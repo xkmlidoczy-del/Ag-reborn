@@ -1,0 +1,307 @@
+# skill<TAB>optional @display=field,...<TAB>field=value; blocks, ticks and blocks/tick
+arc_gen	@display=reach	reach_novice=12	reach_mastered=24
+charging
+mag_movement	@display=reach	reach=28
+mag_manip	@display=reach,throw_reach	reach=14	throw_reach=24
+mine_detect	@display=reach,duration_ticks	reach_novice=18	reach_mastered=32	duration_ticks=120
+body_intensify	@display=buff_duration_multiplier	buff_duration_multiplier_novice=1.6	buff_duration_multiplier_mastered=2.6
+thunder_bolt	@display=reach,radius	reach=32	radius=8
+railgun	@display=reach	reach=80
+thunder_clap	@display=reach,radius	reach=52	radius_novice=15	radius_mastered=30
+electron_bomb	@display=reach	reach=18
+scatter_bomb	@display=reach	reach=19
+light_shield	@display=duration_ticks	duration_ticks_novice=140	duration_ticks_mastered=200
+meltdowner	@display=radius	radius_novice=2	radius_mastered=3
+mine_ray_basic	@display=reach	reach=14
+ray_barrage	@display=reach	reach=28
+jet_engine	@display=reach	reach=16
+mine_ray_expert	@display=reach	reach=24
+mine_ray_luck	@display=reach	reach=28
+electron_missile	@display=reach	reach_novice=7	reach_mastered=16
+threatening_teleport	@display=reach	reach_novice=10	reach_mastered=18
+penetrate_teleport	@display=reach	reach_novice=12	reach_mastered=36
+mark_teleport	@display=reach	reach_novice=28	reach_mastered=60
+flesh_ripping	@display=reach	reach_novice=8	reach_mastered=16
+location_teleport	@display=radius	radius=5
+shift_tp	@display=reach	reach_novice=30	reach_mastered=42
+flashing	@display=duration_ticks,reach	duration_ticks_novice=80	duration_ticks_mastered=180	reach_novice=12	reach_mastered=18
+dir_shock	@display=reach	reach=4
+ground_shock	@display=max_steps	max_steps_novice=12	max_steps_mastered=25
+vec_accel	@display=speed_coefficient	speed_coefficient=2.5
+vec_deviation	@display=radius	radius=5
+dir_blast	@display=reach,radius	reach=5	radius=3
+storm_wing
+blood_retro	@display=reach	reach=3
+vec_reflection	@display=radius	radius=5
+plasma_cannon	@display=reach	reach=96
+forked_arc	@display=reach,branch_radius,max_branches	reach=30	branch_radius=6	max_branches=2
+magnetic_bracer	@display=radius	radius=4
+charge_decoy	@display=reach,radius	reach=24	radius=5
+polarity_tether	@display=reach,max_speed,duration_ticks	reach=20	max_speed=0.6	duration_ticks=120
+conductive_circuit	@display=placement_reach,reach,duration_ticks	placement_reach=28	reach=36	duration_ticks=40
+grounding_return	@display=duration_ticks,precise_ticks	duration_ticks=60	precise_ticks=6
+magnetic_ground_step	@display=base_distance,duration_ticks,max_speed	base_distance=8	duration_ticks=40	max_speed=0.4
+magnetic_item_pull	@display=reach,duration_ticks,max_targets	reach=30	duration_ticks=130	max_targets=16
+iron_sand_lance	@display=reach,duration_ticks,speed	reach=56	duration_ticks=140	speed=2
+thunder_net	@display=reach,duration_ticks,max_targets	reach=72	duration_ticks=60	max_targets=6
+potential_buffer	@display=radius,max_targets	radius=7	max_targets=6
+rail_thunder_array	@display=reach,duration_ticks,max_targets	reach=96	duration_ticks=60	max_targets=16
+magnetic_domain	@display=radius	radius=14
+dual_point	@display=reach,duration_ticks	reach=32	duration_ticks=140
+scatter_plates	@display=horizontal_radius,vertical_radius	horizontal_radius=0.3	vertical_radius=0.55
+beam_etching	@display=reach,max_targets	reach=12	max_targets=16
+thermal_shell	@display=radius,max_targets	radius=4	max_targets=4
+folded_mirror_array	@display=placement_reach,reach,duration_ticks	placement_reach=10	reach=40	duration_ticks=400
+disintegration_sweep	@display=reach,max_targets	reach=56	max_targets=8
+beam_step	@display=max_vertical_addition,max_targets,duration_ticks	max_vertical_addition=0.72	max_targets=3	duration_ticks=32
+particle_laminate	@display=reach,duration_ticks,max_targets	reach=64	duration_ticks=100	max_targets=3
+directional_dissipation_curtain	@display=radius,height,startup_ticks	radius=6	height=3	startup_ticks=6
+multicore_canopy	@display=reach,duration_ticks,max_cores	reach=96	duration_ticks=240	max_cores=6
+zero_gap_armor	@display=startup_ticks	startup_ticks=6
+safe_landing_probe	@display=reach,duration_ticks	reach=12	duration_ticks=140
+phase_sidestep	@display=base_distance	base_distance=3
+displaced_projection	@display=reach,duration_ticks,speed	reach=24	duration_ticks=20	speed=1.5
+return_mark	@display=reach,duration_ticks	reach=30	duration_ticks=1200
+recovery_mark	@display=reach,duration_ticks	reach=30	duration_ticks=1200
+cross_substitution	@display=reach,duration_ticks,max_targets	reach=32	duration_ticks=500	max_targets=3
+corner_exchange	@display=reach,duration_ticks	reach=24	duration_ticks=500
+short_interception	@display=reach,duration_ticks,max_targets	reach=48	duration_ticks=500	max_targets=4
+spatial_relay	@display=reach,duration_ticks,max_targets	reach=36	duration_ticks=500	max_targets=16
+emergency_return	@display=reach,duration_ticks	reach=40	duration_ticks=1200
+tactical_coordinate_formation	@display=reach,duration_ticks,max_templates	reach=64	duration_ticks=240	max_templates=6
+spatial_pincer_corridor	@display=reach,duration_ticks,max_targets	reach=64	duration_ticks=500	max_targets=8
+multidimensional_landing_array	@display=reach,duration_ticks,max_targets	reach=96	duration_ticks=400	max_targets=16
+deflection_strike	@display=reach,max_targets	reach=10	max_targets=2
+vector_parry	@display=precise_ticks	precise_ticks=3
+braking_touch	@display=reach,duration_ticks	reach=3	duration_ticks=50
+shear_windblade	@display=duration_ticks,max_targets,speed	duration_ticks=16	max_targets=4	speed=2
+inertial_anchor
+yaw_palm	@display=reach,max_targets	reach=8	max_targets=3
+trajectory_return	@display=reach,max_targets	reach=40	max_targets=4
+circulation_relief	@display=reach	reach=5
+circulation_listening	@display=reach,max_targets	reach=24	max_targets=8
+vector_cage	@display=duration_ticks,active_ticks,max_targets	duration_ticks=240	active_ticks=80	max_targets=8
+multi_axis_reflection	@display=reach,max_targets	reach=5	max_targets=4
+wind_pressure_lift	@display=duration_ticks	duration_ticks=240
+point_meltdown	@display=reach,focus_ticks	reach=36	focus_ticks=10
+remote_scatter_relay	@display=leg_reach,reach,duration_ticks	leg_reach=32	reach=160	duration_ticks=500
+scatter_locator_plate	@display=placement_reach,duration_ticks	placement_reach=24	duration_ticks=500
+autonomous_vector_circle	@display=reach,max_targets	reach=8	max_targets=8
+pulse_shield	@display=radius,max_targets	radius=15	max_targets=6
+rail_relay	@display=reach,max_speed	reach=36	max_speed=1.5
+reverse_jet_brake	@display=duration_ticks,hover_ticks	duration_ticks=18	hover_ticks=12
+incident_bypass	@display=duration_ticks	duration_ticks=30
+phase_corridor	@display=base_distance	base_distance=32
+zenith_vector_dominion	@display=reach,duration_ticks,max_targets	reach=96	duration_ticks=14	max_targets=16
+impulse_split	@display=duration_ticks	duration_ticks=120
+vector_construct	@display=reach,duration_ticks	reach=24	duration_ticks=120
+mental_probe	@display=reach,reveal_ticks,stagger_ticks	reach=32	reveal_ticks=200	stagger_ticks=400
+mental_disrupt	@display=reach,duration_ticks	duration_ticks=800	reach=32
+mental_out_crowd	@display=reach,radius,duration_ticks,target_cap	duration_ticks=1400	radius=18	reach=32	target_cap=7
+aero_jet	@display=horizontal_speed,vertical_speed	horizontal_speed=0.72	vertical_speed=0.28
+aero_launch	@display=reach,speed,vertical_speed	reach=5	speed=1.16	vertical_speed=0.15
+aero_barrage	@display=reach,target_cap,horizontal_speed,vertical_speed	horizontal_speed=0.65	reach=32	target_cap=7	vertical_speed=0.2
+nitrogen_armor	@display=duration_ticks	duration_ticks=135
+nitrogen_punch	@display=reach,horizontal_speed,vertical_speed	horizontal_speed=0.7	reach=5	vertical_speed=0.12
+nitrogen_dome	@display=duration_ticks,radius	duration_ticks=120	radius=7
+dark_blade	@display=reach	reach=7
+dark_wings	@display=duration_ticks,boosted_duration_ticks,landing_ticks	boosted_duration_ticks=300	duration_ticks=200	landing_ticks=100
+dark_construct	@display=duration_ticks,radius,reach	duration_ticks=200	radius=9	reach=7.5
+hydro_whip	@display=horizontal_speed,reach,source_reach	horizontal_speed=1.05	reach=28	source_reach=6
+hydro_shield	@display=duration_ticks,radius	duration_ticks=140	radius=3
+hydro_domain	@display=duration_ticks,horizontal_speed,radius,target_cap	duration_ticks=140	horizontal_speed=0.24	radius=13	target_cap=8
+paper_blade	@display=reach	reach=28
+paper_armor	@display=duration_ticks,radius	duration_ticks=160	radius=3
+paper_wing	@display=duration_ticks,horizontal_speed,rise_limit	duration_ticks=140	horizontal_speed=0.21	rise_limit=4
+paper_array	@display=radius,target_cap	radius=16	target_cap=6
+liquid_scout	@display=control_reach,duration_ticks,speed	control_reach=31	duration_ticks=650	speed=0.17
+liquid_strike	@display=body_reach,reach	body_reach=5	reach=36
+liquid_shadow_field	@display=radius,target_cap	radius=9	target_cap=8
+float_lift	@display=duration_ticks,reach,rise_limit	duration_ticks=75	reach=24	rise_limit=4
+float_rescue	@display=duration_ticks,max_fall_speed,reach	duration_ticks=110	max_fall_speed=0.1	reach=28
+float_field	@display=duration_ticks,radius,rise_limit,target_cap	duration_ticks=150	radius=14	rise_limit=6	target_cap=8
+dark_rain	@display=radius,target_cap	origin_height=4	radius=12	target_cap=7
+dark_synthesis
+mental_puppet	@display=reach,radius,duration_ticks	duration_ticks=2000	radius=14	reach=28
+dark_wing_charge	@display=reach,target_cap,knockback_speed,horizontal_speed,vertical_speed	horizontal_speed=0.47	knockback_lift=0.08	knockback_speed=0.35	reach=3	target_cap=1	vertical_speed=0.08
+dark_spear_fan	@display=reach,target_cap	reach=34	target_cap=6
+dark_shard_ring	@display=radius,target_cap	origin_offset=1.35	radius=10	target_cap=6
+dark_matter_barrage	@display=reach,target_cap,knockback_speed	knockback_lift=0.08	knockback_speed=0.35	reach=36	target_cap=7
+nitrogen_ram	@display=reach,target_cap,knockback_speed,horizontal_speed,vertical_speed	horizontal_speed=0.41	knockback_lift=0.08	knockback_speed=0.35	reach=3	target_cap=1	vertical_speed=0.04
+nitrogen_shock_ring	@display=radius,target_cap,knockback_speed	knockback_lift=0.08	knockback_speed=0.39	radius=9	target_cap=7
+nitrogen_impact	@display=reach,target_cap,knockback_speed	knockback_lift=0.08	knockback_speed=0.35	reach=4	target_cap=1
+dark_wing_shelter	@display=ally_reach,duration_ticks,boosted_duration_ticks	ally_reach=15	boosted_duration_ticks=165	duration_ticks=110
+nitrogen_fall_guard	@display=duration_ticks,damage_factor	damage_factor=0.25	duration_ticks=120
+nitrogen_ally_guard	@display=ally_reach,duration_ticks	ally_reach=14	duration_ticks=115
+nitrogen_bulwark	@display=duration_ticks,target_cap,half_width,deploy_distance,ally_reach	ally_reach=12	deploy_distance=2.25	duration_ticks=120	half_width=1.05	target_cap=8
+dark_shard_return	@display=reach,speed	reach=6	speed=0.72
+dark_shard_orbit	@display=radius,target_cap,horizontal_speed,vertical_speed	horizontal_speed=0.48	radius=5	target_cap=4	vertical_speed=0.08
+nitrogen_shell_reinforce	@display=shield_fraction	shield_fraction=0.03
+nitrogen_item_push	@display=reach,speed,vertical_speed	reach=5	speed=0.95	vertical_speed=0.12
+nitrogen_rocket	@display=horizontal_factor,vertical_speed,boost_factor	boost_factor=1.25	horizontal_factor=0.2	vertical_speed=0.76
+aero_ring_push	@display=radius,target_cap,horizontal_speed,vertical_speed	horizontal_speed=0.5	radius=5	target_cap=6	vertical_speed=0.08
+aero_vertical_jet	@display=horizontal_factor,vertical_speed	horizontal_factor=0.6	vertical_speed=0.56
+aero_vortex	@display=radius,target_cap,horizontal_speed,vertical_speed	horizontal_speed=0.5	radius=5	target_cap=4	vertical_speed=0.08
+aero_double_jet	@display=horizontal_speed,vertical_speed	horizontal_speed=0.72	vertical_speed=0.4
+dark_guard	@display=duration_ticks,target_cap,boosted_duration_ticks	boosted_duration_ticks=165	duration_ticks=110	target_cap=6
+dark_shard_screen	@display=duration_ticks,target_cap,half_width,deploy_distance,boosted_duration_ticks	boosted_duration_ticks=165	deploy_distance=2	duration_ticks=110	half_width=0.9	target_cap=8
+dark_panel_dome	@display=duration_ticks,target_cap,radius,boosted_duration_ticks	boosted_duration_ticks=180	duration_ticks=120	radius=2.5	target_cap=8
+nitrogen_plate	@display=duration_ticks,target_cap,half_width,deploy_distance	deploy_distance=2	duration_ticks=100	half_width=0.8	target_cap=6
+nitrogen_shield_line	@display=duration_ticks,target_cap,half_width,deploy_distance	deploy_distance=2.25	duration_ticks=110	half_width=0.95	target_cap=8
+aero_pressure_wall	@display=duration_ticks,target_cap,half_width,deploy_distance	deploy_distance=2	duration_ticks=110	half_width=0.95	target_cap=8
+aero_air_curtain	@display=duration_ticks,target_cap,radius	duration_ticks=125	radius=2.6	target_cap=9
+mental_route_interrupt	@display=reach,duration_ticks,target_cap	duration_ticks=600	reach=26	target_cap=1
+mental_silence_field	@display=reach,duration_ticks,target_cap,radius	duration_ticks=800	radius=14	reach=24	target_cap=6
+mental_panic_field	@display=reach,duration_ticks,target_cap,radius	duration_ticks=0	radius=15	reach=24	target_cap=6
+mental_lure_pair	@display=reach,duration_ticks,target_cap,radius,pair_reach	duration_ticks=800	pair_reach=8	radius=14	reach=28	target_cap=2
+mental_pursuit_field	@display=reach,duration_ticks,target_cap,radius,ally_reach	ally_reach=12	duration_ticks=800	radius=16	reach=24	target_cap=6
+mental_crossfire	@display=reach,duration_ticks,target_cap,radius,pair_reach	duration_ticks=1200	pair_reach=9	radius=18	reach=24	target_cap=8
+mental_crowd_detach	@display=reach,duration_ticks,target_cap,radius,ally_reach	ally_reach=12	duration_ticks=1000	radius=16	reach=24	target_cap=7
+mental_conflict_ring	@display=reach,duration_ticks,target_cap,radius,pair_reach	duration_ticks=1000	pair_reach=9	radius=17	reach=24	target_cap=7
+mental_relay_interference	@display=reach,duration_ticks,target_cap,radius	duration_ticks=1000	radius=18	reach=24	target_cap=7
+dark_shard	@display=reach,target_cap	reach=24	target_cap=1
+dark_spread	@display=reach,target_cap	reach=14	target_cap=4
+dark_sweep	@display=reach,target_cap,knockback_speed	knockback_lift=0.08	knockback_speed=0.35	reach=5	target_cap=4
+dark_pierce	@display=reach,target_cap	reach=36	target_cap=4
+dark_shard_salvo	@display=radius,target_cap	radius=14	target_cap=6
+nitrogen_burst	@display=reach,target_cap,knockback_speed	knockback_lift=0.08	knockback_speed=0.35	reach=4.5	target_cap=1
+nitrogen_uppercut	@display=reach,target_cap,vertical_speed	reach=4	target_cap=1	vertical_speed=0.4
+nitrogen_sweep	@display=reach,target_cap,knockback_speed	knockback_lift=0.08	knockback_speed=0.35	reach=5	target_cap=4
+nitrogen_cone	@display=reach,target_cap	reach=14	target_cap=6
+nitrogen_ground_wave	@display=radius,target_cap,knockback_speed	knockback_lift=0.08	knockback_speed=0.35	radius=7	target_cap=6
+aero_gust	@display=reach,target_cap,knockback_speed	knockback_lift=0.08	knockback_speed=0.35	reach=14	target_cap=1
+aero_cone	@display=reach,target_cap	reach=17	target_cap=6
+aero_ground_blast	@display=reach,target_cap,knockback_speed	knockback_lift=0.08	knockback_speed=0.39	reach=20	target_cap=6
+aero_squall	@display=radius,target_cap,knockback_speed	knockback_lift=0.08	knockback_speed=0.39	radius=12	target_cap=8
+aero_pressure_lance	@display=reach,target_cap	reach=42	target_cap=4
+dark_feather_guard	@display=reach,reflection_factor	reach=6	reflection_factor=0.65
+nitrogen_guard	@display=reach,reflection_factor	reach=7	reflection_factor=0.65
+aero_arrow_deflect	@display=reach,speed_cap	reach=8	speed_cap=1.5	speed_floor=0.35
+mental_disengage	@display=reach,duration_ticks,target_cap	duration_ticks=600	reach=26	target_cap=1
+mental_attention_shift	@display=reach,duration_ticks,target_cap	duration_ticks=700	reach=26	target_cap=1
+mental_interpose	@display=reach,duration_ticks,target_cap,pair_reach	duration_ticks=800	pair_reach=8	reach=28	target_cap=1
+mental_redirect	@display=reach,duration_ticks,target_cap,pair_reach	duration_ticks=800	pair_reach=8	reach=30	target_cap=1
+mental_pursuit_break	@display=reach,duration_ticks,target_cap,radius	duration_ticks=600	radius=13	reach=24	target_cap=4
+mental_suppress_pair	@display=reach,duration_ticks,target_cap,pair_reach	duration_ticks=800	pair_reach=8	reach=28	target_cap=2
+mental_conflict	@display=reach,duration_ticks,target_cap,pair_reach	duration_ticks=1000	pair_reach=8	reach=30	target_cap=2
+mental_life_scan	@display=reach,remote_reach,reveal_ticks	reach=24	remote_reach=32	reveal_ticks=140
+mental_intent_scan	@display=reach,remote_reach,reveal_ticks,stagger_ticks	reach=24	remote_reach=32	reveal_ticks=200	stagger_ticks=400
+mental_hostile_scan	@display=reach,remote_reach,reveal_ticks	reach=26	remote_reach=32	reveal_ticks=180
+mental_focus_break	@display=reach	reach=26
+mental_target_sense	@display=reach,remote_reach,reveal_ticks	reach=26	remote_reach=32	reveal_ticks=200
+dark_step	@display=horizontal_speed,vertical_speed	horizontal_speed=0.58	vertical_speed=0.14
+dark_lift	@display=vertical_speed	vertical_speed=0.44
+dark_wing_brake	@display=horizontal_factor	horizontal_factor=0.15
+dark_wing_rescue	@display=vertical_speed	vertical_speed=-0.08
+nitrogen_dash	@display=horizontal_speed,vertical_speed,boost_factor	boost_factor=1.25	horizontal_speed=0.56	vertical_speed=0.14
+nitrogen_brake	@display=horizontal_factor	horizontal_factor=0.17
+nitrogen_shove	@display=reach,horizontal_speed	horizontal_speed=0.54	reach=5
+nitrogen_buoy	@display=vertical_speed	vertical_speed=-0.1
+aero_item_pull	@display=reach,speed	reach=5	speed=0.68
+aero_brake	@display=horizontal_factor	horizontal_factor=0.22
+aero_updraft	@display=horizontal_factor,vertical_speed	horizontal_factor=0.2	vertical_speed=0.68
+aero_push	@display=reach,horizontal_speed	horizontal_speed=0.5	reach=5
+aero_side_step	@display=horizontal_speed,vertical_speed	horizontal_speed=0.58	vertical_speed=0.1
+aero_backstep	@display=horizontal_speed,vertical_speed	horizontal_speed=0.65	vertical_speed=0.12
+aero_fall_brake	@display=vertical_speed	vertical_speed=-0.12
+aero_crosswind	@display=reach,horizontal_speed	horizontal_speed=0.6	reach=6
+aero_airborne_turn	@display=speed_cap	speed_cap=0.8	speed_floor=0.12
+paper_patch	@display=duration_ticks,reach	duration_ticks=540	reach=8
+paper_retract	@display=reach	reach=12
+paper_walkway	@display=duration_ticks,reach	duration_ticks=700	reach=10
+paper_plane	@display=duration_ticks,reach,speed	duration_ticks=100	reach=32	speed=0.7
+paper_ladder	@display=duration_ticks,reach	duration_ticks=850	reach=12
+paper_gate	@display=duration_ticks,reach	duration_ticks=850	reach=12
+paper_switch	@display=duration_ticks,reach	duration_ticks=700	reach=10
+paper_plate	@display=duration_ticks,reach	duration_ticks=700	reach=10
+paper_pad	@display=duration_ticks,reach	duration_ticks=700	reach=10
+paper_screen	@display=duration_ticks,reach	duration_ticks=650	reach=10
+paper_step	@display=duration_ticks,reach	duration_ticks=700	reach=10
+paper_safety_rail	@display=duration_ticks,reach	duration_ticks=850	reach=12
+paper_ramp	@display=duration_ticks,reach	duration_ticks=700	reach=10
+paper_lift_bridge	@display=duration_ticks,reach	duration_ticks=750	reach=11
+paper_cover	@display=duration_ticks,reach	duration_ticks=800	reach=11
+paper_platform	@display=duration_ticks,reach	duration_ticks=900	reach=12
+paper_catwalk	@display=duration_ticks,reach	duration_ticks=1050	reach=14
+paper_emergency_stairs	@display=duration_ticks,reach	duration_ticks=900	reach=13
+paper_puzzle_link	@display=duration_ticks,reach	duration_ticks=900	reach=12
+paper_switch_bridge	@display=duration_ticks,reach	duration_ticks=1050	reach=14
+liquid_dismiss
+liquid_pause
+liquid_recall	@display=speed,stop_distance	speed=0.24	stop_distance=1.7
+liquid_listen	@display=lookback_ticks,radius	lookback_ticks=55	radius=10
+liquid_guard	@display=duration_ticks,radius	duration_ticks=120	radius=2.4
+liquid_push	@display=body_reach,horizontal_speed,reach	body_reach=5	horizontal_speed=0.51	reach=36
+liquid_pulse	@display=horizontal_speed,radius,target_cap	horizontal_speed=0.48	radius=6	target_cap=4
+liquid_path	@display=body_reach	body_reach=1.3
+liquid_switch	@display=body_reach	body_reach=2.5
+liquid_follow	@display=speed,stop_distance	speed=0.19	stop_distance=3.3
+liquid_turn
+liquid_intercept	@display=radius	radius=2.5
+liquid_survey	@display=contact_margin,duration_ticks	contact_margin=0.14	duration_ticks=120
+liquid_retreat	@display=speed	speed=0.17
+liquid_route	@display=reach,speed	reach=17	speed=0.21
+liquid_screen	@display=radius,target_cap	radius=2.8	target_cap=3
+liquid_dual_sensor	@display=contact_margin,duration_ticks,lookback_ticks	contact_margin=0.18	duration_ticks=140	lookback_ticks=65
+float_item_lift	@display=duration_ticks,reach,rise_limit	duration_ticks=240	reach=26	rise_limit=3
+float_item_lower	@display=reach,vertical_speed	reach=26	vertical_speed=0.14
+float_item_release	@display=reach	reach=26
+float_item_pull	@display=reach,speed	reach=26	speed=0.23
+float_item_push	@display=horizontal_speed,reach	horizontal_speed=0.46	reach=28
+float_item_field	@display=duration_ticks,radius,rise_limit,target_cap	duration_ticks=300	radius=10	rise_limit=3.8	target_cap=4
+float_release_field
+hydro_transfer	@display=duration_ticks,reach	duration_ticks=240	reach=8
+hydro_irrigate	@display=reach,source_reach	reach=8	source_reach=6
+hydro_extinguish	@display=reach,source_reach	reach=9	source_reach=6
+hydro_current	@display=horizontal_speed	horizontal_speed=0.55
+hydro_lift	@display=vertical_speed	vertical_speed=0.44
+hydro_brake	@display=horizontal_retention	horizontal_retention=0.15
+hydro_repel	@display=horizontal_speed,reach	horizontal_speed=0.53	reach=9
+hydro_rescue	@display=min_vertical_speed,reach	min_vertical_speed=0.3	reach=10
+hydro_douse_self
+hydro_douse_ally	@display=reach	reach=9
+hydro_douse_hostile	@display=reach	reach=8
+hydro_campfire_out	@display=reach	reach=8
+hydro_candle_out	@display=reach	reach=9
+hydro_pressure_jet	@display=reach	reach=18
+hydro_fan	@display=radius,target_cap	radius=11	target_cap=4
+hydro_eddy	@display=radius,target_cap	radius=10	target_cap=6
+hydro_dive	@display=vertical_speed	vertical_speed=0.44
+hydro_lateral_current	@display=horizontal_speed	horizontal_speed=0.5
+hydro_undertow	@display=horizontal_speed,reach	horizontal_speed=0.46	reach=9
+hydro_tow_ally	@display=horizontal_speed,reach	horizontal_speed=0.36	reach=10
+hydro_brake_field	@display=motion_retention,radius,target_cap	motion_retention=0.15	radius=9	target_cap=6
+float_hover	@display=duration_ticks	duration_ticks=110
+float_ascent	@display=duration_ticks,vertical_speed	duration_ticks=105	vertical_speed=0.2
+float_descent	@display=duration_ticks,vertical_speed	duration_ticks=110	vertical_speed=0.11
+float_air_brake	@display=duration_ticks	duration_ticks=125
+float_ally_hover	@display=duration_ticks,reach	duration_ticks=125	reach=28
+float_ally_ascent	@display=duration_ticks,reach,vertical_speed	duration_ticks=125	reach=30	vertical_speed=0.19
+float_ally_descent	@display=duration_ticks,reach,vertical_speed	duration_ticks=150	reach=32	vertical_speed=0.1
+float_suspend	@display=duration_ticks,reach,rise_limit	duration_ticks=100	reach=26	rise_limit=2.7
+float_hostile_descent	@display=duration_ticks,reach,vertical_speed	duration_ticks=120	reach=30	vertical_speed=0.12
+float_hover_field	@display=duration_ticks,radius,rise_limit,target_cap	duration_ticks=150	radius=12	rise_limit=3.5	target_cap=6
+float_rescue_field	@display=duration_ticks,radius,target_cap	duration_ticks=180	radius=13	target_cap=6
+float_item_shelf	@display=duration_ticks,reach	duration_ticks=170	reach=28
+float_item_orbit	@display=duration_ticks,horizontal_speed,orbit_radius,reach	duration_ticks=190	horizontal_speed=0.16	orbit_radius=2.6	reach=29
+float_item_shelf_field	@display=duration_ticks,radius,target_cap	duration_ticks=200	radius=11	target_cap=4
+liquid_grapple	@display=body_reach,contact_margin,duration_ticks,reach,slow_ticks	body_reach=2.1	contact_margin=0.4	duration_ticks=55	reach=36	slow_ticks=75
+liquid_contact_cut	@display=body_reach,contact_margin,reach	body_reach=2.4	contact_margin=0.55	reach=36
+liquid_contact_sweep	@display=body_reach,contact_margin,target_cap	body_reach=3.1	contact_margin=1.15	target_cap=4
+liquid_contact_crush	@display=body_reach,contact_margin,duration_ticks,reach	body_reach=1.7	contact_margin=0.35	duration_ticks=18	reach=36
+mental_neural_sting	@display=reach,target_cap	reach=28	radius=0	target_cap=1	warmup_ticks=6
+mental_synaptic_burst	@display=reach,radius,target_cap	reach=22	radius=5	target_cap=3	warmup_ticks=8	control_ticks=120
+mental_feedback_spike	@display=reach,target_cap	reach=32	radius=0	target_cap=1	warmup_ticks=10
+mental_cortical_wave	@display=reach,radius,target_cap	reach=28	radius=6	target_cap=5	warmup_ticks=12	control_ticks=200
+mental_resonance_cascade	@display=reach,radius,target_cap	reach=32	radius=8	target_cap=8	warmup_ticks=18	control_ticks=300
+float_buoyant_strike	@display=reach,target_cap	reach=22	radius=0	target_cap=1	warmup_ticks=6
+float_reversal_drop	@display=reach,target_cap	reach=26	radius=0	target_cap=1	warmup_ticks=8
+float_counterpulse	@display=reach,radius,target_cap	reach=22	radius=5	target_cap=4	warmup_ticks=10
+float_pressure_drop	@display=reach,radius,target_cap	reach=28	radius=6	target_cap=5	warmup_ticks=12
+float_collapse_field	@display=reach,radius,target_cap	reach=30	radius=8	target_cap=8	warmup_ticks=18
+paper_fold_fan	@display=reach,radius,target_cap	reach=24	radius=5	target_cap=3	warmup_ticks=8
+paper_piercing_lance	@display=reach,radius,target_cap	reach=34	radius=1.1	target_cap=4	warmup_ticks=10
+paper_returning_wheel	@display=reach,radius,target_cap	reach=30	radius=5	target_cap=5	warmup_ticks=12
+liquid_touch_spike	@display=reach,radius,target_cap	reach=32	radius=2.4	target_cap=1	warmup_ticks=6
+liquid_crosscut	@display=reach,radius,target_cap	reach=32	radius=3.2	target_cap=3	warmup_ticks=8
+aero_pressure_bullet	@display=reach,target_cap	reach=18	radius=0	target_cap=1	warmup_ticks=6

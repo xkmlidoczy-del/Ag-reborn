@@ -1,0 +1,9 @@
+// Pure FxLib building blocks and the per-effect CINEMATIC decorations.
+tasks.register('fxDecorTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.FxDecorRegressionTest'
+    enableAssertions = true
+    maxHeapSize = '256m'
+}
+tasks.named('check') { dependsOn 'fxDecorTest' }

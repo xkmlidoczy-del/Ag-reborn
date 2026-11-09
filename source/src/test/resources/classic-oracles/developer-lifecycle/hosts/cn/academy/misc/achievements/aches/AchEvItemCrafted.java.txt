@@ -1,0 +1,2 @@
+/* Test-only lifecycle platform plumbing; business methods run unchanged originals. */
+package cn.academy.misc.achievements.aches;public class AchEvItemCrafted extends net.minecraft.stats.Achievement {public AchEvItemCrafted(){super("unused");}public boolean accept(cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent e){return false;}}

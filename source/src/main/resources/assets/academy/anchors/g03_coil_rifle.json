@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "coordinate_system": "runtime_x_right_y_up_z_forward",
+  "units": "m",
+  "anchors": {
+    "grip": [
+      -0.031,
+      -0.008,
+      -0.112
+    ],
+    "support": [
+      0.042,
+      0.067,
+      0.279
+    ],
+    "shoulder": [
+      0,
+      0.132,
+      -0.422
+    ],
+    "sight": [
+      0,
+      0.228,
+      -0.058
+    ],
+    "muzzle": [
+      0,
+      0.132,
+      0.568
+    ],
+    "mag": [
+      0,
+      0.061,
+      0.034
+    ],
+    "mag_grip": [
+      0.032,
+      0.006,
+      0.034
+    ],
+    "charge": [
+      0.061,
+      0.164,
+      -0.093
+    ]
+  },
+  "motion": {
+    "magazine_drop": 0.18,
+    "magazine_tilt_deg": -12,
+    "slide_travel": 0.043
+  },
+  "first_person": {
+    "hip": [
+      0.2,
+      -0.25,
+      -0.4
+    ],
+    "ads_distance": 0.34
+  },
+  "notes": "New C03-AR geometry. G03 uses authored rig v2; motion fields retained only for compatibility."
+}

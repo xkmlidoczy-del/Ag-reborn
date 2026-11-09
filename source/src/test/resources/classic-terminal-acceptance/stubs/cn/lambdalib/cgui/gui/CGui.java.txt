@@ -1,0 +1,1 @@
+package cn.lambdalib.cgui.gui; public class CGui {public static int draws;public static double[] model,projection;public void addWidget(Widget w){}public void draw(double x,double y){draws++;model=org.lwjgl.opengl.GL11.model();projection=org.lwjgl.opengl.GL11.projection();}}

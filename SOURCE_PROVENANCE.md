@@ -1,0 +1,9 @@
+# Source snapshot and privacy handling
+
+This snapshot is based on Academy generation reborn / Ag:reborn `0.1.0-m41-highpower.0.81.5-city-a3.61`, the same gameplay version as the CurseForge beta. The original work is [AcademyCraft by Lambda Innovation](https://github.com/LambdaInnovation/AcademyCraft); the classic reference is tag 1.0.7 at commit `00d19ec0cf538f61c1095c9292f5ee6863db4521`.
+
+The export contains a fresh history only: it does not include previous repository history, game saves, local logs, credentials or development caches. Local machine paths were replaced with relative paths where needed. Local fields were removed from the editable train model; the model's geometry and materials were compared before and after. Non-rendering text or EXIF chunks were removed from selected generated PNGs, and their decoded pixels were compared. Some original upstream PNG metadata remains where existing runtime or test checks verify the original upstream file hash; it was checked for local usernames, paths and contact details. See `source/docs/ASSET_METADATA_NOTICE.md`.
+
+Because of this privacy cleanup, some packaged resource bytes and the resulting JAR checksum differ from the earlier a3.61 JAR. An isolated JDK 21 build using the existing dependency cache succeeded. Its 7,582 JAR entries were compared with the earlier binary: class files and other resources match, while 76 generated PNG entries differ only in removed metadata; decoded image pixels were compared. Vehicle-door geometry, the shear-windblade CPU material fixture, and point-meltdown visual logic checks passed. These checks do not establish full multiplayer, long-running or in-game visual acceptance.
+
+`LICENSE` and `NOTICE` preserve the original GPLv3 text, additional AcademyCraft notices and third-party attributions. The interaction between the upstream additional terms and GPLv3 is not resolved here.

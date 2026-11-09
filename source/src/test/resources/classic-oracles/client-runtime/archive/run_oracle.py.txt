@@ -1,0 +1,90 @@
+"""Offline, engine-free javac/java original-source differential oracle."""
+from pathlib import Path
+import hashlib
+import json
+import shutil
+import subprocess
+import sys
+
+S=Path(__file__).resolve().parent
+R=S.parents[1]
+JDK=R/'.tools/jdk-21.0.12.1+1/bin'
+GUAVA=R/'.gradle-user/caches/modules-2/files-2.1/com.google.guava/guava/32.1.2-jre/5e64ec7e056456bef3a4bc4c6fdaef71e8ab6318/guava-32.1.2-jre.jar'
+OUT=S/'checks/oracle'
+OUT.mkdir(parents=True,exist_ok=True)
+
+def sha(path): return hashlib.sha256(path.read_bytes()).hexdigest()
+def run(label,args):
+    result=subprocess.run(list(map(str,args)),cwd=S,text=True,capture_output=True)
+    (OUT/(label+'.log')).write_text(result.stdout+result.stderr)
+    print(label+': '+str(result.returncode),flush=True)
+    print(result.stdout+result.stderr,end='',flush=True)
+    return result.returncode
+
+def main():
+    # A failed compile/cold-link attempt must never leave an earlier PASS proof.
+    (OUT/'proof.json').unlink(missing_ok=True)
+    (OUT/'source-oracle.log').unlink(missing_ok=True)
+    witnesses=json.loads((S/'oracle/source-hashes.json').read_text())
+    for row in witnesses:
+        assert sha(R/row['canonical'])==row['sha256'],row['canonical']
+        assert sha(S/row['copied'])==row['sha256'],row['copied']
+    candidate=S/'replacements/src/main/java/cn/academy/port/client/ClassicClientRuntimeCoordinator.java'
+    sources=[*sorted((S/'oracle/original').rglob('*.java')),
+             *sorted((S/'oracle/hosts').rglob('*.java'))]
+    original_only='--original-only' in sys.argv
+    candidate_classes=OUT/'candidate-classes'
+    results=[]
+    if not original_only:
+        if candidate_classes.exists(): shutil.rmtree(candidate_classes)
+        candidate_classes.mkdir()
+        # Deliberately compile before any fake platform host is on the classpath.
+        rc=run('compile-candidate-only',[JDK/'javac','-proc:none','-encoding','UTF-8',
+               '-cp',GUAVA,'-d',candidate_classes,candidate])
+        results.append({'name':'compile-candidate-only','returncode':rc})
+        if rc: return rc
+        cold_tool=S/'oracle/tools/CandidateColdLinkProbe.java'
+        cold_classes=OUT/'cold-tool-classes'
+        if cold_classes.exists(): shutil.rmtree(cold_classes)
+        cold_classes.mkdir()
+        rc=run('compile-cold-tool',[JDK/'javac','-proc:none','-encoding','UTF-8',
+            '-d',cold_classes,cold_tool])
+        results.append({'name':'compile-cold-tool','returncode':rc})
+        if rc==0:
+            rc=run('candidate-cold-link',[JDK/'java','-ea','-Xmx256m','-cp',cold_classes,
+                'CandidateColdLinkProbe',candidate_classes,GUAVA])
+            results.append({'name':'candidate-cold-link','returncode':rc})
+        if rc: return rc
+        sources += [*sorted((S/'tests').rglob('*.java'))]
+    classes=OUT/'classes'
+    if classes.exists(): shutil.rmtree(classes)
+    classes.mkdir()
+    compile_cp=str(GUAVA) if original_only else str(GUAVA)+':'+str(candidate_classes)
+    rc=run('compile',[JDK/'javac','-proc:none','-encoding','UTF-8','-cp',compile_cp,
+                      '-d',classes,*sources])
+    results.append({'name':'compile','returncode':rc})
+    if rc==0 and not original_only:
+        results.append({'name':'ClientRuntimeSourceOracle', 'returncode':run('source-oracle',
+            [JDK/'java','-ea','-Xmx256m','-Dacademy.candidate.classes='+str(candidate_classes),
+             '-cp',str(classes)+':'+str(candidate_classes)+':'+str(GUAVA),
+             'cn.academy.port.client.ClientRuntimeSourceOracle'])})
+    proof={
+        'scope':'Unchanged original ClientRuntime and KeyDelegate Java business methods plus original event classes, compiled against explicit platform hosts; compared to staged engine-free coordinator. No Gradle, game bootstrap, real client/server, CUA, network, push or engine evidence.',
+        'witnesses':witnesses,
+        'sources_sha256':{str(p.relative_to(S)):sha(p) for p in sources},
+        'candidate_sha256':None if original_only else sha(candidate),
+        'candidate_classes_sha256':{} if original_only else {str(p.relative_to(S)):sha(p) for p in sorted(candidate_classes.rglob('*.class'))},
+        'runner_and_tools_sha256':{str(p.relative_to(S)):sha(p) for p in
+             [S/'run_oracle.py',S/'prepare_oracle_hosts.py',S/'oracle/host-boundaries.md',
+              S/'oracle/source-hashes.json',*sorted((S/'oracle/tools').rglob('*.java'))]},
+        'host_count':len(list((S/'oracle/hosts').rglob('*.java'))),
+        'scenario_names':[] if original_only or not (OUT/'source-oracle.log').exists() else [line[5:] for line in (OUT/'source-oracle.log').read_text().splitlines()
+              if line.startswith('PASS ') and not line.startswith('PASS ClientRuntime')],
+        'toolchain':{'javac':str(JDK/'javac'),'java':str(JDK/'java'),
+                     'guava':str(GUAVA),'guava_sha256':sha(GUAVA)},
+        'results':results,
+    }
+    (OUT/'proof.json').write_text(json.dumps(proof,indent=2)+'\n')
+    return any(row['returncode'] for row in results)
+
+if __name__=='__main__': sys.exit(main())

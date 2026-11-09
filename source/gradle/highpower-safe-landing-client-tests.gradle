@@ -1,0 +1,13 @@
+// NEW313 genuine classic input seam, frozen packet admission and bounded render-only geometry.
+['safeLandingProbeInputTest':'cn.academy.port.client.SafeLandingProbeInputRegressionTest',
+ 'safeLandingProbeVisualTest':'cn.academy.port.client.SafeLandingProbeVisualRegressionTest',
+ 'safeLandingProbeLayoutTest':'cn.academy.port.client.SafeLandingProbeLayoutRegressionTest',
+ 'safeLandingProbeCleanupTest':'cn.academy.port.client.SafeLandingProbeCleanupRegressionTest'].each { taskName, className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+    }
+    tasks.named('check') { dependsOn taskName }
+}

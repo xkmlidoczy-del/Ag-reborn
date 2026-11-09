@@ -1,0 +1,9 @@
+/* Test-only platform host; numeric algorithms remain in unchanged source. */
+package cn.lambdalib.util.datapart;
+public class EntityData {
+ private static final java.util.Map<Object,EntityData> DATA=new java.util.IdentityHashMap<>();
+ public static EntityData get(Object entity){return DATA.computeIfAbsent(entity,e->new EntityData());}
+ private final java.util.Map<Class<?>,DataPart<?>> parts=new java.util.HashMap<>();
+ public <T extends DataPart<?>> T getPart(Class<T> type){return type.cast(parts.get(type));}
+ @SuppressWarnings({"rawtypes","unchecked"}) public static void bind(Object entity,DataPart... values){var data=get(entity);for(var value:values){value.entity=entity;data.parts.put(value.getClass(),value);}}
+}

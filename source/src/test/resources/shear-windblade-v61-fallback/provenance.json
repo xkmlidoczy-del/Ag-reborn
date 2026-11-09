@@ -1,0 +1,15 @@
+{
+  "commit": "917d234a19c5def7e4225904802f6638d1ad6661",
+  "subject": "Record bounded NEW421 client acceptance and preserved visual limitations",
+  "commit_timestamp": "2026-10-14T04:21:32+09:00",
+  "extraction": "git show 917d234a19c5def7e4225904802f6638d1ad6661:<source path>; complete byte-for-byte files, no transformations",
+  "source_sha256": {
+    "src/main/java/cn/academy/port/client/ShearWindbladeEffects.java": "b9ff9d6233397bdf899cc4852597c6826a1d2ffc82b935380fcac8434c7fdc7a",
+    "src/main/java/cn/academy/port/client/ShearWindbladeRenderGeometry.java": "3c2bda906b2dcb04b33338969554d921464084070882892552b134beb9ef8864",
+    "src/main/java/cn/academy/port/client/ShearWindbladeState.java": "2e3bd0a1bc789e3e5ad723476b43ef8faebc1691d5691c755ed37b259521dab9",
+    "src/main/java/cn/academy/port/highpower/core/ShearWindbladeGeometry.java": "f36750cc15088e0b35500ad5b71096410066218944f48ccd982b37eaa2abe20c"
+  },
+  "asset_sha256": {
+    "src/main/resources/assets/academy/textures/effects/glow_line.png": "0785f30721bd1281cb356452c1c68ae721d3b09304df5b23de05578593dbf361"
+  }
+}

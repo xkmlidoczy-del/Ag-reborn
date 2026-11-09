@@ -1,0 +1,51 @@
+/* Opt-in native Anvil/separate-JVM wind family fixture. GPLv3; see NOTICE. */
+package cn.academy.port.gametest;
+import cn.academy.port.wind.*;
+import cn.academy.port.energy.*;
+import cn.academy.port.solar.ClassicSolarGenerators;
+import java.io.*;
+import java.nio.file.*;
+import java.util.*;
+import java.util.zip.InflaterInputStream;
+import net.minecraft.core.*;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.gametest.framework.*;
+import net.minecraft.nbt.*;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.*;
+import net.minecraft.world.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.LevelResource;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.level.LevelEvent;
+import net.neoforged.neoforge.gametest.*;
+/** Main must gracefully stop seed JVM and reuse this one dedicated proof world in a distinct JVM. */
+@GameTestHolder("academy_wind_restart") @PrefixGameTestTemplate(false) @EventBusSubscriber(modid="academy")
+public final class AcademyWindGeneratorRestartRuntimeTests {
+    private static final UUID BOOT=UUID.randomUUID();
+    private static final ChunkPos CHUNK=new ChunkPos(96,96);
+    private static final BlockPos CELL=new BlockPos(1540,80,1540);
+    private static final String PROPERTY="academy.wind.restart";
+    private record Cell(BlockPos pos,BlockState state){}
+    private AcademyWindGeneratorRestartRuntimeTests(){}
+    private static String mode(){return System.getProperty(PROPERTY,"");}
+    private static void check(boolean condition,String label){if(!condition)throw new AssertionError(label);}
+    private static void equal(double expected,double actual,String label){check(Double.isFinite(actual)&&Math.abs(expected-actual)<1e-7,label+": "+actual);}
+    @SubscribeEvent public static void template(LevelEvent.Load event){if(mode().isEmpty()||!(event.getLevel() instanceof ServerLevel level))return;var tag=new CompoundTag();var size=new ListTag();for(int i=0;i<3;i++)size.add(IntTag.valueOf(4));tag.put("size",size);var blocks=new ListTag();var cell=new CompoundTag();var position=new ListTag();for(int i=0;i<3;i++)position.add(IntTag.valueOf(0));cell.put("pos",position);cell.putInt("state",0);blocks.add(cell);tag.put("blocks",blocks);var palette=new ListTag();var air=new CompoundTag();air.putString("Name","minecraft:air");palette.add(air);tag.put("palette",palette);tag.put("entities",new ListTag());level.getStructureManager().getOrCreate(ResourceLocation.parse("academy_wind_restart:wind_restart_empty")).load(level.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.BLOCK),tag);}
+    private static List<Cell> cells(){var result=new ArrayList<Cell>();for(var block:new ClassicWindBlock[]{ClassicWindGenerators.BASE.get(),ClassicWindGenerators.MAIN.get()}){var state=block.defaultBlockState().setValue(ClassicWindBlock.FACING,Direction.EAST);var origin=block.kind==ClassicWindRules.Kind.BASE?CELL:CELL.above(10);for(int part=0;part<ClassicWindRules.parts(block.kind);part++)result.add(new Cell(origin.offset(ClassicWindBlock.offset(state,part)),state.setValue(ClassicWindBlock.PART,part)));}for(int i=0;i<8;i++)result.add(new Cell(CELL.above(i+2),ClassicWindGenerators.PILLAR.get().defaultBlockState()));return List.copyOf(result);}
+    private static ItemStack battery(){var item=new ItemStack(ClassicEnergyItems.ENERGY_UNIT.get());ClassicEnergyItemHelper.setEnergy(item,456.375);item.set(DataComponents.CUSTOM_NAME,Component.literal("Wind restart finite battery"));return item;}
+    private static ItemStack fan(){var item=new ItemStack(ClassicWindGenerators.FAN.get());item.setDamageValue(37);item.set(DataComponents.CUSTOM_NAME,Component.literal("Wind restart original fan"));return item;}
+    private static CompoundTag expected(ServerLevel level,Cell cell){var tag=new CompoundTag();var block=(ClassicWindBlock)cell.state.getBlock();tag.putString("id","academy:windgen_"+block.kind.name().toLowerCase(Locale.ROOT));tag.putInt("x",cell.pos.getX());tag.putInt("y",cell.pos.getY());tag.putInt("z",cell.pos.getZ());if(block.kind!=ClassicWindRules.Kind.PILLAR&&cell.state.getValue(ClassicWindBlock.PART)==0){var items=NonNullList.withSize(1,ItemStack.EMPTY);items.set(0,block.kind==ClassicWindRules.Kind.BASE?battery():fan());ContainerHelper.saveAllItems(tag,items,level.registryAccess());if(block.kind==ClassicWindRules.Kind.BASE)tag.putDouble("energy",123.625);}return tag;}
+    private static ListTag expected(ServerLevel level){var tags=new ListTag();for(var cell:cells())tags.add(expected(level,cell));return tags;}
+    private static CompoundTag readAnvil(Path region)throws Exception{check(Files.isRegularFile(region)&&Files.size(region)>=8192,"native region exists before loadingchunk");try(var file=new RandomAccessFile(region.toFile(),"r")){file.seek(((CHUNK.x&31)+(CHUNK.z&31)*32)*4L);int location=file.readInt(),sector=location>>>8,count=location&255;check(sector>=2&&count>0&&(sector+(long)count)*4096<=file.length(),"bounded actual Anvil location");file.seek(sector*4096L);int length=file.readInt(),compression=file.readUnsignedByte();check(length>1&&length<=count*4096-4&&length<4*1024*1024&&compression==2,"bounded inline native zlib");byte[] bytes=new byte[length-1];file.readFully(bytes);try(var stream=new DataInputStream(new InflaterInputStream(new ByteArrayInputStream(bytes)))){return NbtIo.read(stream,NbtAccounter.create(4*1024*1024));}}}
+    @GameTest(template="wind_restart_empty",templateNamespace="academy_wind_restart",batch="academy_wind_restart",timeoutTicks=20)
+    public static void wind_family_native_anvil_separate_jvm_seed_or_verify(GameTestHelper h)throws Exception{check(mode().equals("seed")||mode().equals("verify"),"set -D"+PROPERTY+"=seed|verify in main-owned lane");var level=h.getLevel();Path world=level.getServer().getWorldPath(LevelResource.ROOT).toRealPath();check(world.getFileName().toString().equals("academy-wind-generator-restart-world"),"requires dedicated isolated proof world");check(!h.absolutePos(BlockPos.ZERO).closerThan(CELL,256),"owned remote region outside GameTest reset");Path marker=world.resolve("wind-generator-seed.nbt"),region=world.resolve("region/r.3.3.mca");
+        if(mode().equals("seed")){check(!Files.exists(marker)&&!Files.exists(region),"seed refuses existing proof region");var chunk=level.getChunk(CHUNK.x,CHUNK.z);check(!chunk.getFullStatus().isOrAfter(FullChunkStatus.BLOCK_TICKING),"remote fullchunk naturally nonticking");for(var cell:cells())check(level.isEmptyBlock(cell.pos),"seed refuses occupied componentfootprint");for(var cell:cells())level.setBlock(cell.pos,cell.state,Block.UPDATE_CLIENTS|Block.UPDATE_KNOWN_SHAPE);var base=(ClassicWindBaseBlockEntity)level.getBlockEntity(CELL);base.buffer().load(123.625);base.setItem(0,battery());((ClassicWindMainBlockEntity)level.getBlockEntity(CELL.above(10))).setItem(0,fan());for(var cell:cells())check(level.getBlockEntity(cell.pos).saveWithFullMetadata(level.registryAccess()).equals(expected(level,cell)),"every real source native component seedpayload exact");var proof=new CompoundTag();proof.putUUID("boot",BOOT);proof.putLong("pid",ProcessHandle.current().pid());proof.putString("world",world.toString());proof.put("expected",expected(level));NbtIo.writeCompressed(proof,marker);System.out.println("ACADEMY_WIND_RESTART seed prepared; all13BEs/rotated cells/finite payload must persist through graceful shutdown");h.succeed();return;}
+        var proof=NbtIo.readCompressed(marker,NbtAccounter.create(4*1024*1024));check(!proof.getUUID("boot").equals(BOOT),"verification requires distinct cold JVM");check(proof.getString("world").equals(world.toString())&&proof.getList("expected",10).equals(expected(level)),"same isolated world and independently declared finite seed");var disk=readAnvil(region);check(disk.getInt("xPos")==CHUNK.x&&disk.getInt("zPos")==CHUNK.z,"actual persisted chunkcoordinates");var entities=disk.getList("block_entities",10);for(var cell:cells()){int matches=0;for(int i=0;i<entities.size();i++){var tag=entities.getCompound(i);if(tag.getInt("x")==cell.pos.getX()&&tag.getInt("y")==cell.pos.getY()&&tag.getInt("z")==cell.pos.getZ()){var expected=expected(level,cell);expected.putBoolean("keepPacked",false);check(tag.equals(expected),"full native Anvil payload including keepPacked=false equals exact componentexpectation");matches++;}}check(matches==1,"exact one actual AnvilBE per original occupiedcell");}var chunk=level.getChunk(CHUNK.x,CHUNK.z);check(!chunk.getFullStatus().isOrAfter(FullChunkStatus.BLOCK_TICKING),"cold remote chunk remains naturally nonticking");for(var cell:cells()){check(level.getBlockState(cell.pos).equals(cell.state),"cold native direction/PART blockstate persists");check(level.getBlockEntity(cell.pos).saveWithFullMetadata(level.registryAccess()).equals(expected(level,cell)),"cold loader every native payload exact");}var base=(ClassicWindBaseBlockEntity)level.getBlockEntity(CELL);var main=(ClassicWindMainBlockEntity)level.getBlockEntity(CELL.above(10));check(base.available()&&main.available(),"cold native roots regain owned endpoints");equal(123.625,base.getEnergy(),"native conserved fractional windIF");equal(456.375,ClassicEnergyItemHelper.getEnergy(base.getItem(0)),"native real battery payload");check(main.fanInstalled()&&main.getItem(0).getDamageValue()==37,"source unused fan durability persists");check(level.getCapability(ClassicSolarGenerators.IMAG_FLUX,CELL,Direction.UP)==base&&level.getCapability(ClassicSolarGenerators.IMAG_FLUX,CELL.above(),Direction.UP)==null,"only cold genuine root generatorreattaches");var verified=proof.copy();verified.putUUID("verify_boot",BOOT);verified.putLong("verify_pid",ProcessHandle.current().pid());verified.putBoolean("verified",true);NbtIo.writeCompressed(verified,world.resolve("wind-generator-verified.nbt"));System.out.println("ACADEMY_WIND_RESTART native Anvil/all13BEs/rotations and separate-JVM cold load passed; seed_pid="+proof.getLong("pid")+" verify_pid="+ProcessHandle.current().pid());h.succeed();
+    }
+}

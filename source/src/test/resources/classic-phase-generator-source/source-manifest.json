@@ -1,0 +1,77 @@
+[
+  {
+    "fixture": "java/cn/academy/energy/block/TilePhaseGen.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/block/TilePhaseGen.java",
+    "sha256": "6311b2d4241da74750f088fc01472c5d1dcb02f74b17e8c160b428cf9f5a4c2c"
+  },
+  {
+    "fixture": "java/cn/academy/core/block/TileGeneratorBase.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/core/block/TileGeneratorBase.java",
+    "sha256": "21669f5fdb7684452fec12cb8e0384731b543ff8bda27c6d22fbacc122c6207a"
+  },
+  {
+    "fixture": "java/cn/academy/core/tile/TileInventory.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/core/tile/TileInventory.java",
+    "sha256": "748835f0402b366cc000bc64193245eeeb50b7047dea65d7430401c9e4df245e"
+  },
+  {
+    "fixture": "java/cn/academy/energy/api/IFItemManager.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/api/IFItemManager.java",
+    "sha256": "3d5ebf467392ba53c8741c03a44c7f18feebb679e0011866a4768d84171dfed7"
+  },
+  {
+    "fixture": "java/cn/academy/energy/IFConstants.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/IFConstants.java",
+    "sha256": "55079b4e5dbefab7de2ac9c62386642211d5a281bc0cf450bd6fb90cbe860e24"
+  },
+  {
+    "fixture": "witness/ContainerPhaseGen.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/block/ContainerPhaseGen.java",
+    "sha256": "0185244b06409618bd34587e4dff8cd68d7b4f816e842c0c25e32f0fa64ff63b"
+  },
+  {
+    "fixture": "witness/BlockPhaseGen.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/block/BlockPhaseGen.java",
+    "sha256": "a1b4d28ba6bf62dc500cd2acb084dd0041e44d7151d0c0cf43df778a97747a8c"
+  },
+  {
+    "fixture": "witness/RenderPhaseGen.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/client/render/block/RenderPhaseGen.java",
+    "sha256": "d43d3d6cc463238888315307b15721933b5429cf5020ee04a02f1a0a41a27ab1"
+  },
+  {
+    "fixture": "witness/GuiPhaseGen.scala",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/energy/client/ui/GuiPhaseGen.scala",
+    "sha256": "ee69fe61243f372d0c88000d23b9f8da08f4893a629290b59c8c8c2ca898a94f"
+  },
+  {
+    "fixture": "witness/TechUIContainer.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/core/container/TechUIContainer.java",
+    "sha256": "03a0b43816ff2667583c6dca3f629c026ff100e37ab88c9b6df41827fef8289f"
+  },
+  {
+    "fixture": "witness/SlotMatterUnit.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/block/SlotMatterUnit.java",
+    "sha256": "2468d7f53fe70fd32348bf24bb28a6e11b27fdd2f502c51ab2caa7bcba1894fe"
+  },
+  {
+    "fixture": "witness/ItemMatterUnit.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/item/ItemMatterUnit.java",
+    "sha256": "4c4294def0cec1465bc627cbf240da14dba5f7c4936a21a35344381cc032060b"
+  },
+  {
+    "fixture": "witness/NodeConn.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/internal/NodeConn.java",
+    "sha256": "3f1b7f21cc91c14f9525650237ae7f3613f6d827e6fdd60ce5493b262e0bef3b"
+  },
+  {
+    "fixture": "witness/default.recipe",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/recipes/default.recipe",
+    "sha256": "a9dc4aa3477ad246f7cb9bb6bea3c33e033aaa8431f3c8a03acaf0845374da1f"
+  },
+  {
+    "fixture": "witness/CleanContainer.java",
+    "reference": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/template/container/CleanContainer.java",
+    "sha256": "8a82cbc21a9fcb12a9f339fbd44322290d37cdf750f7d00f6d7311e2e56dd722"
+  }
+]

@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "result": {
+    "id": "academy:resonance_component",
+    "count": 1
+  },
+  "pattern": [
+    "ABC",
+    " E "
+  ],
+  "key": {
+    "A": {
+      "item": "academy:constraint_plate"
+    },
+    "B": {
+      "item": "academy:reso_crystal"
+    },
+    "C": {
+      "item": "academy:constraint_plate"
+    },
+    "E": {
+      "tag": "c:dusts/redstone"
+    }
+  }
+}

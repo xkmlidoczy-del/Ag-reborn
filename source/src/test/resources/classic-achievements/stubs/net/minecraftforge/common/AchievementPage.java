@@ -1,0 +1,1 @@
+package net.minecraftforge.common;import java.util.*;import net.minecraft.stats.Achievement;public class AchievementPage {public AchievementPage(String id){}public String getName(){return "";}public List<Achievement> getAchievements(){return List.of();}}

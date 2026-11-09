@@ -1,0 +1,10 @@
+Audited AcademyCraft1.0.7 test-only canonical source fixtures
+Upstream commit00d19ec0cf538f61c1095c9292f5ee6863db4521
+Copyright Lambda Innovation,2013-2016. GPLv3; see project LICENSE and NOTICE for upstream additional restrictions.
+These four unmodified source text files contain no media or licensed songs. They are test resources, excluded from the main mod JAR.
+Do not silently skip missing/corrupt fixtures: new source/oracle tests verify canonical SHA256 before using them.
+
+RangedRayDamage.java.txt SHA256 594040499f6bd95f5666a451b898901463efa8ceb6f0b200ac2a3fcf30be9d05
+Meltdowner.scala.txt SHA256 286a351ca7cfd9510281e7a3369a2c6cd379f5d73df69d4cb86c1af9b4b85d33
+MineRaysBase.scala.txt SHA256 39d791417af63ffeaaec1f57e4fbb79cc613474ba0353ffa277bb703a70922eb
+EntityRayBase.java.txt SHA256 c92031238e72442a0a484907336867eef1197013c5013588ede6a614173cdbd8

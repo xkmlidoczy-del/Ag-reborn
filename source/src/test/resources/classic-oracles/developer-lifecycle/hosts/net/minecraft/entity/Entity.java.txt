@@ -1,0 +1,2 @@
+/* Test-only lifecycle platform plumbing; business methods run unchanged originals. */
+package net.minecraft.entity;public class Entity {public final World worldObj=new World();public static class World {public boolean isRemote;}}

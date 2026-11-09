@@ -1,0 +1,15 @@
+package org.lwjgl.opengl;
+import java.util.*;
+/** Finite OpenGL1 column-major postmultiplication. No LWJGL/native methods are invoked. */
+public class GL11 {
+ public static final int GL_MODELVIEW=1,GL_PROJECTION=2,GL_DEPTH_TEST=3,GL_ALPHA_TEST=4,GL_BLEND=5,GL_SRC_ALPHA=6,GL_ONE_MINUS_SRC_ALPHA=7,GL_ONE=8,GL_BACK=9,GL_ALWAYS=10,GL_LEQUAL=11;
+ private static int mode=GL_MODELVIEW;private static final Map<Integer,double[]> matrices=new HashMap<>();private static final Map<Integer,Deque<double[]>> stacks=new HashMap<>();
+ static {matrices.put(GL_MODELVIEW,identity());matrices.put(GL_PROJECTION,identity());stacks.put(GL_MODELVIEW,new ArrayDeque<>());stacks.put(GL_PROJECTION,new ArrayDeque<>());}
+ private static double[] identity(){double[] m=new double[16];for(int i=0;i<4;i++)m[i*5]=1;return m;}
+ public static double[] model(){return matrices.get(GL_MODELVIEW).clone();}public static double[] projection(){return matrices.get(GL_PROJECTION).clone();}
+ public static void multiply(double[] b){double[] a=matrices.get(mode),m=new double[16];for(int c=0;c<4;c++)for(int r=0;r<4;r++)for(int k=0;k<4;k++)m[c*4+r]+=a[k*4+r]*b[c*4+k];matrices.put(mode,m);}
+ public static void glMatrixMode(int n){mode=n;}public static void glLoadIdentity(){matrices.put(mode,identity());}public static void glPushMatrix(){stacks.get(mode).push(matrices.get(mode).clone());}public static void glPopMatrix(){matrices.put(mode,stacks.get(mode).pop());}
+ public static void glTranslated(double x,double y,double z){double[] m=identity();m[12]=x;m[13]=y;m[14]=z;multiply(m);}public static void glScaled(double x,double y,double z){double[] m=identity();m[0]=x;m[5]=y;m[10]=z;multiply(m);}
+ public static void glRotated(double d,double x,double y,double z){double n=Math.sqrt(x*x+y*y+z*z);x/=n;y/=n;z/=n;double c=Math.cos(Math.toRadians(d)),s=Math.sin(Math.toRadians(d)),t=1-c;double[] m=identity();m[0]=t*x*x+c;m[4]=t*x*y-s*z;m[8]=t*x*z+s*y;m[1]=t*x*y+s*z;m[5]=t*y*y+c;m[9]=t*y*z-s*x;m[2]=t*x*z-s*y;m[6]=t*y*z+s*x;m[10]=t*z*z+c;multiply(m);}
+ public static void glEnable(int n){}public static void glDisable(int n){}public static void glBlendFunc(int a,int b){}public static void glColor4d(double a,double b,double c,double d){}public static void glCullFace(int n){}public static void glDepthFunc(int n){}public static void glDepthMask(boolean b){}
+}

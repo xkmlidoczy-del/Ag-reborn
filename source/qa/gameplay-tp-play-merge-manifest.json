@@ -1,0 +1,110 @@
+{
+  "status": "planned_not_run",
+  "groups": [
+    {
+      "group": "cancel-register",
+      "script": "gameplay-tp-play-group-cancel-register.script",
+      "sources": [
+        {
+          "script": "gameplay-tp-play-cancel-return_mark.script",
+          "sha256": "03aa49bf4669f51ed2eefa56db380199bf7621dc0e963f1958bbd0c399848490",
+          "nonQuitSteps": 33
+        },
+        {
+          "script": "gameplay-tp-play-cancel-short_interception.script",
+          "sha256": "67ac53cc6ee55dd09e9d4c762bae0d89a2b3a536c11d6d5a86f8dcf31bce0d2d",
+          "nonQuitSteps": 31
+        },
+        {
+          "script": "gameplay-tp-play-cancel-spatial_relay.script",
+          "sha256": "73c8e7670e52f6d823dbdf14f61acfa0d5b33b033017da5c9fafb652e10aa73d",
+          "nonQuitSteps": 31
+        },
+        {
+          "script": "gameplay-tp-play-cancel-emergency_return.script",
+          "sha256": "88c792d7b9c091deec8d92d7956e110f0ceb029db6b1b73cc454442717a97b14",
+          "nonQuitSteps": 31
+        },
+        {
+          "script": "gameplay-tp-play-cancel-spatial_pincer_corridor.script",
+          "sha256": "f449d813a65af48817eb5fa2cc592015c24538a028afd9e600be8eecf9be42d5",
+          "nonQuitSteps": 31
+        },
+        {
+          "script": "gameplay-tp-play-cancel-multidimensional_landing_array.script",
+          "sha256": "5cfa2f7e9c9b1a1d273580a3db80c9bc5d843346846b47b6d0c1a42dd24a5d37",
+          "nonQuitSteps": 34
+        },
+        {
+          "script": "gameplay-tp-play-probe-move.script",
+          "sha256": "ec64386a7857bf9d01b4b18f84efe28d9acbdb82b37d552324b14afaf7f99179",
+          "nonQuitSteps": 29
+        },
+        {
+          "script": "gameplay-tp-play-probe-pose.script",
+          "sha256": "20da9f079e445e6130f014f82b25615e66018d5c192a729390863f0f3c09393d",
+          "nonQuitSteps": 31
+        }
+      ],
+      "sha256": "737b76e081eeb115321258cfc9e1c0c8e1ce0b59c5a16d11246fd963d56b613a"
+    },
+    {
+      "group": "ordinary-stock",
+      "script": "gameplay-tp-play-group-ordinary-stock.script",
+      "sources": [
+        {
+          "script": "gameplay-tp-play-item-transport.script",
+          "sha256": "1028c3821e45e27a495ad7ac68f7f90cfe46e2ccb3f83513f2055021ecc58add",
+          "nonQuitSteps": 22
+        },
+        {
+          "script": "gameplay-tp-play-block-placement.script",
+          "sha256": "701d16c8f277cc4f64cc7a41167dfd02075fd298c7dfb71a389f4ba9a7e1a23b",
+          "nonQuitSteps": 22
+        }
+      ],
+      "sha256": "28dcfc483685b9df8376d180c3de81ee56ae55d62fa3f5f09ab345c68b8de398"
+    },
+    {
+      "group": "target-air-movement",
+      "script": "gameplay-tp-play-group-target-air-movement.script",
+      "sources": [
+        {
+          "script": "gameplay-tp-play-mark-entity.script",
+          "sha256": "8043e21f64f2a3aad87cf88a94870b82de29f3fc8ac06a06dd48fe36b4ffc092",
+          "nonQuitSteps": 22
+        },
+        {
+          "script": "gameplay-tp-play-mark-air.script",
+          "sha256": "77421c8c03f8bb9b9f411a36bf900bc02beeeb12ffbf1c534d0adf87e03a443b",
+          "nonQuitSteps": 22
+        },
+        {
+          "script": "gameplay-tp-play-accel-air.script",
+          "sha256": "2d5deeeae7fd94fa4167b66f0c952eef11f809baef2f42faaaafc39cdbf183cb",
+          "nonQuitSteps": 24
+        },
+        {
+          "script": "gameplay-tp-play-flash-air.script",
+          "sha256": "b6b9169423b31602196640b9e7e1b80e58948b7175186149633553bdec3e8e03",
+          "nonQuitSteps": 27
+        }
+      ],
+      "sha256": "6ec153549d94c7afa9da7b8bf4e0964b9cdd0f1ff39e1c7a0737f1b9f0855971"
+    },
+    {
+      "group": "two-needles",
+      "script": "gameplay-tp-play-group-two-needles.script",
+      "sources": [
+        {
+          "script": "gameplay-tp-play-two-needles.script",
+          "sha256": "7c887388da1fa04e5887ddefcc6772fc390e61ea4b088893141d96c8a90f3c31",
+          "nonQuitSteps": 62
+        }
+      ],
+      "sha256": "ebbd628966becb3a682b52120c030e7d93a93a718feb2b4cffcf1bab0d10e0e2"
+    }
+  ],
+  "all15SourceScriptsPreserved": true,
+  "rule": "Exact original non-quit steps retained with begin/end marks; no state-force or assertion deletion."
+}

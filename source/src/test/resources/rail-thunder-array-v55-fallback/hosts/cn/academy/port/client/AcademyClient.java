@@ -1,0 +1,4 @@
+package cn.academy.port.client;
+public final class AcademyClient {public static final State state=new State();public static long input=1,epoch=1,session=1;
+ public static long inputSessionEpoch(){return session;}public static boolean sameInputSessionEpoch(long x){return x==session;}public static boolean singleOwnerEpochMatches(long x){return x==epoch;}public static boolean railArrayInputMatches(long i,long e){return i==input&&e==epoch;}public static void railArrayAcceptedInput(long i,long e){}public static void railArrayEndedInput(long i,long e){}
+ public static class State{public boolean activated=true,overloadFine=true,interfering;public String category="electromaster";public int level=5;public final Presets presets=new Presets();public boolean learned(String s){return true;}}public static class Presets{public boolean currentContains(String s){return true;}}}

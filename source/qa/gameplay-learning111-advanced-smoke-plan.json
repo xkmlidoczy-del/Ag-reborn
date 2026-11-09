@@ -1,0 +1,48 @@
+[
+  {
+    "name": "learning111-advanced-smoke",
+    "script": "gameplay-learning111-advanced-smoke.script",
+    "directory": "run-showcase-sable",
+    "props": "",
+    "status": "planned_not_run",
+    "learningCount": 2,
+    "learningRecords": [
+      {
+        "category": "electromaster",
+        "id": "railgun",
+        "level": 4,
+        "controllable": true,
+        "developerType": "ADVANCED",
+        "minimumDeveloper": "ADVANCED",
+        "stimulations": 11,
+        "nativeDevelopmentTicks": 176,
+        "explicitCompletionWaitTicks": 196,
+        "finiteInitialIF": 200000,
+        "expectedActualIF": 7040.0,
+        "selector": "electromaster/railgun"
+      },
+      {
+        "category": "electromaster",
+        "id": "rail_thunder_array",
+        "level": 5,
+        "controllable": true,
+        "developerType": "ADVANCED",
+        "minimumDeveloper": "ADVANCED",
+        "stimulations": 15,
+        "nativeDevelopmentTicks": 240,
+        "explicitCompletionWaitTicks": 260,
+        "finiteInitialIF": 200000,
+        "expectedActualIF": 9600.0,
+        "selector": "electromaster/rail_thunder_array"
+      }
+    ],
+    "scriptSha256": "1fadf7d7912f668d4031edcdaaa1bb905b2cef801308c7c78ff1d1d77bd99278",
+    "scope": "Preflight only: classic LV4 and added LV5 both use complete finite ADVANCED machines; repeated trials do not add to the111 catalog denominator.",
+    "requiredPreparedLogMarkers": [
+      "QA_LEARNING_PREPARED id=railgun category=electromaster learned=false developerType=ADVANCED ",
+      "QA_LEARNING_PREPARED id=rail_thunder_array category=electromaster learned=false developerType=ADVANCED "
+    ],
+    "nominalFixedTicksAt20Tps": 1100,
+    "nominalFixedMinutesAt20Tps": 0.92
+  }
+]

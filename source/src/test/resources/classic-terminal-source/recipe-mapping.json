@@ -1,0 +1,36 @@
+{
+  "terminal": "academy:terminal_installer",
+  "app_skill_tree": "academy:app_skill_tree",
+  "app_media_player": "academy:app_media_player",
+  "app_freq_transmitter": "academy:app_freq_transmitter",
+  "ingredients": {
+    "nil": null,
+    "data_chip": {
+      "item": "academy:data_chip"
+    },
+    "glass_pane": {
+      "item": "minecraft:glass_pane"
+    },
+    "plateIron": {
+      "tag": "c:plates/iron"
+    },
+    "brain_comp": {
+      "item": "academy:brain_component"
+    },
+    "info_comp": {
+      "item": "academy:info_component"
+    },
+    "blockRedstone": {
+      "tag": "c:storage_blocks/redstone"
+    },
+    "compass": {
+      "item": "minecraft:compass"
+    },
+    "noteblock": {
+      "item": "minecraft:note_block"
+    },
+    "reso_comp": {
+      "item": "academy:resonance_component"
+    }
+  }
+}

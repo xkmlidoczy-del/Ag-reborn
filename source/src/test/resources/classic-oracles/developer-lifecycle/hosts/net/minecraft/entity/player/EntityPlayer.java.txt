@@ -1,0 +1,10 @@
+/* Test-only lifecycle platform plumbing; business methods run unchanged originals. */
+package net.minecraft.entity.player;
+public class EntityPlayer extends net.minecraft.entity.Entity {
+ public final Capabilities capabilities=new Capabilities();public static class Capabilities{public boolean isCreativeMode;}
+ public final Inventory inventory=new Inventory();public static class Inventory{public net.minecraft.item.ItemStack[] mainInventory=new net.minecraft.item.ItemStack[9];}
+ public final java.util.List<String> mutations=new java.util.ArrayList<>();public final java.util.Set<String> earned=new java.util.LinkedHashSet<>();
+ public net.minecraft.item.ItemStack getCurrentEquippedItem(){return inventory.mainInventory[0];}
+ public void setCurrentItemOrArmor(int slot,net.minecraft.item.ItemStack value){mutations.add("coil-clear");inventory.mainInventory[slot]=value;}
+ public void triggerAchievement(net.minecraft.stats.Achievement a){earned.add(a.id);}
+}

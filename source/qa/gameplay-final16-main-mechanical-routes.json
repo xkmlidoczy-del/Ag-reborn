@@ -1,0 +1,1520 @@
+{
+  "status": "static_route_mapping_only_not_runtime_pass",
+  "mainCases": 33,
+  "uniqueActiveSkills": 95,
+  "routes": [
+    {
+      "case": "final16-main-em-damage",
+      "script": "gameplay-em-damage.script",
+      "skills": [
+        {
+          "skill": "arc_gen",
+          "setupStepIndex": 9,
+          "setupOperation": "gameem:setup:arc_gen",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 18,
+              "operation": "gameem:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=arc_gen "
+        },
+        {
+          "skill": "thunder_bolt",
+          "setupStepIndex": 22,
+          "setupOperation": "gameem:setup:thunder_bolt",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 31,
+              "operation": "gameem:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=thunder_bolt "
+        },
+        {
+          "skill": "railgun",
+          "setupStepIndex": 35,
+          "setupOperation": "gameem:setup:railgun",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 44,
+              "operation": "gameem:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=railgun "
+        },
+        {
+          "skill": "thunder_clap",
+          "setupStepIndex": 48,
+          "setupOperation": "gameem:setup:thunder_clap",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 57,
+              "operation": "gameem:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=thunder_clap "
+        },
+        {
+          "skill": "forked_arc",
+          "setupStepIndex": 61,
+          "setupOperation": "gameem:setup:forked_arc",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 70,
+              "operation": "gameem:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=forked_arc "
+        },
+        {
+          "skill": "iron_sand_lance",
+          "setupStepIndex": 74,
+          "setupOperation": "gameem:setup:iron_sand_lance",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 83,
+              "operation": "gameem:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=iron_sand_lance "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-md-damage",
+      "script": "gameplay-md-damage.script",
+      "skills": [
+        {
+          "skill": "electron_bomb",
+          "setupStepIndex": 9,
+          "setupOperation": "gameem:setup:electron_bomb",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 18,
+              "operation": "gameem:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=electron_bomb "
+        },
+        {
+          "skill": "meltdowner",
+          "setupStepIndex": 22,
+          "setupOperation": "gameem:setup:meltdowner",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 31,
+              "operation": "gameem:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=meltdowner "
+        },
+        {
+          "skill": "ray_barrage",
+          "setupStepIndex": 35,
+          "setupOperation": "gameem:setup:ray_barrage",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 44,
+              "operation": "gameem:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=ray_barrage "
+        },
+        {
+          "skill": "dual_point",
+          "setupStepIndex": 48,
+          "setupOperation": "gameem:setup:dual_point",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 57,
+              "operation": "gameem:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=dual_point "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-em-md-advanced-attacks",
+      "script": "gameplay-em-md-advanced-attacks.script",
+      "skills": [
+        {
+          "skill": "scatter_bomb",
+          "setupStepIndex": 9,
+          "setupOperation": "gameem:setup:scatter_bomb",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 18,
+              "operation": "gameem:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=scatter_bomb "
+        },
+        {
+          "skill": "electron_missile",
+          "setupStepIndex": 22,
+          "setupOperation": "gameem:setup:electron_missile",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 31,
+              "operation": "gameem:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=electron_missile "
+        },
+        {
+          "skill": "thunder_net",
+          "setupStepIndex": 35,
+          "setupOperation": "gameem:setup:thunder_net",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 44,
+              "operation": "gameem:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=thunder_net "
+        },
+        {
+          "skill": "disintegration_sweep",
+          "setupStepIndex": 48,
+          "setupOperation": "gameem:setup:disintegration_sweep",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 57,
+              "operation": "gameem:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=disintegration_sweep "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-em-md-utility",
+      "script": "gameplay-em-md-utility.script",
+      "skills": [
+        {
+          "skill": "charging",
+          "setupStepIndex": 9,
+          "setupOperation": "gameem:utility:setup:charging",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 18,
+              "operation": "gameem:utility:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdUtility.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=charging "
+        },
+        {
+          "skill": "mine_detect",
+          "setupStepIndex": 22,
+          "setupOperation": "gameem:utility:setup:mine_detect",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 31,
+              "operation": "gameem:utility:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdUtility.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=mine_detect "
+        },
+        {
+          "skill": "body_intensify",
+          "setupStepIndex": 35,
+          "setupOperation": "gameem:utility:setup:body_intensify",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 44,
+              "operation": "gameem:utility:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdUtility.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=body_intensify "
+        },
+        {
+          "skill": "mine_ray_basic",
+          "setupStepIndex": 48,
+          "setupOperation": "gameem:utility:setup:mine_ray_basic",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 57,
+              "operation": "gameem:utility:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdUtility.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=mine_ray_basic "
+        },
+        {
+          "skill": "mine_ray_expert",
+          "setupStepIndex": 61,
+          "setupOperation": "gameem:utility:setup:mine_ray_expert",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 70,
+              "operation": "gameem:utility:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdUtility.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=mine_ray_expert "
+        },
+        {
+          "skill": "mine_ray_luck",
+          "setupStepIndex": 74,
+          "setupOperation": "gameem:utility:setup:mine_ray_luck",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 83,
+              "operation": "gameem:utility:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdUtility.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=mine_ray_luck "
+        },
+        {
+          "skill": "beam_etching",
+          "setupStepIndex": 87,
+          "setupOperation": "gameem:utility:setup:beam_etching",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 96,
+              "operation": "gameem:utility:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdUtility.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=beam_etching "
+        },
+        {
+          "skill": "point_meltdown",
+          "setupStepIndex": 100,
+          "setupOperation": "gameem:utility:setup:point_meltdown",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 109,
+              "operation": "gameem:utility:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdUtility.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=point_meltdown "
+        },
+        {
+          "skill": "disintegration_sweep",
+          "setupStepIndex": 113,
+          "setupOperation": "gameem:utility:setup:disintegration_sweep",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 125,
+              "operation": "gameem:utility:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdUtility.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=disintegration_sweep "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-em-md-motion-basic",
+      "script": "gameplay-em-md-motion-basic.script",
+      "skills": [
+        {
+          "skill": "mag_movement",
+          "setupStepIndex": 12,
+          "setupOperation": "gameem:motion:setup:mag_movement",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 21,
+              "operation": "gameem:motion:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdMotion.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=mag_movement "
+        },
+        {
+          "skill": "polarity_tether",
+          "setupStepIndex": 24,
+          "setupOperation": "gameem:motion:setup:polarity_tether",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 37,
+              "operation": "gameem:motion:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdMotion.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=polarity_tether "
+        },
+        {
+          "skill": "jet_engine",
+          "setupStepIndex": 44,
+          "setupOperation": "gameem:motion:setup:jet_engine",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 53,
+              "operation": "gameem:motion:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdMotion.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=jet_engine "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-em-md-motion-air",
+      "script": "gameplay-em-md-motion-air.script",
+      "skills": [
+        {
+          "skill": "beam_step",
+          "setupStepIndex": 12,
+          "setupOperation": "gameem:motion:setup:beam_step",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 35,
+              "operation": "gameem:motion:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdMotion.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=beam_step "
+        },
+        {
+          "skill": "reverse_jet_brake",
+          "setupStepIndex": 38,
+          "setupOperation": "gameem:motion:setup:reverse_jet_brake",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 45,
+              "operation": "gameem:motion:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdMotion.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=reverse_jet_brake "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-final-magnetic-bracer",
+      "script": "gameplay-final-magnetic-bracer.script",
+      "skills": [
+        {
+          "skill": "magnetic_bracer",
+          "setupStepIndex": 9,
+          "setupOperation": "gameem:defense:setup:magnetic_bracer",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 18,
+              "operation": "gameem:defense:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdDefense.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=magnetic_bracer "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-em-md-retry-charge_decoy",
+      "script": "gameplay-em-md-retry-charge_decoy.script",
+      "skills": [
+        {
+          "skill": "charge_decoy",
+          "setupStepIndex": 9,
+          "setupOperation": "gameem:defense:setup:charge_decoy",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 21,
+              "operation": "gameem:defense:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdDefense.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=charge_decoy "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-em-defense-rest",
+      "script": "gameplay-final-em-defense-rest.script",
+      "skills": [
+        {
+          "skill": "potential_buffer",
+          "setupStepIndex": 10,
+          "setupOperation": "gameem:defense:setup:potential_buffer",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 21,
+              "operation": "gameem:defense:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdDefense.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=potential_buffer "
+        },
+        {
+          "skill": "magnetic_domain",
+          "setupStepIndex": 39,
+          "setupOperation": "gameem:defense:setup:magnetic_domain",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 54,
+              "operation": "gameem:defense:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdDefense.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=magnetic_domain "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-em-md-defense-md-core",
+      "script": "gameplay-em-md-defense-md-core.script",
+      "skills": [
+        {
+          "skill": "light_shield",
+          "setupStepIndex": 9,
+          "setupOperation": "gameem:defense:setup:light_shield",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 18,
+              "operation": "gameem:defense:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdDefense.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=light_shield "
+        },
+        {
+          "skill": "thermal_shell",
+          "setupStepIndex": 23,
+          "setupOperation": "gameem:defense:setup:thermal_shell",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 34,
+              "operation": "gameem:defense:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdDefense.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=thermal_shell "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-em-md-defense-scatter_plates",
+      "script": "gameplay-em-md-defense-scatter_plates.script",
+      "skills": [
+        {
+          "skill": "scatter_plates",
+          "setupStepIndex": 9,
+          "setupOperation": "gameem:defense:setup:scatter_plates",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 20,
+              "operation": "gameem:defense:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdDefense.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=scatter_plates "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-em-md-defense-directional_dissipation_curtain",
+      "script": "gameplay-em-md-defense-directional_dissipation_curtain.script",
+      "skills": [
+        {
+          "skill": "directional_dissipation_curtain",
+          "setupStepIndex": 9,
+          "setupOperation": "gameem:defense:setup:directional_dissipation_curtain",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 18,
+              "operation": "gameem:defense:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdDefense.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=directional_dissipation_curtain "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-em-md-defense-zero_gap_armor",
+      "script": "gameplay-em-md-defense-zero_gap_armor.script",
+      "skills": [
+        {
+          "skill": "zero_gap_armor",
+          "setupStepIndex": 9,
+          "setupOperation": "gameem:defense:setup:zero_gap_armor",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 20,
+              "operation": "gameem:defense:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdDefense.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=zero_gap_armor "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-em-md-multistage-attacks",
+      "script": "gameplay-em-md-multistage-attacks.script",
+      "skills": [
+        {
+          "skill": "rail_thunder_array",
+          "setupStepIndex": 9,
+          "setupOperation": "gameem:setup:rail_thunder_array",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 34,
+              "operation": "gameem:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=rail_thunder_array "
+        },
+        {
+          "skill": "multicore_canopy",
+          "setupStepIndex": 37,
+          "setupOperation": "gameem:setup:multicore_canopy",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 50,
+              "operation": "gameem:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=multicore_canopy "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-em-md-magnetic-block",
+      "script": "gameplay-em-md-magnetic-block.script",
+      "skills": [
+        {
+          "skill": "mag_manip",
+          "setupStepIndex": 10,
+          "setupOperation": "gameem:construction:setup:mag_manip",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 20,
+              "operation": "gameem:construction:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdConstruction.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=mag_manip "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-em-md-circuit-crossing",
+      "script": "gameplay-em-md-circuit-crossing.script",
+      "skills": [
+        {
+          "skill": "conductive_circuit",
+          "setupStepIndex": 10,
+          "setupOperation": "gameem:construction:setup:conductive_circuit",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 31,
+              "operation": "gameem:construction:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdConstruction.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=conductive_circuit "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-em-md-pulse-interference",
+      "script": "gameplay-em-md-pulse-interference.script",
+      "skills": [
+        {
+          "skill": "pulse_shield",
+          "setupStepIndex": 10,
+          "setupOperation": "gameem:construction:setup:pulse_shield",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 19,
+              "operation": "gameem:construction:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdConstruction.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=pulse_shield "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-em-md-rail-route",
+      "script": "gameplay-em-md-rail-route.script",
+      "skills": [
+        {
+          "skill": "rail_relay",
+          "setupStepIndex": 10,
+          "setupOperation": "gameem:construction:setup:rail_relay",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 30,
+              "operation": "gameem:construction:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdConstruction.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=rail_relay "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-em-md-folded_mirror_array",
+      "script": "gameplay-em-md-folded_mirror_array.script",
+      "skills": [
+        {
+          "skill": "folded_mirror_array",
+          "setupStepIndex": 10,
+          "setupOperation": "gameem:construction:setup:folded_mirror_array",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 28,
+              "operation": "gameem:construction:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdConstruction.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=folded_mirror_array "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-em-md-scatter_locator_plate",
+      "script": "gameplay-em-md-scatter_locator_plate.script",
+      "skills": [
+        {
+          "skill": "scatter_locator_plate",
+          "setupStepIndex": 10,
+          "setupOperation": "gameem:construction:setup:scatter_locator_plate",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 28,
+              "operation": "gameem:construction:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdConstruction.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=scatter_locator_plate "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-em-md-remote_scatter_relay",
+      "script": "gameplay-em-md-remote_scatter_relay.script",
+      "skills": [
+        {
+          "skill": "remote_scatter_relay",
+          "setupStepIndex": 10,
+          "setupOperation": "gameem:construction:setup:remote_scatter_relay",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 32,
+              "operation": "gameem:construction:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdConstruction.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=remote_scatter_relay "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-em-md-particle-corridor",
+      "script": "gameplay-em-md-particle-corridor.script",
+      "skills": [
+        {
+          "skill": "particle_laminate",
+          "setupStepIndex": 10,
+          "setupOperation": "gameem:construction:setup:particle_laminate",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 23,
+              "operation": "gameem:construction:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdConstruction.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=particle_laminate "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-em-md-owned-item-pull",
+      "script": "gameplay-em-md-owned-item-pull.script",
+      "skills": [
+        {
+          "skill": "magnetic_item_pull",
+          "setupStepIndex": 10,
+          "setupOperation": "gameem:construction:setup:magnetic_item_pull",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 25,
+              "operation": "gameem:construction:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdConstruction.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=magnetic_item_pull "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-ground-release",
+      "script": "codex-ground-release.script",
+      "skills": [
+        {
+          "skill": "magnetic_ground_step",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 20,
+              "operation": "live:learned:magnetic_ground_step"
+            },
+            {
+              "stepIndex": 24,
+              "operation": "live:ground:prepare"
+            },
+            {
+              "stepIndex": 33,
+              "operation": "live:ground:travel"
+            },
+            {
+              "stepIndex": 40,
+              "operation": "live:ground:stopped"
+            },
+            {
+              "stepIndex": 51,
+              "operation": "live:ground:travel"
+            },
+            {
+              "stepIndex": 59,
+              "operation": "live:ground:stopped"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceGroundStep.java",
+          "requiredLogMarkers": [
+            "QA_LEARNING_PASS id=magnetic_ground_step ",
+            "QA_GROUND_ADMISSION_PASS ",
+            "QA_GROUND_TRAVEL_PASS ",
+            "QA_GROUND_STOP_PASS "
+          ],
+          "requiredRepeatedMarkers": {
+            "QA_GROUND_TRAVEL_PASS ": 2,
+            "QA_GROUND_STOP_PASS ": 2
+          },
+          "effect": "Real LV3 machine learning, default admission without opt-in, actual native grass/stone additions and real release/GUI stop."
+        }
+      ]
+    },
+    {
+      "case": "final16-main-tp-vm-damage",
+      "script": "gameplay-tp-vm-damage.script",
+      "skills": [
+        {
+          "skill": "dir_shock",
+          "setupStepIndex": 12,
+          "setupOperation": "gametp:setup:dir_shock",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 23,
+              "operation": "gametp:check:damage"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=dir_shock "
+        },
+        {
+          "skill": "ground_shock",
+          "setupStepIndex": 29,
+          "setupOperation": "gametp:setup:ground_shock",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 40,
+              "operation": "gametp:check:damage"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=ground_shock "
+        },
+        {
+          "skill": "dir_blast",
+          "setupStepIndex": 46,
+          "setupOperation": "gametp:setup:dir_blast",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 57,
+              "operation": "gametp:check:damage"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=dir_blast "
+        },
+        {
+          "skill": "blood_retro",
+          "setupStepIndex": 63,
+          "setupOperation": "gametp:setup:blood_retro",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 74,
+              "operation": "gametp:check:damage"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=blood_retro "
+        },
+        {
+          "skill": "plasma_cannon",
+          "setupStepIndex": 80,
+          "setupOperation": "gametp:setup:plasma_cannon",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 91,
+              "operation": "gametp:check:damage"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=plasma_cannon "
+        },
+        {
+          "skill": "threatening_teleport",
+          "setupStepIndex": 97,
+          "setupOperation": "gametp:setup:threatening_teleport",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 108,
+              "operation": "gametp:check:damage"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=threatening_teleport "
+        },
+        {
+          "skill": "flesh_ripping",
+          "setupStepIndex": 114,
+          "setupOperation": "gametp:setup:flesh_ripping",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 125,
+              "operation": "gametp:check:damage"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=flesh_ripping "
+        },
+        {
+          "skill": "shift_tp",
+          "setupStepIndex": 131,
+          "setupOperation": "gametp:setup:shift_tp",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 142,
+              "operation": "gametp:check:damage"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=shift_tp "
+        },
+        {
+          "skill": "deflection_strike",
+          "setupStepIndex": 148,
+          "setupOperation": "gametp:setup:deflection_strike",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 159,
+              "operation": "gametp:check:damage"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=deflection_strike "
+        },
+        {
+          "skill": "shear_windblade",
+          "setupStepIndex": 165,
+          "setupOperation": "gametp:setup:shear_windblade",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 176,
+              "operation": "gametp:check:damage"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=shear_windblade "
+        },
+        {
+          "skill": "yaw_palm",
+          "setupStepIndex": 182,
+          "setupOperation": "gametp:setup:yaw_palm",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 193,
+              "operation": "gametp:check:damage"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=yaw_palm "
+        },
+        {
+          "skill": "zenith_vector_dominion",
+          "setupStepIndex": 199,
+          "setupOperation": "gametp:setup:zenith_vector_dominion",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 210,
+              "operation": "gametp:check:damage"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=zenith_vector_dominion "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-tp-basic",
+      "script": "gameplay-tp-basic.script",
+      "skills": [
+        {
+          "skill": "phase_sidestep",
+          "setupStepIndex": 14,
+          "setupOperation": "gametp:setup:phase_sidestep",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 23,
+              "operation": "gametp:check:receipt-PhaseSidestep"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=phase_sidestep "
+        },
+        {
+          "skill": "safe_landing_probe",
+          "setupStepIndex": 31,
+          "setupOperation": "gametp:setup:safe_landing_probe",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 45,
+              "operation": "gametp:check:receipt-SafeLandingProbe"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=safe_landing_probe "
+        },
+        {
+          "skill": "return_mark",
+          "setupStepIndex": 53,
+          "setupOperation": "gametp:setup:return_mark",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 72,
+              "operation": "gametp:check:receipt-ReturnMark"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=return_mark "
+        },
+        {
+          "skill": "emergency_return",
+          "setupStepIndex": 80,
+          "setupOperation": "gametp:setup:emergency_return",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 99,
+              "operation": "gametp:check:receipt-EmergencyReturn"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=emergency_return "
+        },
+        {
+          "skill": "phase_corridor",
+          "setupStepIndex": 107,
+          "setupOperation": "gametp:setup:phase_corridor",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 117,
+              "operation": "gametp:check:movement"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=phase_corridor "
+        },
+        {
+          "skill": "mark_teleport",
+          "setupStepIndex": 125,
+          "setupOperation": "gametp:setup:mark_teleport",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 135,
+              "operation": "gametp:check:movement"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=mark_teleport "
+        },
+        {
+          "skill": "penetrate_teleport",
+          "setupStepIndex": 143,
+          "setupOperation": "gametp:setup:penetrate_teleport",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 154,
+              "operation": "gametp:check:movement"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=penetrate_teleport "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-tp-complex",
+      "script": "gameplay-tp-complex.script",
+      "skills": [
+        {
+          "skill": "corner_exchange",
+          "setupStepIndex": 16,
+          "setupOperation": "gametp:setup:corner_exchange",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 36,
+              "operation": "gametp:check:receipt-CornerExchange"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=corner_exchange "
+        },
+        {
+          "skill": "cross_substitution",
+          "setupStepIndex": 50,
+          "setupOperation": "gametp:setup:cross_substitution",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 73,
+              "operation": "gametp:check:volley-CrossSubstitution"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=cross_substitution "
+        },
+        {
+          "skill": "spatial_pincer_corridor",
+          "setupStepIndex": 82,
+          "setupOperation": "gametp:setup:spatial_pincer_corridor",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 114,
+              "operation": "gametp:check:volley-SpatialPincerCorridor"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=spatial_pincer_corridor "
+        },
+        {
+          "skill": "multidimensional_landing_array",
+          "setupStepIndex": 123,
+          "setupOperation": "gametp:setup:multidimensional_landing_array",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 170,
+              "operation": "gametp:check:volley-MultidimensionalLandingArray"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=multidimensional_landing_array "
+        },
+        {
+          "skill": "displaced_projection",
+          "setupStepIndex": 179,
+          "setupOperation": "gametp:setup:displaced_projection",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 192,
+              "operation": "gametp:check:damage"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=displaced_projection "
+        },
+        {
+          "skill": "short_interception",
+          "setupStepIndex": 201,
+          "setupOperation": "gametp:setup:short_interception",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 218,
+              "operation": "gametp:check:damage"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=short_interception "
+        },
+        {
+          "skill": "recovery_mark",
+          "setupStepIndex": 227,
+          "setupOperation": "gametp:setup:recovery_mark",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 249,
+              "operation": "gametp:check:recovery"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=recovery_mark "
+        },
+        {
+          "skill": "spatial_relay",
+          "setupStepIndex": 258,
+          "setupOperation": "gametp:setup:spatial_relay",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 286,
+              "operation": "gametp:check:item-relay"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=spatial_relay "
+        },
+        {
+          "skill": "flashing",
+          "setupStepIndex": 295,
+          "setupOperation": "gametp:setup:flashing",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 309,
+              "operation": "gametp:check:movement"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=flashing "
+        },
+        {
+          "skill": "vec_accel",
+          "setupStepIndex": 322,
+          "setupOperation": "gametp:setup:vec_accel",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 332,
+              "operation": "gametp:check:movement"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=vec_accel "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-tp-gui-full",
+      "script": "gameplay-tp-gui-full.script",
+      "skills": [
+        {
+          "skill": "location_teleport",
+          "setupStepIndex": 9,
+          "setupOperation": "gametp:setup:location_teleport",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 30,
+              "operation": "gametp:check:movement"
+            },
+            {
+              "stepIndex": 31,
+              "operation": "gametp:check:carried"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=location_teleport "
+        },
+        {
+          "skill": "tactical_coordinate_formation",
+          "setupStepIndex": 36,
+          "setupOperation": "gametp:setup:tactical_coordinate_formation",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 59,
+              "operation": "gametp:check:movement"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=tactical_coordinate_formation "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-incident-bypass",
+      "script": "gameplay-incident-bypass.script",
+      "skills": [
+        {
+          "skill": "incident_bypass",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 16,
+              "operation": "gamevm:utility:incident:assert"
+            },
+            {
+              "stepIndex": 27,
+              "operation": "gamevm:utility:incident:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceIncidentBypass.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=incident_bypass ",
+          "requiredModeFields": [
+            "mode=arrow",
+            "mode=snowball"
+          ],
+          "effect": "Real enemy arrow reduction and real enemy snowball redirection; finite payment; no synthetic collision."
+        }
+      ]
+    },
+    {
+      "case": "final16-main-gameplay-vm-utility",
+      "script": "codex-gameplay-vm-utility.script",
+      "skills": [
+        {
+          "skill": "vec_deviation",
+          "setupStepIndex": 14,
+          "setupOperation": "gamevm:utility:setup:vec_deviation",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 22,
+              "operation": "gamevm:utility:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceVmUtility.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=vec_deviation "
+        },
+        {
+          "skill": "vec_reflection",
+          "setupStepIndex": 32,
+          "setupOperation": "gamevm:utility:setup:vec_reflection",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 40,
+              "operation": "gamevm:utility:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceVmUtility.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=vec_reflection "
+        },
+        {
+          "skill": "vector_parry",
+          "setupStepIndex": 50,
+          "setupOperation": "gamevm:utility:setup:vector_parry",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 56,
+              "operation": "gamevm:utility:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceVmUtility.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=vector_parry "
+        },
+        {
+          "skill": "inertial_anchor",
+          "setupStepIndex": 62,
+          "setupOperation": "gamevm:utility:setup:inertial_anchor",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 68,
+              "operation": "gamevm:utility:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceVmUtility.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=inertial_anchor "
+        },
+        {
+          "skill": "circulation_relief",
+          "setupStepIndex": 78,
+          "setupOperation": "gamevm:utility:setup:circulation_relief",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 84,
+              "operation": "gamevm:utility:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceVmUtility.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=circulation_relief "
+        },
+        {
+          "skill": "autonomous_vector_circle",
+          "setupStepIndex": 94,
+          "setupOperation": "gamevm:utility:setup:autonomous_vector_circle",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 100,
+              "operation": "gamevm:utility:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceVmUtility.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=autonomous_vector_circle "
+        },
+        {
+          "skill": "multi_axis_reflection",
+          "setupStepIndex": 110,
+          "setupOperation": "gamevm:utility:setup:multi_axis_reflection",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 117,
+              "operation": "gamevm:utility:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceVmUtility.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=multi_axis_reflection "
+        },
+        {
+          "skill": "circulation_listening",
+          "setupStepIndex": 127,
+          "setupOperation": "gamevm:utility:setup:circulation_listening",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 134,
+              "operation": "gamevm:utility:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceVmUtility.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=circulation_listening "
+        },
+        {
+          "skill": "trajectory_return",
+          "setupStepIndex": 144,
+          "setupOperation": "gamevm:utility:setup:trajectory_return",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 151,
+              "operation": "gamevm:utility:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceVmUtility.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=trajectory_return "
+        },
+        {
+          "skill": "braking_touch",
+          "setupStepIndex": 157,
+          "setupOperation": "gamevm:utility:setup:braking_touch",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 166,
+              "operation": "gamevm:utility:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceVmUtility.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=braking_touch "
+        },
+        {
+          "skill": "impulse_split",
+          "setupStepIndex": 172,
+          "setupOperation": "gamevm:utility:setup:impulse_split",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 185,
+              "operation": "gamevm:utility:assert"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceVmUtility.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=impulse_split "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-vm-cage-storm",
+      "script": "gameplay-vm-cage-storm.script",
+      "skills": [
+        {
+          "skill": "vector_cage",
+          "setupStepIndex": 10,
+          "setupOperation": "gametp:setup:vector_cage",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 25,
+              "operation": "gametp:check:damage"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=vector_cage "
+        },
+        {
+          "skill": "storm_wing",
+          "setupStepIndex": 29,
+          "setupOperation": "gametp:setup:storm_wing",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 45,
+              "operation": "gametp:check:movement"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=storm_wing "
+        }
+      ]
+    },
+    {
+      "case": "final16-main-wind-sable-proof",
+      "script": "codex-wind-sable-proof.script",
+      "skills": [
+        {
+          "skill": "wind_pressure_lift",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 9,
+              "operation": "live:wind-diagnostic"
+            },
+            {
+              "stepIndex": 13,
+              "operation": "live:moved"
+            },
+            {
+              "stepIndex": 19,
+              "operation": "live:wind-diagnostic"
+            },
+            {
+              "stepIndex": 20,
+              "operation": "live:camera-neutral"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/LiveInputQa.java",
+          "requiredLogMarkers": [
+            "QA_LIVE_MOVEMENT_PASS from=",
+            "QA_LIVE_WIND_PREFLIGHT ",
+            "QA_LIVE_CAMERA_NEUTRAL_PASS skill=wind_pressure_lift"
+          ],
+          "requiredFields": [
+            "nativeReady=true"
+          ],
+          "effect": "Actual server displacement with strict native admission, real Sable compatibility and input release cleanup."
+        }
+      ]
+    },
+    {
+      "case": "final16-main-construct-full",
+      "script": "gameplay-construct-full.script",
+      "skills": [
+        {
+          "skill": "vector_construct",
+          "setupStepIndex": 6,
+          "setupOperation": "gametp:setup:vector_construct",
+          "strictMechanicalOperations": [
+            {
+              "stepIndex": 31,
+              "operation": "gametp:check:construct-land"
+            },
+            {
+              "stepIndex": 54,
+              "operation": "gametp:check:damage"
+            }
+          ],
+          "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+          "requiredLogMarker": "QA_GAMEPLAY_PASS skill=vector_construct "
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Every declared main skill has a real mechanical assertion route and required non-visual log witness. This does not preapprove final16 execution.",
+    "InertialAnchor main primary proves shield superarmor and real slowdown; its positive50percent landing benefit remains mandatory in the separate VM efficiency/alt modes.",
+    "Specialist generic melee witnesses are accompanied by mandatory A/B25percent/50percent efficiency and dedicated real-arrow/quota/capture extra cases; no base fallback can replace those mode requirements.",
+    "The source-only mapping proves routing and assertions exist, not that merged fixtures will succeed or that pixels are acceptable."
+  ]
+}

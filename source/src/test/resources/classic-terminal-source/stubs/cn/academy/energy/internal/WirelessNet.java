@@ -1,0 +1,2 @@
+package cn.academy.energy.internal;
+import cn.academy.energy.api.block.IWirelessMatrix;public class WirelessNet {private final String ssid,password;private final IWirelessMatrix matrix;public WirelessNet(String s,String p,IWirelessMatrix m){ssid=s;password=p;matrix=m;}public String getSSID(){return ssid;}public String getPassword(){return password;}public IWirelessMatrix getMatrix(){return matrix;}}

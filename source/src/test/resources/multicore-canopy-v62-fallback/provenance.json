@@ -1,0 +1,29 @@
+{
+  "commit": "c1c02209960c329ab7e304562d2f102718791ec5",
+  "subject": "Finalize bounded pressure-volume acceptance and retained limitations",
+  "commit_timestamp": "2026-10-14T05:08:45+09:00",
+  "extraction": "git show c1c02209960c329ab7e304562d2f102718791ec5:<source path>; complete byte-for-byte files, no transformations",
+  "source_sha256": {
+    "src/main/java/cn/academy/port/client/MulticoreCanopyEffects.java": "8b0df24456e09bf3f78b1a0360c9d4b841013b7881625347718e5d140505041d",
+    "src/main/java/cn/academy/port/client/MulticoreCanopyMesh.java": "2b038db4c8c846ec37f39ee4c29914e202cfa3cb2e9465a97ff4c3fee08c1142",
+    "src/main/java/cn/academy/port/client/MulticoreCanopyState.java": "e31a67a519c61fd4c5584ecf52979224c8b287c0b7a04980e5e5dd6fc5e070ea",
+    "src/main/java/cn/academy/port/client/FoldedMirrorMesh.java": "87c90c1de8f40e76e7d34d73bd01b13487a1a9ec1646f29c3b7f57c203d8c695",
+    "src/main/java/cn/academy/port/client/FoldedMirrorState.java": "f3180af8ac1f4712afda2a9146a2f4197e3d1c192f2d4c7ecab40a4fbc54e0cb",
+    "src/main/java/cn/academy/port/client/FoldedMirrorMaterial.java": "0f29ff32f7b3095d7d0ce079d33644060b6fa4b474e5a912a5c0b5f16349d30c",
+    "src/main/java/cn/academy/port/client/FoldedMirrorRenderTypes.java": "2d4575c08745e498e5d90f9dc321d2fea2d43e7b09269e8cf41245a78a1e3198",
+    "src/main/java/cn/academy/port/client/BeamEtchingMesh.java": "5d8a91e786fa5afae95e21e0c478eb3854884c7639ef94ae931b5beaff415755",
+    "src/main/java/cn/academy/port/highpower/core/FoldedMirrorGeometry.java": "a5370ebeaff8845eaaecdb79ea3b909c9cd1d0b2ec9f2eeb14377ca8a966590c"
+  },
+  "asset_sha256": {
+    "src/main/resources/assets/academy/textures/port/white.png": "7ac2abfce2be8b46dd9826d597d94edeefc1570b4a992622721b90a1850e3ee9",
+    "src/main/resources/assets/academy/textures/effects/mdball/glow.png": "2dd6e193adfbf100cf00671aa40ada6c40acd01156c9c44ee231edf50e9208b5",
+    "src/main/resources/assets/academy/textures/effects/mdball/0.png": "01130bef3ab1d82cfaf41892cae654f8d77d40ed0c00d3642d4fffd31d09546b",
+    "src/main/resources/assets/academy/textures/effects/mdball/1.png": "e98893f6f46ba618a715cf214452c3d351669d3c72e6efa87c02ec370d9c4518",
+    "src/main/resources/assets/academy/textures/effects/mdball/2.png": "537f631eed7be706abf0000c4cb75358be117faf9738d88c922d2085de14c8c7",
+    "src/main/resources/assets/academy/textures/effects/mdball/3.png": "27e55f9292f346ff24cc25e9bebcf1a7d6e0046e21ac019755c5c6faf017b3db",
+    "src/main/resources/assets/academy/textures/effects/mdball/4.png": "d48f594e02b49f7dd5e59faddb538d249b7a9f0fb9ff697e5493226db50cf82a",
+    "src/main/resources/assets/academy/textures/effects/mdray_small/blend_in.png": "ac97e7a452ecdc5a41f6b2379c98225e443693337f3dd90e2ba54707f1b38104",
+    "src/main/resources/assets/academy/textures/effects/mdray_small/tile.png": "591ab5e780dc406a1d32e4dbf938fc584a56fe8898dcc9c596cf5e07b912e88f",
+    "src/main/resources/assets/academy/textures/effects/mdray_small/blend_out.png": "0c71ed58ed0c122517e09a3db39addf931934ed22b58f880c781f0c31d916620"
+  }
+}

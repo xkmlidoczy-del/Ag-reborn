@@ -1,0 +1,283 @@
+{
+  "version": 19,
+  "baseline_revision": "27ecc8d869ae6389253c2e5c8fe4df68b6291424",
+  "scope": "Seven native learning GameTest registration clauses only; exact prior mechanics, annotations, old ordinals, IDs and methods retained by reversible named edits. Historical sources preserved as genuine .79 bytes.",
+  "registration_gate": {
+    "path": "scripts/verify-scatter-locator-registration-v17.py",
+    "sha256": "8fead34c0bc54afda101e90d95584175d6f38134d69b1b7db4b7a7030024aeb4"
+  },
+  "registry_baseline": {
+    "path": "src/main/java/cn/academy/port/highpower/HighPowerSkills.java",
+    "snapshot": "baseline-v79/HighPowerSkills.java",
+    "sha256": "7b7c560aec52fba4884d07c48d89346667847131075d9cd183934592d4b9d104",
+    "witness": "registry-records-v79.json",
+    "witness_sha256": "524a7d3e7bdf3cedebbed9fecf223e23d5a5031f1174aeb35e09d90db31dc55f"
+  },
+  "files": {
+    "src/main/java/cn/academy/port/gametest/HighPowerBeamEtchingLearningRuntimeTests.java": {
+      "snapshot": "baseline-v79/HighPowerBeamEtchingLearningRuntimeTests.java",
+      "sha256": "fda45c3610a5e221ed9e2d65453abde279219230091a18ddce57aa3a6be44e18",
+      "current_sha256": "c2a4a7efbe1db149d310daf831862fea7a5384cc273a2dbc3ef06536243ea465",
+      "patches": [
+        {
+          "name": "highpower-record",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52 && cn.academy.port.highpower.HighPowerSkills.ALL.get(51).equals(new cn.academy.port.SkillCatalog.Skill(\"meltdowner\", \"scatter_locator_plate\", 2, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"folded_mirror_array\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.SCATTER_LOCATOR_PLATE_PROPOSAL == 223"
+        }
+      ]
+    },
+    "src/main/java/cn/academy/port/gametest/HighPowerDissipationCurtainLearningRuntimeTests.java": {
+      "snapshot": "baseline-v79/HighPowerDissipationCurtainLearningRuntimeTests.java",
+      "sha256": "6a334fa6f85daedbf5f5d1aaabe3f46909b69f5c78bf4bb8bd0aa031330aae62",
+      "current_sha256": "d5e650b7269e41ef92be80b6a215a819f6225266b58f20af03d5c494253a40e1",
+      "patches": [
+        {
+          "name": "highpower-record",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52 && cn.academy.port.highpower.HighPowerSkills.ALL.get(51).equals(new cn.academy.port.SkillCatalog.Skill(\"meltdowner\", \"scatter_locator_plate\", 2, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"folded_mirror_array\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.SCATTER_LOCATOR_PLATE_PROPOSAL == 223"
+        },
+        {
+          "name": "highpower-ids",
+          "before": "HighPowerSkills.IDS.size() == 51",
+          "after": "HighPowerSkills.IDS.size() == 52 && cn.academy.port.highpower.HighPowerSkills.IDS.contains(\"scatter_locator_plate\")"
+        },
+        {
+          "name": "registered-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102 && cn.academy.port.SkillCatalog.REGISTERED.get(101).id().equals(\"scatter_locator_plate\")"
+        },
+        {
+          "name": "registered-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87 && cn.academy.port.preset.PresetSkills.REGISTERED.contains(\"scatter_locator_plate\")"
+        }
+      ]
+    },
+    "src/main/java/cn/academy/port/gametest/HighPowerMulticoreCanopyLearningRuntimeTests.java": {
+      "snapshot": "baseline-v79/HighPowerMulticoreCanopyLearningRuntimeTests.java",
+      "sha256": "54be270749384d6a1e301f8cc3b0f7c82c829fd15b39a9adabeec0c58c2c4126",
+      "current_sha256": "4b6c2a5c64297df749e0cfd5f4967c36b063b2cdcbdb2d0e7dbf5d59870aa41d",
+      "patches": [
+        {
+          "name": "highpower-record",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52 && cn.academy.port.highpower.HighPowerSkills.ALL.get(51).equals(new cn.academy.port.SkillCatalog.Skill(\"meltdowner\", \"scatter_locator_plate\", 2, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"folded_mirror_array\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.SCATTER_LOCATOR_PLATE_PROPOSAL == 223"
+        },
+        {
+          "name": "highpower-ids",
+          "before": "HighPowerSkills.IDS.size() == 51",
+          "after": "HighPowerSkills.IDS.size() == 52 && cn.academy.port.highpower.HighPowerSkills.IDS.contains(\"scatter_locator_plate\")"
+        },
+        {
+          "name": "registered-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102 && cn.academy.port.SkillCatalog.REGISTERED.get(101).id().equals(\"scatter_locator_plate\")"
+        },
+        {
+          "name": "registered-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87 && cn.academy.port.preset.PresetSkills.REGISTERED.contains(\"scatter_locator_plate\")"
+        }
+      ]
+    },
+    "src/main/java/cn/academy/port/gametest/HighPowerMultidimensionalLandingArrayLearningRuntimeTests.java": {
+      "snapshot": "baseline-v79/HighPowerMultidimensionalLandingArrayLearningRuntimeTests.java",
+      "sha256": "bdf25aa30413df3eb09a6fc859f7f5f8c3f4729890bccc6ff6b10ad70abbeb69",
+      "current_sha256": "d0d5e19df0e0abc04647f7b77a2858c343e0355dd37c2e5e50d70abe8f1bb163",
+      "patches": [
+        {
+          "name": "highpower-record",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52 && cn.academy.port.highpower.HighPowerSkills.ALL.get(51).equals(new cn.academy.port.SkillCatalog.Skill(\"meltdowner\", \"scatter_locator_plate\", 2, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"folded_mirror_array\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.SCATTER_LOCATOR_PLATE_PROPOSAL == 223"
+        },
+        {
+          "name": "registered-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102 && cn.academy.port.SkillCatalog.REGISTERED.get(101).id().equals(\"scatter_locator_plate\")"
+        },
+        {
+          "name": "registered-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87 && cn.academy.port.preset.PresetSkills.REGISTERED.contains(\"scatter_locator_plate\")"
+        },
+        {
+          "name": "registered-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93 && SkillCatalog.REGISTERED_CONFIG_KEYS.contains(cn.academy.port.core.ClassicSkillConfiguration.key(\"meltdowner\", \"scatter_locator_plate\"))"
+        }
+      ]
+    },
+    "src/main/java/cn/academy/port/gametest/HighPowerSpatialPincerLearningRuntimeTests.java": {
+      "snapshot": "baseline-v79/HighPowerSpatialPincerLearningRuntimeTests.java",
+      "sha256": "b89d8ff6732b5e4b2154d6539effa63a759a985b15b606558fb6846db68c679f",
+      "current_sha256": "3a86071a96b35c11a2de0823822c1cecdd7265be47ff8363537fe9199fe1a9d3",
+      "patches": [
+        {
+          "name": "highpower-record",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52 && cn.academy.port.highpower.HighPowerSkills.ALL.get(51).equals(new cn.academy.port.SkillCatalog.Skill(\"meltdowner\", \"scatter_locator_plate\", 2, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"folded_mirror_array\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.SCATTER_LOCATOR_PLATE_PROPOSAL == 223"
+        },
+        {
+          "name": "registered-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102 && cn.academy.port.SkillCatalog.REGISTERED.get(101).id().equals(\"scatter_locator_plate\")"
+        },
+        {
+          "name": "registered-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87 && cn.academy.port.preset.PresetSkills.REGISTERED.contains(\"scatter_locator_plate\")"
+        },
+        {
+          "name": "registered-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93 && SkillCatalog.REGISTERED_CONFIG_KEYS.contains(cn.academy.port.core.ClassicSkillConfiguration.key(\"meltdowner\", \"scatter_locator_plate\"))"
+        }
+      ]
+    },
+    "src/main/java/cn/academy/port/gametest/HighPowerTacticalCoordinateLearningRuntimeTests.java": {
+      "snapshot": "baseline-v79/HighPowerTacticalCoordinateLearningRuntimeTests.java",
+      "sha256": "7281c69fae6d189568248b634d225abd9b7652db97aa8f29100d754527003371",
+      "current_sha256": "571d261896503084adcb261ad59a5ea03b1b1212addbff430b0f521b148f93d5",
+      "patches": [
+        {
+          "name": "highpower-record",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52 && cn.academy.port.highpower.HighPowerSkills.ALL.get(51).equals(new cn.academy.port.SkillCatalog.Skill(\"meltdowner\", \"scatter_locator_plate\", 2, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"folded_mirror_array\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.SCATTER_LOCATOR_PLATE_PROPOSAL == 223"
+        },
+        {
+          "name": "registered-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102 && cn.academy.port.SkillCatalog.REGISTERED.get(101).id().equals(\"scatter_locator_plate\")"
+        },
+        {
+          "name": "registered-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87 && cn.academy.port.preset.PresetSkills.REGISTERED.contains(\"scatter_locator_plate\")"
+        },
+        {
+          "name": "registered-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93 && SkillCatalog.REGISTERED_CONFIG_KEYS.contains(cn.academy.port.core.ClassicSkillConfiguration.key(\"meltdowner\", \"scatter_locator_plate\"))"
+        }
+      ]
+    },
+    "src/main/java/cn/academy/port/gametest/HighPowerZeroGapArmorLearningRuntimeTests.java": {
+      "snapshot": "baseline-v79/HighPowerZeroGapArmorLearningRuntimeTests.java",
+      "sha256": "a592e524ce76095216c8e47a27e50d06560d91ff92d6e101acddea9eb968b570",
+      "current_sha256": "4f9a5b731c42fc4ce9f14737cf59103fc2455a101643b190bd2c3092d5c73f46",
+      "patches": [
+        {
+          "name": "highpower-record",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52 && cn.academy.port.highpower.HighPowerSkills.ALL.get(51).equals(new cn.academy.port.SkillCatalog.Skill(\"meltdowner\", \"scatter_locator_plate\", 2, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"folded_mirror_array\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.SCATTER_LOCATOR_PLATE_PROPOSAL == 223"
+        },
+        {
+          "name": "highpower-ids",
+          "before": "HighPowerSkills.IDS.size() == 51",
+          "after": "HighPowerSkills.IDS.size() == 52 && cn.academy.port.highpower.HighPowerSkills.IDS.contains(\"scatter_locator_plate\")"
+        },
+        {
+          "name": "registered-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102 && cn.academy.port.SkillCatalog.REGISTERED.get(101).id().equals(\"scatter_locator_plate\")"
+        },
+        {
+          "name": "registered-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87 && cn.academy.port.preset.PresetSkills.REGISTERED.contains(\"scatter_locator_plate\")"
+        }
+      ]
+    }
+  },
+  "native_learning_baseline": [
+    {
+      "path": "src/main/java/cn/academy/port/gametest/AcademyCompleteLearningRuntimeTests.java",
+      "sha256": "1386ba57e63bf51350ab7e3e253625f58e6d7baa7cb6f61f769f4a953c1c5a44"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/gametest/HighPowerBeamEtchingLearningRuntimeTests.java",
+      "sha256": "fda45c3610a5e221ed9e2d65453abde279219230091a18ddce57aa3a6be44e18"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/gametest/HighPowerBeamStepLearningRuntimeTests.java",
+      "sha256": "ab07806947f6fef21400fb1f86cb7a881e48d5d770b213d176597cb0aa53d0ea"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/gametest/HighPowerDeflectionStrikeLearningRuntimeTests.java",
+      "sha256": "314c7ed29179e8fe0def4bce99ed97d75bd97012057b0a2b57fa0c2cbc5ca761"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/gametest/HighPowerDisintegrationSweepLearningRuntimeTests.java",
+      "sha256": "d580af61033bcfd03979b067b62ec63a0140e2abce29063fcf58084e3a3efb14"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/gametest/HighPowerDissipationCurtainLearningRuntimeTests.java",
+      "sha256": "6a334fa6f85daedbf5f5d1aaabe3f46909b69f5c78bf4bb8bd0aa031330aae62"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/gametest/HighPowerDualPointLearningRuntimeTests.java",
+      "sha256": "723506e76b922836ece5ee9690df0c82dfafeec4e61c3b6b61fa54749d068892"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/gametest/HighPowerEmergencyReturnLearningRuntimeTests.java",
+      "sha256": "0e9f2426e238fb9e370ee159536d08bf31908d88c2160ad1a4ee3c23f04dfe3c"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/gametest/HighPowerFoldedMirrorLearningRuntimeTests.java",
+      "sha256": "37fdd48814ef7f889102fbc4a5ad02dbac50ec286d35ddc36c34e6230c537f28"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/gametest/HighPowerMulticoreCanopyLearningRuntimeTests.java",
+      "sha256": "54be270749384d6a1e301f8cc3b0f7c82c829fd15b39a9adabeec0c58c2c4126"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/gametest/HighPowerMultidimensionalLandingArrayLearningRuntimeTests.java",
+      "sha256": "bdf25aa30413df3eb09a6fc859f7f5f8c3f4729890bccc6ff6b10ad70abbeb69"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/gametest/HighPowerParticleLaminateLearningRuntimeTests.java",
+      "sha256": "b6ae752e1d68be49f1ef5ecc602e1366296a4844e03856ceefa3c85784870f62"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/gametest/HighPowerPointMeltdownLearningRuntimeTests.java",
+      "sha256": "036d80ad634997b8b86e60506150cad57ae29e7d059a17264e56431964c037e0"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/gametest/HighPowerRemoteScatterRelayLearningRuntimeTests.java",
+      "sha256": "8aaa541335f3fcb306ecff9082151e5d959f104938fc6e000b0d385f50196d16"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/gametest/HighPowerScatterPlateLearningRuntimeTests.java",
+      "sha256": "febe8f709eabd77bb6ac5bc689563f4a5bbdd065045ffb38c555ae1106bd255e"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/gametest/HighPowerSpatialPincerLearningRuntimeTests.java",
+      "sha256": "b89d8ff6732b5e4b2154d6539effa63a759a985b15b606558fb6846db68c679f"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/gametest/HighPowerSpatialRelayLearningRuntimeTests.java",
+      "sha256": "eceac0f9f55bd75b85f37c135f83e3efa4bd2fb7e8d080f902ead3168ee5a9f1"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/gametest/HighPowerTacticalCoordinateLearningRuntimeTests.java",
+      "sha256": "7281c69fae6d189568248b634d225abd9b7652db97aa8f29100d754527003371"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/gametest/HighPowerThermalShellLearningRuntimeTests.java",
+      "sha256": "5f44d44f1913e9dbebf5a765c586b9513b6a16549252e966e9723c69555dbed9"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/gametest/HighPowerTrajectoryReturnLearningRuntimeTests.java",
+      "sha256": "862f7640517e5e133a3eab8de9129bbe676d62d36a2004e34a8236fbd4766818"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/gametest/HighPowerWindPressureLiftLearningRuntimeTests.java",
+      "sha256": "2ce888a0b9defee82efc5ae660e274327d71812789d5e0b656a00320dbd2b15f"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/gametest/HighPowerZeroGapArmorLearningRuntimeTests.java",
+      "sha256": "a592e524ce76095216c8e47a27e50d06560d91ff92d6e101acddea9eb968b570"
+    }
+  ],
+  "approved_patch_count": 25
+}

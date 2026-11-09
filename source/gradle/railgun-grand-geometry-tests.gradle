@@ -1,0 +1,8 @@
+// Pure camera-relative shoulders; no game, native marker, render-thread or GUI dependency.
+tasks.register('railgunGrandGeometryTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.RailgunGrandGeometryRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'railgunGrandGeometryTest' }

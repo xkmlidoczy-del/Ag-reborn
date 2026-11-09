@@ -1,0 +1,12 @@
+// NEW221 physical reflection geometry, continuous costs and authenticated rendering/input.
+['highPowerFoldedMirrorGeometryTest':'cn.academy.port.highpower.core.FoldedMirrorGeometryRegressionTest',
+ 'highPowerFoldedMirrorRulesTest':'cn.academy.port.highpower.core.FoldedMirrorRulesRegressionTest',
+ 'foldedMirrorVisualTest':'cn.academy.port.client.FoldedMirrorVisualRegressionTest'].each { taskName, className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+    }
+    tasks.named('check') { dependsOn taskName }
+}

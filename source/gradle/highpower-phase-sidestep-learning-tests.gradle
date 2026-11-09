@@ -1,0 +1,8 @@
+// NEW312 additive learning, retained classic progression, developer layout and translations.
+tasks.register('highPowerPhaseSidestepLearningTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.PhaseSidestepLearningRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerPhaseSidestepLearningTest' }

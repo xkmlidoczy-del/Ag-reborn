@@ -1,0 +1,127 @@
+[
+  {
+    "name": "final22-retry-modes-em-input-modes",
+    "script": "gameplay-final-modes-group-em-input-modes.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-modes-em-environment-planning",
+    "script": "gameplay-final-modes-group-em-environment-planning.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-modes-tp-alternatives",
+    "script": "gameplay-final-modes-group-tp-alternatives.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-modes-vm-alternatives-efficiency",
+    "script": "gameplay-final-modes-group-vm-alternatives-efficiency.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-modes-vm-native-late-window",
+    "script": "gameplay-final-modes-group-vm-native-late-window.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-modes-cross-dimension",
+    "script": "gameplay-final-modes-group-cross-dimension.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-modes-respawn",
+    "script": "gameplay-final-modes-group-respawn.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-passives-training-electromaster",
+    "script": "gameplay-passives-training-electromaster.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-passives-training-meltdowner",
+    "script": "gameplay-passives-training-meltdowner.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-passives-training-teleporter",
+    "script": "gameplay-passives-training-teleporter.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-passives-training-vecmanip",
+    "script": "gameplay-passives-training-vecmanip.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-passives-rad_intensify",
+    "script": "gameplay-passives-rad_intensify.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-passives-dim_folding_theorem",
+    "script": "gameplay-passives-dim_folding_theorem.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-passives-space_fluct",
+    "script": "gameplay-passives-space_fluct.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-tpvm-tp-cancel-register",
+    "script": "gameplay-tp-play-group-cancel-register.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-tpvm-tp-ordinary-stock",
+    "script": "gameplay-tp-play-group-ordinary-stock.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-tpvm-tp-target-air-movement",
+    "script": "gameplay-tp-play-group-target-air-movement.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-tpvm-tp-two-needles",
+    "script": "gameplay-tp-play-group-two-needles.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-tpvm-native-arrow-vector_parry",
+    "script": "gameplay-native-arrow-vector_parry.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-tpvm-native-arrow-autonomous_vector_circle",
+    "script": "gameplay-native-arrow-autonomous_vector_circle.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-tpvm-native-arrow-phase-corridor",
+    "script": "gameplay-native-arrow-phase_corridor.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-vmenv-vm-environment-legacy-three",
+    "script": "gameplay-vm-environment-legacy-three.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-vmenv-vm-environment-storm-fragile",
+    "script": "gameplay-vm-environment-storm-fragile.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-vmenv-vm-environment-plasma-terrain",
+    "script": "gameplay-vm-environment-plasma-terrain.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-itemsplit-vm-extra-yaw-q-items",
+    "script": "gameplay-vm-extra-yaw-q-items.script",
+    "exit": 1
+  }
+]

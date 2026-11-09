@@ -1,0 +1,185 @@
+--- src/main/java/cn/academy/port/AcademyNetwork.java
++++ src/main/java/cn/academy/port/AcademyNetwork.java
+@@ -22,7 +22,7 @@
+         public Type<? extends CustomPacketPayload> type() {return TYPE;}
+     }
+     public static void register(RegisterPayloadHandlersEvent event) {
+-        var registrar=event.registrar("1");registrar.playToServer(Request.TYPE,Request.CODEC,(request,ctx)->{if(ctx.player() instanceof ServerPlayer player) AcademyGameplay.requestFromClient(player,request);});
++        var registrar=event.registrar("1");registrar.playToServer(Request.TYPE,Request.CODEC,(request,ctx)->{if(ctx.player() instanceof ServerPlayer player) {if(request.action().startsWith("machine_"))cn.academy.port.machine.MachineDeveloperSessions.request(player,request);else AcademyGameplay.requestFromClient(player,request);}});
+         registrar.playToClient(ClientData.TYPE,ClientData.CODEC,(data,ctx)->clientReceiver.accept(data));
+     }
+     public static void sync(ServerPlayer player) {var state=AbilityStorage.get(player);var data=AbilityStorage.encode(state);data.putBoolean("interfering",state.interfering);data.putString("kind","state");PacketDistributor.sendToPlayer(player,new ClientData(data));}
+--- src/main/java/cn/academy/port/DeveloperItem.java
++++ src/main/java/cn/academy/port/DeveloperItem.java
+@@ -12,7 +12,7 @@
+     public DeveloperItem(Properties properties) {super(properties);}
+     @Override public InteractionResultHolder<ItemStack> use(Level level,Player player,InteractionHand hand) {
+         if(hand!=InteractionHand.MAIN_HAND)return InteractionResultHolder.fail(player.getItemInHand(hand));
+-        if(player instanceof ServerPlayer server) {AcademyNetwork.sync(server);var t=new CompoundTag();t.putString("kind","developer");PacketDistributor.sendToPlayer(server,new AcademyNetwork.ClientData(t));}
++        if(player instanceof ServerPlayer server) {cn.academy.port.machine.MachineDeveloperSessions.close(server);AcademyNetwork.sync(server);var t=new CompoundTag();t.putString("kind","developer");PacketDistributor.sendToPlayer(server,new AcademyNetwork.ClientData(t));}
+         return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand),level.isClientSide);
+     }
+ }
+--- src/main/java/cn/academy/port/client/AcademyClient.java
++++ src/main/java/cn/academy/port/client/AcademyClient.java
+@@ -64,6 +64,9 @@
+             case "development" -> development=t.copy();
+             case "state" -> {String previous=presetSignature();state=AbilityStorage.decode(t);state.interfering=t.getBoolean("interfering");if(!previous.equals(presetSignature()))resetDelegates();}
+             case "developer" -> minecraft.setScreen(new DeveloperScreen());
++            case "developer_machine" -> minecraft.setScreen(new DeveloperScreen(t));
++            case "developer_machine_update" -> {if(minecraft.screen instanceof DeveloperScreen screen)screen.machineUpdate(t);}
++            case "developer_machine_close" -> {if(minecraft.screen instanceof DeveloperScreen screen&&screen.machineSession(t.getString("session")))minecraft.setScreen(null);}
+             case "charge" -> ClassicEffects.addCharge(t.getInt("entity"));
+             case "charging_start","charging_end" -> ClassicChargingEffects.receive(t);
+             case "ground_shock_start","ground_shock_abort","ground_shock" -> ClassicGroundShockEffects.receive(t);
+@@ -171,6 +174,8 @@
+             net.minecraft.client.renderer.item.ItemProperties.register(AcademyCraft.DEVELOPER.get(),ResourceLocation.fromNamespaceAndPath("academy","charge_icon"),(stack,level,entity,seed)->{int damage=(int)(13*(1-new cn.academy.port.develop.DeveloperItemEnergy(stack,cn.academy.port.develop.DeveloperType.PORTABLE).energy()/10000));return damage<3?2f:damage>10?0f:1f;});
+             net.minecraft.client.renderer.item.ItemProperties.register(AcademyCraft.INDUCTION_FACTOR.get(),ResourceLocation.fromNamespaceAndPath("academy","category"),(stack,level,entity,seed)->cn.academy.port.develop.InductionFactors.category(stack).map(cat->(float)cn.academy.port.develop.DevelopmentActions.CATEGORIES.indexOf(cat)).orElse(0f));
+         });}
++        @SubscribeEvent public static void developerRenderers(EntityRenderersEvent.RegisterRenderers event){ClassicDeveloperRendering.registerRenderers(event);}
++        @SubscribeEvent public static void developerModels(RegisterClientReloadListenersEvent event){ClassicDeveloperRendering.registerReloadListeners(event);}
+         @SubscribeEvent public static void keys(RegisterKeyMappingsEvent event) {event.register(TOGGLE);event.register(SWITCH_PRESET);event.register(EDIT_PRESET);for(var key:SLOTS)event.register(key);}
+     }
+ }
+--- src/main/java/cn/academy/port/client/DeveloperScreen.java
++++ src/main/java/cn/academy/port/client/DeveloperScreen.java
+@@ -8,23 +8,35 @@
+ import java.util.Set;
+ public final class DeveloperScreen extends Screen {
+     private String previous="";
++    private String machineToken="";
++    private DeveloperType developerType=DeveloperType.PORTABLE;
++    private double machineEnergy;
++    private boolean released;
++    public DeveloperScreen(net.minecraft.nbt.CompoundTag machine){this();machineToken=machine.getString("session");try{developerType=DeveloperType.valueOf(machine.getString("type"));}catch(IllegalArgumentException ignored){developerType=DeveloperType.PORTABLE;}machineEnergy=machine.getDouble("energy");}
++    public boolean machineSession(String token){return !machineToken.isEmpty()&&machineToken.equals(token);}
++    public void machineUpdate(net.minecraft.nbt.CompoundTag data){if(machineSession(data.getString("session")))machineEnergy=data.getDouble("energy");}
++    private void request(String action,String value){if(machineToken.isEmpty())AcademyClient.request(action,value);else AcademyClient.request(switch(action){case "develop_level"->"machine_level";case "learn"->"machine_learn";case "develop_abort"->"machine_abort";case "develop_reset"->"machine_reset";default->action;},machineToken+(value.isEmpty()?"":":"+value));}
++    @Override public void removed(){super.removed();if(!machineToken.isEmpty()&&!released){released=true;AcademyClient.request("machine_close",machineToken);}}
+     public DeveloperScreen() {super(Component.translatable("screen.academy.developer"));}
+-    private double energy(){return minecraft==null||minecraft.player==null?0:new DeveloperItemEnergy(minecraft.player.getMainHandItem(),DeveloperType.PORTABLE).energy();}
+-    private String signature(){var s=AcademyClient.state;double e=energy();String flags="";for(int level=1;level<=5;level++)flags+=":"+(e>=DeveloperType.PORTABLE.estimatedConsumption(cn.academy.port.core.ClassicRules.learningStimulations(level)));return s.category+":"+s.level+":"+s.experience.keySet().toString()+flags+":"+(e>=DeveloperType.PORTABLE.estimatedConsumption(5*(s.level+1)));}
++    private double energy(){if(!machineToken.isEmpty())return machineEnergy;return minecraft==null||minecraft.player==null?0:new DeveloperItemEnergy(minecraft.player.getMainHandItem(),DeveloperType.PORTABLE).energy();}
++    private String signature(){var s=AcademyClient.state;double e=energy();String flags="";for(int level=1;level<=5;level++)flags+=":"+(e>=developerType.estimatedConsumption(cn.academy.port.core.ClassicRules.learningStimulations(level)));return s.category+":"+s.level+":"+s.experience.keySet().toString()+flags+":"+(e>=developerType.estimatedConsumption(5*(s.level+1)));}
+     @Override protected void init() {
+         previous=signature();int x=width/2-140,y=60;var state=AcademyClient.state;
+-        var level=addRenderableWidget(Button.builder(Component.translatable(state.hasCategory()?"screen.academy.upgrade":"screen.academy.acquire"),b->AcademyClient.request("develop_level","")).bounds(x,y,280,20).build());level.active=(!state.hasCategory()||state.canLevelUp(SkillCatalog.levelSkillCount(state)))&&energy()>=DeveloperType.PORTABLE.estimatedConsumption(5*(state.level+1));y+=25;
++        var level=addRenderableWidget(Button.builder(Component.translatable(state.hasCategory()?"screen.academy.upgrade":"screen.academy.acquire"),b->request("develop_level","")).bounds(x,y,280,20).build());level.active=(!state.hasCategory()||state.canLevelUp(SkillCatalog.levelSkillCount(state)))&&energy()>=developerType.estimatedConsumption(5*(state.level+1));y+=25;
+         if(state.hasCategory()) {
+             int index=0;
+             for(var skill:SkillCatalog.ALL) {
+                 if(!skill.category().equals(state.category)||!Set.of("arc_gen","charging","railgun","threatening_teleport","dir_shock","ground_shock","electron_bomb","rad_intensify","dim_folding_theorem","space_fluct","brain_course","brain_course_advanced","mind_course").contains(skill.id()))continue;
+-                boolean support=DeveloperType.PORTABLE.supportsSkill(skill.level());
++                boolean support=developerType.supportsSkill(skill.level());
+                 Component label=Component.translatable("ac.ability."+(skill.id().contains("course")?"generic":skill.category())+"."+skill.id()+".name").append(" L"+skill.level()+(state.learned(skill.id())?" ✓":support?"":" ("+DeveloperType.minimumForSkill(skill.level()).name()+")"));
+-                var button=addRenderableWidget(Button.builder(label,b->AcademyClient.request("learn",skill.id())).bounds(x+(index%2)*142,y+(index/2)*24,138,20).build());button.active=support&&SkillCatalog.canLearn(state,skill)&&energy()>=DeveloperType.PORTABLE.estimatedConsumption(cn.academy.port.core.ClassicRules.learningStimulations(skill.level()));index++;
++                var button=addRenderableWidget(Button.builder(label,b->request("learn",skill.id())).bounds(x+(index%2)*142,y+(index/2)*24,138,20).build());button.active=support&&SkillCatalog.canLearn(state,skill)&&energy()>=developerType.estimatedConsumption(cn.academy.port.core.ClassicRules.learningStimulations(skill.level()));index++;
+             }
+             y+=(index+1)/2*24;
+         }
+-        addRenderableWidget(Button.builder(Component.translatable("screen.academy.cancel"),b->AcademyClient.request("develop_abort","")).bounds(x,y+4,138,20).build());
++        if(developerType==DeveloperType.ADVANCED&&minecraft.player!=null&&minecraft.player.getMainHandItem().is(cn.academy.port.AcademyCraft.MAGNETIC_COIL.get())){
++            var reset=addRenderableWidget(Button.builder(Component.translatable("screen.academy.reset_category"),b->request("develop_reset","")).bounds(x,y+4,280,20).build());reset.active=state.level>=3&&energy()>=developerType.estimatedConsumption(state.level*10);y+=24;
++        }
++        addRenderableWidget(Button.builder(Component.translatable("screen.academy.cancel"),b->request("develop_abort","")).bounds(x,y+4,138,20).build());
+         addRenderableWidget(Button.builder(Component.translatable("gui.done"),b->onClose()).bounds(x+142,y+4,138,20).build());
+     }
+     @Override public void tick(){super.tick();if(!previous.equals(signature()))rebuildWidgets();}
+@@ -32,7 +44,7 @@
+         renderBackground(graphics,mx,my,partial);super.render(graphics,mx,my,partial);graphics.drawCenteredString(font,title,width/2,12,0xCCFFFF);
+         graphics.drawCenteredString(font,Component.translatable("screen.academy.development_notice"),width/2,28,0xFFA64D);
+         double energy=energy();
+-        graphics.drawCenteredString(font,Component.literal("IF "+Math.round(energy)+" / 10000  •  1 IF = 4 FE"),width/2,43,0xCCCCCC);
++        graphics.drawCenteredString(font,Component.literal("IF "+Math.round(energy)+" / "+Math.round(developerType.energy)+"  •  "+developerType.name()+"  •  1 IF = 4 FE"),width/2,43,0xCCCCCC);
+         var dev=AcademyClient.development;if(dev!=null){String action=dev.getString("action");String status=dev.getString("state");int y=height-31;
+             graphics.drawCenteredString(font,Component.literal(status+" "+action+"  "+dev.getInt("stimulation")+"/"+dev.getInt("max_stimulations")),width/2,y,0xCCFFFF);
+             int left=width/2-140;graphics.fill(left,y+12,left+280,y+17,0xAA23313A);graphics.fill(left,y+12,left+(int)(280*dev.getDouble("progress")),y+17,0xFF48CBD1);
+--- src/main/java/cn/academy/port/develop/DevelopmentController.java
++++ src/main/java/cn/academy/port/develop/DevelopmentController.java
+@@ -38,10 +38,15 @@
+ 
+     public static boolean startSkill(ServerPlayer player, String id) {
+         if (!holdingPortable(player)) return false;
++        return startSkill(player, portable(player), id);
++    }
++
++    /** Machine sessions select the server-owned developer; the client cannot provide a tier or battery. */
++    public static boolean startSkill(ServerPlayer player, DevelopmentProcess.Developer developer, String id) {
+         var state = AbilityStorage.get(player);
+         var found = SkillCatalog.find(state.category, id);
+         if (found.isEmpty() || state.learned(id)) return false;
+-        return start(player, portable(player), DevelopmentActions.skill(state, found.get()));
++        return start(player, developer, DevelopmentActions.skill(state, found.get()));
+     }
+ 
+     /** No arbitrary category selector: source acquisition chooses an induction factor or a random category. */
+@@ -51,7 +56,11 @@
+ 
+     public static boolean startLevel(ServerPlayer player, DevelopmentActions.CategoryItems items) {
+         if (!holdingPortable(player)) return false;
+-        return start(player, portable(player), DevelopmentActions.level(AbilityStorage.get(player), items, player.getRandom()::nextInt));
++        return startLevel(player, portable(player), items);
++    }
++
++    public static boolean startLevel(ServerPlayer player, DevelopmentProcess.Developer developer, DevelopmentActions.CategoryItems items) {
++        return start(player, developer, DevelopmentActions.level(AbilityStorage.get(player), items, player.getRandom()::nextInt));
+     }
+ 
+     /** Trusted machine adapters may use this when real normal/advanced developer devices exist. */
+@@ -76,8 +85,8 @@
+     }
+ 
+     /** Logout/death/clone discard active progress: original DevelopData never enabled NBT storage. */
+-    public static void remove(ServerPlayer player) { PROCESSES.remove(player.getUUID()); }
+-    public static void clear() { PROCESSES.clear(); }
++    public static void remove(ServerPlayer player) { cn.academy.port.machine.MachineDeveloperSessions.close(player); PROCESSES.remove(player.getUUID()); }
++    public static void clear() { cn.academy.port.machine.MachineDeveloperSessions.clear(); PROCESSES.clear(); }
+ 
+     public static CompoundTag encode(DevelopmentProcess.Snapshot snapshot) {
+         var tag = new CompoundTag();
+--- src/main/resources/assets/academy/lang/en_us.json
++++ src/main/resources/assets/academy/lang/en_us.json
+@@ -496,5 +496,8 @@
+   "block.academy.reso_crystal_ore": "Resonant Crystal Ore",
+   "block.academy.constraint_metal_ore": "Constraint Metal Ore",
+   "block.academy.crystal_ore": "Imag Crystal Ore",
+-  "block.academy.imag_silicon_ore": "Imag Silicon Ore"
++  "block.academy.imag_silicon_ore": "Imag Silicon Ore",
++  "block.academy.developer_normal": "Normal Ability Developer",
++  "block.academy.developer_advanced": "Advanced Ability Developer",
++  "screen.academy.reset_category": "Reset category"
+ }
+--- src/main/resources/assets/academy/lang/zh_cn.json
++++ src/main/resources/assets/academy/lang/zh_cn.json
+@@ -495,5 +495,8 @@
+   "block.academy.reso_crystal_ore": "谐振水晶矿",
+   "block.academy.constraint_metal_ore": "束能金属矿",
+   "block.academy.crystal_ore": "虚能水晶矿",
+-  "block.academy.imag_silicon_ore": "虚像硅矿"
++  "block.academy.imag_silicon_ore": "虚像硅矿",
++  "block.academy.developer_normal": "基础能力开发机",
++  "block.academy.developer_advanced": "高级能力开发机",
++  "screen.academy.reset_category": "重置能力类别"
+ }
+--- src/main/resources/data/minecraft/tags/block/mineable/pickaxe.json
++++ src/main/resources/data/minecraft/tags/block/mineable/pickaxe.json
+@@ -5,6 +5,7 @@
+     "academy:reso_crystal_ore",
+     "academy:constraint_metal_ore",
+     "academy:crystal_ore",
+-    "academy:imag_silicon_ore"
++    "academy:imag_silicon_ore",
++    "#academy:developers"
+   ]
+ }
+--- src/main/resources/data/minecraft/tags/block/needs_iron_tool.json
++++ src/main/resources/data/minecraft/tags/block/needs_iron_tool.json
+@@ -3,6 +3,7 @@
+   "values": [
+     "academy:reso_crystal_ore",
+     "academy:crystal_ore",
+-    "academy:imag_silicon_ore"
++    "academy:imag_silicon_ore",
++    "#academy:developers"
+   ]
+ }

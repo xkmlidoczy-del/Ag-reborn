@@ -1,0 +1,119 @@
+{
+  "assets": [
+    {
+      "path": "assets/academy/textures/effects/mdray_expert/blend_in.png",
+      "sha256": "aab749126063cba586b544da94bb24f0baf95ae67a49317003b8faa35c35f5a2"
+    },
+    {
+      "path": "assets/academy/textures/effects/mdray_expert/tile.png",
+      "sha256": "01c088dd01e47f14102aa8d9a3485fa9fcd5cd7bda160fe1b4d582d9c93a3b4a"
+    },
+    {
+      "path": "assets/academy/textures/effects/mdray_expert/blend_out.png",
+      "sha256": "b69e3425576c5e5e545f0a01971d5905e103a4398fc73b8101438fd5efb14bb1"
+    },
+    {
+      "path": "assets/academy/textures/effects/mdray_luck/blend_in.png",
+      "sha256": "a8d4894a8e7ed91de51356eba8fb6a78efaa3f7267a1a482e811fc9dd2fb76ce"
+    },
+    {
+      "path": "assets/academy/textures/effects/mdray_luck/tile.png",
+      "sha256": "f5c346be802023cbbf431c2d6ae966ef25d0b6ef2f7da55bc17da88cfa2373b9"
+    },
+    {
+      "path": "assets/academy/textures/effects/mdray_luck/blend_out.png",
+      "sha256": "77b18fcf4de7ec44f4b326b3e7f383d309010ad0d666dd64a26c5e976d1fe1a9"
+    },
+    {
+      "path": "assets/academy/textures/effects/md_particle.png",
+      "sha256": "57660d9947391b14d0df5683ee4820332db0c1a25233130e3a02bb05e34bea70"
+    },
+    {
+      "path": "assets/academy/textures/effects/md_particle_luck.png",
+      "sha256": "d1dab7e906910ca36f66b056be915761275291e7d49cb6bd7d7706618a529e76"
+    },
+    {
+      "path": "assets/academy/textures/abilities/meltdowner/skills/mine_ray_expert.png",
+      "sha256": "86b40fa8c4b9d38a46cb1e191ef0830d11b13aa4b2937a468b0382365ab3702b"
+    },
+    {
+      "path": "assets/academy/textures/abilities/meltdowner/skills/mine_ray_luck.png",
+      "sha256": "acc8cc94aad4f3796c280fb60d551a13810f3e5d6adfb3c147ca3b58864526fd"
+    },
+    {
+      "path": "assets/academy/sounds/md/mine_loop.ogg",
+      "sha256": "ea1cd88d8baba6bd8bb2c66fbd5cc4c5638e199c6563619fea76297395705a79"
+    },
+    {
+      "path": "assets/academy/sounds/md/mine_expert_startup.ogg",
+      "sha256": "8367929a2c05477ac96dd2aa7a013b016234dd7f701d580fa3476e08db1e6987"
+    },
+    {
+      "path": "assets/academy/sounds/md/mine_luck_startup.ogg",
+      "sha256": "6efd9b45a97e88ec8aa8501d3e85396e82353647f671b6dd0afc080d716ec12f"
+    }
+  ],
+  "sound_events": [
+    {
+      "event": "md.mine_loop",
+      "value": {
+        "sounds": [
+          {
+            "name": "academy:md/mine_loop",
+            "stream": false
+          }
+        ]
+      },
+      "source_value": {
+        "category": "master",
+        "sounds": [
+          {
+            "name": "md/mine_loop",
+            "stream": false
+          }
+        ]
+      }
+    },
+    {
+      "event": "md.mine_expert_startup",
+      "value": {
+        "sounds": [
+          {
+            "name": "academy:md/mine_expert_startup",
+            "stream": false
+          }
+        ]
+      },
+      "source_value": {
+        "category": "master",
+        "sounds": [
+          {
+            "name": "md/mine_expert_startup",
+            "stream": false
+          }
+        ]
+      }
+    },
+    {
+      "event": "md.mine_luck_startup",
+      "value": {
+        "sounds": [
+          {
+            "name": "academy:md/mine_luck_startup",
+            "stream": false
+          }
+        ]
+      },
+      "source_value": {
+        "category": "master",
+        "sounds": [
+          {
+            "name": "md/mine_luck_startup",
+            "stream": false
+          }
+        ]
+      }
+    }
+  ],
+  "note": "Production reuses unchanged media bytes. Modern JSON namespaces academy: and drops obsolete category; real client sound source is MASTER. No sounds.json replacement. Original notices remain in root and mandatory test fixtures."
+}

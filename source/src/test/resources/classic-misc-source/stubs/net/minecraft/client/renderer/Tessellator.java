@@ -1,0 +1,1 @@
+package net.minecraft.client.renderer;public class Tessellator {public static Tessellator instance=new Tessellator();public void startDrawingQuads(){oracle.Capture.vertices.clear();}public void addVertexWithUV(double x,double y,double z,double u,double v){oracle.Capture.vertex(x,y,z,u,v);}public void draw(){}}

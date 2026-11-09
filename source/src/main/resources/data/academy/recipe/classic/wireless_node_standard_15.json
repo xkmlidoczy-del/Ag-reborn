@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " L ",
+    "CEC",
+    " N "
+  ],
+  "key": {
+    "L": {
+      "item": "academy:crystal_normal"
+    },
+    "C": {
+      "item": "academy:calc_chip"
+    },
+    "E": {
+      "item": "academy:energy_convert_component"
+    },
+    "N": {
+      "item": "academy:wireless_node_basic"
+    }
+  },
+  "result": {
+    "id": "academy:wireless_node_standard",
+    "count": 1
+  }
+}

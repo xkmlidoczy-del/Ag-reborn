@@ -1,0 +1,29 @@
+[
+  {
+    "name": "candidate-vm-extra-yaw-q-items",
+    "script": "gameplay-vm-extra-yaw-q-items.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "yaw_palm"
+    ],
+    "modes": [
+      "actual owner Q item left push",
+      "actual owner Q item crouching right push"
+    ],
+    "status": "planned_not_run"
+  },
+  {
+    "name": "candidate-vm-extra-split-narrow",
+    "script": "gameplay-vm-extra-split-narrow.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "impulse_split"
+    ],
+    "modes": [
+      "actual approximately20 degree pair slows naturally",
+      "native integer budget partition",
+      "two real native arrow impacts and bounded combined actual target damage"
+    ],
+    "status": "planned_not_run"
+  }
+]

@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "result": {
+    "id": "academy:data_chip",
+    "count": 1
+  },
+  "pattern": [
+    "ABC",
+    " E "
+  ],
+  "key": {
+    "A": {
+      "tag": "c:dusts/redstone"
+    },
+    "B": {
+      "tag": "c:dusts/redstone"
+    },
+    "C": {
+      "tag": "c:dusts/redstone"
+    },
+    "E": {
+      "tag": "c:plates/iron"
+    }
+  }
+}

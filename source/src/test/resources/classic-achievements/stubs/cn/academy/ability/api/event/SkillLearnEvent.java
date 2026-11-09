@@ -1,0 +1,1 @@
+package cn.academy.ability.api.event;public class SkillLearnEvent extends cpw.mods.fml.common.gameevent.PlayerEvent {public final cn.academy.ability.api.Skill skill;public SkillLearnEvent(net.minecraft.entity.player.EntityPlayer p,cn.academy.ability.api.Skill s){super(p);skill=s;}}

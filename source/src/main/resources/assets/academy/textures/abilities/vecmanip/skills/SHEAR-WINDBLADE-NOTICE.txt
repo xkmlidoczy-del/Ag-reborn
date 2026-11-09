@@ -1,0 +1,3 @@
+NEW421 Shear Windblade learning icon
+
+The file shear_windblade.png is an unchanged, byte-identical copy of dir_blast.png from the AcademyCraft 1.0.7 vector skill assets already included in this port. Original work: Lambda Innovation, 2013-2016. Reused for this provisional high-power addition, not newly drawn artwork. GPLv3 and all additional upstream restrictions remain in force. See LICENSE and NOTICE.

@@ -1,0 +1,831 @@
+{
+  "stage": "metal-former",
+  "authority": "AcademyCraft classic 1.0.7 requested commit 00d19ec0cf538f61c1095c9292f5ee6863db4521 and LambdaLib 1.2.3 cached canonical trees; immutable source bytes independently checked",
+  "registered_content": [
+    "academy:metal_former block/item/block entity/menu",
+    "21 built-in source transformations",
+    "source-conditional c: ore/ingot tag refinement",
+    "source recipe26 and self-drop"
+  ],
+  "work_contract": {
+    "capacity_if": 3000,
+    "bandwidth_if": 50,
+    "debit_if_per_work_tick": 13.3,
+    "successful_work_ticks": 60,
+    "idle_scan_ticks": 5,
+    "blocked_or_partial_debit_refunded": false,
+    "battery_after_work": true,
+    "persisted": [
+      "inventory",
+      "energy",
+      "mode"
+    ],
+    "transient": [
+      "recipe",
+      "work_counter"
+    ]
+  },
+  "isolated_checks_passed": [
+    "common finite-work regression",
+    "immutable executable-source differential",
+    "independent canonical recipe/crafting/binding regression",
+    "common server cold linkage",
+    "immutable client source/media/geometry regression"
+  ],
+  "native_runtime": "Fixtures compiled only. Owner must run Gradle aggregate/native GameTests and actual singleplayer craft/place/battery/node/mode/needle/coin/reload/drop/visual/audio workflow.",
+  "additive": [
+    {
+      "path": "src/main/java/cn/academy/port/former/ClassicMetalFormer.java",
+      "stage_path": "src/main/java/cn/academy/port/former/ClassicMetalFormer.java",
+      "sha256": "e223f7ce8b55af574322d982f26cd6c543b7286598fa2658d086825ae845935d",
+      "bytes": 2714
+    },
+    {
+      "path": "src/main/java/cn/academy/port/former/ClassicMetalFormerBlock.java",
+      "stage_path": "src/main/java/cn/academy/port/former/ClassicMetalFormerBlock.java",
+      "sha256": "9e2696e8c2b7b311ce21755fb73f53201b206829ac82441e8c393da3aaa36ffd",
+      "bytes": 3357
+    },
+    {
+      "path": "src/main/java/cn/academy/port/former/ClassicMetalFormerBlockEntity.java",
+      "stage_path": "src/main/java/cn/academy/port/former/ClassicMetalFormerBlockEntity.java",
+      "sha256": "dae2c78f69a8343668aac0efff240a8ed1f96984e82ebe0eab43256e58e45bff",
+      "bytes": 9541
+    },
+    {
+      "path": "src/main/java/cn/academy/port/former/ClassicMetalFormerMenu.java",
+      "stage_path": "src/main/java/cn/academy/port/former/ClassicMetalFormerMenu.java",
+      "sha256": "92ac31c56226c0187397093d23ff8bb79c8accd33b545df2c927705f17a2b254",
+      "bytes": 3772
+    },
+    {
+      "path": "src/main/java/cn/academy/port/former/ClassicMetalFormerRecipes.java",
+      "stage_path": "src/main/java/cn/academy/port/former/ClassicMetalFormerRecipes.java",
+      "sha256": "40db7f03274de07c0d9d6609db3c4ed866699c6e61d9625b40857e336a59f3c5",
+      "bytes": 3961
+    },
+    {
+      "path": "src/main/java/cn/academy/port/former/ClassicMetalFormerRules.java",
+      "stage_path": "src/main/java/cn/academy/port/former/ClassicMetalFormerRules.java",
+      "sha256": "f9344776c076b851147e7988a4d380f4c7e53df6109a5f05e1dd658d17cf3a18",
+      "bytes": 2378
+    },
+    {
+      "path": "src/main/java/cn/academy/port/former/ClassicMetalFormerWork.java",
+      "stage_path": "src/main/java/cn/academy/port/former/ClassicMetalFormerWork.java",
+      "sha256": "af0053507236a1139f09301c91a02b115a066ddba27411fd4a1a3c28883d0a6f",
+      "bytes": 2090
+    },
+    {
+      "path": "src/main/java/cn/academy/port/gametest/AcademyMetalFormerRuntimeTests.java",
+      "stage_path": "src/main/java/cn/academy/port/gametest/AcademyMetalFormerRuntimeTests.java",
+      "sha256": "34b47105d1ca6e4016751343531c2b0db3391660594e75e77692cc6b58098109",
+      "bytes": 42449
+    },
+    {
+      "path": "src/main/resources/data/academy/loot_table/blocks/metal_former.json",
+      "stage_path": "src/main/resources/data/academy/loot_table/blocks/metal_former.json",
+      "sha256": "716d3fa1c14d725ec06f7d7c47e99ad47b6c870d83f0453cc19673fbe74a0a11",
+      "bytes": 177
+    },
+    {
+      "path": "src/main/resources/data/academy/recipe/classic/metal_former_26.json",
+      "stage_path": "src/main/resources/data/academy/recipe/classic/metal_former_26.json",
+      "sha256": "8c82c9a10a36c319743450f5c7bea9e8afa98d49b365d54ffc21f14627e86ca2",
+      "bytes": 383
+    },
+    {
+      "path": "src/test/java/cn/academy/port/former/ClassicMetalFormerCanonicalRecipes.java",
+      "stage_path": "src/test/java/cn/academy/port/former/ClassicMetalFormerCanonicalRecipes.java",
+      "sha256": "5fce08db2c3821751866ec3a9fd425e34eab5f9337ab8952e54f94aca9a7ce70",
+      "bytes": 4951
+    },
+    {
+      "path": "src/test/java/cn/academy/port/former/ClassicMetalFormerDataRegressionTest.java",
+      "stage_path": "src/test/java/cn/academy/port/former/ClassicMetalFormerDataRegressionTest.java",
+      "sha256": "3934723391c648114dd1ce2744a4e21c40fe34326fa03296304d08795672efe2",
+      "bytes": 6069
+    },
+    {
+      "path": "src/test/java/cn/academy/port/former/ClassicMetalFormerRegressionTest.java",
+      "stage_path": "src/test/java/cn/academy/port/former/ClassicMetalFormerRegressionTest.java",
+      "sha256": "5f21c42fbff5f49be1526204ff2a46a9224240952c2da35be7d02d7cdd948758",
+      "bytes": 3780
+    },
+    {
+      "path": "src/test/java/cn/academy/port/former/ClassicMetalFormerServerLinkTest.java",
+      "stage_path": "src/test/java/cn/academy/port/former/ClassicMetalFormerServerLinkTest.java",
+      "sha256": "7feb41209615abad4d17e41b58523ba014eb615d561f32a243e7bfdc2f8677e7",
+      "bytes": 2210
+    },
+    {
+      "path": "src/test/java/cn/academy/port/former/ClassicMetalFormerSourceOracleTest.java",
+      "stage_path": "src/test/java/cn/academy/port/former/ClassicMetalFormerSourceOracleTest.java",
+      "sha256": "6ebdf0cfa73b8746ebf92dfee697c747f3d4b164e5ede71e9509fd9686e19b9a",
+      "bytes": 8601
+    },
+    {
+      "path": "src/test/java/cn/academy/port/former/UpstreamMetalFormer.java",
+      "stage_path": "src/test/java/cn/academy/port/former/UpstreamMetalFormer.java",
+      "sha256": "0d61d83df60371a82bbdc44c01cfa44cfaa27f2766a6c5d3803fc88a8f5185f5",
+      "bytes": 5897
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/java/cn/academy/core/block/TileReceiverBase.java",
+      "stage_path": "src/test/resources/classic-metal-former-source/java/cn/academy/core/block/TileReceiverBase.java",
+      "sha256": "3579e9af020d787fe885e761bc990f12f0a729122fc45349db16958ac033f35d",
+      "bytes": 2621
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/java/cn/academy/core/tile/TileInventory.java",
+      "stage_path": "src/test/resources/classic-metal-former-source/java/cn/academy/core/tile/TileInventory.java",
+      "sha256": "748835f0402b366cc000bc64193245eeeb50b7047dea65d7430401c9e4df245e",
+      "bytes": 3861
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/java/cn/academy/crafting/ModuleCrafting.java",
+      "stage_path": "src/test/resources/classic-metal-former-source/java/cn/academy/crafting/ModuleCrafting.java",
+      "sha256": "f0ea3f22cc77815ecd0f4f6374d68ac0ca6334e720ee159d97aae0e3256a6b46",
+      "bytes": 10308
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/java/cn/academy/crafting/api/MetalFormerRecipes.java",
+      "stage_path": "src/test/resources/classic-metal-former-source/java/cn/academy/crafting/api/MetalFormerRecipes.java",
+      "sha256": "79385669e070ff7440fb6bc2731e6f9c3cfe92fc47ee187a1ba057f0373b08fe",
+      "bytes": 2527
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/java/cn/academy/crafting/block/BlockMetalFormer.java",
+      "stage_path": "src/test/resources/classic-metal-former-source/java/cn/academy/crafting/block/BlockMetalFormer.java",
+      "sha256": "44d1f26d2eaacdd6677109e086230d90d466557c5cb3c91f936b63f2a010bd1d",
+      "bytes": 3435
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/java/cn/academy/crafting/block/ContainerMetalFormer.java",
+      "stage_path": "src/test/resources/classic-metal-former-source/java/cn/academy/crafting/block/ContainerMetalFormer.java",
+      "sha256": "71e3b9a392ce946daa27399fa84fbb03ba1d0836bf6f9ec9b75100f226860e8d",
+      "bytes": 1287
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/java/cn/academy/crafting/block/SlotMFItem.java",
+      "stage_path": "src/test/resources/classic-metal-former-source/java/cn/academy/crafting/block/SlotMFItem.java",
+      "sha256": "8860ee238edc32c6ce4e840602b11dd00699d06a0697c8bf63c167503b918649",
+      "bytes": 954
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/java/cn/academy/crafting/block/TileMetalFormer.java",
+      "stage_path": "src/test/resources/classic-metal-former-source/java/cn/academy/crafting/block/TileMetalFormer.java",
+      "sha256": "32e41e5a1ada6c2069225bc4bd3b09258695003484e84cc789d53f2d1e42dc13",
+      "bytes": 7395
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/java/cn/academy/vanilla/ModuleVanilla.java",
+      "stage_path": "src/test/resources/classic-metal-former-source/java/cn/academy/vanilla/ModuleVanilla.java",
+      "sha256": "5028171ed587fc4e54994133ae02e78b885c4d53e73e03218aea86ffb354960a",
+      "bytes": 3658
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/manifest.json",
+      "stage_path": "src/test/resources/classic-metal-former-source/manifest.json",
+      "sha256": "020e01e159d21e223f04fd6ccf90630846b1c52f89105f9bdabf7d77353b88fe",
+      "bytes": 1735
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/resources/assets/academy/recipes/default.recipe",
+      "stage_path": "src/test/resources/classic-metal-former-source/resources/assets/academy/recipes/default.recipe",
+      "sha256": "a9dc4aa3477ad246f7cb9bb6bea3c33e033aaa8431f3c8a03acaf0845374da1f",
+      "bytes": 5119
+    },
+    {
+      "path": "src/main/java/cn/academy/port/client/ClassicMetalFormerClient.java",
+      "stage_path": "client-draft/src/main/java/cn/academy/port/client/ClassicMetalFormerClient.java",
+      "sha256": "1ce6c4ce8751149a6463628b2fbb035df92a4c7a625bfbb7c2e5e95d405fd4a9",
+      "bytes": 4752
+    },
+    {
+      "path": "src/main/java/cn/academy/port/client/ClassicMetalFormerScreen.java",
+      "stage_path": "client-draft/src/main/java/cn/academy/port/client/ClassicMetalFormerScreen.java",
+      "sha256": "f4df938bb554969c9113d094670ca15ebd0a5efcecfb6f58bcc1cd2a583ba33c",
+      "bytes": 9420
+    },
+    {
+      "path": "src/main/resources/assets/academy/blockstates/metal_former.json",
+      "stage_path": "client-draft/src/main/resources/assets/academy/blockstates/metal_former.json",
+      "sha256": "1e07fd9a0eb4476e0970090e6ec7ff37470954a7f332ec4e2246b15cf3601510",
+      "bytes": 315
+    },
+    {
+      "path": "src/main/resources/assets/academy/models/block/metal_former_0.json",
+      "stage_path": "client-draft/src/main/resources/assets/academy/models/block/metal_former_0.json",
+      "sha256": "fe42713addf866a06fb1402f49e6f9aabfd6b6f0e25433911383cc39003a0b54",
+      "bytes": 401
+    },
+    {
+      "path": "src/main/resources/assets/academy/models/block/metal_former_1.json",
+      "stage_path": "client-draft/src/main/resources/assets/academy/models/block/metal_former_1.json",
+      "sha256": "ae1f6c85b38a5f6727249ef737cb131bd3fbf4d604596d0eb2b864b8f434802f",
+      "bytes": 401
+    },
+    {
+      "path": "src/main/resources/assets/academy/models/block/metal_former_2.json",
+      "stage_path": "client-draft/src/main/resources/assets/academy/models/block/metal_former_2.json",
+      "sha256": "103025afd1517593c9efc9986d7cafc91e9cbbaf42dead6b883148cea3764f27",
+      "bytes": 401
+    },
+    {
+      "path": "src/main/resources/assets/academy/models/block/metal_former_3.json",
+      "stage_path": "client-draft/src/main/resources/assets/academy/models/block/metal_former_3.json",
+      "sha256": "b7f0e84c479b1e1bb11be5b445c8f4f80262caa46f437675b2727087ab4c2099",
+      "bytes": 401
+    },
+    {
+      "path": "src/main/resources/assets/academy/models/item/metal_former.json",
+      "stage_path": "client-draft/src/main/resources/assets/academy/models/item/metal_former.json",
+      "sha256": "21f1b3a8ed9b57fb5998c0ba012ab4715e025418afbda290339cf81ce63a9e4d",
+      "bytes": 47
+    },
+    {
+      "path": "src/test/java/cn/academy/port/client/ClassicMetalFormerVisualRegressionTest.java",
+      "stage_path": "client-draft/src/test/java/cn/academy/port/client/ClassicMetalFormerVisualRegressionTest.java",
+      "sha256": "10ec5569df49a220016d660a8c4221ee659ca066463e0f19ada60939dd85993b",
+      "bytes": 25988
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/client/README.md",
+      "stage_path": "client-draft/src/test/resources/classic-metal-former-source/client/README.md",
+      "sha256": "018c29130183acbadedce1a9028e9da58e01335626b7c5557171350a31152aea",
+      "bytes": 1456
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/client/academy/BlockMetalFormer.java",
+      "stage_path": "client-draft/src/test/resources/classic-metal-former-source/client/academy/BlockMetalFormer.java",
+      "sha256": "44d1f26d2eaacdd6677109e086230d90d466557c5cb3c91f936b63f2a010bd1d",
+      "bytes": 3435
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/client/academy/ContainerMetalFormer.java",
+      "stage_path": "client-draft/src/test/resources/classic-metal-former-source/client/academy/ContainerMetalFormer.java",
+      "sha256": "71e3b9a392ce946daa27399fa84fbb03ba1d0836bf6f9ec9b75100f226860e8d",
+      "bytes": 1287
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/client/academy/GuiMetalFormer.scala",
+      "stage_path": "client-draft/src/test/resources/classic-metal-former-source/client/academy/GuiMetalFormer.scala",
+      "sha256": "f9aa71d3363554b305f5f93a7cbae71d16895a7e307d0d45380099ea3179d319",
+      "bytes": 2878
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/client/academy/PositionedSound.java",
+      "stage_path": "client-draft/src/test/resources/classic-metal-former-source/client/academy/PositionedSound.java",
+      "sha256": "c11cd90e190aa44d2022342e983b3617cdd36128f4ca6cbebe5b579b9779e734",
+      "bytes": 1151
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/client/academy/TechUI.scala",
+      "stage_path": "client-draft/src/test/resources/classic-metal-former-source/client/academy/TechUI.scala",
+      "sha256": "5a10ef61d2068e7677a47953f4e044db2200abde8e74727666b4315f5511ffc1",
+      "bytes": 25924
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/client/academy/TechUIContainer.java",
+      "stage_path": "client-draft/src/test/resources/classic-metal-former-source/client/academy/TechUIContainer.java",
+      "sha256": "03a0b43816ff2667583c6dca3f629c026ff100e37ab88c9b6df41827fef8289f",
+      "bytes": 1189
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/client/academy/TileEntitySound.java",
+      "stage_path": "client-draft/src/test/resources/classic-metal-former-source/client/academy/TileEntitySound.java",
+      "sha256": "ae67b0c145d9820e41099f7cb857c02c1b06e950db84125c303c2462e92fa88a",
+      "bytes": 562
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/client/academy/TileMetalFormer.java",
+      "stage_path": "client-draft/src/test/resources/classic-metal-former-source/client/academy/TileMetalFormer.java",
+      "sha256": "32e41e5a1ada6c2069225bc4bd3b09258695003484e84cc789d53f2d1e42dc13",
+      "bytes": 7395
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/client/academy/lang/en_US.lang",
+      "stage_path": "client-draft/src/test/resources/classic-metal-former-source/client/academy/lang/en_US.lang",
+      "sha256": "1bebd37b61e7e3fd7ba4af617a0a2deba588deb10c5abcfec71ca8ba404c42b6",
+      "bytes": 30174
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/client/academy/lang/ja_JP.lang",
+      "stage_path": "client-draft/src/test/resources/classic-metal-former-source/client/academy/lang/ja_JP.lang",
+      "sha256": "3ba5ff10c042aeed4773b4f30cfa3dce0cdd59a3d3a7a504dd3a630a0b679316",
+      "bytes": 35535
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/client/academy/lang/zh_CN.lang",
+      "stage_path": "client-draft/src/test/resources/classic-metal-former-source/client/academy/lang/zh_CN.lang",
+      "sha256": "40c35cd739abe858bb77b4b3df4b3a47b8ad117f0c1bb58dca938e9bb0fa700f",
+      "bytes": 30251
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/client/academy/lang/zh_TW.lang",
+      "stage_path": "client-draft/src/test/resources/classic-metal-former-source/client/academy/lang/zh_TW.lang",
+      "sha256": "4a2444fb6bfe5221fbc65d392aa68d7e291ec11338e837a6d67ead7dccfcbf54",
+      "bytes": 30299
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/client/academy/page_metalformer.xml",
+      "stage_path": "client-draft/src/test/resources/classic-metal-former-source/client/academy/page_metalformer.xml",
+      "sha256": "e50fdcdff2b105164f8a363d938e03d02c101a2d447923b4a5ee23428dd37625",
+      "bytes": 4570
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/client/academy/pageselect.xml",
+      "stage_path": "client-draft/src/test/resources/classic-metal-former-source/client/academy/pageselect.xml",
+      "sha256": "ac6ca7a304f9dbc38d634fe2c42dfb2aac4ce32da80e7c4db6a64901151e7053",
+      "bytes": 695
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/client/academy/sounds.json",
+      "stage_path": "client-draft/src/test/resources/classic-metal-former-source/client/academy/sounds.json",
+      "sha256": "c84f72ec250c2b46885565ac31123ac13184b6497be8bc1434cba6d083013a8f",
+      "bytes": 4627
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/client/lambda/CGui.java",
+      "stage_path": "client-draft/src/test/resources/classic-metal-former-source/client/lambda/CGui.java",
+      "sha256": "b38a09528f56a67f1281d74f435bc1024ed9b36c7476b1d5deeff548a90aa40a",
+      "bytes": 13506
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/client/lambda/CGuiScreenContainer.java",
+      "stage_path": "client-draft/src/test/resources/classic-metal-former-source/client/lambda/CGuiScreenContainer.java",
+      "sha256": "d25071f358a8b0ff6da7b570881466330b7e73a047d6eddf1f3a7d7d5c3ab815",
+      "bytes": 2955
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/client/lambda/DrawTexture.java",
+      "stage_path": "client-draft/src/test/resources/classic-metal-former-source/client/lambda/DrawTexture.java",
+      "sha256": "3cc7ab4458a9c39f973fffac1c4bfcddd2484e7ad4e6fe95c5b762a46a380ce6",
+      "bytes": 3277
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/client/lambda/IFont.java",
+      "stage_path": "client-draft/src/test/resources/classic-metal-former-source/client/lambda/IFont.java",
+      "sha256": "cef5fd1c96b811c3e2a472ed5d8fedd9cb67e334a0d470115efd9956e7b5c1a4",
+      "bytes": 4031
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/client/lambda/ProgressBar.java",
+      "stage_path": "client-draft/src/test/resources/classic-metal-former-source/client/lambda/ProgressBar.java",
+      "sha256": "c56e0b2e96de79ff77871646c2679bcd2f80e84b695ca50672779878f2dde6c9",
+      "bytes": 3440
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/client/lambda/Transform.java",
+      "stage_path": "client-draft/src/test/resources/classic-metal-former-source/client/lambda/Transform.java",
+      "sha256": "4546f5a06c1380864d0c0a27dc0a04accbd627fc610462e7db1e9a31e89af902",
+      "bytes": 2031
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/client/manifest.json",
+      "stage_path": "client-draft/src/test/resources/classic-metal-former-source/client/manifest.json",
+      "sha256": "360ff469c272503234ebd689c7719e935dea50fd8b8f626e293f561df9712847",
+      "bytes": 17190
+    },
+    {
+      "path": "src/test/resources/classic-metal-former-source/client/native-cube.json",
+      "stage_path": "client-draft/src/test/resources/classic-metal-former-source/client/native-cube.json",
+      "sha256": "3e4aacd02e816aeba38f83076596e18ded4cf49c01e17c62d1fce79850ffb84e",
+      "bytes": 584
+    },
+    {
+      "path": "gradle/metal-former-tests.gradle",
+      "stage_path": "gradle/metal-former-tests.gradle",
+      "sha256": "640d768a040346997f1d6474b25e92ee0760080504634699fbc9a85e8ec68566",
+      "bytes": 737
+    }
+  ],
+  "existing_resources_verify_only": [],
+  "original_media_verify_only": [
+    {
+      "path": "src/main/resources/assets/academy/textures/blocks/metal_former_front.png",
+      "sha256": "4e1be0b843673894d1a361a80e4dd7b1f88acf7819c17b709a603f1517284432",
+      "bytes": 4177
+    },
+    {
+      "path": "src/main/resources/assets/academy/textures/blocks/metal_former_right.png",
+      "sha256": "d54a6292a9a3a701e040e062624100d20cac83328458e13eb985dfe0820975cb",
+      "bytes": 3446
+    },
+    {
+      "path": "src/main/resources/assets/academy/textures/blocks/metal_former_back.png",
+      "sha256": "118eb6feb162bd8678249bd51b292dd6c6b5544bf3eb877c7b612e70faffa772",
+      "bytes": 3477
+    },
+    {
+      "path": "src/main/resources/assets/academy/textures/blocks/metal_former_left.png",
+      "sha256": "5ab57a7573759b2acbcbdd78130cf7b4091c28793375deefd3fe3ebf87bf19b1",
+      "bytes": 3912
+    },
+    {
+      "path": "src/main/resources/assets/academy/textures/blocks/metal_former_top.png",
+      "sha256": "a7447854c8c802a91270dda7179865770f03b8ead20e965113a5cffca4fb1880",
+      "bytes": 4076
+    },
+    {
+      "path": "src/main/resources/assets/academy/textures/blocks/metal_former_bottom.png",
+      "sha256": "9b8a87a24d8e12ed5b116488c7508d3eb1a175042ab60f90cadc1cc8e0133f13",
+      "bytes": 3635
+    },
+    {
+      "path": "src/main/resources/assets/academy/textures/guis/icons/icon_former_plate.png",
+      "sha256": "a35f55791d5a922facd6cb5b38c3047d02f9ef814435e26682018a89df5703ff",
+      "bytes": 3724
+    },
+    {
+      "path": "src/main/resources/assets/academy/textures/guis/icons/icon_former_incise.png",
+      "sha256": "d2513040a30a9dde5f96fb704efccbc7bd03bface44c699f37d49ecc315d9128",
+      "bytes": 3662
+    },
+    {
+      "path": "src/main/resources/assets/academy/textures/guis/icons/icon_former_etch.png",
+      "sha256": "c08982634b28400fcaa68c1045063e74fcaec4512a097ba273ff715f050782ca",
+      "bytes": 3682
+    },
+    {
+      "path": "src/main/resources/assets/academy/textures/guis/icons/icon_former_refine.png",
+      "sha256": "3b8f872385901abd3d64a1599418f8f9b958c1dacb904acf5a2d4349b2fe643c",
+      "bytes": 3756
+    },
+    {
+      "path": "src/main/resources/assets/academy/textures/guis/parent/parent_background.png",
+      "sha256": "bd0f8650f74c7eecd3b81aac8c3f1b359a4265517d860b7f45482faea583217d",
+      "bytes": 4759
+    },
+    {
+      "path": "src/main/resources/assets/academy/textures/guis/ui/ui_inventory.png",
+      "sha256": "3df45b3dcd70ccbcf6ab0334bf2ed36345113d7ae71c8c42187d7ab9a3cc6887",
+      "bytes": 9803
+    },
+    {
+      "path": "src/main/resources/assets/academy/textures/guis/ui/ui_metalformer.png",
+      "sha256": "0236ebeeb6059d1f545a91a6efb04a36914a705a406592235645116e189173cf",
+      "bytes": 9629
+    },
+    {
+      "path": "src/main/resources/assets/academy/textures/guis/progress/progress_metalformer.png",
+      "sha256": "d6cdf51f1b3648ebd9631e97158eb2c8aa265a00b7635c6479c5e6da95b7fbce",
+      "bytes": 3240
+    },
+    {
+      "path": "src/main/resources/assets/academy/textures/guis/button/button_arrowlefta.png",
+      "sha256": "ebc6512b7b3e7cd9c85bfc7965008fcca582a2031ee3ec248b1e92e99716048e",
+      "bytes": 3110
+    },
+    {
+      "path": "src/main/resources/assets/academy/textures/guis/button/button_arrowrighta.png",
+      "sha256": "9af9f01eada40d158a807ca2d33614cf6e6988695a3f0cb3e5aa9c5f8e5dcd57",
+      "bytes": 3131
+    },
+    {
+      "path": "src/main/resources/assets/academy/textures/guis/icons/icon_inv.png",
+      "sha256": "01bf54ad90bb6c0dd4a5d67fc4bff4443afb7389a7cf4f81621da8c5e760c201",
+      "bytes": 3824
+    },
+    {
+      "path": "src/main/resources/assets/academy/textures/guis/icons/icon_wireless.png",
+      "sha256": "628058163c6d7f59a43067c292f85b834297ebe0a4470c000915a1e193e02602",
+      "bytes": 3892
+    },
+    {
+      "path": "src/main/resources/assets/academy/textures/guis/blend_quad.png",
+      "sha256": "79a3e404e11d7e8ff702710cc8889709e96bb3e93804972b8a0f6c92847a689b",
+      "bytes": 18033
+    },
+    {
+      "path": "src/main/resources/assets/academy/textures/guis/line.png",
+      "sha256": "7798a3503bebcd5c25cb13259964ce367641b458d2b3bc5e6b45c77023ea939f",
+      "bytes": 17810
+    },
+    {
+      "path": "src/main/resources/assets/academy/textures/guis/histogram.png",
+      "sha256": "13048f7541f94b21beb1f052ce51626d398cb6aa2656c5bc6798c166f8e09f4a",
+      "bytes": 20314
+    },
+    {
+      "path": "src/main/resources/assets/academy/sounds/machine/machine_work.ogg",
+      "sha256": "ba2dfaf80eb3bc751038434233119da2c9d461d926d1e9e071abdc92b7af21f4",
+      "bytes": 198917
+    }
+  ],
+  "sounds_json_verify_only_sha256": "08d579f8966d9406f070a2552db0326405a2269c17c0abfe5208ea0761955420",
+  "shared": [
+    {
+      "path": "src/main/java/cn/academy/port/AcademyCraft.java",
+      "baseline_stage_path": "integration/base/src/main/java/cn/academy/port/AcademyCraft.java",
+      "after_stage_path": "integration/src/main/java/cn/academy/port/AcademyCraft.java",
+      "baseline_sha256": "df83338bcb1e4ffd0446b5a4c6be34dc8986f5e8d8093c364c990f08c27aa695",
+      "after_sha256": "3afce563ce673c81a7c4d904e036dcf2a1dfb30f20dc2feb3795c1480dd6432d"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/wireless/ClassicWirelessProtocol.java",
+      "baseline_stage_path": "integration/base/src/main/java/cn/academy/port/wireless/ClassicWirelessProtocol.java",
+      "after_stage_path": "integration/src/main/java/cn/academy/port/wireless/ClassicWirelessProtocol.java",
+      "baseline_sha256": "8a812473eed67bb8dcc68b66563c307f0aae8b46954f4894d1c08fa3efc0da8b",
+      "after_sha256": "59091863a6c18623fe6d95e86f2775fe6e604af774c19155b43a000c90149b75"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/client/ClassicWirelessScreen.java",
+      "baseline_stage_path": "integration/base/src/main/java/cn/academy/port/client/ClassicWirelessScreen.java",
+      "after_stage_path": "integration/src/main/java/cn/academy/port/client/ClassicWirelessScreen.java",
+      "baseline_sha256": "984f99a3a844f81d7d9da10c43801c20366fe507612cce173e88962957e23bbe",
+      "after_sha256": "ac0acd3f07bf2bedff59c24bc91b35a173f2ac6b652312d05e8c527923cf81f8"
+    },
+    {
+      "path": "src/main/resources/data/minecraft/tags/block/mineable/pickaxe.json",
+      "baseline_stage_path": "integration/base/src/main/resources/data/minecraft/tags/block/mineable/pickaxe.json",
+      "after_stage_path": "integration/src/main/resources/data/minecraft/tags/block/mineable/pickaxe.json",
+      "baseline_sha256": "e0a7657ccb59690072770f8eb516f0f29996327cc0e1f0fbf1433c7106fd89de",
+      "after_sha256": "ca4827dd4389e5a01b2cb06088c5ada0911d5d9ca6c26585a0a8209b518ad15e"
+    },
+    {
+      "path": "src/main/resources/data/minecraft/tags/block/needs_stone_tool.json",
+      "baseline_stage_path": "integration/base/src/main/resources/data/minecraft/tags/block/needs_stone_tool.json",
+      "after_stage_path": "integration/src/main/resources/data/minecraft/tags/block/needs_stone_tool.json",
+      "baseline_sha256": "ca038da0878f0c5b652d46642e6336da5176faa13b9b4aa5e7a33af0d7975742",
+      "after_sha256": "6cf39b5e3834a083f34f00627672d2de6548eaebfc19d0d70524402b55e591c3"
+    },
+    {
+      "path": "src/main/resources/assets/academy/lang/en_us.json",
+      "baseline_stage_path": "integration/base/src/main/resources/assets/academy/lang/en_us.json",
+      "after_stage_path": "integration/src/main/resources/assets/academy/lang/en_us.json",
+      "baseline_sha256": "12bf282cb7d0e81e3c1258558f71ef2d2eda1d755f569fa17edfc61280243406",
+      "after_sha256": "8a1197ec69f50b50fb3d94c25f489a7f006caf08109d8408c5766ccb7d6a1357"
+    },
+    {
+      "path": "src/main/resources/assets/academy/lang/ja_jp.json",
+      "baseline_stage_path": "integration/base/src/main/resources/assets/academy/lang/ja_jp.json",
+      "after_stage_path": "integration/src/main/resources/assets/academy/lang/ja_jp.json",
+      "baseline_sha256": "4141bc0c9d1721a6b839cc1ec8452faf96e6b5bb728f13078bf535682054ed3e",
+      "after_sha256": "4c569c5270962ad6b90ba938081e1e7188b7a79c66ab8358ddf11671318781dd"
+    },
+    {
+      "path": "src/main/resources/assets/academy/lang/zh_cn.json",
+      "baseline_stage_path": "integration/base/src/main/resources/assets/academy/lang/zh_cn.json",
+      "after_stage_path": "integration/src/main/resources/assets/academy/lang/zh_cn.json",
+      "baseline_sha256": "c4bc560417191a27a55be5b5e012d95453f89ef3377cc2e6a54f4039c58409bb",
+      "after_sha256": "f942156af9f0c44115bf8a78db2b80e62d52d14c6746bd220bd390359f61452a"
+    },
+    {
+      "path": "src/main/resources/assets/academy/lang/zh_tw.json",
+      "baseline_stage_path": "integration/base/src/main/resources/assets/academy/lang/zh_tw.json",
+      "after_stage_path": "integration/src/main/resources/assets/academy/lang/zh_tw.json",
+      "baseline_sha256": "0b4e51777a2171b9e479a4fb7b881d1e84f7dc8d955c2ebc19f6609c85cd7f6c",
+      "after_sha256": "14d4ee8ec93d6da923a7656af4897f9de4f5c9da03fbee9cf425cec438f15c91"
+    },
+    {
+      "path": "build.gradle",
+      "baseline_stage_path": "integration/base/build.gradle",
+      "after_stage_path": "integration/build.gradle",
+      "baseline_sha256": "1550dd19d5be8be60e716a8ab5bafa18174fec3f61fd32638df6b71f4c53765a",
+      "after_sha256": "0de4f7929b860af370cf706fcb6e4efb5d7cf5395eb666b691fed0e545714d2a"
+    }
+  ],
+  "patch_sha256": "23ec074c922704315f5e78f857ed106461e6c2eb50e89c61d74e75353273422e",
+  "original_source_manifest_sha256": "020e01e159d21e223f04fd6ccf90630846b1c52f89105f9bdabf7d77353b88fe",
+  "client_source_media_witness_sha256": "1c00c46da5828c5ef13e1edbdbc04bba8587aefa8985c4097ea89ba7b5a48b5b",
+  "client_witness_topology": [
+    "checks",
+    "faces_by_legacy_metadata",
+    "production_media",
+    "sources",
+    "xml_layout"
+  ],
+  "native_fixture_methods_compiled_only": 9,
+  "artifacts": [
+    {
+      "path": "docs/FIDELITY.md",
+      "sha256": "ed9e22745ae1a7a8a0263681858ab51b683eb0d700eac855f8a8680dbf0007df"
+    },
+    {
+      "path": "docs/integration.patch",
+      "sha256": "23ec074c922704315f5e78f857ed106461e6c2eb50e89c61d74e75353273422e"
+    },
+    {
+      "path": "docs/promoted-layout-checks.log",
+      "sha256": "4d89a6bececd99eec3e635c58f5c7a85901708b2e8c76ac55602f407bfe5eeef"
+    },
+    {
+      "path": "docs/shared-paths.json",
+      "sha256": "6d739af13e2683c18452026b44fe7bfea21ffd12dbbcb48073fdd9b33994ab5e"
+    },
+    {
+      "path": "docs/standalone-checks.log",
+      "sha256": "cab772840dd3fc13bdf64ac8a60d1c2494d395afe652f15f2693fb79c85ba2f5"
+    },
+    {
+      "path": "scripts/check-promoted-layout.sh",
+      "sha256": "5917d902607245f45ab43632a6b42bc09ccf047421b17ab78db7e4dab5452a4a"
+    },
+    {
+      "path": "scripts/freeze-manifest.py",
+      "sha256": "950dfe554198090764e471165b58014a6462a96c10202a76c5f4bd53b7a36e26"
+    },
+    {
+      "path": "scripts/rebase-shared.py",
+      "sha256": "a6823760a78af7f142a129b7e4742c34ba9cb98914bd67b4fff1eaf6c549100d"
+    },
+    {
+      "path": "scripts/verify-manifest.py",
+      "sha256": "2d03708fbd29afd39307c57864a259afa6e0d1825741e1129f97eb264f2a62df"
+    },
+    {
+      "path": "scripts/verify-metal-former.sh",
+      "sha256": "f47073fc20a065cc7ac5831a364174bd6cd291fa82c437df6492a1555a914095"
+    },
+    {
+      "path": "native-fixtures/README.md",
+      "sha256": "ab5524a71542fdf504a2b17227f68354c5904b9716830f4592f56d021a7b9e46"
+    },
+    {
+      "path": "native-fixtures/classes/cn/academy/port/former/ClassicMetalFormer.class",
+      "sha256": "8891808e92f9e266274bdef7700ecb9b8622d16d24b28090c67114a534ddfe84"
+    },
+    {
+      "path": "native-fixtures/classes/cn/academy/port/former/ClassicMetalFormerBlock.class",
+      "sha256": "51d1d811c04534c4ef0302f7ced7a9358de23bf5b23bd09541598d500aaa2373"
+    },
+    {
+      "path": "native-fixtures/classes/cn/academy/port/former/ClassicMetalFormerBlockEntity$1.class",
+      "sha256": "b22d3338d45d623df4cdbd8956cbc6ac04af585c884e25202fb04017b471fabc"
+    },
+    {
+      "path": "native-fixtures/classes/cn/academy/port/former/ClassicMetalFormerBlockEntity$2.class",
+      "sha256": "4a4417f72a14d1df5e02b11f7b65cbdc4c221b467b06b379d2618ee8c31a6b1b"
+    },
+    {
+      "path": "native-fixtures/classes/cn/academy/port/former/ClassicMetalFormerBlockEntity.class",
+      "sha256": "a0df7ac11bcdeaa36827c4343e58bdd7be9efac1f1c6da9d9b4fd43f679641a3"
+    },
+    {
+      "path": "native-fixtures/classes/cn/academy/port/former/ClassicMetalFormerMenu$1.class",
+      "sha256": "f9c2339ed6603cc31c5f31e181f7230c7b9b19a1a66f2cdc1eb6cb9ed7914a86"
+    },
+    {
+      "path": "native-fixtures/classes/cn/academy/port/former/ClassicMetalFormerMenu$2.class",
+      "sha256": "35b8aef19a82044b7e250b2b07283ae30fade416a0ea6971c86162c16a171faf"
+    },
+    {
+      "path": "native-fixtures/classes/cn/academy/port/former/ClassicMetalFormerMenu$3.class",
+      "sha256": "2643b73867cf47d0ad903f41a8c632dc987ed0d167f3a15b5cf4a5cc5ce60803"
+    },
+    {
+      "path": "native-fixtures/classes/cn/academy/port/former/ClassicMetalFormerMenu.class",
+      "sha256": "b917b8cdb5f4d5cbc89ea6be6a65873e3a9a0ee10b58188e0fe15bc03fa4d2fc"
+    },
+    {
+      "path": "native-fixtures/classes/cn/academy/port/former/ClassicMetalFormerRecipes$Recipe.class",
+      "sha256": "aaa627c92672861e4fce0b0388276bebdcb44e35e75e3fab9b921bfaa7f20687"
+    },
+    {
+      "path": "native-fixtures/classes/cn/academy/port/former/ClassicMetalFormerRecipes.class",
+      "sha256": "cd16de53ea03698459e75ec2c2b7551eaa40a80a25dbc69f96de718b1ae2f9c4"
+    },
+    {
+      "path": "native-fixtures/classes/cn/academy/port/former/ClassicMetalFormerRules$Rule.class",
+      "sha256": "01dee77ef242060668ff72aeef9edd9051ebf147bc3c4006ea04031c80806686"
+    },
+    {
+      "path": "native-fixtures/classes/cn/academy/port/former/ClassicMetalFormerRules.class",
+      "sha256": "72f3cf0e38c186e303e0ffa104f435f21d327a11b98abc2e7ea366c52f136379"
+    },
+    {
+      "path": "native-fixtures/classes/cn/academy/port/former/ClassicMetalFormerWork$Access.class",
+      "sha256": "32a789ffd2aef65a02348e2a4e2fde22d7300d2932b8f0d2de35d3ab6cd0e388"
+    },
+    {
+      "path": "native-fixtures/classes/cn/academy/port/former/ClassicMetalFormerWork$Mode.class",
+      "sha256": "b24e6f76c638345a00be16255043ec90e324ee2edfb477d85bb585faff11d6bf"
+    },
+    {
+      "path": "native-fixtures/classes/cn/academy/port/former/ClassicMetalFormerWork.class",
+      "sha256": "9c81d9b25a5ac60d8217388f236367dc7f7d8c9df718f7f5c57ac40fcd162ad2"
+    },
+    {
+      "path": "native-fixtures/classes/cn/academy/port/gametest/AcademyMetalFormerRuntimeTests$SourceJob.class",
+      "sha256": "f1fb599b219619582a5aad6a233ecb967a6b484053a733cd5697b76c94fd3624"
+    },
+    {
+      "path": "native-fixtures/classes/cn/academy/port/gametest/AcademyMetalFormerRuntimeTests.class",
+      "sha256": "9a207d141f73e15631f1d5d692de04cefdf836348432846d21788951766994c0"
+    },
+    {
+      "path": "native-fixtures/compile-sources.txt",
+      "sha256": "410c62334087c1b1a75a9d26122a7c07bfcc953d36f19309771c22a747b7d842"
+    },
+    {
+      "path": "native-fixtures/javac.exit-code",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "native-fixtures/javac.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "client-draft/audit/check-native-api.sh",
+      "sha256": "03003ca7da79008a6d396b999ac45f0b8c9990dec5f0166c2bffd3e355206be9"
+    },
+    {
+      "path": "client-draft/audit/check-portable-witnesses.sh",
+      "sha256": "96851cfa8a1b291d321f76b9dc1cf27b60c14c4a291bccaf18a10c6f906aaa43"
+    },
+    {
+      "path": "client-draft/audit/client-integration-witnesses.json",
+      "sha256": "6946bc16ec565407093a03b60f41265b7b78703714b230690aa55c53b4083279"
+    },
+    {
+      "path": "client-draft/audit/compile-sources.txt",
+      "sha256": "e6e5366c59075755993a6faf40c3c3b4daa180591ddb839d69054b5b7a8e6ff6"
+    },
+    {
+      "path": "client-draft/audit/inspected-source-histogram.png",
+      "sha256": "17b1bd5c01c2874034874ea9111072d56e550aafc8ba0ed113bb86a19d47e544"
+    },
+    {
+      "path": "client-draft/audit/inspected-source-progress_metalformer.png",
+      "sha256": "88e1e8cb4dfd3c90b1091c9bf374e4cbd4b5381d03176462dd1e1e804edb1964"
+    },
+    {
+      "path": "client-draft/audit/inspected-source-ui_metalformer.png",
+      "sha256": "4527f109293ced236a6b8e447632723f95951b001caa30b2a5d9d8cc01849f3c"
+    },
+    {
+      "path": "client-draft/audit/media-source-witnesses.json",
+      "sha256": "1c00c46da5828c5ef13e1edbdbc04bba8587aefa8985c4097ea89ba7b5a48b5b"
+    },
+    {
+      "path": "client-draft/audit/native-api-javac.log",
+      "sha256": "b844a4cb6cbc3067149eb8941d8d171004d226144646651c8a3d3ccc879b74af"
+    },
+    {
+      "path": "client-draft/audit/portable-negative-witnesses.log",
+      "sha256": "89f47ca2ec29f524a1b4bce25c34439400be6100eb0b9cf7270c0d47de11b6ec"
+    },
+    {
+      "path": "client-draft/audit/portable-one-root.log",
+      "sha256": "bd3e59f03536c142495d748aeb1cfec3e870bde61aa828ef4ec7132e3479c185"
+    },
+    {
+      "path": "client-draft/audit/portable-witnesses.log",
+      "sha256": "a5a326117435fe3f7318c8b19096f23c26696e1175fc8d018e45feea48140be2"
+    },
+    {
+      "path": "client-draft/audit/prepare_shared_client_patch.py",
+      "sha256": "364ea7111aba0d7611be55823d324e5f95ea17a7a16416add80f918cf8ef4d9d"
+    },
+    {
+      "path": "client-draft/audit/shared-client-integration.json",
+      "sha256": "faad2fbec34550df19f0d5e43ae68e51ef5d03dfd368c97249901932ed1c7aea"
+    },
+    {
+      "path": "client-draft/audit/verify_client_integration.py",
+      "sha256": "72b7d5653e9ca11fb1534b66de9763fb54bb20d648f55493dd369b7d9ebb066a"
+    },
+    {
+      "path": "client-draft/audit/verify_client_witnesses.py",
+      "sha256": "fbbeffbc6e1d86d8a4aeaa9326f631f1a05bd4c2118281fa28295a8d2d088725"
+    },
+    {
+      "path": "client-draft/integration/ClassicWirelessScreen.USER-return.patch",
+      "sha256": "0c85e591961de68adc8e754505b75f13581226c05125324199bb54b3e3272b86"
+    },
+    {
+      "path": "client-draft/integration/after/AcademyClient.java",
+      "sha256": "96c18b54ff01f1d6d8009e5a918342c25cdf4358f49d2d08c452c47f317c6067"
+    },
+    {
+      "path": "client-draft/integration/after/ClassicWirelessScreen.java",
+      "sha256": "ac0acd3f07bf2bedff59c24bc91b35a173f2ac6b652312d05e8c527923cf81f8"
+    },
+    {
+      "path": "client-draft/integration/base/AcademyClient.java",
+      "sha256": "96c18b54ff01f1d6d8009e5a918342c25cdf4358f49d2d08c452c47f317c6067"
+    },
+    {
+      "path": "client-draft/integration/base/ClassicWirelessScreen.java",
+      "sha256": "984f99a3a844f81d7d9da10c43801c20366fe507612cce173e88962957e23bbe"
+    },
+    {
+      "path": "client-draft/integration/lang-additions/en_us.json",
+      "sha256": "030445296daa0ab90c81549e99bc0f3c22854947fd27ba94933d23c7beebc1cb"
+    },
+    {
+      "path": "client-draft/integration/lang-additions/ja_jp.json",
+      "sha256": "b0e0aa4c13f8b88b637c18633946b9c0e2c91776e799fe2b4d8bceb3eb92037d"
+    },
+    {
+      "path": "client-draft/integration/lang-additions/zh_cn.json",
+      "sha256": "e81af7ab88420f3874a194957cb42d1a649cd87a1dfbc97060deedf45568aeb6"
+    },
+    {
+      "path": "client-draft/integration/lang-additions/zh_tw.json",
+      "sha256": "d66d183ce0d3cbc8353dea6a5a73e9643fd97ea0fac2f451dea207f619a193e2"
+    }
+  ]
+}

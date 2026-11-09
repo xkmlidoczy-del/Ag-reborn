@@ -1,0 +1,4 @@
+Pillow==12.1.0
+numpy==2.3.4
+# Traditional Chinese localization authoring
+opencc-python-reimplemented==0.1.7

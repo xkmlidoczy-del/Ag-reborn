@@ -1,0 +1,2 @@
+package cn.lambdalib.util.helper;
+public class Color { public final int value; public Color(int v) { value=v; } }

@@ -1,0 +1,367 @@
+[
+  {
+    "name": "final96-mode-em-md-mode-arrow-separation",
+    "script": "gameplay-em-md-mode-arrow-separation.script",
+    "directory": "run-showcase-sable",
+    "group": "em_modes",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-em-md-mode-canopy-held",
+    "script": "gameplay-em-md-mode-canopy-held.script",
+    "directory": "run-showcase-sable",
+    "group": "em_modes",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-em-md-mode-coin-qte",
+    "script": "gameplay-em-md-mode-coin-qte.script",
+    "directory": "run-showcase-sable",
+    "group": "em_modes",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-em-md-mode-dual-secondary",
+    "script": "gameplay-em-md-mode-dual-secondary.script",
+    "directory": "run-showcase-sable",
+    "group": "em_modes",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-em-md-mode-lance-orbit",
+    "script": "gameplay-em-md-mode-lance-orbit.script",
+    "directory": "run-showcase-sable",
+    "group": "em_modes",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-em-md-mode-net-hold",
+    "script": "gameplay-em-md-mode-net-hold.script",
+    "directory": "run-showcase-sable",
+    "group": "em_modes",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-em-md-mode-pulse-detect",
+    "script": "gameplay-em-md-mode-pulse-detect.script",
+    "directory": "run-showcase-sable",
+    "group": "em_modes",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-em-md-mode-rail-hold",
+    "script": "gameplay-em-md-mode-rail-hold.script",
+    "directory": "run-showcase-sable",
+    "group": "em_modes",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-em-md-mode-semiconductor-fan",
+    "script": "gameplay-em-md-mode-semiconductor-fan.script",
+    "directory": "run-showcase-sable",
+    "group": "em_modes",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-em-md-env-arc-creeper",
+    "script": "gameplay-em-md-env-arc-creeper.script",
+    "directory": "run-showcase-sable",
+    "group": "em_environment",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-em-md-env-arc-fire",
+    "script": "gameplay-em-md-env-arc-fire.script",
+    "directory": "run-showcase-sable",
+    "group": "em_environment",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-em-md-env-charging-block",
+    "script": "gameplay-em-md-env-charging-block.script",
+    "directory": "run-showcase-sable",
+    "group": "em_environment",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-em-md-env-etch-batch",
+    "script": "gameplay-em-md-env-etch-batch.script",
+    "directory": "run-showcase-sable",
+    "group": "em_environment",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-em-md-env-etch-hard-refusal",
+    "script": "gameplay-em-md-env-etch-hard-refusal.script",
+    "directory": "run-showcase-sable",
+    "group": "em_environment",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-em-md-env-fork-single",
+    "script": "gameplay-em-md-env-fork-single.script",
+    "directory": "run-showcase-sable",
+    "group": "em_environment",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-em-md-env-jet-collision",
+    "script": "gameplay-em-md-env-jet-collision.script",
+    "directory": "run-showcase-sable",
+    "group": "em_environment",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-em-md-env-laminate-low",
+    "script": "gameplay-em-md-env-laminate-low.script",
+    "directory": "run-showcase-sable",
+    "group": "em_environment",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-em-md-env-light-touch",
+    "script": "gameplay-em-md-env-light-touch.script",
+    "directory": "run-showcase-sable",
+    "group": "em_environment",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-em-md-env-mag-entity",
+    "script": "gameplay-em-md-env-mag-entity.script",
+    "directory": "run-showcase-sable",
+    "group": "em_environment",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-em-md-env-melt-overcharge",
+    "script": "gameplay-em-md-env-melt-overcharge.script",
+    "directory": "run-showcase-sable",
+    "group": "em_environment",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-em-md-env-melt-terrain",
+    "script": "gameplay-em-md-env-melt-terrain.script",
+    "directory": "run-showcase-sable",
+    "group": "em_environment",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-em-md-env-point-hard-refusal",
+    "script": "gameplay-em-md-env-point-hard-refusal.script",
+    "directory": "run-showcase-sable",
+    "group": "em_environment",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-em-md-env-point-no-tool",
+    "script": "gameplay-em-md-env-point-no-tool.script",
+    "directory": "run-showcase-sable",
+    "group": "em_environment",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-em-md-planning-folded_mirror_array",
+    "script": "gameplay-em-md-planning-folded_mirror_array.script",
+    "directory": "run-showcase-sable",
+    "group": "em_planning",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-em-md-planning-remote_scatter_relay",
+    "script": "gameplay-em-md-planning-remote_scatter_relay.script",
+    "directory": "run-showcase-sable",
+    "group": "em_planning",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-em-md-planning-scatter_locator_plate",
+    "script": "gameplay-em-md-planning-scatter_locator_plate.script",
+    "directory": "run-showcase-sable",
+    "group": "em_planning",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-tp-alt-corner_exchange",
+    "script": "gameplay-tp-alt-corner_exchange.script",
+    "directory": "run-showcase-sable",
+    "group": "tp_alternatives",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-tp-alt-cross_substitution",
+    "script": "gameplay-tp-alt-cross_substitution.script",
+    "directory": "run-showcase-sable",
+    "group": "tp_alternatives",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-tp-alt-multidimensional_landing_array",
+    "script": "gameplay-tp-alt-multidimensional_landing_array.script",
+    "directory": "run-showcase-sable",
+    "group": "tp_alternatives",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-tp-alt-phase_sidestep",
+    "script": "gameplay-tp-alt-phase_sidestep.script",
+    "directory": "run-showcase-sable",
+    "group": "tp_alternatives",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-tp-alt-short_interception",
+    "script": "gameplay-tp-alt-short_interception.script",
+    "directory": "run-showcase-sable",
+    "group": "tp_alternatives",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-tp-alt-spatial_relay",
+    "script": "gameplay-tp-alt-spatial_relay.script",
+    "directory": "run-showcase-sable",
+    "group": "tp_alternatives",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-vm-alt-anchor-fall",
+    "script": "gameplay-vm-alt-anchor-fall.script",
+    "directory": "run-showcase-sable",
+    "group": "vm_alternatives",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-vm-alt-braking-fall",
+    "script": "gameplay-vm-alt-braking-fall.script",
+    "directory": "run-showcase-sable",
+    "group": "vm_alternatives",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-vm-alt-braking-snowball",
+    "script": "gameplay-vm-alt-braking-snowball.script",
+    "directory": "run-showcase-sable",
+    "group": "vm_alternatives",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-vm-alt-listening-runner",
+    "script": "gameplay-vm-alt-listening-runner.script",
+    "directory": "run-showcase-sable",
+    "group": "vm_alternatives",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-vm-alt-parry-full",
+    "script": "gameplay-vm-alt-parry-full.script",
+    "directory": "run-showcase-sable",
+    "group": "vm_alternatives",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-vm-alt-parry-left",
+    "script": "gameplay-vm-alt-parry-left.script",
+    "directory": "run-showcase-sable",
+    "group": "vm_alternatives",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-vm-alt-parry-right",
+    "script": "gameplay-vm-alt-parry-right.script",
+    "directory": "run-showcase-sable",
+    "group": "vm_alternatives",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-vm-alt-trajectory-hammer",
+    "script": "gameplay-vm-alt-trajectory-hammer.script",
+    "directory": "run-showcase-sable",
+    "group": "vm_alternatives",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-vm-efficiency-circulation_relief",
+    "script": "gameplay-vm-efficiency-circulation_relief.script",
+    "directory": "run-showcase-sable",
+    "group": "vm_efficiency",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-vm-efficiency-inertial_anchor",
+    "script": "gameplay-vm-efficiency-inertial_anchor.script",
+    "directory": "run-showcase-sable",
+    "group": "vm_efficiency",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-vm-efficiency-vector_parry",
+    "script": "gameplay-vm-efficiency-vector_parry.script",
+    "directory": "run-showcase-sable",
+    "group": "vm_efficiency",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-em-md-magnetic-block-far",
+    "script": "gameplay-em-md-magnetic-block-far.script",
+    "directory": "run-showcase-sable",
+    "group": "additional_named_branch",
+    "purpose": "far material compensation projectile",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-tp-emergency-auto",
+    "script": "gameplay-tp-emergency-auto.script",
+    "directory": "run-showcase-sable",
+    "group": "additional_named_branch",
+    "purpose": "actual PvE automatic emergency return",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-vm-direction-modes",
+    "script": "gameplay-vm-direction-modes.script",
+    "directory": "run-showcase-sable",
+    "group": "additional_named_branch",
+    "purpose": "non-damage knockback and alternate directional selection",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-vm-cage-low",
+    "script": "gameplay-vm-cage-low.script",
+    "directory": "run-showcase-sable",
+    "group": "additional_named_branch",
+    "purpose": "low-power slowing cage",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-location-cross-dimension",
+    "script": "gameplay-location-cross-dimension.script",
+    "directory": "run-showcase-sable",
+    "group": "additional_named_branch",
+    "purpose": "cross-dimension location arrival",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-wind-sideways",
+    "script": "gameplay-wind-sideways.script",
+    "directory": "run-showcase-sable",
+    "group": "additional_named_branch",
+    "purpose": "crouch sideways lift",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-vm-primary-impulse_split-late",
+    "script": "gameplay-vm-primary-impulse_split-late.script",
+    "directory": "run-showcase-sable",
+    "group": "additional_named_branch",
+    "purpose": "70-tick late native split and owner DIVERT",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-mode-vm-impulse-window-respawn",
+    "script": "gameplay-vm-impulse-window-respawn-native-damage.script",
+    "directory": "run-showcase-sable",
+    "group": "additional_named_branch",
+    "purpose": "same-ClientLevel real respawn window cleanup",
+    "status": "planned_not_run"
+  }
+]

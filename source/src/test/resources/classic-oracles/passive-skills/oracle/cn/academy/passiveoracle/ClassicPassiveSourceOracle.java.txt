@@ -1,0 +1,57 @@
+package cn.academy.passiveoracle;
+import cn.academy.ability.api.data.AbilityData;
+import cn.lambdalib.util.generic.MathUtils;
+import cn.academy.ability.api.event.CalcEvent;
+import cn.academy.ability.api.event.CalcEvent.CPRecoverSpeed;
+import cn.academy.vanilla.teleporter.passiveskill.*;
+public final class ClassicPassiveSourceOracle {
+ private static final net.minecraft.entity.player.EntityPlayer PLAYER=new net.minecraft.entity.player.EntityPlayer();
+ static {new cn.academy.vanilla.generic.skill.SkillBrainCourse();new cn.academy.vanilla.generic.skill.SkillBrainCourseAdvanced();new cn.academy.vanilla.generic.skill.SkillMindCourse();}
+ private float maxCP,curCP,speed;
+ private float getFloat(String key){return speed;}
+ private net.minecraft.entity.player.EntityPlayer getEntity(){return PLAYER;}
+ public static void setup(int courses,boolean folding,float foldingExp,boolean fluct,float fluctExp){
+  var exps=AbilityData.CURRENT.exps;exps.clear();if((courses&1)!=0)exps.put("brain_course",0f);if((courses&2)!=0)exps.put("brain_course_advanced",0f);if((courses&4)!=0)exps.put("mind_course",0f);if(folding)exps.put("dim_folding_theorem",foldingExp);if(fluct)exps.put("space_fluct",fluctExp);
+ }
+ public static float maximumCP(float initial){return CalcEvent.calc(new CalcEvent.MaxCP(PLAYER,initial));}
+ public static float maximumOverload(float initial){return CalcEvent.calc(new CalcEvent.MaxOverload(PLAYER,initial));}
+ public static float recover(float cp,float max,float configured){var o=new ClassicPassiveSourceOracle();o.curCP=cp;o.maxCP=max;o.speed=configured;return o.getCPRecoverSpeed();}
+ public static float probability(int tier){return prob(AbilityData.CURRENT,tier);}
+ public static float radiation(float max,float level5){return lerpf(1.4f,1.8f,clampf(0,1,max/level5));}
+ public static float damage(float damage,int tier){float rates[]={1.3f,1.6f,2.6f};return damage*rates[tier];}
+private static float prob(AbilityData data, int level) {
+        float dimFoldingExp = data.isSkillLearned(DimFoldingTheorem$.MODULE$) ? data.getSkillExp(DimFoldingTheorem$.MODULE$) : -1;
+        float spaceFluctExp = data.isSkillLearned(SpaceFluctuation$.MODULE$) ? data.getSkillExp(SpaceFluctuation$.MODULE$) : -1;
+
+        switch (level) {
+        case 0:
+            return tryLerp(0.1f, 0.2f, dimFoldingExp) + tryLerp(0.18f, 0.25f, spaceFluctExp);
+        case 1:
+            return tryLerp(0.10f, 0.15f, spaceFluctExp);
+        case 2:
+            return tryLerp(0.01f, 0.03f, spaceFluctExp);
+        }
+        throw new IllegalArgumentException();
+    }
+private static float tryLerp(float a, float b, float l) {
+        if (l == -1) return 0;
+        return a + l * (b - a);
+    }
+public static float lerpf(float a, float b, float lambda) {
+        return a + lambda * (b - a);
+    }
+public static float clampf(float min, float max, float val) {
+        if(val > max)
+            return max;
+        if(val < min)
+            return min;
+        return val;
+    }
+private float getCPRecoverSpeed() {
+        float raw = getFloat("cp_recover_speed") *
+                0.0003f * maxCP *
+                MathUtils.lerpf(1, 2, curCP / maxCP);
+
+        return CalcEvent.calc(new CPRecoverSpeed(getEntity(), 1)) * raw;
+    }
+}

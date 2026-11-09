@@ -1,0 +1,22 @@
+[
+  {
+    "name": "final22-primary-canopy-execution",
+    "script": "gameplay-final22-canopy-primary.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-primary-plasma-execution",
+    "script": "gameplay-final22-plasma-primary.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-primary-mirror-execution",
+    "script": "gameplay-final22-mirror-primary.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-primary-construct-execution",
+    "script": "gameplay-final22-construct-primary.script",
+    "exit": 0
+  }
+]

@@ -1,0 +1,1 @@
+package net.minecraft.item; import java.util.*; import net.minecraft.block.Block; public class Item {public final String name; public Item(){name="dummy";} public Item(String n){name=n;} public static Item getItemFromBlock(Block b){return b.item;}}

@@ -1,0 +1,2 @@
+package cn.lambdalib.util.mc;
+public class SideHelper { public static boolean client=true; public static boolean isClient() { return client; } }

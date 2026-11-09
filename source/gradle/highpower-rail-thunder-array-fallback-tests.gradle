@@ -1,0 +1,11 @@
+// Independent CPU proof against immutable .55 renderer source; no historical guard is rewritten.
+tasks.register('railThunderArrayV55FallbackProof', Exec) {
+    doFirst {
+        def report = new File(System.getProperty('java.io.tmpdir'),
+                'aca-rail-array-v55-fallback/' + java.util.UUID.randomUUID())
+        commandLine 'python3', 'scripts/verify-rail-thunder-array-v55-fallback.py',
+                '--report', report.absolutePath
+        logger.lifecycle('NEW151 frozen .55 fallback evidence: ' + report.absolutePath)
+    }
+}
+tasks.named('check') { dependsOn 'railThunderArrayV55FallbackProof' }

@@ -1,0 +1,1 @@
+lang:zh_cn|cmd:time set day|cmd:gamerule doMobSpawning false|cmd:difficulty normal|keyup:82|keyup:340|tree:close|cam:first|cmd:tp @s 0.5 -60 0.5 0 0|gameem:env:setup:point-no-tool|wait:30|aim:0.5,-58.5,5.5|wait:6|gameem:env:baseline|keydown:82|wait:16|keyup:82|wait:24|gameem:env:assert|shot:gameplay_env_point_no_tool|gameem:env:verify|quit

@@ -1,0 +1,10 @@
+package cn.academy.ability.api.cooldown;
+import cn.academy.ability.api.Skill;
+import java.util.*;
+import net.minecraft.entity.player.EntityPlayer;
+public class CooldownData {
+ public static final Map<EntityPlayer,CooldownData> DATA = new IdentityHashMap<>();
+ public final Set<Skill> blocked = Collections.newSetFromMap(new IdentityHashMap<>());
+ public static CooldownData of(EntityPlayer p) { return DATA.computeIfAbsent(p, ignored -> new CooldownData()); }
+ public boolean isInCooldown(Skill s, Integer identifier) { return blocked.contains(s); }
+}

@@ -1,0 +1,1 @@
+package net.neoforged.neoforge.client.event;public final class RegisterClientCommandsEvent {public net.minecraft.commands.Commands.Dispatcher getDispatcher(){throw new AssertionError("command registration outside renderer proof");}}

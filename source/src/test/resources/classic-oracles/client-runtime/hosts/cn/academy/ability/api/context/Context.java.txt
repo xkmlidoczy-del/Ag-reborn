@@ -1,0 +1,8 @@
+package cn.academy.ability.api.context;
+public class Context {
+ public enum Status { CONSTRUCTED, ALIVE, TERMINATED }
+ public Status status = Status.ALIVE;
+ public int terminations;
+ public Status getStatus() { return status; }
+ public void terminate() { ++terminations; status = Status.TERMINATED; }
+}

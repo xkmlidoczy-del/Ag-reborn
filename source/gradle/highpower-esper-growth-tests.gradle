@@ -1,0 +1,9 @@
+// Pure per-category growth styles: bounded bonus experience with a distinct trigger per category.
+tasks.register('esperGrowthStyleTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.core.EsperGrowthStyleRegressionTest'
+    enableAssertions = true
+    maxHeapSize = '128m'
+}
+tasks.named('check') { dependsOn 'esperGrowthStyleTest' }

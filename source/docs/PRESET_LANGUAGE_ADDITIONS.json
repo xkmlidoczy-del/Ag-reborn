@@ -1,0 +1,38 @@
+{
+  "en_us": {
+    "key.academy.toggle": "Activate Ability",
+    "key.academy.switch_preset": "Switch Preset",
+    "key.academy.edit_preset": "Edit Preset",
+    "key.academy.ability_0": "Ability Control #1",
+    "key.academy.ability_1": "Ability Control #2",
+    "key.academy.ability_2": "Ability Control #3",
+    "key.academy.ability_3": "Ability Control #4"
+  },
+  "zh_cn": {
+    "key.academy.toggle": "激活能力",
+    "key.academy.switch_preset": "切换技能预设",
+    "key.academy.edit_preset": "设置技能预设",
+    "key.academy.ability_0": "能力控制 #1",
+    "key.academy.ability_1": "能力控制 #2",
+    "key.academy.ability_2": "能力控制 #3",
+    "key.academy.ability_3": "能力控制 #4"
+  },
+  "zh_tw": {
+    "key.academy.toggle": "啟動能力",
+    "key.academy.switch_preset": "切換技能預設",
+    "key.academy.edit_preset": "設定技能預設",
+    "key.academy.ability_0": "能力控制 #1",
+    "key.academy.ability_1": "能力控制 #2",
+    "key.academy.ability_2": "能力控制 #3",
+    "key.academy.ability_3": "能力控制 #4"
+  },
+  "ja_jp": {
+    "key.academy.toggle": "能力の起動",
+    "key.academy.switch_preset": "プリセットの切り替え",
+    "key.academy.edit_preset": "プリセットの編集",
+    "key.academy.ability_0": "能力コントロール #1",
+    "key.academy.ability_1": "能力コントロール #2",
+    "key.academy.ability_2": "能力コントロール #3",
+    "key.academy.ability_3": "能力コントロール #4"
+  }
+}

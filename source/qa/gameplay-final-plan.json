@@ -1,0 +1,403 @@
+[
+  {
+    "name": "final96-em-damage",
+    "script": "gameplay-em-damage.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "arc_gen",
+      "thunder_bolt",
+      "railgun",
+      "thunder_clap",
+      "forked_arc",
+      "iron_sand_lance"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-md-damage",
+    "script": "gameplay-md-damage.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "electron_bomb",
+      "meltdowner",
+      "ray_barrage",
+      "dual_point"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-em-md-advanced-attacks",
+    "script": "gameplay-em-md-advanced-attacks.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "scatter_bomb",
+      "electron_missile",
+      "thunder_net",
+      "disintegration_sweep"
+    ],
+    "status": "planned_not_run",
+    "prerequisite": "Wait for current real-client diagnosis/fix closure and final production freeze; this plan is not acceptance.",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-em-md-utility",
+    "script": "gameplay-em-md-utility.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "charging",
+      "mine_detect",
+      "body_intensify",
+      "mine_ray_basic",
+      "mine_ray_expert",
+      "mine_ray_luck",
+      "beam_etching",
+      "point_meltdown",
+      "disintegration_sweep"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-em-md-motion-basic",
+    "script": "gameplay-em-md-motion-basic.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "mag_movement",
+      "polarity_tether",
+      "jet_engine"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-em-md-motion-air",
+    "script": "gameplay-em-md-motion-air.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "beam_step",
+      "reverse_jet_brake"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-final-magnetic-bracer",
+    "script": "gameplay-final-magnetic-bracer.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "magnetic_bracer"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-em-md-retry-charge_decoy",
+    "script": "gameplay-em-md-retry-charge_decoy.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "charge_decoy"
+    ],
+    "status": "planned_not_run",
+    "fixture_note": "Use corrected decoy aim + decoy-placed, not obsolete combined defense-em aim.",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-em-defense-rest",
+    "script": "gameplay-final-em-defense-rest.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "potential_buffer",
+      "magnetic_domain"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "fixture_note": "Exact independent potential-buffer/domain flows; grounding_return is exclusively the real two-client arc_gen case in gameplay-final-dual-manifest.json."
+  },
+  {
+    "name": "final96-em-md-defense-md-core",
+    "script": "gameplay-em-md-defense-md-core.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "light_shield",
+      "thermal_shell"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-em-md-defense-scatter_plates",
+    "script": "gameplay-em-md-defense-scatter_plates.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "scatter_plates"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-em-md-defense-directional_dissipation_curtain",
+    "script": "gameplay-em-md-defense-directional_dissipation_curtain.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "directional_dissipation_curtain"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-em-md-defense-zero_gap_armor",
+    "script": "gameplay-em-md-defense-zero_gap_armor.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "zero_gap_armor"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-em-md-multistage-attacks",
+    "script": "gameplay-em-md-multistage-attacks.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "rail_thunder_array",
+      "multicore_canopy"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-em-md-magnetic-block",
+    "script": "gameplay-em-md-magnetic-block.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "mag_manip"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-em-md-circuit-crossing",
+    "script": "gameplay-em-md-circuit-crossing.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "conductive_circuit"
+    ],
+    "status": "planned_not_run",
+    "prerequisite": "Wait for current real-client diagnosis/fix closure and final production freeze; this plan is not acceptance.",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-em-md-pulse-interference",
+    "script": "gameplay-em-md-pulse-interference.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "pulse_shield"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-em-md-rail-route",
+    "script": "gameplay-em-md-rail-route.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "rail_relay"
+    ],
+    "status": "planned_not_run",
+    "prerequisite": "Wait for current real-client diagnosis/fix closure and final production freeze; this plan is not acceptance.",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-em-md-folded_mirror_array",
+    "script": "gameplay-em-md-folded_mirror_array.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "folded_mirror_array"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-em-md-scatter_locator_plate",
+    "script": "gameplay-em-md-scatter_locator_plate.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "scatter_locator_plate"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-em-md-remote_scatter_relay",
+    "script": "gameplay-em-md-remote_scatter_relay.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "remote_scatter_relay"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-em-md-particle-corridor",
+    "script": "gameplay-em-md-particle-corridor.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "particle_laminate"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-em-md-owned-item-pull",
+    "script": "gameplay-em-md-owned-item-pull.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "magnetic_item_pull"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-ground-release",
+    "script": "codex-ground-release.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "magnetic_ground_step"
+    ],
+    "status": "planned_not_run",
+    "fixture_note": "Default-enabled real LV3 machine learning; no opt-in property.",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-tp-vm-damage",
+    "script": "gameplay-tp-vm-damage.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "dir_shock",
+      "ground_shock",
+      "dir_blast",
+      "blood_retro",
+      "plasma_cannon",
+      "threatening_teleport",
+      "flesh_ripping",
+      "shift_tp",
+      "deflection_strike",
+      "shear_windblade",
+      "yaw_palm",
+      "zenith_vector_dominion"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-tp-basic",
+    "script": "gameplay-tp-basic.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "phase_sidestep",
+      "safe_landing_probe",
+      "return_mark",
+      "emergency_return",
+      "phase_corridor",
+      "mark_teleport",
+      "penetrate_teleport"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-tp-complex",
+    "script": "gameplay-tp-complex.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "corner_exchange",
+      "cross_substitution",
+      "spatial_pincer_corridor",
+      "multidimensional_landing_array",
+      "displaced_projection",
+      "short_interception",
+      "recovery_mark",
+      "spatial_relay",
+      "flashing",
+      "vec_accel"
+    ],
+    "status": "planned_not_run",
+    "prerequisite": "Wait for current real-client diagnosis/fix closure and final production freeze; this plan is not acceptance.",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-tp-gui-full",
+    "script": "gameplay-tp-gui-full.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "location_teleport",
+      "tactical_coordinate_formation"
+    ],
+    "status": "planned_not_run",
+    "prerequisite": "Wait for current real-client diagnosis/fix closure and final production freeze; this plan is not acceptance.",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-incident-bypass",
+    "script": "gameplay-incident-bypass.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "incident_bypass"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-gameplay-vm-utility",
+    "script": "codex-gameplay-vm-utility.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "vec_deviation",
+      "vec_reflection",
+      "vector_parry",
+      "inertial_anchor",
+      "circulation_relief",
+      "autonomous_vector_circle",
+      "multi_axis_reflection",
+      "circulation_listening",
+      "trajectory_return",
+      "braking_touch",
+      "impulse_split"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-vm-cage-storm",
+    "script": "gameplay-vm-cage-storm.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "vector_cage",
+      "storm_wing"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-wind-sable-proof",
+    "script": "codex-wind-sable-proof.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "wind_pressure_lift"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "final96-construct-full",
+    "script": "gameplay-construct-full.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "vector_construct"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true"
+  }
+]

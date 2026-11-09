@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "academy:developer_normal",
+    "academy:developer_advanced"
+  ]
+}

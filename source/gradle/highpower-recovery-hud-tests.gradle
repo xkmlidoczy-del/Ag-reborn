@@ -1,0 +1,15 @@
+// Exact decimal display, bounded snapshots, session fences and narrowly scoped heart adapter.
+tasks.register('highPowerRecoveryHudTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.HighPowerRecoveryHudRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerRecoveryHudTest' }
+tasks.register('teleporterFoundationTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.TeleporterFoundationRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'teleporterFoundationTest' }

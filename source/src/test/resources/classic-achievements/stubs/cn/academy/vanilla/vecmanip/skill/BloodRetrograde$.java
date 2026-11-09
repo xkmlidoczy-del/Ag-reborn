@@ -1,0 +1,1 @@
+package cn.academy.vanilla.vecmanip.skill;public class BloodRetrograde$ extends cn.academy.ability.api.Skill {public static final BloodRetrograde$ MODULE$=new BloodRetrograde$();private BloodRetrograde$(){super(cn.academy.vanilla.vecmanip.CatVecManip$.INSTANCE,"blood_retro");}}

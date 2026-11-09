@@ -1,0 +1,3 @@
+package cn.lambdalib.util.datapart;
+import cpw.mods.fml.relauncher.Side;
+public @interface RegDataPart { Class<?> value(); Side side(); }

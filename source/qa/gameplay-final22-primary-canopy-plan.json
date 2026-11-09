@@ -1,0 +1,13 @@
+[
+  {
+    "name": "final22-primary-canopy-execution",
+    "script": "gameplay-final22-canopy-primary.script",
+    "directory": "run-showcase-sable",
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Additional real multicore canopy firing recording. Exact complete prior mechanical script preserved, only recording brackets added. Separate from core 66 and the existing 11 primary cases.",
+    "scriptSha256": "d68f5e4875dd099a2ac9a273b0b038958d0dcbb32b6d81a32a997de92663b879",
+    "originalMechanicalScript": "gameplay-final20-visual-rail-array.script",
+    "originalMechanicalScriptSha256": "37d211dd04a69f9fae2bea256e25a0107b1a2eaab3294e024d81e190ac4c704e"
+  }
+]

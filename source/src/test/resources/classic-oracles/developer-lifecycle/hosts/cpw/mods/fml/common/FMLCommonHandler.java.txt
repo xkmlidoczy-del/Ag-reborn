@@ -1,0 +1,2 @@
+/* Test-only lifecycle platform plumbing; business methods run unchanged originals. */
+package cpw.mods.fml.common;public class FMLCommonHandler {private static final FMLCommonHandler I=new FMLCommonHandler();public static FMLCommonHandler instance(){return I;}public net.minecraftforge.common.MinecraftForge.Bus bus(){return net.minecraftforge.common.MinecraftForge.EVENT_BUS;}}

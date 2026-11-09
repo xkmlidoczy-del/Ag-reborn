@@ -1,0 +1,1 @@
+package cn.academy.energy.api.event.node;public class LinkUserEvent {public final Object tile;public final cn.academy.energy.api.block.IWirelessNode node;public LinkUserEvent(Object t,cn.academy.energy.api.block.IWirelessNode n){tile=t;node=n;}}

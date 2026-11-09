@@ -1,0 +1,1 @@
+NEW442 multi_axis_reflection.png is a byte-identical reuse of the original AcademyCraft vec_reflection.png asset. Original attribution and license apply. No external art dependency.

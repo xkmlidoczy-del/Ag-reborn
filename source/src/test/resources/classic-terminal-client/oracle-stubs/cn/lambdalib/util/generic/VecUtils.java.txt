@@ -1,0 +1,1 @@
+package cn.lambdalib.util.generic; public class VecUtils{public static net.minecraft.util.Vec3 vec(double x,double y,double z){return net.minecraft.util.Vec3.createVectorHelper(x,y,z);}}

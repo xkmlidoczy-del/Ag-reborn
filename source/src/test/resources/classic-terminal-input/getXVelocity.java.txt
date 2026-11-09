@@ -1,0 +1,3 @@
+public double getXVelocity() {
+        return this.accumulatedDX;
+    }

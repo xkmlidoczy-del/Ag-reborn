@@ -1,0 +1,74 @@
+{
+  "silent": true,
+  "rawUnedited": true,
+  "completeContinuousProgressionCaptured": false,
+  "fixtures": "Solar, originally empty portable developer, Electromaster factor were provided once by three-item function; pose/day/weather commands declared; no ability level/skill/mastery/battery-energy grants. Actual finite Solar power earned category and Charging.",
+  "actualClosedState": "survival ElectromasterLV1, onlycharging0, battery2700.4000000017513IF, factor consumed; independent cold JVM exact semantic equality.",
+  "clips": [
+    {
+      "file_name": "m22-01-solar-config-earned-workflow.mp4",
+      "bytes": 2571640,
+      "sha256": "5764c5bef1f4c905f557805857f211bd9f031b876b64a5b4e5a0442ce51ab116",
+      "duration_seconds": 180.0,
+      "width": 1046,
+      "height": 720,
+      "container_frame_rate": "30/1",
+      "silent": true,
+      "full_decode": "passed",
+      "nonblack_probe": "passed",
+      "scope": "180s setup/camera/placement diagnostic. Despite the planned filename, no successful learning is shown. Placement later proven from actual closed Anvil."
+    },
+    {
+      "file_name": "m22-02-solar-finite-charge.mp4",
+      "bytes": 2029601,
+      "sha256": "b82e685e38431c87380e02fbc21a8cdec707a6f5d52570de9de7ddb0ca1b21ae",
+      "duration_seconds": 180.0,
+      "width": 1046,
+      "height": 720,
+      "container_frame_rate": "30/1",
+      "silent": true,
+      "full_decode": "passed",
+      "nonblack_probe": "passed",
+      "scope": "180s correct Solar source model/GUI after cold JVM and U use-item binding. Empty GUI view/setup; not a full charging-completion clip."
+    },
+    {
+      "file_name": "m22-03-solar-actual-charge-and-learn.mp4",
+      "bytes": 19092458,
+      "sha256": "ffc2034f0cafe6136561e684ed30c939a83e62fd862d7c4a28cd3480dc001380",
+      "duration_seconds": 180.0,
+      "width": 1046,
+      "height": 720,
+      "container_frame_rate": "30/1",
+      "silent": true,
+      "full_decode": "passed",
+      "nonblack_probe": "passed",
+      "scope": "180s actual partial Solar charging in rain, initial visible developer1812IF, 0.6IF/T and declared climate/camera command steps. No learning completion."
+    },
+    {
+      "file_name": "m22-04-physically-powered-category-and-charging.mp4",
+      "bytes": 10945550,
+      "sha256": "55baa55e922263329520314075f73d611cb543d9880162afa1f85ba76a76e193",
+      "duration_seconds": 90.0,
+      "width": 1046,
+      "height": 720,
+      "container_frame_rate": "30/1",
+      "silent": true,
+      "full_decode": "passed",
+      "nonblack_probe": "passed",
+      "scope": "90s physically charged portable developer and original uncategorized console. Actual frame89.5 still N/A/LV0; category completion occurred after this clip."
+    },
+    {
+      "file_name": "m22-05-earned-charging-disabled-parent.mp4",
+      "bytes": 511620,
+      "sha256": "79127e60928799824402ecac81b8ebc59222937e64acfe9343ac5f4f52b80762",
+      "duration_seconds": 90.0,
+      "width": 1046,
+      "height": 720,
+      "container_frame_rate": "30/1",
+      "silent": true,
+      "full_decode": "passed",
+      "nonblack_probe": "passed",
+      "scope": "90s actual Charging selection with no Arc prerequisite, confirmed learning begins. Actual frame89.5 shows29percent progress. Completion was after this clip and is evidenced separately by reopened learned screenshot, closed NBT and cold JVM restore."
+    }
+  ]
+}

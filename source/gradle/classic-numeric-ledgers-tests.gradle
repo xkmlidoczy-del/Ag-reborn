@@ -1,0 +1,17 @@
+// Parent-reviewed integration only; no fixture platform hosts enter normal source sets.
+tasks.register('classicNumericLedgersSourceTest',JavaExec) {
+ dependsOn testClasses
+ classpath=sourceSets.test.runtimeClasspath
+ mainClass='cn.academy.port.core.ClassicNumericLedgersSourceOracleTest'
+ enableAssertions=true
+}
+tasks.named('check') { dependsOn 'classicNumericLedgersSourceTest' }
+
+// Preserve modern invalid raw-ledger rejection around source-exact finite maximum arithmetic.
+tasks.register('numericCapacityInvalidStateTest',JavaExec) {
+ dependsOn testClasses
+ classpath=sourceSets.test.runtimeClasspath
+ mainClass='cn.academy.port.core.NumericCapacityInvalidStateRegressionTest'
+ enableAssertions=true
+}
+tasks.named('check') { dependsOn 'numericCapacityInvalidStateTest' }

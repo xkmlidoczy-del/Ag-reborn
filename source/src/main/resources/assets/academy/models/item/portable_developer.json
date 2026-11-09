@@ -1,0 +1,1 @@
+{"parent": "minecraft:item/generated", "textures": {"layer0": "academy:items/developer_portable_empty"}, "overrides": [{"predicate": {"academy:charge_icon": 1}, "model": "academy:item/portable_developer_half"}, {"predicate": {"academy:charge_icon": 2}, "model": "academy:item/portable_developer_full"}]}

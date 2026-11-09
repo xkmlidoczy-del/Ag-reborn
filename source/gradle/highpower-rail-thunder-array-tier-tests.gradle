@@ -1,0 +1,9 @@
+// Pure STANDARD/CINEMATIC decorative layers for NEW151: frozen LOW/OFF, bounds, determinism, projection.
+tasks.register('railThunderArrayTierTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.RailThunderArrayTierRegressionTest'
+    enableAssertions = true
+    maxHeapSize = '128m'
+}
+tasks.named('check') { dependsOn 'railThunderArrayTierTest' }

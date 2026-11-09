@@ -1,0 +1,46 @@
+/* AcademyCraft classic1.0.7 LocationTeleport/LocTeleportData adaptation. GPLv3; see NOTICE. */
+package cn.academy.port.skill;
+import cn.academy.port.*;
+import cn.academy.port.core.AbilityProgress;
+import net.minecraft.core.*;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.*;
+import net.minecraft.resources.*;
+import net.minecraft.server.level.*;
+import net.minecraft.sounds.*;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.boss.EnderDragonPart;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.*;
+import net.neoforged.neoforge.network.PacketDistributor;
+import java.util.*;
+import static cn.academy.port.skill.TeleporterFinalRules.*;
+/** Persistent server-owned float coordinates; authenticated list IDs replace legacy arbitrary Location upload. */
+public final class LocationTeleport {
+ public static final String ID=LOCATION;private static final String KEY="academy:location_teleport";private LocationTeleport(){}
+ public record Location(String name,ResourceKey<Level> dimension,float x,float y,float z,int id){public Vec3 position(){return new Vec3(x,y,z);}}
+ public static List<Location> locations(ServerPlayer p){var out=new ArrayList<Location>();var list=p.getPersistentData().getList(KEY,Tag.TAG_COMPOUND);for(int i=0;i<list.size();i++){var t=list.getCompound(i);var dim=ResourceLocation.tryParse(t.getString("dimension"));if(dim!=null&&Float.isFinite(t.getFloat("x"))&&Float.isFinite(t.getFloat("y"))&&Float.isFinite(t.getFloat("z")))out.add(new Location(t.getString("name"),ResourceKey.create(Registries.DIMENSION,dim),t.getFloat("x"),t.getFloat("y"),t.getFloat("z"),out.size()));}return List.copyOf(out);}
+ private static CompoundTag encode(Location l){var t=new CompoundTag();t.putString("name",l.name);t.putString("dimension",l.dimension.location().toString());t.putFloat("x",l.x);t.putFloat("y",l.y);t.putFloat("z",l.z);t.putInt("id",l.id);return t;}
+ private static void store(ServerPlayer p,List<Location> all){var list=new ListTag();for(int i=0;i<all.size();i++){Location l=all.get(i);list.add(encode(new Location(l.name,l.dimension,l.x,l.y,l.z,i)));}p.getPersistentData().put(KEY,list);}
+ /** LambdaLib EntityData keeps LocTeleportData on player clone; clearOnDeath defaults false. */
+ public static void copyLocations(ServerPlayer original,ServerPlayer replacement){if(TeleporterFinalSupport.server(original)&&replacement!=null)replacement.getPersistentData().put(KEY,original.getPersistentData().getList(KEY,Tag.TAG_COMPOUND).copy());}
+ public static boolean start(ServerPlayer p){if(cn.academy.port.AbilityConsumption.busy(p))return false;return start(p,0);}public static boolean start(ServerPlayer p,long nonce){if(cn.academy.port.AbilityConsumption.busy(p))return false;var h=TeleporterFinalSupport.start(p,ID,nonce);if(h==null)return false;sendList(p,h);return true;}
+ private static void sendList(ServerPlayer p,TeleporterFinalSupport.Hold h){var t=TeleporterFinalSupport.tag(ID,h,"list");var list=new ListTag();for(Location l:locations(p)){var a=encode(l);a.putFloat("cp",cost(p,l));a.putString("error",performStat(p,l));list.add(a);}t.put("locations",list);t.putString("dimension",p.serverLevel().dimension().location().toString());t.putFloat("x",(float)p.getX());t.putFloat("y",(float)p.getY());t.putFloat("z",(float)p.getZ());PacketDistributor.sendToPlayer(p,new AcademyNetwork.ClientData(t));}
+ public static float cost(ServerPlayer p,Location dest){return locationConsumption(AbilityStorage.get(p).exp(ID),p.position().distanceTo(dest.position()),!p.serverLevel().dimension().equals(dest.dimension));}
+ public static String performStat(ServerPlayer p,Location dest){var s=AbilityStorage.get(p);if(!p.serverLevel().dimension().equals(dest.dimension)&&!crossDimension(s.exp(ID)))return "err_exp";return p.getAbilities().instabuild||s.cp>=cost(p,dest)?"":"err_cp";}
+ public static boolean add(ServerPlayer p,long nonce,String name){var h=session(p,nonce);if(h==null||name==null||name.length()>16)return false;var all=new ArrayList<>(locations(p));if(all.size()>=256)return false;all.add(new Location(name,p.serverLevel().dimension(),(float)p.getX(),(float)p.getY(),(float)p.getZ(),all.size()));store(p,all);sendList(p,h);return true;}
+ public static boolean removeLocation(ServerPlayer p,long nonce,int id){var h=session(p,nonce);var all=new ArrayList<>(locations(p));if(h==null||id<0||id>=all.size())return false;all.remove(id);store(p,all);sendList(p,h);return true;}
+ private static TeleporterFinalSupport.Hold session(ServerPlayer p,long nonce){var h=TeleporterFinalSupport.current(p,ID);if(h==null||nonce>0&&h.nonce!=nonce)return null;if(!TeleporterFinalSupport.valid(p,h,ID)){TeleporterFinalSupport.dispose(p,ID);return null;}return h;}
+ public static boolean perform(ServerPlayer p,long nonce,int id){var h=session(p,nonce);var all=locations(p);if(h==null||id<0||id>=all.size()||TeleporterFinalSupport.COMMITTING.contains(p.getUUID()))return false;Location dest=all.get(id);if(!performStat(p,dest).isEmpty())return false;ServerLevel target=p.server.getLevel(dest.dimension);Vec3 at=dest.position();BlockPos block=BlockPos.containing(at);if(target==null||!target.getWorldBorder().isWithinBounds(block)||at.y<target.getMinBuildHeight()||at.y>=target.getMaxBuildHeight())return false;
+  Vec3 origin=p.position();var entities=new ArrayList<Entity>();entities.add(p);entities.addAll(p.serverLevel().getEntities(p,new AABB(origin, origin).inflate(locationRadius()),e->(e instanceof LivingEntity||e instanceof EnderDragonPart)&&locationCompanion(e.getBbWidth(),e.getBbHeight(),origin.distanceToSqr(e.position()))));var offsets=new LinkedHashMap<Entity,Vec3>();for(Entity e:entities){Vec3 off=e.position().subtract(origin);Vec3 landing=at.add(off);var b=BlockPos.containing(landing);if(!target.getWorldBorder().isWithinBounds(b)||landing.y<target.getMinBuildHeight()||landing.y>=target.getMaxBuildHeight())return false;target.getChunk(b);offsets.put(e,off);}
+  TeleporterFinalSupport.COMMITTING.add(p.getUUID());try{float cp=cost(p,dest);if(!h.state.consumeWithForceSkill(ID,cp,locationOverload(),p.getAbilities().instabuild,()->TeleporterFinalSupport.current(p,ID)==h&&offsets.keySet().stream().allMatch(e->!e.isRemoved()&&e.level()==h.world)))return false;TeleporterFinalSupport.HOLDS.get(ID).remove(p.getUUID());for(var entry:offsets.entrySet()){Entity e=entry.getKey();Vec3 landing=at.add(entry.getValue());e.stopRiding();e.teleportTo(target,landing.x,landing.y,landing.z,Set.of(),e.getYRot(),e.getXRot());}
+  target.playSound(null,p.blockPosition(),SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath("academy","tp.tp")),SoundSource.PLAYERS,.5F,1);double distance=p.position().distanceTo(at);h.state.addExperience(ID,locationExperience(distance));h.state.setCooldown(ID,locationCooldown(h.state.exp(ID)));TeleporterFinalSupport.count(p,true);TeleporterFinalSupport.send(p,ID,h,"end",at,true);
+  // A dedicated post-move success cue also reaches the caster after crossing dimensions; the old audience belongs to h.world.
+  var arrival=TeleporterFinalSupport.tag(ID,h,"arrival");arrival.putBoolean("success",true);arrival.putInt("entity",p.getId());arrival.putUUID("entity_uuid",p.getUUID());
+  arrival.putString("dimension",p.serverLevel().dimension().location().toString());arrival.putDouble("x",p.getX());arrival.putDouble("y",p.getY());arrival.putDouble("z",p.getZ());
+  PacketDistributor.sendToPlayersNear(p.serverLevel(),null,p.getX(),p.getY(),p.getZ(),50,new AcademyNetwork.ClientData(arrival));
+  TeleporterFinalSupport.save(p);return true;
+ }finally{TeleporterFinalSupport.COMMITTING.remove(p.getUUID());}}
+ public static boolean request(ServerPlayer p,String action,String value){int sep=value.indexOf(':');if(sep<1)return false;long nonce=TeleporterFinalSupport.nonce(value.substring(0,sep));if(nonce==0)return false;String body=value.substring(sep+1);if(action.equals("location_add"))return add(p,nonce,body);if(action.equals("location_close"))return body.isEmpty()&&abort(p,nonce);if(action.equals("location_query")){var h=session(p,nonce);if(h==null||!body.isEmpty())return false;sendList(p,h);return true;}int id=-1;try{id=Integer.parseInt(body);}catch(NumberFormatException ignored){}if(id<0||!body.equals(Integer.toString(id)))return false;if(action.equals("location_remove"))return removeLocation(p,nonce,id);if(action.equals("location_perform")){if(session(p,nonce)==null)return false;boolean performed=perform(p,nonce,id);if(!performed)abort(p,nonce);return performed;}return false;}
+ public static void tick(ServerPlayer p){TeleporterFinalSupport.tick(p,ID);}public static void release(ServerPlayer p){}public static boolean release(ServerPlayer p,long nonce){return session(p,nonce)!=null;}public static void abort(ServerPlayer p){abort(p,0);}public static boolean abort(ServerPlayer p,long nonce){return TeleporterFinalSupport.abort(p,ID,nonce);}public static void remove(ServerPlayer p){TeleporterFinalSupport.remove(p,ID);}public static boolean active(ServerPlayer p){return TeleporterFinalSupport.active(p,ID);}public static boolean canUse(AbilityProgress s){return TeleporterFinalSupport.usable(s,ID);}public static void clear(){TeleporterFinalSupport.clear(ID);}
+}

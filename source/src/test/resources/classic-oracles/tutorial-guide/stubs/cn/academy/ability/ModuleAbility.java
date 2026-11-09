@@ -1,0 +1,2 @@
+package cn.academy.ability;
+public final class ModuleAbility { public static final net.minecraft.item.Item developerPortable=new net.minecraft.item.Item("developerPortable");public static final net.minecraft.block.Block developerNormal=new net.minecraft.block.Block("developerNormal"); public static final net.minecraft.block.Block developerAdvanced=new net.minecraft.block.Block("developerAdvanced"); }

@@ -1,0 +1,2 @@
+package cpw.mods.fml.common.registry;
+public class RegistryDelegate { public interface Delegate<T> {} }

@@ -1,0 +1,1 @@
+cmd:time set day|cmd:difficulty normal|cmd:gamerule doMobSpawning false|dual:publish|dual:ready|dual:grant:iron_sand_lance|cmd:tp @s 0.5 -60 0.5 0 0|wait:20|aim:5.5,-59,-3.5|dual:await-peer|wait:200|dual:verify|quit

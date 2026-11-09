@@ -1,0 +1,107 @@
+{
+  "audit": "FROZEN_API_CLASS_IDENTITY_ONLY",
+  "class_count": 11,
+  "class_identity_result": "PASS",
+  "classes": [
+    {
+      "archive": "merged",
+      "byte_identity": "MATCH",
+      "class": "com.mojang.blaze3d.vertex.PoseStack",
+      "sha256": "290f061392e47f80dda410bbfe193e435d52ab2303ea63f7d04c99bdef0c40b4"
+    },
+    {
+      "archive": "merged",
+      "byte_identity": "MATCH",
+      "class": "com.mojang.blaze3d.vertex.PoseStack$Pose",
+      "sha256": "bb7b6f66e7c8ef7b6b08665c95f2b1a814a8fb650e12646371c4bf45227608e6"
+    },
+    {
+      "archive": "merged",
+      "byte_identity": "MATCH",
+      "class": "com.mojang.blaze3d.vertex.VertexConsumer",
+      "sha256": "59f07dd96c56628f7a4876e7291c9a24f0aa31e9a577c0139e5c44fb9241670c"
+    },
+    {
+      "archive": "merged",
+      "byte_identity": "MATCH",
+      "class": "com.mojang.math.Axis",
+      "sha256": "75b0762292b9c040fc53f888d40d588399b4e444b31d7d34c0fb497d87a4e757"
+    },
+    {
+      "archive": "merged",
+      "byte_identity": "MATCH",
+      "class": "net.minecraft.client.Camera",
+      "sha256": "caecc54dcaf82c1135fcc8efa70fde6a9127c9b02b5dab54fe151a881c3ecb0e"
+    },
+    {
+      "archive": "merged",
+      "byte_identity": "MATCH",
+      "class": "net.minecraft.client.renderer.RenderStateShard",
+      "sha256": "abda570d17bd3b8c9bf85e2958a0f798292561a3cccce89566ea60e5e52b4cfe"
+    },
+    {
+      "archive": "merged",
+      "byte_identity": "MATCH",
+      "class": "net.minecraft.client.renderer.RenderType",
+      "sha256": "aae249b874ac93a7b987e9c918fbcb3e16bf27c308054e743bc642dafd74a839"
+    },
+    {
+      "archive": "merged",
+      "byte_identity": "MATCH",
+      "class": "net.minecraft.world.phys.Vec3",
+      "sha256": "6bba0a6e54d1790d8c4b5e58bd69821909ccdcc829c5cf70abf1f983acc30178"
+    },
+    {
+      "archive": "merged",
+      "byte_identity": "MATCH",
+      "class": "net.neoforged.neoforge.client.event.RenderLevelStageEvent",
+      "sha256": "062e1da695caaaa1f3bb5250c6f7287c62b90ab0111f6246474413431ece882a"
+    },
+    {
+      "archive": "joml",
+      "byte_identity": "MATCH",
+      "class": "org.joml.Matrix4f",
+      "sha256": "1eaa5621369741c338ecd98795dc849c2d86c94bcd537b34fa32ebd5c7c01f19"
+    },
+    {
+      "archive": "joml",
+      "byte_identity": "MATCH",
+      "class": "org.joml.Quaternionf",
+      "sha256": "36995083b5f4147f2af89c04e8395031b2a8de2a944bbc767cdab53c15dfa325"
+    }
+  ],
+  "existing_whole_archive_guard": "FAIL",
+  "fixture_evidence": [
+    {
+      "camera": "charging",
+      "fixture_index_sha256": "9d57269347605eb5833b7645ea252c632987a0f3f1b2ad0f09f816ca4db0e12c",
+      "test_sha256": "4a771ec44a3d5d26963f95fe243f95f1dfbd428c1fc4fc0d44add2c0da64d69b",
+      "unchanged_indexed_fixture_files": 8
+    },
+    {
+      "camera": "meltdowner",
+      "fixture_index_sha256": "49cec99d629e9eb46f6cab953f4ddd1e5271b36dc4da37182ed7bbab8e00c98a",
+      "test_sha256": "219634a1929ae701f4e2780dcdd68a5abc2d774e995df23b63ead95aa15dc270",
+      "unchanged_indexed_fixture_files": 15
+    },
+    {
+      "camera": "thunderbolt",
+      "fixture_index_sha256": "eaf49dc5866881ffe2eab16234ba05f1e950811a99293ecb03d63de995f46cde",
+      "test_sha256": "28ffce5c490b951c80c5d54926c1f833e77b9518595a8fb1c33c495a75f40cc2",
+      "unchanged_indexed_fixture_files": 8
+    }
+  ],
+  "fixtures_and_existing_tests": "UNCHANGED_FROM_IMMUTABLE_M41",
+  "input_stability": "ALL_READ_INPUTS_HASHED_AGAIN_UNCHANGED",
+  "limitations": [
+    "The three existing geometry tests and all guards remain unmodified; this audit cannot replace them or make full check pass.",
+    "Byte identity is proven only for the listed fingerprinted API classes. No reference exists here for every other merged-archive entry or transitive dependency.",
+    "A changed archive hash is not proof that only ZIP metadata changed. The reason for the whole-archive difference is not established.",
+    "No current renderer execution, golden-vertex comparison, class-loader origin, gameplay, or GPU visual equivalence is established by this audit."
+  ],
+  "original_geometry_tasks": "NOT_EXECUTED_BY_THIS_AUDIT",
+  "original_merged_archive_sha256": "59a14efc6e5c163fe7e1374b3cf66ace00dd20f1b847ae18dd5a08aee186d0c7",
+  "original_source_zip_sha256": "8dd1dc1345cb687347d6a89abae5f30587a3dbd97a3dd31c7377da4e361c602b",
+  "selected_joml_archive_sha256": "cac9f22f83a7aa33eebda73c16ff5261e3cb4911b6bafcf4c79ea486099d0c9a",
+  "selected_merged_archive_sha256": "356dc6d331e3ca29c85be9a2cef39e7485ca654789d54f7157b8b2fe8e00f181"
+}

@@ -1,0 +1,18 @@
+[
+  "cpw/mods/fml/common/eventhandler/Event.java.txt",
+  "cpw/mods/fml/common/eventhandler/SubscribeEvent.java.txt",
+  "cn/lambdalib/util/generic/MathUtils.java.txt",
+  "cn/academy/passiveoracle/ClassicPassiveSourceOracle.java.txt",
+  "cn/academy/ability/api/Skill.java.txt",
+  "cn/academy/ability/api/data/AbilityData.java.txt",
+  "cn/academy/ability/api/event/CalcEvent.java.txt",
+  "cn/academy/ability/api/event/AbilityEvent.java.txt",
+  "cn/academy/vanilla/teleporter/passiveskill/SpaceFluctuation$.java.txt",
+  "cn/academy/vanilla/teleporter/passiveskill/DimFoldingTheorem$.java.txt",
+  "cn/academy/vanilla/generic/skill/SkillBrainCourseAdvanced.java.txt",
+  "cn/academy/vanilla/generic/skill/SkillBrainCourse.java.txt",
+  "cn/academy/vanilla/generic/skill/SkillMindCourse.java.txt",
+  "net/minecraft/entity/Entity.java.txt",
+  "net/minecraft/entity/player/EntityPlayer.java.txt",
+  "net/minecraftforge/common/MinecraftForge.java.txt"
+]

@@ -1,0 +1,10 @@
+Internal development reference assets supplied by the user on 2026-10-09.
+Source: ACA_VFX2_Workspace_Reference_2026-10-09.zip
+Archive SHA256: 1c7edf47eb3c78fd670eb9b652925c68330fa2177554285e9c3ff19b378ddeb0
+beam_core_strip.png, beam_halo_strip.png and loopable_noise.png are copied byte-for-byte.
+loopable_noise.png SHA256: e61402fa1d9b14830d136068f6c685ac06da35fc9561f530cdeab3c34e12a2f1
+The reference author describes these as independently program-generated concept textures.
+No standalone redistribution license was supplied; internal prototype use only.
+Classic AcademyCraft textures, attribution, LICENSE and NOTICE remain unchanged.
+The actual source strips have white RGB and authored alpha; the reference contact sheet previews them with a cyan tint. The scoped shader samples intensity/alpha with the original warm Railgun tint.
+The 256x256 grayscale loopable noise is sampled as bounded data only by the MEDIUM inner-core material; its opaque PNG alpha is not a beam mask. The original cylinder vertices, warm colors and age-based alpha remain the material inputs. Texture wrap is explicitly periodic in the shader.

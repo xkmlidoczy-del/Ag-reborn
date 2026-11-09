@@ -1,0 +1,20 @@
+AcademyCraft m13 raw singleplayer scene index | 2026-10-01 UTC
+
+Private incomplete classic1.0.7 -> Minecraft1.21.1 / NeoForge21.1.252. Integrated17/35 controllable paths,18 remain. Silent raw H264 MP41046x720 nominal30fps; no narration/watermark/montage/timing edits. All five successful45s clips fully decode and have inspected nonblack frames. Audio unavailable(OpenAL); source pixel/audio parity not claimed.
+
+Fixture boundary: retained truly crafted developer/Solar/node and genuinely earned m12 skills reused. Core setup declares Lv3/mature Scatter/Shield0.8; mining setup declares mature already GUI-earned Meltdowner0.3. Neither target skill nor machine energy is granted. Bounded stone/NPC test targets and camera teleports are declared QA setup. Original raw materials/prerequisite grinding are not claimed natural. Actual player is Survival(type0,instabuild0), though the older controlled world's default creation label is Creative.
+
+1. academycraft-m13-cold-earned-state-and-font.mp4 |45s
+   Raw fresh-JVM retained world. Around20s V hold shows CP/OL with corrected original no-alpha-test font, then native inventory tooltip retains2200/10000IF. R/F and both learned m12 starter tree verified separately before any new fixture.
+2. academycraft-m13-genuine-normal-core-learning.mp4 |45s
+   Initial unlearned Meltdowner Normal card, real physical Learn around19s, native source seven21tick stimulation then Develop Successful. Retained Current Node Unnamed and power visible. Source estimate4900IF vs actual5145IF covered by exact finite native menu regression; live network replenishes power.
+3. academycraft-m13-core-beam-physical-use.mp4 |45s
+   Original manual R mapping. Around25..28s physical2300ms R hold; around28..31s released green composite wide beam, red native NPC damage, actual stone-wall hole and native cobblestone drops. Damage/terrain are native gameplay, not commands/explosion footage. Actual game ticks govern charge, not nominal wall-clock assumptions.
+4. academycraft-m13-genuine-normal-mining-learning.mp4 |45s
+   Initial unlearned Basic Mining Ray Normal card, real physical Learn around17s, source stimulation and Develop Successful. Only mature already-learned Meltdowner prerequisite was declared; target not granted. Manual F mapping follows, separately screenshot-verified.
+5. academycraft-m13-basic-mining-held-and-drops.mp4 |45s
+   Around24..28s physical F hold renders continuous green beam, progressively removes three native stone blocks and produces native cobblestone item entities. Camera-only pitch/height adjustment is disclosed. Walking forward afterward physically collects exactlythree cobblestone and vanilla Stone Age; native inventory screenshot/closed NBT proves count. Pickup itself is after raw capture, not claimed present in this clip.
+
+Two retained local attempts (model-only60s, mining-aim-only45s) contain no successful cast and are excluded from representative delivery. Initial labels were corrected; source timestamps/index, not planned filenames, determine evidence.
+
+Client saved all dimensions and exited0. Closed world preserves genuine target learning, Basic earned EXP.001500000071246177, authentic2200IF,3cobblestone and R/F. Stored .3/.8 mastery values are declared prerequisite seeds. True new-JVM reload of new core targets is pending; observed cold reload above concerns m12 starters. Pristine normal-survival material/category/root workflow is the next validation, with no seeded materials/mastery/power or location commands intended.

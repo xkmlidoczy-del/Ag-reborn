@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "result": {
+    "id": "academy:terminal_installer",
+    "count": 1
+  },
+  "pattern": [
+    "ABA",
+    "CDC",
+    "EFE"
+  ],
+  "key": {
+    "A": {
+      "item": "academy:data_chip"
+    },
+    "B": {
+      "item": "minecraft:glass_pane"
+    },
+    "C": {
+      "tag": "c:plates/iron"
+    },
+    "D": {
+      "item": "academy:brain_component"
+    },
+    "E": {
+      "item": "academy:info_component"
+    },
+    "F": {
+      "tag": "c:storage_blocks/redstone"
+    }
+  }
+}

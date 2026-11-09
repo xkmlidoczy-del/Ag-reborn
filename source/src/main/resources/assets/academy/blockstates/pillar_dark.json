@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=y": {
+      "model": "academy:block/pillar_dark"
+    },
+    "axis=z": {
+      "model": "academy:block/pillar_dark",
+      "x": 90
+    },
+    "axis=x": {
+      "model": "academy:block/pillar_dark",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

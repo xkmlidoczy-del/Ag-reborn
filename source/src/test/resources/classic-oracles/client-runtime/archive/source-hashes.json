@@ -1,0 +1,68 @@
+[
+  {
+    "canonical": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/context/ClientRuntime.java",
+    "copied": "oracle/original/src/main/java/cn/academy/ability/api/context/ClientRuntime.java",
+    "sha256": "c5ad216e600569e2b4732d75244d79d57dbfeafe158ad358b63f74cf8db2a05d",
+    "compiled": true
+  },
+  {
+    "canonical": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/context/KeyDelegate.java",
+    "copied": "oracle/original/src/main/java/cn/academy/ability/api/context/KeyDelegate.java",
+    "sha256": "a330a5379ad89828b3b4b8364c62cd865d216cc2b3d59499bf1dd01fcf198bdf",
+    "compiled": true
+  },
+  {
+    "canonical": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/AbilityEvent.java",
+    "copied": "oracle/original/src/main/java/cn/academy/ability/api/event/AbilityEvent.java",
+    "sha256": "c096901f6ad91d86433a35700470bdc3eb286fb6b0ba367f4aa357c2c1f9654f",
+    "compiled": true
+  },
+  {
+    "canonical": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/PresetSwitchEvent.java",
+    "copied": "oracle/original/src/main/java/cn/academy/ability/api/event/PresetSwitchEvent.java",
+    "sha256": "6702d4258bece0f9f6ae7744a8421b18dc73f1b608ab36fa3f9b9f76a48258d6",
+    "compiled": true
+  },
+  {
+    "canonical": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/PresetUpdateEvent.java",
+    "copied": "oracle/original/src/main/java/cn/academy/ability/api/event/PresetUpdateEvent.java",
+    "sha256": "ec093f2758027e1bca67143855f11a6d6630fceb3b5e9647597a2f393e3ab9a1",
+    "compiled": true
+  },
+  {
+    "canonical": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/AbilityActivateEvent.java",
+    "copied": "oracle/original/src/main/java/cn/academy/ability/api/event/AbilityActivateEvent.java",
+    "sha256": "dbeb149c6cda24e4fbcb234f415a9984190ab4cbf5da1912288b71128a43b2ce",
+    "compiled": true
+  },
+  {
+    "canonical": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/AbilityDeactivateEvent.java",
+    "copied": "oracle/original/src/main/java/cn/academy/ability/api/event/AbilityDeactivateEvent.java",
+    "sha256": "7bbc73c3214ff8550c2849ea379795ffbb16165fb0db6a6a388bf5137a9f9e04",
+    "compiled": true
+  },
+  {
+    "canonical": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/FlushControlEvent.java",
+    "copied": "oracle/original/src/main/java/cn/academy/ability/api/event/FlushControlEvent.java",
+    "sha256": "ec880022d09dead4a51256d2d5196ecb7994b913785d7ad5aca98dc9b55f4289",
+    "compiled": true
+  },
+  {
+    "canonical": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/ability/api/ctrl/KeyDelegates.scala",
+    "copied": "oracle/witnesses/src/main/scala/cn/academy/ability/api/ctrl/KeyDelegates.scala",
+    "sha256": "33ef594c57d687914c36994f192bb5c0110c2058d563d841208dadd6d31e6532",
+    "compiled": false
+  },
+  {
+    "canonical": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/data/CPData.java",
+    "copied": "oracle/witnesses/src/main/java/cn/academy/ability/api/data/CPData.java",
+    "sha256": "6ef3a87f06fa86e422b183d379c07093366bf60b89057adc94c01cb9088324c3",
+    "compiled": false
+  },
+  {
+    "canonical": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/context/Context.java",
+    "copied": "oracle/witnesses/src/main/java/cn/academy/ability/api/context/Context.java",
+    "sha256": "683a69621d92c6d9d7c731c816edee0bddd7680e8c3d3b5b70a078e3fc04d98a",
+    "compiled": false
+  }
+]

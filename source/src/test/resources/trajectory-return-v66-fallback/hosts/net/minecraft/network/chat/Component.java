@@ -1,0 +1,1 @@
+package net.minecraft.network.chat;public final class Component {public static Component literal(String value){throw new AssertionError("chat outside renderer proof");}public static Component translatable(String s,Object...v){throw new AssertionError("chat rendering outside renderer proof");}}

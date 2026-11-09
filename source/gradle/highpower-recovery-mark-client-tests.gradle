@@ -1,0 +1,12 @@
+// NEW323 genuine classic Post dispatch, persistent receipt ownership, and bounded precision-safe VFX.
+['recoveryMarkInputTest':'cn.academy.port.client.RecoveryMarkInputRegressionTest',
+ 'recoveryMarkVisualTest':'cn.academy.port.client.RecoveryMarkVisualRegressionTest',
+ 'recoveryMarkDispatchTest':'cn.academy.port.client.RecoveryMarkDispatchRegressionTest'].each { taskName, className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+    }
+    tasks.named('check') { dependsOn taskName }
+}

@@ -1,0 +1,5 @@
+{
+  "criteria": {"cast": {"trigger": "minecraft:impossible"}},
+  "requirements": [["cast"]],
+  "parent": "academy:electromaster/body_intensify"
+}

@@ -1,0 +1,1 @@
+package cn.lambdalib.core;public class LambdaLib{public static final Log log=new Log();public static final Channel channel=new Channel();public static class Log{public void error(String s){throw new AssertionError(s);}}public static class Channel{public void sendToServer(Object value){}}}

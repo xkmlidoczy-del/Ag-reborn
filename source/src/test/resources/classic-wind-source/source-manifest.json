@@ -1,0 +1,182 @@
+[
+  {
+    "fixture": "java/cn/academy/energy/block/wind/TileWindGenBase.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/block/wind/TileWindGenBase.java",
+    "sha256": "f962cc9a26b3d7b3fdb2c68f3d9c4e1d27807ba7f68700e157cfbe0f64d88725"
+  },
+  {
+    "fixture": "java/cn/academy/energy/block/wind/TileWindGenMain.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/block/wind/TileWindGenMain.java",
+    "sha256": "14abfd6449d128872cb3ee78c1c492b696af286dd46a566d307529b0d13a14e2"
+  },
+  {
+    "fixture": "java/cn/academy/energy/block/wind/WindGenerator.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/block/wind/WindGenerator.java",
+    "sha256": "fd708fdca4e25941c1c240a06990e4c8f5ac3da99c8670c038c9a92a6cc13c71"
+  },
+  {
+    "fixture": "java/cn/academy/core/block/TileGeneratorBase.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/core/block/TileGeneratorBase.java",
+    "sha256": "21669f5fdb7684452fec12cb8e0384731b543ff8bda27c6d22fbacc122c6207a"
+  },
+  {
+    "fixture": "java/cn/academy/core/tile/TileInventory.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/core/tile/TileInventory.java",
+    "sha256": "748835f0402b366cc000bc64193245eeeb50b7047dea65d7430401c9e4df245e"
+  },
+  {
+    "fixture": "java/cn/academy/energy/api/IFItemManager.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/api/IFItemManager.java",
+    "sha256": "3d5ebf467392ba53c8741c03a44c7f18feebb679e0011866a4768d84171dfed7"
+  },
+  {
+    "fixture": "java/cn/academy/energy/IFConstants.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/IFConstants.java",
+    "sha256": "55079b4e5dbefab7de2ac9c62386642211d5a281bc0cf450bd6fb90cbe860e24"
+  },
+  {
+    "fixture": "java/cn/lambdalib/multiblock/BlockMulti.java",
+    "reference": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/multiblock/BlockMulti.java",
+    "sha256": "00b4580b85cbec7673a178d7dfe7fb5f2e81a4d7bbba0e6ea60766bd20824f99"
+  },
+  {
+    "fixture": "java/cn/lambdalib/multiblock/InfoBlockMulti.java",
+    "reference": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/multiblock/InfoBlockMulti.java",
+    "sha256": "38c6dd4825dc458ce3eaf3693d29c4d4a1201cd36bd72132c62c6943377b8ae0"
+  },
+  {
+    "fixture": "java/cn/lambdalib/multiblock/IMultiTile.java",
+    "reference": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/multiblock/IMultiTile.java",
+    "sha256": "c369dbf862086140fe6b99ae1214617b2b92161fa29fa1278a60a04fc4c30307"
+  },
+  {
+    "fixture": "java/cn/lambdalib/util/generic/MathUtils.java",
+    "reference": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/generic/MathUtils.java",
+    "sha256": "e80c87ca15cbae89584bd9e1111e22d2f55866bf91b434c8813c20bb98176075"
+  },
+  {
+    "fixture": "java/cn/lambdalib/util/helper/TickScheduler.java",
+    "reference": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/helper/TickScheduler.java",
+    "sha256": "1dc6b67f01253e10ed7d212bc897d595fbaae15bd4784f468044d6ebb8fe5f32"
+  },
+  {
+    "fixture": "witness/BlockWindGenBase.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/block/wind/BlockWindGenBase.java",
+    "sha256": "a398a8bfcedbca6e68c6029cefbfbc9db3e51d415f013553966a02342c1e85c2"
+  },
+  {
+    "fixture": "witness/BlockWindGenMain.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/block/wind/BlockWindGenMain.java",
+    "sha256": "6b55b7db67d461d069ea62e03ffc976f22792d7fdf79b31be56b7ae97678d1fe"
+  },
+  {
+    "fixture": "witness/BlockWindGenPillar.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/block/wind/BlockWindGenPillar.java",
+    "sha256": "716ad9c7ce9e20c1fa114acf31bbf30264749bd20f3aea21349869eb708c8b19"
+  },
+  {
+    "fixture": "witness/TileWindGenPillar.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/block/wind/TileWindGenPillar.java",
+    "sha256": "b8bff3f35048dce166001b69004a51aada299fd5abcbbad1511a142971e2f0a3"
+  },
+  {
+    "fixture": "witness/ContainerWindGenBase.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/block/wind/ContainerWindGenBase.java",
+    "sha256": "e772a9f929957f178f476a50033d8061f088fe34eeb404b2edd1e0060fd0ce22"
+  },
+  {
+    "fixture": "witness/ContainerWindGenMain.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/block/wind/ContainerWindGenMain.java",
+    "sha256": "e124f235ae284959352d01ab952cc943121d35d4cccba3fbfb4b72ca97ceebf3"
+  },
+  {
+    "fixture": "witness/SlotFan.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/block/wind/SlotFan.java",
+    "sha256": "a5b19803e2b3c1f8007afe9edf87d46d328a99cdfab34285add6beb750fd5df8"
+  },
+  {
+    "fixture": "witness/RenderWindGenBase.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/client/render/block/RenderWindGenBase.java",
+    "sha256": "e8d0c3dcadbd6b2fcb68a31c1c37c2312c68dbaa49f726d0daacb89cc1f9ea8c"
+  },
+  {
+    "fixture": "witness/RenderWindGenMain.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/client/render/block/RenderWindGenMain.java",
+    "sha256": "81a35ca9cf4dcedefd6bf9728981899e32625e14e898c4f9e4a27161ad864c9b"
+  },
+  {
+    "fixture": "witness/RenderWindGenPillar.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/client/render/block/RenderWindGenPillar.java",
+    "sha256": "74be101e0795a2694507be03eed646ba6b07a4e0c7b3b16be8ce4a5e786e1566"
+  },
+  {
+    "fixture": "witness/GuiWindGenBase.scala",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/energy/client/ui/GuiWindGenBase.scala",
+    "sha256": "8fbb673ecb4b2b149ee700ed0d3ed4ebfbae2d2657e22309d664d1ec503bc4af"
+  },
+  {
+    "fixture": "witness/GuiWindGenMain.scala",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/energy/client/ui/GuiWindGenMain.scala",
+    "sha256": "b9a7937b18bbc2c1524b7f80dbf12828c088f7bc7e8f2e2422a24c0d710f1153"
+  },
+  {
+    "fixture": "witness/ACBlockMulti.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/core/block/ACBlockMulti.java",
+    "sha256": "e5d8b4707adfbf46268385de2021c4d6fb1f950e1cdc7dbec7a1df8be62305cd"
+  },
+  {
+    "fixture": "witness/ModuleEnergy.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/ModuleEnergy.java",
+    "sha256": "fc38533a5d7f38114823471d53ac7f259501543585b8f7241a6b2753bb80598e"
+  },
+  {
+    "fixture": "witness/NodeConn.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/internal/NodeConn.java",
+    "sha256": "3f1b7f21cc91c14f9525650237ae7f3613f6d827e6fdd60ce5493b262e0bef3b"
+  },
+  {
+    "fixture": "witness/TechUI.scala",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/core/client/ui/TechUI.scala",
+    "sha256": "5a10ef61d2068e7677a47953f4e044db2200abde8e74727666b4315f5511ffc1"
+  },
+  {
+    "fixture": "witness/default.recipe",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/recipes/default.recipe",
+    "sha256": "a9dc4aa3477ad246f7cb9bb6bea3c33e033aaa8431f3c8a03acaf0845374da1f"
+  },
+  {
+    "fixture": "witness/page_windbase.xml",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/guis/rework/page_windbase.xml",
+    "sha256": "e6f87f31938b1e1c3fc89b5cbdb53898d2f177935ff1f20da2739eac31415056"
+  },
+  {
+    "fixture": "witness/page_inv.xml",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/guis/rework/page_inv.xml",
+    "sha256": "9d9bd5c2fe179a235bab17db0a8789d14339fcc163fe05ff2529adc6a1d1644d"
+  },
+  {
+    "fixture": "witness/ItemBlockMulti.java",
+    "reference": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/multiblock/ItemBlockMulti.java",
+    "sha256": "8bd81de4f745599ebbca7e432b637de6643e6be4a226158a07c406f31f346a12"
+  },
+  {
+    "fixture": "witness/RenderBlockMulti.java",
+    "reference": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/multiblock/RenderBlockMulti.java",
+    "sha256": "ff8c83a79cd36784ebf42b5b70ed7a8bd4f000271799f7ebaa94b60d0d44a2ad"
+  },
+  {
+    "fixture": "witness/RenderTileEntityModel.java",
+    "reference": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/template/client/render/block/RenderTileEntityModel.java",
+    "sha256": "503702c1f60d20a23b8f067a4da910c143e33c2fab6c1d032c686180f8a2afd0"
+  },
+  {
+    "fixture": "java/cn/academy/energy/client/render/block/RenderWindGenMain.java",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/client/render/block/RenderWindGenMain.java",
+    "sha256": "81a35ca9cf4dcedefd6bf9728981899e32625e14e898c4f9e4a27161ad864c9b"
+  },
+  {
+    "fixture": "java/cn/lambdalib/multiblock/RenderBlockMulti.java",
+    "reference": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/multiblock/RenderBlockMulti.java",
+    "sha256": "ff8c83a79cd36784ebf42b5b70ed7a8bd4f000271799f7ebaa94b60d0d44a2ad"
+  }
+]

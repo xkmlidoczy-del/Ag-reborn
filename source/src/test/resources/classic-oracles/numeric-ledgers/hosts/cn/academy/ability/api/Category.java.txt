@@ -1,0 +1,5 @@
+/* Test-only platform host; numeric algorithms remain in unchanged source. */
+package cn.academy.ability.api;
+public class Category {
+ public final java.util.List<Skill> skills=new java.util.ArrayList<>();public float progressRate=1; public int getCategoryID(){return 0;}public java.util.List<Skill> getSkillList(){return skills;}public int getSkillCount(){return skills.size();}public float getProgIncrRate(){return progressRate;}
+}

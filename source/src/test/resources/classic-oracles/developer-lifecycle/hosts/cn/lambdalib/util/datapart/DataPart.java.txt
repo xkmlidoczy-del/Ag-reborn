@@ -1,0 +1,7 @@
+/* Test-only platform host; numeric algorithms remain in unchanged source. */
+package cn.lambdalib.util.datapart;
+public class DataPart<T> {
+ public T entity; public T getEntity(){return entity;} public void setTick(boolean b){}public void setClientNeedSync(){}public void setNBTStorage(){}
+ public boolean isClient(){return false;}public void checkSide(cpw.mods.fml.relauncher.Side s){}public boolean checkSideSoft(cpw.mods.fml.relauncher.Side s){return s==cpw.mods.fml.relauncher.Side.SERVER;}
+ public void setClearOnDeath(){}protected void onSynchronized(){}protected void debug(Object... args){}public void sync(){}public void sendMessage(Object... a){}public void sendToLocal(Object... a){}public void wake(){}public void tick(){}public void toNBT(net.minecraft.nbt.NBTTagCompound t){}public void fromNBT(net.minecraft.nbt.NBTTagCompound t){}
+}

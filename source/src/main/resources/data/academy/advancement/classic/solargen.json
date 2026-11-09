@@ -1,0 +1,13 @@
+{
+  "criteria": {
+    "award": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "award"
+    ]
+  ],
+  "parent": "academy:classic/phasegen"
+}

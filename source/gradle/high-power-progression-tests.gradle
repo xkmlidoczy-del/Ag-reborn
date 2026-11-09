@@ -1,0 +1,8 @@
+// Additive high-power progression; canonical source oracles remain separate.
+tasks.register('highPowerProgressionTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.HighPowerProgressionRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerProgressionTest' }

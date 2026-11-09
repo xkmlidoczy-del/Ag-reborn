@@ -1,0 +1,1 @@
+package net.minecraft.util;public record ResourceLocation(String namespace,String path) {public ResourceLocation(String text){this(text.contains(":")?text.split(":",2)[0]:"minecraft",text.contains(":")?text.split(":",2)[1]:text);}}

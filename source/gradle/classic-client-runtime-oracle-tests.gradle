@@ -1,0 +1,16 @@
+// Unchanged classic Java/declared-host oracle against actual current main coordinator class resources.
+tasks.register('classicClientRuntimeSourceOracleTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.ClassicClientRuntimeSourceOracleTest'
+    enableAssertions = true
+    doFirst {
+        def source = layout.projectDirectory.file('src/main/java/cn/academy/port/client/ClassicClientRuntimeCoordinator.java').asFile
+        def hash = java.security.MessageDigest.getInstance('SHA-256').digest(source.bytes).encodeHex().toString()
+        systemProperty 'academy.runtime.project.dir', projectDir.canonicalPath
+        systemProperty 'academy.runtime.main.classes', tasks.named('compileJava', JavaCompile).get().destinationDirectory.get().asFile.canonicalPath
+        systemProperty 'academy.runtime.main.source.sha256', hash
+        systemProperty 'academy.runtime.oracle.report', layout.buildDirectory.dir('reports/classic-client-runtime-source-oracle').get().asFile.absolutePath
+    }
+}
+tasks.named('check') { dependsOn 'classicClientRuntimeSourceOracleTest' }

@@ -1,0 +1,22 @@
+// Actual compileJava ClassResources and a closed fixture; no game bootstrap or class hosts.
+tasks.register('classicChargingGeometryTest', JavaExec) {
+    dependsOn compileJava, processResources, testClasses
+    def geometryApi = layout.buildDirectory.file('moddev/artifacts/neoforge-21.1.252-merged.jar')
+    // Explicit priority avoids selecting ModDev's differently packaged slim archive.
+    classpath = files(geometryApi) + sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.ClassicChargingGeometryClassResourcesTest'
+    enableAssertions = true
+    maxHeapSize = '256m'
+    doFirst {
+        def digest = { File file -> java.security.MessageDigest.getInstance('SHA-256').digest(file.bytes).encodeHex().toString() }
+        systemProperty 'academy.charging.project.dir', project.projectDir.canonicalPath
+        systemProperty 'academy.charging.main.classes', tasks.named('compileJava').get().destinationDirectory.get().asFile.canonicalPath
+        systemProperty 'academy.charging.main.resources', sourceSets.main.output.resourcesDir.canonicalPath
+        systemProperty 'academy.charging.api.minecraft.jar', geometryApi.get().asFile.canonicalPath
+        systemProperty 'academy.charging.source.effects.sha256', digest(file('src/main/java/cn/academy/port/client/ClassicChargingEffects.java'))
+        systemProperty 'academy.charging.source.geometry.sha256', digest(file('src/main/java/cn/academy/port/client/ClassicArcGeometry.java'))
+        systemProperty 'academy.charging.source.timeline.sha256', digest(file('src/main/java/cn/academy/port/client/ClassicChargingTimeline.java'))
+        systemProperty 'academy.charging.report', layout.buildDirectory.dir('reports/classic-charging-geometry').get().asFile.absolutePath
+    }
+}
+tasks.named('check') { dependsOn 'classicChargingGeometryTest' }

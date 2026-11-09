@@ -1,0 +1,180 @@
+{
+  "academy_revision": "00d19ec0cf538f61c1095c9292f5ee6863db4521",
+  "lambdalib_version": "1.2.3",
+  "files": [
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/develop/action/IDevelopAction.java",
+      "fixture": "source/cn/academy/ability/develop/action/IDevelopAction.java.txt",
+      "sha256": "0a7e39e206e2df16594a9b7c94a234b3b4f6d6b0a0d7520f1b64ba89dec3aee9",
+      "compiled": true
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/develop/action/DevelopActionReset.java",
+      "fixture": "source/cn/academy/ability/develop/action/DevelopActionReset.java.txt",
+      "sha256": "1097884be881c6851818a834b757c83eadaa0d7b1c025ed85d8e0fb4327a019c",
+      "compiled": true
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/develop/action/DevelopActionLevel.java",
+      "fixture": "source/cn/academy/ability/develop/action/DevelopActionLevel.java.txt",
+      "sha256": "44b6f2b236454ecf04e85f113e1ec876832f5ddcd60d34fba2351317a438f9a5",
+      "compiled": true
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/data/CPData.java",
+      "fixture": "source/cn/academy/ability/api/data/CPData.java.txt",
+      "sha256": "6ef3a87f06fa86e422b183d379c07093366bf60b89057adc94c01cb9088324c3",
+      "compiled": true
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/data/AbilityData.java",
+      "fixture": "source/cn/academy/ability/api/data/AbilityData.java.txt",
+      "sha256": "a2be759d022d4992bbbba1cfc6e1fa3874015a8f615445864f65f62c250f126e",
+      "compiled": true
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/OverloadEvent.java",
+      "fixture": "source/cn/academy/ability/api/event/OverloadEvent.java.txt",
+      "sha256": "01125823dbc66ace71781e859c68fbb6d2f6456ac966727d675da6678dfcf13c",
+      "compiled": true
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/SkillExpAddedEvent.java",
+      "fixture": "source/cn/academy/ability/api/event/SkillExpAddedEvent.java.txt",
+      "sha256": "e2e2a5562c259faf970a860442cb0af336b3660a4d0264dc87b55b883914d388",
+      "compiled": true
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/AbilityActivateEvent.java",
+      "fixture": "source/cn/academy/ability/api/event/AbilityActivateEvent.java.txt",
+      "sha256": "dbeb149c6cda24e4fbcb234f415a9984190ab4cbf5da1912288b71128a43b2ce",
+      "compiled": true
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/SkillLearnEvent.java",
+      "fixture": "source/cn/academy/ability/api/event/SkillLearnEvent.java.txt",
+      "sha256": "e655da809f578a1370ce9e750c90316d78e94b6d1b943fda82a8583b55d903b0",
+      "compiled": true
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/CategoryChangeEvent.java",
+      "fixture": "source/cn/academy/ability/api/event/CategoryChangeEvent.java.txt",
+      "sha256": "80bd81523812dc8b43a22a068d969764d7177b1b1f0d085168d9008183438b4a",
+      "compiled": true
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/AbilityDeactivateEvent.java",
+      "fixture": "source/cn/academy/ability/api/event/AbilityDeactivateEvent.java.txt",
+      "sha256": "7bbc73c3214ff8550c2849ea379795ffbb16165fb0db6a6a388bf5137a9f9e04",
+      "compiled": true
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/LevelChangeEvent.java",
+      "fixture": "source/cn/academy/ability/api/event/LevelChangeEvent.java.txt",
+      "sha256": "72b765e3dc1cf772ff27500024e674bf8c79749d72aa38e192097654344b6fbf",
+      "compiled": true
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/CalcEvent.java",
+      "fixture": "source/cn/academy/ability/api/event/CalcEvent.java.txt",
+      "sha256": "45cf7ef4ab13a1d3e29d467aa4b1aa9e3b800a883b96496f88cbffcee7ce1dc3",
+      "compiled": true
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/AbilityEvent.java",
+      "fixture": "source/cn/academy/ability/api/event/AbilityEvent.java.txt",
+      "sha256": "c096901f6ad91d86433a35700470bdc3eb286fb6b0ba367f4aa357c2c1f9654f",
+      "compiled": true
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/SkillExpChangedEvent.java",
+      "fixture": "source/cn/academy/ability/api/event/SkillExpChangedEvent.java.txt",
+      "sha256": "19984b460d037ac483afe8f2e6741b59dde44251643fe773d0e408e9bf08ba56",
+      "compiled": true
+    },
+    {
+      "source": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/generic/MathUtils.java",
+      "fixture": "source/cn/lambdalib/util/generic/MathUtils.java.txt",
+      "sha256": "e80c87ca15cbae89584bd9e1111e22d2f55866bf91b434c8813c20bb98176075",
+      "compiled": true
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/data/PresetData.java",
+      "fixture": "witnesses/cn/academy/ability/api/data/PresetData.java.txt",
+      "sha256": "f375a767a7d19b6d02c3f2de8c7cf3fc472a80b75d646c85df1fe7c7e8d9a6bd",
+      "compiled": false
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/cooldown/CooldownData.java",
+      "fixture": "witnesses/cn/academy/ability/api/cooldown/CooldownData.java.txt",
+      "sha256": "2945da5d8d76cb5f230ca5428003aae5bb46138a0787138e3f0f51c7ffa7fc10",
+      "compiled": false
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/context/ContextManager.java",
+      "fixture": "witnesses/cn/academy/ability/api/context/ContextManager.java.txt",
+      "sha256": "9043b907759cb9349be438d4f75c26f790fd357280609b500010dc4ce33803e8",
+      "compiled": false
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/misc/achievements/DispatcherAch.java",
+      "fixture": "witnesses/cn/academy/misc/achievements/DispatcherAch.java.txt",
+      "sha256": "d3d382f3e374ab2d218b2522c81f4017e408a0dcbb4d7bec316b8e35c7ed6cc0",
+      "compiled": false
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/misc/achievements/aches/AchEvLevelChange.java",
+      "fixture": "witnesses/cn/academy/misc/achievements/aches/AchEvLevelChange.java.txt",
+      "sha256": "75464468571a9901e632fb00f59daf00d6126c2a7b714a49223b496199048c03",
+      "compiled": false
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/data/PresetData.java",
+      "fixture": "source/cn/academy/ability/api/data/PresetData.java.txt",
+      "sha256": "f375a767a7d19b6d02c3f2de8c7cf3fc472a80b75d646c85df1fe7c7e8d9a6bd",
+      "compiled": true
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/cooldown/CooldownData.java",
+      "fixture": "source/cn/academy/ability/api/cooldown/CooldownData.java.txt",
+      "sha256": "2945da5d8d76cb5f230ca5428003aae5bb46138a0787138e3f0f51c7ffa7fc10",
+      "compiled": true
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/PresetUpdateEvent.java",
+      "fixture": "source/cn/academy/ability/api/event/PresetUpdateEvent.java.txt",
+      "sha256": "ec093f2758027e1bca67143855f11a6d6630fceb3b5e9647597a2f393e3ab9a1",
+      "compiled": true
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/misc/achievements/DispatcherAch.java",
+      "fixture": "source/cn/academy/misc/achievements/DispatcherAch.java.txt",
+      "sha256": "d3d382f3e374ab2d218b2522c81f4017e408a0dcbb4d7bec316b8e35c7ed6cc0",
+      "compiled": true
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/misc/achievements/aches/AchEvLevelChange.java",
+      "fixture": "source/cn/academy/misc/achievements/aches/AchEvLevelChange.java.txt",
+      "sha256": "75464468571a9901e632fb00f59daf00d6126c2a7b714a49223b496199048c03",
+      "compiled": true
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/misc/achievements/aches/IAchEventDriven.java",
+      "fixture": "source/cn/academy/misc/achievements/aches/IAchEventDriven.java.txt",
+      "sha256": "ac1f97b8f14ed8959153574261c0178ae06c3497ee70c36f842c5f728c12fda1",
+      "compiled": true
+    },
+    {
+      "source": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/annoreg/core/RegistryType.java",
+      "fixture": "witnesses/cn/lambdalib/annoreg/core/RegistryType.java.txt",
+      "sha256": "718320d5d81c9cc9674396d262e05c139bba96359c8ce87f20ea2c5bc94e4578",
+      "compiled": false
+    },
+    {
+      "source": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/annoreg/mc/EventHandlerRegistration.java",
+      "fixture": "witnesses/cn/lambdalib/annoreg/mc/EventHandlerRegistration.java.txt",
+      "sha256": "cd553beba6e7443b9bc8605ebaa6708575865414bda00eb2b4d3408ec30659ea",
+      "compiled": false
+    }
+  ]
+}

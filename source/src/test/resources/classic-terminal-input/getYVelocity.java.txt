@@ -1,0 +1,3 @@
+public double getYVelocity() {
+        return this.accumulatedDY;
+    }

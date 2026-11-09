@@ -1,0 +1,1 @@
+package net.minecraft.util;public class AxisAlignedBB{public double minX,minY,minZ,maxX,maxY,maxZ;public static AxisAlignedBB getBoundingBox(double a,double b,double c,double d,double e,double f){var box=new AxisAlignedBB();box.minX=a;box.minY=b;box.minZ=c;box.maxX=d;box.maxY=e;box.maxZ=f;return box;}}

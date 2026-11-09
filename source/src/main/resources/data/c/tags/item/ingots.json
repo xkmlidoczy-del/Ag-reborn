@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "#c:ingots/constraint_metal",
+    "#c:ingots/imag_silicon"
+  ]
+}

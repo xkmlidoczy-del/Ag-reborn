@@ -1,0 +1,30 @@
+package cn.academy.port.phasegen;
+
+import com.google.gson.JsonParser;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.charset.StandardCharsets;
+
+/** Native recipe/material identity, source witness and promoted registry/tag/wireless routing checks. */
+public final class ClassicPhaseGeneratorDataRegressionTest {
+    private static int checks;
+    private static void check(boolean condition,String label){checks++;if(!condition)throw new AssertionError(label);}
+    private static byte[] resource(String name)throws Exception{try(var stream=ClassicPhaseGeneratorDataRegressionTest.class.getResourceAsStream('/'+name)){if(stream==null)throw new AssertionError("Missing resource "+name);return stream.readAllBytes();}}
+    private static String source(Path root,String path)throws Exception{return Files.readString(root.resolve(path));}
+    public static void main(String[] args)throws Exception{
+        Path root=Path.of(System.getProperty("academy.phasegen.stage","."));
+        var recipe=JsonParser.parseString(new String(resource("data/academy/recipe/classic/phase_gen_08.json"),StandardCharsets.UTF_8)).getAsJsonObject();
+        check(recipe.get("type").getAsString().equals("minecraft:crafting_shaped"),"genuine native shaped recipe");check(recipe.getAsJsonArray("pattern").toString().equals("[\"CFC\",\"M M\"]"),"source exact two-row grid");
+        for(String[] e:new String[][]{{"C","academy:crystal_low"},{"F","academy:machine_frame"},{"M","academy:matter_unit"}})check(recipe.getAsJsonObject("key").getAsJsonObject(e[0]).get("item").getAsString().equals(e[1]),"source ingredient "+e[0]);
+        check(recipe.getAsJsonObject("result").get("id").getAsString().equals("academy:phase_gen")&&recipe.getAsJsonObject("result").get("count").getAsInt()==1,"source one real generator yield");
+        String original=source(root,"src/test/resources/classic-phase-generator-source/witness/default.recipe");check(original.contains("shaped(phase_gen) {\n    [crystal0,    frame, crystal0]\n    [matter_unit, nil,   matter_unit]\n}"),"unchanged original recipe witness");
+        var loot=JsonParser.parseString(new String(resource("data/academy/loot_table/blocks/phase_gen.json"),StandardCharsets.UTF_8)).getAsJsonObject();check(loot.getAsJsonArray("pools").size()==1,"one source block lootpool");var pool=loot.getAsJsonArray("pools").get(0).getAsJsonObject();check(pool.get("rolls").getAsInt()==1&&pool.getAsJsonArray("entries").size()==1,"exact single-roll loot");check(pool.getAsJsonArray("entries").get(0).getAsJsonObject().get("name").getAsString().equals("academy:phase_gen"),"genuine generator block refund");
+        for(String tag:new String[]{"mineable/pickaxe","needs_stone_tool"}){var values=JsonParser.parseString(new String(resource("data/minecraft/tags/block/"+tag+".json"),StandardCharsets.UTF_8)).getAsJsonObject().getAsJsonArray("values");check(values.asList().stream().anyMatch(value->value.getAsString().equals("academy:phase_gen")),"source pickaxe1 tool tag "+tag);}
+        for(String locale:new String[]{"en_us","zh_cn","zh_tw","ja_jp"}){var dictionary=JsonParser.parseString(new String(resource("assets/academy/lang/"+locale+".json"),StandardCharsets.UTF_8)).getAsJsonObject();check(dictionary.get("block.academy.phase_gen").getAsString().equals(dictionary.get("tile.ac_phase_generator.name").getAsString()),"original localized block name "+locale);}
+        String registration=source(root,"src/main/java/cn/academy/port/phasegen/ClassicPhaseGenerators.java");check(registration.contains("register(\"phase_gen\"")&&registration.contains("strength(2.5f)")&&registration.contains("ClassicSolarGenerators.IMAG_FLUX"),"real identity hardness and existing generatorcapability");check(registration.contains("Capabilities.FluidHandler.BLOCK")&&registration.contains("Capabilities.ItemHandler.BLOCK")&&registration.contains("new InvWrapper(tile)"),"source native all-sided fluid/unrestricted unsidedinventory");
+        String tile=source(root,"src/main/java/cn/academy/port/phasegen/ClassicPhaseGeneratorBlockEntity.java");int generate=tile.indexOf("tile.buffer.generate();"),acquire=tile.indexOf("tile.acquireMatterUnit();"),charge=tile.indexOf("tile.buffer.charge(request->");check(generate>=0&&generate<acquire&&acquire<charge,"source generation/acquisition/charging order in actualnative adapter");check(tile.contains("++tile.energySyncTicks>=20")&&tile.contains("++tile.fluidSyncTicks>=10")&&tile.contains("publishedLiquid=tile.buffer.liquid()")&&tile.contains("publishedEnergy=tile.buffer.energy()"),"source independent before-acquisition publicationclocks");check(tile.contains("getUpdatePacket()")&&tile.contains("pendingEnergySync")&&tile.contains("pendingFluidSync")&&tile.contains("tag.contains(\"energy\")?")&&tile.contains("tag.contains(\"liquid\")?"),"native partial snapshot update preserves otherfield");
+        String protocol=source(root,"src/main/java/cn/academy/port/wireless/ClassicWirelessProtocol.java");check(protocol.contains("request.action.equals(\"open_phasegen\")")&&protocol.contains("menu.isFor(phase)")&&protocol.contains("menu.sourcePos().equals(request.target)"),"actual source wirelesspage request binds sender/menu/position/tile");check(protocol.contains("accepted=tile instanceof ImagFluxGenerator?graph.linkGenerator")&&protocol.contains("if(tile instanceof ImagFluxGenerator)graph.unlinkGenerator")&&protocol.contains("var linked=tile instanceof ImagFluxGenerator?graph.nodeForGenerator"),"native phase-generator link/unlink/snapshot follow generatorroute");check(protocol.contains("phase.getEnergy()")&&protocol.contains("\"max_energy\",6000")&&protocol.contains("phase.getBandwidth()"),"native source wireless reportcapacity");
+        check(source(root,"src/main/java/cn/academy/port/AcademyCraft.java").contains("cn.academy.port.phasegen.ClassicPhaseGenerators.register(bus);"),"real modbus registration");
+        System.out.println("ClassicPhaseGeneratorDataRegressionTest: "+checks+" native source recipe/resources/bindings/publication/wireless routing checks passed");
+    }
+}

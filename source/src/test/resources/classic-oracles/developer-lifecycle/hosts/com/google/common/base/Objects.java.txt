@@ -1,0 +1,2 @@
+/* Test-only lifecycle platform plumbing; business methods run unchanged originals. */
+package com.google.common.base;public class Objects {public static ToStringHelper toStringHelper(Object o){return new ToStringHelper();}public static class ToStringHelper{public ToStringHelper add(String name,Object value){return this;}}}

@@ -1,0 +1,349 @@
+{
+  "academyCommit": "00d19ec0cf538f61c1095c9292f5ee6863db4521",
+  "academyVersion": "classic1.0.7",
+  "lambdaLibVersion": "1.2.3",
+  "files": [
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/data/CPData.java",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/ability/api/data/CPData.java.txt",
+      "sha256": "6ef3a87f06fa86e422b183d379c07093366bf60b89057adc94c01cb9088324c3",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/ability/api/data/CPData.java.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/data/AbilityData.java",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/ability/api/data/AbilityData.java.txt",
+      "sha256": "a2be759d022d4992bbbba1cfc6e1fa3874015a8f615445864f65f62c250f126e",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/ability/api/data/AbilityData.java.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/AbilityContext.java",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/ability/api/AbilityContext.java.txt",
+      "sha256": "9830d2efcfec0e86539a8cf49f5984e1a5cf1e48e5d9b50ad6c167fd454db00a",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/ability/api/AbilityContext.java.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/Skill.java",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/ability/api/Skill.java.txt",
+      "sha256": "afc9c70de37bfb393f62ee3c9fe1d4e02cedf1c73c75f935bf9d8d5e638f698c",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/ability/api/Skill.java.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/Category.java",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/ability/api/Category.java.txt",
+      "sha256": "c85163a52d7711896d9dcd458ef80c50b587f749c8e01e882869c08974ccf563",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/ability/api/Category.java.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/CalcEvent.java",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/ability/api/event/CalcEvent.java.txt",
+      "sha256": "45cf7ef4ab13a1d3e29d467aa4b1aa9e3b800a883b96496f88cbffcee7ce1dc3",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/ability/api/event/CalcEvent.java.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/AbilityEvent.java",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/ability/api/event/AbilityEvent.java.txt",
+      "sha256": "c096901f6ad91d86433a35700470bdc3eb286fb6b0ba367f4aa357c2c1f9654f",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/ability/api/event/AbilityEvent.java.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/OverloadEvent.java",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/ability/api/event/OverloadEvent.java.txt",
+      "sha256": "01125823dbc66ace71781e859c68fbb6d2f6456ac966727d675da6678dfcf13c",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/ability/api/event/OverloadEvent.java.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/context/ContextManager.java",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/ability/api/context/ContextManager.java.txt",
+      "sha256": "9043b907759cb9349be438d4f75c26f790fd357280609b500010dc4ce33803e8",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/ability/api/context/ContextManager.java.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/config/default.conf",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/resources/assets/academy/config/default.conf.txt",
+      "sha256": "700f42a545d761872daae8dfb6e65e5e4571f947d7dcd50eb60933b0542ef824",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/resources/assets/academy/config/default.conf.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/README.md",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/README.md.txt",
+      "sha256": "6666d51532b31b3f6c1506ad1855aa22241926ffcec9f452e64e5e54285f9794",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/README.md.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/build.properties",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/build.properties.txt",
+      "sha256": "ef62fbe7d49c3863f3f2ffecdaef6a4a1ad35a852a91bb39feba2cec0b72fcca",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/build.properties.txt"
+    },
+    {
+      "reference": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/generic/MathUtils.java",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/lambdalib/src/main/java/cn/lambdalib/util/generic/MathUtils.java.txt",
+      "sha256": "e80c87ca15cbae89584bd9e1111e22d2f55866bf91b434c8813c20bb98176075",
+      "resource": "classic-oracles/shared-skill-consumption/lambdalib/src/main/java/cn/lambdalib/util/generic/MathUtils.java.txt"
+    },
+    {
+      "reference": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/s11n/network/NetworkMessage.java",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/lambdalib/src/main/java/cn/lambdalib/s11n/network/NetworkMessage.java.txt",
+      "sha256": "9147337c50f1f174dc8c2478bb8857ee0405e7e11ef6320018ec541559a11145",
+      "resource": "classic-oracles/shared-skill-consumption/lambdalib/src/main/java/cn/lambdalib/s11n/network/NetworkMessage.java.txt"
+    },
+    {
+      "reference": ".reference/LambdaLib-1.2.3/LICENSE",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/lambdalib/LICENSE.txt",
+      "sha256": "852bcc033a46c62f99fb5ffd43b3241ba2c0c440c6034aa2114505f2c4f03c4a",
+      "resource": "classic-oracles/shared-skill-consumption/lambdalib/LICENSE.txt"
+    },
+    {
+      "reference": "LICENSE",
+      "fixture": "docs/PORT-LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "resource": "classic-oracles/shared-skill-consumption/licenses/PORT-LICENSE"
+    },
+    {
+      "reference": "NOTICE",
+      "fixture": "docs/PORT-NOTICE",
+      "sha256": "3bc6b79e44b92cfd5bf574ce23a339708b1034479237150a55b5faab3ecfdaab",
+      "resource": "classic-oracles/shared-skill-consumption/licenses/PORT-NOTICE"
+    },
+    {
+      "reference": "docs/LAMBDALIB-LICENSE",
+      "fixture": "docs/PORT-LAMBDALIB-LICENSE",
+      "sha256": "852bcc033a46c62f99fb5ffd43b3241ba2c0c440c6034aa2114505f2c4f03c4a",
+      "resource": "classic-oracles/shared-skill-consumption/licenses/PORT-LAMBDALIB-LICENSE"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/electromaster/skill/ThunderClap.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/electromaster/skill/ThunderClap.scala.txt",
+      "sha256": "0f6961e3c71e70476c32d6c9a6d99075aad93ee0cf3713ec068a66e75013d622",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/electromaster/skill/ThunderClap.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/electromaster/skill/MagMovement.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/electromaster/skill/MagMovement.scala.txt",
+      "sha256": "cc50f967f1cb4af0f70aca24332e4eff5d9a6361916f11207cdab8ca960b019d",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/electromaster/skill/MagMovement.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/electromaster/skill/Railgun.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/electromaster/skill/Railgun.scala.txt",
+      "sha256": "1804381ae435209a4484a8bf91f11d65c990e712ef131f2edeb297be2ffa032b",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/electromaster/skill/Railgun.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/electromaster/skill/ArcGen.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/electromaster/skill/ArcGen.scala.txt",
+      "sha256": "410d422cc2d6750c4816c4acbd8239043f10b5b2fb5ee9f19f3724ccb0f69d10",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/electromaster/skill/ArcGen.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/electromaster/skill/MineDetect.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/electromaster/skill/MineDetect.scala.txt",
+      "sha256": "3db73f8b6d8592995a0614cdfe0c9e9198b39299c49bd94271cecb478621c289",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/electromaster/skill/MineDetect.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/electromaster/skill/CurrentCharging.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/electromaster/skill/CurrentCharging.scala.txt",
+      "sha256": "9bef9ca9a77a566773e23fc497a05f440d83f591bc2a642c869a1e96488d5069",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/electromaster/skill/CurrentCharging.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/electromaster/skill/ThunderBolt.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/electromaster/skill/ThunderBolt.scala.txt",
+      "sha256": "61f50cd79a7648b5df85f004e9f7adf020e8e5844869fd0438165e0cd527b4bc",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/electromaster/skill/ThunderBolt.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/electromaster/skill/MagManip.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/electromaster/skill/MagManip.scala.txt",
+      "sha256": "fe5fec24d6f0a2c41d9a7bc0ed3a79b2f63f97e4ba98dfc5f60be7e9775a25c3",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/electromaster/skill/MagManip.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/electromaster/skill/BodyIntensify.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/electromaster/skill/BodyIntensify.scala.txt",
+      "sha256": "dc011316fc3589aaeab0bbe75cf6228fe6556533af72632d08ea8cb8f89f85f0",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/electromaster/skill/BodyIntensify.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/meltdowner/skill/ElectronBomb.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/meltdowner/skill/ElectronBomb.scala.txt",
+      "sha256": "13025f5d06f5ed7ffa416268cf332994dd0a118dd8ea84f8d2b3b36e02ed9c61",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/meltdowner/skill/ElectronBomb.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/meltdowner/skill/MineRaysBase.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/meltdowner/skill/MineRaysBase.scala.txt",
+      "sha256": "39d791417af63ffeaaec1f57e4fbb79cc613474ba0353ffa277bb703a70922eb",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/meltdowner/skill/MineRaysBase.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/meltdowner/skill/ElectronMissile.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/meltdowner/skill/ElectronMissile.scala.txt",
+      "sha256": "417238d254ebbc37778fe30b33cac23eee3f75707faef5c32db3131430d7e786",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/meltdowner/skill/ElectronMissile.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/meltdowner/skill/Meltdowner.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/meltdowner/skill/Meltdowner.scala.txt",
+      "sha256": "286a351ca7cfd9510281e7a3369a2c6cd379f5d73df69d4cb86c1af9b4b85d33",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/meltdowner/skill/Meltdowner.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/meltdowner/skill/MineRayExpert.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/meltdowner/skill/MineRayExpert.scala.txt",
+      "sha256": "62b7b89ebedb25a6a56af23a17fa4c310cef56c78a9a73b492d8b370a4273e5d",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/meltdowner/skill/MineRayExpert.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/meltdowner/skill/ScatterBomb.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/meltdowner/skill/ScatterBomb.scala.txt",
+      "sha256": "2516cd187fab43de8336a2e64b39a8f94f70367f51bb230c0b0690f547618b87",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/meltdowner/skill/ScatterBomb.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/meltdowner/skill/MineRayBasic.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/meltdowner/skill/MineRayBasic.scala.txt",
+      "sha256": "6c45d0b528ce98447840c66a33ee6c44f7b9b82175802b8a770be3182e82b130",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/meltdowner/skill/MineRayBasic.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/meltdowner/skill/RayBarrage.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/meltdowner/skill/RayBarrage.scala.txt",
+      "sha256": "3b33f6dec68cd471cb574bd1cb768c448b411521a700d293a21a0a6ce3ca66a4",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/meltdowner/skill/RayBarrage.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/meltdowner/skill/MineRayLuck.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/meltdowner/skill/MineRayLuck.scala.txt",
+      "sha256": "ddd2773143e2a52f19407fddc023075631b37262b211d2ffe7736f47a297a8eb",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/meltdowner/skill/MineRayLuck.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/meltdowner/skill/LightShield.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/meltdowner/skill/LightShield.scala.txt",
+      "sha256": "0891d76f017957b1a49010463fb39304b2fcb58de650df8853a78d44c67e71be",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/meltdowner/skill/LightShield.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/meltdowner/skill/JetEngine.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/meltdowner/skill/JetEngine.scala.txt",
+      "sha256": "1d02e6d3fe43cbf125c32a674919fb760807c67070fab4a97648d27f2c1b86ef",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/meltdowner/skill/JetEngine.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/teleporter/skill/ThreateningTeleport.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/teleporter/skill/ThreateningTeleport.scala.txt",
+      "sha256": "c7e8ff634ac92fad0aa012e8a2b8bc061b4730d3ae7b8937f237abee776efd65",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/teleporter/skill/ThreateningTeleport.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/teleporter/skill/FleshRipping.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/teleporter/skill/FleshRipping.scala.txt",
+      "sha256": "d2955c7d9d17cd846692e8ccfff5ef8c1da8f6c803cd4e723da49d5ff182cf83",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/teleporter/skill/FleshRipping.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/teleporter/skill/MarkTeleport.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/teleporter/skill/MarkTeleport.scala.txt",
+      "sha256": "6ccb8e8598971de41ee31680879d5f9d3a8e3df2d74f880451288c5105840f44",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/teleporter/skill/MarkTeleport.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/teleporter/skill/PenetrateTeleport.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/teleporter/skill/PenetrateTeleport.scala.txt",
+      "sha256": "4bfed1f8e1bc9cb5eee5a52ea77ed0099502d009a0e307b627ec3020ce52fb12",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/teleporter/skill/PenetrateTeleport.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/teleporter/skill/LocationTeleport.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/teleporter/skill/LocationTeleport.scala.txt",
+      "sha256": "b5e24c842e4efe49a52ab29c16005363a8b99f260badfdd68bf36122e809e1d5",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/teleporter/skill/LocationTeleport.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/teleporter/skill/ShiftTeleport.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/teleporter/skill/ShiftTeleport.scala.txt",
+      "sha256": "42917e5e68bae8dad11fd7f644e9058a1bd5328393faadd6da872dc712e9bc6b",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/teleporter/skill/ShiftTeleport.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/vecmanip/skill/Groundshock.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/Groundshock.scala.txt",
+      "sha256": "0fb1aa8ff7e73b13fbecc80706f3926539274c3d13a3c46960c276a6d6657671",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/Groundshock.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/vecmanip/skill/StormWing.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/StormWing.scala.txt",
+      "sha256": "979bfaa893d962b006fb091dd267bb840bb48c0ee59678fad2501e1d6742f097",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/StormWing.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/vecmanip/skill/BloodRetrograde.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/BloodRetrograde.scala.txt",
+      "sha256": "9b65735f6614f750592b4cdd88604904215d7adc9f006fd87650bc717afe8817",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/BloodRetrograde.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/vecmanip/skill/VecReflection.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/VecReflection.scala.txt",
+      "sha256": "223b162a686e32facb5d9433bd9cfc31062bb4a72012e76457129e219ae86f17",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/VecReflection.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/vecmanip/skill/VecAccel.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/VecAccel.scala.txt",
+      "sha256": "ab1e0ec582818fd9d91c0e96d1830f147f849c2257e6003a6ec34b91ab5f2df3",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/VecAccel.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/vecmanip/skill/VecDeviation.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/VecDeviation.scala.txt",
+      "sha256": "19c3468244ecbb22de48fd09ab0b34f0aea10b00d4839f78539fd54cb648a193",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/VecDeviation.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/vecmanip/skill/DirectedBlastwave.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/DirectedBlastwave.scala.txt",
+      "sha256": "17dd7552fcb7eeb27778369f3a9b5400d84c04b2af1ae9f81f1ac85238862ce9",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/DirectedBlastwave.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/vecmanip/skill/EntityAffection.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/EntityAffection.scala.txt",
+      "sha256": "cb725ee2b4b5b4c824462e365945ee89bdfa8a70aa62d918ea6c1443f8e62a1c",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/EntityAffection.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/vecmanip/skill/VMSkillHelper.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/VMSkillHelper.scala.txt",
+      "sha256": "4cb084e9e038c98fbdacfe3cc1052dc598b786edfd45e939ba6c3e57e0af0ed3",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/VMSkillHelper.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/vecmanip/skill/PlasmaCannon.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/PlasmaCannon.scala.txt",
+      "sha256": "70c18a053976635843eb65b6ead78614dfbee59e0db6298e00adc3f1b150e760",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/PlasmaCannon.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/vecmanip/skill/DirectedShock.scala",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/DirectedShock.scala.txt",
+      "sha256": "e01f0987800840a4d03833529298909dbb3b7d09a223d1fb1da29c8a1482c249",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/DirectedShock.scala.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/teleporter/skill/Flashing.java",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/vanilla/teleporter/skill/Flashing.java.txt",
+      "sha256": "77d5caf7dbf724e60e352706fef500f0cb388774020cef803160cfcaeff39450",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/vanilla/teleporter/skill/Flashing.java.txt"
+    },
+    {
+      "reference": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/teleporter/util/TPSkillHelper.java",
+      "fixture": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/vanilla/teleporter/util/TPSkillHelper.java.txt",
+      "sha256": "eabc8ff27c3332b7f846eb24377ed5c50a2e32feb35d17cb25bbe6dbd008446c",
+      "resource": "classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/vanilla/teleporter/util/TPSkillHelper.java.txt"
+    }
+  ]
+}

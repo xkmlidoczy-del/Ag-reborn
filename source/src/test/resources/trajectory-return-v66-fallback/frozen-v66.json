@@ -1,0 +1,10 @@
+{
+  "commit": "dbe8100aa9c222cfea16fdcf6329c2da2dca4dd3",
+  "source": "Exact bytes read with git show from the independently existing .66 commit; no working-tree sources used for the baseline.",
+  "sha256": {
+    "src/main/java/cn/academy/port/client/TrajectoryReturnEffects.java": "e59915b173ef36ebff619f2abf770e053f6344bbedc960d2074f66d9bf431aa7",
+    "src/main/java/cn/academy/port/client/TrajectoryReturnState.java": "9cf0d976a20d548fe73790a392e49775346a3d2b9439e9056f78ad4d75943a9f",
+    "src/main/java/cn/academy/port/client/TrajectoryReturnMesh.java": "8337ba94188ee4cdb19507d874c58d34ea88aea2602609afd40d175f458ff324",
+    "src/main/java/cn/academy/port/highpower/core/SafeLandingProbeGeometry.java": "e585d53bc35e0a6326fc5ccac90c0c9e3ece490043523085adf5d6d48d7e5b98"
+  }
+}

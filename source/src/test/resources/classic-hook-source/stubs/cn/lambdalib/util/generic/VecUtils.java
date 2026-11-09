@@ -1,0 +1,1 @@
+package cn.lambdalib.util.generic;public class VecUtils{public static net.minecraft.util.Vec3 vec(double x,double y,double z){return new net.minecraft.util.Vec3(x,y,z);}public static net.minecraft.util.Vec3 add(net.minecraft.util.Vec3 a,net.minecraft.util.Vec3 b){return vec(a.xCoord+b.xCoord,a.yCoord+b.yCoord,a.zCoord+b.zCoord);}}

@@ -1,0 +1,1 @@
+package net.minecraft.client.renderer.tileentity;import net.minecraft.tileentity.TileEntity;public abstract class TileEntitySpecialRenderer{public abstract void renderTileEntityAt(TileEntity tile,double x,double y,double z,float partial);}

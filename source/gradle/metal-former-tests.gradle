@@ -1,0 +1,9 @@
+// Source-faithful classic Metal Former finite work, declarations and common cold linkage.
+['metalFormerTest':'cn.academy.port.former.ClassicMetalFormerRegressionTest',
+ 'metalFormerSourceTest':'cn.academy.port.former.ClassicMetalFormerSourceOracleTest',
+ 'metalFormerDataTest':'cn.academy.port.former.ClassicMetalFormerDataRegressionTest',
+ 'metalFormerServerLinkTest':'cn.academy.port.former.ClassicMetalFormerServerLinkTest',
+ 'metalFormerVisualTest':'cn.academy.port.client.ClassicMetalFormerVisualRegressionTest'].each { taskName,className ->
+ tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+ tasks.named('check') {dependsOn taskName}
+}

@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "academy:block/facade_fin",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "academy:block/facade_fin",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "academy:block/facade_fin",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "academy:block/facade_fin",
+      "y": 270
+    }
+  }
+}

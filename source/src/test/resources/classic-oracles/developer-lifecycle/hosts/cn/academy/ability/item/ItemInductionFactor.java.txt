@@ -1,0 +1,2 @@
+/* Test-only lifecycle platform plumbing; business methods run unchanged originals. */
+package cn.academy.ability.item;public class ItemInductionFactor extends net.minecraft.item.Item {public final cn.academy.ability.api.Category category;public ItemInductionFactor(cn.academy.ability.api.Category c){category=c;}public static cn.academy.ability.api.Category getCategory(net.minecraft.item.ItemStack stack){return ((ItemInductionFactor)stack.getItem()).category;}}

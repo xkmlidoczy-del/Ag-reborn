@@ -1,0 +1,82 @@
+[
+  {
+    "name": "final96-passives-training-electromaster",
+    "script": "gameplay-passives-training-electromaster.script",
+    "directory": "run-showcase-sable",
+    "category": "electromaster",
+    "records": [
+      "brain_course",
+      "brain_course_advanced",
+      "mind_course"
+    ],
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-passives-training-meltdowner",
+    "script": "gameplay-passives-training-meltdowner.script",
+    "directory": "run-showcase-sable",
+    "category": "meltdowner",
+    "records": [
+      "brain_course",
+      "brain_course_advanced",
+      "mind_course"
+    ],
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-passives-training-teleporter",
+    "script": "gameplay-passives-training-teleporter.script",
+    "directory": "run-showcase-sable",
+    "category": "teleporter",
+    "records": [
+      "brain_course",
+      "brain_course_advanced",
+      "mind_course"
+    ],
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-passives-training-vecmanip",
+    "script": "gameplay-passives-training-vecmanip.script",
+    "directory": "run-showcase-sable",
+    "category": "vecmanip",
+    "records": [
+      "brain_course",
+      "brain_course_advanced",
+      "mind_course"
+    ],
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-passives-rad_intensify",
+    "script": "gameplay-passives-rad_intensify.script",
+    "directory": "run-showcase-sable",
+    "category": "meltdowner",
+    "records": [
+      "rad_intensify"
+    ],
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-passives-dim_folding_theorem",
+    "script": "gameplay-passives-dim_folding_theorem.script",
+    "directory": "run-showcase-sable",
+    "category": "teleporter",
+    "records": [
+      "dim_folding_theorem"
+    ],
+    "random_boundary": "96 finite real casts; no random seed override; absence of required observed critical remains failure",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final96-passives-space_fluct",
+    "script": "gameplay-passives-space_fluct.script",
+    "directory": "run-showcase-sable",
+    "category": "teleporter",
+    "records": [
+      "space_fluct"
+    ],
+    "random_boundary": "96 finite real casts; no random seed override; absence of required observed critical remains failure",
+    "status": "planned_not_run"
+  }
+]

@@ -1,0 +1,982 @@
+{
+  "version": 1,
+  "scope": "Immutable M41 original-core versus fixed current compileJava bounded differential; no update mode",
+  "original_zip_sha256": "8dd1dc1345cb687347d6a89abae5f30587a3dbd97a3dd31c7377da4e361c602b",
+  "original_sources": {
+    "src/main/java/cn/academy/port/core/AbilityProgress.java": "3592af12272c93e2fc471f8ad206a6119323e67ea5906dd26b480b1bc120eb6a",
+    "src/main/java/cn/academy/port/core/CurrentChargingSession.java": "cc9afd84b29f26097ad3cef5d6d29d41c162ef96f0b534a6889e45c8647e406d",
+    "src/main/java/cn/academy/port/core/SkillConsumption.java": "87147312151e37f4757c774742ae667a2f4de9e7ce2410dcb73c892ccdf2d5bd",
+    "src/main/java/cn/academy/port/core/AbilityCalculation.java": "60c14b6aedfebbb1018455c10a9d8337ca4fec5d4a5d0b29e83af95520f3f374",
+    "src/main/java/cn/academy/port/core/ClassicPassiveSkills.java": "dc257e83a2dfcbe482ff359c6af5642514fec9db0f6bde87a210a0aa04ea60b4",
+    "src/main/java/cn/academy/port/core/ClassicRules.java": "4abfac645ae9a33263573001064ff1c023fab88d6417e6137407c1f741b32c8d",
+    "src/main/java/cn/academy/port/core/SkillPresets.java": "3cd9d880464570331271fa018c9c07936db1895af9936eb66eb447f8ac2ed7da",
+    "src/main/java/cn/academy/port/core/ClassicSkillConfiguration.java": "16999cb9bc9ef347644ac855ee29c4866741b6a518edbd7a7e23c4c3ee92b03b",
+    "src/main/java/cn/academy/port/interferer/ClassicInterferenceSources.java": "9959075334b31454843605d50b06b004da3195ba4373c50521f3204828aa4957",
+    "src/main/java/cn/academy/port/SkillCatalog.java": "e4af9fc4fe53ca697d8176881797744bbdeab95e9bfb3ef5bd4e3667dba9c1db"
+  },
+  "original_classes": [
+    "cn.academy.port.SkillCatalog",
+    "cn.academy.port.SkillCatalog$Requirement",
+    "cn.academy.port.SkillCatalog$Skill",
+    "cn.academy.port.core.AbilityCalculation",
+    "cn.academy.port.core.AbilityCalculation$Kind",
+    "cn.academy.port.core.AbilityCalculation$Mutation",
+    "cn.academy.port.core.AbilityCalculation$Request",
+    "cn.academy.port.core.AbilityProgress",
+    "cn.academy.port.core.AbilityProgress$1",
+    "cn.academy.port.core.AbilityProgress$ExperienceAward",
+    "cn.academy.port.core.ClassicPassiveSkills",
+    "cn.academy.port.core.ClassicPassiveSkills$1",
+    "cn.academy.port.core.ClassicRules",
+    "cn.academy.port.core.ClassicRules$SkillCost",
+    "cn.academy.port.core.ClassicSkillConfiguration",
+    "cn.academy.port.core.ClassicSkillConfiguration$Flags",
+    "cn.academy.port.core.ClassicSkillConfiguration$Key",
+    "cn.academy.port.core.ClassicSkillConfiguration$Requirement",
+    "cn.academy.port.core.CurrentChargingSession",
+    "cn.academy.port.core.CurrentChargingSession$Target",
+    "cn.academy.port.core.CurrentChargingSession$TickResult",
+    "cn.academy.port.core.SkillConsumption",
+    "cn.academy.port.core.SkillConsumption$Config",
+    "cn.academy.port.core.SkillConsumption$Creative",
+    "cn.academy.port.core.SkillConsumption$Mutation",
+    "cn.academy.port.core.SkillConsumption$Overloaded",
+    "cn.academy.port.core.SkillConsumption$Request",
+    "cn.academy.port.core.SkillPresets",
+    "cn.academy.port.interferer.ClassicInterferenceSources"
+  ],
+  "classic_catalog_sha256": "fe698b35ce94e9cbd628dc63950bfd706749177d3b0ebe4048c1b4e7905e4433",
+  "current_sources": {
+    "src/main/java/cn/academy/port/core/AbilityProgress.java": "992507dc8e96a94e06e6358b7209793452f899bf4d9ea51eeea19d9d49520b0d",
+    "src/main/java/cn/academy/port/core/CurrentChargingSession.java": "cc9afd84b29f26097ad3cef5d6d29d41c162ef96f0b534a6889e45c8647e406d",
+    "src/main/java/cn/academy/port/core/SkillConsumption.java": "87147312151e37f4757c774742ae667a2f4de9e7ce2410dcb73c892ccdf2d5bd",
+    "src/main/java/cn/academy/port/core/AbilityCalculation.java": "60c14b6aedfebbb1018455c10a9d8337ca4fec5d4a5d0b29e83af95520f3f374",
+    "src/main/java/cn/academy/port/core/ClassicPassiveSkills.java": "dc257e83a2dfcbe482ff359c6af5642514fec9db0f6bde87a210a0aa04ea60b4",
+    "src/main/java/cn/academy/port/core/ClassicRules.java": "4abfac645ae9a33263573001064ff1c023fab88d6417e6137407c1f741b32c8d",
+    "src/main/java/cn/academy/port/core/SkillPresets.java": "3cd9d880464570331271fa018c9c07936db1895af9936eb66eb447f8ac2ed7da",
+    "src/main/java/cn/academy/port/core/ClassicSkillConfiguration.java": "16999cb9bc9ef347644ac855ee29c4866741b6a518edbd7a7e23c4c3ee92b03b",
+    "src/main/java/cn/academy/port/interferer/ClassicInterferenceSources.java": "9959075334b31454843605d50b06b004da3195ba4373c50521f3204828aa4957",
+    "src/main/java/cn/academy/port/SkillCatalog.java": "2407b5935a19fcbc38d96bdf29313b123ddc34287bada418ae8964de72b4646c",
+    "src/main/java/cn/academy/port/highpower/HighPowerSkills.java": "ae786dbafd230eec42c45390cc33bb5778b9c7535a456451d0e00247fdbd2445",
+    "src/main/java/cn/academy/port/highpower/HighPowerCategories.java": "be2ce1b3e7a4ada719a99cfc6bb494633fcb2e418be2e9174bb59c9c103c92f2"
+  },
+  "current_classes": {
+    "cn.academy.port.SkillCatalog": "4f19c0d8818ca18631a833d4606d90ee6e25a803b35a408d0af3ed8de774d9fd",
+    "cn.academy.port.SkillCatalog$Requirement": "1b30bb9fd735398eb0d5c28f67d93f744af8e824fc7f17780eb2833e33331a40",
+    "cn.academy.port.SkillCatalog$Skill": "0a8f760fd72b35e8c8f0a6c41f0561c59e097bc5372f758207246cba6d2f36a2",
+    "cn.academy.port.core.AbilityCalculation": "69bb98046f39eae24df0638232d1f52ddb3c3a23a45085bebc5518261e0d1862",
+    "cn.academy.port.core.AbilityCalculation$Kind": "53753a0ba3cf4375dff7d8858e0870d571f9580ee77f8dd19fadcd261d26e74c",
+    "cn.academy.port.core.AbilityCalculation$Mutation": "9ae702842193ac1e901821174a513605b3db56896a2e66ac2c2119cf5030a668",
+    "cn.academy.port.core.AbilityCalculation$Request": "f6a695c80413439ca754c2ecf4a43690a9e384ef529d12b5be10d7305ab78de9",
+    "cn.academy.port.core.AbilityProgress": "9cc65cb179cfc0e53630d41fdfacf0171a59394bc6915b5dbe61e989859002e7",
+    "cn.academy.port.core.AbilityProgress$1": "cd1c0848461e98ed5435b752df44341f6d2cbcd9a177be486e7705d15b867116",
+    "cn.academy.port.core.AbilityProgress$ExperienceAward": "b5b054e4799a94cd1c5717c01ee3eda24b6c838b86d99734ead43a950a8fd3e0",
+    "cn.academy.port.core.AbilityProgress$ExperienceReceipt": "5c3c516fd56f1da39d14705588f9a47c28037380929443d85379aada05d68f0b",
+    "cn.academy.port.core.ClassicPassiveSkills": "7b20b0766eaa00cf9694a631d242bb0ae76934f09f28fbc310ebcd9c9cfffed1",
+    "cn.academy.port.core.ClassicPassiveSkills$1": "cc2f1a2128f4c28ef9cbd27071aa47c99573cfb68903af92fcb50b988a717254",
+    "cn.academy.port.core.ClassicRules": "6e9b9e47282b36bd103fcbaf5b0a4ef04b96025347f0b0789e24f1f4e7ce8bad",
+    "cn.academy.port.core.ClassicRules$SkillCost": "e36dcf00af5ab1479d7fd69c1362c8c3c98407dd89a0b14cabde604dcd24c0de",
+    "cn.academy.port.core.ClassicSkillConfiguration": "ff87107dd21dd7fe210f17c8f56fc9de2296f47d909f2f489a6e3a0f77f4bcc2",
+    "cn.academy.port.core.ClassicSkillConfiguration$Flags": "375e8b43045a7b00b1555af284a5e8b07f0377c1555f35e9d68c354523a0f04c",
+    "cn.academy.port.core.ClassicSkillConfiguration$Key": "d1668358064a1336033fd3cd12dd4274d5ffca2b3c2d2df41eabe2716d7a0d43",
+    "cn.academy.port.core.ClassicSkillConfiguration$Requirement": "7542a1f2ef377e4b5e0f6a339d314b09c0219099309cb8db522d0148a123b727",
+    "cn.academy.port.core.CurrentChargingSession": "87d7de575e43e619d119bef32515b17b68c3a4be9b46382ee0a40be0a7dd6b8b",
+    "cn.academy.port.core.CurrentChargingSession$Target": "f8b22f7295a392a9298e7901c1e9588aa0f3466ac177472f360cddc0a687bf42",
+    "cn.academy.port.core.CurrentChargingSession$TickResult": "207ac30782d0d5cc43578e12949ff5d2d92600de090ad0da494c73b2199d202d",
+    "cn.academy.port.core.SkillConsumption": "8a3e10c3798aec078b1187d81309e001bab241d6e0529b231472087c37339cdc",
+    "cn.academy.port.core.SkillConsumption$Config": "3d8dc1b8f13ed7cb0ca4527016a58dfb6e51120606083e3d11747c22506cace4",
+    "cn.academy.port.core.SkillConsumption$Creative": "23a1de6ad6d26d6dd2c6a1d4dea80077ef0c88bc7a09c32e72019a9d39656460",
+    "cn.academy.port.core.SkillConsumption$Mutation": "f3c22fc0d9a095aaafae8617d4f9c84e26d019d52d15a8879261d197a28171a4",
+    "cn.academy.port.core.SkillConsumption$Overloaded": "574374daf879fc5a2622098afc5648584aa9effdc1db065946d9b7bc9bba3e5c",
+    "cn.academy.port.core.SkillConsumption$Request": "43e8b27e20ad5484a04789ad135a57bcd1db76cff6826270bd2ea8f6f4230fbc",
+    "cn.academy.port.core.SkillPresets": "eba379ef669e18898118162ac16e8fa6c07999d6064fe18c90d0450721752ab1",
+    "cn.academy.port.highpower.HighPowerCategories": "5fdfbfdc7ec10dcebbff26f842fbc84f2c721362d755a684962e9bc598c07d7d",
+    "cn.academy.port.highpower.HighPowerSkills": "33ee44e5efebc40930738e8a95376568e58f5855343b7bb30a4785b2481112de",
+    "cn.academy.port.interferer.ClassicInterferenceSources": "e9736465b9b6bf3e9d460e5bf71c10b43fbc3efbc5319b497a3c6f8d15145001"
+  },
+  "gson_archive_sha256": "4241c14a7727c34feea6507ec801318a3d4a90f070e4525681079fb94ee4c593",
+  "dependencies": {
+    "com.google.gson.ExclusionStrategy": {
+      "origin": "gson",
+      "sha256": "7d2f4e4abda5cdd6ae690933ed60b6f825b1896daab21e72c554bb3a26d06fd4"
+    },
+    "com.google.gson.FieldAttributes": {
+      "origin": "gson",
+      "sha256": "f95cbef1baf5a80f7b7c4a1cb7b946c67e83fe2452109e7698bcd054920b72ce"
+    },
+    "com.google.gson.FieldNamingPolicy": {
+      "origin": "gson",
+      "sha256": "6c420459b135a231652221fd465a2e0a3c9d09e67826238f0e522f6a33e3dd82"
+    },
+    "com.google.gson.FieldNamingPolicy$1": {
+      "origin": "gson",
+      "sha256": "485cd882a93a353f197d7b391629390084a2381ad53e555f18ca66053bf98579"
+    },
+    "com.google.gson.FieldNamingPolicy$2": {
+      "origin": "gson",
+      "sha256": "666f847800ddccf3f7e76914f20b2af6de3176ad72b24d7afe84589005e5287d"
+    },
+    "com.google.gson.FieldNamingPolicy$3": {
+      "origin": "gson",
+      "sha256": "6efc7f3421fa8310b2540d107b2ff0175123f49efde956483e894abacad5c0d0"
+    },
+    "com.google.gson.FieldNamingPolicy$4": {
+      "origin": "gson",
+      "sha256": "01ca0e180647766f51c5edb4a7e38d9930ad369f206e073d8a8626854803279f"
+    },
+    "com.google.gson.FieldNamingPolicy$5": {
+      "origin": "gson",
+      "sha256": "76e560a78b0181ae8d77221b092850d780e31c07b2b15cdd043fdb642cf41386"
+    },
+    "com.google.gson.FieldNamingPolicy$6": {
+      "origin": "gson",
+      "sha256": "887d5a781a1c4d2c2b3ecb41b0a67faf6ae03912eb4935926e147c13cf414501"
+    },
+    "com.google.gson.FieldNamingPolicy$7": {
+      "origin": "gson",
+      "sha256": "70980f8128c38010bd87828e0f36c96c9ec994343d1a89539bfe5eda99ebf500"
+    },
+    "com.google.gson.FieldNamingStrategy": {
+      "origin": "gson",
+      "sha256": "cad0a5f7b45b9ef75b69993fafbe734a3c0f7b2d27e7efe527ad2b01c8fdc7b5"
+    },
+    "com.google.gson.Gson": {
+      "origin": "gson",
+      "sha256": "24fc58c357c3e0709b1840faa75edb1bf6a044342731bbe0e094cbff58172eab"
+    },
+    "com.google.gson.Gson$1": {
+      "origin": "gson",
+      "sha256": "c55d6e345edef4b297f7942a7a8dc42c4e74834018d75af580241f3f9c668daf"
+    },
+    "com.google.gson.Gson$2": {
+      "origin": "gson",
+      "sha256": "e6e941fa0a118057c5513784284b57d5b7c8abba904ecc8c6ce2c8293b6be807"
+    },
+    "com.google.gson.Gson$3": {
+      "origin": "gson",
+      "sha256": "48816af59ff872e5fea3d057ac6554b26c5ba436480e789fea05541b26f10201"
+    },
+    "com.google.gson.Gson$4": {
+      "origin": "gson",
+      "sha256": "a95abc8fcdfc1cadd8abc36f89afaa73d3324e0590e602ddeaa4df64d7a41629"
+    },
+    "com.google.gson.Gson$5": {
+      "origin": "gson",
+      "sha256": "e8c967713fa54e8aa38c9317e1f7094831d88b23e80541a6228dc81fe3703e65"
+    },
+    "com.google.gson.Gson$FutureTypeAdapter": {
+      "origin": "gson",
+      "sha256": "3f0868db896ad94b9856fc4b11564998dda9ef9d6effe07b34da688eeced86c8"
+    },
+    "com.google.gson.GsonBuilder": {
+      "origin": "gson",
+      "sha256": "c3f8f284ab28f37d2a4c85bda9f446031df36aa0a29fb02997c0d44d7c0fb969"
+    },
+    "com.google.gson.InstanceCreator": {
+      "origin": "gson",
+      "sha256": "a1bfb20f55bfdf7e67d48d57b4cd77b4839c8740cb350153e952cc7e643153c8"
+    },
+    "com.google.gson.JsonArray": {
+      "origin": "gson",
+      "sha256": "e6f849825bea2971d1a7215318369f5efa73cf7c401a643af3b199b1ddd804e5"
+    },
+    "com.google.gson.JsonDeserializationContext": {
+      "origin": "gson",
+      "sha256": "847a91090aac3b0f53ba312d9b2f576dcc6d321603a48a1441da181b01eec2e8"
+    },
+    "com.google.gson.JsonDeserializer": {
+      "origin": "gson",
+      "sha256": "2da09b054b4bf540edfdd1d4cfe84add3885450c2f8fbd3c9f21216a9bac657c"
+    },
+    "com.google.gson.JsonElement": {
+      "origin": "gson",
+      "sha256": "1dce0a6e87e78a0311903750b67cde046933df66b11b6ba5a2ef012a4322e064"
+    },
+    "com.google.gson.JsonIOException": {
+      "origin": "gson",
+      "sha256": "0b1d7ded2396b906bfac63da4bcb555a5605d4ee5882effebd3e3d585d8f4f84"
+    },
+    "com.google.gson.JsonNull": {
+      "origin": "gson",
+      "sha256": "a0b4ec30d1ee7622db291e674b45c21836a4b3fb5ffe47432ff2ef4da65d7778"
+    },
+    "com.google.gson.JsonObject": {
+      "origin": "gson",
+      "sha256": "e34cec0434817a64731ebea5752388f5fd120803a1b68d10d1936cf5a0a6b751"
+    },
+    "com.google.gson.JsonParseException": {
+      "origin": "gson",
+      "sha256": "c7c3d3d6c7d8028fcb1143e5ef8ffaae9874a7b1031b0109d33bfc4fb0d397dc"
+    },
+    "com.google.gson.JsonParser": {
+      "origin": "gson",
+      "sha256": "66c50213b938c61278681d483c793942c310bc99b75f4c34b2c2d3b844d45b8d"
+    },
+    "com.google.gson.JsonPrimitive": {
+      "origin": "gson",
+      "sha256": "c603a211599e2d9fcb2f16bcf983d539788b6ed05f5afe06ecac9002c4860b1f"
+    },
+    "com.google.gson.JsonSerializationContext": {
+      "origin": "gson",
+      "sha256": "6ef9d643584f59f4ae2d2d4f612f6cb4bc447dd1e17f763accdc449b2ef674fb"
+    },
+    "com.google.gson.JsonSerializer": {
+      "origin": "gson",
+      "sha256": "20d553173d7a480f51bd218f2532f95777cd0964dea5d7ccd0aa28054ca0127b"
+    },
+    "com.google.gson.JsonStreamParser": {
+      "origin": "gson",
+      "sha256": "8ccac814e2e3e8269c45554287909c50ee604549877df3f2b6c85ecf43ed5294"
+    },
+    "com.google.gson.JsonSyntaxException": {
+      "origin": "gson",
+      "sha256": "027e8511e110bb641dcb2f7f4b7925a86c8135fd090c3d421a6b57dfb76477ac"
+    },
+    "com.google.gson.LongSerializationPolicy": {
+      "origin": "gson",
+      "sha256": "c31052460176f1ea3728a62f66859af24f6fa94fc85d33678b40a8c8df78d805"
+    },
+    "com.google.gson.LongSerializationPolicy$1": {
+      "origin": "gson",
+      "sha256": "5874a878ffe357f594561605635a7c5e06cc555184740a43a378323603a81be2"
+    },
+    "com.google.gson.LongSerializationPolicy$2": {
+      "origin": "gson",
+      "sha256": "8da2655ba512ed78b958dab7d0af336ad6e4ea5329ddb6a3268b160e72d3bea8"
+    },
+    "com.google.gson.ReflectionAccessFilter": {
+      "origin": "gson",
+      "sha256": "c96af7e1e08a4d48d08efb1857be5cdce0aa6735e73605e0bd796198f81ec21f"
+    },
+    "com.google.gson.ReflectionAccessFilter$1": {
+      "origin": "gson",
+      "sha256": "bbf0d99aeb5c48f8566d06fdc647ce42474a6a8ba8dd623c1e7901823f09529c"
+    },
+    "com.google.gson.ReflectionAccessFilter$2": {
+      "origin": "gson",
+      "sha256": "f4c37a605ba2bbc3f884b1c5cc2d11b2ccfef2a7373a65be5330f012fa74f82f"
+    },
+    "com.google.gson.ReflectionAccessFilter$3": {
+      "origin": "gson",
+      "sha256": "15666e8f4d6fd21d42fdd763d30646f05f0e5acd474478a8b795c24c4b62e630"
+    },
+    "com.google.gson.ReflectionAccessFilter$4": {
+      "origin": "gson",
+      "sha256": "e9c4e44dfc40cb1da32ed80c5f86a0addb4b5351751d2bf13522b5c8cafc1cc6"
+    },
+    "com.google.gson.ReflectionAccessFilter$FilterResult": {
+      "origin": "gson",
+      "sha256": "b3d07b7fdcd70422eb2ac2c371cef2b45908aad9f6b3266cdab3637cca1886b3"
+    },
+    "com.google.gson.ToNumberPolicy": {
+      "origin": "gson",
+      "sha256": "bdbae0ffea164a1f782487fe3a75b2828ffb821bf42497ba364fe777e9ce9164"
+    },
+    "com.google.gson.ToNumberPolicy$1": {
+      "origin": "gson",
+      "sha256": "1a0b689479f9c972b6a8f44797930b30a0b65a36f5833c4ba5a2a328247ef9f0"
+    },
+    "com.google.gson.ToNumberPolicy$2": {
+      "origin": "gson",
+      "sha256": "91a03161a0323cd69af357ba354e4ddcf53f08568f1881af3aff7a8a8c103b29"
+    },
+    "com.google.gson.ToNumberPolicy$3": {
+      "origin": "gson",
+      "sha256": "e8fa25175c3e4455a56072f35632714909ed9b092341bc1f2d2c9e4ef3909bbe"
+    },
+    "com.google.gson.ToNumberPolicy$4": {
+      "origin": "gson",
+      "sha256": "137bcd5f1639f46457c46bf85df216e42dbf65c8b0b4c257c202096dfb1f6bf8"
+    },
+    "com.google.gson.ToNumberStrategy": {
+      "origin": "gson",
+      "sha256": "829adac3bb8ca2367b020489165b0344185afa598b384f1ebc3d3e8425c65529"
+    },
+    "com.google.gson.TypeAdapter": {
+      "origin": "gson",
+      "sha256": "595ac5640aa5a3348ea757cf6a0b1bd27679b55a0b7a9f3b3f92a7a514bc0b04"
+    },
+    "com.google.gson.TypeAdapter$1": {
+      "origin": "gson",
+      "sha256": "a237f390533ed8350d25c4dbc21628cd2511d9d514598bc01ddf1515cee965a2"
+    },
+    "com.google.gson.TypeAdapterFactory": {
+      "origin": "gson",
+      "sha256": "da74ae3781e246a8fec449a964fa4071b3d3bba08f819047279757291e866bc0"
+    },
+    "com.google.gson.annotations.Expose": {
+      "origin": "gson",
+      "sha256": "448ad3bae91db707dde9c42b2a754b3d5f569bc1838d1fca9161603f16bb1a03"
+    },
+    "com.google.gson.annotations.JsonAdapter": {
+      "origin": "gson",
+      "sha256": "267a01bb3072e46bd343c6905d17c13b2ce774b2940ea4df9008aef0fe63529a"
+    },
+    "com.google.gson.annotations.SerializedName": {
+      "origin": "gson",
+      "sha256": "58977be415438194768cee73e9b4096eb2f3297ab5e7be7e9389a752740dcfb9"
+    },
+    "com.google.gson.annotations.Since": {
+      "origin": "gson",
+      "sha256": "f507313bdd1dc1fb81cdd254740a88978713c05d792a7cfdb0d37fb3740f1a68"
+    },
+    "com.google.gson.annotations.Until": {
+      "origin": "gson",
+      "sha256": "978719e6061d42a6a598d05b58fcdd48ce28d413a0a1313aeb41c914dd6330d5"
+    },
+    "com.google.gson.annotations.package-info": {
+      "origin": "gson",
+      "sha256": "508af1faaf743c153882af7e1497aeb2387c9f2a08d3682afeac8800ab942de4"
+    },
+    "com.google.gson.internal.$Gson$Preconditions": {
+      "origin": "gson",
+      "sha256": "9ad7715ed9b8b722da27942ec7887fe4b713af072affd40c91d15a312a05444b"
+    },
+    "com.google.gson.internal.$Gson$Types": {
+      "origin": "gson",
+      "sha256": "bbf2c6649896a7e599429cde9d26a3c43750fa70e6c5302b92efea9c6e8cdb8d"
+    },
+    "com.google.gson.internal.$Gson$Types$GenericArrayTypeImpl": {
+      "origin": "gson",
+      "sha256": "4ff197aed18364f2ad5a036dd3b7c850f71405547a9ebe295135c7fbcd18a084"
+    },
+    "com.google.gson.internal.$Gson$Types$ParameterizedTypeImpl": {
+      "origin": "gson",
+      "sha256": "5fe47e3489cc7bc5b4571f22c4b7b0886e262964961a052e8d78f1ed362611b3"
+    },
+    "com.google.gson.internal.$Gson$Types$WildcardTypeImpl": {
+      "origin": "gson",
+      "sha256": "ba546b93abdbced40fea61cca0004e3c167251f72a746265431e963ef8342d23"
+    },
+    "com.google.gson.internal.ConstructorConstructor": {
+      "origin": "gson",
+      "sha256": "2c5d27ceaa4265e2609ae7a4abe43d9736ce37a04be386ff13ff5ef3fcc0c4d1"
+    },
+    "com.google.gson.internal.ConstructorConstructor$1": {
+      "origin": "gson",
+      "sha256": "edd005d7f21130b3088ddcf0913d39d343df705958613e020ce3d212ef0c2864"
+    },
+    "com.google.gson.internal.ConstructorConstructor$10": {
+      "origin": "gson",
+      "sha256": "2010f08f300fea366ab8dfb960bb829a9883bb794a09270b063c472029b68ea0"
+    },
+    "com.google.gson.internal.ConstructorConstructor$11": {
+      "origin": "gson",
+      "sha256": "9c6c94715208bd6dcb8bc8d6f30e7f91f5ca36dc4df180f80ca27fc56119782f"
+    },
+    "com.google.gson.internal.ConstructorConstructor$12": {
+      "origin": "gson",
+      "sha256": "1dbbf1f7f2efdf5be3397460798d2608fa781974d12e0fd31576ec7a95a8312e"
+    },
+    "com.google.gson.internal.ConstructorConstructor$13": {
+      "origin": "gson",
+      "sha256": "ca4f9f093dd2c86069ff9904e54849e0a645e7a8ec41ea694b7d4eabeaabf26b"
+    },
+    "com.google.gson.internal.ConstructorConstructor$14": {
+      "origin": "gson",
+      "sha256": "ba178ee8ad2457b345a958c01467c1cdfd9446d96a883756aac8f2761be1e8ef"
+    },
+    "com.google.gson.internal.ConstructorConstructor$15": {
+      "origin": "gson",
+      "sha256": "7bbb4992d0b3ff3bf31cd78e502902bbde8aeb2af68e976c43324534d6111f91"
+    },
+    "com.google.gson.internal.ConstructorConstructor$16": {
+      "origin": "gson",
+      "sha256": "2ac39f937b731efd876af4837e0f44adc98d3d1c1ad5bff5ca35e1e9b2c59320"
+    },
+    "com.google.gson.internal.ConstructorConstructor$17": {
+      "origin": "gson",
+      "sha256": "d131bda8cab17a812c14716cfbda8f2a62ea20ca25381bb741461b8de2b767e2"
+    },
+    "com.google.gson.internal.ConstructorConstructor$18": {
+      "origin": "gson",
+      "sha256": "51118648be3ec5b1f7b2aa9a66867663ae3b7fcf5a4e73f725e884cd13961929"
+    },
+    "com.google.gson.internal.ConstructorConstructor$19": {
+      "origin": "gson",
+      "sha256": "002d5c69839d34976b9534d5134ede18caee56acdb82e22a15243a3da61a6b35"
+    },
+    "com.google.gson.internal.ConstructorConstructor$2": {
+      "origin": "gson",
+      "sha256": "a7ec5b298593bad209ea4a3e548bb4c1f438a216bb7d4654f2edf6b97ba9639c"
+    },
+    "com.google.gson.internal.ConstructorConstructor$20": {
+      "origin": "gson",
+      "sha256": "f67ead7ecd55643fd4d901a9bf70812eace3a8783f03bac24d585da599afc710"
+    },
+    "com.google.gson.internal.ConstructorConstructor$3": {
+      "origin": "gson",
+      "sha256": "ee4b71e60d433e75a8e777bc83554cb33a4b9d1b268141bbbfe842c86d9e52bd"
+    },
+    "com.google.gson.internal.ConstructorConstructor$4": {
+      "origin": "gson",
+      "sha256": "86bfbee67f80ca0748c76d0efa150ca7fe450cff1887386fd0294a6d413ac45a"
+    },
+    "com.google.gson.internal.ConstructorConstructor$5": {
+      "origin": "gson",
+      "sha256": "79b9d7968334167a1cad6470c546370825480c50ded0bf8fc76317c7b25736d4"
+    },
+    "com.google.gson.internal.ConstructorConstructor$6": {
+      "origin": "gson",
+      "sha256": "013e353c531da0a4635f152ecb84b96eb82d38797d222d71762a1a7dd029ad5c"
+    },
+    "com.google.gson.internal.ConstructorConstructor$7": {
+      "origin": "gson",
+      "sha256": "9d636b7e2ab6b565f424d38ab78c2f95e167beb65444c5de2b950f72c384247a"
+    },
+    "com.google.gson.internal.ConstructorConstructor$8": {
+      "origin": "gson",
+      "sha256": "90a40cbea0c9caa374ede302366e358adb50c7717cf60873183db244cb1ca841"
+    },
+    "com.google.gson.internal.ConstructorConstructor$9": {
+      "origin": "gson",
+      "sha256": "9e2c0b584390ed9b75a4ca09b026cc5e7ffd3256453aa33675c6fa29c4ff07ab"
+    },
+    "com.google.gson.internal.Excluder": {
+      "origin": "gson",
+      "sha256": "6a1d9c2dbb470402ac268890d80150920b02b01c7061273baf7671e7ee1f11e6"
+    },
+    "com.google.gson.internal.Excluder$1": {
+      "origin": "gson",
+      "sha256": "5a80b94080754523e7a00dd89d9e3f6cbf627f433dedafdb8e00df0644ae9094"
+    },
+    "com.google.gson.internal.GsonBuildConfig": {
+      "origin": "gson",
+      "sha256": "e289ea0896bde3d350529656e3f13778ecaddd61ca1ded66297a377b04e608af"
+    },
+    "com.google.gson.internal.JavaVersion": {
+      "origin": "gson",
+      "sha256": "b7842d554e51f3c83e0dc363f8959a3e909efb29cbf721c0b99e30e68879eadb"
+    },
+    "com.google.gson.internal.JsonReaderInternalAccess": {
+      "origin": "gson",
+      "sha256": "9f30ab5dea03536233a3ccc741a1734034e522963a61e70759f83e1c09c85e85"
+    },
+    "com.google.gson.internal.LazilyParsedNumber": {
+      "origin": "gson",
+      "sha256": "63da87a64a1449a505d96c20fc4fab996d3817f3bb8d92ae9898da6aff4ae329"
+    },
+    "com.google.gson.internal.LinkedTreeMap": {
+      "origin": "gson",
+      "sha256": "7fdac655e64a5359827dc65ec27b78c11ae3cb186e564ccfc87eb4a9dd142bcd"
+    },
+    "com.google.gson.internal.LinkedTreeMap$1": {
+      "origin": "gson",
+      "sha256": "23c1bda10bb213819f6aeb4d4767d782eab92f0c082b8abb86c5fbee9fd05f97"
+    },
+    "com.google.gson.internal.LinkedTreeMap$EntrySet": {
+      "origin": "gson",
+      "sha256": "f71aed4978e94576838a7dc9c90a178a74d3a40e4d4c6cb4997c941129a5127b"
+    },
+    "com.google.gson.internal.LinkedTreeMap$EntrySet$1": {
+      "origin": "gson",
+      "sha256": "dbf650e4baf8d8a3de507895c1d56c3ac9216f8eae6aca995ce4dbca3aabcc83"
+    },
+    "com.google.gson.internal.LinkedTreeMap$KeySet": {
+      "origin": "gson",
+      "sha256": "58c60f421e1bbbd07272a20cdea3a1bcdafc4b8d9647a56fe0b2b8974308c191"
+    },
+    "com.google.gson.internal.LinkedTreeMap$KeySet$1": {
+      "origin": "gson",
+      "sha256": "abc9f059f2c0a48e88fbf9fa323fa676d916f1e5ac260aa746c9d7e0f0eb8421"
+    },
+    "com.google.gson.internal.LinkedTreeMap$LinkedTreeMapIterator": {
+      "origin": "gson",
+      "sha256": "027d6425c0c4233dea3f98bfeec054d8fd109b07e2d4c8dbbb28805b48f55a6e"
+    },
+    "com.google.gson.internal.LinkedTreeMap$Node": {
+      "origin": "gson",
+      "sha256": "dd2705019658048835434dc5a8dab932ac0612ef8e65a4ffdcce2f803bbc08a1"
+    },
+    "com.google.gson.internal.NonNullElementWrapperList": {
+      "origin": "gson",
+      "sha256": "e6d1eb91ec72505e22405392a0874a63eff87d54a3eb3e3b451f61e456e98596"
+    },
+    "com.google.gson.internal.ObjectConstructor": {
+      "origin": "gson",
+      "sha256": "3b454f9dffb7b50d1ef6071e246f6ba09ff48f21eb369ebb21791a982d148898"
+    },
+    "com.google.gson.internal.PreJava9DateFormatProvider": {
+      "origin": "gson",
+      "sha256": "c5fbfae211c883e51b8bea43b756a8a156ada91c6f94a7451079c90abfd573e9"
+    },
+    "com.google.gson.internal.Primitives": {
+      "origin": "gson",
+      "sha256": "75842db39347cadf8ed18b493c5ed2053562203b619155ddeb4854f412f96f1c"
+    },
+    "com.google.gson.internal.ReflectionAccessFilterHelper": {
+      "origin": "gson",
+      "sha256": "fe090a36a0cc07aea3f575b27734806de35c5262a207f529e776ec4e3c50ae55"
+    },
+    "com.google.gson.internal.ReflectionAccessFilterHelper$1": {
+      "origin": "gson",
+      "sha256": "243777270f7a57726886db013c8d0d5cae78db2dac9475cc7ee58ba6069b27de"
+    },
+    "com.google.gson.internal.ReflectionAccessFilterHelper$AccessChecker": {
+      "origin": "gson",
+      "sha256": "797080c551a136f3058d1e94d5cf95aab5f69b734d537c6ed3fe50a49496c0bb"
+    },
+    "com.google.gson.internal.ReflectionAccessFilterHelper$AccessChecker$1": {
+      "origin": "gson",
+      "sha256": "a97dfb6859b74ac30344679e97dfb39ccaa303eee4661fbcc49f42ce3d660d65"
+    },
+    "com.google.gson.internal.ReflectionAccessFilterHelper$AccessChecker$2": {
+      "origin": "gson",
+      "sha256": "a421793778a5d203d84d30f50eadad31d7ac5bdc0a999e57e116527035e48198"
+    },
+    "com.google.gson.internal.Streams": {
+      "origin": "gson",
+      "sha256": "ce05b95215f5bad810d4e917a7924f2acb0248c030c4bf7e819a695827494a3c"
+    },
+    "com.google.gson.internal.Streams$1": {
+      "origin": "gson",
+      "sha256": "c4f2741d7303b5480138098f448d201162ef68bc4d0aec5460c820043bcbf3f9"
+    },
+    "com.google.gson.internal.Streams$AppendableWriter": {
+      "origin": "gson",
+      "sha256": "2beb928877e906f09fa4bc338378fc7f8f7a6888f716cb591af6c4793bd35357"
+    },
+    "com.google.gson.internal.Streams$AppendableWriter$CurrentWrite": {
+      "origin": "gson",
+      "sha256": "0d71e20ee060ed0a7092fa8e2fc1e9068636b62d92e87b3ae8044b6b8a1c55f8"
+    },
+    "com.google.gson.internal.UnsafeAllocator": {
+      "origin": "gson",
+      "sha256": "1147a9d72492a1a2c7faeb78b7ae6774552e7eef77b30cdbdafd039a8e7a5862"
+    },
+    "com.google.gson.internal.UnsafeAllocator$1": {
+      "origin": "gson",
+      "sha256": "71d30f006457a81368ad0e5d4dfde87f330bd03f00cefab2ecd3e5a359066dfb"
+    },
+    "com.google.gson.internal.UnsafeAllocator$2": {
+      "origin": "gson",
+      "sha256": "55fdd0a1d89dbc608e71290faeffb1fb6ca0a2f32bbec7d5559dd530df734f62"
+    },
+    "com.google.gson.internal.UnsafeAllocator$3": {
+      "origin": "gson",
+      "sha256": "806e030993622abcd5994cd490f947e2e86f08aedcde003bf3a928c5be35e1c7"
+    },
+    "com.google.gson.internal.UnsafeAllocator$4": {
+      "origin": "gson",
+      "sha256": "85fb07ef20dc9d9eb5c85fa9f9bebf6ba3fb24c7c57f8eecc4d04faf4ccd649f"
+    },
+    "com.google.gson.internal.bind.ArrayTypeAdapter": {
+      "origin": "gson",
+      "sha256": "ff5604be1f565eb49ceb807efbb550273f041e33287bd3e1afa2c3886a8802df"
+    },
+    "com.google.gson.internal.bind.ArrayTypeAdapter$1": {
+      "origin": "gson",
+      "sha256": "909f56f7baf1d6bddbbeede915d68e7ed218b28d09cc2182fdefb6c7603f5470"
+    },
+    "com.google.gson.internal.bind.CollectionTypeAdapterFactory": {
+      "origin": "gson",
+      "sha256": "e7231e810298674ed2c16dacbf10a73491d3b7c9f68bde570e1f255b6eee613b"
+    },
+    "com.google.gson.internal.bind.CollectionTypeAdapterFactory$Adapter": {
+      "origin": "gson",
+      "sha256": "5f420d7e0d45a9a10b1b2b9e1d0c19a375aa3cf4d5fa5c12d5d2c2b39437d123"
+    },
+    "com.google.gson.internal.bind.DateTypeAdapter": {
+      "origin": "gson",
+      "sha256": "a5f12663920832df6661a31addbfafc43885681af6b874178d83f25749313813"
+    },
+    "com.google.gson.internal.bind.DateTypeAdapter$1": {
+      "origin": "gson",
+      "sha256": "e19ae4461a1612a20d06aaee7ce460d42a41f63cd1bf1862551c92280c01f77d"
+    },
+    "com.google.gson.internal.bind.DefaultDateTypeAdapter": {
+      "origin": "gson",
+      "sha256": "468e307ed5a40d080115a777bdeeb88fe56682116ac0655c95c768cb6394f9dc"
+    },
+    "com.google.gson.internal.bind.DefaultDateTypeAdapter$1": {
+      "origin": "gson",
+      "sha256": "ded57aee6c6679df8fb7baa5e57a3f1d5cafaaac83bd931536ea499fe519a5b4"
+    },
+    "com.google.gson.internal.bind.DefaultDateTypeAdapter$DateType": {
+      "origin": "gson",
+      "sha256": "1d8356f454f615386d21bcfb33f9aa749ee1c48765f935a708e7087a10376f2d"
+    },
+    "com.google.gson.internal.bind.DefaultDateTypeAdapter$DateType$1": {
+      "origin": "gson",
+      "sha256": "bd20579e7ed9427b6f776956b64ecc146d1412530fba9834fecd9c9a625e5150"
+    },
+    "com.google.gson.internal.bind.JsonAdapterAnnotationTypeAdapterFactory": {
+      "origin": "gson",
+      "sha256": "6eb627cf185a923c8fd13336bc200ab2b269bb8f12eb83511eff8bc4ea35c4ee"
+    },
+    "com.google.gson.internal.bind.JsonTreeReader": {
+      "origin": "gson",
+      "sha256": "03aab7b0a6a1b0acb2aa0d00ab4b2419fedf94d0dfd39b3431add3385b33f141"
+    },
+    "com.google.gson.internal.bind.JsonTreeReader$1": {
+      "origin": "gson",
+      "sha256": "82b303f427e11c81c5272e542d718b73b47f1a4108f0799d2671cab1c9e94d92"
+    },
+    "com.google.gson.internal.bind.JsonTreeReader$2": {
+      "origin": "gson",
+      "sha256": "7d6a031e6ae69718daa6abf4d5f6db256a5ca28666d7897b9531b2f1b564eb6b"
+    },
+    "com.google.gson.internal.bind.JsonTreeWriter": {
+      "origin": "gson",
+      "sha256": "612448e1397c2c5519edf1537ee92c2206bd524b087723c8ad9a63612f5a2ce0"
+    },
+    "com.google.gson.internal.bind.JsonTreeWriter$1": {
+      "origin": "gson",
+      "sha256": "bd59f9f04a34ce520380100271453d1536beebb9746692bc06be45364bbdf549"
+    },
+    "com.google.gson.internal.bind.MapTypeAdapterFactory": {
+      "origin": "gson",
+      "sha256": "6b1c64ac9d152422f0c3eb11bbd6e3448c35d3f42e63ace2a907beb8a2573321"
+    },
+    "com.google.gson.internal.bind.MapTypeAdapterFactory$Adapter": {
+      "origin": "gson",
+      "sha256": "eacefbf53b5e425a981ff93dada0a10b5e9416cb68bea6d6b6556a304c1ef796"
+    },
+    "com.google.gson.internal.bind.NumberTypeAdapter": {
+      "origin": "gson",
+      "sha256": "820e243d13360c7aad67bc4ed9cb899c063fb83b029c84f3d90ce258e5dab654"
+    },
+    "com.google.gson.internal.bind.NumberTypeAdapter$1": {
+      "origin": "gson",
+      "sha256": "53896e4546c568794f5e706da34e81c59d7847c81a3ee0d514ad7abbdb0b28f0"
+    },
+    "com.google.gson.internal.bind.NumberTypeAdapter$2": {
+      "origin": "gson",
+      "sha256": "5bf7efb3a2f8cfe264bb347f74e5746450577baa5866c22fb486ee686025fe56"
+    },
+    "com.google.gson.internal.bind.ObjectTypeAdapter": {
+      "origin": "gson",
+      "sha256": "04bb926940345c596c38442863a6d6484783304cf1662d5caa74f1377fd498f1"
+    },
+    "com.google.gson.internal.bind.ObjectTypeAdapter$1": {
+      "origin": "gson",
+      "sha256": "b5b3af4209908dc2c931c750c83ac4837a7371258765d15c8039fa3547d7420e"
+    },
+    "com.google.gson.internal.bind.ObjectTypeAdapter$2": {
+      "origin": "gson",
+      "sha256": "d2cf3f6170a7056b51f47288abc2195db87717e6cd77d2d8d4ab5d4189c7fb15"
+    },
+    "com.google.gson.internal.bind.ReflectiveTypeAdapterFactory": {
+      "origin": "gson",
+      "sha256": "3877e4a872914f3ef23bc0ce92550aa1505086c8499e406781cbc5c8f8135a66"
+    },
+    "com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$1": {
+      "origin": "gson",
+      "sha256": "c87ba69f0b3b90314969420e0057eb6773c5d7124f58025d0a3fa55e993bafa2"
+    },
+    "com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter": {
+      "origin": "gson",
+      "sha256": "d962f3134bae03828bd08028135c1459245879e19d30b58022f18e42448d05f4"
+    },
+    "com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$BoundField": {
+      "origin": "gson",
+      "sha256": "c8e0e4534aa5f6d3dffb9251f917188ea699d36bc1599f827274def5f5bf2157"
+    },
+    "com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$FieldReflectionAdapter": {
+      "origin": "gson",
+      "sha256": "13ba13d08c2c7c56eedbdc313e51ddc8ccb027ad1c0dc6e72bdbaf446eb6663e"
+    },
+    "com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$RecordAdapter": {
+      "origin": "gson",
+      "sha256": "8147eb1d6ee0790d45fcec54aeed697916ac4fc2f4b7a2e6adb3fb5fa8fbcb2c"
+    },
+    "com.google.gson.internal.bind.SerializationDelegatingTypeAdapter": {
+      "origin": "gson",
+      "sha256": "b7076d201de0d4b7379a2aa4780e8051e4a6e9398d2588040c007c6cea430190"
+    },
+    "com.google.gson.internal.bind.TreeTypeAdapter": {
+      "origin": "gson",
+      "sha256": "f8d3f9a005f6ca447690ada694cadad110e4afadadd9644d0f0acd84f116d813"
+    },
+    "com.google.gson.internal.bind.TreeTypeAdapter$1": {
+      "origin": "gson",
+      "sha256": "f7d30393fffcbccfc327cca3ce7250f5eb8bde98fbb053df804720ae676c06b3"
+    },
+    "com.google.gson.internal.bind.TreeTypeAdapter$GsonContextImpl": {
+      "origin": "gson",
+      "sha256": "06da643663fc03953e4f92c8434003f0a6c77691247e17ba20280274563b5eb5"
+    },
+    "com.google.gson.internal.bind.TreeTypeAdapter$SingleTypeFactory": {
+      "origin": "gson",
+      "sha256": "373b39a1f685d1653203946e24a4dc18cce7c3fb4a763b9085874dcadc321100"
+    },
+    "com.google.gson.internal.bind.TypeAdapterRuntimeTypeWrapper": {
+      "origin": "gson",
+      "sha256": "df82fa67df92f76c095eb150add2dae22b39804916eff8c69a2e151f8a7cb849"
+    },
+    "com.google.gson.internal.bind.TypeAdapters": {
+      "origin": "gson",
+      "sha256": "d0073abc4ebc1d6ceaceb41251f3ca0c3052625f4c0702c2cf369fe522a6a2e5"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$1": {
+      "origin": "gson",
+      "sha256": "3f151762b8510e6238e325c40c362690ce2f32e8fa6b7d1fd39179261d320a8b"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$10": {
+      "origin": "gson",
+      "sha256": "6d43644eb14c2852cf62682373ec1963ad4e27fb7ddb91da3c153d3ba99d58ff"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$11": {
+      "origin": "gson",
+      "sha256": "7e2384d0c5985bd7e9ccc826cc65201679018043d40c1f373c4c96b834ee56be"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$12": {
+      "origin": "gson",
+      "sha256": "c044fbef1c8c04bb7c468df9e8adcea7ccc2db87f463c7bf08bc328de90f0470"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$13": {
+      "origin": "gson",
+      "sha256": "3839b493c80c91b6be968c2ae409fc56db39a96d12a5a4f6ea582ab6fd2a19f6"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$14": {
+      "origin": "gson",
+      "sha256": "fed42c1986873130408d544786bc3a8e90df046b69877249beb2b2695a4300aa"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$15": {
+      "origin": "gson",
+      "sha256": "a9609668ea48f6ff8232bd524b7315b7ed5557d46cdb128f608a7f533818ea70"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$16": {
+      "origin": "gson",
+      "sha256": "edba9034a923a62ccfd0996b285359659703958885206a5170c21fcd414656b3"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$17": {
+      "origin": "gson",
+      "sha256": "cc55f778b09332b2172572af7085d414f33eef7b024e0f43ac05e5e1e04ef408"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$18": {
+      "origin": "gson",
+      "sha256": "8726fc919285d4b27e4586d3beacac7fac6b5969cba34495dd4d54c8d1a5810d"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$19": {
+      "origin": "gson",
+      "sha256": "6ebc85434f47b9d23e01db4179cf2b3f7447322f718d00576d8f89382ccb7440"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$2": {
+      "origin": "gson",
+      "sha256": "edcd15ec8bbcfedbc97025fb7f581515001ef4c8a76a7c1fba3aae38304e64a5"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$20": {
+      "origin": "gson",
+      "sha256": "c1f494a1b0a79128cfb4ecd5707e781b36a4637b6a74e9c958fc2294155b5801"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$21": {
+      "origin": "gson",
+      "sha256": "45d2148728f91301c1bb5e187f3b6d5aefdf3a1d965dd22d1b6d1440a55e4662"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$22": {
+      "origin": "gson",
+      "sha256": "357f2f14a41fdb075732d384c49f4907257dd37a5e7a5bd2f295b4215791104d"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$23": {
+      "origin": "gson",
+      "sha256": "5ff2d9523b02e51a356fbdbb1005e7598f6da83fd2a7989c6afe69dce3fe82c8"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$24": {
+      "origin": "gson",
+      "sha256": "2ce490af465bb8851709b0bdd35b3b66a2e5456a49b69760dbbcc2396de886b0"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$25": {
+      "origin": "gson",
+      "sha256": "fd883c0434a96b5760b1f558c74fdb8975add13ecff61e76388bf2fed04374c5"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$26": {
+      "origin": "gson",
+      "sha256": "b4e139f037fe18b4eddaab5a1ddb69e78052a105666e19f72e8637a42b18d4e6"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$27": {
+      "origin": "gson",
+      "sha256": "9b4fe33842add320c61930fd20a76b72eefb69f99157b448b3bc1e410f2dd767"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$28": {
+      "origin": "gson",
+      "sha256": "e57f9718ab50e7c89ab942ea8dccf876efc49ca94f3fa0af1178cf969593f241"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$29": {
+      "origin": "gson",
+      "sha256": "8f6d3833fb58da043c3d928712a954f4b06744df0d86c8075e44d6f69bac2cf6"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$3": {
+      "origin": "gson",
+      "sha256": "9c7f334f4d0c1f9c5fe47ac2d987b21dac1af05f3b65940b946562cc85d5acc2"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$30": {
+      "origin": "gson",
+      "sha256": "6722d47931e6c68abbd9288832077a558bbed5fd4f96a3ace9c19ecd387af95c"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$31": {
+      "origin": "gson",
+      "sha256": "a41dedbc20c73ec9e7abfbda0f35cf7ca6f12d1eae367935e3de59ed182a2350"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$32": {
+      "origin": "gson",
+      "sha256": "819fd01facef7ea1294d6454ee0470807f692ace0f4e8fc65ca9c8368a6e852f"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$33": {
+      "origin": "gson",
+      "sha256": "e77911f458e2325ff9d2f99bcdca44b501ee9d3fd2796554f3eddfac93b26caf"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$34": {
+      "origin": "gson",
+      "sha256": "868891b6a30bb46e285e539aa37819048e27cb92a50feea9e045ea48d8e11629"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$34$1": {
+      "origin": "gson",
+      "sha256": "03d7ceaea0760c532c0b8809d4afb61bf52f2360e7bf1c6cf3834062d1e6d679"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$35": {
+      "origin": "gson",
+      "sha256": "a966342eec2ccdbf70a9d2d985358810dcbd8fafe53c23b1cd0c9d1fa5901a08"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$4": {
+      "origin": "gson",
+      "sha256": "c3290329f732fc07a94109e1b26a744bfbf88bf15b8ebe973aa2efeed88153ab"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$5": {
+      "origin": "gson",
+      "sha256": "d1382c9f1619491a8a06522b0916965964b819249154fd72ac56f195b5264325"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$6": {
+      "origin": "gson",
+      "sha256": "4c4e09145d9e3920fb1b0ecc3af9b9865658d99bc83f4cdf113f8c0d1650ce28"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$7": {
+      "origin": "gson",
+      "sha256": "3037490306c6efd85a7207c95ee77cd75e273e2e97b2c7bfce62bb149374822c"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$8": {
+      "origin": "gson",
+      "sha256": "bcc3dca0b60750a764e74c071f76bc8b4ca1ab99aa5db432a6a5f1bf3852f542"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$9": {
+      "origin": "gson",
+      "sha256": "ecf9aae6fdc8b58aeb654b6db4e8b3a319fce64229ccdcab89e136506b07d2e1"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$EnumTypeAdapter": {
+      "origin": "gson",
+      "sha256": "41f69fbbd34c0b67a4118ced97f7041840b730947ac8d69ec5caa59b01f0825a"
+    },
+    "com.google.gson.internal.bind.TypeAdapters$EnumTypeAdapter$1": {
+      "origin": "gson",
+      "sha256": "f8130aacff037799c5f56e72b7b656e20557bc7263171a6df9616c76a63b064b"
+    },
+    "com.google.gson.internal.bind.util.ISO8601Utils": {
+      "origin": "gson",
+      "sha256": "226039ba105ccbc471f90c965048eb5f151286ca378e2b81e46424982142fdc5"
+    },
+    "com.google.gson.internal.package-info": {
+      "origin": "gson",
+      "sha256": "92ac1a39686ac7beb43240714470639fba48a23524ee279abde6808cccd85200"
+    },
+    "com.google.gson.internal.reflect.ReflectionHelper": {
+      "origin": "gson",
+      "sha256": "f1ed110fd5dae6767f4ff3d886ce890da3cf05dadb0b500939461dc738c8578c"
+    },
+    "com.google.gson.internal.reflect.ReflectionHelper$1": {
+      "origin": "gson",
+      "sha256": "c1311abe9605cefe04dacfb96b7a214589c860b9d3e3576754b9d195a4337fa5"
+    },
+    "com.google.gson.internal.reflect.ReflectionHelper$RecordHelper": {
+      "origin": "gson",
+      "sha256": "ab70f750ee1190b0d10e17b4431262f7e603d8b60e8117f6526027cdfd37e865"
+    },
+    "com.google.gson.internal.reflect.ReflectionHelper$RecordNotSupportedHelper": {
+      "origin": "gson",
+      "sha256": "ae21e028ce7bd0664cc1c0fe1f02b15e7d45520d859515f048bbe8cb7515ddc9"
+    },
+    "com.google.gson.internal.reflect.ReflectionHelper$RecordSupportedHelper": {
+      "origin": "gson",
+      "sha256": "e55e895b24e5c032f804d9682686e5941bf50ee31d9839ba8f2be973072da145"
+    },
+    "com.google.gson.internal.sql.SqlDateTypeAdapter": {
+      "origin": "gson",
+      "sha256": "a5203950e04b97366d626266f2a9bc3da8e53e485d4fc65efed65b1f9746ccb2"
+    },
+    "com.google.gson.internal.sql.SqlDateTypeAdapter$1": {
+      "origin": "gson",
+      "sha256": "8964619ac949e04707270f40a28ba08086995d2c2f52d35ee4e78a1c5eb56eae"
+    },
+    "com.google.gson.internal.sql.SqlTimeTypeAdapter": {
+      "origin": "gson",
+      "sha256": "c5be428af1cfed907d5d9b8b7ce90ef4258f116884c46723abdbb53cadeff2e5"
+    },
+    "com.google.gson.internal.sql.SqlTimeTypeAdapter$1": {
+      "origin": "gson",
+      "sha256": "87467eb685ff904e569f33e1ab12ccf35eec232d7dbddd935429f9752cac5512"
+    },
+    "com.google.gson.internal.sql.SqlTimestampTypeAdapter": {
+      "origin": "gson",
+      "sha256": "47335b022267e56bb78e9d3593921bbea6012ca95250f4ee9a444e13adcb1232"
+    },
+    "com.google.gson.internal.sql.SqlTimestampTypeAdapter$1": {
+      "origin": "gson",
+      "sha256": "f27a1b8aaa441df92443fb2862e7f774dc7f3ee496959500b32e80f57931c8a6"
+    },
+    "com.google.gson.internal.sql.SqlTypesSupport": {
+      "origin": "gson",
+      "sha256": "0e72a0ec8052ad2178c61667d21cf6a8afaab6c54d326f8ed50b629b34ceffae"
+    },
+    "com.google.gson.internal.sql.SqlTypesSupport$1": {
+      "origin": "gson",
+      "sha256": "b6f8d177fef16f392f96e51d74b3e38d521fedad60fecc2c8565e94983fbb12f"
+    },
+    "com.google.gson.internal.sql.SqlTypesSupport$2": {
+      "origin": "gson",
+      "sha256": "3ccd42005bcbc370a0ec7b1276cf8aded7e311fa99371ca1cd9ee1e51daffd59"
+    },
+    "com.google.gson.package-info": {
+      "origin": "gson",
+      "sha256": "456016b754cbd0c1e11062b5b3dd39eff7563ccb1c39ab50ba5c1f9f75ef0632"
+    },
+    "com.google.gson.reflect.TypeToken": {
+      "origin": "gson",
+      "sha256": "bb6d3dbcd7b4f01080a7f510acf050d588c49d5b02bb30bf684d7bdcde862c3f"
+    },
+    "com.google.gson.reflect.package-info": {
+      "origin": "gson",
+      "sha256": "2d139c03a7a1daac0ccd5cae03d64d485c485bca8f3dd72d94f3e9b85912eda2"
+    },
+    "com.google.gson.stream.JsonReader": {
+      "origin": "gson",
+      "sha256": "3625d2cb803336ae812e465665a9a7f7f2ffbc1ea299f550064717bc939c05b7"
+    },
+    "com.google.gson.stream.JsonReader$1": {
+      "origin": "gson",
+      "sha256": "7405b37b66835ab2bff12fd171506a8a52a44819dd5ab25584e9d11b0e431b71"
+    },
+    "com.google.gson.stream.JsonScope": {
+      "origin": "gson",
+      "sha256": "dc0cfb59a49c3789bd87427c18158e7bdd5144ac26251dc97205767ae3a99300"
+    },
+    "com.google.gson.stream.JsonToken": {
+      "origin": "gson",
+      "sha256": "75db23dd916cb22490f581b9665b37d54cb77d659c665103e6f8554da0f0d16a"
+    },
+    "com.google.gson.stream.JsonWriter": {
+      "origin": "gson",
+      "sha256": "5d2e9fca6710ca5a18363df0329cc846af018c09560cbe16f2b0cdd7fd5c2bf6"
+    },
+    "com.google.gson.stream.MalformedJsonException": {
+      "origin": "gson",
+      "sha256": "177c894da29268dde683f996fa60ed030d28d8a1d93096a816121ff363ef2100"
+    },
+    "com.google.gson.stream.package-info": {
+      "origin": "gson",
+      "sha256": "69d1922a5fed48722994456cd78043ad1fdfcb5904cc95c2e49edaec4b28e1a5"
+    },
+    "net.minecraft.nbt.CompoundTag": {
+      "origin": "nbt-signature",
+      "sha256": "93a9643a11aa61b666871cadeb14be32ff4f813bf97b05951bae389bada15fe6"
+    },
+    "net.minecraft.nbt.Tag": {
+      "origin": "nbt-signature",
+      "sha256": "c9fa1972f0805fec74173b267612ee9389dab9fc847e9b3027242a31d26cb7f2"
+    }
+  },
+  "provenance": "Original sources and JSON are byte-pinned immutable ZIP members. Current and official dependency pins are repeatability bounds, not historic artifact equivalence. Full fixed Gson archive class admission; runtime loaded subset is reported. NBT signatures only, no NBT execution.",
+  "proof_sources": {
+    "ChargingCoreTrace.java": "92ab15453e8fbeabe8a1e69ad861b6a80209eef016ae89d6c6eb6536b35db1b6",
+    "ChargingCoreLoader.java": "b020c3c870005506dbbee394d493937880e213e26e4e7d35f0d99899b5aac8dc"
+  },
+  "original_trace_sha256": "baa6b9ac524a80027a8c559ecb20b6f5d143ba9e9f38498016895c537811c3e4"
+}

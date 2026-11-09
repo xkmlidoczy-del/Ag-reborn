@@ -1,0 +1,1 @@
+package net.minecraft.world.level;import net.minecraft.world.phys.Vec3;import net.minecraft.world.entity.Entity;public record ClipContext(Vec3 from,Vec3 to,Block block,Fluid fluid,Entity owner){public enum Block{COLLIDER};public enum Fluid{NONE}}

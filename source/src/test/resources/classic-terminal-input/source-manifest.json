@@ -1,0 +1,41 @@
+{
+  "sourceBaseline": "AcademyCraft1.0.7 commit00d19ec0cf538f61c1095c9292f5ee6863db4521; cached official Minecraft1.21.1/NeoForge21.1.252 sources artifact",
+  "officialMouseHandlerSha256": "ea8fa06f4896f55309fb70cfc9b0dbc5a97a8ae262fc5123a5c63f5df2d24032",
+  "files": [
+    {
+      "name": "TerminalMouseHelper.java.txt",
+      "sha256": "3c259feac9bcb6ee171dd7eaa06a278d2bede2dc0581b40f5eb38938d1f5b006",
+      "bytes": 557
+    },
+    {
+      "name": "cursorEntered.java.txt",
+      "sha256": "5db4419673549059397a93b8470f08289f4ebdea73e99275ac547319155ccecd",
+      "bytes": 72
+    },
+    {
+      "name": "getXVelocity.java.txt",
+      "sha256": "7cc5387ac447f81d952821137b6d7f3f76d765d79fbe4fe5a4d4c768e839754a",
+      "bytes": 71
+    },
+    {
+      "name": "getYVelocity.java.txt",
+      "sha256": "2fed8599c268edf31119473f4d2aec337f7cdaacad7adc4b794652cf7078ca81",
+      "bytes": 71
+    },
+    {
+      "name": "grabMouse.java.txt",
+      "sha256": "5a37e0cd359fe71571fd9a3d2e1473859f6cce9bc67ff06897c9cbd578df971c",
+      "bytes": 721
+    },
+    {
+      "name": "onMove.java.txt",
+      "sha256": "412adbaab9bb9262e4413064faa77ed69698ba3362ffc97755bfdde5abc32c28",
+      "bytes": 680
+    },
+    {
+      "name": "releaseMouse.java.txt",
+      "sha256": "5c338c2dbb628d2da37f94b1f4b77a1f6a109080b1447ced9581186f600655ce",
+      "bytes": 400
+    }
+  ]
+}

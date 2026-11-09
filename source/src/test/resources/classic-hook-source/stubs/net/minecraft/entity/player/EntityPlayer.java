@@ -1,0 +1,1 @@
+package net.minecraft.entity.player;public class EntityPlayer extends net.minecraft.entity.EntityLivingBase{public final Capabilities capabilities=new Capabilities();public EntityPlayer(net.minecraft.world.World w){super(w);}public static class Capabilities{public boolean isCreativeMode;}}

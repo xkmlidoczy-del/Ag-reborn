@@ -1,0 +1,1 @@
+lang:zh_cn|cmd:time set day|cmd:gamerule doMobSpawning false|cmd:difficulty normal|keyup:82|keyup:340|tree:close|cam:first|cmd:tp @s 0.5 -60 0.5 0 0|gameem:env:setup:fork-single|wait:30|aim:0.5,-59,6.5|wait:6|gameem:env:baseline|keydown:340|keydown:82|wait:2|keyup:82|keyup:340|wait:14|gameem:env:assert|shot:gameplay_env_fork_single|gameem:env:verify|quit

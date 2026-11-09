@@ -1,0 +1,1 @@
+cmd:time set day|cmd:gamerule doMobSpawning false|live:setup:iron_sand_lance|wait:30|live:clearui|cam:first|keydown:82|wait:8|live:pose|shot:live_fp_lift|live:active|keyup:82|wait:30|live:neutral|live:setup:iron_sand_lance|wait:30|live:clearui|cam:front|keydown:82|wait:8|live:pose|shot:live_tp_lift|live:active|keyup:82|wait:30|live:neutral|quit

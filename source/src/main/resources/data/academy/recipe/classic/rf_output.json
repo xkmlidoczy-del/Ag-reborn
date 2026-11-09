@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "abc",
+    " d "
+  ],
+  "key": {
+    "a": {
+      "type": "academy:bridge_energy_unit"
+    },
+    "b": {
+      "item": "academy:machine_frame"
+    },
+    "c": {
+      "item": "academy:reso_crystal"
+    },
+    "d": {
+      "item": "academy:energy_convert_component"
+    }
+  },
+  "result": {
+    "id": "academy:rf_output",
+    "count": 1
+  }
+}

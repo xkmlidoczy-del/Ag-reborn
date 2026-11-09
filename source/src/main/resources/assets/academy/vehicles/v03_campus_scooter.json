@@ -1,0 +1,192 @@
+{
+  "version": 1,
+  "id": "v03_campus_scooter",
+  "kind": "scooter",
+  "units": "m",
+  "nodes": [
+    {
+      "name": "body",
+      "parent": null,
+      "origin": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "glass",
+      "parent": null,
+      "origin": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "interior",
+      "parent": null,
+      "origin": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "lights",
+      "parent": null,
+      "origin": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "livery",
+      "parent": null,
+      "origin": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "steer_front",
+      "parent": null,
+      "origin": [
+        0.0,
+        0.8500000238418579,
+        0.41999998688697815
+      ]
+    },
+    {
+      "name": "steering_wheel",
+      "parent": "steer_front",
+      "origin": [
+        0.0,
+        0.1029999852180481,
+        -0.04399999976158142
+      ]
+    },
+    {
+      "name": "wheel_0_0",
+      "parent": "steer_front",
+      "origin": [
+        0.0,
+        -0.6050000190734863,
+        0.25699999928474426
+      ]
+    },
+    {
+      "name": "wheel_1_0",
+      "parent": null,
+      "origin": [
+        0.0,
+        0.24500000476837158,
+        -0.652999997138977
+      ]
+    }
+  ],
+  "wheels": [
+    {
+      "node": "wheel_0_0",
+      "position": [
+        0.0,
+        0.24500000476837158,
+        0.6769999861717224
+      ],
+      "radius": 0.245,
+      "front": true
+    },
+    {
+      "node": "wheel_1_0",
+      "position": [
+        0.0,
+        0.24500000476837158,
+        -0.652999997138977
+      ],
+      "radius": 0.245,
+      "front": false
+    }
+  ],
+  "doors": [],
+  "seats": [
+    [
+      0.0,
+      0.699999988079071,
+      -0.23999999463558197
+    ],
+    [
+      0.0,
+      0.7199999690055847,
+      -0.5899999737739563
+    ]
+  ],
+  "eye": [
+    0.0,
+    1.5699999332427979,
+    -0.23999999463558197
+  ],
+  "steering_center": [
+    0.0,
+    0.953000009059906,
+    0.37599998712539673
+  ],
+  "steering_axis": [
+    0,
+    0,
+    1
+  ],
+  "steering_radius": 0.29,
+  "steering_max_degrees": 24,
+  "pedals": [
+    [
+      -0.12,
+      0.29,
+      -0.05
+    ],
+    [
+      0.12,
+      0.29,
+      -0.05
+    ]
+  ],
+  "collision_segments": [
+    [
+      0,
+      0.85,
+      -0.6333333333333333,
+      0.3128,
+      0.5,
+      0.3103333333333333
+    ],
+    [
+      0,
+      0.85,
+      -1.1102230246251565e-16,
+      0.3128,
+      0.5,
+      0.3103333333333333
+    ],
+    [
+      0,
+      0.85,
+      0.6333333333333333,
+      0.3128,
+      0.5,
+      0.3103333333333333
+    ]
+  ],
+  "width": 0.68,
+  "length": 1.9,
+  "height": 1.12,
+  "exit": [
+    [
+      -0.949999988079071,
+      0.19999998807907104,
+      -0.23999999463558197
+    ]
+  ],
+  "first_person_note": "World-rendered actual cabin; hands are transformed from these real control points. No generic dashboard overlay.",
+  "driver_hand_file": "driver_v03_campus_scooter.json",
+  "nearview_revision": "seat-head-clearance-and-continuous-pillars-r1"
+}

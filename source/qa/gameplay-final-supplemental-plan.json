@@ -1,0 +1,20 @@
+[
+  {
+    "name": "final-supplement-storm-sustain-40s",
+    "script": "codex-storm-sustain.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "required": true,
+    "purpose": "Real finite LV5 survival CP, at least800 ACTIVE ticks/850 elapsed ticks, actual R stop and airborne slow falling.",
+    "scriptSha256": "f0fa746b26e7e026b8455e5bce3411426e05235a5be53a39da61446abd68b85e"
+  },
+  {
+    "name": "final-supplement-four-category-shield-hud",
+    "script": "codex-shield-hud-final.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "required": true,
+    "purpose": "All four categories: actual ordinary damage debits positive S without HP loss, then genuine overflow damages HP and holding ends; compact native/skill CP HUD.",
+    "scriptSha256": "e6dc00b2eb96b809e8d30c00aa1692f126f863ef8f49f74b6bea2c97eff17394"
+  }
+]

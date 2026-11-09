@@ -1,0 +1,20 @@
+{
+  "ac.ability.vecmanip.autonomous_vector_circle.name": "自律矢量圈 [高算力]",
+  "ac.ability.vecmanip.autonomous_vector_circle.desc": "NEW452 动能防御临时原型。点按开启，松键不结束，再次点按关闭。使用共享基础层＋下层＋上层防御储备，上限 2S；仅处理来源在 8 米内、前方三维 160° 扇区中的受支持敌对原生动能接触。后方留空。任意连续 20 个服务器刻最多 8 次有效吸收，同一刻最多 4 次；CP、熟练度和快速开关均不能绕过物理额度。未知伤害来源与未支持攻击保留原生行为。本原型不反射投射物。灰白开放流线显示已确认扇区和 8 个实际额度刻度；仅在服务器确认正数吸收后，于真实接触位置短暂压缩。LV5，前置为已学习多轴反射，无熟练度门槛。数值均为临时方案。",
+  "hud.academy.highpower.autonomous_vector_circle": "矢量圈 %s/8 | %s",
+  "hud.academy.highpower.autonomous_vector_circle.ready": "前方动能防御就绪",
+  "hud.academy.highpower.autonomous_vector_circle.paused": "暂停：物理额度或储备不足",
+  "message.academy.highpower.autonomous_vector_circle.unavailable": "自律矢量圈当前不可用",
+  "message.academy.highpower.autonomous_vector_circle.resource": "CP 或共享防御储备不足",
+  "message.academy.highpower.autonomous_vector_circle.capacity": "共享防御储备当前不可用",
+  "message.academy.highpower.autonomous_vector_circle.cooldown": "自律矢量圈正在恢复",
+  "message.academy.highpower.autonomous_vector_circle.corrupt": "无法验证已保存的防御状态",
+  "message.academy.highpower.autonomous_vector_circle.unsupported": "当前防御接入不受支持",
+  "message.academy.highpower.autonomous_vector_circle.not_ready": "矢量圈尚未就绪：请检查能力、CP、储备和冷却",
+  "message.academy.highpower.autonomous_vector_circle.conflict": "请先关闭其他正在运行的矢量控制技能",
+  "hud.academy.highpower.autonomous_vector_circle.shield_label": "矢量圈 · 可用护盾",
+  "hud.academy.highpower.autonomous_vector_circle.shield_unknown": "不可用",
+  "hud.academy.highpower.autonomous_vector_circle.quota_label": "次数",
+  "hud.academy.highpower.autonomous_vector_circle.state_ready": "就绪",
+  "hud.academy.highpower.autonomous_vector_circle.state_paused": "暂停"
+}

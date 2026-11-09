@@ -1,0 +1,1 @@
+package cn.academy.terminal.client; public class TerminalUI {public static Key keyHandler=new Key();public static class Key{public int calls;public void onKeyUp(){calls++;}}}

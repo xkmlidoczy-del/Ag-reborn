@@ -1,0 +1,3 @@
+/* Test-only platform host; numeric algorithms remain in unchanged source. */
+package com.google.common.base;
+public class Preconditions { public static void checkState(boolean state,Object... message){if(!state)throw new IllegalStateException(java.util.Arrays.toString(message));} }

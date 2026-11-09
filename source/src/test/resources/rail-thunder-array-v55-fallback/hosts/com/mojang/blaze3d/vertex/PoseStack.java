@@ -1,0 +1,1 @@
+package com.mojang.blaze3d.vertex; import org.joml.Matrix4f; public class PoseStack {public final Matrix4f matrix=new Matrix4f();public Pose last(){return new Pose(matrix);} public record Pose(Matrix4f pose){}}

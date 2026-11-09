@@ -1,0 +1,1 @@
+Unchanged original source fixtures for private fidelity verification. AcademyCraft classic1.0.7 Copyright Lambda Innovation2013–2016, GPLv3; project LICENSE applies. LambdaLib1.2.3 Copyright Lambda Innovation, MIT; license enclosed. Test resources are runtime self-contained; no excluded .reference/.staging tree is needed after promotion.

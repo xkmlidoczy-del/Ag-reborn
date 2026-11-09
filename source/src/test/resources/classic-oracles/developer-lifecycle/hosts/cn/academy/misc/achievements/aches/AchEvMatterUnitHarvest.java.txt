@@ -1,0 +1,2 @@
+/* Test-only lifecycle platform plumbing; business methods run unchanged originals. */
+package cn.academy.misc.achievements.aches;public class AchEvMatterUnitHarvest extends net.minecraft.stats.Achievement {public AchEvMatterUnitHarvest(){super("unused");}public boolean accept(cn.academy.crafting.api.event.MatterUnitHarvestEvent e){return false;}}

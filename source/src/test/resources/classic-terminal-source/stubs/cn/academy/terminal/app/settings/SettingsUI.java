@@ -1,0 +1,2 @@
+package cn.academy.terminal.app.settings;
+public class SettingsUI {}

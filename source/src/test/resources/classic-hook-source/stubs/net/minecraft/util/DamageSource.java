@@ -1,0 +1,1 @@
+package net.minecraft.util;public class DamageSource{private final net.minecraft.entity.Entity entity;public DamageSource(net.minecraft.entity.Entity e){entity=e;}public net.minecraft.entity.Entity getEntity(){return entity;}public static DamageSource causePlayerDamage(net.minecraft.entity.player.EntityPlayer e){return new DamageSource(e);}}

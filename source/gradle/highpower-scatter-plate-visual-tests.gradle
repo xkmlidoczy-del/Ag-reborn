@@ -1,0 +1,8 @@
+// NEW212 exact slab meshes, receipt fences, native FOV visibility, and MD base-shield presentation.
+tasks.register('scatterPlateVisualTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.ScatterPlateVisualRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'scatterPlateVisualTest' }

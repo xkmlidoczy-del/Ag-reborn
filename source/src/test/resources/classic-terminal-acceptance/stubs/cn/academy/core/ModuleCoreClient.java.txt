@@ -1,0 +1,1 @@
+package cn.academy.core; public class ModuleCoreClient {public static cn.lambdalib.util.key.KeyManager dynKeyManager=new cn.lambdalib.util.key.KeyManager();}

@@ -1,0 +1,9 @@
+// Counterexample-first pure rules for the seven skills added after 0.81.2: 143, 153, 243, 332, 352, 451, 453.
+tasks.register('newSkillRulesTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.core.NewSkillRulesRegressionTest'
+    enableAssertions = true
+    maxHeapSize = '128m'
+}
+tasks.named('check') { dependsOn 'newSkillRulesTest' }

@@ -1,0 +1,1 @@
+package cn.lambdalib.util.client.auxgui; public abstract class AuxGui {public long time; public boolean disposed;public long getTimeActive(){return time;}public void dispose(){disposed=true;}public abstract boolean isForeground();public abstract void draw(net.minecraft.client.gui.ScaledResolution r);}

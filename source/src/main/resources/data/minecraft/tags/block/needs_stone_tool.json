@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "academy:machine_frame",
+    "academy:constraint_metal_ore",
+    "academy:solar_gen",
+    "academy:imag_fusor",
+    "#academy:wireless_nodes",
+    "academy:metal_former",
+    "academy:phase_gen"
+  ]
+}

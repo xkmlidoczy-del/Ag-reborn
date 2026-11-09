@@ -1,0 +1,12 @@
+[
+  {
+    "name": "final18-main-em-damage",
+    "script": "gameplay-em-damage.script",
+    "exit": 0
+  },
+  {
+    "name": "final18-main-md-damage",
+    "script": "gameplay-md-damage.script",
+    "exit": 0
+  }
+]

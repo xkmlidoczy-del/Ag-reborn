@@ -1,0 +1,2 @@
+package net.minecraft.client;
+public final class Minecraft { private static final Minecraft INSTANCE=new Minecraft();public final Settings gameSettings=new Settings();public static final class Settings{public String language="en_US";}public static Minecraft getMinecraft(){return INSTANCE;}public void displayGuiScreen(Object screen){cn.academy.misc.tutorial.OracleSupport.logs.add("screen:"+screen.getClass().getSimpleName());} }

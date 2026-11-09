@@ -1,0 +1,17 @@
+/* Declared test transport plumbing: direct self-listeners, queued client requests/remote events. */
+package cn.lambdalib.s11n.network;
+public class NetworkMessage {
+ @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
+ public @interface Listener {String channel();cpw.mods.fml.relauncher.Side[] side();}
+ public static final java.util.List<Boolean> requested=new java.util.ArrayList<>(),remote=new java.util.ArrayList<>();
+ public static java.util.function.Consumer<Boolean> clientSend=value->{};
+ public static void sendToServer(Object instance,String channel,Object...params){if(channel.equals("actv_svr")){boolean value=(Boolean)params[0];requested.add(value);clientSend.accept(value);}}
+ public static void sendTo(Object player,Object instance,String channel,Object...params){if(channel.equals("post_event"))remote.add((Boolean)params[0]);}
+ public static void sendToSelf(Object instance,String channel,Object...params){
+  var side=((cn.lambdalib.util.datapart.DataPart<?>)instance).isClient()?cpw.mods.fml.relauncher.Side.CLIENT:cpw.mods.fml.relauncher.Side.SERVER;
+  for(var method:instance.getClass().getDeclaredMethods()){
+   var listener=method.getAnnotation(Listener.class);if(listener==null||!listener.channel().equals(channel)||java.util.Arrays.stream(listener.side()).noneMatch(s->s==side))continue;
+   try{method.setAccessible(true);method.invoke(instance,params);}catch(java.lang.reflect.InvocationTargetException e){throw new AssertionError(e.getCause());}catch(ReflectiveOperationException e){throw new AssertionError(e);}
+  }
+ }
+}

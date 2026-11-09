@@ -1,0 +1,14 @@
+// Optional client acceptance viewport. Does not affect ordinary gameplay or builds.
+allprojects {
+    afterEvaluate { testedProject ->
+        if (testedProject.hasProperty('qaWidth') || testedProject.hasProperty('qaHeight')) {
+            if (testedProject.findProperty('visualQA') != 'true') throw new GradleException('QA viewport requires the explicit visualQA profile')
+            int qaViewWidth = testedProject.property('qaWidth').toString().toInteger()
+            int qaViewHeight = testedProject.property('qaHeight').toString().toInteger()
+            if (qaViewWidth < 640 || qaViewWidth > 4096 || qaViewHeight < 360 || qaViewHeight > 2160) throw new GradleException('Bounded QA viewport required')
+            def qaClient = testedProject.extensions.getByName('neoForge').runs.getByName('client')
+            qaClient.programArgument('--width'); qaClient.programArgument(qaViewWidth.toString())
+            qaClient.programArgument('--height'); qaClient.programArgument(qaViewHeight.toString())
+        }
+    }
+}

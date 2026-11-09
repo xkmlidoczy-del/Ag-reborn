@@ -1,0 +1,341 @@
+{
+  "sources": {
+    "rubberduck": "https://opengameart.org/content/80-cc0-creature-sfx",
+    "kenney_impact": "https://kenney.nl/assets/impact-sounds",
+    "kenney_rpg": "https://kenney.nl/assets/rpg-audio",
+    "kenney_scifi": "https://kenney.nl/assets/sci-fi-sounds"
+  },
+  "license": "CC0-1.0",
+  "files": [
+    {
+      "file": "rubberduck/roar_01.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/roar_01.ogg",
+      "sha256": "e9d44326860a1c3aba917684faccfd967a4fefa284d7df773e05ae890ec242e0",
+      "bytes": 15863
+    },
+    {
+      "file": "rubberduck/roar_02.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/roar_02.ogg",
+      "sha256": "ceb532ee0fe775d6f86a821099b75f1790ab8022b963cb837c8c1fa4fffee5c2",
+      "bytes": 28522
+    },
+    {
+      "file": "rubberduck/roar_03.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/roar_03.ogg",
+      "sha256": "983396c808eb658ed3bd223ffaf9ea7f756dba7bc45ecc3fde117083026a4556",
+      "bytes": 24977
+    },
+    {
+      "file": "rubberduck/monster_01.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/monster_01.ogg",
+      "sha256": "e8bb5c9d3d25172666c60ed302d354144b67e66170bdf039ec88f4b6b0cd879f",
+      "bytes": 50215
+    },
+    {
+      "file": "rubberduck/monster_02.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/monster_02.ogg",
+      "sha256": "2f590aec7086b2327a141ec71d5e8b8e83524a30e6b9baf3be2784f4adb153b3",
+      "bytes": 29602
+    },
+    {
+      "file": "rubberduck/monster_03.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/monster_03.ogg",
+      "sha256": "1208729886f3f66e7d8018e8880dff073275fd37b30e1016dd5b164161482df1",
+      "bytes": 17484
+    },
+    {
+      "file": "rubberduck/monster_04.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/monster_04.ogg",
+      "sha256": "04b556b93bf3f99255ac362ebe7f905f750a8bcbb653f78ef7191adb91e71f49",
+      "bytes": 24985
+    },
+    {
+      "file": "rubberduck/monster_05.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/monster_05.ogg",
+      "sha256": "e7e67dd4b5ae627dbdefcb25ee1a0fab2a5f6d0c9879eae87974a422fd83e583",
+      "bytes": 24208
+    },
+    {
+      "file": "rubberduck/monster_06.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/monster_06.ogg",
+      "sha256": "6b8df01eb7821fb0fcf66b4683a8eb997ca728fded26b6937734b84ff05852f9",
+      "bytes": 31838
+    },
+    {
+      "file": "rubberduck/monster_07.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/monster_07.ogg",
+      "sha256": "5f7d40c4899f2e2e146fe8a0207597d4daf4d304a644ad2e8629057bc49a87e9",
+      "bytes": 21987
+    },
+    {
+      "file": "rubberduck/alien_01.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/alien_01.ogg",
+      "sha256": "a725a4aef74d75bf8ddc9bc90abd49d1ba8380c62d80ee1318cf97c48c7a4124",
+      "bytes": 43847
+    },
+    {
+      "file": "rubberduck/alien_02.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/alien_02.ogg",
+      "sha256": "a28c192579824352a0177d71d9f2fe32560d17b00fbc16297488bddd07ddcdc9",
+      "bytes": 38506
+    },
+    {
+      "file": "rubberduck/alien_03.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/alien_03.ogg",
+      "sha256": "8e417706c6ca3f7eb99d9500d17bf74ef977d16c540dfa9d695db4721cc30003",
+      "bytes": 53349
+    },
+    {
+      "file": "rubberduck/alien_05.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/alien_05.ogg",
+      "sha256": "7f6414bd745b244af6f24f7bd2d58b0d7cd1c670ea389e122a750bc588ce7134",
+      "bytes": 25080
+    },
+    {
+      "file": "rubberduck/bug_01.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/bug_01.ogg",
+      "sha256": "a7afae8bd3b448184e92bbb6162702e86322e5df58045715176c450ba4bbea3a",
+      "bytes": 26999
+    },
+    {
+      "file": "rubberduck/bug_02.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/bug_02.ogg",
+      "sha256": "7993707dcb082c4f9f297bec44f8aa276988d848f4cf10ea6046c1c45daee518",
+      "bytes": 29638
+    },
+    {
+      "file": "rubberduck/bug_03.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/bug_03.ogg",
+      "sha256": "947dad474b93a2786455b1772184f79f4881cf8bf212353638a42f662c808b7b",
+      "bytes": 22423
+    },
+    {
+      "file": "rubberduck/bug_04.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/bug_04.ogg",
+      "sha256": "478418f0d70667109145ca10d82e918c5eeb95c594be40186681179a883d64be",
+      "bytes": 20036
+    },
+    {
+      "file": "rubberduck/burble_01.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/burble_01.ogg",
+      "sha256": "f4c27a1839ef9e82d29e1bb175c0ebf73c65b6839b2914108d0c219fc1f42445",
+      "bytes": 48655
+    },
+    {
+      "file": "rubberduck/burble_02.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/burble_02.ogg",
+      "sha256": "7cc51b6cf28a5d0ac13f34e54cb18ebb8d2b66aa144281d321d0af826f56a85b",
+      "bytes": 43100
+    },
+    {
+      "file": "rubberduck/spit_01.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/spit_01.ogg",
+      "sha256": "11185484afda924711008f5e565d0baa5ebb271457c028b7e19b9ed487f8c6bd",
+      "bytes": 28176
+    },
+    {
+      "file": "rubberduck/weird_01.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/weird_01.ogg",
+      "sha256": "f4a67e07911836cb90479e01c5a32e31627038e3227ecec7c6e029b3aa2d81ad",
+      "bytes": 20568
+    },
+    {
+      "file": "rubberduck/howl.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/howl.ogg",
+      "sha256": "e63e29a219dfbe64724525600f36db7aab6017145650ffbc92763f87181c7825",
+      "bytes": 25641
+    },
+    {
+      "file": "rubberduck/grunt_01.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/grunt_01.ogg",
+      "sha256": "73ee84f2bb3e1b371a72dd66a09f150c98c9000bcb735c3bdd7f607e59385206",
+      "bytes": 24912
+    },
+    {
+      "file": "rubberduck/grunt_03.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/grunt_03.ogg",
+      "sha256": "f2a23b32fcf9cbdabf059339d346ce7eead018fda778067827e71b96936989f1",
+      "bytes": 26099
+    },
+    {
+      "file": "rubberduck/troll_02.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/troll_02.ogg",
+      "sha256": "d63ae3a57294b8370eb6370cc4c75f544f4a8571d893ea3a48a4564d82e078cb",
+      "bytes": 33825
+    },
+    {
+      "file": "rubberduck/scream_01.ogg",
+      "url": "https://raw.githubusercontent.com/lavenderdotpet/CC0-Public-Domain-Sounds/f2b6264f9ab89fabc266914c3654685d68c5a39b/80-CC0-creature-SFX/scream_01.ogg",
+      "sha256": "54da7bba4c4272b0b77dc3fe26a91d0a26d9280797fecb8197d716b47745eb85",
+      "bytes": 38406
+    },
+    {
+      "file": "kenney/impact-sounds/impactMetal_heavy_000.ogg",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/impact-sounds/Audio/impactMetal_heavy_000.ogg",
+      "sha256": "e07045693e4a2b3d165c424e3dab4c781d9ff8880a386880ac89a51315d7f831",
+      "bytes": 6110
+    },
+    {
+      "file": "kenney/impact-sounds/impactMetal_heavy_002.ogg",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/impact-sounds/Audio/impactMetal_heavy_002.ogg",
+      "sha256": "b914c8f1eb7c0f34bb165d7c77f4be0351f6be0660c13c53e65424e262e2c093",
+      "bytes": 5634
+    },
+    {
+      "file": "kenney/impact-sounds/impactPlate_heavy_000.ogg",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/impact-sounds/Audio/impactPlate_heavy_000.ogg",
+      "sha256": "112d4f93ddcc370b410630f971c0f5d991856102da9c76bc5c5540d388e75aaa",
+      "bytes": 10032
+    },
+    {
+      "file": "kenney/impact-sounds/impactGlass_heavy_000.ogg",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/impact-sounds/Audio/impactGlass_heavy_000.ogg",
+      "sha256": "b44b39a940e8948e74b9bd3776bff980df43cf220abdaf0d467dc4c43c0244a5",
+      "bytes": 7403
+    },
+    {
+      "file": "kenney/impact-sounds/impactWood_heavy_000.ogg",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/impact-sounds/Audio/impactWood_heavy_000.ogg",
+      "sha256": "15ff82332f342c30e469215539e1cc57e11b221aa2cf7e11e811d313a9927f3d",
+      "bytes": 6233
+    },
+    {
+      "file": "kenney/impact-sounds/impactPunch_heavy_002.ogg",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/impact-sounds/Audio/impactPunch_heavy_002.ogg",
+      "sha256": "7993dd4c156b9979ad69f17be5ebe31850b16039a3857f8477141be54dfee1b3",
+      "bytes": 9025
+    },
+    {
+      "file": "kenney/impact-sounds/impactSoft_heavy_000.ogg",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/impact-sounds/Audio/impactSoft_heavy_000.ogg",
+      "sha256": "49e7ca88743fca974bb8676ea138b751cfd8f9033b5e7af8736c2a215d6edbc1",
+      "bytes": 6570
+    },
+    {
+      "file": "kenney/impact-sounds/footstep_concrete_000.ogg",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/impact-sounds/Audio/footstep_concrete_000.ogg",
+      "sha256": "d7267e183067757c92c169de2a379abea592cfca6b39bb2e8feea15221ad79fe",
+      "bytes": 5808
+    },
+    {
+      "file": "kenney/impact-sounds/footstep_grass_001.ogg",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/impact-sounds/Audio/footstep_grass_001.ogg",
+      "sha256": "fb28781bd22b2eefdc14077f1adf5c94d7fe9c3a130194633b55f3e0d39d9f04",
+      "bytes": 8313
+    },
+    {
+      "file": "kenney/impact-sounds/footstep_snow_001.ogg",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/impact-sounds/Audio/footstep_snow_001.ogg",
+      "sha256": "980fb9a1c9227aed7995067b0357f373053337f2416316db8ea0438418542fb4",
+      "bytes": 7794
+    },
+    {
+      "file": "kenney/impact-sounds/footstep_wood_001.ogg",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/impact-sounds/Audio/footstep_wood_001.ogg",
+      "sha256": "e4f68e1c9fd55b4dc8ca89ed2bbab6f200171bc54bdc18aa96b80d8e7336f462",
+      "bytes": 5929
+    },
+    {
+      "file": "kenney/impact-sounds/impactMetal_medium_002.ogg",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/impact-sounds/Audio/impactMetal_medium_002.ogg",
+      "sha256": "7e89ce2ca0dbda95ea2b78d4b50791cab35c10d20e9f5ccd45dd0b00e99ff548",
+      "bytes": 5857
+    },
+    {
+      "file": "kenney/impact-sounds/LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/LICENSES/kenney-impact-sounds-license.txt",
+      "sha256": "b49aa9c56b04528b95913de13e506a0f7c5e807b9925db9bfef86af1f91120db",
+      "bytes": 608
+    },
+    {
+      "file": "kenney/rpg-audio/creak1.ogg",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/rpg-audio/Audio/creak1.ogg",
+      "sha256": "8a346186fd297254248cab8e8117060a52a5cf2a84f603153a762108550ea95e",
+      "bytes": 15761
+    },
+    {
+      "file": "kenney/rpg-audio/creak2.ogg",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/rpg-audio/Audio/creak2.ogg",
+      "sha256": "8a990afdc03aebb91d528f5385e2f95582dbfa8e2c12c71098ab01be9142294a",
+      "bytes": 19012
+    },
+    {
+      "file": "kenney/rpg-audio/knifeSlice.ogg",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/rpg-audio/Audio/knifeSlice.ogg",
+      "sha256": "4cd96dc630bed9840c15f1dd2306da2cc56a4da26a5d3f1a03c5a7265ac5e54f",
+      "bytes": 15532
+    },
+    {
+      "file": "kenney/rpg-audio/drawKnife1.ogg",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/rpg-audio/Audio/drawKnife1.ogg",
+      "sha256": "276403e72c3b71c47bc24db3083970c23f8e5551ffa78f436f83483c56f3f0bb",
+      "bytes": 11134
+    },
+    {
+      "file": "kenney/rpg-audio/cloth1.ogg",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/rpg-audio/Audio/cloth1.ogg",
+      "sha256": "ddb93a3671233f95da0e0b10367f082f7eb42fa6caaddcf776410aa8833c747d",
+      "bytes": 16508
+    },
+    {
+      "file": "kenney/rpg-audio/chop.ogg",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/rpg-audio/Audio/chop.ogg",
+      "sha256": "d00c2b3c9fff07e376145c8c8c45c90e5084ec192f6ce0387db233f7b86f1486",
+      "bytes": 9370
+    },
+    {
+      "file": "kenney/rpg-audio/metalLatch.ogg",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/rpg-audio/Audio/metalLatch.ogg",
+      "sha256": "ba9ba60b172b3ebc131a940f25793cd2e207aca7af73dc80d637277f060f1708",
+      "bytes": 10208
+    },
+    {
+      "file": "kenney/rpg-audio/LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/LICENSES/kenney-rpg-audio-license.txt",
+      "sha256": "5735dfd72cb64cbbceda4ebc00c380c41ca680edb82ff153aa7c9ab97614c539",
+      "bytes": 478
+    },
+    {
+      "file": "kenney/sci-fi-sounds/laserLarge_000.ogg",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/sci-fi-sounds/Audio/laserLarge_000.ogg",
+      "sha256": "a56d95794cd732d6c2d66ce488c14cf557fe526c282897c9a77675c2bd9b77e6",
+      "bytes": 25566
+    },
+    {
+      "file": "kenney/sci-fi-sounds/laserRetro_001.ogg",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/sci-fi-sounds/Audio/laserRetro_001.ogg",
+      "sha256": "a0a99efaa755594982d5dfebf3d9cecaed5249bdf1f0de29cf26ca9ea24c191a",
+      "bytes": 12732
+    },
+    {
+      "file": "kenney/sci-fi-sounds/slime_000.ogg",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/sci-fi-sounds/Audio/slime_000.ogg",
+      "sha256": "480ee82b690136ea9db6966a3c3033356b8274752795c4e37afd6b6defcfacff",
+      "bytes": 20870
+    },
+    {
+      "file": "kenney/sci-fi-sounds/forceField_000.ogg",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/sci-fi-sounds/Audio/forceField_000.ogg",
+      "sha256": "c2916f2a062c8ddd1aca2826d134fe90847037db31342726ffb0f9097afe339c",
+      "bytes": 25672
+    },
+    {
+      "file": "kenney/sci-fi-sounds/explosionCrunch_000.ogg",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/sci-fi-sounds/Audio/explosionCrunch_000.ogg",
+      "sha256": "4b597d658d0ae101f0a030fbeea5fc3a4292ab85f017470a8254a8e7959cbd69",
+      "bytes": 28274
+    },
+    {
+      "file": "kenney/sci-fi-sounds/lowFrequency_explosion_000.ogg",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/assets/kenney/sci-fi-sounds/Audio/lowFrequency_explosion_000.ogg",
+      "sha256": "3cb48d86dab63140cfb9aaeea4d4a6846abaca5831d157d8adbec0490da26343",
+      "bytes": 14317
+    },
+    {
+      "file": "kenney/sci-fi-sounds/LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/GeorgeQLe/assets-sfx-combat/9662dc1bed3b06ae753045915f9accfac044c7ce/LICENSES/kenney-sci-fi-sounds-license.txt",
+      "sha256": "a9767b25c3533f69d03af136480efad08efba19a9f0d89616992b34c79fd6186",
+      "bytes": 571
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+package cn.academy.ability.api.event;public class AbilityEvent extends cpw.mods.fml.common.eventhandler.Event {public final net.minecraft.entity.player.EntityPlayer player;public AbilityEvent(net.minecraft.entity.player.EntityPlayer player){this.player=player;}}

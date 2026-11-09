@@ -1,0 +1,15 @@
+package cn.academy.ability.api.data;
+import java.util.*;
+import net.minecraft.entity.player.EntityPlayer;
+/** Host predicate projection only; no CPData transport, event posting, resources or engine. */
+public class CPData {
+ public static final Map<EntityPlayer,CPData> DATA = new IdentityHashMap<>();
+ public boolean activated = true, overloadFine = true, interfering;
+ public final List<Boolean> requests = new ArrayList<>();
+ private final EntityPlayer player;
+ private CPData(EntityPlayer p) { player=p; }
+ public static CPData get(EntityPlayer p) { return DATA.computeIfAbsent(p, CPData::new); }
+ public boolean isActivated() { return AbilityData.get(player).hasCategory() && activated; }
+ public boolean canUseAbility() { return activated && overloadFine && !interfering; }
+ public void setActivateState(boolean value) { activated=value; requests.add(value); }
+}

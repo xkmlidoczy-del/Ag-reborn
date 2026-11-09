@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "academy:block/white_panel_slab"
+    },
+    "type=top": {
+      "model": "academy:block/white_panel_slab_top"
+    },
+    "type=double": {
+      "model": "academy:block/white_panel_slab_double"
+    }
+  }
+}

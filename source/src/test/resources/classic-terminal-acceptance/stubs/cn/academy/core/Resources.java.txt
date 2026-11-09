@@ -1,0 +1,1 @@
+package cn.academy.core; public class Resources {public static net.minecraft.util.ResourceLocation getTexture(String s){return new net.minecraft.util.ResourceLocation(s);}}

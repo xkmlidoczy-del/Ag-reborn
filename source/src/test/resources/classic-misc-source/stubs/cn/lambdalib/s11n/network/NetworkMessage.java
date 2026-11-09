@@ -1,0 +1,1 @@
+package cn.lambdalib.s11n.network; import cpw.mods.fml.relauncher.Side; public class NetworkMessage {public @interface Listener {String channel();Side side();} public static void sendToAllAround(Object p,Object t,String c,Object... args){oracle.Capture.messages.add(c+":"+args[0]);}}

@@ -1,0 +1,22 @@
+shaped(ene_unit) {
+    [nil,        cons_plate, nil]
+    [cons_plate, crystal0,   cons_plate]
+    [nil,        data_chip,  nil]
+}
+
+shaped(ene_unit*2) {
+    [nil,        cons_plate, nil]
+    [cons_plate, crystal1,   cons_plate]
+    [nil,        data_chip,  nil]
+}
+
+shaped(ene_unit*4) {
+    [nil,        cons_plate, nil]
+    [cons_plate, crystal2,   cons_plate]
+    [nil,        data_chip,  nil]
+}
+shaped(conv_comp) {
+    [calc_chip]
+    [ene_unit]
+    [reso_crystal]
+}

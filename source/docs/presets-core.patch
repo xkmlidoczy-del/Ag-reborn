@@ -1,0 +1,449 @@
+--- a/src/main/java/cn/academy/port/core/AbilityProgress.java
++++ b/src/main/java/cn/academy/port/core/AbilityProgress.java
+@@ -10,8 +10,18 @@
+     public boolean activated, overloadFine=true, interfering;
+     public double cp=1800, overload, extraCp, extraOverload, levelExperience;
+     public int cpDelay, overloadDelay;
++    public final SkillPresets presets=new SkillPresets();
+     public final Map<String,Double> experience=new HashMap<>();
+     public final Map<String,Integer> cooldowns=new HashMap<>();
++    public final Map<String,Integer> cooldownMaxTicks=new HashMap<>();
++    /** Classic CooldownData preserves the greatest max/remaining ticks while an existing cooldown is alive. */
++    public void setCooldown(String id,int ticks) {
++        if(id==null||!learned(id)||ticks<=0)return;ticks=Math.min(12000,ticks);
++        int previous=cooldowns.getOrDefault(id,0),maximum=previous>0?cooldownMaxTicks.getOrDefault(id,previous):0;
++        cooldowns.put(id,Math.max(previous,ticks));cooldownMaxTicks.put(id,Math.max(maximum,ticks));
++    }
++    public int cooldownMaximum(String id) {return Math.max(1,Math.max(cooldowns.getOrDefault(id,0),cooldownMaxTicks.getOrDefault(id,0)));}
++    public void tickCooldowns() {cooldowns.replaceAll((id,ticks)->Math.max(0,ticks-1));cooldowns.values().removeIf(ticks->ticks==0);cooldownMaxTicks.keySet().retainAll(cooldowns.keySet());}
+     public boolean hasCategory() { return !category.isEmpty(); }
+     public double baseCp() { return ClassicRules.BASE_CP[ClassicRules.level(level)]+(learned("brain_course")?1000:0)+(learned("brain_course_advanced")?1500:0); }
+     public double baseOverload() { return ClassicRules.BASE_OVERLOAD[ClassicRules.level(level)]+(learned("brain_course_advanced")?100:0); }
+@@ -20,7 +30,7 @@
+     public double exp(String skill) { if(category.equals("meltdowner")&&skill.equals("rad_intensify"))return ClassicRules.clamp(maxCp()/(ClassicRules.BASE_CP[5]+(learned("brain_course")?1000:0)+(learned("brain_course_advanced")?1500:0)),0,1);return experience.getOrDefault(skill,0.0); }
+     public boolean learned(String skill) { return experience.containsKey(skill); }
+     public boolean canUse(String skill) { return hasCategory() && activated && overloadFine && !interfering && learned(skill) && cooldowns.getOrDefault(skill,0)==0; }
+-    public void selectCategory(String value) { category=value; level=0; experience.clear(); cooldowns.clear(); levelExperience=0; recalculate(true); activated=false; }
++    public void selectCategory(String value) { category=value; presets.clear(); level=0; experience.clear(); cooldowns.clear(); cooldownMaxTicks.clear(); levelExperience=0; recalculate(true); activated=false; }
+     public void learn(String id) { if(!learned(id)) { experience.put(id,0.0); recalculate(false); } }
+     public void setLevel(int value) { level=ClassicRules.level(value); levelExperience=0; recalculate(true); }
+     public void recoverAll() { cp=maxCp();overload=0;overloadFine=false; }
+@@ -41,7 +51,7 @@
+     }
+     public void addExperience(String id,double raw) { if(!Double.isFinite(raw)||raw<0||!learned(id)) return;experience.put(id,Math.min(1,exp(id)+raw));levelExperience+=raw; }
+     public void tick() {
+-        cooldowns.replaceAll((id,ticks)->Math.max(0,ticks-1));cooldowns.values().removeIf(ticks->ticks==0);
++        tickCooldowns();
+         if(!hasCategory()) return;
+         if(cpDelay>0) cpDelay--; else cp=Math.min(maxCp(),cp+ClassicRules.cpRecovery(cp,baseCp())*(learned("mind_course")?1.2:1));
+         if(overloadDelay>0) overloadDelay--; else {overload=Math.max(0,overload-ClassicRules.overloadRecovery(overload,baseOverload()));if(overload==0)overloadFine=true;}
+@@ -50,6 +60,6 @@
+         level=ClassicRules.level(level);extraCp=ClassicRules.clamp(extraCp,0,ClassicRules.EXTRA_CP_CAP[level]);extraOverload=ClassicRules.clamp(extraOverload,0,ClassicRules.EXTRA_OVERLOAD_CAP[level]);
+         cp=ClassicRules.clamp(cp,0,maxCp());overload=ClassicRules.clamp(overload,0,maxOverload());levelExperience=ClassicRules.clamp(levelExperience,0,10000);
+         cpDelay=Math.max(0,Math.min(15,cpDelay));overloadDelay=Math.max(0,Math.min(32,overloadDelay));
+-        experience.replaceAll((id,value)->ClassicRules.clamp(value,0,1));cooldowns.replaceAll((id,value)->Math.max(0,Math.min(12000,value)));
++        experience.replaceAll((id,value)->ClassicRules.clamp(value,0,1));cooldowns.replaceAll((id,value)->Math.max(0,Math.min(12000,value)));cooldownMaxTicks.keySet().retainAll(cooldowns.keySet());cooldownMaxTicks.replaceAll((id,value)->Math.max(cooldowns.getOrDefault(id,0),Math.max(1,Math.min(12000,value))));
+     }
+ }
+--- a/src/main/java/cn/academy/port/AbilityStorage.java
++++ b/src/main/java/cn/academy/port/AbilityStorage.java
+@@ -1,5 +1,7 @@
+ package cn.academy.port;
+ import cn.academy.port.core.AbilityProgress;
++import cn.academy.port.core.SkillPresets;
++import cn.academy.port.preset.PresetSkills;
+ import net.minecraft.nbt.CompoundTag;
+ import net.minecraft.server.level.ServerPlayer;
+ import java.util.*;
+@@ -10,16 +12,22 @@
+     public static void save(ServerPlayer player) {player.getPersistentData().put(KEY,encode(get(player)));}
+     public static void remove(ServerPlayer player) {save(player);CACHE.remove(player.getUUID());}
+     public static CompoundTag encode(AbilityProgress s) {
+-        var t=new CompoundTag();t.putInt("schema",1);t.putString("category",s.category);t.putInt("level",s.level);t.putBoolean("active",s.activated);t.putBoolean("overload_fine",s.overloadFine);
++        var t=new CompoundTag();t.putInt("schema",2);t.putString("category",s.category);t.putInt("level",s.level);t.putBoolean("active",s.activated);t.putBoolean("overload_fine",s.overloadFine);
+         t.putDouble("cp",s.cp);t.putDouble("overload",s.overload);t.putDouble("extra_cp",s.extraCp);t.putDouble("extra_overload",s.extraOverload);t.putDouble("level_exp",s.levelExperience);t.putInt("cp_delay",s.cpDelay);t.putInt("overload_delay",s.overloadDelay);
+-        var exps=new CompoundTag();s.experience.forEach(exps::putDouble);t.put("skills",exps);var cds=new CompoundTag();s.cooldowns.forEach(cds::putInt);t.put("cooldowns",cds);return t;
++        var exps=new CompoundTag();s.experience.forEach(exps::putDouble);t.put("skills",exps);var cds=new CompoundTag();s.cooldowns.forEach(cds::putInt);t.put("cooldowns",cds);var maxima=new CompoundTag();s.cooldowns.forEach((id,ticks)->maxima.putInt(id,s.cooldownMaximum(id)));t.put("cooldown_max",maxima);
++        var presets=new CompoundTag();presets.putInt("current",s.presets.current());presets.putLong("revision",s.presets.revision());
++        for(int preset=0;preset<SkillPresets.MAX_PRESETS;preset++){var mapping=new CompoundTag();for(int slot=0;slot<SkillPresets.MAX_KEYS;slot++){String skill=s.presets.skill(preset,slot);if(!skill.isEmpty())mapping.putString(Integer.toString(slot),skill);}presets.put(Integer.toString(preset),mapping);}
++        t.put("presets",presets);return t;
+     }
+     public static AbilityProgress decode(CompoundTag t) {
+         var s=new AbilityProgress();if(!t.contains("schema"))return s;
+         String cat=t.getString("category");if(Set.of("electromaster","meltdowner","teleporter","vecmanip").contains(cat))s.category=cat;
+         s.level=t.getInt("level");s.activated=t.getBoolean("active");s.overloadFine=t.getBoolean("overload_fine");s.cp=t.getDouble("cp");s.overload=t.getDouble("overload");s.extraCp=t.getDouble("extra_cp");s.extraOverload=t.getDouble("extra_overload");s.levelExperience=t.getDouble("level_exp");s.cpDelay=t.getInt("cp_delay");s.overloadDelay=t.getInt("overload_delay");
+         var exps=t.getCompound("skills");for(var id:exps.getAllKeys())if(SkillCatalog.find(s.category,id).isPresent())s.experience.put(id,exps.getDouble(id));
+-        var cds=t.getCompound("cooldowns");for(var id:cds.getAllKeys())if(s.learned(id))s.cooldowns.put(id,cds.getInt(id));s.sanitize();return s;
++        var cds=t.getCompound("cooldowns");for(var id:cds.getAllKeys())if(s.learned(id))s.cooldowns.put(id,cds.getInt(id));var maxima=t.getCompound("cooldown_max");for(var id:s.cooldowns.keySet())s.cooldownMaxTicks.put(id,Math.max(s.cooldowns.get(id),maxima.getInt(id)));s.sanitize();
++        var presets=t.getCompound("presets");var saved=new String[SkillPresets.MAX_PRESETS][SkillPresets.MAX_KEYS];
++        for(int preset=0;preset<SkillPresets.MAX_PRESETS;preset++)for(int slot=0;slot<SkillPresets.MAX_KEYS;slot++)saved[preset][slot]=presets.getCompound(Integer.toString(preset)).getString(Integer.toString(slot));
++        s.presets.restore(presets.getInt("current"),presets.getLong("revision"),saved,id->PresetSkills.selectable(s,id));return s;
+     }
+     public static void clone(ServerPlayer original,ServerPlayer replacement) {replacement.getPersistentData().put(KEY,encode(get(original)));CACHE.remove(original.getUUID());}
+     public static void clear() {CACHE.clear();}
+--- a/src/main/java/cn/academy/port/AcademyGameplay.java
++++ b/src/main/java/cn/academy/port/AcademyGameplay.java
+@@ -1,6 +1,7 @@
+ package cn.academy.port;
+ import cn.academy.port.core.*;
+ import cn.academy.port.develop.*;
++import cn.academy.port.preset.PresetSkills;
+ import net.neoforged.neoforge.network.PacketDistributor;
+ import com.mojang.brigadier.arguments.DoubleArgumentType;
+ import cn.academy.port.skill.RailgunDamage;
+@@ -10,6 +11,7 @@
+ import cn.academy.port.skill.ElectronBomb;
+ import cn.academy.port.skill.CoinTosses;
+ import cn.academy.port.skill.CurrentCharging;
++import cn.academy.port.skill.GroundShock;
+ import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+ import net.minecraft.commands.Commands;
+ import net.minecraft.network.chat.Component;
+@@ -37,6 +39,55 @@
+ public final class AcademyGameplay {
+     private record RailgunCharge(net.minecraft.server.level.ServerLevel level,AbilityProgress state,int remaining) {}
+     private static final Map<UUID,RailgunCharge> CHARGES=new HashMap<>();
++    /** Only this entry point is registered on the wire; skill-name request() is a trusted test/internal API. */
++    public static boolean requestFromClient(ServerPlayer player,AcademyNetwork.Request request) {
++        if(player==null||request==null||request.action()==null||request.value()==null||player.isRemoved()||!player.isAlive()||player.isSpectator()||!player.serverLevel().getServer().isSameThread())return false;
++        var state=AbilityStorage.get(player);boolean accepted=false;
++        switch(request.action()) {
++            case "preset_switch" -> {
++                int preset=presetIndex(request.value());
++                if(state.activated&&SkillPresets.validPreset(preset)) {abortHolds(player);accepted=state.presets.switchTo(preset);}
++            }
++            case "preset_edit" -> {
++                String[] fields=request.value().split(":",-1);
++                if(fields.length==3&&state.hasCategory()) {
++                    int preset=presetIndex(fields[0]),slot=presetIndex(fields[1]);
++                    accepted=state.presets.edit(preset,slot,fields[2],id->PresetSkills.selectable(state,id));
++                    // Classic PresetUpdate flushes every default delegate, even edits to a nonselected preset.
++                    if(accepted)abortHolds(player);
++                }
++            }
++            case "slot_press","slot_release","slot_abort" -> {
++                int slot=presetIndex(request.value());String skill=state.presets.currentSkill(slot);
++                if(SkillPresets.validSlot(slot)&&PresetSkills.selectable(state,skill)) {
++                    if(request.action().equals("slot_abort")) {abortSlot(player,skill);accepted=true;}
++                    else if(request.action().equals("slot_release")) {releaseSlot(player,skill);accepted=true;}
++                    else if(state.canUse(skill)) {pressSlot(player,skill);accepted=true;}
++                }
++            }
++            case "coin_attempt" -> {if(PresetSkills.selectable(state,"railgun")&&state.presets.currentContains("railgun")&&state.canUse("railgun")){request(player,request);accepted=true;}}
++            case "toggle","abort_active","develop_level","develop_abort","learn" -> {request(player,request);accepted=true;}
++            default -> {} // Do not expose arbitrary skill names, casts, charges or aborts through network ingress.
++        }
++        AbilityStorage.save(player);AcademyNetwork.sync(player);return accepted;
++    }
++    private static int presetIndex(String value) {return value!=null&&value.length()==1&&value.charAt(0)>='0'&&value.charAt(0)<='3'?value.charAt(0)-'0':-1;}
++    private static void pressSlot(ServerPlayer player,String skill) {
++        switch(skill) {
++            case "arc_gen","electron_bomb" -> request(player,new AcademyNetwork.Request("cast",skill));
++            case "charging","threatening_teleport","dir_shock","ground_shock" -> request(player,new AcademyNetwork.Request("skill_start",skill));
++            case "railgun" -> request(player,new AcademyNetwork.Request("charge",""));
++            default -> {}
++        }
++    }
++    private static void releaseSlot(ServerPlayer player,String skill) {
++        if(skill.equals("railgun"))request(player,new AcademyNetwork.Request("abort",""));
++        else if(Set.of("charging","threatening_teleport","dir_shock","ground_shock").contains(skill))request(player,new AcademyNetwork.Request("skill_release",skill));
++    }
++    private static void abortSlot(ServerPlayer player,String skill) {
++        if(skill.equals("railgun"))request(player,new AcademyNetwork.Request("abort",""));
++        else if(Set.of("charging","threatening_teleport","dir_shock","ground_shock").contains(skill))request(player,new AcademyNetwork.Request("skill_abort",skill));
++    }
+     public static void request(ServerPlayer player,AcademyNetwork.Request request) {
+         if(player==null||player.isRemoved()||!player.isAlive()||player.isSpectator())return;
+         var s=AbilityStorage.get(player);
+@@ -44,21 +95,21 @@
+             case "abort_active" -> abortHolds(player);
+             case "toggle" -> {if(s.hasCategory()){s.activated=!s.activated;if(!s.activated)abortHolds(player);}}
+             case "cast" -> {switch(request.value()){case "arc_gen" -> arc(player);case "electron_bomb" -> ElectronBomb.perform(player);default -> {}}}
+-            case "skill_start" -> {switch(request.value()){case "threatening_teleport" -> ThreateningTeleport.start(player);case "dir_shock" -> DirectedShock.start(player);case "charging" -> CurrentCharging.start(player);default -> {}}}
+-            case "skill_release" -> {switch(request.value()){case "threatening_teleport" -> ThreateningTeleport.release(player);case "dir_shock" -> DirectedShock.release(player);case "charging" -> CurrentCharging.release(player);default -> {}}}
+-            case "skill_abort" -> {switch(request.value()){case "threatening_teleport" -> ThreateningTeleport.abort(player);case "dir_shock" -> DirectedShock.abort(player);case "charging" -> CurrentCharging.abort(player);default -> {}}}
++            case "skill_start" -> {switch(request.value()){case "threatening_teleport" -> ThreateningTeleport.start(player);case "dir_shock" -> DirectedShock.start(player);case "charging" -> CurrentCharging.start(player);case "ground_shock" -> GroundShock.start(player);default -> {}}}
++            case "skill_release" -> {switch(request.value()){case "threatening_teleport" -> ThreateningTeleport.release(player);case "dir_shock" -> DirectedShock.release(player);case "charging" -> CurrentCharging.release(player);case "ground_shock" -> GroundShock.release(player);default -> {}}}
++            case "skill_abort" -> {switch(request.value()){case "threatening_teleport" -> ThreateningTeleport.abort(player);case "dir_shock" -> DirectedShock.abort(player);case "charging" -> CurrentCharging.abort(player);case "ground_shock" -> GroundShock.abort(player);default -> {}}}
+             case "coin_attempt" -> {try{long token=Long.parseLong(request.value());if(CoinTosses.attempt(player,token))railgun(player,false);}catch(NumberFormatException ignored){}}
+             case "charge" -> {if(s.canUse("railgun")&&ammo(player)&&!CHARGES.containsKey(player.getUUID())) {CHARGES.put(player.getUUID(),new RailgunCharge(player.serverLevel(),s,20));AcademyNetwork.effect(player,"charge",0);}}
+             case "abort" -> CHARGES.remove(player.getUUID());
+             case "develop_level" -> DevelopmentController.startLevel(player,InductionFactors.inventory(player));
+             case "develop_abort" -> DevelopmentController.abort(player);
+-            case "learn" -> {if(Set.of("arc_gen","charging","railgun","threatening_teleport","dir_shock","electron_bomb","rad_intensify","dim_folding_theorem","space_fluct","brain_course","brain_course_advanced","mind_course").contains(request.value()))DevelopmentController.startSkill(player,request.value());}
++            case "learn" -> {if(Set.of("arc_gen","charging","railgun","threatening_teleport","dir_shock","ground_shock","electron_bomb","rad_intensify","dim_folding_theorem","space_fluct","brain_course","brain_course_advanced","mind_course").contains(request.value()))DevelopmentController.startSkill(player,request.value());}
+             default -> {}
+         }
+         AbilityStorage.save(player);AcademyNetwork.sync(player);
+     }
+     public static void cancelRailgunCharge(ServerPlayer player) {CHARGES.remove(player.getUUID());}
+-    private static void abortHolds(ServerPlayer player) {CurrentCharging.abort(player);DirectedShock.abort(player);ThreateningTeleport.abort(player);CHARGES.remove(player.getUUID());}
++    private static void abortHolds(ServerPlayer player) {CurrentCharging.abort(player);GroundShock.abort(player);DirectedShock.abort(player);ThreateningTeleport.abort(player);CHARGES.remove(player.getUUID());}
+     public static boolean holdingDeveloper(ServerPlayer p) {return p.getMainHandItem().is(AcademyCraft.DEVELOPER.get())||p.getOffhandItem().is(AcademyCraft.DEVELOPER.get());}
+     public static boolean ammo(ServerPlayer p) {return p.getMainHandItem().is(Items.IRON_INGOT)||p.getMainHandItem().is(Items.IRON_BLOCK);}
+     public static boolean arc(ServerPlayer player) {
+@@ -79,7 +130,7 @@
+             else if(world.random.nextDouble()<ClassicRules.lerp(0,.6,e)&&world.isEmptyBlock(pos.above())&&world.mayInteract(player,pos.above()))world.setBlock(pos.above(),Blocks.FIRE.defaultBlockState(),3);
+             s.addExperience("arc_gen",ClassicRules.lerp(.0018,.0027,e));
+         }
+-        s.cooldowns.put("arc_gen",ClassicRules.arc(s.exp("arc_gen")).cooldown());AbilityStorage.save(player);AcademyNetwork.effect(player,"arc",cost.range());return true;
++        s.setCooldown("arc_gen",ClassicRules.arc(s.exp("arc_gen")).cooldown());AbilityStorage.save(player);AcademyNetwork.effect(player,"arc",cost.range());return true;
+     }
+     private static boolean railgun(ServerPlayer player) {return railgun(player,true);}
+     private static boolean railgun(ServerPlayer player,boolean ironAmmo) {
+@@ -90,10 +141,10 @@
+         if(!s.consume(cost.cp(),cost.overload(),player.getAbilities().instabuild))return false;
+         var result=RailgunDamage.perform(player,(float)cost.damage(),(float)ClassicRules.lerp(900,2000,s.exp("railgun")));
+         // Legacy normal hits award .005; the shared reflection flag bug is intentionally not reproduced.
+-        s.addExperience("railgun",result.reflectedHit()?.01:.005);s.cooldowns.put("railgun",cost.cooldown());AbilityStorage.save(player);AcademyNetwork.effect(player,"railgun",result.beamLength());return true;
++        s.addExperience("railgun",result.reflectedHit()?.01:.005);s.setCooldown("railgun",cost.cooldown());AbilityStorage.save(player);AcademyNetwork.effect(player,"railgun",result.beamLength());return true;
+     }
+     @SubscribeEvent public static void tick(PlayerTickEvent.Post event) {
+-        if(!(event.getEntity() instanceof ServerPlayer p))return;var s=AbilityStorage.get(p);s.tick();DevelopmentController.tick(p,snapshot->{var tag=DevelopmentController.encode(snapshot);tag.putString("kind","development");PacketDistributor.sendToPlayer(p,new AcademyNetwork.ClientData(tag));});CoinTosses.tick(p);CurrentCharging.tick(p);DirectedShock.tick(p);ThreateningTeleport.tick(p);ElectronBomb.tick(p);var charge=CHARGES.get(p.getUUID());
++        if(!(event.getEntity() instanceof ServerPlayer p))return;var s=AbilityStorage.get(p);s.tick();DevelopmentController.tick(p,snapshot->{var tag=DevelopmentController.encode(snapshot);tag.putString("kind","development");PacketDistributor.sendToPlayer(p,new AcademyNetwork.ClientData(tag));});CoinTosses.tick(p);CurrentCharging.tick(p);GroundShock.tick(p);DirectedShock.tick(p);ThreateningTeleport.tick(p);ElectronBomb.tick(p);var charge=CHARGES.get(p.getUUID());
+         if(charge!=null) {if(!p.isAlive()||p.isRemoved()||p.isSpectator()||charge.level()!=p.serverLevel()||charge.state()!=s||!ammo(p)||!s.canUse("railgun"))CHARGES.remove(p.getUUID());else if(charge.remaining()<=1) {CHARGES.remove(p.getUUID());railgun(p);}else CHARGES.put(p.getUUID(),new RailgunCharge(charge.level(),charge.state(),charge.remaining()-1));}
+         if(p.tickCount%10==0){AbilityStorage.save(p);AcademyNetwork.sync(p);}
+     }
+@@ -101,12 +152,12 @@
+     @SubscribeEvent public static void login(PlayerEvent.PlayerLoggedInEvent event) {if(event.getEntity() instanceof ServerPlayer p){AcademyNetwork.sync(p);syncDevelopment(p);}}
+     private static void syncDevelopment(ServerPlayer player){var tag=DevelopmentController.encode(DevelopmentController.process(player).snapshot());tag.putString("kind","development");PacketDistributor.sendToPlayer(player,new AcademyNetwork.ClientData(tag));}
+     @SubscribeEvent public static void respawn(PlayerEvent.PlayerRespawnEvent event){if(event.getEntity() instanceof ServerPlayer p){AcademyNetwork.sync(p);syncDevelopment(p);}}
+-    @SubscribeEvent public static void logout(PlayerEvent.PlayerLoggedOutEvent event) {if(event.getEntity() instanceof ServerPlayer p){DevelopmentController.remove(p);CoinTosses.abort(p);CurrentCharging.abort(p);DirectedShock.abort(p);ThreateningTeleport.abort(p);ElectronBomb.abort(p);AbilityStorage.remove(p);CHARGES.remove(p.getUUID());}}
+-    @SubscribeEvent public static void clone(PlayerEvent.Clone event) {if(event.getOriginal() instanceof ServerPlayer old&&event.getEntity() instanceof ServerPlayer p){if(event.isWasDeath()){var state=AbilityStorage.get(old);state.recoverAll();state.activated=false;}DevelopmentController.remove(old);CoinTosses.abort(old);CurrentCharging.abort(old);DirectedShock.abort(old);ThreateningTeleport.abort(old);ElectronBomb.abort(old);AbilityStorage.clone(old,p);CHARGES.remove(p.getUUID());}}
+-    @SubscribeEvent(priority=EventPriority.LOWEST) public static void death(LivingDeathEvent event) {if(event.getEntity() instanceof ServerPlayer p){DevelopmentController.remove(p);CoinTosses.abort(p);CurrentCharging.abort(p);DirectedShock.abort(p);ThreateningTeleport.abort(p);ElectronBomb.abort(p);CHARGES.remove(p.getUUID());var state=AbilityStorage.get(p);state.recoverAll();state.activated=false;AbilityStorage.save(p);}}
++    @SubscribeEvent public static void logout(PlayerEvent.PlayerLoggedOutEvent event) {if(event.getEntity() instanceof ServerPlayer p){DevelopmentController.remove(p);CoinTosses.abort(p);CurrentCharging.abort(p);GroundShock.abort(p);DirectedShock.abort(p);ThreateningTeleport.abort(p);ElectronBomb.abort(p);AbilityStorage.remove(p);CHARGES.remove(p.getUUID());}}
++    @SubscribeEvent public static void clone(PlayerEvent.Clone event) {if(event.getOriginal() instanceof ServerPlayer old&&event.getEntity() instanceof ServerPlayer p){if(event.isWasDeath()){var state=AbilityStorage.get(old);state.recoverAll();state.activated=false;}DevelopmentController.remove(old);CoinTosses.abort(old);CurrentCharging.abort(old);GroundShock.abort(old);DirectedShock.abort(old);ThreateningTeleport.abort(old);ElectronBomb.abort(old);AbilityStorage.clone(old,p);CHARGES.remove(p.getUUID());}}
++    @SubscribeEvent(priority=EventPriority.LOWEST) public static void death(LivingDeathEvent event) {if(event.getEntity() instanceof ServerPlayer p){DevelopmentController.remove(p);CoinTosses.abort(p);CurrentCharging.abort(p);GroundShock.abort(p);DirectedShock.abort(p);ThreateningTeleport.abort(p);ElectronBomb.abort(p);CHARGES.remove(p.getUUID());var state=AbilityStorage.get(p);state.recoverAll();state.activated=false;AbilityStorage.save(p);}}
+     @SubscribeEvent public static void wake(PlayerWakeUpEvent event) {if(!event.wakeImmediately()&&!event.updateLevel()&&event.getEntity() instanceof ServerPlayer p){AbilityStorage.get(p).recoverAll();AbilityStorage.save(p);AcademyNetwork.sync(p);}}
+     @SubscribeEvent public static void stopping(ServerStoppingEvent event) {CoinTosses.clear();for(var player:event.getServer().getPlayerList().getPlayers())AbilityStorage.save(player);}
+-    @SubscribeEvent public static void stopped(ServerStoppedEvent event) {DevelopmentController.clear();CoinTosses.clear();CurrentCharging.clear();DirectedShock.clear();ThreateningTeleport.clear();ElectronBomb.clear();AbilityStorage.clear();CHARGES.clear();}
++    @SubscribeEvent public static void stopped(ServerStoppedEvent event) {DevelopmentController.clear();CoinTosses.clear();CurrentCharging.clear();GroundShock.clear();DirectedShock.clear();ThreateningTeleport.clear();ElectronBomb.clear();AbilityStorage.clear();CHARGES.clear();}
+     @SubscribeEvent public static void commands(RegisterCommandsEvent event) {
+         event.getDispatcher().register(Commands.literal("academy").then(Commands.literal("status").executes(ctx->{var p=ctx.getSource().getPlayerOrException();var s=AbilityStorage.get(p);ctx.getSource().sendSuccess(()->Component.literal(s.category+" level "+s.level+" CP "+Math.round(s.cp)+"/"+Math.round(s.maxCp())+" overload "+Math.round(s.overload)+" progress "+s.levelProgress(SkillCatalog.levelSkillCount(s))),false);return 1;}))
+             .then(Commands.literal("dev").requires(src->src.hasPermission(2)).then(Commands.literal("charge").then(Commands.argument("energy",DoubleArgumentType.doubleArg(0,10000)).executes(ctx->{var player=ctx.getSource().getPlayerOrException();if(!DevelopmentController.holdingPortable(player))return 0;new DeveloperItemEnergy(player.getMainHandItem(),DeveloperType.PORTABLE).energy(DoubleArgumentType.getDouble(ctx,"energy"));return 1;}))).then(Commands.argument("category",StringArgumentType.word()).executes(ctx->{var p=ctx.getSource().getPlayerOrException();var cat=StringArgumentType.getString(ctx,"category");if(!Set.of("electromaster","meltdowner","teleporter","vecmanip").contains(cat))return 0;var s=AbilityStorage.get(p);abortHolds(p);DevelopmentController.remove(p);ElectronBomb.abort(p);s.selectCategory(cat);s.setLevel(5);s.activated=true;for(var skill:SkillCatalog.ALL)if(skill.category().equals(cat))s.experience.put(skill.id(),1.0);s.recoverAll();AcademyNetwork.sync(p);AbilityStorage.save(p);return 1;}))));
+--- a/src/main/java/cn/academy/port/client/AcademyClient.java
++++ b/src/main/java/cn/academy/port/client/AcademyClient.java
+@@ -19,27 +19,56 @@
+ public final class AcademyClient {
+     public static AbilityProgress state=new AbilityProgress();
+     public static net.minecraft.nbt.CompoundTag development;
+-    public static final KeyMapping TOGGLE=new KeyMapping("key.academy.toggle",GLFW.GLFW_KEY_Z,"key.categories.academy");
+-    public static final KeyMapping ARC=new KeyMapping("key.academy.arc_gen",GLFW.GLFW_KEY_R,"key.categories.academy");
+-    public static final KeyMapping RAILGUN=new KeyMapping("key.academy.railgun",GLFW.GLFW_KEY_G,"key.categories.academy");
+-    public static final KeyMapping CHARGING=new KeyMapping("key.academy.charging",GLFW.GLFW_KEY_H,"key.categories.academy");
+-    private static boolean charging;
+-    private static String heldSkill="";
+-    private static final ClassicInputLatch primaryLatch=new ClassicInputLatch(),railLatch=new ClassicInputLatch(),chargingLatch=new ClassicInputLatch();
+-    private static boolean down(KeyMapping mapping){var mc=Minecraft.getInstance();var key=mapping.getKey();if(key.getType()==com.mojang.blaze3d.platform.InputConstants.Type.MOUSE)return GLFW.glfwGetMouseButton(mc.getWindow().getWindow(),key.getValue())==GLFW.GLFW_PRESS;if(key.getType()==com.mojang.blaze3d.platform.InputConstants.Type.KEYSYM)return com.mojang.blaze3d.platform.InputConstants.isKeyDown(mc.getWindow().getWindow(),key.getValue());return mapping.isDown();}
++    public static final KeyMapping TOGGLE=new KeyMapping("key.academy.toggle",GLFW.GLFW_KEY_V,"key.categories.academy");
++    public static final KeyMapping SWITCH_PRESET=new KeyMapping("key.academy.switch_preset",GLFW.GLFW_KEY_C,"key.categories.academy");
++    public static final KeyMapping EDIT_PRESET=new KeyMapping("key.academy.edit_preset",GLFW.GLFW_KEY_N,"key.categories.academy");
++    public static final KeyMapping[] SLOTS={
++        new KeyMapping("key.academy.ability_0",com.mojang.blaze3d.platform.InputConstants.Type.MOUSE,GLFW.GLFW_MOUSE_BUTTON_LEFT,"key.categories.academy"),
++        new KeyMapping("key.academy.ability_1",com.mojang.blaze3d.platform.InputConstants.Type.MOUSE,GLFW.GLFW_MOUSE_BUTTON_RIGHT,"key.categories.academy"),
++        new KeyMapping("key.academy.ability_2",GLFW.GLFW_KEY_R,"key.categories.academy"),
++        new KeyMapping("key.academy.ability_3",GLFW.GLFW_KEY_F,"key.categories.academy")
++    };
++    private static final ClassicInputLatch[] slotLatches={new ClassicInputLatch(),new ClassicInputLatch(),new ClassicInputLatch(),new ClassicInputLatch()};
++    private static final String[] delegateSkills={"","","",""};
++    private static final com.mojang.blaze3d.platform.InputConstants.Key[] delegateKeys=new com.mojang.blaze3d.platform.InputConstants.Key[4];
++    private static final ClassicActivationKey activation=new ClassicActivationKey();
++    private static final ClassicInputLatch switchLatch=new ClassicInputLatch(),editLatch=new ClassicInputLatch();
++    private static boolean down(KeyMapping mapping){var mc=Minecraft.getInstance();var key=mapping.getKey();if(key.getType()==com.mojang.blaze3d.platform.InputConstants.Type.MOUSE)return key.getValue()>=0&&GLFW.glfwGetMouseButton(mc.getWindow().getWindow(),key.getValue())==GLFW.GLFW_PRESS;if(key.getType()==com.mojang.blaze3d.platform.InputConstants.Type.KEYSYM)return key.getValue()>=0&&com.mojang.blaze3d.platform.InputConstants.isKeyDown(mc.getWindow().getWindow(),key.getValue());return mapping.isDown();}
++    private static long now(){return net.minecraft.Util.getMillis();}
++    public static KeyMapping skillKey(String id){for(int slot=0;slot<SLOTS.length;slot++)if(state.presets.currentSkill(slot).equals(id))return SLOTS[slot];return null;}
++    public static boolean delegatePresent(int slot){
++        if(slot<0||slot>=SLOTS.length||!cn.academy.port.preset.PresetSkills.selectable(state,state.presets.currentSkill(slot)))return false;
++        // Classic runtime stores a single delegate per physical key; a later slot replaces an earlier collision.
++        for(int later=slot+1;later<SLOTS.length;later++)if(cn.academy.port.preset.PresetSkills.selectable(state,state.presets.currentSkill(later))&&SLOTS[later].getKey().equals(SLOTS[slot].getKey()))return false;
++        return true;
++    }
++    public static boolean delegateActive(int slot){return slot>=0&&slot<slotLatches.length&&slotLatches[slot].active();}
++    public static boolean activationHeld(){return activation.held();}
++    public static long activationHeldMillis(){return activation.heldMillis(now());}
++    public static boolean displayNumbers(){return activation.displayNumbers(now());}
++    private static boolean anyDelegateActive(){for(var latch:slotLatches)if(latch.active())return true;return false;}
++    /** Preserve real/physical key state while replacing delegates, so a held key never becomes a fresh cast. */
++    private static void resetDelegates(){for(int slot=0;slot<SLOTS.length;slot++){if(delegateSkills[slot].equals("ground_shock"))ClassicGroundShockEffects.abortLocal();slotLatches[slot].replaceSession(down(SLOTS[slot]));delegateSkills[slot]=state.presets.currentSkill(slot);delegateKeys[slot]=SLOTS[slot].getKey();}}
++    private static void abortDelegates(boolean send){if(send&&anyDelegateActive())request("abort_active","");for(int slot=0;slot<slotLatches.length;slot++){if(delegateSkills[slot].equals("ground_shock"))ClassicGroundShockEffects.abortLocal();slotLatches[slot].abort();}}
+     private static final ClientSessionGuard session=new ClientSessionGuard();
+-    private static void synchronizeSession(Minecraft mc){if(session.synchronize(mc.level,mc.player)){state=new AbilityProgress();development=null;charging=false;heldSkill="";primaryLatch.replaceSession(down(ARC));railLatch.replaceSession(down(RAILGUN));chargingLatch.replaceSession(down(CHARGING));ClassicCoinEffects.clear();}}
++    private static void synchronizeSession(Minecraft mc){if(session.synchronize(mc.level,mc.player)){state=new AbilityProgress();development=null;resetDelegates();activation.replaceSession(down(TOGGLE),now());switchLatch.replaceSession(down(SWITCH_PRESET));editLatch.replaceSession(down(EDIT_PRESET));ClassicCoinEffects.clear();ClassicGroundShockEffects.clear();}}
++    public static void editPreset(int preset,int slot,String skill){
++        // Source provides immediate local page/delegate feedback. The next server snapshot always wins.
++        if(state.presets.edit(preset,slot,skill,id->cn.academy.port.preset.PresetSkills.selectable(state,id))){abortDelegates(true);resetDelegates();request("preset_edit",preset+":"+slot+":"+skill);}
++    }
++    private static String presetSignature(){return state.category+":"+state.activated+":"+state.presets.current()+":"+state.presets.revision();}
+     public static void request(String action,String value) {PacketDistributor.sendToServer(new AcademyNetwork.Request(action,value));}
+     public static void receive(AcademyNetwork.ClientData packet) {
+         var minecraft=Minecraft.getInstance();synchronizeSession(minecraft);var t=packet.data();if(t==null)return;
+         switch(t.getString("kind")) {
+             case "development" -> development=t.copy();
+-            case "state" -> {state=AbilityStorage.decode(t);state.interfering=t.getBoolean("interfering");}
++            case "state" -> {String previous=presetSignature();state=AbilityStorage.decode(t);state.interfering=t.getBoolean("interfering");if(!previous.equals(presetSignature()))resetDelegates();}
+             case "developer" -> minecraft.setScreen(new DeveloperScreen());
+             case "charge" -> ClassicEffects.addCharge(t.getInt("entity"));
+             case "charging_start","charging_end" -> ClassicChargingEffects.receive(t);
++            case "ground_shock_start","ground_shock_abort","ground_shock" -> ClassicGroundShockEffects.receive(t);
+             case "dir_shock_prepare","dir_shock_abort","dir_shock","electron_bomb_charge","electron_bomb","threatening_teleport_start","threatening_teleport_abort","threatening_teleport" -> ClassicFirstSkillEffects.receive(t);
+-            case "coin_toss","coin_end" -> {ClassicCoinEffects.receive(t);if(t.getString("kind").equals("coin_toss")&&t.getBoolean("qte")&&minecraft.player!=null&&t.getInt("entity")==minecraft.player.getId()&&down(RAILGUN)){railLatch.replaceSession(true);charging=false;}}
++            case "coin_toss","coin_end" -> {ClassicCoinEffects.receive(t);if(t.getString("kind").equals("coin_toss")&&t.getBoolean("qte")&&minecraft.player!=null&&t.getInt("entity")==minecraft.player.getId())for(int slot=0;slot<SLOTS.length;slot++)if(state.presets.currentSkill(slot).equals("railgun")&&down(SLOTS[slot]))slotLatches[slot].replaceSession(true);}
+             case "railgun","arc" -> {
+                 var origin=new Vec3(t.getDouble("x"),t.getDouble("y"),t.getDouble("z"));var direction=new Vec3(t.getDouble("dx"),t.getDouble("dy"),t.getDouble("dz"));
+                 boolean rail=t.getString("kind").equals("railgun");if(rail)ClassicEffects.addRailgun(origin,direction,t.getDouble("length"));else ClassicEffects.addArc(origin,direction,t.getDouble("length"));
+@@ -51,32 +80,61 @@
+     @SubscribeEvent public static void tick(ClientTickEvent.Post event) {
+         var mc=Minecraft.getInstance();synchronizeSession(mc);
+         if(mc.player==null||mc.level==null)return;
+-        state.cooldowns.replaceAll((id,ticks)->Math.max(0,ticks-1));
+-        boolean holdCategory=state.category.equals("teleporter")||state.category.equals("vecmanip");
+-        String primary=state.category.equals("meltdowner")?"electron_bomb":state.category.equals("teleporter")?"threatening_teleport":state.category.equals("vecmanip")?"dir_shock":"arc_gen";
+-        var primaryTransition=primaryLatch.update(down(ARC),mc.screen==null&&state.canUse(primary));
+-        var railTransition=railLatch.update(down(RAILGUN),mc.screen==null&&state.canUse("railgun"));
+-        var chargingTransition=chargingLatch.update(down(CHARGING),mc.screen==null&&state.category.equals("electromaster")&&state.canUse("charging"));
+-        // Raw physical state is tracked even through GUI/cooldown aborts, as in classic realState.
+-        while(ARC.consumeClick()){};
+-        while(CHARGING.consumeClick()){};
+-        if(primaryTransition.abort()&&!heldSkill.isEmpty()){request("skill_abort",heldSkill);heldSkill="";}
+-        if(railTransition.abort()&&charging){request("abort","");charging=false;}
+-        if(chargingTransition.abort())request("skill_abort","charging");
+-        if(mc.screen!=null){while(TOGGLE.consumeClick()){};return;}
+-        boolean abortRequested=false;
+-        while(TOGGLE.consumeClick()){
+-            if(primaryLatch.active()||railLatch.active()||chargingLatch.active()){
+-                request("abort_active","");primaryLatch.abort();railLatch.abort();chargingLatch.abort();charging=false;heldSkill="";abortRequested=true;
+-            }else request("toggle","");
++        state.tickCooldowns();
++        var transitions=new ClassicInputLatch.Transition[SLOTS.length];
++        for(int slot=0;slot<SLOTS.length;slot++){
++            String mapped=state.presets.currentSkill(slot);
++            if(!mapped.equals(delegateSkills[slot])||!SLOTS[slot].getKey().equals(delegateKeys[slot])){if(slotLatches[slot].active())request("slot_abort",Integer.toString(slot));if(delegateSkills[slot].equals("ground_shock"))ClassicGroundShockEffects.abortLocal();slotLatches[slot].replaceSession(down(SLOTS[slot]));delegateSkills[slot]=mapped;delegateKeys[slot]=SLOTS[slot].getKey();}
++            transitions[slot]=slotLatches[slot].update(down(SLOTS[slot]),mc.screen==null&&delegatePresent(slot)&&state.canUse(mapped));
++            while(SLOTS[slot].consumeClick()){};
++            if(transitions[slot].abort()){if(delegateSkills[slot].equals("ground_shock"))ClassicGroundShockEffects.abortLocal();request("slot_abort",Integer.toString(slot));}
+         }
+-        if(abortRequested)return;
+-        if(primaryTransition.press()) {if(holdCategory){heldSkill=primary;request("skill_start",primary);}else request("cast",primary);}
+-        if(primaryTransition.release()&&!heldSkill.isEmpty()){request("skill_release",heldSkill);heldSkill="";}
+-        if(railTransition.press()){var coin=ClassicCoinEffects.attempt();if(coin.isPresent())request("coin_attempt",Long.toString(coin.getAsLong()));else request("charge","");charging=true;}
+-        if(railTransition.release()&&charging){request("abort","");charging=false;}
+-        if(chargingTransition.press())request("skill_start","charging");
+-        if(chargingTransition.release())request("skill_release","charging");
++        var switchTransition=switchLatch.update(down(SWITCH_PRESET),mc.screen==null&&state.activated);
++        var editTransition=editLatch.update(down(EDIT_PRESET),mc.screen==null&&state.hasCategory());
++        while(SWITCH_PRESET.consumeClick()){};while(EDIT_PRESET.consumeClick()){};
++        while(TOGGLE.consumeClick()){};
++        boolean activate=activation.update(down(TOGGLE),mc.screen==null,now());
++        if(mc.screen!=null){while(SWITCH_PRESET.consumeClick()){};while(EDIT_PRESET.consumeClick()){};return;}
++        if(activate&&state.hasCategory()){
++            if(anyDelegateActive()){request("abort_active","");abortDelegates(false);}
++            else request("toggle","");
++            return;
++        }
++        if(editTransition.press()){abortDelegates(true);mc.setScreen(new PresetEditScreen());return;}
++        if(switchTransition.press()){
++            int next=(state.presets.current()+1)%cn.academy.port.core.SkillPresets.MAX_PRESETS;
++            abortDelegates(false);state.presets.switchTo(next);resetDelegates();request("preset_switch",Integer.toString(next));return;
++        }
++        for(int slot=0;slot<SLOTS.length;slot++){
++            var transition=transitions[slot];
++            if(transition.press()){
++                if(delegateSkills[slot].equals("ground_shock"))ClassicGroundShockEffects.startLocal();
++                var coin=delegateSkills[slot].equals("railgun")?ClassicCoinEffects.attempt():java.util.OptionalLong.empty();
++                if(coin.isPresent())request("coin_attempt",Long.toString(coin.getAsLong()));else request("slot_press",Integer.toString(slot));
++            }
++            if(transition.release()){if(delegateSkills[slot].equals("ground_shock"))ClassicGroundShockEffects.abortLocal();request("slot_release",Integer.toString(slot));}
++        }
++    }
++    private static boolean overrides(KeyMapping vanilla){
++        if(!state.activated)return false;
++        for(int slot=0;slot<SLOTS.length;slot++)if(!state.presets.currentSkill(slot).isEmpty()&&SLOTS[slot].getKey().equals(vanilla.getKey()))return true;
++        return false;
++    }
++    /** Source ControlOverrider suppresses vanilla mappings for bound delegates, even on cooldown. */
++    @SubscribeEvent public static void suppressVanillaKeys(ClientTickEvent.Pre event){
++        var mc=Minecraft.getInstance();synchronizeSession(mc);if(mc.player==null||mc.screen!=null)return;
++        for(var key:mc.options.keyMappings){
++            boolean own=key==TOGGLE||key==SWITCH_PRESET||key==EDIT_PRESET;for(var slot:SLOTS)own|=key==slot;
++            if(!own&&overrides(key)){key.setDown(false);while(key.consumeClick()){};}
++        }
++    }
++    /** Callback-level mouse suppression also blocks vanilla before its click queue is populated. */
++    @SubscribeEvent public static void suppressVanillaMouse(InputEvent.MouseButton.Pre event){
++        var mc=Minecraft.getInstance();if(mc.player==null||mc.level==null||mc.screen!=null||!state.activated)return;
++        for(int slot=0;slot<SLOTS.length;slot++)if(!state.presets.currentSkill(slot).isEmpty()&&SLOTS[slot].matchesMouse(event.getButton())){event.setCanceled(true);return;}
++    }
++    @SubscribeEvent public static void suppressVanillaInteraction(InputEvent.InteractionKeyMappingTriggered event){
++        if(Minecraft.getInstance().screen==null&&overrides(event.getKeyMapping())){event.setCanceled(true);event.setSwingHand(false);}
+     }
+     @SubscribeEvent public static void hud(RenderGuiEvent.Post event) {
+         var mc=Minecraft.getInstance();if(mc.player==null||!state.hasCategory()||mc.options.hideGui)return;GuiGraphics g=event.getGuiGraphics();int x=12,y=12;
+@@ -91,6 +149,6 @@
+             net.minecraft.client.renderer.item.ItemProperties.register(AcademyCraft.DEVELOPER.get(),ResourceLocation.fromNamespaceAndPath("academy","charge_icon"),(stack,level,entity,seed)->{int damage=(int)(13*(1-new cn.academy.port.develop.DeveloperItemEnergy(stack,cn.academy.port.develop.DeveloperType.PORTABLE).energy()/10000));return damage<3?2f:damage>10?0f:1f;});
+             net.minecraft.client.renderer.item.ItemProperties.register(AcademyCraft.INDUCTION_FACTOR.get(),ResourceLocation.fromNamespaceAndPath("academy","category"),(stack,level,entity,seed)->cn.academy.port.develop.InductionFactors.category(stack).map(cat->(float)cn.academy.port.develop.DevelopmentActions.CATEGORIES.indexOf(cat)).orElse(0f));
+         });}
+-        @SubscribeEvent public static void keys(RegisterKeyMappingsEvent event) {event.register(TOGGLE);event.register(ARC);event.register(RAILGUN);event.register(CHARGING);}
++        @SubscribeEvent public static void keys(RegisterKeyMappingsEvent event) {event.register(TOGGLE);event.register(SWITCH_PRESET);event.register(EDIT_PRESET);for(var key:SLOTS)event.register(key);}
+     }
+ }
+--- a/src/main/java/cn/academy/port/client/DeveloperScreen.java
++++ b/src/main/java/cn/academy/port/client/DeveloperScreen.java
+@@ -17,7 +17,7 @@
+         if(state.hasCategory()) {
+             int index=0;
+             for(var skill:SkillCatalog.ALL) {
+-                if(!skill.category().equals(state.category)||!Set.of("arc_gen","charging","railgun","threatening_teleport","dir_shock","electron_bomb","rad_intensify","dim_folding_theorem","space_fluct","brain_course","brain_course_advanced","mind_course").contains(skill.id()))continue;
++                if(!skill.category().equals(state.category)||!Set.of("arc_gen","charging","railgun","threatening_teleport","dir_shock","ground_shock","electron_bomb","rad_intensify","dim_folding_theorem","space_fluct","brain_course","brain_course_advanced","mind_course").contains(skill.id()))continue;
+                 boolean support=DeveloperType.PORTABLE.supportsSkill(skill.level());
+                 Component label=Component.translatable("ac.ability."+(skill.id().contains("course")?"generic":skill.category())+"."+skill.id()+".name").append(" L"+skill.level()+(state.learned(skill.id())?" ✓":support?"":" ("+DeveloperType.minimumForSkill(skill.level()).name()+")"));
+                 var button=addRenderableWidget(Button.builder(label,b->AcademyClient.request("learn",skill.id())).bounds(x+(index%2)*142,y+(index/2)*24,138,20).build());button.active=support&&SkillCatalog.canLearn(state,skill)&&energy()>=DeveloperType.PORTABLE.estimatedConsumption(cn.academy.port.core.ClassicRules.learningStimulations(skill.level()));index++;
+--- a/src/main/java/cn/academy/port/client/ClassicCoinEffects.java
++++ b/src/main/java/cn/academy/port/client/ClassicCoinEffects.java
+@@ -133,11 +133,13 @@
+         Minecraft minecraft = Minecraft.getInstance();
+         if (minecraft.player == null || minecraft.options.hideGui || minecraft.screen != null
+                 || !hasPendingAttempt() || !AcademyClient.state.canUse("railgun")) return;
++        var mapping = AcademyClient.skillKey("railgun");
++        if (mapping == null) return;
+         var graphics = event.getGuiGraphics();
+         boolean active = ready();
+         graphics.fill(9, 57, 177, 80, 0xAA07131D);
+         graphics.blit(RAILGUN_ICON, 12, 60, 16, 16, 0, 0, 32, 32, 32, 32);
+-        String key = AcademyClient.RAILGUN.getTranslatedKeyMessage().getString();
++        String key = mapping.getTranslatedKeyMessage().getString();
+         graphics.drawString(minecraft.font, "Railgun [" + key + "] " + (active ? "ACTIVE" : "CHARGE"),
+                 33, 64, active ? 0xFF48CBD1 : 0xFFEDAB63, false);
+     }
+--- a/src/main/java/cn/academy/port/skill/DirectedShock.java
++++ b/src/main/java/cn/academy/port/skill/DirectedShock.java
+@@ -232,7 +232,7 @@
+     }
+ 
+     static void recordResult(AbilityProgress state, boolean hit) {
+-        if (hit) state.cooldowns.put(ID, cost(state.exp(ID)).cooldown());
++        if (hit) state.setCooldown(ID, cost(state.exp(ID)).cooldown());
+         state.addExperience(ID, hit ? HIT_EXPERIENCE : MISS_EXPERIENCE);
+     }
+ 
+--- a/src/main/java/cn/academy/port/skill/ThreateningTeleport.java
++++ b/src/main/java/cn/academy/port/skill/ThreateningTeleport.java
+@@ -100,7 +100,7 @@
+         }
+         // A traced target counts even when its damage hook rejects the attack, as in 1.0.7.
+         state.addExperience(ID, experienceIncrement(entityHit));
+-        state.cooldowns.put(ID, cost.cooldown());
++        state.setCooldown(ID, cost.cooldown());
+         AbilityStorage.save(player);
+         sendVisual(player,ID,cost.range(),trace.position(),trace.target()==null?-1:trace.target().getId(),true,critical);
+         return true;
+--- a/src/main/java/cn/academy/port/skill/ElectronBomb.java
++++ b/src/main/java/cn/academy/port/skill/ElectronBomb.java
+@@ -67,7 +67,7 @@
+         var cost = cost(experience);
+         if (!state.consume(cost.cp(), cost.overload(), creative)) return null;
+         state.addExperience(ID, EXPERIENCE_GAIN);
+-        state.cooldowns.put(ID, cost.cooldown());
++        state.setCooldown(ID, cost.cooldown());
+         return new LaunchPlan(cost, lifeTicks(experience));
+     }
+ 

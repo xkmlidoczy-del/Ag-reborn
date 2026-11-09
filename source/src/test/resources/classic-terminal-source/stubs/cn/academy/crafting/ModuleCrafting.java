@@ -1,0 +1,2 @@
+package cn.academy.crafting;
+public class ModuleCrafting {public static Object oreConstraintMetal=new Object(); public static Object oreImagSil=new Object(); public static Object oreImagCrystal=new Object(); public static Object oreResoCrystal=new Object(); public static Object constPlate=new Object(); public static Object ingotImagSil=new Object(); public static Object wafer=new Object(); public static Object silPiece=new Object(); public static Object metalFormer=new Object(); public static Object imagFusor=new Object();}

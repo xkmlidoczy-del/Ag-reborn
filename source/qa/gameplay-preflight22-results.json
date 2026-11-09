@@ -1,0 +1,22 @@
+[
+  {
+    "name": "preflight22-course-zero-requirements",
+    "script": "gameplay-final22-course-zero-requirements.script",
+    "exit": 0
+  },
+  {
+    "name": "preflight22-potential-original",
+    "script": "gameplay-final-em-defense-rest.script",
+    "exit": 0
+  },
+  {
+    "name": "preflight22-tp-complex-original",
+    "script": "gameplay-tp-complex.script",
+    "exit": 0
+  },
+  {
+    "name": "preflight22-hand-cage-storm",
+    "script": "gameplay-vm-cage-storm.script",
+    "exit": 0
+  }
+]

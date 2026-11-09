@@ -1,0 +1,3 @@
+package net.minecraft.world.entity.player;
+import java.util.*;import net.minecraft.world.item.ItemStack;import net.minecraft.world.InteractionHand;import net.minecraft.network.chat.Component;
+public class Player {public final Abilities abilities=new Abilities();public final Inventory inventory=new Inventory();public final List<Component> chat=new ArrayList<>();public ItemStack stack;public static class Abilities{public boolean instabuild;}public static class Inventory{public int changes;public void setChanged(){changes++;}}public ItemStack getItemInHand(InteractionHand h){return stack;}public Abilities getAbilities(){return abilities;}public Inventory getInventory(){return inventory;}public void sendSystemMessage(Component c){chat.add(c);} }

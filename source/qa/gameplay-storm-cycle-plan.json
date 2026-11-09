@@ -1,0 +1,9 @@
+[
+  {
+    "name": "diagnostic-storm-cycle-costs",
+    "script": "gameplay-storm-cycle-costs.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "fixture": "Finite initial CP and 84-percent initial heat before baseline only; natural native cooling and CP depletion after actual R start, never refilled."
+  }
+]

@@ -1,0 +1,6 @@
+package cn.academy.ability.api.ctrl;
+public final class ClientHandler {
+ public static final Object keyActivate = new Object();
+ public static int[] mapping = {11,12,13,14};
+ public static int getKeyMapping(int slot) { return mapping[slot]; }
+}

@@ -1,0 +1,1 @@
+package cn.lambdalib.util.helper; import cpw.mods.fml.relauncher.Side; public class TickScheduler {int ticks;Runnable task;public TickScheduler every(int t){return this;}public TickScheduler atOnly(Side s){return this;}public void run(Runnable r){task=r;}public void runTick(){if(++ticks%20==0)task.run();}}

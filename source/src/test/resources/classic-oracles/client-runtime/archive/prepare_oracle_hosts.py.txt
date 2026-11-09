@@ -1,0 +1,217 @@
+"""Materialize only declared host shims and byte-identical canonical witnesses."""
+from pathlib import Path
+import hashlib
+import json
+import shutil
+
+STAGE = Path(__file__).resolve().parent
+ROOT = STAGE.parents[1]
+REFERENCE = ROOT / '.reference/AcademyCraft-1.0.7'
+ORACLE = STAGE / 'oracle'
+COMPILE_WITNESSES = [
+    'src/main/java/cn/academy/ability/api/context/ClientRuntime.java',
+    'src/main/java/cn/academy/ability/api/context/KeyDelegate.java',
+    *['src/main/java/cn/academy/ability/api/event/' + name + '.java' for name in
+      ['AbilityEvent', 'PresetSwitchEvent', 'PresetUpdateEvent', 'AbilityActivateEvent',
+       'AbilityDeactivateEvent', 'FlushControlEvent']],
+]
+READ_ONLY_WITNESSES = [
+    'src/main/scala/cn/academy/ability/api/ctrl/KeyDelegates.scala',
+    'src/main/java/cn/academy/ability/api/data/CPData.java',
+    'src/main/java/cn/academy/ability/api/context/Context.java',
+]
+
+HOSTS = {
+ 'cn/academy/ability/api/Controllable.java': '''package cn.academy.ability.api;
+import cn.academy.ability.api.context.ClientRuntime;
+public interface Controllable { void activate(ClientRuntime runtime, int key); }
+''',
+ 'cn/academy/ability/api/Skill.java': '''package cn.academy.ability.api;
+import net.minecraft.util.ResourceLocation;
+public class Skill { public ResourceLocation getHintIcon() { return new ResourceLocation("host:skill"); } }
+''',
+ 'cn/academy/ability/api/context/Context.java': '''package cn.academy.ability.api.context;
+public class Context {
+ public enum Status { CONSTRUCTED, ALIVE, TERMINATED }
+ public Status status = Status.ALIVE;
+ public int terminations;
+ public Status getStatus() { return status; }
+ public void terminate() { ++terminations; status = Status.TERMINATED; }
+}
+''',
+ 'cn/academy/ability/api/cooldown/CooldownData.java': '''package cn.academy.ability.api.cooldown;
+import cn.academy.ability.api.Skill;
+import java.util.*;
+import net.minecraft.entity.player.EntityPlayer;
+public class CooldownData {
+ public static final Map<EntityPlayer,CooldownData> DATA = new IdentityHashMap<>();
+ public final Set<Skill> blocked = Collections.newSetFromMap(new IdentityHashMap<>());
+ public static CooldownData of(EntityPlayer p) { return DATA.computeIfAbsent(p, ignored -> new CooldownData()); }
+ public boolean isInCooldown(Skill s, Integer identifier) { return blocked.contains(s); }
+}
+''',
+ 'cn/academy/ability/api/ctrl/ClientHandler.java': '''package cn.academy.ability.api.ctrl;
+public final class ClientHandler {
+ public static final Object keyActivate = new Object();
+ public static int[] mapping = {11,12,13,14};
+ public static int getKeyMapping(int slot) { return mapping[slot]; }
+}
+''',
+ 'cn/academy/ability/api/data/AbilityData.java': '''package cn.academy.ability.api.data;
+import java.util.*;
+import net.minecraft.entity.player.EntityPlayer;
+public class AbilityData {
+ public static final Map<EntityPlayer,AbilityData> DATA = new IdentityHashMap<>();
+ public boolean category = true;
+ public static AbilityData get(EntityPlayer p) { return DATA.computeIfAbsent(p, ignored -> new AbilityData()); }
+ public boolean hasCategory() { return category; }
+}
+''',
+ 'cn/academy/ability/api/data/CPData.java': '''package cn.academy.ability.api.data;
+import java.util.*;
+import net.minecraft.entity.player.EntityPlayer;
+/** Host predicate projection only; no CPData transport, event posting, resources or engine. */
+public class CPData {
+ public static final Map<EntityPlayer,CPData> DATA = new IdentityHashMap<>();
+ public boolean activated = true, overloadFine = true, interfering;
+ public final List<Boolean> requests = new ArrayList<>();
+ private final EntityPlayer player;
+ private CPData(EntityPlayer p) { player=p; }
+ public static CPData get(EntityPlayer p) { return DATA.computeIfAbsent(p, CPData::new); }
+ public boolean isActivated() { return AbilityData.get(player).hasCategory() && activated; }
+ public boolean canUseAbility() { return activated && overloadFine && !interfering; }
+ public void setActivateState(boolean value) { activated=value; requests.add(value); }
+}
+''',
+ 'cn/academy/ability/api/data/PresetData.java': '''package cn.academy.ability.api.data;
+import cn.academy.ability.api.Controllable;
+import java.util.*;
+import net.minecraft.entity.player.EntityPlayer;
+public class PresetData {
+ public static final int MAX_PRESETS = 4;
+ public static final Map<EntityPlayer,PresetData> DATA = new IdentityHashMap<>();
+ public Preset current = new Preset();
+ public static PresetData get(EntityPlayer p) { return DATA.computeIfAbsent(p, ignored -> new PresetData()); }
+ public Preset getCurrentPreset() { return current; }
+ public static class Preset {
+  public final Map<Integer,Controllable> mappings = new HashMap<>();
+  public boolean hasMapping(int i) { return mappings.containsKey(i); }
+  public Controllable getControllable(int i) { return mappings.get(i); }
+ }
+}
+''',
+ 'cn/academy/core/AcademyCraft.java': '''package cn.academy.core;
+public class AcademyCraft { public static void debug(String message) {} }
+''',
+ 'cn/academy/core/ModuleCoreClient.java': '''package cn.academy.core;
+import cn.lambdalib.util.key.KeyManager;
+public class ModuleCoreClient { public static final KeyManager keyManager = new KeyManager(); }
+''',
+ 'cn/academy/terminal/client/TerminalUI.java': 'package cn.academy.terminal.client; public class TerminalUI {}\n',
+ 'cn/lambdalib/annoreg/core/Registrant.java': 'package cn.lambdalib.annoreg.core; public @interface Registrant {}\n',
+ 'cn/lambdalib/annoreg/mc/RegEventHandler.java': '''package cn.lambdalib.annoreg.mc;
+public @interface RegEventHandler { Bus[] value(); enum Bus { FML, Forge } }
+''',
+ 'cn/lambdalib/util/client/ClientUtils.java': '''package cn.lambdalib.util.client;
+public class ClientUtils { public static boolean playerInGame=true; public static boolean isPlayerInGame() { return playerInGame; } }
+''',
+ 'cn/lambdalib/util/client/auxgui/AuxGuiHandler.java': '''package cn.lambdalib.util.client.auxgui;
+import java.util.*;
+public class AuxGuiHandler { public static final List<Object> ACTIVE=new ArrayList<>(); public static List<Object> active() { return ACTIVE; } }
+''',
+ 'cn/lambdalib/util/datapart/DataPart.java': '''package cn.lambdalib.util.datapart;
+public class DataPart<T> {
+ private T entity;
+ public boolean tickEnabled, clearOnDeath;
+ public void setTick(boolean enabled) { tickEnabled=enabled; }
+ public void setClearOnDeath() { clearOnDeath=true; }
+ public T getEntity() { return entity; }
+ public void hostAttach(T value) { entity=value; }
+}
+''',
+ 'cn/lambdalib/util/datapart/EntityData.java': '''package cn.lambdalib.util.datapart;
+import java.util.*;
+public class EntityData {
+ public static final Map<Object,EntityData> DATA = new IdentityHashMap<>();
+ public final Map<Class<?>,Object> parts = new HashMap<>();
+ public static EntityData get(Object entity) { return DATA.computeIfAbsent(entity, ignored -> new EntityData()); }
+ public <T> T getPart(Class<T> type) { return type.cast(parts.get(type)); }
+}
+''',
+ 'cn/lambdalib/util/datapart/RegDataPart.java': '''package cn.lambdalib.util.datapart;
+import cpw.mods.fml.relauncher.Side;
+public @interface RegDataPart { Class<?> value(); Side side(); }
+''',
+ 'cn/lambdalib/util/key/KeyManager.java': '''package cn.lambdalib.util.key;
+import java.util.*;
+public class KeyManager {
+ public static final Set<Integer> DOWN = new HashSet<>();
+ public static boolean getKeyDown(int key) { return DOWN.contains(key); }
+ public static String getKeyName(int key) { return "key-"+key; }
+ public int getKeyID(Object handler) { return 47; }
+}
+''',
+ 'cn/lambdalib/util/mc/ControlOverrider.java': '''package cn.lambdalib.util.mc;
+import java.util.*;
+public class ControlOverrider {
+ public static final List<int[]> CALLS = new ArrayList<>();
+ public static int[] latest = {};
+ public static void override(String group, int[] keys) {
+  if (!group.equals("AC_ClientRuntime")) throw new AssertionError(group);
+  latest=keys.clone(); CALLS.add(latest);
+ }
+}
+''',
+ 'cn/lambdalib/util/mc/SideHelper.java': '''package cn.lambdalib.util.mc;
+public class SideHelper { public static boolean client=true; public static boolean isClient() { return client; } }
+''',
+ 'cn/lambdalib/util/helper/Color.java': '''package cn.lambdalib.util.helper;
+public class Color { public final int value; public Color(int v) { value=v; } }
+''',
+ 'cpw/mods/fml/common/registry/RegistryDelegate.java': '''package cpw.mods.fml.common.registry;
+public class RegistryDelegate { public interface Delegate<T> {} }
+''',
+ 'cpw/mods/fml/common/eventhandler/SubscribeEvent.java': 'package cpw.mods.fml.common.eventhandler; public @interface SubscribeEvent {}\n',
+ 'cpw/mods/fml/common/eventhandler/Event.java': 'package cpw.mods.fml.common.eventhandler; public class Event {}\n',
+ 'cpw/mods/fml/common/gameevent/TickEvent.java': '''package cpw.mods.fml.common.gameevent;
+public class TickEvent { public enum Phase { START, END } public static class ClientTickEvent { public final Phase phase; public ClientTickEvent(Phase p) { phase=p; } } }
+''',
+ 'cpw/mods/fml/relauncher/Side.java': 'package cpw.mods.fml.relauncher; public enum Side { CLIENT, SERVER }\n',
+ 'cpw/mods/fml/relauncher/SideOnly.java': 'package cpw.mods.fml.relauncher; public @interface SideOnly { Side value(); }\n',
+ 'net/minecraft/client/Minecraft.java': '''package net.minecraft.client;
+import net.minecraft.entity.player.EntityPlayer;
+public class Minecraft {
+ private static final Minecraft INSTANCE = new Minecraft();
+ public EntityPlayer thePlayer;
+ public static Minecraft getMinecraft() { return INSTANCE; }
+}
+''',
+ 'net/minecraft/entity/player/EntityPlayer.java': 'package net.minecraft.entity.player; public class EntityPlayer {}\n',
+ 'net/minecraft/util/StatCollector.java': 'package net.minecraft.util; public class StatCollector { public static String translateToLocal(String key) { return "translated:"+key; } }\n',
+ 'net/minecraft/util/ResourceLocation.java': 'package net.minecraft.util; public record ResourceLocation(String name) {}\n',
+}
+
+def digest(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+def main():
+    witnesses=[]
+    for rel in COMPILE_WITNESSES + READ_ONLY_WITNESSES:
+        source=REFERENCE/rel
+        target=ORACLE/('original' if rel in COMPILE_WITNESSES else 'witnesses')/rel
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source,target)
+        assert digest(source)==digest(target)
+        witnesses.append({'canonical':str(source.relative_to(ROOT)),
+                          'copied':str(target.relative_to(STAGE)),
+                          'sha256':digest(source),
+                          'compiled':rel in COMPILE_WITNESSES})
+    for rel,content in HOSTS.items():
+        target=ORACLE/'hosts'/rel
+        target.parent.mkdir(parents=True,exist_ok=True)
+        target.write_text(content)
+    (ORACLE/'source-hashes.json').write_text(json.dumps(witnesses,indent=2)+'\n')
+    print(f'Copied {len(witnesses)} byte-identical witnesses; declared {len(HOSTS)} hosts')
+
+if __name__ == '__main__':
+    main()

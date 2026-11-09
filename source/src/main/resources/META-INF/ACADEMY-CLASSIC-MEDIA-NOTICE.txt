@@ -1,0 +1,10 @@
+AcademyCraft classic media-player UI/source adaptation
+
+Behavior baseline: AcademyCraft 1.0.7, commit 00d19ec0cf538f61c1095c9292f5ee6863db4521.
+Original media player background/control/missing-cover artwork: Lambda Innovation.
+AcademyCraft is licensed under GPLv3, with the original README additional conditions preserved in the packaged source witnesses and project notices. See project LICENSE and NOTICE.
+
+System-font rasterization adaptation and unchanged ElementList oracle: LambdaLib 1.2.3.
+Copyright (c) Lambda Innovation, 2013-2016. Licensed under MIT; original license is packaged with the source witnesses.
+
+No third-party song, music cover, song-item artwork, internal-media catalog, or proprietary font is redistributed by this increment. Audio and optional covers are supplied locally by the user.

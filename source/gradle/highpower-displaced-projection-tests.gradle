@@ -1,0 +1,13 @@
+['highPowerDisplacedProjectionRulesTest':'cn.academy.port.highpower.core.DisplacedProjectionRulesRegressionTest',
+ 'highPowerDisplacedProjectionLearningTest':'cn.academy.port.highpower.DisplacedProjectionLearningRegressionTest',
+ 'displacedProjectionInputTest':'cn.academy.port.client.DisplacedProjectionInputRegressionTest',
+ 'displacedProjectionDispatchTest':'cn.academy.port.client.DisplacedProjectionDispatchRegressionTest',
+ 'displacedProjectionVisualTest':'cn.academy.port.client.DisplacedProjectionVisualRegressionTest'].each { taskName, className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+    }
+    tasks.named('check') { dependsOn taskName }
+}

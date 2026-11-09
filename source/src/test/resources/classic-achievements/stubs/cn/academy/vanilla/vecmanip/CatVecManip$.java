@@ -1,0 +1,1 @@
+package cn.academy.vanilla.vecmanip;import cn.academy.ability.api.*;public class CatVecManip$ extends Category {public static final CatVecManip$ INSTANCE=new CatVecManip$();public CatVecManip$(){super("vecmanip");}}

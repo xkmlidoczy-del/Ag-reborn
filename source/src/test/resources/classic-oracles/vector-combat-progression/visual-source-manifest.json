@@ -1,0 +1,321 @@
+{
+  "academycraft_commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521",
+  "lambdalib_tag": "1.2.3",
+  "sources": [
+    {
+      "project": "academycraft",
+      "source": "src/main/scala/cn/academy/vanilla/vecmanip/skill/DirectedBlastwave.scala",
+      "fixture": "visual-source/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/DirectedBlastwave.scala.txt",
+      "sha256": "17dd7552fcb7eeb27778369f3a9b5400d84c04b2af1ae9f81f1ac85238862ce9",
+      "bytes": 7934
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/scala/cn/academy/vanilla/vecmanip/skill/StormWing.scala",
+      "fixture": "visual-source/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/StormWing.scala.txt",
+      "sha256": "979bfaa893d962b006fb091dd267bb840bb48c0ee59678fad2501e1d6742f097",
+      "bytes": 10766
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/scala/cn/academy/vanilla/vecmanip/skill/BloodRetrograde.scala",
+      "fixture": "visual-source/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/BloodRetrograde.scala.txt",
+      "sha256": "9b65735f6614f750592b4cdd88604904215d7adc9f006fd87650bc717afe8817",
+      "bytes": 3890
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/scala/cn/academy/vanilla/vecmanip/client/effect/WaveEffect.scala",
+      "fixture": "visual-source/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/client/effect/WaveEffect.scala.txt",
+      "sha256": "875ab902fa3f69aa69f6dd82e579a32eb14fc22ae648e7f8cf45b6d656dc135a",
+      "bytes": 3624
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/scala/cn/academy/vanilla/vecmanip/client/effect/AnimPresets.scala",
+      "fixture": "visual-source/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/client/effect/AnimPresets.scala.txt",
+      "sha256": "0c3ac97e85beea7a32c1b85013c18864396b79cb46fa4a6fa97e9cc51ef63b29",
+      "bytes": 2052
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/scala/cn/academy/vanilla/vecmanip/client/effect/StormWingEffect.scala",
+      "fixture": "visual-source/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/client/effect/StormWingEffect.scala.txt",
+      "sha256": "963d17b0eefb07d0cf7ef2ee3859a0b7cd6c7fa44ea1b6124834cbb7ba843716",
+      "bytes": 3355
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/scala/cn/academy/vanilla/vecmanip/client/effect/TornadoEffect.scala",
+      "fixture": "visual-source/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/client/effect/TornadoEffect.scala.txt",
+      "sha256": "b148650a1c1a4d0ee1462175075e776a7f86a27e2a959ba4668d237b3795f3b1",
+      "bytes": 3692
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/scala/cn/academy/vanilla/generic/client/effect/BloodSprayEffect.scala",
+      "fixture": "visual-source/academycraft/src/main/scala/cn/academy/vanilla/generic/client/effect/BloodSprayEffect.scala.txt",
+      "sha256": "ac2347a4c0a5f1b4af6686826178246f18afa2f2fb60be33f6a309f2e5c8f542",
+      "bytes": 3759
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/java/cn/academy/vanilla/generic/entity/EntityBloodSplash.java",
+      "fixture": "visual-source/academycraft/src/main/java/cn/academy/vanilla/generic/entity/EntityBloodSplash.java.txt",
+      "sha256": "c2a673b56d906e74aeb11eed4a39b51e92506e45d434bb4a651ba0fa5f808eae",
+      "bytes": 2554
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/java/cn/academy/core/util/ImprovedNoise.java",
+      "fixture": "visual-source/academycraft/src/main/java/cn/academy/core/util/ImprovedNoise.java.txt",
+      "sha256": "9638f3c2f446559b9e8835e32640ea2ecab4d0b319c92eaa39b507a668116cf1",
+      "bytes": 3463
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/java/cn/academy/core/client/sound/FollowEntitySound.java",
+      "fixture": "visual-source/academycraft/src/main/java/cn/academy/core/client/sound/FollowEntitySound.java.txt",
+      "sha256": "ab4df4d6c5fa93917e8a66eab2123f0d19a2e0fbbb17115cdc01832e7bc420a9",
+      "bytes": 1294
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/java/cn/academy/core/client/sound/ACSounds.java",
+      "fixture": "visual-source/academycraft/src/main/java/cn/academy/core/client/sound/ACSounds.java.txt",
+      "sha256": "3d1f8d8207988ad8b57f4843ffc5f2204fc9028807c22ff279cb93e43eb03750",
+      "bytes": 1142
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/java/cn/academy/ability/api/event/CalcEvent.java",
+      "fixture": "visual-source/academycraft/src/main/java/cn/academy/ability/api/event/CalcEvent.java.txt",
+      "sha256": "45cf7ef4ab13a1d3e29d467aa4b1aa9e3b800a883b96496f88cbffcee7ce1dc3",
+      "bytes": 2322
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/java/cn/academy/ability/api/AbilityContext.java",
+      "fixture": "visual-source/academycraft/src/main/java/cn/academy/ability/api/AbilityContext.java.txt",
+      "sha256": "9830d2efcfec0e86539a8cf49f5984e1a5cf1e48e5d9b50ad6c167fd454db00a",
+      "bytes": 5244
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/java/cn/academy/ability/api/Skill.java",
+      "fixture": "visual-source/academycraft/src/main/java/cn/academy/ability/api/Skill.java.txt",
+      "sha256": "afc9c70de37bfb393f62ee3c9fe1d4e02cedf1c73c75f935bf9d8d5e638f698c",
+      "bytes": 13981
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/java/cn/academy/ability/api/data/CPData.java",
+      "fixture": "visual-source/academycraft/src/main/java/cn/academy/ability/api/data/CPData.java.txt",
+      "sha256": "6ef3a87f06fa86e422b183d379c07093366bf60b89057adc94c01cb9088324c3",
+      "bytes": 17003
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/java/cn/academy/ability/api/data/AbilityData.java",
+      "fixture": "visual-source/academycraft/src/main/java/cn/academy/ability/api/data/AbilityData.java.txt",
+      "sha256": "a2be759d022d4992bbbba1cfc6e1fa3874015a8f615445864f65f62c250f126e",
+      "bytes": 9799
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/scala/cn/academy/vanilla/vecmanip/CatVecManip.scala",
+      "fixture": "visual-source/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/CatVecManip.scala.txt",
+      "sha256": "2bf1907f5971692395a5556a927e08660f74dea45609459a42d13afab04daf45",
+      "bytes": 1254
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/java/cn/academy/core/config/ACConfig.java",
+      "fixture": "visual-source/academycraft/src/main/java/cn/academy/core/config/ACConfig.java.txt",
+      "sha256": "919f1c2984d8a5978cf2df558373353f62a89e83310ea3c7e5869038c1f8f83e",
+      "bytes": 3221
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/resources/assets/academy/config/default.conf",
+      "fixture": "visual-source/academycraft/src/main/resources/assets/academy/config/default.conf.txt",
+      "sha256": "700f42a545d761872daae8dfb6e65e5e4571f947d7dcd50eb60933b0542ef824",
+      "bytes": 4701
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/resources/assets/academy/recipes/default.recipe",
+      "fixture": "visual-source/academycraft/src/main/resources/assets/academy/recipes/default.recipe.txt",
+      "sha256": "a9dc4aa3477ad246f7cb9bb6bea3c33e033aaa8431f3c8a03acaf0845374da1f",
+      "bytes": 5119
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/java/cn/academy/core/Resources.java",
+      "fixture": "visual-source/academycraft/src/main/java/cn/academy/core/Resources.java.txt",
+      "sha256": "a837d1ac2f2ff943b544e312be3ac4c4e1d1283cd2184efa4897d9c119d75563",
+      "bytes": 4392
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/java/cn/academy/core/entity/LocalEntity.java",
+      "fixture": "visual-source/academycraft/src/main/java/cn/academy/core/entity/LocalEntity.java.txt",
+      "sha256": "a321f5c90ff4f12dc5f2d052e0471a804170a30b303b670e2d8fe0add6504991",
+      "bytes": 608
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/resources/assets/academy/sounds.json",
+      "fixture": "visual-source/academycraft/src/main/resources/assets/academy/sounds.json.txt",
+      "sha256": "c84f72ec250c2b46885565ac31123ac13184b6497be8bc1434cba6d083013a8f",
+      "bytes": 4627
+    },
+    {
+      "project": "academycraft",
+      "source": "README.md",
+      "fixture": "visual-source/academycraft/README.md.txt",
+      "sha256": "6666d51532b31b3f6c1506ad1855aa22241926ffcec9f452e64e5e54285f9794",
+      "bytes": 4531
+    },
+    {
+      "project": "lambdalib",
+      "source": "src/main/java/cn/lambdalib/vis/curve/CubicCurve.java",
+      "fixture": "visual-source/lambdalib/src/main/java/cn/lambdalib/vis/curve/CubicCurve.java.txt",
+      "sha256": "6f381af595f9ab0b0d279c202743c59577e27ecbf01414b7259cf1844a64e218",
+      "bytes": 3567
+    },
+    {
+      "project": "lambdalib",
+      "source": "src/main/java/cn/lambdalib/vis/curve/IFittedCurve.java",
+      "fixture": "visual-source/lambdalib/src/main/java/cn/lambdalib/vis/curve/IFittedCurve.java.txt",
+      "sha256": "859826124ada463e491c59d1bb52310b291bec79eb60873a2095a099f2eec8ad",
+      "bytes": 1451
+    },
+    {
+      "project": "lambdalib",
+      "source": "src/main/java/cn/lambdalib/vis/model/CompTransform.java",
+      "fixture": "visual-source/lambdalib/src/main/java/cn/lambdalib/vis/model/CompTransform.java.txt",
+      "sha256": "4b3ee478ea43090966e7d370ca03f949f4c88514e432f75114890deeb13d67c8",
+      "bytes": 1819
+    },
+    {
+      "project": "lambdalib",
+      "source": "src/main/java/cn/lambdalib/vis/animation/presets/CompTransformAnim.java",
+      "fixture": "visual-source/lambdalib/src/main/java/cn/lambdalib/vis/animation/presets/CompTransformAnim.java.txt",
+      "sha256": "d6226bb2bacf06b4b7ee934ac88ef06148f4943cb22806bae1066fd5732f5940",
+      "bytes": 1269
+    },
+    {
+      "project": "lambdalib",
+      "source": "src/main/java/cn/lambdalib/util/deprecated/MeshUtils.java",
+      "fixture": "visual-source/lambdalib/src/main/java/cn/lambdalib/util/deprecated/MeshUtils.java.txt",
+      "sha256": "909cb919a6085f741e789ee01d24bffcde5381a4b6e24cfd31619bdfc90b3fe6",
+      "bytes": 3855
+    },
+    {
+      "project": "lambdalib",
+      "source": "src/main/java/cn/lambdalib/util/deprecated/SimpleMaterial.java",
+      "fixture": "visual-source/lambdalib/src/main/java/cn/lambdalib/util/deprecated/SimpleMaterial.java.txt",
+      "sha256": "2e921dd92116d0def03086fc6c26dcc17c7a2bf8a268311f48662d68477c1606",
+      "bytes": 2068
+    },
+    {
+      "project": "lambdalib",
+      "source": "src/main/java/cn/lambdalib/util/deprecated/Mesh.java",
+      "fixture": "visual-source/lambdalib/src/main/java/cn/lambdalib/util/deprecated/Mesh.java.txt",
+      "sha256": "6813ed5d18a0d5404b918741f3ba8f901f930995250da6b467c1ce0c81357fef",
+      "bytes": 5938
+    },
+    {
+      "project": "lambdalib",
+      "source": "src/main/java/cn/lambdalib/template/client/render/entity/RenderIcon.java",
+      "fixture": "visual-source/lambdalib/src/main/java/cn/lambdalib/template/client/render/entity/RenderIcon.java.txt",
+      "sha256": "5eca45d68425d11cbb3d6926aae0b7bb0d175656de1b2786bf718d99168b2618",
+      "bytes": 3834
+    },
+    {
+      "project": "lambdalib",
+      "source": "src/main/java/cn/lambdalib/util/generic/RandUtils.java",
+      "fixture": "visual-source/lambdalib/src/main/java/cn/lambdalib/util/generic/RandUtils.java.txt",
+      "sha256": "e06e74399c3fbb5de54672c1198135da76d16427e2ab75e943e847e1f05623eb",
+      "bytes": 951
+    },
+    {
+      "project": "lambdalib",
+      "source": "src/main/java/cn/lambdalib/util/helper/GameTimer.java",
+      "fixture": "visual-source/lambdalib/src/main/java/cn/lambdalib/util/helper/GameTimer.java.txt",
+      "sha256": "5ef55c16e064b6fd176e652bff4cc7f76d0b0f80bd35c0f2c398adb28b684680",
+      "bytes": 1809
+    },
+    {
+      "project": "lambdalib",
+      "source": "src/main/java/cn/lambdalib/util/mc/BlockSelectors.java",
+      "fixture": "visual-source/lambdalib/src/main/java/cn/lambdalib/util/mc/BlockSelectors.java.txt",
+      "sha256": "2cf76d501ce53d3655f9b8a4f67a031176243761535c363e1ee89bed85923cef",
+      "bytes": 881
+    },
+    {
+      "project": "lambdalib",
+      "source": "src/main/java/cn/lambdalib/util/mc/Raytrace.java",
+      "fixture": "visual-source/lambdalib/src/main/java/cn/lambdalib/util/mc/Raytrace.java.txt",
+      "sha256": "c893f0a9434bf6e33564aa4aebe8eaecda3d502a79f7b9862402bff852e9ac0b",
+      "bytes": 9888
+    },
+    {
+      "project": "lambdalib",
+      "source": "src/main/java/cn/lambdalib/util/mc/EntitySelectors.java",
+      "fixture": "visual-source/lambdalib/src/main/java/cn/lambdalib/util/mc/EntitySelectors.java.txt",
+      "sha256": "6cc57bea7aa410f3d93fab085a1f64ac6110ab510ba47a2d15048acf344713f2",
+      "bytes": 2636
+    },
+    {
+      "project": "lambdalib",
+      "source": "src/main/java/cn/lambdalib/util/mc/WorldUtils.java",
+      "fixture": "visual-source/lambdalib/src/main/java/cn/lambdalib/util/mc/WorldUtils.java.txt",
+      "sha256": "22dc9e2c1594f8b97e31cf4075e953f5a7a95edb0db6cffe9fb9dcc0678a0f2e",
+      "bytes": 7408
+    },
+    {
+      "project": "lambdalib",
+      "source": "src/main/java/cn/lambdalib/util/generic/MathUtils.java",
+      "fixture": "visual-source/lambdalib/src/main/java/cn/lambdalib/util/generic/MathUtils.java.txt",
+      "sha256": "e80c87ca15cbae89584bd9e1111e22d2f55866bf91b434c8813c20bb98176075",
+      "bytes": 3879
+    },
+    {
+      "project": "lambdalib",
+      "source": "src/main/scala/cn/lambdalib/util/mc/HandRenderInterrupter.scala",
+      "fixture": "visual-source/lambdalib/src/main/scala/cn/lambdalib/util/mc/HandRenderInterrupter.scala.txt",
+      "sha256": "ba9eb3391606f798be653531fb25502c06e50846e375e58e75b451ab790002af",
+      "bytes": 3553
+    },
+    {
+      "project": "lambdalib",
+      "source": "src/main/scala/cn/lambdalib/util/mc/MCExtender.scala",
+      "fixture": "visual-source/lambdalib/src/main/scala/cn/lambdalib/util/mc/MCExtender.scala.txt",
+      "sha256": "25cf3ee89062b08586a46395d31220bd1511d2530be53515dfff29a627ea9979",
+      "bytes": 1007
+    },
+    {
+      "project": "lambdalib",
+      "source": "src/main/scala/cn/lambdalib/util/mc/RichVec3.scala",
+      "fixture": "visual-source/lambdalib/src/main/scala/cn/lambdalib/util/mc/RichVec3.scala.txt",
+      "sha256": "f0d2e66f5e7ab23335da2d742959a840f816e7f3567aa41c55da4c9bd916fcc2",
+      "bytes": 2419
+    },
+    {
+      "project": "lambdalib",
+      "source": "src/main/scala/cn/lambdalib/util/mc/RichEntity.scala",
+      "fixture": "visual-source/lambdalib/src/main/scala/cn/lambdalib/util/mc/RichEntity.scala.txt",
+      "sha256": "775411d7469203db813f6bdbf482c205708c93014f46014c0967f594a252601a",
+      "bytes": 1178
+    },
+    {
+      "project": "lambdalib",
+      "source": "LICENSE",
+      "fixture": "visual-source/lambdalib/LICENSE.txt",
+      "sha256": "852bcc033a46c62f99fb5ffd43b3241ba2c0c440c6034aa2114505f2c4f03c4a",
+      "bytes": 1067
+    }
+  ]
+}

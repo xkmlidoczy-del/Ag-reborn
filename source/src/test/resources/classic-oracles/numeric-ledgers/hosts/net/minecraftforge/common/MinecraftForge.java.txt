@@ -1,0 +1,14 @@
+/* Test-only platform host; numeric algorithms remain in unchanged source. */
+package net.minecraftforge.common;
+public class MinecraftForge {
+ public static final Bus EVENT_BUS=new Bus();public static class Bus {
+  public java.util.function.Consumer<Object> callback=event->{};
+  public boolean post(Object event){
+   callback.accept(event);
+   if(event instanceof cn.academy.ability.api.event.CategoryChangeEvent e)cn.academy.ability.api.data.CPData.Events.instance.changedCategory(e);
+   if(event instanceof cn.academy.ability.api.event.SkillLearnEvent e)cn.academy.ability.api.data.CPData.Events.instance.learnedSkill(e);
+   if(event instanceof cn.academy.ability.api.event.LevelChangeEvent e)cn.academy.ability.api.data.CPData.Events.instance.changedLevel(e);
+   return false;
+  }
+ }
+}

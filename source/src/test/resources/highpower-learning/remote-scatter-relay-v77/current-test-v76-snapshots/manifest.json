@@ -1,0 +1,98 @@
+{
+  "baseline_revision": "80a1f7d95dda7404b6ce153a7ffd40841db67e7c",
+  "scope": "Exact .76 current-test source snapshots before narrow NEW253 registry total maintenance; frozen historical PointMeltdown registration and geometry proofs excluded.",
+  "files": {
+    "src/test/java/cn/academy/port/highpower/CirculationListeningLearningRegressionTest.java": {
+      "snapshot": "CirculationListeningLearningRegressionTest.java",
+      "sha256": "137a0657db16d38aae6db0144a540eb1b534b6106c9958848d5fd7f01055a3b5"
+    },
+    "src/test/java/cn/academy/port/highpower/CirculationReliefLearningRegressionTest.java": {
+      "snapshot": "CirculationReliefLearningRegressionTest.java",
+      "sha256": "6aa12d49f958f6aeb81ecf9216195d56cc0ee383f3cc146537d66e87631f826b"
+    },
+    "src/test/java/cn/academy/port/highpower/CornerExchangeLearningRegressionTest.java": {
+      "snapshot": "CornerExchangeLearningRegressionTest.java",
+      "sha256": "57ea303554e6e6127f12a9df5c0f0126a51e727cbc527729dcdfc3e88d2cd88f"
+    },
+    "src/test/java/cn/academy/port/highpower/CrossSubstitutionLearningRegressionTest.java": {
+      "snapshot": "CrossSubstitutionLearningRegressionTest.java",
+      "sha256": "bb17c28e82a910ea6102ce7b3171ca4fdb083970346bc23d3ff447ffeae40a25"
+    },
+    "src/test/java/cn/academy/port/highpower/DisplacedProjectionLearningRegressionTest.java": {
+      "snapshot": "DisplacedProjectionLearningRegressionTest.java",
+      "sha256": "cb1cdef2f351036eb7d6d5bb0a20328d5de842c9b860eb9a1d800d31b1a005e3"
+    },
+    "src/test/java/cn/academy/port/highpower/EmergencyReturnLearningRegressionTest.java": {
+      "snapshot": "EmergencyReturnLearningRegressionTest.java",
+      "sha256": "82c6006526b9e88f363e34a354e2f5979e45727b536ace6c3a9ebc14a1747799"
+    },
+    "src/test/java/cn/academy/port/highpower/HighPowerProgressionRegressionTest.java": {
+      "snapshot": "HighPowerProgressionRegressionTest.java",
+      "sha256": "981dff743d2a227115bd0f851815db47d07379f1a5c45703bb5b04a2cc9dd46a"
+    },
+    "src/test/java/cn/academy/port/highpower/InertialAnchorLearningRegressionTest.java": {
+      "snapshot": "InertialAnchorLearningRegressionTest.java",
+      "sha256": "d91546e4949388415e892d686ed455030b45addd3975e3c7ad2d63c35756d553"
+    },
+    "src/test/java/cn/academy/port/highpower/MultiAxisReflectionLearningRegressionTest.java": {
+      "snapshot": "MultiAxisReflectionLearningRegressionTest.java",
+      "sha256": "ce2c634ebd4539292ea03835bc7ff666c3a4773ebf7e45ec7f99d3389c3a15ce"
+    },
+    "src/test/java/cn/academy/port/highpower/MultidimensionalLandingArrayLearningRegressionTest.java": {
+      "snapshot": "MultidimensionalLandingArrayLearningRegressionTest.java",
+      "sha256": "9cd5c108a7c378020e5bf0e536c4abeec355c2ddc803c84a3f088c8577d13128"
+    },
+    "src/test/java/cn/academy/port/highpower/PhaseSidestepLearningRegressionTest.java": {
+      "snapshot": "PhaseSidestepLearningRegressionTest.java",
+      "sha256": "6b9d138720e5237214c2632e392d0d709c41bec38472d2395d59483a1c07c113"
+    },
+    "src/test/java/cn/academy/port/highpower/RecoveryMarkLearningRegressionTest.java": {
+      "snapshot": "RecoveryMarkLearningRegressionTest.java",
+      "sha256": "90e6a5fe510b9d10ec0170cac91a177a7872f1eb8b75c819b59705bf3024a48a"
+    },
+    "src/test/java/cn/academy/port/highpower/ReturnMarkLearningRegressionTest.java": {
+      "snapshot": "ReturnMarkLearningRegressionTest.java",
+      "sha256": "d43db5441ae3604f1217e4df662983bd0cd5a2255ec3babe6a6db13d1ea33845"
+    },
+    "src/test/java/cn/academy/port/highpower/ShortInterceptionLearningRegressionTest.java": {
+      "snapshot": "ShortInterceptionLearningRegressionTest.java",
+      "sha256": "8beb5b32eacfa95e4bdd7f27a493a7f8748b98faecdfa0176548e67c54b722d5"
+    },
+    "src/test/java/cn/academy/port/highpower/SpatialPincerCorridorLearningRegressionTest.java": {
+      "snapshot": "SpatialPincerCorridorLearningRegressionTest.java",
+      "sha256": "8c864d525525a478239c470c2854037bacd4ceac8f471c4c07483a16a8651aa2"
+    },
+    "src/test/java/cn/academy/port/highpower/SpatialRelayLearningRegressionTest.java": {
+      "snapshot": "SpatialRelayLearningRegressionTest.java",
+      "sha256": "7ae1c84963950237028d686b0ff341824b11c0dd73acb5c16b687274ebaa2d30"
+    },
+    "src/test/java/cn/academy/port/highpower/TacticalCoordinateLearningRegressionTest.java": {
+      "snapshot": "TacticalCoordinateLearningRegressionTest.java",
+      "sha256": "30570f1b7cfd56a05800245e23dcc552b80a26bd3614b81c486f662574799d6a"
+    },
+    "src/test/java/cn/academy/port/highpower/TeleporterFoundationRegressionTest.java": {
+      "snapshot": "TeleporterFoundationRegressionTest.java",
+      "sha256": "1848be82fe89fcb6f9194ee5a11d31881ec4f13ec0f8ff6b2e4b9c5430868daf"
+    },
+    "src/test/java/cn/academy/port/highpower/TrajectoryReturnLearningRegressionTest.java": {
+      "snapshot": "TrajectoryReturnLearningRegressionTest.java",
+      "sha256": "4ade30c6dbc65b0f86d6965cc75601d965d3243f265d8f85cfc6ba7d1a3d5122"
+    },
+    "src/test/java/cn/academy/port/highpower/VectorCageLearningRegressionTest.java": {
+      "snapshot": "VectorCageLearningRegressionTest.java",
+      "sha256": "1b21144c3aab1483b60349334472812807f2fc3ee040c9721fd117f70350eb7b"
+    },
+    "src/test/java/cn/academy/port/highpower/VectorFoundationRegressionTest.java": {
+      "snapshot": "VectorFoundationRegressionTest.java",
+      "sha256": "fa5ea6f2f102661e9b6bc4df040c753a0373e817db3fcb137b162f54752f358f"
+    },
+    "src/test/java/cn/academy/port/highpower/WindPressureLiftLearningRegressionTest.java": {
+      "snapshot": "WindPressureLiftLearningRegressionTest.java",
+      "sha256": "4e121e4d85152f52a91f889dfa2c44d3d1ae919a4b1a4e0e9a9dd7fe52eacb84"
+    },
+    "src/test/java/cn/academy/port/highpower/YawPalmLearningRegressionTest.java": {
+      "snapshot": "YawPalmLearningRegressionTest.java",
+      "sha256": "b9e8d96d41a8ec1c92e44f81f27b69934cf4235f52f507dbfc25f89895c4095b"
+    }
+  }
+}

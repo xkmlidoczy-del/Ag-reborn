@@ -1,0 +1,8 @@
+// NEW142 exact shared-shield accounting, sector geometry, continuous pulse cost and controller guards.
+tasks.register('highPowerPotentialBufferTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.PotentialBufferRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerPotentialBufferTest' }

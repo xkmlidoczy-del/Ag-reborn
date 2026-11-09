@@ -1,0 +1,7 @@
+// Finite portable suites only; the owner exclusively controls all native/client launches.
+['classicInterfererSourceTest':'cn.academy.port.interferer.ClassicInterfererSourceOracleTest',
+ 'classicInterfererDataTest':'cn.academy.port.interferer.ClassicInterfererDataRegressionTest',
+ 'classicInterfererVisualTest':'cn.academy.port.client.ClassicInterfererVisualRegressionTest'].each { taskName,className ->
+ tasks.register(taskName,JavaExec) { dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true;systemProperty 'java.awt.headless','true' }
+ tasks.named('check') { dependsOn taskName }
+}

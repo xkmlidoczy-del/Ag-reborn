@@ -1,0 +1,146 @@
+[
+  {
+    "asset": "assets/academy/textures/effects/glow_circle.png",
+    "fixture": "visual-media/textures/effects/glow_circle.png",
+    "sha256": "8e293110e074e2d6ada9cf966647831b6cbc9127930c07138432216e9ac36777",
+    "bytes": 69755
+  },
+  {
+    "asset": "assets/academy/textures/effects/tornado_ring.png",
+    "fixture": "visual-media/textures/effects/tornado_ring.png",
+    "sha256": "9f5cc41dd8e4464e441d0a6e0636f0042b8d3bee82a0ab7b2ca094b5414a6429",
+    "bytes": 44029
+  },
+  {
+    "asset": "assets/academy/textures/effects/blood_splash/0.png",
+    "fixture": "visual-media/textures/effects/blood_splash/0.png",
+    "sha256": "e93c92233453d194e142b3086a4f17eedc20f6cd23dd96a18ae787bb71950f1a",
+    "bytes": 18527
+  },
+  {
+    "asset": "assets/academy/textures/effects/blood_splash/1.png",
+    "fixture": "visual-media/textures/effects/blood_splash/1.png",
+    "sha256": "48feb72212a0902c8c2717307f6ca22945c823a057f8d9371f0cadc6e5287169",
+    "bytes": 18717
+  },
+  {
+    "asset": "assets/academy/textures/effects/blood_splash/2.png",
+    "fixture": "visual-media/textures/effects/blood_splash/2.png",
+    "sha256": "8db84851e946c1b6b181a37a86fad3ac13ee3f863d3db965982f9b73889e33a5",
+    "bytes": 19268
+  },
+  {
+    "asset": "assets/academy/textures/effects/blood_splash/3.png",
+    "fixture": "visual-media/textures/effects/blood_splash/3.png",
+    "sha256": "e93f97966981177f1cd47bb0af3e3f57e8478d39a52ae5617f8783cd059b2651",
+    "bytes": 20001
+  },
+  {
+    "asset": "assets/academy/textures/effects/blood_splash/4.png",
+    "fixture": "visual-media/textures/effects/blood_splash/4.png",
+    "sha256": "172bf4b93e3d359754dc48abcb3471ed0f2076cc9804362eef70981f1fdb37d5",
+    "bytes": 20661
+  },
+  {
+    "asset": "assets/academy/textures/effects/blood_splash/5.png",
+    "fixture": "visual-media/textures/effects/blood_splash/5.png",
+    "sha256": "826db7ba616076657b69d9ae81128e2b96bd8b4354da513dc63dcd556feeff70",
+    "bytes": 21148
+  },
+  {
+    "asset": "assets/academy/textures/effects/blood_splash/6.png",
+    "fixture": "visual-media/textures/effects/blood_splash/6.png",
+    "sha256": "88638e217c7e1a2fbd06e13169144924df22e1c4a498ee9a917b44e061015efb",
+    "bytes": 21276
+  },
+  {
+    "asset": "assets/academy/textures/effects/blood_splash/7.png",
+    "fixture": "visual-media/textures/effects/blood_splash/7.png",
+    "sha256": "22983e869016e2ebfdf5d7169cf69e1d6561283126e507020ff3a39bc0bba429",
+    "bytes": 21231
+  },
+  {
+    "asset": "assets/academy/textures/effects/blood_splash/8.png",
+    "fixture": "visual-media/textures/effects/blood_splash/8.png",
+    "sha256": "9cccb38e9d095b00defef46e956805155a52fb851a79e24ce40d55cfa3ef2e80",
+    "bytes": 20101
+  },
+  {
+    "asset": "assets/academy/textures/effects/blood_splash/9.png",
+    "fixture": "visual-media/textures/effects/blood_splash/9.png",
+    "sha256": "0655c851aab9d3e2b91be541ad5a557f859e1aa7d5775aff31e72ade7c91e724",
+    "bytes": 18788
+  },
+  {
+    "asset": "assets/academy/textures/effects/blood_spray/grnd/0.png",
+    "fixture": "visual-media/textures/effects/blood_spray/grnd/0.png",
+    "sha256": "34213f75340b08f643ff8db5af3be3dc8fddcfc4ffc988af2060c81710a102e7",
+    "bytes": 7396
+  },
+  {
+    "asset": "assets/academy/textures/effects/blood_spray/grnd/1.png",
+    "fixture": "visual-media/textures/effects/blood_spray/grnd/1.png",
+    "sha256": "af4fcd25e6b32fada5ae448045fcf8ab9301db1979e68ad688a5ce3901362a4a",
+    "bytes": 7969
+  },
+  {
+    "asset": "assets/academy/textures/effects/blood_spray/grnd/2.png",
+    "fixture": "visual-media/textures/effects/blood_spray/grnd/2.png",
+    "sha256": "26db960cf0d748e7aa476f76beeed664518252f34b479b3023421f676e89c84a",
+    "bytes": 8138
+  },
+  {
+    "asset": "assets/academy/textures/effects/blood_spray/wall/0.png",
+    "fixture": "visual-media/textures/effects/blood_spray/wall/0.png",
+    "sha256": "2927306b58d60c71ffe50df417b4b7938e3e3147a66c5272c3bfa0713b582425",
+    "bytes": 13248
+  },
+  {
+    "asset": "assets/academy/textures/effects/blood_spray/wall/1.png",
+    "fixture": "visual-media/textures/effects/blood_spray/wall/1.png",
+    "sha256": "32c440d0983a93d41591f6fe6276445ccfa4dd2c5d5b2f8e71745fc5b29a952d",
+    "bytes": 11069
+  },
+  {
+    "asset": "assets/academy/textures/effects/blood_spray/wall/2.png",
+    "fixture": "visual-media/textures/effects/blood_spray/wall/2.png",
+    "sha256": "262e1c07cc6c9d6d5e0df2d7be6f552a6543644923a531fd0217e1a61015a5c6",
+    "bytes": 9958
+  },
+  {
+    "asset": "assets/academy/textures/abilities/vecmanip/skills/dir_blast.png",
+    "fixture": "visual-media/textures/abilities/vecmanip/skills/dir_blast.png",
+    "sha256": "5cb82a7bdb76aa79b1c1b37d71550776247634f8ce5380641a46c77d17a952e8",
+    "bytes": 520
+  },
+  {
+    "asset": "assets/academy/textures/abilities/vecmanip/skills/storm_wing.png",
+    "fixture": "visual-media/textures/abilities/vecmanip/skills/storm_wing.png",
+    "sha256": "6c182af54745d781f0e073976ff69ae736fe96d43a1f4e94fe6b62e9ba1e2925",
+    "bytes": 698
+  },
+  {
+    "asset": "assets/academy/textures/abilities/vecmanip/skills/blood_retro.png",
+    "fixture": "visual-media/textures/abilities/vecmanip/skills/blood_retro.png",
+    "sha256": "932f05c2064530ef2f1df8d4892e0947dd04abf44cd408e6b79a77932bbfad30",
+    "bytes": 679
+  },
+  {
+    "asset": "assets/academy/sounds/vecmanip/directed_blast.ogg",
+    "fixture": "visual-media/sounds/vecmanip/directed_blast.ogg",
+    "sha256": "f071b28d5e3c532a3692f6f2da923393c660c0d0cc32cc52ac3f863503b36148",
+    "bytes": 25144
+  },
+  {
+    "asset": "assets/academy/sounds/vecmanip/storm_wing.ogg",
+    "fixture": "visual-media/sounds/vecmanip/storm_wing.ogg",
+    "sha256": "a1f6d4817d2c363e72dd8d1b0d17634f7b7f044ef42444a75c3be620464750bb",
+    "bytes": 156679
+  },
+  {
+    "asset": "assets/academy/sounds/vecmanip/blood_retro.ogg",
+    "fixture": "visual-media/sounds/vecmanip/blood_retro.ogg",
+    "sha256": "f45b3895984225528a14bff62fd020269d3cce230d3a2d18ab1be545c6119b21",
+    "bytes": 9772
+  }
+]

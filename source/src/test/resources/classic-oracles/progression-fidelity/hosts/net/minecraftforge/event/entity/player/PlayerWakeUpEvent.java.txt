@@ -1,0 +1,3 @@
+/* Test-only platform host; numeric algorithms remain in unchanged source. */
+package net.minecraftforge.event.entity.player;
+public class PlayerWakeUpEvent { public boolean wakeImmediatly,updateWorld,setSpawn; public net.minecraft.entity.player.EntityPlayer entityPlayer; }

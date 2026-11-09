@@ -1,0 +1,17 @@
+.gradle/
+build/
+run/
+run-*/
+.reference/
+.tools/
+
+.gradle-user/
+dist/
+
+logs/
+
+# Isolated, regenerable lift diagnostics and stop-reason build outputs.
+/build-resync-client-v83/
+/build-resync-test-v82/
+/build-stop-reasons-v84/
+/build-stop-reasons-qa-v84/

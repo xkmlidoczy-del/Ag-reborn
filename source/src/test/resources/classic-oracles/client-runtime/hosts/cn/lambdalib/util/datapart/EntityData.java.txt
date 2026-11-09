@@ -1,0 +1,8 @@
+package cn.lambdalib.util.datapart;
+import java.util.*;
+public class EntityData {
+ public static final Map<Object,EntityData> DATA = new IdentityHashMap<>();
+ public final Map<Class<?>,Object> parts = new HashMap<>();
+ public static EntityData get(Object entity) { return DATA.computeIfAbsent(entity, ignored -> new EntityData()); }
+ public <T> T getPart(Class<T> type) { return type.cast(parts.get(type)); }
+}

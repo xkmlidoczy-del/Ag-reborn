@@ -1,0 +1,1 @@
+package net.minecraft.world; import java.util.*;import net.minecraft.tileentity.TileEntity;public class World{public boolean isRemote;public final Map<String,TileEntity> tiles=new HashMap<>();public TileEntity getTileEntity(int x,int y,int z){return tiles.get(x+","+y+","+z);}public void put(int x,int y,int z,TileEntity t){tiles.put(x+","+y+","+z,t);}}

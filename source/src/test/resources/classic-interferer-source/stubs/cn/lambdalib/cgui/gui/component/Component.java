@@ -1,0 +1,1 @@
+package cn.lambdalib.cgui.gui.component; import cn.lambdalib.cgui.gui.Widget; public class Component {public Widget widget=new Widget();public Component(String name){}public void onAdded(){}public void onRemoved(){}public Component copy(){return this;}}

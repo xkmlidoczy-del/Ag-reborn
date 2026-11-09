@@ -1,0 +1,7 @@
+package cn.lambdalib.cgui.gui;
+import java.util.*;import cn.lambdalib.cgui.gui.component.*;import cn.lambdalib.cgui.gui.event.*;
+public class Widget {public DrawTexture texture;public TextBox text;public ProgressBar bar;public Map<String,Widget> children=new LinkedHashMap<>();private List<IGuiEventHandler<FrameEvent>> handlers=new ArrayList<>();
+public Widget copy(){Widget w=new Widget();w.texture=texture==null?null:new DrawTexture(texture.color.a);w.text=text==null?null:new TextBox();w.bar=bar==null?null:new ProgressBar();for(var e:children.entrySet())w.children.put(e.getKey(),e.getValue().copy());return w;}
+public <T> void listen(Class<T> type,IGuiEventHandler<T> handler){handlers.add((IGuiEventHandler<FrameEvent>)handler);}
+public List<Widget> getDrawList(){return new ArrayList<>(children.values());}public void fire(){for(var h:handlers)h.handleEvent(this,new FrameEvent());for(var c:children.values())c.fire();}}
+

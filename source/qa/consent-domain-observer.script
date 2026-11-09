@@ -1,0 +1,1 @@
+consent:await:invited|consent:domain-on|wait:10|consent:signal:accepted|consent:await:domain-active|aim:2.5,-51.38,20.5|keydown:87|wait:8|keyup:87|consent:await:shared|consent:domain-off|wait:10|consent:signal:off|shot:dual_domain_recipient_off|consent:await:checked|dual:await-disconnect

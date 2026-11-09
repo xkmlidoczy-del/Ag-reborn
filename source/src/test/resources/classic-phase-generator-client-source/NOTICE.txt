@@ -1,0 +1,3 @@
+AcademyCraft1.0.7 source and artwork: Copyright Lambda Innovation2013–2016, GPLv3. Original LICENSE included.
+LambdaLib1.2.3 registration/render source witnesses: MIT; original LICENSE included.
+Witnesses and production source art are copied byte-for-byte. Tests are portable and do not start Minecraft or native libraries.

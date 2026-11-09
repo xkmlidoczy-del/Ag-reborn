@@ -1,0 +1,3 @@
+/* Type-only host; DevConditionDep never reads this argument. */
+package cn.academy.ability.develop;
+public interface IDeveloper {}

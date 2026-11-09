@@ -1,0 +1,27 @@
+[
+  {
+    "name": "final23-main-md-damage",
+    "script": "gameplay-md-damage.script",
+    "exit": 0
+  },
+  {
+    "name": "final23-main-tp-vm-damage",
+    "script": "gameplay-tp-vm-damage.script",
+    "exit": 0
+  },
+  {
+    "name": "final23-modes-em-input-modes",
+    "script": "gameplay-final-modes-group-em-input-modes.script",
+    "exit": 0
+  },
+  {
+    "name": "final23-modes-vm-alternatives-efficiency",
+    "script": "gameplay-final-modes-group-vm-alternatives-efficiency.script",
+    "exit": 0
+  },
+  {
+    "name": "final23-itemsplit-vm-extra-yaw-q-items",
+    "script": "gameplay-vm-extra-yaw-q-items.script",
+    "exit": 0
+  }
+]

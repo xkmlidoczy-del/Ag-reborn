@@ -1,0 +1,120 @@
+{
+  "canonical_equal": true,
+  "media": [
+    {
+      "path": "textures/effects/tp_mark/0.png",
+      "sha256": "952cca68c146cdde4f69b86be92ef0c0b0d79857f93aedb1a2225dba52a4b3ff",
+      "bytes": 10229
+    },
+    {
+      "path": "textures/effects/tp_mark/1.png",
+      "sha256": "edf556933b5a773699938386caa07c3cdb23cd9c7ca1ee7db4cdeb5aaa361b60",
+      "bytes": 9901
+    },
+    {
+      "path": "textures/effects/tp_mark/2.png",
+      "sha256": "72c6836532204fe659b9e3951c2efa6b60c4584f6b875f7b78e89e455d24c68d",
+      "bytes": 10032
+    },
+    {
+      "path": "textures/effects/tp_mark/3.png",
+      "sha256": "1e99c3a45293bf26b293fa9b465e770871cbcebf24b600e55f7695cbc999bd9b",
+      "bytes": 10170
+    },
+    {
+      "path": "textures/effects/tp_mark/4.png",
+      "sha256": "9e29f5c1002e46c930fe69ba4455d7343f90a184f595917863fd9ea2225a0bde",
+      "bytes": 9342
+    },
+    {
+      "path": "textures/effects/tp_mark/5.png",
+      "sha256": "72f1adc9482023aacbf7e522d56d28358332b28474082a9510f2084ca1bf9f75",
+      "bytes": 9437
+    },
+    {
+      "path": "textures/effects/tp_mark/6.png",
+      "sha256": "561d2d25207ef04d3b4d802f29064067733ba4eda0d3c0ac0c28f520b43baaf4",
+      "bytes": 9579
+    },
+    {
+      "path": "textures/effects/blood_splash/0.png",
+      "sha256": "e93c92233453d194e142b3086a4f17eedc20f6cd23dd96a18ae787bb71950f1a",
+      "bytes": 18527
+    },
+    {
+      "path": "textures/effects/blood_splash/1.png",
+      "sha256": "48feb72212a0902c8c2717307f6ca22945c823a057f8d9371f0cadc6e5287169",
+      "bytes": 18717
+    },
+    {
+      "path": "textures/effects/blood_splash/2.png",
+      "sha256": "8db84851e946c1b6b181a37a86fad3ac13ee3f863d3db965982f9b73889e33a5",
+      "bytes": 19268
+    },
+    {
+      "path": "textures/effects/blood_splash/3.png",
+      "sha256": "e93f97966981177f1cd47bb0af3e3f57e8478d39a52ae5617f8783cd059b2651",
+      "bytes": 20001
+    },
+    {
+      "path": "textures/effects/blood_splash/4.png",
+      "sha256": "172bf4b93e3d359754dc48abcb3471ed0f2076cc9804362eef70981f1fdb37d5",
+      "bytes": 20661
+    },
+    {
+      "path": "textures/effects/blood_splash/5.png",
+      "sha256": "826db7ba616076657b69d9ae81128e2b96bd8b4354da513dc63dcd556feeff70",
+      "bytes": 21148
+    },
+    {
+      "path": "textures/effects/blood_splash/6.png",
+      "sha256": "88638e217c7e1a2fbd06e13169144924df22e1c4a498ee9a917b44e061015efb",
+      "bytes": 21276
+    },
+    {
+      "path": "textures/effects/blood_splash/7.png",
+      "sha256": "22983e869016e2ebfdf5d7169cf69e1d6561283126e507020ff3a39bc0bba429",
+      "bytes": 21231
+    },
+    {
+      "path": "textures/effects/blood_splash/8.png",
+      "sha256": "9cccb38e9d095b00defef46e956805155a52fb851a79e24ce40d55cfa3ef2e80",
+      "bytes": 20101
+    },
+    {
+      "path": "textures/effects/blood_splash/9.png",
+      "sha256": "0655c851aab9d3e2b91be541ad5a557f859e1aa7d5775aff31e72ade7c91e724",
+      "bytes": 18788
+    },
+    {
+      "path": "textures/effects/tp_particle.png",
+      "sha256": "891dee2e1a087dcd917f3e224e1c5723fd949b71f7d65a47fd31709924b3bd00",
+      "bytes": 4146
+    },
+    {
+      "path": "textures/abilities/teleporter/skills/penetrate_teleport.png",
+      "sha256": "7e7ea353c61da217035051309055da0834d2920e5464c0252edee7c800a61d26",
+      "bytes": 1071
+    },
+    {
+      "path": "textures/abilities/teleporter/skills/mark_teleport.png",
+      "sha256": "17d578f3090e7c0e8436dde3cd24454bb78727ade227130d49beab10581a91bc",
+      "bytes": 743
+    },
+    {
+      "path": "textures/abilities/teleporter/skills/flesh_ripping.png",
+      "sha256": "5d8ebb3ebc6a1065e835a478b586b7aac8996438ab8dbc257e745f1f0ff37490",
+      "bytes": 1162
+    },
+    {
+      "path": "sounds/tp/tp.ogg",
+      "sha256": "abd492c26232106683c59e5039418c0aeb2b41269eacb26dcdde8e0762cfa2fa",
+      "bytes": 11970
+    },
+    {
+      "path": "sounds/tp/guts.ogg",
+      "sha256": "4b70c02594375a70d279bd6535f091d0cb7aaa53bf46e8ffd200f49359f950b1",
+      "bytes": 12403
+    }
+  ]
+}

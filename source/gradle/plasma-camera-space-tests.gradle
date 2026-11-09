@@ -1,0 +1,8 @@
+// Actual production JOML helper versus vertex camera-space mapping; original shaders retained.
+tasks.register('plasmaCameraSpaceTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.PlasmaCameraSpaceRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'plasmaCameraSpaceTest' }

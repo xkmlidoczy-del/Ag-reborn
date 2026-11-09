@@ -1,0 +1,1 @@
+package cn.academy.vanilla.vecmanip.skill;public class Groundshock$ extends cn.academy.ability.api.Skill {public static final Groundshock$ MODULE$=new Groundshock$();private Groundshock$(){super(cn.academy.vanilla.vecmanip.CatVecManip$.INSTANCE,"ground_shock");}}

@@ -1,0 +1,14 @@
+{
+  "commit": "c1c02209960c329ab7e304562d2f102718791ec5",
+  "sources": {
+    "src/main/java/cn/academy/port/client/MulticoreCanopyEffects.java": "8b0df24456e09bf3f78b1a0360c9d4b841013b7881625347718e5d140505041d",
+    "src/main/java/cn/academy/port/client/MulticoreCanopyMesh.java": "2b038db4c8c846ec37f39ee4c29914e202cfa3cb2e9465a97ff4c3fee08c1142",
+    "src/main/java/cn/academy/port/client/MulticoreCanopyState.java": "e31a67a519c61fd4c5584ecf52979224c8b287c0b7a04980e5e5dd6fc5e070ea",
+    "src/main/java/cn/academy/port/client/FoldedMirrorMesh.java": "87c90c1de8f40e76e7d34d73bd01b13487a1a9ec1646f29c3b7f57c203d8c695",
+    "src/main/java/cn/academy/port/client/FoldedMirrorState.java": "f3180af8ac1f4712afda2a9146a2f4197e3d1c192f2d4c7ecab40a4fbc54e0cb",
+    "src/main/java/cn/academy/port/client/FoldedMirrorMaterial.java": "0f29ff32f7b3095d7d0ce079d33644060b6fa4b474e5a912a5c0b5f16349d30c",
+    "src/main/java/cn/academy/port/client/FoldedMirrorRenderTypes.java": "2d4575c08745e498e5d90f9dc321d2fea2d43e7b09269e8cf41245a78a1e3198",
+    "src/main/java/cn/academy/port/client/BeamEtchingMesh.java": "5d8a91e786fa5afae95e21e0c478eb3854884c7639ef94ae931b5beaff415755",
+    "src/main/java/cn/academy/port/highpower/core/FoldedMirrorGeometry.java": "a5370ebeaff8845eaaecdb79ea3b909c9cd1d0b2ec9f2eeb14377ca8a966590c"
+  }
+}

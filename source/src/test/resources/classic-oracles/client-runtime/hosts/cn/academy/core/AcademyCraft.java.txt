@@ -1,0 +1,2 @@
+package cn.academy.core;
+public class AcademyCraft { public static void debug(String message) {} }

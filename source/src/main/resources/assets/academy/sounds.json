@@ -1,0 +1,5534 @@
+{
+  "ability.deny": {
+    "sounds": [
+      {
+        "name": "academy:ability/deny",
+        "stream": false
+      }
+    ]
+  },
+  "em.arc_weak": {
+    "sounds": [
+      {
+        "name": "academy:em/arc_weak",
+        "stream": false
+      }
+    ]
+  },
+  "em.arc_strong": {
+    "sounds": [
+      {
+        "name": "academy:em/arc_strong",
+        "stream": false
+      }
+    ]
+  },
+  "em.minedetect": {
+    "sounds": [
+      {
+        "name": "academy:em/minedetect",
+        "stream": false
+      }
+    ]
+  },
+  "em.railgun": {
+    "sounds": [
+      {
+        "name": "academy:em/railgun",
+        "stream": false
+      }
+    ]
+  },
+  "em.move_loop": {
+    "sounds": [
+      {
+        "name": "academy:em/move_loop",
+        "stream": false
+      }
+    ]
+  },
+  "em.charge_loop": {
+    "sounds": [
+      {
+        "name": "academy:em/charge_loop",
+        "stream": false
+      }
+    ]
+  },
+  "em.intensify_activate": {
+    "sounds": [
+      {
+        "name": "academy:em/intensify_activate",
+        "stream": false
+      }
+    ]
+  },
+  "em.intensify_loop": {
+    "sounds": [
+      {
+        "name": "academy:em/intensify_loop",
+        "stream": false
+      }
+    ]
+  },
+  "em.lf_loop": {
+    "sounds": [
+      {
+        "name": "academy:em/lf_loop",
+        "stream": false
+      }
+    ]
+  },
+  "em.mag_manip": {
+    "sounds": [
+      {
+        "name": "academy:em/mag_manip",
+        "stream": false
+      }
+    ]
+  },
+  "md.ballshoot": {
+    "sounds": [
+      {
+        "name": "academy:md/ballshoot",
+        "stream": false
+      }
+    ]
+  },
+  "md.ray_small": {
+    "sounds": [
+      {
+        "name": "academy:md/ray_small",
+        "stream": false
+      }
+    ]
+  },
+  "md.shield_startup": {
+    "sounds": [
+      {
+        "name": "academy:md/shield_startup",
+        "stream": false
+      }
+    ]
+  },
+  "md.shield_loop": {
+    "sounds": [
+      {
+        "name": "academy:md/shield_loop",
+        "stream": false
+      }
+    ]
+  },
+  "md.meltdowner": {
+    "sounds": [
+      {
+        "name": "academy:md/meltdowner",
+        "stream": false
+      }
+    ]
+  },
+  "md.mine_loop": {
+    "sounds": [
+      {
+        "name": "academy:md/mine_loop",
+        "stream": false
+      }
+    ]
+  },
+  "md.mine_basic_startup": {
+    "sounds": [
+      {
+        "name": "academy:md/mine_basic_startup",
+        "stream": false
+      }
+    ]
+  },
+  "md.mine_luck_startup": {
+    "sounds": [
+      {
+        "name": "academy:md/mine_luck_startup",
+        "stream": false
+      }
+    ]
+  },
+  "md.mine_expert_startup": {
+    "sounds": [
+      {
+        "name": "academy:md/mine_expert_startup",
+        "stream": false
+      }
+    ]
+  },
+  "md.simple_charge": {
+    "sounds": [
+      {
+        "name": "academy:md/simple_charge",
+        "stream": false
+      }
+    ]
+  },
+  "md.md_charge": {
+    "sounds": [
+      {
+        "name": "academy:md/md_charge",
+        "stream": false
+      }
+    ]
+  },
+  "entity.flipcoin": {
+    "sounds": [
+      {
+        "name": "academy:entity/flipcoin",
+        "stream": false
+      }
+    ]
+  },
+  "entity.silbarn_heavy": {
+    "sounds": [
+      {
+        "name": "academy:entity/silbarn_heavy",
+        "stream": false
+      }
+    ]
+  },
+  "entity.silbarn_light": {
+    "sounds": [
+      {
+        "name": "academy:entity/silbarn_light",
+        "stream": false
+      }
+    ]
+  },
+  "terminal.select": {
+    "sounds": [
+      {
+        "name": "academy:terminal/select",
+        "stream": false
+      }
+    ]
+  },
+  "terminal.confirm": {
+    "sounds": [
+      {
+        "name": "academy:terminal/confirm",
+        "stream": false
+      }
+    ]
+  },
+  "tp.tp": {
+    "sounds": [
+      {
+        "name": "academy:tp/tp",
+        "stream": false
+      }
+    ]
+  },
+  "tp.tp_pre": {
+    "sounds": [
+      {
+        "name": "academy:tp/tp_pre",
+        "stream": false
+      }
+    ]
+  },
+  "tp.guts": {
+    "sounds": [
+      {
+        "name": "academy:tp/guts",
+        "stream": false
+      }
+    ]
+  },
+  "tp.tp_shift": {
+    "sounds": [
+      {
+        "name": "academy:tp/tp_shift",
+        "stream": false
+      }
+    ]
+  },
+  "tp.tp_flashing": {
+    "sounds": [
+      {
+        "name": "academy:tp/tp_flashing",
+        "stream": false
+      }
+    ]
+  },
+  "vecmanip.blood_retro": {
+    "sounds": [
+      {
+        "name": "academy:vecmanip/blood_retro",
+        "stream": false
+      }
+    ]
+  },
+  "vecmanip.directed_shock": {
+    "sounds": [
+      {
+        "name": "academy:vecmanip/directed_shock",
+        "stream": false
+      }
+    ]
+  },
+  "vecmanip.groundshock": {
+    "sounds": [
+      {
+        "name": "academy:vecmanip/groundshock",
+        "stream": false
+      }
+    ]
+  },
+  "vecmanip.directed_blast": {
+    "sounds": [
+      {
+        "name": "academy:vecmanip/directed_blast",
+        "stream": false
+      }
+    ]
+  },
+  "vecmanip.vec_accel": {
+    "sounds": [
+      {
+        "name": "academy:vecmanip/vec_accel",
+        "stream": false
+      }
+    ]
+  },
+  "vecmanip.plasma_cannon": {
+    "sounds": [
+      {
+        "name": "academy:vecmanip/plasma_cannon",
+        "stream": false
+      }
+    ]
+  },
+  "vecmanip.storm_wing": {
+    "sounds": [
+      {
+        "name": "academy:vecmanip/storm_wing",
+        "stream": false
+      }
+    ]
+  },
+  "vecmanip.vec_deviation": {
+    "sounds": [
+      {
+        "name": "academy:vecmanip/vec_deviation",
+        "stream": false
+      }
+    ]
+  },
+  "vecmanip.vec_reflection": {
+    "sounds": [
+      {
+        "name": "academy:vecmanip/vec_reflection",
+        "stream": false
+      }
+    ]
+  },
+  "vecmanip.plasma_cannon_t": {
+    "sounds": [
+      {
+        "name": "academy:vecmanip/plasma_cannon_t",
+        "stream": false
+      }
+    ]
+  },
+  "machine.imag_fusor_work": {
+    "sounds": [
+      {
+        "name": "academy:machine/imag_fusor_work",
+        "stream": true
+      }
+    ]
+  },
+  "machine.machine_work": {
+    "sounds": [
+      {
+        "name": "academy:machine/machine_work",
+        "stream": true
+      }
+    ]
+  },
+  "world_boss_beam": {
+    "sounds": [
+      {
+        "name": "academy:worldboss/beam",
+        "attenuation_distance": 220
+      }
+    ]
+  },
+  "world_boss_bite": {
+    "sounds": [
+      {
+        "name": "academy:worldboss/bite",
+        "attenuation_distance": 220
+      }
+    ]
+  },
+  "world_boss_breath": {
+    "sounds": [
+      {
+        "name": "academy:worldboss/breath",
+        "attenuation_distance": 220
+      }
+    ]
+  },
+  "world_boss_charge": {
+    "sounds": [
+      {
+        "name": "academy:worldboss/charge",
+        "attenuation_distance": 220
+      }
+    ]
+  },
+  "world_boss_growl": {
+    "sounds": [
+      {
+        "name": "academy:worldboss/growl",
+        "attenuation_distance": 220
+      }
+    ]
+  },
+  "world_boss_impact": {
+    "sounds": [
+      {
+        "name": "academy:worldboss/impact",
+        "attenuation_distance": 220
+      }
+    ]
+  },
+  "world_boss_meteor": {
+    "sounds": [
+      {
+        "name": "academy:worldboss/meteor",
+        "attenuation_distance": 220
+      }
+    ]
+  },
+  "world_boss_nova": {
+    "sounds": [
+      {
+        "name": "academy:worldboss/nova",
+        "attenuation_distance": 220
+      }
+    ]
+  },
+  "world_boss_slash": {
+    "sounds": [
+      {
+        "name": "academy:worldboss/slash",
+        "attenuation_distance": 220
+      }
+    ]
+  },
+  "world_boss_stomp": {
+    "sounds": [
+      {
+        "name": "academy:worldboss/stomp",
+        "attenuation_distance": 220
+      }
+    ]
+  },
+  "world_boss_storm": {
+    "sounds": [
+      {
+        "name": "academy:worldboss/storm",
+        "attenuation_distance": 220
+      }
+    ]
+  },
+  "world_boss_tail": {
+    "sounds": [
+      {
+        "name": "academy:worldboss/tail",
+        "attenuation_distance": 220
+      }
+    ]
+  },
+  "world_boss_whoosh": {
+    "sounds": [
+      {
+        "name": "academy:worldboss/whoosh",
+        "attenuation_distance": 220
+      }
+    ]
+  },
+  "world_boss_thunder": {
+    "sounds": [
+      {
+        "name": "academy:worldboss/thunder",
+        "attenuation_distance": 220
+      }
+    ]
+  },
+  "world_boss_rumble": {
+    "sounds": [
+      {
+        "name": "academy:worldboss/rumble",
+        "attenuation_distance": 220
+      }
+    ]
+  },
+  "world_boss_crack": {
+    "sounds": [
+      {
+        "name": "academy:worldboss/crack",
+        "attenuation_distance": 220
+      }
+    ]
+  },
+  "world_boss_lava": {
+    "sounds": [
+      {
+        "name": "academy:worldboss/lava",
+        "attenuation_distance": 220
+      }
+    ]
+  },
+  "world_boss_rise": {
+    "sounds": [
+      {
+        "name": "academy:worldboss/rise",
+        "attenuation_distance": 220
+      }
+    ]
+  },
+  "canon.mental.start": {
+    "sounds": [
+      {
+        "name": "academy:canon/mental_start",
+        "stream": false
+      }
+    ]
+  },
+  "canon.mental.hit": {
+    "sounds": [
+      {
+        "name": "academy:canon/mental_hit",
+        "stream": false
+      }
+    ]
+  },
+  "canon.dark.start": {
+    "sounds": [
+      {
+        "name": "academy:canon/dark_start",
+        "stream": false
+      }
+    ]
+  },
+  "canon.dark.hit": {
+    "sounds": [
+      {
+        "name": "academy:canon/dark_hit",
+        "stream": false
+      }
+    ]
+  },
+  "canon.nitrogen.start": {
+    "sounds": [
+      {
+        "name": "academy:canon/nitrogen_start",
+        "stream": false
+      }
+    ]
+  },
+  "canon.nitrogen.hit": {
+    "sounds": [
+      {
+        "name": "academy:canon/nitrogen_hit",
+        "stream": false
+      }
+    ]
+  },
+  "canon.aero.start": {
+    "sounds": [
+      {
+        "name": "academy:canon/aero_start",
+        "stream": false
+      }
+    ]
+  },
+  "canon.aero.hit": {
+    "sounds": [
+      {
+        "name": "academy:canon/aero_hit",
+        "stream": false
+      }
+    ]
+  },
+  "canon.hydro.start": {
+    "sounds": [
+      {
+        "name": "academy:canon/hydro_start",
+        "stream": false
+      }
+    ]
+  },
+  "canon.hydro.hit": {
+    "sounds": [
+      {
+        "name": "academy:canon/hydro_hit",
+        "stream": false
+      }
+    ]
+  },
+  "canon.float.start": {
+    "sounds": [
+      {
+        "name": "academy:canon/float_start",
+        "stream": false
+      }
+    ]
+  },
+  "canon.float.hit": {
+    "sounds": [
+      {
+        "name": "academy:canon/float_hit",
+        "stream": false
+      }
+    ]
+  },
+  "canon.liquid.start": {
+    "sounds": [
+      {
+        "name": "academy:canon/liquid_start",
+        "stream": false
+      }
+    ]
+  },
+  "canon.liquid.hit": {
+    "sounds": [
+      {
+        "name": "academy:canon/liquid_hit",
+        "stream": false
+      }
+    ]
+  },
+  "canon.paper.start": {
+    "sounds": [
+      {
+        "name": "academy:canon/paper_start",
+        "stream": false
+      }
+    ]
+  },
+  "canon.paper.hit": {
+    "sounds": [
+      {
+        "name": "academy:canon/paper_hit",
+        "stream": false
+      }
+    ]
+  },
+  "c03_fire": {
+    "sounds": [
+      {
+        "name": "academy:g03/fire",
+        "stream": false
+      }
+    ]
+  },
+  "c03_mag_out": {
+    "sounds": [
+      {
+        "name": "academy:g03/mag_out",
+        "stream": false
+      }
+    ]
+  },
+  "c03_mag_in": {
+    "sounds": [
+      {
+        "name": "academy:g03/mag_in",
+        "stream": false
+      }
+    ]
+  },
+  "c03_activate": {
+    "sounds": [
+      {
+        "name": "academy:g03/activate",
+        "stream": false
+      }
+    ]
+  },
+  "g01_fire_near": {
+    "subtitle": "subtitles.aclab.g01_fire_near",
+    "sounds": [
+      {
+        "name": "academy:fleet/g01_fire_near_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g01_fire_near_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g01_fire_near_2",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g01_fire_near_3",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g01_fire_far": {
+    "subtitle": "subtitles.aclab.g01_fire_far",
+    "sounds": [
+      {
+        "name": "academy:fleet/g01_fire_far_0",
+        "stream": false,
+        "attenuation_distance": 112,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g01_fire_far_1",
+        "stream": false,
+        "attenuation_distance": 112,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g01_fire_far_2",
+        "stream": false,
+        "attenuation_distance": 112,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g01_fire_far_3",
+        "stream": false,
+        "attenuation_distance": 112,
+        "preload": true
+      }
+    ]
+  },
+  "g01_latch": {
+    "subtitle": "subtitles.aclab.g01_latch",
+    "sounds": [
+      {
+        "name": "academy:fleet/g01_latch_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g01_latch_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g01_mag_out": {
+    "subtitle": "subtitles.aclab.g01_mag_out",
+    "sounds": [
+      {
+        "name": "academy:fleet/g01_mag_out_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g01_mag_out_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g01_guide": {
+    "subtitle": "subtitles.aclab.g01_guide",
+    "sounds": [
+      {
+        "name": "academy:fleet/g01_guide_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g01_guide_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g01_mag_in": {
+    "subtitle": "subtitles.aclab.g01_mag_in",
+    "sounds": [
+      {
+        "name": "academy:fleet/g01_mag_in_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g01_mag_in_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g01_charge": {
+    "subtitle": "subtitles.aclab.g01_charge",
+    "sounds": [
+      {
+        "name": "academy:fleet/g01_charge_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g01_charge_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g01_activate": {
+    "subtitle": "subtitles.aclab.g01_activate",
+    "sounds": [
+      {
+        "name": "academy:fleet/g01_activate_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g01_activate_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g01_settle": {
+    "subtitle": "subtitles.aclab.g01_settle",
+    "sounds": [
+      {
+        "name": "academy:fleet/g01_settle_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g01_settle_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g01_cancel": {
+    "subtitle": "subtitles.aclab.g01_cancel",
+    "sounds": [
+      {
+        "name": "academy:fleet/g01_cancel_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g01_cancel_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g01_dry": {
+    "subtitle": "subtitles.aclab.g01_dry",
+    "sounds": [
+      {
+        "name": "academy:fleet/g01_dry_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g01_dry_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g01_equip": {
+    "subtitle": "subtitles.aclab.g01_equip",
+    "sounds": [
+      {
+        "name": "academy:fleet/g01_equip_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g01_equip_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g01_ads_in": {
+    "subtitle": "subtitles.aclab.g01_ads_in",
+    "sounds": [
+      {
+        "name": "academy:fleet/g01_ads_in_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g01_ads_in_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g01_ads_out": {
+    "subtitle": "subtitles.aclab.g01_ads_out",
+    "sounds": [
+      {
+        "name": "academy:fleet/g01_ads_out_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g01_ads_out_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g02_fire_near": {
+    "subtitle": "subtitles.aclab.g02_fire_near",
+    "sounds": [
+      {
+        "name": "academy:fleet/g02_fire_near_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g02_fire_near_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g02_fire_near_2",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g02_fire_near_3",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g02_fire_far": {
+    "subtitle": "subtitles.aclab.g02_fire_far",
+    "sounds": [
+      {
+        "name": "academy:fleet/g02_fire_far_0",
+        "stream": false,
+        "attenuation_distance": 112,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g02_fire_far_1",
+        "stream": false,
+        "attenuation_distance": 112,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g02_fire_far_2",
+        "stream": false,
+        "attenuation_distance": 112,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g02_fire_far_3",
+        "stream": false,
+        "attenuation_distance": 112,
+        "preload": true
+      }
+    ]
+  },
+  "g02_latch": {
+    "subtitle": "subtitles.aclab.g02_latch",
+    "sounds": [
+      {
+        "name": "academy:fleet/g02_latch_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g02_latch_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g02_mag_out": {
+    "subtitle": "subtitles.aclab.g02_mag_out",
+    "sounds": [
+      {
+        "name": "academy:fleet/g02_mag_out_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g02_mag_out_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g02_guide": {
+    "subtitle": "subtitles.aclab.g02_guide",
+    "sounds": [
+      {
+        "name": "academy:fleet/g02_guide_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g02_guide_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g02_mag_in": {
+    "subtitle": "subtitles.aclab.g02_mag_in",
+    "sounds": [
+      {
+        "name": "academy:fleet/g02_mag_in_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g02_mag_in_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g02_charge": {
+    "subtitle": "subtitles.aclab.g02_charge",
+    "sounds": [
+      {
+        "name": "academy:fleet/g02_charge_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g02_charge_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g02_activate": {
+    "subtitle": "subtitles.aclab.g02_activate",
+    "sounds": [
+      {
+        "name": "academy:fleet/g02_activate_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g02_activate_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g02_settle": {
+    "subtitle": "subtitles.aclab.g02_settle",
+    "sounds": [
+      {
+        "name": "academy:fleet/g02_settle_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g02_settle_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g02_cancel": {
+    "subtitle": "subtitles.aclab.g02_cancel",
+    "sounds": [
+      {
+        "name": "academy:fleet/g02_cancel_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g02_cancel_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g02_dry": {
+    "subtitle": "subtitles.aclab.g02_dry",
+    "sounds": [
+      {
+        "name": "academy:fleet/g02_dry_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g02_dry_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g02_equip": {
+    "subtitle": "subtitles.aclab.g02_equip",
+    "sounds": [
+      {
+        "name": "academy:fleet/g02_equip_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g02_equip_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g02_ads_in": {
+    "subtitle": "subtitles.aclab.g02_ads_in",
+    "sounds": [
+      {
+        "name": "academy:fleet/g02_ads_in_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g02_ads_in_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g02_ads_out": {
+    "subtitle": "subtitles.aclab.g02_ads_out",
+    "sounds": [
+      {
+        "name": "academy:fleet/g02_ads_out_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g02_ads_out_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g03_fire_near": {
+    "subtitle": "subtitles.aclab.g03_fire_near",
+    "sounds": [
+      {
+        "name": "academy:fleet/g03_fire_near_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g03_fire_near_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g03_fire_near_2",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g03_fire_near_3",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g03_fire_far": {
+    "subtitle": "subtitles.aclab.g03_fire_far",
+    "sounds": [
+      {
+        "name": "academy:fleet/g03_fire_far_0",
+        "stream": false,
+        "attenuation_distance": 112,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g03_fire_far_1",
+        "stream": false,
+        "attenuation_distance": 112,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g03_fire_far_2",
+        "stream": false,
+        "attenuation_distance": 112,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g03_fire_far_3",
+        "stream": false,
+        "attenuation_distance": 112,
+        "preload": true
+      }
+    ]
+  },
+  "g03_latch": {
+    "subtitle": "subtitles.aclab.g03_latch",
+    "sounds": [
+      {
+        "name": "academy:fleet/g03_latch_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g03_latch_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g03_mag_out": {
+    "subtitle": "subtitles.aclab.g03_mag_out",
+    "sounds": [
+      {
+        "name": "academy:fleet/g03_mag_out_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g03_mag_out_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g03_guide": {
+    "subtitle": "subtitles.aclab.g03_guide",
+    "sounds": [
+      {
+        "name": "academy:fleet/g03_guide_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g03_guide_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g03_mag_in": {
+    "subtitle": "subtitles.aclab.g03_mag_in",
+    "sounds": [
+      {
+        "name": "academy:fleet/g03_mag_in_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g03_mag_in_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g03_charge": {
+    "subtitle": "subtitles.aclab.g03_charge",
+    "sounds": [
+      {
+        "name": "academy:fleet/g03_charge_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g03_charge_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g03_activate": {
+    "subtitle": "subtitles.aclab.g03_activate",
+    "sounds": [
+      {
+        "name": "academy:fleet/g03_activate_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g03_activate_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g03_settle": {
+    "subtitle": "subtitles.aclab.g03_settle",
+    "sounds": [
+      {
+        "name": "academy:fleet/g03_settle_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g03_settle_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g03_cancel": {
+    "subtitle": "subtitles.aclab.g03_cancel",
+    "sounds": [
+      {
+        "name": "academy:fleet/g03_cancel_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g03_cancel_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g03_dry": {
+    "subtitle": "subtitles.aclab.g03_dry",
+    "sounds": [
+      {
+        "name": "academy:fleet/g03_dry_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g03_dry_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g03_equip": {
+    "subtitle": "subtitles.aclab.g03_equip",
+    "sounds": [
+      {
+        "name": "academy:fleet/g03_equip_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g03_equip_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g03_ads_in": {
+    "subtitle": "subtitles.aclab.g03_ads_in",
+    "sounds": [
+      {
+        "name": "academy:fleet/g03_ads_in_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g03_ads_in_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g03_ads_out": {
+    "subtitle": "subtitles.aclab.g03_ads_out",
+    "sounds": [
+      {
+        "name": "academy:fleet/g03_ads_out_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g03_ads_out_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g04_fire_near": {
+    "subtitle": "subtitles.aclab.g04_fire_near",
+    "sounds": [
+      {
+        "name": "academy:fleet/g04_fire_near_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g04_fire_near_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g04_fire_near_2",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g04_fire_near_3",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g04_fire_far": {
+    "subtitle": "subtitles.aclab.g04_fire_far",
+    "sounds": [
+      {
+        "name": "academy:fleet/g04_fire_far_0",
+        "stream": false,
+        "attenuation_distance": 112,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g04_fire_far_1",
+        "stream": false,
+        "attenuation_distance": 112,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g04_fire_far_2",
+        "stream": false,
+        "attenuation_distance": 112,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g04_fire_far_3",
+        "stream": false,
+        "attenuation_distance": 112,
+        "preload": true
+      }
+    ]
+  },
+  "g04_latch": {
+    "subtitle": "subtitles.aclab.g04_latch",
+    "sounds": [
+      {
+        "name": "academy:fleet/g04_latch_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g04_latch_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g04_mag_out": {
+    "subtitle": "subtitles.aclab.g04_mag_out",
+    "sounds": [
+      {
+        "name": "academy:fleet/g04_mag_out_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g04_mag_out_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g04_guide": {
+    "subtitle": "subtitles.aclab.g04_guide",
+    "sounds": [
+      {
+        "name": "academy:fleet/g04_guide_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g04_guide_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g04_mag_in": {
+    "subtitle": "subtitles.aclab.g04_mag_in",
+    "sounds": [
+      {
+        "name": "academy:fleet/g04_mag_in_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g04_mag_in_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g04_charge": {
+    "subtitle": "subtitles.aclab.g04_charge",
+    "sounds": [
+      {
+        "name": "academy:fleet/g04_charge_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g04_charge_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g04_activate": {
+    "subtitle": "subtitles.aclab.g04_activate",
+    "sounds": [
+      {
+        "name": "academy:fleet/g04_activate_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g04_activate_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g04_settle": {
+    "subtitle": "subtitles.aclab.g04_settle",
+    "sounds": [
+      {
+        "name": "academy:fleet/g04_settle_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g04_settle_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g04_cancel": {
+    "subtitle": "subtitles.aclab.g04_cancel",
+    "sounds": [
+      {
+        "name": "academy:fleet/g04_cancel_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g04_cancel_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g04_dry": {
+    "subtitle": "subtitles.aclab.g04_dry",
+    "sounds": [
+      {
+        "name": "academy:fleet/g04_dry_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g04_dry_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g04_equip": {
+    "subtitle": "subtitles.aclab.g04_equip",
+    "sounds": [
+      {
+        "name": "academy:fleet/g04_equip_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g04_equip_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g04_ads_in": {
+    "subtitle": "subtitles.aclab.g04_ads_in",
+    "sounds": [
+      {
+        "name": "academy:fleet/g04_ads_in_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g04_ads_in_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g04_ads_out": {
+    "subtitle": "subtitles.aclab.g04_ads_out",
+    "sounds": [
+      {
+        "name": "academy:fleet/g04_ads_out_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g04_ads_out_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g05_fire_near": {
+    "subtitle": "subtitles.aclab.g05_fire_near",
+    "sounds": [
+      {
+        "name": "academy:fleet/g05_fire_near_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g05_fire_near_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g05_fire_near_2",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g05_fire_near_3",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g05_fire_far": {
+    "subtitle": "subtitles.aclab.g05_fire_far",
+    "sounds": [
+      {
+        "name": "academy:fleet/g05_fire_far_0",
+        "stream": false,
+        "attenuation_distance": 112,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g05_fire_far_1",
+        "stream": false,
+        "attenuation_distance": 112,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g05_fire_far_2",
+        "stream": false,
+        "attenuation_distance": 112,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g05_fire_far_3",
+        "stream": false,
+        "attenuation_distance": 112,
+        "preload": true
+      }
+    ]
+  },
+  "g05_latch": {
+    "subtitle": "subtitles.aclab.g05_latch",
+    "sounds": [
+      {
+        "name": "academy:fleet/g05_latch_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g05_latch_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g05_mag_out": {
+    "subtitle": "subtitles.aclab.g05_mag_out",
+    "sounds": [
+      {
+        "name": "academy:fleet/g05_mag_out_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g05_mag_out_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g05_guide": {
+    "subtitle": "subtitles.aclab.g05_guide",
+    "sounds": [
+      {
+        "name": "academy:fleet/g05_guide_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g05_guide_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g05_mag_in": {
+    "subtitle": "subtitles.aclab.g05_mag_in",
+    "sounds": [
+      {
+        "name": "academy:fleet/g05_mag_in_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g05_mag_in_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g05_charge": {
+    "subtitle": "subtitles.aclab.g05_charge",
+    "sounds": [
+      {
+        "name": "academy:fleet/g05_charge_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g05_charge_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g05_activate": {
+    "subtitle": "subtitles.aclab.g05_activate",
+    "sounds": [
+      {
+        "name": "academy:fleet/g05_activate_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g05_activate_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g05_settle": {
+    "subtitle": "subtitles.aclab.g05_settle",
+    "sounds": [
+      {
+        "name": "academy:fleet/g05_settle_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g05_settle_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g05_cancel": {
+    "subtitle": "subtitles.aclab.g05_cancel",
+    "sounds": [
+      {
+        "name": "academy:fleet/g05_cancel_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g05_cancel_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g05_dry": {
+    "subtitle": "subtitles.aclab.g05_dry",
+    "sounds": [
+      {
+        "name": "academy:fleet/g05_dry_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g05_dry_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g05_equip": {
+    "subtitle": "subtitles.aclab.g05_equip",
+    "sounds": [
+      {
+        "name": "academy:fleet/g05_equip_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g05_equip_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g05_ads_in": {
+    "subtitle": "subtitles.aclab.g05_ads_in",
+    "sounds": [
+      {
+        "name": "academy:fleet/g05_ads_in_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g05_ads_in_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g05_ads_out": {
+    "subtitle": "subtitles.aclab.g05_ads_out",
+    "sounds": [
+      {
+        "name": "academy:fleet/g05_ads_out_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g05_ads_out_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g06_fire_near": {
+    "subtitle": "subtitles.aclab.g06_fire_near",
+    "sounds": [
+      {
+        "name": "academy:fleet/g06_fire_near_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g06_fire_near_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g06_fire_near_2",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g06_fire_near_3",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g06_fire_far": {
+    "subtitle": "subtitles.aclab.g06_fire_far",
+    "sounds": [
+      {
+        "name": "academy:fleet/g06_fire_far_0",
+        "stream": false,
+        "attenuation_distance": 112,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g06_fire_far_1",
+        "stream": false,
+        "attenuation_distance": 112,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g06_fire_far_2",
+        "stream": false,
+        "attenuation_distance": 112,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g06_fire_far_3",
+        "stream": false,
+        "attenuation_distance": 112,
+        "preload": true
+      }
+    ]
+  },
+  "g06_latch": {
+    "subtitle": "subtitles.aclab.g06_latch",
+    "sounds": [
+      {
+        "name": "academy:fleet/g06_latch_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g06_latch_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g06_mag_out": {
+    "subtitle": "subtitles.aclab.g06_mag_out",
+    "sounds": [
+      {
+        "name": "academy:fleet/g06_mag_out_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g06_mag_out_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g06_guide": {
+    "subtitle": "subtitles.aclab.g06_guide",
+    "sounds": [
+      {
+        "name": "academy:fleet/g06_guide_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g06_guide_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g06_mag_in": {
+    "subtitle": "subtitles.aclab.g06_mag_in",
+    "sounds": [
+      {
+        "name": "academy:fleet/g06_mag_in_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g06_mag_in_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g06_charge": {
+    "subtitle": "subtitles.aclab.g06_charge",
+    "sounds": [
+      {
+        "name": "academy:fleet/g06_charge_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g06_charge_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g06_activate": {
+    "subtitle": "subtitles.aclab.g06_activate",
+    "sounds": [
+      {
+        "name": "academy:fleet/g06_activate_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g06_activate_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g06_settle": {
+    "subtitle": "subtitles.aclab.g06_settle",
+    "sounds": [
+      {
+        "name": "academy:fleet/g06_settle_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g06_settle_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g06_cancel": {
+    "subtitle": "subtitles.aclab.g06_cancel",
+    "sounds": [
+      {
+        "name": "academy:fleet/g06_cancel_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g06_cancel_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g06_dry": {
+    "subtitle": "subtitles.aclab.g06_dry",
+    "sounds": [
+      {
+        "name": "academy:fleet/g06_dry_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g06_dry_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g06_equip": {
+    "subtitle": "subtitles.aclab.g06_equip",
+    "sounds": [
+      {
+        "name": "academy:fleet/g06_equip_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g06_equip_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g06_ads_in": {
+    "subtitle": "subtitles.aclab.g06_ads_in",
+    "sounds": [
+      {
+        "name": "academy:fleet/g06_ads_in_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g06_ads_in_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "g06_ads_out": {
+    "subtitle": "subtitles.aclab.g06_ads_out",
+    "sounds": [
+      {
+        "name": "academy:fleet/g06_ads_out_0",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      },
+      {
+        "name": "academy:fleet/g06_ads_out_1",
+        "stream": false,
+        "attenuation_distance": 48,
+        "preload": true
+      }
+    ]
+  },
+  "v01_idle": {
+    "subtitle": "subtitles.aclab.v01_idle",
+    "sounds": [
+      {
+        "name": "academy:fleet/v01_idle_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v01_idle_cabin": {
+    "subtitle": "subtitles.aclab.v01_idle_cabin",
+    "sounds": [
+      {
+        "name": "academy:fleet/v01_idle_cabin_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v01_drive": {
+    "subtitle": "subtitles.aclab.v01_drive",
+    "sounds": [
+      {
+        "name": "academy:fleet/v01_drive_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v01_drive_cabin": {
+    "subtitle": "subtitles.aclab.v01_drive_cabin",
+    "sounds": [
+      {
+        "name": "academy:fleet/v01_drive_cabin_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v01_roll": {
+    "subtitle": "subtitles.aclab.v01_roll",
+    "sounds": [
+      {
+        "name": "academy:fleet/v01_roll_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v01_roll_cabin": {
+    "subtitle": "subtitles.aclab.v01_roll_cabin",
+    "sounds": [
+      {
+        "name": "academy:fleet/v01_roll_cabin_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v01_wind": {
+    "subtitle": "subtitles.aclab.v01_wind",
+    "sounds": [
+      {
+        "name": "academy:fleet/v01_wind_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v01_reverse": {
+    "subtitle": "subtitles.aclab.v01_reverse",
+    "sounds": [
+      {
+        "name": "academy:fleet/v01_reverse_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v01_start": {
+    "subtitle": "subtitles.aclab.v01_start",
+    "sounds": [
+      {
+        "name": "academy:fleet/v01_start_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v01_stop": {
+    "subtitle": "subtitles.aclab.v01_stop",
+    "sounds": [
+      {
+        "name": "academy:fleet/v01_stop_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v01_brake": {
+    "subtitle": "subtitles.aclab.v01_brake",
+    "sounds": [
+      {
+        "name": "academy:fleet/v01_brake_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v01_door_open": {
+    "subtitle": "subtitles.aclab.v01_door_open",
+    "sounds": [
+      {
+        "name": "academy:fleet/v01_door_open_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v01_door_close": {
+    "subtitle": "subtitles.aclab.v01_door_close",
+    "sounds": [
+      {
+        "name": "academy:fleet/v01_door_close_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v01_door_open_end": {
+    "subtitle": "subtitles.aclab.v01_door_open_end",
+    "sounds": [
+      {
+        "name": "academy:fleet/v01_door_open_end_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v01_door_close_end": {
+    "subtitle": "subtitles.aclab.v01_door_close_end",
+    "sounds": [
+      {
+        "name": "academy:fleet/v01_door_close_end_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v01_horn": {
+    "subtitle": "subtitles.aclab.v01_horn",
+    "sounds": [
+      {
+        "name": "academy:fleet/v01_horn_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v01_bump": {
+    "subtitle": "subtitles.aclab.v01_bump",
+    "sounds": [
+      {
+        "name": "academy:fleet/v01_bump_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v02_idle": {
+    "subtitle": "subtitles.aclab.v02_idle",
+    "sounds": [
+      {
+        "name": "academy:fleet/v02_idle_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v02_idle_cabin": {
+    "subtitle": "subtitles.aclab.v02_idle_cabin",
+    "sounds": [
+      {
+        "name": "academy:fleet/v02_idle_cabin_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v02_drive": {
+    "subtitle": "subtitles.aclab.v02_drive",
+    "sounds": [
+      {
+        "name": "academy:fleet/v02_drive_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v02_drive_cabin": {
+    "subtitle": "subtitles.aclab.v02_drive_cabin",
+    "sounds": [
+      {
+        "name": "academy:fleet/v02_drive_cabin_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v02_roll": {
+    "subtitle": "subtitles.aclab.v02_roll",
+    "sounds": [
+      {
+        "name": "academy:fleet/v02_roll_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v02_roll_cabin": {
+    "subtitle": "subtitles.aclab.v02_roll_cabin",
+    "sounds": [
+      {
+        "name": "academy:fleet/v02_roll_cabin_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v02_wind": {
+    "subtitle": "subtitles.aclab.v02_wind",
+    "sounds": [
+      {
+        "name": "academy:fleet/v02_wind_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v02_reverse": {
+    "subtitle": "subtitles.aclab.v02_reverse",
+    "sounds": [
+      {
+        "name": "academy:fleet/v02_reverse_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v02_start": {
+    "subtitle": "subtitles.aclab.v02_start",
+    "sounds": [
+      {
+        "name": "academy:fleet/v02_start_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v02_stop": {
+    "subtitle": "subtitles.aclab.v02_stop",
+    "sounds": [
+      {
+        "name": "academy:fleet/v02_stop_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v02_brake": {
+    "subtitle": "subtitles.aclab.v02_brake",
+    "sounds": [
+      {
+        "name": "academy:fleet/v02_brake_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v02_door_open": {
+    "subtitle": "subtitles.aclab.v02_door_open",
+    "sounds": [
+      {
+        "name": "academy:fleet/v02_door_open_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v02_door_close": {
+    "subtitle": "subtitles.aclab.v02_door_close",
+    "sounds": [
+      {
+        "name": "academy:fleet/v02_door_close_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v02_door_open_end": {
+    "subtitle": "subtitles.aclab.v02_door_open_end",
+    "sounds": [
+      {
+        "name": "academy:fleet/v02_door_open_end_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v02_door_close_end": {
+    "subtitle": "subtitles.aclab.v02_door_close_end",
+    "sounds": [
+      {
+        "name": "academy:fleet/v02_door_close_end_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v02_horn": {
+    "subtitle": "subtitles.aclab.v02_horn",
+    "sounds": [
+      {
+        "name": "academy:fleet/v02_horn_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v02_bump": {
+    "subtitle": "subtitles.aclab.v02_bump",
+    "sounds": [
+      {
+        "name": "academy:fleet/v02_bump_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v03_idle": {
+    "subtitle": "subtitles.aclab.v03_idle",
+    "sounds": [
+      {
+        "name": "academy:fleet/v03_idle_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v03_idle_cabin": {
+    "subtitle": "subtitles.aclab.v03_idle_cabin",
+    "sounds": [
+      {
+        "name": "academy:fleet/v03_idle_cabin_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v03_drive": {
+    "subtitle": "subtitles.aclab.v03_drive",
+    "sounds": [
+      {
+        "name": "academy:fleet/v03_drive_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v03_drive_cabin": {
+    "subtitle": "subtitles.aclab.v03_drive_cabin",
+    "sounds": [
+      {
+        "name": "academy:fleet/v03_drive_cabin_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v03_roll": {
+    "subtitle": "subtitles.aclab.v03_roll",
+    "sounds": [
+      {
+        "name": "academy:fleet/v03_roll_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v03_roll_cabin": {
+    "subtitle": "subtitles.aclab.v03_roll_cabin",
+    "sounds": [
+      {
+        "name": "academy:fleet/v03_roll_cabin_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v03_wind": {
+    "subtitle": "subtitles.aclab.v03_wind",
+    "sounds": [
+      {
+        "name": "academy:fleet/v03_wind_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v03_reverse": {
+    "subtitle": "subtitles.aclab.v03_reverse",
+    "sounds": [
+      {
+        "name": "academy:fleet/v03_reverse_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v03_start": {
+    "subtitle": "subtitles.aclab.v03_start",
+    "sounds": [
+      {
+        "name": "academy:fleet/v03_start_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v03_stop": {
+    "subtitle": "subtitles.aclab.v03_stop",
+    "sounds": [
+      {
+        "name": "academy:fleet/v03_stop_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v03_brake": {
+    "subtitle": "subtitles.aclab.v03_brake",
+    "sounds": [
+      {
+        "name": "academy:fleet/v03_brake_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v03_door_open": {
+    "subtitle": "subtitles.aclab.v03_door_open",
+    "sounds": [
+      {
+        "name": "academy:fleet/v03_door_open_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v03_door_close": {
+    "subtitle": "subtitles.aclab.v03_door_close",
+    "sounds": [
+      {
+        "name": "academy:fleet/v03_door_close_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v03_door_open_end": {
+    "subtitle": "subtitles.aclab.v03_door_open_end",
+    "sounds": [
+      {
+        "name": "academy:fleet/v03_door_open_end_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v03_door_close_end": {
+    "subtitle": "subtitles.aclab.v03_door_close_end",
+    "sounds": [
+      {
+        "name": "academy:fleet/v03_door_close_end_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v03_horn": {
+    "subtitle": "subtitles.aclab.v03_horn",
+    "sounds": [
+      {
+        "name": "academy:fleet/v03_horn_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v03_bump": {
+    "subtitle": "subtitles.aclab.v03_bump",
+    "sounds": [
+      {
+        "name": "academy:fleet/v03_bump_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v04_idle": {
+    "subtitle": "subtitles.aclab.v04_idle",
+    "sounds": [
+      {
+        "name": "academy:fleet/v04_idle_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v04_idle_cabin": {
+    "subtitle": "subtitles.aclab.v04_idle_cabin",
+    "sounds": [
+      {
+        "name": "academy:fleet/v04_idle_cabin_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v04_drive": {
+    "subtitle": "subtitles.aclab.v04_drive",
+    "sounds": [
+      {
+        "name": "academy:fleet/v04_drive_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v04_drive_cabin": {
+    "subtitle": "subtitles.aclab.v04_drive_cabin",
+    "sounds": [
+      {
+        "name": "academy:fleet/v04_drive_cabin_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v04_roll": {
+    "subtitle": "subtitles.aclab.v04_roll",
+    "sounds": [
+      {
+        "name": "academy:fleet/v04_roll_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v04_roll_cabin": {
+    "subtitle": "subtitles.aclab.v04_roll_cabin",
+    "sounds": [
+      {
+        "name": "academy:fleet/v04_roll_cabin_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v04_wind": {
+    "subtitle": "subtitles.aclab.v04_wind",
+    "sounds": [
+      {
+        "name": "academy:fleet/v04_wind_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v04_reverse": {
+    "subtitle": "subtitles.aclab.v04_reverse",
+    "sounds": [
+      {
+        "name": "academy:fleet/v04_reverse_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v04_siren": {
+    "subtitle": "subtitles.aclab.v04_siren",
+    "sounds": [
+      {
+        "name": "academy:fleet/v04_siren_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v04_start": {
+    "subtitle": "subtitles.aclab.v04_start",
+    "sounds": [
+      {
+        "name": "academy:fleet/v04_start_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v04_stop": {
+    "subtitle": "subtitles.aclab.v04_stop",
+    "sounds": [
+      {
+        "name": "academy:fleet/v04_stop_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v04_brake": {
+    "subtitle": "subtitles.aclab.v04_brake",
+    "sounds": [
+      {
+        "name": "academy:fleet/v04_brake_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v04_door_open": {
+    "subtitle": "subtitles.aclab.v04_door_open",
+    "sounds": [
+      {
+        "name": "academy:fleet/v04_door_open_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v04_door_close": {
+    "subtitle": "subtitles.aclab.v04_door_close",
+    "sounds": [
+      {
+        "name": "academy:fleet/v04_door_close_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v04_door_open_end": {
+    "subtitle": "subtitles.aclab.v04_door_open_end",
+    "sounds": [
+      {
+        "name": "academy:fleet/v04_door_open_end_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v04_door_close_end": {
+    "subtitle": "subtitles.aclab.v04_door_close_end",
+    "sounds": [
+      {
+        "name": "academy:fleet/v04_door_close_end_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v04_horn": {
+    "subtitle": "subtitles.aclab.v04_horn",
+    "sounds": [
+      {
+        "name": "academy:fleet/v04_horn_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v04_bump": {
+    "subtitle": "subtitles.aclab.v04_bump",
+    "sounds": [
+      {
+        "name": "academy:fleet/v04_bump_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v05_idle": {
+    "subtitle": "subtitles.aclab.v05_idle",
+    "sounds": [
+      {
+        "name": "academy:fleet/v05_idle_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v05_idle_cabin": {
+    "subtitle": "subtitles.aclab.v05_idle_cabin",
+    "sounds": [
+      {
+        "name": "academy:fleet/v05_idle_cabin_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v05_drive": {
+    "subtitle": "subtitles.aclab.v05_drive",
+    "sounds": [
+      {
+        "name": "academy:fleet/v05_drive_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v05_drive_cabin": {
+    "subtitle": "subtitles.aclab.v05_drive_cabin",
+    "sounds": [
+      {
+        "name": "academy:fleet/v05_drive_cabin_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v05_roll": {
+    "subtitle": "subtitles.aclab.v05_roll",
+    "sounds": [
+      {
+        "name": "academy:fleet/v05_roll_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v05_roll_cabin": {
+    "subtitle": "subtitles.aclab.v05_roll_cabin",
+    "sounds": [
+      {
+        "name": "academy:fleet/v05_roll_cabin_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v05_wind": {
+    "subtitle": "subtitles.aclab.v05_wind",
+    "sounds": [
+      {
+        "name": "academy:fleet/v05_wind_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v05_reverse": {
+    "subtitle": "subtitles.aclab.v05_reverse",
+    "sounds": [
+      {
+        "name": "academy:fleet/v05_reverse_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v05_siren": {
+    "subtitle": "subtitles.aclab.v05_siren",
+    "sounds": [
+      {
+        "name": "academy:fleet/v05_siren_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v05_start": {
+    "subtitle": "subtitles.aclab.v05_start",
+    "sounds": [
+      {
+        "name": "academy:fleet/v05_start_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v05_stop": {
+    "subtitle": "subtitles.aclab.v05_stop",
+    "sounds": [
+      {
+        "name": "academy:fleet/v05_stop_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v05_brake": {
+    "subtitle": "subtitles.aclab.v05_brake",
+    "sounds": [
+      {
+        "name": "academy:fleet/v05_brake_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v05_door_open": {
+    "subtitle": "subtitles.aclab.v05_door_open",
+    "sounds": [
+      {
+        "name": "academy:fleet/v05_door_open_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v05_door_close": {
+    "subtitle": "subtitles.aclab.v05_door_close",
+    "sounds": [
+      {
+        "name": "academy:fleet/v05_door_close_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v05_door_open_end": {
+    "subtitle": "subtitles.aclab.v05_door_open_end",
+    "sounds": [
+      {
+        "name": "academy:fleet/v05_door_open_end_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v05_door_close_end": {
+    "subtitle": "subtitles.aclab.v05_door_close_end",
+    "sounds": [
+      {
+        "name": "academy:fleet/v05_door_close_end_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v05_horn": {
+    "subtitle": "subtitles.aclab.v05_horn",
+    "sounds": [
+      {
+        "name": "academy:fleet/v05_horn_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v05_bump": {
+    "subtitle": "subtitles.aclab.v05_bump",
+    "sounds": [
+      {
+        "name": "academy:fleet/v05_bump_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v06_idle": {
+    "subtitle": "subtitles.aclab.v06_idle",
+    "sounds": [
+      {
+        "name": "academy:fleet/v06_idle_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v06_idle_cabin": {
+    "subtitle": "subtitles.aclab.v06_idle_cabin",
+    "sounds": [
+      {
+        "name": "academy:fleet/v06_idle_cabin_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v06_drive": {
+    "subtitle": "subtitles.aclab.v06_drive",
+    "sounds": [
+      {
+        "name": "academy:fleet/v06_drive_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v06_drive_cabin": {
+    "subtitle": "subtitles.aclab.v06_drive_cabin",
+    "sounds": [
+      {
+        "name": "academy:fleet/v06_drive_cabin_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v06_roll": {
+    "subtitle": "subtitles.aclab.v06_roll",
+    "sounds": [
+      {
+        "name": "academy:fleet/v06_roll_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v06_roll_cabin": {
+    "subtitle": "subtitles.aclab.v06_roll_cabin",
+    "sounds": [
+      {
+        "name": "academy:fleet/v06_roll_cabin_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v06_wind": {
+    "subtitle": "subtitles.aclab.v06_wind",
+    "sounds": [
+      {
+        "name": "academy:fleet/v06_wind_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v06_reverse": {
+    "subtitle": "subtitles.aclab.v06_reverse",
+    "sounds": [
+      {
+        "name": "academy:fleet/v06_reverse_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v06_start": {
+    "subtitle": "subtitles.aclab.v06_start",
+    "sounds": [
+      {
+        "name": "academy:fleet/v06_start_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v06_stop": {
+    "subtitle": "subtitles.aclab.v06_stop",
+    "sounds": [
+      {
+        "name": "academy:fleet/v06_stop_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v06_brake": {
+    "subtitle": "subtitles.aclab.v06_brake",
+    "sounds": [
+      {
+        "name": "academy:fleet/v06_brake_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v06_door_open": {
+    "subtitle": "subtitles.aclab.v06_door_open",
+    "sounds": [
+      {
+        "name": "academy:fleet/v06_door_open_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v06_door_close": {
+    "subtitle": "subtitles.aclab.v06_door_close",
+    "sounds": [
+      {
+        "name": "academy:fleet/v06_door_close_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v06_door_open_end": {
+    "subtitle": "subtitles.aclab.v06_door_open_end",
+    "sounds": [
+      {
+        "name": "academy:fleet/v06_door_open_end_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v06_door_close_end": {
+    "subtitle": "subtitles.aclab.v06_door_close_end",
+    "sounds": [
+      {
+        "name": "academy:fleet/v06_door_close_end_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v06_horn": {
+    "subtitle": "subtitles.aclab.v06_horn",
+    "sounds": [
+      {
+        "name": "academy:fleet/v06_horn_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "v06_bump": {
+    "subtitle": "subtitles.aclab.v06_bump",
+    "sounds": [
+      {
+        "name": "academy:fleet/v06_bump_0",
+        "stream": false,
+        "attenuation_distance": 64,
+        "preload": true
+      }
+    ]
+  },
+  "clockwork_rex.swing_a": {
+    "subtitle": "subtitles.titanblocks.clockwork_rex.swing_a",
+    "sounds": [
+      {
+        "name": "academy:clockwork_rex/swing_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:clockwork_rex/swing_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "clockwork_rex.swing_b": {
+    "subtitle": "subtitles.titanblocks.clockwork_rex.swing_b",
+    "sounds": [
+      {
+        "name": "academy:clockwork_rex/swing_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:clockwork_rex/swing_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "clockwork_rex.hit_a": {
+    "subtitle": "subtitles.titanblocks.clockwork_rex.hit_a",
+    "sounds": [
+      {
+        "name": "academy:clockwork_rex/hit_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:clockwork_rex/hit_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "clockwork_rex.hit_b": {
+    "subtitle": "subtitles.titanblocks.clockwork_rex.hit_b",
+    "sounds": [
+      {
+        "name": "academy:clockwork_rex/hit_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:clockwork_rex/hit_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "clockwork_rex.charge_a": {
+    "subtitle": "subtitles.titanblocks.clockwork_rex.charge_a",
+    "sounds": [
+      {
+        "name": "academy:clockwork_rex/charge_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:clockwork_rex/charge_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "clockwork_rex.charge_b": {
+    "subtitle": "subtitles.titanblocks.clockwork_rex.charge_b",
+    "sounds": [
+      {
+        "name": "academy:clockwork_rex/charge_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:clockwork_rex/charge_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "clockwork_rex.skill_a": {
+    "subtitle": "subtitles.titanblocks.clockwork_rex.skill_a",
+    "sounds": [
+      {
+        "name": "academy:clockwork_rex/skill_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:clockwork_rex/skill_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "clockwork_rex.skill_b": {
+    "subtitle": "subtitles.titanblocks.clockwork_rex.skill_b",
+    "sounds": [
+      {
+        "name": "academy:clockwork_rex/skill_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:clockwork_rex/skill_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "clockwork_rex.roar": {
+    "subtitle": "subtitles.titanblocks.clockwork_rex.roar",
+    "sounds": [
+      {
+        "name": "academy:clockwork_rex/roar_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:clockwork_rex/roar_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "clockwork_rex.hurt": {
+    "subtitle": "subtitles.titanblocks.clockwork_rex.hurt",
+    "sounds": [
+      {
+        "name": "academy:clockwork_rex/hurt_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:clockwork_rex/hurt_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "clockwork_rex.death": {
+    "subtitle": "subtitles.titanblocks.clockwork_rex.death",
+    "sounds": [
+      {
+        "name": "academy:clockwork_rex/death_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:clockwork_rex/death_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "clockwork_rex.step": {
+    "subtitle": "subtitles.titanblocks.clockwork_rex.step",
+    "sounds": [
+      {
+        "name": "academy:clockwork_rex/step_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:clockwork_rex/step_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "myco_frog.swing_a": {
+    "subtitle": "subtitles.titanblocks.myco_frog.swing_a",
+    "sounds": [
+      {
+        "name": "academy:myco_frog/swing_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:myco_frog/swing_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "myco_frog.swing_b": {
+    "subtitle": "subtitles.titanblocks.myco_frog.swing_b",
+    "sounds": [
+      {
+        "name": "academy:myco_frog/swing_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:myco_frog/swing_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "myco_frog.hit_a": {
+    "subtitle": "subtitles.titanblocks.myco_frog.hit_a",
+    "sounds": [
+      {
+        "name": "academy:myco_frog/hit_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:myco_frog/hit_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "myco_frog.hit_b": {
+    "subtitle": "subtitles.titanblocks.myco_frog.hit_b",
+    "sounds": [
+      {
+        "name": "academy:myco_frog/hit_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:myco_frog/hit_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "myco_frog.charge_a": {
+    "subtitle": "subtitles.titanblocks.myco_frog.charge_a",
+    "sounds": [
+      {
+        "name": "academy:myco_frog/charge_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:myco_frog/charge_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "myco_frog.charge_b": {
+    "subtitle": "subtitles.titanblocks.myco_frog.charge_b",
+    "sounds": [
+      {
+        "name": "academy:myco_frog/charge_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:myco_frog/charge_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "myco_frog.skill_a": {
+    "subtitle": "subtitles.titanblocks.myco_frog.skill_a",
+    "sounds": [
+      {
+        "name": "academy:myco_frog/skill_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:myco_frog/skill_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "myco_frog.skill_b": {
+    "subtitle": "subtitles.titanblocks.myco_frog.skill_b",
+    "sounds": [
+      {
+        "name": "academy:myco_frog/skill_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:myco_frog/skill_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "myco_frog.roar": {
+    "subtitle": "subtitles.titanblocks.myco_frog.roar",
+    "sounds": [
+      {
+        "name": "academy:myco_frog/roar_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:myco_frog/roar_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "myco_frog.hurt": {
+    "subtitle": "subtitles.titanblocks.myco_frog.hurt",
+    "sounds": [
+      {
+        "name": "academy:myco_frog/hurt_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:myco_frog/hurt_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "myco_frog.death": {
+    "subtitle": "subtitles.titanblocks.myco_frog.death",
+    "sounds": [
+      {
+        "name": "academy:myco_frog/death_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:myco_frog/death_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "myco_frog.step": {
+    "subtitle": "subtitles.titanblocks.myco_frog.step",
+    "sounds": [
+      {
+        "name": "academy:myco_frog/step_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:myco_frog/step_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "lava_rex.swing_a": {
+    "subtitle": "subtitles.titanblocks.lava_rex.swing_a",
+    "sounds": [
+      {
+        "name": "academy:lava_rex/swing_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:lava_rex/swing_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "lava_rex.swing_b": {
+    "subtitle": "subtitles.titanblocks.lava_rex.swing_b",
+    "sounds": [
+      {
+        "name": "academy:lava_rex/swing_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:lava_rex/swing_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "lava_rex.hit_a": {
+    "subtitle": "subtitles.titanblocks.lava_rex.hit_a",
+    "sounds": [
+      {
+        "name": "academy:lava_rex/hit_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:lava_rex/hit_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "lava_rex.hit_b": {
+    "subtitle": "subtitles.titanblocks.lava_rex.hit_b",
+    "sounds": [
+      {
+        "name": "academy:lava_rex/hit_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:lava_rex/hit_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "lava_rex.charge_a": {
+    "subtitle": "subtitles.titanblocks.lava_rex.charge_a",
+    "sounds": [
+      {
+        "name": "academy:lava_rex/charge_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:lava_rex/charge_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "lava_rex.charge_b": {
+    "subtitle": "subtitles.titanblocks.lava_rex.charge_b",
+    "sounds": [
+      {
+        "name": "academy:lava_rex/charge_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:lava_rex/charge_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "lava_rex.skill_a": {
+    "subtitle": "subtitles.titanblocks.lava_rex.skill_a",
+    "sounds": [
+      {
+        "name": "academy:lava_rex/skill_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:lava_rex/skill_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "lava_rex.skill_b": {
+    "subtitle": "subtitles.titanblocks.lava_rex.skill_b",
+    "sounds": [
+      {
+        "name": "academy:lava_rex/skill_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:lava_rex/skill_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "lava_rex.roar": {
+    "subtitle": "subtitles.titanblocks.lava_rex.roar",
+    "sounds": [
+      {
+        "name": "academy:lava_rex/roar_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:lava_rex/roar_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "lava_rex.hurt": {
+    "subtitle": "subtitles.titanblocks.lava_rex.hurt",
+    "sounds": [
+      {
+        "name": "academy:lava_rex/hurt_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:lava_rex/hurt_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "lava_rex.death": {
+    "subtitle": "subtitles.titanblocks.lava_rex.death",
+    "sounds": [
+      {
+        "name": "academy:lava_rex/death_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:lava_rex/death_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "lava_rex.step": {
+    "subtitle": "subtitles.titanblocks.lava_rex.step",
+    "sounds": [
+      {
+        "name": "academy:lava_rex/step_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:lava_rex/step_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "ironback.swing_a": {
+    "subtitle": "subtitles.titanblocks.ironback.swing_a",
+    "sounds": [
+      {
+        "name": "academy:ironback/swing_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:ironback/swing_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "ironback.swing_b": {
+    "subtitle": "subtitles.titanblocks.ironback.swing_b",
+    "sounds": [
+      {
+        "name": "academy:ironback/swing_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:ironback/swing_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "ironback.hit_a": {
+    "subtitle": "subtitles.titanblocks.ironback.hit_a",
+    "sounds": [
+      {
+        "name": "academy:ironback/hit_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:ironback/hit_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "ironback.hit_b": {
+    "subtitle": "subtitles.titanblocks.ironback.hit_b",
+    "sounds": [
+      {
+        "name": "academy:ironback/hit_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:ironback/hit_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "ironback.charge_a": {
+    "subtitle": "subtitles.titanblocks.ironback.charge_a",
+    "sounds": [
+      {
+        "name": "academy:ironback/charge_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:ironback/charge_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "ironback.charge_b": {
+    "subtitle": "subtitles.titanblocks.ironback.charge_b",
+    "sounds": [
+      {
+        "name": "academy:ironback/charge_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:ironback/charge_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "ironback.skill_a": {
+    "subtitle": "subtitles.titanblocks.ironback.skill_a",
+    "sounds": [
+      {
+        "name": "academy:ironback/skill_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:ironback/skill_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "ironback.skill_b": {
+    "subtitle": "subtitles.titanblocks.ironback.skill_b",
+    "sounds": [
+      {
+        "name": "academy:ironback/skill_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:ironback/skill_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "ironback.roar": {
+    "subtitle": "subtitles.titanblocks.ironback.roar",
+    "sounds": [
+      {
+        "name": "academy:ironback/roar_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:ironback/roar_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "ironback.hurt": {
+    "subtitle": "subtitles.titanblocks.ironback.hurt",
+    "sounds": [
+      {
+        "name": "academy:ironback/hurt_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:ironback/hurt_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "ironback.death": {
+    "subtitle": "subtitles.titanblocks.ironback.death",
+    "sounds": [
+      {
+        "name": "academy:ironback/death_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:ironback/death_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "ironback.step": {
+    "subtitle": "subtitles.titanblocks.ironback.step",
+    "sounds": [
+      {
+        "name": "academy:ironback/step_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:ironback/step_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "frost_bastion.swing_a": {
+    "subtitle": "subtitles.titanblocks.frost_bastion.swing_a",
+    "sounds": [
+      {
+        "name": "academy:frost_bastion/swing_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:frost_bastion/swing_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "frost_bastion.swing_b": {
+    "subtitle": "subtitles.titanblocks.frost_bastion.swing_b",
+    "sounds": [
+      {
+        "name": "academy:frost_bastion/swing_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:frost_bastion/swing_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "frost_bastion.hit_a": {
+    "subtitle": "subtitles.titanblocks.frost_bastion.hit_a",
+    "sounds": [
+      {
+        "name": "academy:frost_bastion/hit_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:frost_bastion/hit_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "frost_bastion.hit_b": {
+    "subtitle": "subtitles.titanblocks.frost_bastion.hit_b",
+    "sounds": [
+      {
+        "name": "academy:frost_bastion/hit_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:frost_bastion/hit_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "frost_bastion.charge_a": {
+    "subtitle": "subtitles.titanblocks.frost_bastion.charge_a",
+    "sounds": [
+      {
+        "name": "academy:frost_bastion/charge_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:frost_bastion/charge_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "frost_bastion.charge_b": {
+    "subtitle": "subtitles.titanblocks.frost_bastion.charge_b",
+    "sounds": [
+      {
+        "name": "academy:frost_bastion/charge_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:frost_bastion/charge_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "frost_bastion.skill_a": {
+    "subtitle": "subtitles.titanblocks.frost_bastion.skill_a",
+    "sounds": [
+      {
+        "name": "academy:frost_bastion/skill_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:frost_bastion/skill_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "frost_bastion.skill_b": {
+    "subtitle": "subtitles.titanblocks.frost_bastion.skill_b",
+    "sounds": [
+      {
+        "name": "academy:frost_bastion/skill_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:frost_bastion/skill_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "frost_bastion.roar": {
+    "subtitle": "subtitles.titanblocks.frost_bastion.roar",
+    "sounds": [
+      {
+        "name": "academy:frost_bastion/roar_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:frost_bastion/roar_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "frost_bastion.hurt": {
+    "subtitle": "subtitles.titanblocks.frost_bastion.hurt",
+    "sounds": [
+      {
+        "name": "academy:frost_bastion/hurt_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:frost_bastion/hurt_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "frost_bastion.death": {
+    "subtitle": "subtitles.titanblocks.frost_bastion.death",
+    "sounds": [
+      {
+        "name": "academy:frost_bastion/death_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:frost_bastion/death_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "frost_bastion.step": {
+    "subtitle": "subtitles.titanblocks.frost_bastion.step",
+    "sounds": [
+      {
+        "name": "academy:frost_bastion/step_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:frost_bastion/step_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "grove_titan.swing_a": {
+    "subtitle": "subtitles.titanblocks.grove_titan.swing_a",
+    "sounds": [
+      {
+        "name": "academy:grove_titan/swing_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:grove_titan/swing_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "grove_titan.swing_b": {
+    "subtitle": "subtitles.titanblocks.grove_titan.swing_b",
+    "sounds": [
+      {
+        "name": "academy:grove_titan/swing_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:grove_titan/swing_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "grove_titan.hit_a": {
+    "subtitle": "subtitles.titanblocks.grove_titan.hit_a",
+    "sounds": [
+      {
+        "name": "academy:grove_titan/hit_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:grove_titan/hit_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "grove_titan.hit_b": {
+    "subtitle": "subtitles.titanblocks.grove_titan.hit_b",
+    "sounds": [
+      {
+        "name": "academy:grove_titan/hit_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:grove_titan/hit_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "grove_titan.charge_a": {
+    "subtitle": "subtitles.titanblocks.grove_titan.charge_a",
+    "sounds": [
+      {
+        "name": "academy:grove_titan/charge_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:grove_titan/charge_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "grove_titan.charge_b": {
+    "subtitle": "subtitles.titanblocks.grove_titan.charge_b",
+    "sounds": [
+      {
+        "name": "academy:grove_titan/charge_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:grove_titan/charge_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "grove_titan.skill_a": {
+    "subtitle": "subtitles.titanblocks.grove_titan.skill_a",
+    "sounds": [
+      {
+        "name": "academy:grove_titan/skill_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:grove_titan/skill_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "grove_titan.skill_b": {
+    "subtitle": "subtitles.titanblocks.grove_titan.skill_b",
+    "sounds": [
+      {
+        "name": "academy:grove_titan/skill_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:grove_titan/skill_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "grove_titan.roar": {
+    "subtitle": "subtitles.titanblocks.grove_titan.roar",
+    "sounds": [
+      {
+        "name": "academy:grove_titan/roar_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:grove_titan/roar_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "grove_titan.hurt": {
+    "subtitle": "subtitles.titanblocks.grove_titan.hurt",
+    "sounds": [
+      {
+        "name": "academy:grove_titan/hurt_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:grove_titan/hurt_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "grove_titan.death": {
+    "subtitle": "subtitles.titanblocks.grove_titan.death",
+    "sounds": [
+      {
+        "name": "academy:grove_titan/death_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:grove_titan/death_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "grove_titan.step": {
+    "subtitle": "subtitles.titanblocks.grove_titan.step",
+    "sounds": [
+      {
+        "name": "academy:grove_titan/step_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:grove_titan/step_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "crystal_mantis.swing_a": {
+    "subtitle": "subtitles.titanblocks.crystal_mantis.swing_a",
+    "sounds": [
+      {
+        "name": "academy:crystal_mantis/swing_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:crystal_mantis/swing_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "crystal_mantis.swing_b": {
+    "subtitle": "subtitles.titanblocks.crystal_mantis.swing_b",
+    "sounds": [
+      {
+        "name": "academy:crystal_mantis/swing_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:crystal_mantis/swing_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "crystal_mantis.hit_a": {
+    "subtitle": "subtitles.titanblocks.crystal_mantis.hit_a",
+    "sounds": [
+      {
+        "name": "academy:crystal_mantis/hit_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:crystal_mantis/hit_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "crystal_mantis.hit_b": {
+    "subtitle": "subtitles.titanblocks.crystal_mantis.hit_b",
+    "sounds": [
+      {
+        "name": "academy:crystal_mantis/hit_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:crystal_mantis/hit_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "crystal_mantis.charge_a": {
+    "subtitle": "subtitles.titanblocks.crystal_mantis.charge_a",
+    "sounds": [
+      {
+        "name": "academy:crystal_mantis/charge_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:crystal_mantis/charge_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "crystal_mantis.charge_b": {
+    "subtitle": "subtitles.titanblocks.crystal_mantis.charge_b",
+    "sounds": [
+      {
+        "name": "academy:crystal_mantis/charge_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:crystal_mantis/charge_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "crystal_mantis.skill_a": {
+    "subtitle": "subtitles.titanblocks.crystal_mantis.skill_a",
+    "sounds": [
+      {
+        "name": "academy:crystal_mantis/skill_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:crystal_mantis/skill_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "crystal_mantis.skill_b": {
+    "subtitle": "subtitles.titanblocks.crystal_mantis.skill_b",
+    "sounds": [
+      {
+        "name": "academy:crystal_mantis/skill_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:crystal_mantis/skill_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "crystal_mantis.roar": {
+    "subtitle": "subtitles.titanblocks.crystal_mantis.roar",
+    "sounds": [
+      {
+        "name": "academy:crystal_mantis/roar_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:crystal_mantis/roar_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "crystal_mantis.hurt": {
+    "subtitle": "subtitles.titanblocks.crystal_mantis.hurt",
+    "sounds": [
+      {
+        "name": "academy:crystal_mantis/hurt_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:crystal_mantis/hurt_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "crystal_mantis.death": {
+    "subtitle": "subtitles.titanblocks.crystal_mantis.death",
+    "sounds": [
+      {
+        "name": "academy:crystal_mantis/death_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:crystal_mantis/death_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "crystal_mantis.step": {
+    "subtitle": "subtitles.titanblocks.crystal_mantis.step",
+    "sounds": [
+      {
+        "name": "academy:crystal_mantis/step_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:crystal_mantis/step_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "dune_scorpion.swing_a": {
+    "subtitle": "subtitles.titanblocks.dune_scorpion.swing_a",
+    "sounds": [
+      {
+        "name": "academy:dune_scorpion/swing_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:dune_scorpion/swing_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "dune_scorpion.swing_b": {
+    "subtitle": "subtitles.titanblocks.dune_scorpion.swing_b",
+    "sounds": [
+      {
+        "name": "academy:dune_scorpion/swing_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:dune_scorpion/swing_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "dune_scorpion.hit_a": {
+    "subtitle": "subtitles.titanblocks.dune_scorpion.hit_a",
+    "sounds": [
+      {
+        "name": "academy:dune_scorpion/hit_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:dune_scorpion/hit_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "dune_scorpion.hit_b": {
+    "subtitle": "subtitles.titanblocks.dune_scorpion.hit_b",
+    "sounds": [
+      {
+        "name": "academy:dune_scorpion/hit_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:dune_scorpion/hit_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "dune_scorpion.charge_a": {
+    "subtitle": "subtitles.titanblocks.dune_scorpion.charge_a",
+    "sounds": [
+      {
+        "name": "academy:dune_scorpion/charge_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:dune_scorpion/charge_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "dune_scorpion.charge_b": {
+    "subtitle": "subtitles.titanblocks.dune_scorpion.charge_b",
+    "sounds": [
+      {
+        "name": "academy:dune_scorpion/charge_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:dune_scorpion/charge_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "dune_scorpion.skill_a": {
+    "subtitle": "subtitles.titanblocks.dune_scorpion.skill_a",
+    "sounds": [
+      {
+        "name": "academy:dune_scorpion/skill_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:dune_scorpion/skill_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "dune_scorpion.skill_b": {
+    "subtitle": "subtitles.titanblocks.dune_scorpion.skill_b",
+    "sounds": [
+      {
+        "name": "academy:dune_scorpion/skill_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:dune_scorpion/skill_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "dune_scorpion.roar": {
+    "subtitle": "subtitles.titanblocks.dune_scorpion.roar",
+    "sounds": [
+      {
+        "name": "academy:dune_scorpion/roar_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:dune_scorpion/roar_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "dune_scorpion.hurt": {
+    "subtitle": "subtitles.titanblocks.dune_scorpion.hurt",
+    "sounds": [
+      {
+        "name": "academy:dune_scorpion/hurt_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:dune_scorpion/hurt_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "dune_scorpion.death": {
+    "subtitle": "subtitles.titanblocks.dune_scorpion.death",
+    "sounds": [
+      {
+        "name": "academy:dune_scorpion/death_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:dune_scorpion/death_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "dune_scorpion.step": {
+    "subtitle": "subtitles.titanblocks.dune_scorpion.step",
+    "sounds": [
+      {
+        "name": "academy:dune_scorpion/step_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:dune_scorpion/step_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "storm_drake.swing_a": {
+    "subtitle": "subtitles.titanblocks.storm_drake.swing_a",
+    "sounds": [
+      {
+        "name": "academy:storm_drake/swing_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:storm_drake/swing_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "storm_drake.swing_b": {
+    "subtitle": "subtitles.titanblocks.storm_drake.swing_b",
+    "sounds": [
+      {
+        "name": "academy:storm_drake/swing_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:storm_drake/swing_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "storm_drake.hit_a": {
+    "subtitle": "subtitles.titanblocks.storm_drake.hit_a",
+    "sounds": [
+      {
+        "name": "academy:storm_drake/hit_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:storm_drake/hit_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "storm_drake.hit_b": {
+    "subtitle": "subtitles.titanblocks.storm_drake.hit_b",
+    "sounds": [
+      {
+        "name": "academy:storm_drake/hit_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:storm_drake/hit_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "storm_drake.charge_a": {
+    "subtitle": "subtitles.titanblocks.storm_drake.charge_a",
+    "sounds": [
+      {
+        "name": "academy:storm_drake/charge_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:storm_drake/charge_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "storm_drake.charge_b": {
+    "subtitle": "subtitles.titanblocks.storm_drake.charge_b",
+    "sounds": [
+      {
+        "name": "academy:storm_drake/charge_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:storm_drake/charge_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "storm_drake.skill_a": {
+    "subtitle": "subtitles.titanblocks.storm_drake.skill_a",
+    "sounds": [
+      {
+        "name": "academy:storm_drake/skill_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:storm_drake/skill_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "storm_drake.skill_b": {
+    "subtitle": "subtitles.titanblocks.storm_drake.skill_b",
+    "sounds": [
+      {
+        "name": "academy:storm_drake/skill_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:storm_drake/skill_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "storm_drake.roar": {
+    "subtitle": "subtitles.titanblocks.storm_drake.roar",
+    "sounds": [
+      {
+        "name": "academy:storm_drake/roar_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:storm_drake/roar_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "storm_drake.hurt": {
+    "subtitle": "subtitles.titanblocks.storm_drake.hurt",
+    "sounds": [
+      {
+        "name": "academy:storm_drake/hurt_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:storm_drake/hurt_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "storm_drake.death": {
+    "subtitle": "subtitles.titanblocks.storm_drake.death",
+    "sounds": [
+      {
+        "name": "academy:storm_drake/death_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:storm_drake/death_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "storm_drake.step": {
+    "subtitle": "subtitles.titanblocks.storm_drake.step",
+    "sounds": [
+      {
+        "name": "academy:storm_drake/step_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:storm_drake/step_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "ossuary_dragon.swing_a": {
+    "subtitle": "subtitles.titanblocks.ossuary_dragon.swing_a",
+    "sounds": [
+      {
+        "name": "academy:ossuary_dragon/swing_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:ossuary_dragon/swing_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "ossuary_dragon.swing_b": {
+    "subtitle": "subtitles.titanblocks.ossuary_dragon.swing_b",
+    "sounds": [
+      {
+        "name": "academy:ossuary_dragon/swing_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:ossuary_dragon/swing_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "ossuary_dragon.hit_a": {
+    "subtitle": "subtitles.titanblocks.ossuary_dragon.hit_a",
+    "sounds": [
+      {
+        "name": "academy:ossuary_dragon/hit_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:ossuary_dragon/hit_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "ossuary_dragon.hit_b": {
+    "subtitle": "subtitles.titanblocks.ossuary_dragon.hit_b",
+    "sounds": [
+      {
+        "name": "academy:ossuary_dragon/hit_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:ossuary_dragon/hit_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "ossuary_dragon.charge_a": {
+    "subtitle": "subtitles.titanblocks.ossuary_dragon.charge_a",
+    "sounds": [
+      {
+        "name": "academy:ossuary_dragon/charge_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:ossuary_dragon/charge_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "ossuary_dragon.charge_b": {
+    "subtitle": "subtitles.titanblocks.ossuary_dragon.charge_b",
+    "sounds": [
+      {
+        "name": "academy:ossuary_dragon/charge_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:ossuary_dragon/charge_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "ossuary_dragon.skill_a": {
+    "subtitle": "subtitles.titanblocks.ossuary_dragon.skill_a",
+    "sounds": [
+      {
+        "name": "academy:ossuary_dragon/skill_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:ossuary_dragon/skill_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "ossuary_dragon.skill_b": {
+    "subtitle": "subtitles.titanblocks.ossuary_dragon.skill_b",
+    "sounds": [
+      {
+        "name": "academy:ossuary_dragon/skill_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:ossuary_dragon/skill_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "ossuary_dragon.roar": {
+    "subtitle": "subtitles.titanblocks.ossuary_dragon.roar",
+    "sounds": [
+      {
+        "name": "academy:ossuary_dragon/roar_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:ossuary_dragon/roar_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "ossuary_dragon.hurt": {
+    "subtitle": "subtitles.titanblocks.ossuary_dragon.hurt",
+    "sounds": [
+      {
+        "name": "academy:ossuary_dragon/hurt_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:ossuary_dragon/hurt_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "ossuary_dragon.death": {
+    "subtitle": "subtitles.titanblocks.ossuary_dragon.death",
+    "sounds": [
+      {
+        "name": "academy:ossuary_dragon/death_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:ossuary_dragon/death_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "ossuary_dragon.step": {
+    "subtitle": "subtitles.titanblocks.ossuary_dragon.step",
+    "sounds": [
+      {
+        "name": "academy:ossuary_dragon/step_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:ossuary_dragon/step_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "tidal_sail.swing_a": {
+    "subtitle": "subtitles.titanblocks.tidal_sail.swing_a",
+    "sounds": [
+      {
+        "name": "academy:tidal_sail/swing_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:tidal_sail/swing_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "tidal_sail.swing_b": {
+    "subtitle": "subtitles.titanblocks.tidal_sail.swing_b",
+    "sounds": [
+      {
+        "name": "academy:tidal_sail/swing_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:tidal_sail/swing_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "tidal_sail.hit_a": {
+    "subtitle": "subtitles.titanblocks.tidal_sail.hit_a",
+    "sounds": [
+      {
+        "name": "academy:tidal_sail/hit_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:tidal_sail/hit_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "tidal_sail.hit_b": {
+    "subtitle": "subtitles.titanblocks.tidal_sail.hit_b",
+    "sounds": [
+      {
+        "name": "academy:tidal_sail/hit_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:tidal_sail/hit_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "tidal_sail.charge_a": {
+    "subtitle": "subtitles.titanblocks.tidal_sail.charge_a",
+    "sounds": [
+      {
+        "name": "academy:tidal_sail/charge_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:tidal_sail/charge_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "tidal_sail.charge_b": {
+    "subtitle": "subtitles.titanblocks.tidal_sail.charge_b",
+    "sounds": [
+      {
+        "name": "academy:tidal_sail/charge_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:tidal_sail/charge_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "tidal_sail.skill_a": {
+    "subtitle": "subtitles.titanblocks.tidal_sail.skill_a",
+    "sounds": [
+      {
+        "name": "academy:tidal_sail/skill_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:tidal_sail/skill_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "tidal_sail.skill_b": {
+    "subtitle": "subtitles.titanblocks.tidal_sail.skill_b",
+    "sounds": [
+      {
+        "name": "academy:tidal_sail/skill_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:tidal_sail/skill_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "tidal_sail.roar": {
+    "subtitle": "subtitles.titanblocks.tidal_sail.roar",
+    "sounds": [
+      {
+        "name": "academy:tidal_sail/roar_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:tidal_sail/roar_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "tidal_sail.hurt": {
+    "subtitle": "subtitles.titanblocks.tidal_sail.hurt",
+    "sounds": [
+      {
+        "name": "academy:tidal_sail/hurt_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:tidal_sail/hurt_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "tidal_sail.death": {
+    "subtitle": "subtitles.titanblocks.tidal_sail.death",
+    "sounds": [
+      {
+        "name": "academy:tidal_sail/death_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:tidal_sail/death_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "tidal_sail.step": {
+    "subtitle": "subtitles.titanblocks.tidal_sail.step",
+    "sounds": [
+      {
+        "name": "academy:tidal_sail/step_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:tidal_sail/step_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "astral_moth.swing_a": {
+    "subtitle": "subtitles.titanblocks.astral_moth.swing_a",
+    "sounds": [
+      {
+        "name": "academy:astral_moth/swing_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:astral_moth/swing_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "astral_moth.swing_b": {
+    "subtitle": "subtitles.titanblocks.astral_moth.swing_b",
+    "sounds": [
+      {
+        "name": "academy:astral_moth/swing_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:astral_moth/swing_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "astral_moth.hit_a": {
+    "subtitle": "subtitles.titanblocks.astral_moth.hit_a",
+    "sounds": [
+      {
+        "name": "academy:astral_moth/hit_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:astral_moth/hit_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "astral_moth.hit_b": {
+    "subtitle": "subtitles.titanblocks.astral_moth.hit_b",
+    "sounds": [
+      {
+        "name": "academy:astral_moth/hit_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:astral_moth/hit_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "astral_moth.charge_a": {
+    "subtitle": "subtitles.titanblocks.astral_moth.charge_a",
+    "sounds": [
+      {
+        "name": "academy:astral_moth/charge_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:astral_moth/charge_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "astral_moth.charge_b": {
+    "subtitle": "subtitles.titanblocks.astral_moth.charge_b",
+    "sounds": [
+      {
+        "name": "academy:astral_moth/charge_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:astral_moth/charge_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "astral_moth.skill_a": {
+    "subtitle": "subtitles.titanblocks.astral_moth.skill_a",
+    "sounds": [
+      {
+        "name": "academy:astral_moth/skill_a_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:astral_moth/skill_a_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "astral_moth.skill_b": {
+    "subtitle": "subtitles.titanblocks.astral_moth.skill_b",
+    "sounds": [
+      {
+        "name": "academy:astral_moth/skill_b_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:astral_moth/skill_b_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "astral_moth.roar": {
+    "subtitle": "subtitles.titanblocks.astral_moth.roar",
+    "sounds": [
+      {
+        "name": "academy:astral_moth/roar_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:astral_moth/roar_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "astral_moth.hurt": {
+    "subtitle": "subtitles.titanblocks.astral_moth.hurt",
+    "sounds": [
+      {
+        "name": "academy:astral_moth/hurt_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:astral_moth/hurt_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "astral_moth.death": {
+    "subtitle": "subtitles.titanblocks.astral_moth.death",
+    "sounds": [
+      {
+        "name": "academy:astral_moth/death_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:astral_moth/death_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "astral_moth.step": {
+    "subtitle": "subtitles.titanblocks.astral_moth.step",
+    "sounds": [
+      {
+        "name": "academy:astral_moth/step_1",
+        "weight": 1,
+        "attenuation_distance": 32
+      },
+      {
+        "name": "academy:astral_moth/step_2",
+        "weight": 1,
+        "attenuation_distance": 32
+      }
+    ]
+  }
+}

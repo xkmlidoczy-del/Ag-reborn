@@ -1,0 +1,83 @@
+{
+  "source": "AcademyCraft 1.0.7 assets/academy/recipes/default.recipe",
+  "recipes": [
+    {
+      "ordinal": 44,
+      "output": "academy:developer_normal",
+      "yield": 1,
+      "status": "implemented",
+      "missing_functional_prerequisite": [],
+      "source_grid": [
+        [
+          "nil",
+          "dev_portable",
+          "nil"
+        ],
+        [
+          "mat_core#0",
+          "bed",
+          "piston"
+        ],
+        [
+          "crystal1",
+          "frame",
+          "dustRedstone"
+        ]
+      ],
+      "recipe_id": "academy:classic/developer_normal_44",
+      "power_boundary": "Genuine solar/node/matrix IF graph is integrated. Native finite crafted-Normal acquisition passed; human survival and full client parity remain separate."
+    },
+    {
+      "ordinal": 45,
+      "output": "academy:developer_normal",
+      "yield": 1,
+      "status": "implemented",
+      "missing_functional_prerequisite": [],
+      "source_grid": [
+        [
+          "brain_comp",
+          "info_comp",
+          "conv_comp"
+        ],
+        [
+          "mat_core#0",
+          "bed",
+          "piston"
+        ],
+        [
+          "crystal1",
+          "frame",
+          "dustRedstone"
+        ]
+      ],
+      "recipe_id": "academy:classic/developer_normal_45",
+      "power_boundary": "Genuine solar/node/matrix IF graph is integrated. Native finite crafted-Normal acquisition passed; human survival and full client parity remain separate."
+    },
+    {
+      "ordinal": 46,
+      "output": "academy:developer_advanced",
+      "yield": 1,
+      "status": "implemented",
+      "missing_functional_prerequisite": [],
+      "source_grid": [
+        [
+          "cons_plate",
+          "cons_plate",
+          "cons_plate"
+        ],
+        [
+          "glowstone",
+          "dev_normal",
+          "glowstone"
+        ],
+        [
+          "node1",
+          "crystal2",
+          "reso_crystal"
+        ]
+      ],
+      "recipe_id": "academy:classic/developer_advanced_46",
+      "power_boundary": "Genuine solar/node/matrix IF graph is integrated. Native finite crafted-Normal acquisition passed; human survival and full client parity remain separate."
+    }
+  ]
+}

@@ -1,0 +1,5746 @@
+[
+  {
+    "id": "mental_probe",
+    "category": "mental_out",
+    "level": 1,
+    "implemented": true,
+    "zh": {
+      "name": "精神探测",
+      "description": "读取命中者当前警觉状态或服务器剧情证人线索。"
+    },
+    "en": {
+      "name": "Mental Probe",
+      "description": "Read a visible hostile's alert state or a verified story witness."
+    },
+    "motif": "REMOTE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "精神探測",
+      "description": "讀取命中者當前警覺狀態或伺服器劇情證人線索。"
+    },
+    "ja": {
+      "name": "精神探査",
+      "description": "対象の警戒状態、または物語の証人が持つ手掛かりを読み取る。"
+    },
+    "prerequisites": []
+  },
+  {
+    "id": "mental_life_scan",
+    "category": "mental_out",
+    "level": 1,
+    "implemented": true,
+    "zh": {
+      "name": "心智脉冲",
+      "description": "扫描可见可控敌意个体数量。"
+    },
+    "en": {
+      "name": "Mind Pulse",
+      "description": "Count visible controllable hostiles."
+    },
+    "motif": "PULSE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "心智脈衝",
+      "description": "掃描可見可控敵意個體數量。"
+    },
+    "ja": {
+      "name": "精神パルス",
+      "description": "視界内で操作可能な敵対生物の数を調べる。"
+    },
+    "prerequisites": [
+      "mental_probe"
+    ]
+  },
+  {
+    "id": "mental_intent_scan",
+    "category": "mental_out",
+    "level": 1,
+    "implemented": true,
+    "zh": {
+      "name": "意图辨识",
+      "description": "辨别注视的敌对生物当前追击目标。"
+    },
+    "en": {
+      "name": "Intent Reading",
+      "description": "Identify the current target of an observed hostile."
+    },
+    "motif": "REMOTE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "意圖辨識",
+      "description": "辨別注視的敵對生物當前追擊目標。"
+    },
+    "ja": {
+      "name": "意図の識別",
+      "description": "見つめた敵対生物が現在追っている対象を見分ける。"
+    },
+    "prerequisites": [
+      "mental_probe"
+    ]
+  },
+  {
+    "id": "mental_hostile_scan",
+    "category": "mental_out",
+    "level": 1,
+    "implemented": true,
+    "zh": {
+      "name": "警戒辨识",
+      "description": "筛出正在追击自己的可见敌人。"
+    },
+    "en": {
+      "name": "Alert Reading",
+      "description": "Find visible enemies currently pursuing the caster."
+    },
+    "motif": "RING",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "警戒辨識",
+      "description": "篩出正在追擊自己的可見敵人。"
+    },
+    "ja": {
+      "name": "警戒の識別",
+      "description": "視界内の敵のうち、自分を追っている個体を見分ける。"
+    },
+    "prerequisites": [
+      "mental_probe"
+    ]
+  },
+  {
+    "id": "mental_focus_break",
+    "category": "mental_out",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "专注打断",
+      "description": "中断单个敌对生物正在进行的导航。"
+    },
+    "en": {
+      "name": "Focus Break",
+      "description": "Interrupt one hostile navigation path."
+    },
+    "motif": "DISRUPT",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "專注打斷",
+      "description": "中斷單個敵對生物正在進行的導航。"
+    },
+    "ja": {
+      "name": "集中妨害",
+      "description": "敵対生物一体の進行中の経路移動を中断する。"
+    },
+    "prerequisites": [
+      "mental_probe"
+    ]
+  },
+  {
+    "id": "mental_disengage",
+    "category": "mental_out",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "敌意消退",
+      "description": "解除单个敌对生物对施术者的追击。"
+    },
+    "en": {
+      "name": "Disengage",
+      "description": "Break one hostile's pursuit of the caster."
+    },
+    "motif": "DISRUPT",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "敵意消退",
+      "description": "解除單個敵對生物對施術者的追擊。"
+    },
+    "ja": {
+      "name": "敵意解除",
+      "description": "敵対生物一体による自分への追跡を解除する。"
+    },
+    "prerequisites": [
+      "mental_probe"
+    ]
+  },
+  {
+    "id": "mental_route_interrupt",
+    "category": "mental_out",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "路线干扰",
+      "description": "阻止敌人短暂继续既有寻路路线。"
+    },
+    "en": {
+      "name": "Route Interference",
+      "description": "Temporarily interrupt an enemy's current route."
+    },
+    "motif": "PULSE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "路線干擾",
+      "description": "阻止敵人短暫繼續既有尋路路線。"
+    },
+    "ja": {
+      "name": "経路干渉",
+      "description": "敵が現在の経路をたどる動きを短時間中断する。"
+    },
+    "prerequisites": [
+      "mental_probe"
+    ]
+  },
+  {
+    "id": "mental_attention_shift",
+    "category": "mental_out",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "注意偏转",
+      "description": "让敌人的视线从当前目标转向施术者。"
+    },
+    "en": {
+      "name": "Attention Shift",
+      "description": "Turn an enemy's attention toward the caster."
+    },
+    "motif": "REMOTE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "注意偏轉",
+      "description": "讓敵人的視線從當前目標轉向施術者。"
+    },
+    "ja": {
+      "name": "注意誘導",
+      "description": "敵の追跡対象を現在の相手から自分へ切り替える。"
+    },
+    "prerequisites": [
+      "mental_probe"
+    ]
+  },
+  {
+    "id": "mental_target_sense",
+    "category": "mental_out",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "目标感知",
+      "description": "判别敌人的追击目标是否为附近其他生物。"
+    },
+    "en": {
+      "name": "Target Sense",
+      "description": "Inspect whether the hostile pursues another nearby mob."
+    },
+    "motif": "REMOTE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "目標感知",
+      "description": "判別敵人的追擊目標是否為附近其他生物。"
+    },
+    "ja": {
+      "name": "標的感知",
+      "description": "敵の追跡対象が近くの別の生物かどうかを見分ける。"
+    },
+    "prerequisites": [
+      "mental_probe"
+    ]
+  },
+  {
+    "id": "mental_disrupt",
+    "category": "mental_out",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "精神扰乱",
+      "description": "短时打断真实敌对生物的追击。"
+    },
+    "en": {
+      "name": "Mental Disruption",
+      "description": "Temporarily disrupt an eligible hostile's pursuit."
+    },
+    "motif": "DISRUPT",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "精神擾亂",
+      "description": "短時打斷真實敵對生物的追擊。"
+    },
+    "ja": {
+      "name": "精神攪乱",
+      "description": "敵対生物の追跡を短時間中断する。"
+    },
+    "prerequisites": [
+      "mental_probe"
+    ]
+  },
+  {
+    "id": "mental_interpose",
+    "category": "mental_out",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "敌意移转",
+      "description": "把敌人对自身的追击转向已选敌对生物。"
+    },
+    "en": {
+      "name": "Threat Transfer",
+      "description": "Transfer an enemy's pursuit to a selected hostile mob."
+    },
+    "motif": "REMOTE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "敵意移轉",
+      "description": "把敵人對自身的追擊轉向已選敵對生物。"
+    },
+    "ja": {
+      "name": "敵意転移",
+      "description": "自分を追う敵の標的を、選んだ別の敵対生物へ移す。"
+    },
+    "prerequisites": [
+      "mental_focus_break"
+    ]
+  },
+  {
+    "id": "mental_redirect",
+    "category": "mental_out",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "目标重写",
+      "description": "对注视的敌人设置另一名可见敌人为目标。"
+    },
+    "en": {
+      "name": "Target Rewrite",
+      "description": "Redirect a selected hostile toward another visible hostile."
+    },
+    "motif": "REMOTE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "目標重寫",
+      "description": "對注視的敵人設定另一名可見敵人為目標。"
+    },
+    "ja": {
+      "name": "標的書き換え",
+      "description": "見つめた敵の標的を、視界内の別の敵に変更する。"
+    },
+    "prerequisites": [
+      "mental_focus_break"
+    ]
+  },
+  {
+    "id": "mental_pursuit_break",
+    "category": "mental_out",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "追击阻断",
+      "description": "打断周围正在追击施术者的敌人。"
+    },
+    "en": {
+      "name": "Pursuit Break",
+      "description": "Interrupt nearby enemies actively pursuing the caster."
+    },
+    "motif": "RING",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "追擊阻斷",
+      "description": "打斷周圍正在追擊施術者的敵人。"
+    },
+    "ja": {
+      "name": "追跡遮断",
+      "description": "周囲で自分を追っている敵の追跡を中断する。"
+    },
+    "prerequisites": [
+      "mental_focus_break"
+    ]
+  },
+  {
+    "id": "mental_suppress_pair",
+    "category": "mental_out",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "双重干扰",
+      "description": "同时中断视野中两名敌人的导航。"
+    },
+    "en": {
+      "name": "Dual Interference",
+      "description": "Interrupt navigation for two visible hostiles."
+    },
+    "motif": "PULSE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "雙重干擾",
+      "description": "同時中斷視野中兩名敵人的導航。"
+    },
+    "ja": {
+      "name": "二重干渉",
+      "description": "視界内の敵二体の経路移動を同時に中断する。"
+    },
+    "prerequisites": [
+      "mental_focus_break"
+    ]
+  },
+  {
+    "id": "mental_conflict",
+    "category": "mental_out",
+    "level": 4,
+    "implemented": true,
+    "zh": {
+      "name": "敌对冲突",
+      "description": "让两名敌对生物互相锁定。"
+    },
+    "en": {
+      "name": "Hostile Conflict",
+      "description": "Make two selected hostile mobs target each other."
+    },
+    "motif": "REMOTE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "敵對衝突",
+      "description": "讓兩名敵對生物互相鎖定。"
+    },
+    "ja": {
+      "name": "敵対衝突",
+      "description": "敵対生物二体を互いに標的として設定する。"
+    },
+    "prerequisites": [
+      "mental_disrupt"
+    ]
+  },
+  {
+    "id": "mental_silence_field",
+    "category": "mental_out",
+    "level": 4,
+    "implemented": true,
+    "zh": {
+      "name": "静默领域",
+      "description": "短时间清除附近敌人的追击目标。"
+    },
+    "en": {
+      "name": "Silence Field",
+      "description": "Temporarily clear nearby hostile pursuit targets."
+    },
+    "motif": "FIELD",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "靜默領域",
+      "description": "短時間清除附近敵人的追擊目標。"
+    },
+    "ja": {
+      "name": "静穏領域",
+      "description": "近くの敵の追跡対象を短時間解除する。"
+    },
+    "prerequisites": [
+      "mental_disrupt"
+    ]
+  },
+  {
+    "id": "mental_panic_field",
+    "category": "mental_out",
+    "level": 4,
+    "implemented": true,
+    "zh": {
+      "name": "混乱领域",
+      "description": "干扰周围正在寻路的敌对生物。"
+    },
+    "en": {
+      "name": "Confusion Field",
+      "description": "Interrupt currently navigating nearby hostiles."
+    },
+    "motif": "FIELD",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "混亂領域",
+      "description": "干擾周圍正在尋路的敵對生物。"
+    },
+    "ja": {
+      "name": "混乱領域",
+      "description": "周囲で経路移動中の敵対生物を妨害する。"
+    },
+    "prerequisites": [
+      "mental_disrupt"
+    ]
+  },
+  {
+    "id": "mental_lure_pair",
+    "category": "mental_out",
+    "level": 4,
+    "implemented": true,
+    "zh": {
+      "name": "双向诱导",
+      "description": "把两名敌对生物的注意力引向共同目标。"
+    },
+    "en": {
+      "name": "Dual Lure",
+      "description": "Direct two hostiles toward the same visible hostile."
+    },
+    "motif": "PULSE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "雙向誘導",
+      "description": "把兩名敵對生物的注意力引向共同目標。"
+    },
+    "ja": {
+      "name": "双方向誘導",
+      "description": "敵対生物二体の注意を同じ標的へ向ける。"
+    },
+    "prerequisites": [
+      "mental_disrupt"
+    ]
+  },
+  {
+    "id": "mental_pursuit_field",
+    "category": "mental_out",
+    "level": 4,
+    "implemented": true,
+    "zh": {
+      "name": "追踪阻断",
+      "description": "持续中断追逐施术者的敌人。"
+    },
+    "en": {
+      "name": "Pursuit Suppression",
+      "description": "Temporarily suppress nearby pursuit of the caster."
+    },
+    "motif": "FIELD",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "追蹤阻斷",
+      "description": "持續中斷追逐施術者的敵人。"
+    },
+    "ja": {
+      "name": "追跡妨害域",
+      "description": "自分を追う敵の経路移動を継続して中断する。"
+    },
+    "prerequisites": [
+      "mental_disrupt"
+    ]
+  },
+  {
+    "id": "mental_out_crowd",
+    "category": "mental_out",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "群体掌握",
+      "description": "将附近敌对生物的目标转向另一可见敌人。"
+    },
+    "en": {
+      "name": "Crowd Control",
+      "description": "Direct nearby hostiles toward another visible hostile."
+    },
+    "motif": "FIELD",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "群體掌握",
+      "description": "將附近敵對生物的目標轉向另一可見敵人。"
+    },
+    "ja": {
+      "name": "群体掌握",
+      "description": "近くの敵対生物の標的を、視界内の別の敵へ変更する。"
+    },
+    "prerequisites": [
+      "mental_disrupt"
+    ]
+  },
+  {
+    "id": "mental_crossfire",
+    "category": "mental_out",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "群体对立",
+      "description": "使两个敌对群体交叉锁定。"
+    },
+    "en": {
+      "name": "Crossfire",
+      "description": "Redirect two hostile groups toward each other."
+    },
+    "motif": "FIELD",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "群體對立",
+      "description": "使兩個敵對群體交叉鎖定。"
+    },
+    "ja": {
+      "name": "集団対立",
+      "description": "二つの敵集団が互いを標的にするよう誘導する。"
+    },
+    "prerequisites": [
+      "mental_conflict"
+    ]
+  },
+  {
+    "id": "mental_crowd_detach",
+    "category": "mental_out",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "群体脱离",
+      "description": "让正在追逐潜行队友的敌群撤销目标（准星对准该队友）。"
+    },
+    "en": {
+      "name": "Crowd Disengage",
+      "description": "Detach the hostile group pursuing a sneaking teammate you aim at."
+    },
+    "motif": "FIELD",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "群體脫離",
+      "description": "讓正在追逐潛行隊友的敵群撤銷目標（準星對準該隊友）。"
+    },
+    "ja": {
+      "name": "群体離脱",
+      "description": "照準を合わせたしゃがみ中の味方を追う敵集団の標的を解除する。"
+    },
+    "prerequisites": [
+      "mental_conflict"
+    ]
+  },
+  {
+    "id": "mental_conflict_ring",
+    "category": "mental_out",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "环形冲突",
+      "description": "将周围敌人分配给不同可见敌人。"
+    },
+    "en": {
+      "name": "Conflict Ring",
+      "description": "Assign nearby hostiles to separate visible targets."
+    },
+    "motif": "RING",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "環形衝突",
+      "description": "將周圍敵人分配給不同可見敵人。"
+    },
+    "ja": {
+      "name": "環状対立",
+      "description": "周囲の敵に、それぞれ異なる視界内の敵を標的として割り当てる。"
+    },
+    "prerequisites": [
+      "mental_conflict"
+    ]
+  },
+  {
+    "id": "mental_relay_interference",
+    "category": "mental_out",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "接力干扰",
+      "description": "对视线内的敌群轮流施加寻路干扰。"
+    },
+    "en": {
+      "name": "Relay Interference",
+      "description": "Apply bounded sequential navigation interference to visible hostiles."
+    },
+    "motif": "PULSE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "接力干擾",
+      "description": "對視線內的敵群輪流施加尋路干擾。"
+    },
+    "ja": {
+      "name": "連鎖干渉",
+      "description": "視界内の敵集団に順次、経路移動への干渉を行う。"
+    },
+    "prerequisites": [
+      "mental_conflict"
+    ]
+  },
+  {
+    "id": "dark_blade",
+    "category": "dark_matter",
+    "level": 1,
+    "implemented": true,
+    "zh": {
+      "name": "未元之刃",
+      "description": "形成近距未元刃并精确命中一个目标。"
+    },
+    "en": {
+      "name": "Dark Blade",
+      "description": "Form a short dark blade with one exact hit."
+    },
+    "motif": "LANCE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "未元之刃",
+      "description": "形成近距未元刃並精確命中一個目標。"
+    },
+    "ja": {
+      "name": "未元の刃",
+      "description": "至近距離に未元の刃を形成し、敵一体を正確に斬る。"
+    },
+    "prerequisites": []
+  },
+  {
+    "id": "dark_shard",
+    "category": "dark_matter",
+    "level": 1,
+    "implemented": true,
+    "zh": {
+      "name": "未元碎片",
+      "description": "沿视线投射一次单目标未元碎片。"
+    },
+    "en": {
+      "name": "Dark Shard",
+      "description": "Project one short-lived shard at an aimed target."
+    },
+    "motif": "SHARD",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "未元碎片",
+      "description": "沿視線投射一次單目標未元碎片。"
+    },
+    "ja": {
+      "name": "未元の破片",
+      "description": "視線に沿って破片を放ち、敵一体を攻撃する。"
+    },
+    "prerequisites": [
+      "dark_blade"
+    ]
+  },
+  {
+    "id": "dark_feather_guard",
+    "category": "dark_matter",
+    "level": 1,
+    "implemented": true,
+    "zh": {
+      "name": "羽片格挡",
+      "description": "用定向羽片拦截真实箭矢。"
+    },
+    "en": {
+      "name": "Feather Guard",
+      "description": "Intercept a real arrow with a directed feather."
+    },
+    "motif": "PRISM",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "羽片格擋",
+      "description": "用定向羽片攔截真實箭矢。"
+    },
+    "ja": {
+      "name": "羽片防御",
+      "description": "向きを定めた羽片で実際に飛来する矢を防ぐ。"
+    },
+    "prerequisites": [
+      "dark_blade"
+    ]
+  },
+  {
+    "id": "dark_step",
+    "category": "dark_matter",
+    "level": 1,
+    "implemented": true,
+    "zh": {
+      "name": "羽翼步",
+      "description": "利用未元羽翼进行地面短距跃进。"
+    },
+    "en": {
+      "name": "Wing Step",
+      "description": "Use a small wing-assisted grounded leap."
+    },
+    "motif": "WINGS",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "羽翼步",
+      "description": "利用未元羽翼進行地面短距躍進。"
+    },
+    "ja": {
+      "name": "翼歩",
+      "description": "未元の翼を利用し、地上を短く跳び進む。"
+    },
+    "prerequisites": [
+      "dark_blade"
+    ]
+  },
+  {
+    "id": "dark_spread",
+    "category": "dark_matter",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "散羽",
+      "description": "在前方短锥中分配一次总伤害。"
+    },
+    "en": {
+      "name": "Feather Spread",
+      "description": "Allocate one damage budget across a short forward cone."
+    },
+    "motif": "CONE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "散羽",
+      "description": "在前方短錐中分配一次總傷害。"
+    },
+    "ja": {
+      "name": "散羽",
+      "description": "前方の狭い扇形内の敵に、一回分の総ダメージを分配する。"
+    },
+    "prerequisites": [
+      "dark_blade"
+    ]
+  },
+  {
+    "id": "dark_sweep",
+    "category": "dark_matter",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "未元横扫",
+      "description": "以白质刃进行近距离扇形扫击，多目标分享同一次伤害预算。"
+    },
+    "en": {
+      "name": "Dark Sweep",
+      "description": "Sweep a close horizontal arc."
+    },
+    "motif": "CONE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "未元橫掃",
+      "description": "以白質刃進行近距離扇形掃擊，多目標分享同一次傷害預算。"
+    },
+    "ja": {
+      "name": "未元の薙ぎ払い",
+      "description": "白い刃で近距離を薙ぎ払い、複数の敵に一回分のダメージを分配する。"
+    },
+    "prerequisites": [
+      "dark_blade"
+    ]
+  },
+  {
+    "id": "dark_guard",
+    "category": "dark_matter",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "未元护片",
+      "description": "围绕自身形成有限时长的拦截碎片。"
+    },
+    "en": {
+      "name": "Dark Guard",
+      "description": "Maintain limited intercepting shards around the caster."
+    },
+    "motif": "ARMOR",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "未元護片",
+      "description": "圍繞自身形成有限時長的攔截碎片。"
+    },
+    "ja": {
+      "name": "未元の護片",
+      "description": "自身の周囲に、一定時間だけ矢を防ぐ破片を展開する。"
+    },
+    "prerequisites": [
+      "dark_blade"
+    ]
+  },
+  {
+    "id": "dark_lift",
+    "category": "dark_matter",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "未元升翼",
+      "description": "在空中用未元翼给自身向上动量。"
+    },
+    "en": {
+      "name": "Wing Lift",
+      "description": "Use wings for a bounded airborne upward impulse."
+    },
+    "motif": "WINGS",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "未元升翼",
+      "description": "在空中用未元翼給自身向上動量。"
+    },
+    "ja": {
+      "name": "未元の浮翼",
+      "description": "空中で未元の翼を使い、自分に上向きの勢いを与える。"
+    },
+    "prerequisites": [
+      "dark_blade"
+    ]
+  },
+  {
+    "id": "dark_shard_return",
+    "category": "dark_matter",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "碎片回旋",
+      "description": "将自己投掷的方块物品拉回。"
+    },
+    "en": {
+      "name": "Returning Shard",
+      "description": "Pull a self-thrown block item toward the caster."
+    },
+    "motif": "SHARD",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "碎片迴旋",
+      "description": "將自己投擲的方塊物品拉回。"
+    },
+    "ja": {
+      "name": "破片回収",
+      "description": "自分で投げたブロックのドロップアイテムを手元へ引き寄せる。"
+    },
+    "prerequisites": [
+      "dark_blade"
+    ]
+  },
+  {
+    "id": "dark_wings",
+    "category": "dark_matter",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "未元之翼",
+      "description": "展开白质翼片，暂时取得受限飞行权限；租约结束后撤销本次授予的飞行。"
+    },
+    "en": {
+      "name": "Dark Wings",
+      "description": "Temporarily grant bounded flight."
+    },
+    "motif": "WINGS",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "未元之翼",
+      "description": "展開白質翼片，暫時取得受限飛行權限；租約結束後撤銷本次授予的飛行。"
+    },
+    "ja": {
+      "name": "未元の翼",
+      "description": "白い翼片を展開して一時的に飛行を可能にし、効果終了時にこの能力で付与した飛行を解除する。"
+    },
+    "prerequisites": [
+      "dark_blade"
+    ]
+  },
+  {
+    "id": "dark_pierce",
+    "category": "dark_matter",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "未元穿刺",
+      "description": "沿窄直线精确攻击可见敌人。"
+    },
+    "en": {
+      "name": "Dark Pierce",
+      "description": "Strike visible enemies along a narrow line."
+    },
+    "motif": "LANCE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "未元穿刺",
+      "description": "沿窄直線精確攻擊可見敵人。"
+    },
+    "ja": {
+      "name": "未元の穿刺",
+      "description": "細い直線上にいる視認可能な敵を正確に攻撃する。"
+    },
+    "prerequisites": [
+      "dark_spread"
+    ]
+  },
+  {
+    "id": "dark_shard_orbit",
+    "category": "dark_matter",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "环绕羽片",
+      "description": "用未元碎片使自己投掷的方块物品作圆周运动。"
+    },
+    "en": {
+      "name": "Orbiting Feathers",
+      "description": "Use dark shards to orbit a block item thrown by the caster."
+    },
+    "motif": "ORBIT",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "環繞羽片",
+      "description": "用未元碎片使自己投擲的方塊物品作圓周運動。"
+    },
+    "ja": {
+      "name": "旋回羽片",
+      "description": "自分で投げたブロックのドロップアイテムを円を描くように動かす。"
+    },
+    "prerequisites": [
+      "dark_spread"
+    ]
+  },
+  {
+    "id": "dark_shard_screen",
+    "category": "dark_matter",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "未元屏障",
+      "description": "在身前建立有限时长的定向箭矢屏障。"
+    },
+    "en": {
+      "name": "Dark Screen",
+      "description": "Maintain a brief forward projectile screen."
+    },
+    "motif": "PRISM",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "未元屏障",
+      "description": "在身前建立有限時長的定向箭矢屏障。"
+    },
+    "ja": {
+      "name": "未元の障壁",
+      "description": "前方に、一定時間だけ矢を防ぐ指向性の障壁を設ける。"
+    },
+    "prerequisites": [
+      "dark_spread"
+    ]
+  },
+  {
+    "id": "dark_wing_brake",
+    "category": "dark_matter",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "羽翼制动",
+      "description": "利用翼面阻力减缓自身空中水平速度，保留真实碰撞和落地行为。"
+    },
+    "en": {
+      "name": "Wing Brake",
+      "description": "Brake the caster's horizontal velocity in flight."
+    },
+    "motif": "WINGS",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "羽翼制動",
+      "description": "利用翼面阻力減緩自身空中水平速度，保留真實碰撞和落地行為。"
+    },
+    "ja": {
+      "name": "翼による制動",
+      "description": "翼の抵抗で空中の水平速度を落とす。衝突や着地の判定は通常どおり行われる。"
+    },
+    "prerequisites": [
+      "dark_wings"
+    ]
+  },
+  {
+    "id": "dark_rain",
+    "category": "dark_matter",
+    "level": 4,
+    "implemented": true,
+    "zh": {
+      "name": "未元羽雨",
+      "description": "从上方扇形覆盖可见敌人。"
+    },
+    "en": {
+      "name": "Feather Rain",
+      "description": "Strike visible targets in a bounded elevated fan."
+    },
+    "motif": "CONE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "未元羽雨",
+      "description": "從上方扇形覆蓋可見敵人。"
+    },
+    "ja": {
+      "name": "未元の羽雨",
+      "description": "視界内の敵を上方から扇状に攻撃する。"
+    },
+    "prerequisites": [
+      "dark_wings"
+    ]
+  },
+  {
+    "id": "dark_wing_charge",
+    "category": "dark_matter",
+    "level": 4,
+    "implemented": true,
+    "zh": {
+      "name": "翼刃突进",
+      "description": "沿自身飞行方向推进并触碰攻击。"
+    },
+    "en": {
+      "name": "Wing Charge",
+      "description": "Charge forward with a bounded wing-contact strike."
+    },
+    "motif": "WINGS",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "翼刃突進",
+      "description": "沿自身飛行方向推進並觸碰攻擊。"
+    },
+    "ja": {
+      "name": "翼刃突進",
+      "description": "飛行方向へ進み、接触した敵を攻撃する。"
+    },
+    "prerequisites": [
+      "dark_wings"
+    ]
+  },
+  {
+    "id": "dark_panel_dome",
+    "category": "dark_matter",
+    "level": 4,
+    "implemented": true,
+    "zh": {
+      "name": "未元护罩",
+      "description": "形成消耗护盾的半径拦截区。"
+    },
+    "en": {
+      "name": "Dark Dome",
+      "description": "Maintain a shield-funded projectile interception radius."
+    },
+    "motif": "DOME",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "未元護罩",
+      "description": "形成消耗護盾的半徑攔截區。"
+    },
+    "ja": {
+      "name": "未元の防護圏",
+      "description": "シールドを消費し、一定範囲に矢を防ぐ防護圏を作る。"
+    },
+    "prerequisites": [
+      "dark_wings"
+    ]
+  },
+  {
+    "id": "dark_shard_salvo",
+    "category": "dark_matter",
+    "level": 4,
+    "implemented": true,
+    "zh": {
+      "name": "碎片齐射",
+      "description": "向多个可见目标分配有限总预算。"
+    },
+    "en": {
+      "name": "Shard Salvo",
+      "description": "Split a fixed budget among visible targets."
+    },
+    "motif": "SHARD",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "碎片齊射",
+      "description": "向多個可見目標分配有限總預算。"
+    },
+    "ja": {
+      "name": "破片一斉射",
+      "description": "視界内の複数の敵に、限られた総ダメージを分配する。"
+    },
+    "prerequisites": [
+      "dark_wings"
+    ]
+  },
+  {
+    "id": "dark_wing_rescue",
+    "category": "dark_matter",
+    "level": 4,
+    "implemented": true,
+    "zh": {
+      "name": "缓降羽翼",
+      "description": "展开承托翼面减缓本人下落，不能替代无限飞行权限。"
+    },
+    "en": {
+      "name": "Feather Descent",
+      "description": "Use wings to reduce the caster's fall speed."
+    },
+    "motif": "WINGS",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "緩降羽翼",
+      "description": "展開承託翼面減緩本人下落，不能替代無限飛行權限。"
+    },
+    "ja": {
+      "name": "翼による緩降",
+      "description": "翼で自分の落下を減速する。無制限の飛行はできない。"
+    },
+    "prerequisites": [
+      "dark_wings"
+    ]
+  },
+  {
+    "id": "dark_construct",
+    "category": "dark_matter",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "未元构体",
+      "description": "环绕碎片自主攻击并拦截实际箭矢。"
+    },
+    "en": {
+      "name": "Dark Constructs",
+      "description": "Orbiting shards attack autonomously and intercept real arrows."
+    },
+    "motif": "ORBIT",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "未元構體",
+      "description": "環繞碎片自主攻擊並攔截實際箭矢。"
+    },
+    "ja": {
+      "name": "未元構体",
+      "description": "周回する破片が自律的に敵を攻撃し、実際の矢を防ぐ。"
+    },
+    "prerequisites": [
+      "dark_wings"
+    ]
+  },
+  {
+    "id": "dark_spear_fan",
+    "category": "dark_matter",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "未元枪阵",
+      "description": "沿多个方向投射分预算枪刃。"
+    },
+    "en": {
+      "name": "Dark Spear Fan",
+      "description": "Project budgeted spears in separate directions."
+    },
+    "motif": "LANCE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "未元槍陣",
+      "description": "沿多個方向投射分預算槍刃。"
+    },
+    "ja": {
+      "name": "未元の槍陣",
+      "description": "複数方向に槍状の刃を放ち、一回分のダメージを分配する。"
+    },
+    "prerequisites": [
+      "dark_rain"
+    ]
+  },
+  {
+    "id": "dark_wing_shelter",
+    "category": "dark_matter",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "翼幕护卫",
+      "description": "用定向翼幕保护同队成员免受箭矢。"
+    },
+    "en": {
+      "name": "Wing Shelter",
+      "description": "Protect an allied player from arrows with a wing screen."
+    },
+    "motif": "WINGS",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "翼幕護衛",
+      "description": "用定向翼幕保護同隊成員免受箭矢。"
+    },
+    "ja": {
+      "name": "翼幕護衛",
+      "description": "向きを定めた翼幕で、同じチームの仲間を矢から守る。"
+    },
+    "prerequisites": [
+      "dark_wings"
+    ]
+  },
+  {
+    "id": "dark_shard_ring",
+    "category": "dark_matter",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "羽片环阵",
+      "description": "环绕碎片围攻附近可见敌人。"
+    },
+    "en": {
+      "name": "Feather Ring",
+      "description": "Attack visible nearby hostiles from an orbiting formation."
+    },
+    "motif": "RING",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "羽片環陣",
+      "description": "環繞碎片圍攻附近可見敵人。"
+    },
+    "ja": {
+      "name": "羽片環陣",
+      "description": "周回する破片で、近くの視認可能な敵を攻撃する。"
+    },
+    "prerequisites": [
+      "dark_rain"
+    ]
+  },
+  {
+    "id": "dark_matter_barrage",
+    "category": "dark_matter",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "未元弹幕",
+      "description": "将有限未元打击分给多个可见目标。"
+    },
+    "en": {
+      "name": "Dark Barrage",
+      "description": "Distribute a fixed dark-matter budget over multiple targets."
+    },
+    "motif": "CONE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "未元彈幕",
+      "description": "將有限未元打擊分給多個可見目標。"
+    },
+    "ja": {
+      "name": "未元弾幕",
+      "description": "限られた総ダメージを視界内の複数の敵に分配する。"
+    },
+    "prerequisites": [
+      "dark_rain"
+    ]
+  },
+  {
+    "id": "nitrogen_armor",
+    "category": "nitrogen_armor",
+    "level": 1,
+    "implemented": true,
+    "zh": {
+      "name": "氮气装甲",
+      "description": "创建消耗精确护盾的箭矢装甲。"
+    },
+    "en": {
+      "name": "Nitrogen Armor",
+      "description": "Create a shield-funded arrow-deflecting shell."
+    },
+    "motif": "ARMOR",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "氮氣裝甲",
+      "description": "建立消耗精確護盾的箭矢裝甲。"
+    },
+    "ja": {
+      "name": "窒素装甲",
+      "description": "シールドを消費して、飛来する矢を防ぐ装甲を作る。"
+    },
+    "prerequisites": []
+  },
+  {
+    "id": "nitrogen_guard",
+    "category": "nitrogen_armor",
+    "level": 1,
+    "implemented": true,
+    "zh": {
+      "name": "气甲格挡",
+      "description": "在身前以气甲偏转真实箭矢。"
+    },
+    "en": {
+      "name": "Armor Guard",
+      "description": "Deflect real arrows with a frontal armor guard."
+    },
+    "motif": "PRISM",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "氣甲格擋",
+      "description": "在身前以氣甲偏轉真實箭矢。"
+    },
+    "ja": {
+      "name": "装甲防御",
+      "description": "前方から飛来する実際の矢を装甲で逸らす。"
+    },
+    "prerequisites": [
+      "nitrogen_armor"
+    ]
+  },
+  {
+    "id": "nitrogen_dash",
+    "category": "nitrogen_armor",
+    "level": 1,
+    "implemented": true,
+    "zh": {
+      "name": "压缩冲步",
+      "description": "在地面借压缩气甲向视线方向短促冲步，前方碰撞会阻止位移。"
+    },
+    "en": {
+      "name": "Pressure Dash",
+      "description": "Use compressed armor for a grounded dash."
+    },
+    "motif": "JET",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "壓縮衝步",
+      "description": "在地面借壓縮氣甲向視線方向短促衝步，前方碰撞會阻止位移。"
+    },
+    "ja": {
+      "name": "圧縮ステップ",
+      "description": "圧縮した装甲で地上を視線方向へ短く進む。前方に障害物があると移動できない。"
+    },
+    "prerequisites": [
+      "nitrogen_armor"
+    ]
+  },
+  {
+    "id": "nitrogen_burst",
+    "category": "nitrogen_armor",
+    "level": 1,
+    "implemented": true,
+    "zh": {
+      "name": "气甲冲击",
+      "description": "近距离沿前方冲击一个敌人。"
+    },
+    "en": {
+      "name": "Armor Burst",
+      "description": "Strike one nearby enemy with a frontal pressure burst."
+    },
+    "motif": "PULSE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "氣甲衝擊",
+      "description": "近距離沿前方衝擊一個敵人。"
+    },
+    "ja": {
+      "name": "装甲衝撃",
+      "description": "前方の至近距離にいる敵一体に衝撃を与える。"
+    },
+    "prerequisites": [
+      "nitrogen_armor"
+    ]
+  },
+  {
+    "id": "nitrogen_brake",
+    "category": "nitrogen_armor",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "气甲制动",
+      "description": "消耗资源降低已有水平动量。"
+    },
+    "en": {
+      "name": "Armor Brake",
+      "description": "Spend resources to reduce existing horizontal momentum."
+    },
+    "motif": "ARMOR",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "氣甲制動",
+      "description": "消耗資源降低已有水平動量。"
+    },
+    "ja": {
+      "name": "装甲制動",
+      "description": "資源を消費して、すでに生じている水平速度を落とす。"
+    },
+    "prerequisites": [
+      "nitrogen_armor"
+    ]
+  },
+  {
+    "id": "nitrogen_ram",
+    "category": "nitrogen_armor",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "氮气冲撞",
+      "description": "地面短冲并对碰到的目标结算。"
+    },
+    "en": {
+      "name": "Nitrogen Ram",
+      "description": "Rush along the ground and settle a contact hit."
+    },
+    "motif": "LANCE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "氮氣衝撞",
+      "description": "地面短衝並對碰到的目標結算。"
+    },
+    "ja": {
+      "name": "窒素突撃",
+      "description": "地上を短く突進し、接触した敵を攻撃する。"
+    },
+    "prerequisites": [
+      "nitrogen_armor"
+    ]
+  },
+  {
+    "id": "nitrogen_plate",
+    "category": "nitrogen_armor",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "压力板",
+      "description": "在正前方形成短暂投射物格挡面。"
+    },
+    "en": {
+      "name": "Pressure Plate",
+      "description": "Create a brief forward projectile-deflecting plate."
+    },
+    "motif": "PRISM",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "壓力板",
+      "description": "在正前方形成短暫投射物格擋面。"
+    },
+    "ja": {
+      "name": "圧力板",
+      "description": "正面に、飛来する矢を短時間防ぐ面を作る。"
+    },
+    "prerequisites": [
+      "nitrogen_armor"
+    ]
+  },
+  {
+    "id": "nitrogen_shove",
+    "category": "nitrogen_armor",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "压力推掌",
+      "description": "把近距离可见敌人推离自身。"
+    },
+    "en": {
+      "name": "Pressure Shove",
+      "description": "Push a visible nearby enemy away from the caster."
+    },
+    "motif": "PULSE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "壓力推掌",
+      "description": "把近距離可見敵人推離自身。"
+    },
+    "ja": {
+      "name": "圧力掌打",
+      "description": "近くの視認可能な敵を自分から押し離す。"
+    },
+    "prerequisites": [
+      "nitrogen_armor"
+    ]
+  },
+  {
+    "id": "nitrogen_buoy",
+    "category": "nitrogen_armor",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "压缩缓降",
+      "description": "借贴体气甲减缓本人下落，只改变短时速度而不关闭世界重力。"
+    },
+    "en": {
+      "name": "Pressure Descent",
+      "description": "Use armor pressure to reduce the caster's fall speed."
+    },
+    "motif": "ARMOR",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "壓縮緩降",
+      "description": "借貼體氣甲減緩本人下落，只改變短時速度而不關閉世界重力。"
+    },
+    "ja": {
+      "name": "圧縮緩降",
+      "description": "身にまとった装甲で自分の落下を短時間減速する。重力は無効にならない。"
+    },
+    "prerequisites": [
+      "nitrogen_armor"
+    ]
+  },
+  {
+    "id": "nitrogen_punch",
+    "category": "nitrogen_armor",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "氮气重拳",
+      "description": "要求气甲存在的近身精确打击。"
+    },
+    "en": {
+      "name": "Nitrogen Punch",
+      "description": "Land an exact close strike while the armor is active."
+    },
+    "motif": "LANCE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "氮氣重拳",
+      "description": "要求氣甲存在的近身精確打擊。"
+    },
+    "ja": {
+      "name": "窒素の重拳",
+      "description": "装甲を展開した状態で、近距離の敵を正確に打撃する。"
+    },
+    "prerequisites": [
+      "nitrogen_armor"
+    ]
+  },
+  {
+    "id": "nitrogen_uppercut",
+    "category": "nitrogen_armor",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "压力升拳",
+      "description": "以近身压缩拳向上掀动可见敌人，并按有限预算结算打击。"
+    },
+    "en": {
+      "name": "Pressure Uppercut",
+      "description": "Lift a nearby enemy with an upward pressure strike."
+    },
+    "motif": "PULSE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "壓力升拳",
+      "description": "以近身壓縮拳向上掀動可見敵人，並按有限預算結算打擊。"
+    },
+    "ja": {
+      "name": "圧力アッパー",
+      "description": "圧縮した拳で近くの敵を上方へ押し上げ、限られたダメージを与える。"
+    },
+    "prerequisites": [
+      "nitrogen_brake"
+    ]
+  },
+  {
+    "id": "nitrogen_sweep",
+    "category": "nitrogen_armor",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "压力横扫",
+      "description": "以近身气甲横扫敌对目标，多目标分享同一次有限打击预算。"
+    },
+    "en": {
+      "name": "Pressure Sweep",
+      "description": "Split a bounded strike across a close fan."
+    },
+    "motif": "CONE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "壓力橫掃",
+      "description": "以近身氣甲橫掃敵對目標，多目標分享同一次有限打擊預算。"
+    },
+    "ja": {
+      "name": "圧力薙ぎ払い",
+      "description": "装甲で近くの敵を薙ぎ払い、複数の対象に一回分のダメージを分配する。"
+    },
+    "prerequisites": [
+      "nitrogen_brake"
+    ]
+  },
+  {
+    "id": "nitrogen_shell_reinforce",
+    "category": "nitrogen_armor",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "装甲加固",
+      "description": "支付资源恢复当前气甲可用护盾。"
+    },
+    "en": {
+      "name": "Shell Reinforcement",
+      "description": "Spend resources to reinforce the active shell."
+    },
+    "motif": "ARMOR",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "裝甲加固",
+      "description": "支付資源恢復當前氣甲可用護盾。"
+    },
+    "ja": {
+      "name": "装甲強化",
+      "description": "資源を消費し、展開中の装甲に使うシールドを回復する。"
+    },
+    "prerequisites": [
+      "nitrogen_brake"
+    ]
+  },
+  {
+    "id": "nitrogen_item_push",
+    "category": "nitrogen_armor",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "压缩投物",
+      "description": "推动自己投掷的方块物品。"
+    },
+    "en": {
+      "name": "Pressure Launch",
+      "description": "Propel a block item thrown by the caster."
+    },
+    "motif": "JET",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "壓縮投物",
+      "description": "推動自己投擲的方塊物品。"
+    },
+    "ja": {
+      "name": "圧縮投射",
+      "description": "自分で投げたブロックのドロップアイテムを押し出す。"
+    },
+    "prerequisites": [
+      "nitrogen_brake"
+    ]
+  },
+  {
+    "id": "nitrogen_shield_line",
+    "category": "nitrogen_armor",
+    "level": 4,
+    "implemented": true,
+    "zh": {
+      "name": "压力屏线",
+      "description": "为前方路径布置短时箭矢拦截面。"
+    },
+    "en": {
+      "name": "Pressure Screen",
+      "description": "Intercept arrows crossing a short frontal screen."
+    },
+    "motif": "PRISM",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "壓力屏線",
+      "description": "為前方路徑佈置短時箭矢攔截面。"
+    },
+    "ja": {
+      "name": "圧力防壁線",
+      "description": "前方に短時間、飛来する矢を防ぐ面を設ける。"
+    },
+    "prerequisites": [
+      "nitrogen_punch"
+    ]
+  },
+  {
+    "id": "nitrogen_fall_guard",
+    "category": "nitrogen_armor",
+    "level": 4,
+    "implemented": true,
+    "zh": {
+      "name": "缓冲装甲",
+      "description": "以有限护盾降低自身跌落冲击。"
+    },
+    "en": {
+      "name": "Fall Cushion",
+      "description": "Use a limited shield to cushion the caster's fall."
+    },
+    "motif": "ARMOR",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "緩衝裝甲",
+      "description": "以有限護盾降低自身跌落衝擊。"
+    },
+    "ja": {
+      "name": "衝撃緩和装甲",
+      "description": "シールドを消費し、自分の落下による衝撃を軽減する。"
+    },
+    "prerequisites": [
+      "nitrogen_punch"
+    ]
+  },
+  {
+    "id": "nitrogen_cone",
+    "category": "nitrogen_armor",
+    "level": 4,
+    "implemented": true,
+    "zh": {
+      "name": "压力锥",
+      "description": "向前锥形内的敌人分配冲击预算。"
+    },
+    "en": {
+      "name": "Pressure Cone",
+      "description": "Distribute a bounded pressure strike through a forward cone."
+    },
+    "motif": "CONE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "壓力錐",
+      "description": "向前錐形內的敵人分配衝擊預算。"
+    },
+    "ja": {
+      "name": "圧力円錐",
+      "description": "前方の扇形内にいる敵へ、一回分の衝撃ダメージを分配する。"
+    },
+    "prerequisites": [
+      "nitrogen_punch"
+    ]
+  },
+  {
+    "id": "nitrogen_ally_guard",
+    "category": "nitrogen_armor",
+    "level": 4,
+    "implemented": true,
+    "zh": {
+      "name": "同伴气甲",
+      "description": "为同队玩家暂时拦截真实箭矢。"
+    },
+    "en": {
+      "name": "Ally Armor",
+      "description": "Briefly intercept real arrows aimed at an ally."
+    },
+    "motif": "ARMOR",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "同伴氣甲",
+      "description": "為同隊玩家暫時攔截真實箭矢。"
+    },
+    "ja": {
+      "name": "仲間の装甲",
+      "description": "同じチームの仲間を、飛来する矢から一時的に守る。"
+    },
+    "prerequisites": [
+      "nitrogen_punch"
+    ]
+  },
+  {
+    "id": "nitrogen_ground_wave",
+    "category": "nitrogen_armor",
+    "level": 4,
+    "implemented": true,
+    "zh": {
+      "name": "压力震波",
+      "description": "以脚下实心支撑面发动短距环形冲击。"
+    },
+    "en": {
+      "name": "Pressure Wave",
+      "description": "Emit a close radial strike from a solid supporting surface."
+    },
+    "motif": "RING",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "壓力震波",
+      "description": "以腳下實心支撐面發動短距環形衝擊。"
+    },
+    "ja": {
+      "name": "圧力震波",
+      "description": "足元の固い支持面を使い、近距離へ環状の衝撃を放つ。"
+    },
+    "prerequisites": [
+      "nitrogen_punch"
+    ]
+  },
+  {
+    "id": "nitrogen_dome",
+    "category": "nitrogen_armor",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "氮气护域",
+      "description": "保护同队成员并从施术者护盾扣费。"
+    },
+    "en": {
+      "name": "Nitrogen Dome",
+      "description": "Protect allies while debiting the caster's shield."
+    },
+    "motif": "DOME",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "氮氣護域",
+      "description": "保護同隊成員並從施術者護盾扣費。"
+    },
+    "ja": {
+      "name": "窒素防護域",
+      "description": "術者のシールドを消費し、同じチームの仲間を守る。"
+    },
+    "prerequisites": [
+      "nitrogen_punch"
+    ]
+  },
+  {
+    "id": "nitrogen_bulwark",
+    "category": "nitrogen_armor",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "重压壁垒",
+      "description": "消耗护盾拦截正面箭矢并保护盟友。"
+    },
+    "en": {
+      "name": "Pressure Bulwark",
+      "description": "Spend shield to intercept frontal arrows for allies."
+    },
+    "motif": "DOME",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "重壓壁壘",
+      "description": "消耗護盾攔截正面箭矢並保護盟友。"
+    },
+    "ja": {
+      "name": "重圧防壁",
+      "description": "シールドを消費して正面の矢を防ぎ、仲間を守る。"
+    },
+    "prerequisites": [
+      "nitrogen_dome"
+    ]
+  },
+  {
+    "id": "nitrogen_shock_ring",
+    "category": "nitrogen_armor",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "压缩冲环",
+      "description": "气甲在空中将冲击预算分配给周围敌人。"
+    },
+    "en": {
+      "name": "Compression Ring",
+      "description": "While airborne, split one shock budget among nearby hostiles."
+    },
+    "motif": "RING",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "壓縮衝環",
+      "description": "氣甲在空中將衝擊預算分配給周圍敵人。"
+    },
+    "ja": {
+      "name": "圧縮衝撃環",
+      "description": "空中の装甲から周囲の敵へ、一回分の衝撃ダメージを分配する。"
+    },
+    "prerequisites": [
+      "nitrogen_shield_line"
+    ]
+  },
+  {
+    "id": "nitrogen_rocket",
+    "category": "nitrogen_armor",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "压力跃迁",
+      "description": "从有效支撑面发动强力定向跃进。"
+    },
+    "en": {
+      "name": "Pressure Rocket",
+      "description": "Launch a directional leap from a valid supporting surface."
+    },
+    "motif": "JET",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "壓力躍遷",
+      "description": "從有效支撐面發動強力定向躍進。"
+    },
+    "ja": {
+      "name": "圧力跳躍",
+      "description": "有効な支持面を足場に、狙った方向へ大きく跳躍する。"
+    },
+    "prerequisites": [
+      "nitrogen_ground_wave"
+    ]
+  },
+  {
+    "id": "nitrogen_impact",
+    "category": "nitrogen_armor",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "全压冲击",
+      "description": "下降时依靠气甲冲击近身目标并中止下坠。"
+    },
+    "en": {
+      "name": "Full Pressure Impact",
+      "description": "While falling, strike a nearby target with the shell and arrest descent."
+    },
+    "motif": "LANCE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "全壓衝擊",
+      "description": "下降時依靠氣甲衝擊近身目標並中止下墜。"
+    },
+    "ja": {
+      "name": "全圧衝撃",
+      "description": "落下中に装甲で近くの敵へ衝撃を与え、自分の落下を止める。"
+    },
+    "prerequisites": [
+      "nitrogen_shield_line"
+    ]
+  },
+  {
+    "id": "aero_jet",
+    "category": "aero_hand",
+    "level": 1,
+    "implemented": true,
+    "zh": {
+      "name": "空气喷射",
+      "description": "借脚下支撑面形成喷口，沿视线短促推进自身并检查实际地形碰撞。"
+    },
+    "en": {
+      "name": "Air Jet",
+      "description": "Leap forward from a supporting surface."
+    },
+    "motif": "JET",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "空氣噴射",
+      "description": "借腳下支撐面形成噴口，沿視線短促推進自身並檢查實際地形碰撞。"
+    },
+    "ja": {
+      "name": "空気噴射",
+      "description": "足元の支持面を利用して視線方向へ短く進む。実際の地形に衝突する場合は移動できない。"
+    },
+    "prerequisites": []
+  },
+  {
+    "id": "aero_brake",
+    "category": "aero_hand",
+    "level": 1,
+    "implemented": true,
+    "zh": {
+      "name": "空气制动",
+      "description": "用逆向气流降低水平速度。"
+    },
+    "en": {
+      "name": "Air Brake",
+      "description": "Use counterflow to reduce horizontal speed."
+    },
+    "motif": "PULSE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "空氣制動",
+      "description": "用逆向氣流降低水平速度。"
+    },
+    "ja": {
+      "name": "空気制動",
+      "description": "逆向きの気流で水平速度を落とす。"
+    },
+    "prerequisites": [
+      "aero_jet"
+    ]
+  },
+  {
+    "id": "aero_updraft",
+    "category": "aero_hand",
+    "level": 1,
+    "implemented": true,
+    "zh": {
+      "name": "上升气流",
+      "description": "由脚下支撑面产生向上跃升。"
+    },
+    "en": {
+      "name": "Updraft",
+      "description": "Produce an upward jump from a supporting surface."
+    },
+    "motif": "JET",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "上升氣流",
+      "description": "由腳下支撐面產生向上躍升。"
+    },
+    "ja": {
+      "name": "上昇気流",
+      "description": "足元の支持面を利用し、上向きに跳び上がる。"
+    },
+    "prerequisites": [
+      "aero_jet"
+    ]
+  },
+  {
+    "id": "aero_push",
+    "category": "aero_hand",
+    "level": 1,
+    "implemented": true,
+    "zh": {
+      "name": "风压推掌",
+      "description": "将近身且实际可见的敌对目标推离，不改变对方的永久重力或阵营。"
+    },
+    "en": {
+      "name": "Air Push",
+      "description": "Push a nearby visible enemy away."
+    },
+    "motif": "CONE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "風壓推掌",
+      "description": "將近身且實際可見的敵對目標推離，不改變對方的永久重力或陣營。"
+    },
+    "ja": {
+      "name": "風圧掌打",
+      "description": "至近距離で視認できる敵を押し離す。対象の重力設定や陣営は変更しない。"
+    },
+    "prerequisites": [
+      "aero_jet"
+    ]
+  },
+  {
+    "id": "aero_side_step",
+    "category": "aero_hand",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "侧向气步",
+      "description": "借侧风沿视线的横向短距移动自身，前方实物会阻止本次侧移。"
+    },
+    "en": {
+      "name": "Air Sidestep",
+      "description": "Use lateral airflow to step sideways."
+    },
+    "motif": "JET",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "側向氣步",
+      "description": "借側風沿視線的橫向短距移動自身，前方實物會阻止本次側移。"
+    },
+    "ja": {
+      "name": "横風ステップ",
+      "description": "横風を使い、視線に対して横方向へ短く移動する。移動先に障害物があると使えない。"
+    },
+    "prerequisites": [
+      "aero_jet"
+    ]
+  },
+  {
+    "id": "aero_backstep",
+    "category": "aero_hand",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "逆风撤步",
+      "description": "以气流向视线反方向撤离。"
+    },
+    "en": {
+      "name": "Air Backstep",
+      "description": "Move backward with a bounded air impulse."
+    },
+    "motif": "JET",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "逆風撤步",
+      "description": "以氣流向視線反方向撤離。"
+    },
+    "ja": {
+      "name": "逆風ステップ",
+      "description": "気流で視線と反対方向へ後退する。"
+    },
+    "prerequisites": [
+      "aero_jet"
+    ]
+  },
+  {
+    "id": "aero_fall_brake",
+    "category": "aero_hand",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "气流缓降",
+      "description": "用上托气流减轻本人下落速度，保持原版重力和落地碰撞。"
+    },
+    "en": {
+      "name": "Air Descent",
+      "description": "Reduce the caster's downward speed."
+    },
+    "motif": "PULSE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "氣流緩降",
+      "description": "用上託氣流減輕本人下落速度，保持原版重力和落地碰撞。"
+    },
+    "ja": {
+      "name": "気流緩降",
+      "description": "上向きの気流で自分の落下を減速する。通常の重力と着地判定は残る。"
+    },
+    "prerequisites": [
+      "aero_jet"
+    ]
+  },
+  {
+    "id": "aero_item_pull",
+    "category": "aero_hand",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "气流回收",
+      "description": "把自己投掷的方块物品拉向自己。"
+    },
+    "en": {
+      "name": "Air Retrieval",
+      "description": "Draw a self-thrown block item toward the caster."
+    },
+    "motif": "JET",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "氣流回收",
+      "description": "把自己投擲的方塊物品拉向自己。"
+    },
+    "ja": {
+      "name": "気流回収",
+      "description": "自分で投げたブロックのドロップアイテムを手元へ引き寄せる。"
+    },
+    "prerequisites": [
+      "aero_jet"
+    ]
+  },
+  {
+    "id": "aero_gust",
+    "category": "aero_hand",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "定向阵风",
+      "description": "对前方近距敌人施加精确冲击。"
+    },
+    "en": {
+      "name": "Directed Gust",
+      "description": "Apply one exact short-range frontal strike."
+    },
+    "motif": "CONE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "定向陣風",
+      "description": "對前方近距敵人施加精確衝擊。"
+    },
+    "ja": {
+      "name": "指向性の突風",
+      "description": "前方の近くにいる敵に正確な衝撃を与える。"
+    },
+    "prerequisites": [
+      "aero_jet"
+    ]
+  },
+  {
+    "id": "aero_launch",
+    "category": "aero_hand",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "气流投物",
+      "description": "定向推进自己投掷的方块物品。"
+    },
+    "en": {
+      "name": "Air Launch",
+      "description": "Propel a block item thrown by the caster."
+    },
+    "motif": "JET",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "氣流投物",
+      "description": "定向推進自己投擲的方塊物品。"
+    },
+    "ja": {
+      "name": "気流投射",
+      "description": "自分で投げたブロックのドロップアイテムを狙った方向へ押し出す。"
+    },
+    "prerequisites": [
+      "aero_jet"
+    ]
+  },
+  {
+    "id": "aero_cone",
+    "category": "aero_hand",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "风压扇面",
+      "description": "向前扇形敌人分配总伤害。"
+    },
+    "en": {
+      "name": "Air Fan",
+      "description": "Split one total damage budget across a forward fan."
+    },
+    "motif": "CONE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "風壓扇面",
+      "description": "向前扇形敵人分配總傷害。"
+    },
+    "ja": {
+      "name": "風圧扇面",
+      "description": "前方の扇形内にいる敵に、一回分の総ダメージを分配する。"
+    },
+    "prerequisites": [
+      "aero_side_step"
+    ]
+  },
+  {
+    "id": "aero_ring_push",
+    "category": "aero_hand",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "环形气浪",
+      "description": "推开附近可见的敌对生物。"
+    },
+    "en": {
+      "name": "Air Ring",
+      "description": "Push nearby visible hostiles away."
+    },
+    "motif": "RING",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "環形氣浪",
+      "description": "推開附近可見的敵對生物。"
+    },
+    "ja": {
+      "name": "環状気流",
+      "description": "近くの視認可能な敵対生物を押し離す。"
+    },
+    "prerequisites": [
+      "aero_side_step"
+    ]
+  },
+  {
+    "id": "aero_vertical_jet",
+    "category": "aero_hand",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "垂直喷流",
+      "description": "限制条件下使自身获得垂直喷射。"
+    },
+    "en": {
+      "name": "Vertical Jet",
+      "description": "Apply a bounded vertical air jet to the caster."
+    },
+    "motif": "JET",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "垂直噴流",
+      "description": "限制條件下使自身獲得垂直噴射。"
+    },
+    "ja": {
+      "name": "垂直噴流",
+      "description": "条件を満たしたとき、自分に垂直方向への噴射を与える。"
+    },
+    "prerequisites": [
+      "aero_side_step"
+    ]
+  },
+  {
+    "id": "aero_arrow_deflect",
+    "category": "aero_hand",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "气流偏矢",
+      "description": "用定向风场偏转真实箭矢。"
+    },
+    "en": {
+      "name": "Arrow Deflection",
+      "description": "Deflect a real arrow with a directional air current."
+    },
+    "motif": "PRISM",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "氣流偏矢",
+      "description": "用定向風場偏轉真實箭矢。"
+    },
+    "ja": {
+      "name": "気流による矢逸らし",
+      "description": "方向を定めた風で、実際に飛来する矢を逸らす。"
+    },
+    "prerequisites": [
+      "aero_side_step"
+    ]
+  },
+  {
+    "id": "aero_vortex",
+    "category": "aero_hand",
+    "level": 4,
+    "implemented": true,
+    "zh": {
+      "name": "旋转风场",
+      "description": "使附近最多四个本人实际投掷的方块物品沿环形方向运动。"
+    },
+    "en": {
+      "name": "Air Vortex",
+      "description": "Move up to four nearby block items actually thrown by you along an orbital current."
+    },
+    "motif": "ORBIT",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "旋轉風場",
+      "description": "使附近最多四個本人實際投擲的方塊物品沿環形方向運動。"
+    },
+    "ja": {
+      "name": "旋回風場",
+      "description": "自分で投げた近くのブロックのドロップアイテムを、環状の気流で最大四つ動かす。"
+    },
+    "prerequisites": [
+      "aero_launch"
+    ]
+  },
+  {
+    "id": "aero_crosswind",
+    "category": "aero_hand",
+    "level": 4,
+    "implemented": true,
+    "zh": {
+      "name": "横向风压",
+      "description": "借横向气流移动可见敌人，使用服务端实际目标和碰撞验证。"
+    },
+    "en": {
+      "name": "Crosswind",
+      "description": "Apply a lateral impulse to a visible hostile."
+    },
+    "motif": "CONE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "橫向風壓",
+      "description": "借橫向氣流移動可見敵人，使用服務端實際目標和碰撞驗證。"
+    },
+    "ja": {
+      "name": "横風圧",
+      "description": "視認可能な敵を横向きの気流で動かす。対象と衝突をサーバーで確認する。"
+    },
+    "prerequisites": [
+      "aero_launch"
+    ]
+  },
+  {
+    "id": "aero_pressure_wall",
+    "category": "aero_hand",
+    "level": 4,
+    "implemented": true,
+    "zh": {
+      "name": "风压墙",
+      "description": "在正前方维持短时气流防线，按真实箭矢交叉和护盾预算拦截。"
+    },
+    "en": {
+      "name": "Pressure Wall",
+      "description": "Maintain a brief frontal arrow barrier."
+    },
+    "motif": "PRISM",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "風壓牆",
+      "description": "在正前方維持短時氣流防線，按真實箭矢交叉和護盾預算攔截。"
+    },
+    "ja": {
+      "name": "風圧の壁",
+      "description": "正面に短時間の気流の壁を作り、実際に交差する矢をシールド消費で防ぐ。"
+    },
+    "prerequisites": [
+      "aero_launch"
+    ]
+  },
+  {
+    "id": "aero_ground_blast",
+    "category": "aero_hand",
+    "level": 4,
+    "implemented": true,
+    "zh": {
+      "name": "贴地气爆",
+      "description": "以支撑面发动沿地面的扇形攻击。"
+    },
+    "en": {
+      "name": "Ground Blast",
+      "description": "Emit a surface-bound forward fan strike."
+    },
+    "motif": "CONE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "貼地氣爆",
+      "description": "以支撐面發動沿地面的扇形攻擊。"
+    },
+    "ja": {
+      "name": "地走りの気爆",
+      "description": "支持面を利用して地面に沿う扇形の攻撃を放つ。"
+    },
+    "prerequisites": [
+      "aero_launch"
+    ]
+  },
+  {
+    "id": "aero_airborne_turn",
+    "category": "aero_hand",
+    "level": 4,
+    "implemented": true,
+    "zh": {
+      "name": "空中转向",
+      "description": "以风压调整空中水平行进方向。"
+    },
+    "en": {
+      "name": "Air Turn",
+      "description": "Redirect the caster's airborne horizontal motion."
+    },
+    "motif": "JET",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "空中轉向",
+      "description": "以風壓調整空中水平行進方向。"
+    },
+    "ja": {
+      "name": "空中転向",
+      "description": "風圧で空中の水平方向の進路を変える。"
+    },
+    "prerequisites": [
+      "aero_launch"
+    ]
+  },
+  {
+    "id": "aero_barrage",
+    "category": "aero_hand",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "空力弹幕",
+      "description": "由支撑面发射有限预算多目标气流。"
+    },
+    "en": {
+      "name": "Air Barrage",
+      "description": "Emit a bounded multi-target barrage from a supporting surface."
+    },
+    "motif": "CONE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "空力彈幕",
+      "description": "由支撐面發射有限預算多目標氣流。"
+    },
+    "ja": {
+      "name": "空力弾幕",
+      "description": "支持面から気流を放ち、複数の敵に一回分の総ダメージを分配する。"
+    },
+    "prerequisites": [
+      "aero_launch"
+    ]
+  },
+  {
+    "id": "aero_squall",
+    "category": "aero_hand",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "狂风环阵",
+      "description": "向周围敌人结算有限总风压。"
+    },
+    "en": {
+      "name": "Squall Ring",
+      "description": "Settle a fixed total pressure budget among nearby hostiles."
+    },
+    "motif": "RING",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "狂風環陣",
+      "description": "向周圍敵人結算有限總風壓。"
+    },
+    "ja": {
+      "name": "狂風環陣",
+      "description": "周囲の敵に限られた総風圧ダメージを分配する。"
+    },
+    "prerequisites": [
+      "aero_cone"
+    ]
+  },
+  {
+    "id": "aero_air_curtain",
+    "category": "aero_hand",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "气流护幕",
+      "description": "以护盾预算拦截周围箭矢。"
+    },
+    "en": {
+      "name": "Air Curtain",
+      "description": "Intercept nearby arrows using a shield budget."
+    },
+    "motif": "DOME",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "氣流護幕",
+      "description": "以護盾預算攔截周圍箭矢。"
+    },
+    "ja": {
+      "name": "気流の幕",
+      "description": "シールドを消費し、周囲に飛来する矢を防ぐ。"
+    },
+    "prerequisites": [
+      "aero_pressure_wall"
+    ]
+  },
+  {
+    "id": "aero_double_jet",
+    "category": "aero_hand",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "双向喷流",
+      "description": "下降时同时产生前向与向上气流以改变空中轨迹。"
+    },
+    "en": {
+      "name": "Twin Jets",
+      "description": "While falling, combine a forward and upward jet to redirect the caster."
+    },
+    "motif": "JET",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "雙向噴流",
+      "description": "下降時同時產生前向與向上氣流以改變空中軌跡。"
+    },
+    "ja": {
+      "name": "双方向噴流",
+      "description": "落下中に前向きと上向きの気流を同時に起こし、空中の軌道を変える。"
+    },
+    "prerequisites": [
+      "aero_vortex"
+    ]
+  },
+  {
+    "id": "aero_pressure_lance",
+    "category": "aero_hand",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "风压长枪",
+      "description": "沿窄直线对可见目标精确结算。"
+    },
+    "en": {
+      "name": "Pressure Lance",
+      "description": "Settle an exact strike along a narrow visible line."
+    },
+    "motif": "LANCE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "風壓長槍",
+      "description": "沿窄直線對可見目標精確結算。"
+    },
+    "ja": {
+      "name": "風圧の槍",
+      "description": "細い直線上にいる視認可能な敵を正確に攻撃する。"
+    },
+    "prerequisites": [
+      "aero_ground_blast"
+    ]
+  },
+  {
+    "category": "hydro_hand",
+    "id": "hydro_whip",
+    "level": 1,
+    "prerequisites": [],
+    "mechanism": "既有水源射流及推击",
+    "status": "existing_runtime_validation_varies",
+    "icon": {
+      "family": "water_drop",
+      "shape": "whip",
+      "state": "design"
+    },
+    "description": "既有水源射流及推击",
+    "name": "既有水源射流及推击",
+    "implemented": true,
+    "zh": {
+      "name": "水鞭",
+      "description": "从可见水源引流，击退受限敌人。"
+    },
+    "en": {
+      "name": "Water Whip",
+      "description": "Draw water from a visible source to strike and push an eligible enemy."
+    },
+    "motif": "water_jet",
+    "zh_tw": {
+      "name": "水鞭",
+      "description": "從可見水源引流，擊退受限敵人。"
+    },
+    "ja": {
+      "name": "水鞭",
+      "description": "見える水源から水を引き、対象となる敵を押し退ける。"
+    }
+  },
+  {
+    "category": "hydro_hand",
+    "id": "hydro_transfer",
+    "level": 1,
+    "prerequisites": [
+      "hydro_whip"
+    ],
+    "mechanism": "可见位置间搬运一个源",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "water_drop",
+      "shape": "transfer",
+      "state": "design"
+    },
+    "description": "两次施放将一个真实水源搬运至许可空位，需源与目标在6格内。",
+    "name": "可见位置间搬运一个源",
+    "implemented": true,
+    "zh": {
+      "name": "水源搬运",
+      "description": "先选择水源，再对准目标附近的空位施放，搬运一格水源。"
+    },
+    "en": {
+      "name": "Water Transfer",
+      "description": "Select a real water source, then cast at a nearby empty destination to move it."
+    },
+    "motif": "water_transfer",
+    "zh_tw": {
+      "name": "水源搬運",
+      "description": "先選擇水源，再對準目標附近的空位施放，搬運一格水源。"
+    },
+    "ja": {
+      "name": "水源移動",
+      "description": "水源を選んでから移動先付近の空きマスを狙い、水源を一マス移す。"
+    }
+  },
+  {
+    "category": "hydro_hand",
+    "id": "hydro_extinguish",
+    "level": 2,
+    "prerequisites": [
+      "hydro_whip"
+    ],
+    "mechanism": "灭指定火",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "water_drop",
+      "shape": "extinguish",
+      "state": "design"
+    },
+    "description": "灭指定火",
+    "name": "灭指定火",
+    "implemented": true,
+    "zh": {
+      "name": "灭火",
+      "description": "借现有水源扑灭准星所指的火。"
+    },
+    "en": {
+      "name": "Extinguish",
+      "description": "Use an existing water source to extinguish targeted fire."
+    },
+    "motif": "water_extinguish",
+    "zh_tw": {
+      "name": "滅火",
+      "description": "借現有水源撲滅準星所指的火。"
+    },
+    "ja": {
+      "name": "消火",
+      "description": "既存の水源を使い、照準先の火を消す。"
+    }
+  },
+  {
+    "category": "hydro_hand",
+    "id": "hydro_irrigate",
+    "level": 2,
+    "prerequisites": [
+      "hydro_transfer"
+    ],
+    "mechanism": "耕地灌溉",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "water_drop",
+      "shape": "irrigate",
+      "state": "design"
+    },
+    "description": "耕地灌溉",
+    "name": "耕地灌溉",
+    "implemented": true,
+    "zh": {
+      "name": "灌溉",
+      "description": "借现有水源湿润准星所指的干耕地。"
+    },
+    "en": {
+      "name": "Irrigate",
+      "description": "Use an existing water source to moisten targeted dry farmland."
+    },
+    "motif": "water_irrigate",
+    "zh_tw": {
+      "name": "灌溉",
+      "description": "借現有水源濕潤準星所指的乾燥耕地。"
+    },
+    "ja": {
+      "name": "灌漑",
+      "description": "既存の水源を使い、照準先の乾いた耕地を潤す。"
+    }
+  },
+  {
+    "category": "hydro_hand",
+    "id": "hydro_shield",
+    "level": 3,
+    "prerequisites": [
+      "hydro_whip"
+    ],
+    "mechanism": "既有水幕拦箭",
+    "status": "existing_runtime_validation_varies",
+    "icon": {
+      "family": "water_drop",
+      "shape": "shield",
+      "state": "design"
+    },
+    "description": "既有水幕拦箭",
+    "name": "既有水幕拦箭",
+    "implemented": true,
+    "zh": {
+      "name": "水幕",
+      "description": "借附近水源拦截一支来袭箭矢，并消耗护盾。"
+    },
+    "en": {
+      "name": "Water Screen",
+      "description": "Use a nearby water source to deflect one incoming arrow at a shield cost."
+    },
+    "motif": "water_shield",
+    "zh_tw": {
+      "name": "水幕",
+      "description": "借附近水源攔截一支來襲箭矢，並消耗護盾。"
+    },
+    "ja": {
+      "name": "水幕",
+      "description": "近くの水源を使って飛来する矢を一本防ぎ、シールドを消費する。"
+    }
+  },
+  {
+    "category": "hydro_hand",
+    "id": "hydro_current",
+    "level": 3,
+    "prerequisites": [
+      "hydro_whip"
+    ],
+    "mechanism": "沿水推进本人",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "water_drop",
+      "shape": "current",
+      "state": "design"
+    },
+    "description": "沿水推进本人",
+    "name": "沿水推进本人",
+    "implemented": true,
+    "zh": {
+      "name": "水流推进",
+      "description": "在实际水体中沿视线水平推进自己。"
+    },
+    "en": {
+      "name": "Water Current",
+      "description": "Propel yourself horizontally while actually immersed in water."
+    },
+    "motif": "hydro_current",
+    "zh_tw": {
+      "name": "水流推進",
+      "description": "在實際水體中沿視線水平推進自己。"
+    },
+    "ja": {
+      "name": "水流推進",
+      "description": "実際の水中で視線の水平な方向へ自分を進める。"
+    }
+  },
+  {
+    "category": "hydro_hand",
+    "id": "hydro_repel",
+    "level": 3,
+    "prerequisites": [
+      "hydro_shield"
+    ],
+    "mechanism": "推离入水敌人",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "water_drop",
+      "shape": "repel",
+      "state": "design"
+    },
+    "description": "推离入水敌人",
+    "name": "推离入水敌人",
+    "implemented": true,
+    "zh": {
+      "name": "水流推离",
+      "description": "将视线内水中的敌对生物推离，不造成伤害。"
+    },
+    "en": {
+      "name": "Water Repulsion",
+      "description": "Push a visible hostile entity in water away without dealing damage."
+    },
+    "motif": "hydro_repel",
+    "zh_tw": {
+      "name": "水流推離",
+      "description": "將視線內水中的敵對生物推離，不造成傷害。"
+    },
+    "ja": {
+      "name": "水流排撃",
+      "description": "視線内の水中にいる敵対生物を、ダメージを与えずに押し離す。"
+    }
+  },
+  {
+    "category": "hydro_hand",
+    "id": "hydro_lift",
+    "level": 4,
+    "prerequisites": [
+      "hydro_current"
+    ],
+    "mechanism": "水体内扶升自身",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "water_drop",
+      "shape": "lift",
+      "state": "design"
+    },
+    "description": "水体内扶升自身",
+    "name": "水体内扶升自身",
+    "implemented": true,
+    "zh": {
+      "name": "水中上浮",
+      "description": "通过周围的水快速向上移动。"
+    },
+    "en": {
+      "name": "Water Lift",
+      "description": "Rise through the water around you."
+    },
+    "motif": "hydro_lift",
+    "zh_tw": {
+      "name": "水中上浮",
+      "description": "透過周圍的水快速向上移動。"
+    },
+    "ja": {
+      "name": "水中浮上",
+      "description": "周囲の水を使い、素早く上方へ移動する。"
+    }
+  },
+  {
+    "category": "hydro_hand",
+    "id": "hydro_brake",
+    "level": 4,
+    "prerequisites": [
+      "hydro_current"
+    ],
+    "mechanism": "水中制动",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "water_drop",
+      "shape": "brake",
+      "state": "design"
+    },
+    "description": "水中制动",
+    "name": "水中制动",
+    "implemented": true,
+    "zh": {
+      "name": "水流制动",
+      "description": "本人实际浸水时减缓水中运动，仍需真实水源及合法的移动空间。"
+    },
+    "en": {
+      "name": "Water Brake",
+      "description": "Reduce your own movement while in water."
+    },
+    "motif": "hydro_brake",
+    "zh_tw": {
+      "name": "水流制動",
+      "description": "本人實際浸水時減緩水中運動，仍需真實水源及合法的移動空間。"
+    },
+    "ja": {
+      "name": "水流制動",
+      "description": "実際に水に浸かっているとき、水中での動きを抑える。水源と移動可能な空間が必要。"
+    }
+  },
+  {
+    "category": "hydro_hand",
+    "id": "hydro_rescue",
+    "level": 4,
+    "prerequisites": [
+      "hydro_shield"
+    ],
+    "mechanism": "水中辅助同意玩家",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "water_drop",
+      "shape": "rescue",
+      "state": "design"
+    },
+    "description": "水中辅助同意玩家",
+    "name": "水中辅助同意玩家",
+    "implemented": true,
+    "zh": {
+      "name": "水中救援",
+      "description": "托升水中按住潜行表示同意的玩家。"
+    },
+    "en": {
+      "name": "Water Rescue",
+      "description": "Lift a player in water who holds sneak to consent."
+    },
+    "motif": "hydro_rescue",
+    "zh_tw": {
+      "name": "水中救援",
+      "description": "託升水中按住潛行表示同意的玩家。"
+    },
+    "ja": {
+      "name": "水中救助",
+      "description": "水中でスニークして同意したプレイヤーを上方へ持ち上げる。"
+    }
+  },
+  {
+    "category": "hydro_hand",
+    "id": "hydro_domain",
+    "level": 5,
+    "prerequisites": [
+      "hydro_shield"
+    ],
+    "mechanism": "既有水域推流",
+    "status": "existing_runtime_validation_varies",
+    "icon": {
+      "family": "water_drop",
+      "shape": "domain",
+      "state": "design"
+    },
+    "description": "既有水域推流",
+    "name": "既有水域推流",
+    "implemented": true,
+    "zh": {
+      "name": "水流场",
+      "description": "驱动水中的敌对生物移动。"
+    },
+    "en": {
+      "name": "Water Current",
+      "description": "Push eligible enemies that are actually in water."
+    },
+    "motif": "water_current",
+    "zh_tw": {
+      "name": "水流場",
+      "description": "驅動水中的敵對生物移動。"
+    },
+    "ja": {
+      "name": "水流域",
+      "description": "水中の敵対生物を水流で動かす。"
+    }
+  },
+  {
+    "category": "float_dial",
+    "id": "float_lift",
+    "level": 1,
+    "prerequisites": [],
+    "mechanism": "既有定点浮升敌人",
+    "status": "existing_runtime_validation_varies",
+    "icon": {
+      "family": "buoyancy",
+      "shape": "lift",
+      "state": "design"
+    },
+    "description": "既有定点浮升敌人",
+    "name": "既有定点浮升敌人",
+    "implemented": true,
+    "zh": {
+      "name": "浮升",
+      "description": "以浮力抬升视线中的敌人。"
+    },
+    "en": {
+      "name": "Buoyant Lift",
+      "description": "Lift a visible eligible enemy using buoyancy."
+    },
+    "motif": "buoyancy_lift",
+    "zh_tw": {
+      "name": "浮升",
+      "description": "以浮力抬升視線中的敵人。"
+    },
+    "ja": {
+      "name": "浮上",
+      "description": "視線内の敵を浮力で持ち上げる。"
+    }
+  },
+  {
+    "category": "float_dial",
+    "id": "float_item_lift",
+    "level": 2,
+    "prerequisites": [
+      "float_lift"
+    ],
+    "mechanism": "受限浮起掉落物",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "buoyancy",
+      "shape": "item_lift",
+      "state": "design"
+    },
+    "description": "受限浮起掉落物",
+    "name": "受限浮起掉落物",
+    "implemented": true,
+    "zh": {
+      "name": "浮起物品",
+      "description": "抬升本人真实丢弃且可验证归属的物品。"
+    },
+    "en": {
+      "name": "Lift Owned Item",
+      "description": "Lift an item actually tossed by you with verified ownership."
+    },
+    "motif": "buoyancy_item_lift",
+    "zh_tw": {
+      "name": "浮起物品",
+      "description": "抬升本人真實丟棄且可驗證歸屬的物品。"
+    },
+    "ja": {
+      "name": "浮遊物持ち上げ",
+      "description": "自分が実際に捨て、所有者を確認できるアイテムを持ち上げる。"
+    }
+  },
+  {
+    "category": "float_dial",
+    "id": "float_item_lower",
+    "level": 2,
+    "prerequisites": [
+      "float_item_lift"
+    ],
+    "mechanism": "降低自有掉落物",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "buoyancy",
+      "shape": "item_lower",
+      "state": "design"
+    },
+    "description": "降低自有掉落物",
+    "name": "降低自有掉落物",
+    "implemented": true,
+    "zh": {
+      "name": "放低物品",
+      "description": "将本人正在控制的浮起物品缓慢放低。"
+    },
+    "en": {
+      "name": "Lower Owned Item",
+      "description": "Lower your currently controlled floating item."
+    },
+    "motif": "buoyancy_item_lower",
+    "zh_tw": {
+      "name": "放低物品",
+      "description": "將本人正在控制的浮起物品緩慢放低。"
+    },
+    "ja": {
+      "name": "浮遊物降下",
+      "description": "自分が操作中の浮遊アイテムをゆっくり下ろす。"
+    }
+  },
+  {
+    "category": "float_dial",
+    "id": "float_item_pull",
+    "level": 2,
+    "prerequisites": [
+      "float_item_lift"
+    ],
+    "mechanism": "拉近自有掉落物",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "buoyancy",
+      "shape": "item_pull",
+      "state": "design"
+    },
+    "description": "拉近自有掉落物",
+    "name": "拉近自有掉落物",
+    "implemented": true,
+    "zh": {
+      "name": "收拢浮物",
+      "description": "将本人正在控制的掉落物缓慢引向自己，不自动拾取。"
+    },
+    "en": {
+      "name": "Pull Owned Item",
+      "description": "Draw your controlled dropped item toward you without automatic pickup."
+    },
+    "motif": "float_item_pull",
+    "zh_tw": {
+      "name": "收攏浮物",
+      "description": "將本人正在控制的掉落物緩慢引向自己，不自動拾取。"
+    },
+    "ja": {
+      "name": "浮遊物引き寄せ",
+      "description": "自分が操作中のドロップアイテムをゆっくり引き寄せる。自動では拾わない。"
+    }
+  },
+  {
+    "category": "float_dial",
+    "id": "float_item_release",
+    "level": 2,
+    "prerequisites": [
+      "float_item_lift"
+    ],
+    "mechanism": "终止自有掉落物控制",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "buoyancy",
+      "shape": "item_release",
+      "state": "design"
+    },
+    "description": "终止自有掉落物控制",
+    "name": "终止自有掉落物控制",
+    "implemented": true,
+    "zh": {
+      "name": "释放物品",
+      "description": "停止控制本人浮起的物品。"
+    },
+    "en": {
+      "name": "Release Owned Item",
+      "description": "Stop controlling your floating item."
+    },
+    "motif": "buoyancy_item_release",
+    "zh_tw": {
+      "name": "釋放物品",
+      "description": "停止控制本人浮起的物品。"
+    },
+    "ja": {
+      "name": "浮遊物解放",
+      "description": "自分の浮遊アイテムの操作を終了する。"
+    }
+  },
+  {
+    "category": "float_dial",
+    "id": "float_rescue",
+    "level": 3,
+    "prerequisites": [
+      "float_lift"
+    ],
+    "mechanism": "既有自身或同意玩家缓降",
+    "status": "existing_runtime_validation_varies",
+    "icon": {
+      "family": "buoyancy",
+      "shape": "rescue",
+      "state": "design"
+    },
+    "description": "既有自身或同意玩家缓降",
+    "name": "既有自身或同意玩家缓降",
+    "implemented": true,
+    "zh": {
+      "name": "浮力救援",
+      "description": "缓解自身或按住潜行的下落玩家的下坠。"
+    },
+    "en": {
+      "name": "Buoyant Rescue",
+      "description": "Slow your fall or help a falling player who holds sneak."
+    },
+    "motif": "buoyancy_rescue",
+    "zh_tw": {
+      "name": "浮力救援",
+      "description": "緩解自身或按住潛行的下落玩家的下墜。"
+    },
+    "ja": {
+      "name": "浮力救助",
+      "description": "自分またはスニーク中の落下するプレイヤーの落下速度を抑える。"
+    }
+  },
+  {
+    "category": "float_dial",
+    "id": "float_item_push",
+    "level": 2,
+    "prerequisites": [
+      "float_item_lift"
+    ],
+    "mechanism": "向外推送本人真实掉落物",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "buoyancy",
+      "shape": "item_place",
+      "state": "design"
+    },
+    "description": "投放自有物至准星",
+    "name": "投放自有物至准星",
+    "implemented": true,
+    "zh": {
+      "name": "抛送浮物",
+      "description": "将本人真实丢弃的物品短距离向外推送。"
+    },
+    "en": {
+      "name": "Push Owned Item",
+      "description": "Gently propel an item actually tossed by you away from you."
+    },
+    "motif": "float_item_push",
+    "zh_tw": {
+      "name": "拋送浮物",
+      "description": "將本人真實丟棄的物品短距離向外推送。"
+    },
+    "ja": {
+      "name": "浮遊物押し出し",
+      "description": "自分が実際に捨てたアイテムを近距離へ押し出す。"
+    }
+  },
+  {
+    "category": "float_dial",
+    "id": "float_field",
+    "level": 5,
+    "prerequisites": [
+      "float_rescue"
+    ],
+    "mechanism": "既有群体浮升",
+    "status": "existing_runtime_validation_varies",
+    "icon": {
+      "family": "buoyancy",
+      "shape": "field",
+      "state": "design"
+    },
+    "description": "既有群体浮升",
+    "name": "既有群体浮升",
+    "implemented": true,
+    "zh": {
+      "name": "浮力场",
+      "description": "短时抬升范围内的受限敌人。"
+    },
+    "en": {
+      "name": "Buoyancy Field",
+      "description": "Briefly lift eligible nearby enemies."
+    },
+    "motif": "buoyancy_field",
+    "zh_tw": {
+      "name": "浮力場",
+      "description": "短時抬升範圍內的受限敵人。"
+    },
+    "ja": {
+      "name": "浮力場",
+      "description": "範囲内の対象となる敵を短時間持ち上げる。"
+    }
+  },
+  {
+    "category": "float_dial",
+    "id": "float_item_field",
+    "level": 5,
+    "prerequisites": [
+      "float_item_lift"
+    ],
+    "mechanism": "批量自有物定向升起",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "buoyancy",
+      "shape": "item_field",
+      "state": "design"
+    },
+    "description": "批量自有物定向升起",
+    "name": "批量自有物定向升起",
+    "implemented": true,
+    "zh": {
+      "name": "浮物场",
+      "description": "同时浮起附近最多四个本人真实丢弃的物品。"
+    },
+    "en": {
+      "name": "Owned Item Field",
+      "description": "Lift up to four nearby items actually tossed by you."
+    },
+    "motif": "float_item_field",
+    "zh_tw": {
+      "name": "浮物場",
+      "description": "同時浮起附近最多四個本人真實丟棄的物品。"
+    },
+    "ja": {
+      "name": "浮遊物場",
+      "description": "近くにある自分が実際に捨てたアイテムを最大四個同時に浮かせる。"
+    }
+  },
+  {
+    "category": "float_dial",
+    "id": "float_release_field",
+    "level": 5,
+    "prerequisites": [
+      "float_item_lift"
+    ],
+    "mechanism": "释放全部本人的浮力租约",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "buoyancy",
+      "shape": "release_field",
+      "state": "design"
+    },
+    "description": "释放全部本人的浮力租约",
+    "name": "释放全部本人的浮力租约",
+    "implemented": true,
+    "zh": {
+      "name": "解除浮物场",
+      "description": "停止控制当前全部本人浮物。"
+    },
+    "en": {
+      "name": "Release Item Field",
+      "description": "Release all your currently controlled floating items."
+    },
+    "motif": "float_release_field",
+    "zh_tw": {
+      "name": "解除浮物場",
+      "description": "停止控制當前全部本人浮物。"
+    },
+    "ja": {
+      "name": "浮遊物場解除",
+      "description": "操作中の自分の浮遊アイテムをすべて解放する。"
+    }
+  },
+  {
+    "category": "liquid_shadow",
+    "id": "liquid_scout",
+    "level": 1,
+    "prerequisites": [],
+    "mechanism": "既有实物液影及观察",
+    "status": "existing_runtime_validation_varies",
+    "icon": {
+      "family": "liquid_silhouette",
+      "shape": "scout",
+      "state": "design"
+    },
+    "description": "消耗液影介质生成听觉、触觉人偶；另一手持有液影观测模块时消耗并安装该设备。",
+    "name": "既有实物液影及观察",
+    "implemented": true,
+    "zh": {
+      "name": "液影侦察",
+      "description": "消耗液影介质制作以听觉和触觉侦察的人偶；另一手携带液影观测模块时可消耗并安装该设备。"
+    },
+    "en": {
+      "name": "Liquid Scout",
+      "description": "Consume liquid medium to create a hearing and touch scout; a shadow observer module in the other hand is consumed and installed for remote observation."
+    },
+    "motif": "liquid_scout",
+    "zh_tw": {
+      "name": "液影偵察",
+      "description": "消耗液影介質製作以聽覺和觸覺偵察的人偶；另一手攜帶液影觀測模組時可消耗並安裝該裝置。"
+    },
+    "ja": {
+      "name": "液影偵察",
+      "description": "液影の媒体を消費して聴覚と触覚で偵察する人形を作る。反対の手に液影観測モジュールがあれば、それを消費して装着できる。"
+    }
+  },
+  {
+    "category": "liquid_shadow",
+    "id": "liquid_pause",
+    "level": 2,
+    "prerequisites": [
+      "liquid_scout"
+    ],
+    "mechanism": "暂停现有液影",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "liquid_silhouette",
+      "shape": "pause",
+      "state": "design"
+    },
+    "description": "暂停现有液影",
+    "name": "暂停现有液影",
+    "implemented": true,
+    "zh": {
+      "name": "液影驻留",
+      "description": "暂停或恢复已生成液影的移动。"
+    },
+    "en": {
+      "name": "Pause Liquid Body",
+      "description": "Pause or resume movement of the existing liquid body."
+    },
+    "motif": "liquid_pause",
+    "zh_tw": {
+      "name": "液影駐留",
+      "description": "暫停或恢復已生成液影的移動。"
+    },
+    "ja": {
+      "name": "液影待機",
+      "description": "生成済みの液影の移動を停止または再開する。"
+    }
+  },
+  {
+    "category": "liquid_shadow",
+    "id": "liquid_recall",
+    "level": 1,
+    "prerequisites": [
+      "liquid_scout"
+    ],
+    "mechanism": "召回现有液影",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "liquid_silhouette",
+      "shape": "recall",
+      "state": "design"
+    },
+    "description": "召回现有液影",
+    "name": "召回现有液影",
+    "implemented": true,
+    "zh": {
+      "name": "召回液影",
+      "description": "液影沿可通行地面返回本体附近后解除，不返还介质。"
+    },
+    "en": {
+      "name": "Recall Liquid Body",
+      "description": "The body returns across traversable ground and dissolves near its owner without refunding the medium."
+    },
+    "motif": "liquid_recall",
+    "zh_tw": {
+      "name": "召回液影",
+      "description": "液影沿可通行地面返回本體附近後解除，不返還介質。"
+    },
+    "ja": {
+      "name": "液影帰還",
+      "description": "液影が通行可能な地面を伝って本体の近くに戻ると解除される。媒体は返らない。"
+    }
+  },
+  {
+    "category": "liquid_shadow",
+    "id": "liquid_dismiss",
+    "level": 1,
+    "prerequisites": [
+      "liquid_scout"
+    ],
+    "mechanism": "遣散现有液影",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "liquid_silhouette",
+      "shape": "dismiss",
+      "state": "design"
+    },
+    "description": "遣散现有液影",
+    "name": "遣散现有液影",
+    "implemented": true,
+    "zh": {
+      "name": "收束液影",
+      "description": "解除现有液影，已消耗的介质不返还。"
+    },
+    "en": {
+      "name": "Dismiss Liquid Body",
+      "description": "Dissolve the current liquid body without refunding its medium."
+    },
+    "motif": "liquid_dismiss",
+    "zh_tw": {
+      "name": "收束液影",
+      "description": "解除現有液影，已消耗的介質不返還。"
+    },
+    "ja": {
+      "name": "液影解除",
+      "description": "現在の液影を解除する。消費した媒体は返らない。"
+    }
+  },
+  {
+    "category": "liquid_shadow",
+    "id": "liquid_turn",
+    "level": 2,
+    "prerequisites": [
+      "liquid_scout"
+    ],
+    "mechanism": "改变液影朝向",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "liquid_silhouette",
+      "shape": "turn",
+      "state": "design"
+    },
+    "description": "使真实液影在原地转向当前朝向，暂停时亦可使用。",
+    "name": "液影转身",
+    "implemented": true,
+    "zh": {
+      "name": "液影转身",
+      "description": "使真实液影在原地转向当前朝向，暂停时亦可使用。"
+    },
+    "en": {
+      "name": "Liquid Turn",
+      "description": "Turn the real liquid body in place toward the current heading, even while paused."
+    },
+    "motif": "liquid_turn",
+    "zh_tw": {
+      "name": "液影轉身",
+      "description": "使真實液影在原地轉向當前朝向，暫停時亦可使用。"
+    },
+    "ja": {
+      "name": "液影旋回",
+      "description": "実体のある液影をその場で現在の向きに回す。停止中も使用可能。"
+    }
+  },
+  {
+    "category": "liquid_shadow",
+    "id": "liquid_retreat",
+    "level": 2,
+    "prerequisites": [
+      "liquid_scout"
+    ],
+    "mechanism": "向本体退行",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "liquid_silhouette",
+      "shape": "retreat",
+      "state": "design"
+    },
+    "description": "切换液影沿视线反方向逐步退行，再次施放恢复原控制。",
+    "name": "液影退行",
+    "implemented": true,
+    "zh": {
+      "name": "液影退行",
+      "description": "切换液影沿视线反方向逐步退行，再次施放恢复原控制。"
+    },
+    "en": {
+      "name": "Liquid Retreat",
+      "description": "Toggle bounded backward steps relative to the player’s heading."
+    },
+    "motif": "liquid_retreat",
+    "zh_tw": {
+      "name": "液影退行",
+      "description": "切換液影沿視線反方向逐步退行，再次施放恢復原控制。"
+    },
+    "ja": {
+      "name": "液影後退",
+      "description": "液影が視線と反対方向へ少しずつ後退するモードを切り替える。再使用で元の操作に戻る。"
+    }
+  },
+  {
+    "category": "liquid_shadow",
+    "id": "liquid_guard",
+    "level": 2,
+    "prerequisites": [
+      "liquid_scout"
+    ],
+    "mechanism": "短时阻挡近箭",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "liquid_silhouette",
+      "shape": "guard",
+      "state": "design"
+    },
+    "description": "短时阻挡近箭",
+    "name": "短时阻挡近箭",
+    "implemented": true,
+    "zh": {
+      "name": "液影拦截",
+      "description": "液影接触并偏转一支敌对来箭，消耗护盾。"
+    },
+    "en": {
+      "name": "Liquid Guard",
+      "description": "Deflect one incoming hostile arrow at the liquid body at a shield cost."
+    },
+    "motif": "liquid_guard",
+    "zh_tw": {
+      "name": "液影攔截",
+      "description": "液影接觸並偏轉一支敵對來箭，消耗護盾。"
+    },
+    "ja": {
+      "name": "液影防御",
+      "description": "液影が敵の飛来する矢を一本受け流し、シールドを消費する。"
+    }
+  },
+  {
+    "category": "liquid_shadow",
+    "id": "liquid_listen",
+    "level": 2,
+    "prerequisites": [
+      "liquid_scout"
+    ],
+    "mechanism": "指示影体近域声音线索",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "liquid_silhouette",
+      "shape": "listen",
+      "state": "design"
+    },
+    "description": "指示影体近域声音线索",
+    "name": "指示影体近域声音线索",
+    "implemented": true,
+    "zh": {
+      "name": "液影听声",
+      "description": "通过液影聆听近期真实发出的附近声音，反馈粗略方向。"
+    },
+    "en": {
+      "name": "Liquid Listening",
+      "description": "Listen through the body for recent nearby real sounds and receive a coarse direction."
+    },
+    "motif": "liquid_listen",
+    "zh_tw": {
+      "name": "液影聽聲",
+      "description": "透過液影聆聽近期真實發出的附近聲音，回報粗略方向。"
+    },
+    "ja": {
+      "name": "液影聴音",
+      "description": "液影を通して最近実際に発生した近くの音を聞き、大まかな方向を知る。"
+    }
+  },
+  {
+    "category": "liquid_shadow",
+    "id": "liquid_path",
+    "level": 2,
+    "prerequisites": [
+      "liquid_scout"
+    ],
+    "mechanism": "检测前方通路",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "liquid_silhouette",
+      "shape": "path",
+      "state": "design"
+    },
+    "description": "检测前方通路",
+    "name": "检测前方通路",
+    "implemented": true,
+    "zh": {
+      "name": "液影触路",
+      "description": "液影触探一格内的障碍和落脚位置，不提供远程图像。"
+    },
+    "en": {
+      "name": "Liquid Touch Probe",
+      "description": "Probe nearby obstacles and footing through the body without providing a remote image."
+    },
+    "motif": "liquid_path",
+    "zh_tw": {
+      "name": "液影觸路",
+      "description": "液影觸探一格內的障礙和落腳位置，不提供遠端影像。"
+    },
+    "ja": {
+      "name": "液影触路",
+      "description": "液影が一マス先の障害物と足場を触って調べる。遠隔映像は得られない。"
+    }
+  },
+  {
+    "category": "liquid_shadow",
+    "id": "liquid_strike",
+    "level": 3,
+    "prerequisites": [
+      "liquid_scout"
+    ],
+    "mechanism": "既有液影近击",
+    "status": "existing_runtime_validation_varies",
+    "icon": {
+      "family": "liquid_silhouette",
+      "shape": "strike",
+      "state": "design"
+    },
+    "description": "既有液影近击",
+    "name": "既有液影近击",
+    "implemented": true,
+    "zh": {
+      "name": "液影突刺",
+      "description": "控制已生成液影近距离攻击。"
+    },
+    "en": {
+      "name": "Liquid Strike",
+      "description": "Attack at close range through an existing liquid body."
+    },
+    "motif": "liquid_strike",
+    "zh_tw": {
+      "name": "液影突刺",
+      "description": "控制已生成液影近距離攻擊。"
+    },
+    "ja": {
+      "name": "液影突き",
+      "description": "生成済みの液影を操作し、近距離を攻撃する。"
+    }
+  },
+  {
+    "category": "liquid_shadow",
+    "id": "liquid_push",
+    "level": 3,
+    "prerequisites": [
+      "liquid_scout"
+    ],
+    "mechanism": "影体碰撞推敌",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "liquid_silhouette",
+      "shape": "push",
+      "state": "design"
+    },
+    "description": "影体碰撞推敌",
+    "name": "影体碰撞推敌",
+    "implemented": true,
+    "zh": {
+      "name": "液影推击",
+      "description": "液影以实体动量推离邻近敌人，不直接造成伤害。"
+    },
+    "en": {
+      "name": "Liquid Push",
+      "description": "Push a nearby enemy with the liquid body without dealing direct damage."
+    },
+    "motif": "liquid_push",
+    "zh_tw": {
+      "name": "液影推擊",
+      "description": "液影以實體動量推離鄰近敵人，不直接造成傷害。"
+    },
+    "ja": {
+      "name": "液影押撃",
+      "description": "液影の実体の力で近くの敵を押し離す。直接ダメージは与えない。"
+    }
+  },
+  {
+    "category": "liquid_shadow",
+    "id": "liquid_intercept",
+    "level": 3,
+    "prerequisites": [
+      "liquid_guard"
+    ],
+    "mechanism": "影体拦截真实箭矢",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "liquid_silhouette",
+      "shape": "intercept",
+      "state": "design"
+    },
+    "description": "主动拦截靠近液影的一支真实敌对箭矢，支付护盾。",
+    "name": "液影应急拦截",
+    "implemented": true,
+    "zh": {
+      "name": "液影应急拦截",
+      "description": "主动拦截靠近液影的一支真实敌对箭矢，支付护盾。"
+    },
+    "en": {
+      "name": "Liquid Intercept",
+      "description": "Actively deflect one real hostile arrow approaching the body at a shield cost."
+    },
+    "motif": "liquid_intercept",
+    "zh_tw": {
+      "name": "液影應急攔截",
+      "description": "主動攔截靠近液影的一支真實敵對箭矢，支付護盾。"
+    },
+    "ja": {
+      "name": "液影緊急迎撃",
+      "description": "液影に近づく実際の敵の矢を一本能動的に受け流し、シールドを消費する。"
+    }
+  },
+  {
+    "category": "liquid_shadow",
+    "id": "liquid_switch",
+    "level": 3,
+    "prerequisites": [
+      "liquid_scout"
+    ],
+    "mechanism": "仅经权限交互实体按钮",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "liquid_silhouette",
+      "shape": "switch",
+      "state": "design"
+    },
+    "description": "仅经权限交互实体按钮",
+    "name": "仅经权限交互实体按钮",
+    "implemented": true,
+    "zh": {
+      "name": "液影触闸",
+      "description": "液影触碰近处拉杆；本体仍须处于原版交互距离且通过权限检查。"
+    },
+    "en": {
+      "name": "Liquid Switch",
+      "description": "Touch a nearby lever through the body while the owner remains within native interaction reach."
+    },
+    "motif": "liquid_switch",
+    "zh_tw": {
+      "name": "液影觸閘",
+      "description": "液影觸碰近處拉桿；本體仍須處於原版互動距離且透過權限檢查。"
+    },
+    "ja": {
+      "name": "液影操作",
+      "description": "液影が近くのレバーに触れる。本体も通常の操作距離内にあり、権限を満たす必要がある。"
+    }
+  },
+  {
+    "category": "liquid_shadow",
+    "id": "liquid_follow",
+    "level": 4,
+    "prerequisites": [
+      "liquid_scout"
+    ],
+    "mechanism": "影体跟随本体",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "liquid_silhouette",
+      "shape": "follow",
+      "state": "design"
+    },
+    "description": "影体跟随本体",
+    "name": "影体跟随本体",
+    "implemented": true,
+    "zh": {
+      "name": "液影伴行",
+      "description": "液影在地面可通行时向本体缓慢靠近。"
+    },
+    "en": {
+      "name": "Liquid Follow",
+      "description": "The liquid body follows its owner slowly across traversable ground."
+    },
+    "motif": "liquid_follow",
+    "zh_tw": {
+      "name": "液影伴行",
+      "description": "液影在地面可通行時向本體緩慢靠近。"
+    },
+    "ja": {
+      "name": "液影随行",
+      "description": "液影が通行可能な地面を通って本体へゆっくり近づく。"
+    }
+  },
+  {
+    "category": "liquid_shadow",
+    "id": "liquid_route",
+    "level": 4,
+    "prerequisites": [
+      "liquid_path"
+    ],
+    "mechanism": "两点间有碰撞行走",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "liquid_silhouette",
+      "shape": "route",
+      "state": "design"
+    },
+    "description": "令液影沿地面向玩家视线选中的同高位置逐步行走，阻挡时不能穿墙。",
+    "name": "液影路径",
+    "implemented": true,
+    "zh": {
+      "name": "液影路径",
+      "description": "令液影沿地面向玩家视线选中的同高位置逐步行走，阻挡时不能穿墙。"
+    },
+    "en": {
+      "name": "Liquid Route",
+      "description": "Walk the body toward a visible same-height floor waypoint, stopping at physical obstructions."
+    },
+    "motif": "liquid_route",
+    "zh_tw": {
+      "name": "液影路徑",
+      "description": "令液影沿地面向玩家視線選中的同高位置逐步行走，阻擋時不能穿牆。"
+    },
+    "ja": {
+      "name": "液影経路",
+      "description": "プレイヤーが視線で選んだ同じ高さの地点へ液影を地面に沿って歩かせる。障害物や壁は通過できない。"
+    }
+  },
+  {
+    "category": "liquid_shadow",
+    "id": "liquid_screen",
+    "level": 4,
+    "prerequisites": [
+      "liquid_intercept"
+    ],
+    "mechanism": "影体短暂阻挡投射",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "liquid_silhouette",
+      "shape": "screen",
+      "state": "design"
+    },
+    "description": "主动弹开液影附近最多三支真实敌对箭，每支支付护盾。",
+    "name": "液影拦截幕",
+    "implemented": true,
+    "zh": {
+      "name": "液影拦截幕",
+      "description": "主动弹开液影附近最多三支真实敌对箭，每支支付护盾。"
+    },
+    "en": {
+      "name": "Liquid Screen",
+      "description": "Actively deflect up to three real hostile arrows near the body, paying shield for each."
+    },
+    "motif": "liquid_screen",
+    "zh_tw": {
+      "name": "液影攔截幕",
+      "description": "主動彈開液影附近最多三支真實敵對箭，每支支付護盾。"
+    },
+    "ja": {
+      "name": "液影迎撃幕",
+      "description": "液影の近くにある実際の敵の矢を最大三本はじき返す。一本ごとにシールドを消費する。"
+    }
+  },
+  {
+    "category": "liquid_shadow",
+    "id": "liquid_survey",
+    "level": 4,
+    "prerequisites": [
+      "liquid_path"
+    ],
+    "mechanism": "按方位反馈近域实体",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "liquid_silhouette",
+      "shape": "survey",
+      "state": "design"
+    },
+    "description": "感知与液影实际接触的生物，不提供视觉或身份。",
+    "name": "液影触觉接触",
+    "implemented": true,
+    "zh": {
+      "name": "液影触觉接触",
+      "description": "感知与液影实际接触的生物，不提供视觉或身份。"
+    },
+    "en": {
+      "name": "Liquid Contact Survey",
+      "description": "Sense physical contact with a creature without visual information or identity."
+    },
+    "motif": "liquid_survey",
+    "zh_tw": {
+      "name": "液影觸覺接觸",
+      "description": "感知與液影實際接觸的生物，不提供視覺或身份。"
+    },
+    "ja": {
+      "name": "液影接触感知",
+      "description": "液影に実際に触れた生物を感知する。映像や相手の正体は得られない。"
+    }
+  },
+  {
+    "category": "liquid_shadow",
+    "id": "liquid_pulse",
+    "level": 4,
+    "prerequisites": [
+      "liquid_push"
+    ],
+    "mechanism": "影响近域动量",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "liquid_silhouette",
+      "shape": "pulse",
+      "state": "design"
+    },
+    "description": "影响近域动量",
+    "name": "影响近域动量",
+    "implemented": true,
+    "zh": {
+      "name": "液影推波",
+      "description": "液影对附近最多四个敌人施加受限推力，不直接造成伤害。"
+    },
+    "en": {
+      "name": "Liquid Pulse",
+      "description": "Apply bounded physical pushes to up to four nearby enemies without direct damage."
+    },
+    "motif": "liquid_pulse",
+    "zh_tw": {
+      "name": "液影推波",
+      "description": "液影對附近最多四個敵人施加受限推力，不直接造成傷害。"
+    },
+    "ja": {
+      "name": "液影押波",
+      "description": "液影が近くの敵を最大四体、制限された力で押す。直接ダメージは与えない。"
+    }
+  },
+  {
+    "category": "liquid_shadow",
+    "id": "liquid_shadow_field",
+    "level": 5,
+    "prerequisites": [
+      "liquid_strike"
+    ],
+    "mechanism": "既有影体多目标近击",
+    "status": "existing_runtime_validation_varies",
+    "icon": {
+      "family": "liquid_silhouette",
+      "shape": "shadow_field",
+      "state": "design"
+    },
+    "description": "既有影体多目标近击",
+    "name": "既有影体多目标近击",
+    "implemented": true,
+    "zh": {
+      "name": "液影近域",
+      "description": "由液影对邻近敌人分配一次攻击。"
+    },
+    "en": {
+      "name": "Liquid Shadow Field",
+      "description": "Allocate one attack among eligible enemies near the liquid body."
+    },
+    "motif": "liquid_field",
+    "zh_tw": {
+      "name": "液影近域",
+      "description": "由液影對鄰近敵人分配一次攻擊。"
+    },
+    "ja": {
+      "name": "液影近接域",
+      "description": "液影の近くにいる敵へ一回分の攻撃を配分する。"
+    }
+  },
+  {
+    "category": "liquid_shadow",
+    "id": "liquid_dual_sensor",
+    "level": 5,
+    "prerequisites": [
+      "liquid_listen",
+      "liquid_survey"
+    ],
+    "mechanism": "多方位实体感知",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "liquid_silhouette",
+      "shape": "dual_sensor",
+      "state": "design"
+    },
+    "description": "同时汇报液影近期真实声音与生物接触，不提供视觉。",
+    "name": "液影双感",
+    "implemented": true,
+    "zh": {
+      "name": "液影双感",
+      "description": "同时汇报液影近期真实声音与生物接触，不提供视觉。"
+    },
+    "en": {
+      "name": "Liquid Dual Sense",
+      "description": "Report a recent real sound and physical creature contact without visual information."
+    },
+    "motif": "liquid_dual_sensor",
+    "zh_tw": {
+      "name": "液影雙感",
+      "description": "同時彙報液影近期真實聲音與生物接觸，不提供視覺。"
+    },
+    "ja": {
+      "name": "液影二重感覚",
+      "description": "液影の近くで最近発生した実際の音と、生物との接触を同時に報告する。映像は得られない。"
+    }
+  },
+  {
+    "category": "paper_psychokinesis",
+    "id": "paper_blade",
+    "level": 1,
+    "prerequisites": [],
+    "mechanism": "既有纸刃",
+    "status": "existing_runtime_validation_varies",
+    "icon": {
+      "family": "folded_paper",
+      "shape": "blade",
+      "state": "design"
+    },
+    "description": "既有纸刃",
+    "name": "既有纸刃",
+    "implemented": true,
+    "zh": {
+      "name": "纸刃",
+      "description": "消耗一张纸，向目标发射纸刃。"
+    },
+    "en": {
+      "name": "Paper Blade",
+      "description": "Consume one sheet to launch a blade at a target."
+    },
+    "motif": "paper_blade",
+    "zh_tw": {
+      "name": "紙刃",
+      "description": "消耗一張紙，向目標發射紙刃。"
+    },
+    "ja": {
+      "name": "紙刃",
+      "description": "紙を一枚消費して、目標へ紙刃を放つ。"
+    }
+  },
+  {
+    "category": "paper_psychokinesis",
+    "id": "paper_patch",
+    "level": 1,
+    "prerequisites": [
+      "paper_blade"
+    ],
+    "mechanism": "放置一个临时承载纸块",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "folded_paper",
+      "shape": "patch",
+      "state": "design"
+    },
+    "description": "消耗两张纸在可建位置生成限时、可承载的纸构造。",
+    "name": "放置一个临时承载纸块",
+    "implemented": true,
+    "zh": {
+      "name": "纸构造",
+      "description": "消耗两张纸放置一块限时、可承载的纸构造。"
+    },
+    "en": {
+      "name": "Paper Construct",
+      "description": "Consume two sheets to place a temporary solid paper block."
+    },
+    "motif": "paper_construct",
+    "zh_tw": {
+      "name": "紙構造",
+      "description": "消耗兩張紙放置一塊限時、可承載的紙構造。"
+    },
+    "ja": {
+      "name": "紙構造",
+      "description": "紙を二枚消費し、一定時間残り、上に立てる紙の構造物を一ブロック設置する。"
+    }
+  },
+  {
+    "category": "paper_psychokinesis",
+    "id": "paper_retract",
+    "level": 1,
+    "prerequisites": [
+      "paper_patch"
+    ],
+    "mechanism": "收回本人纸块不返纸",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "folded_paper",
+      "shape": "retract",
+      "state": "design"
+    },
+    "description": "收回本人纸块不返纸",
+    "name": "收回本人纸块不返纸",
+    "implemented": true,
+    "zh": {
+      "name": "撤收纸构造",
+      "description": "移除本人有效的纸构造，不返还纸张。"
+    },
+    "en": {
+      "name": "Retract Construct",
+      "description": "Remove your active paper construct without returning paper."
+    },
+    "motif": "paper_retract",
+    "zh_tw": {
+      "name": "撤收紙構造",
+      "description": "移除本人有效的紙構造，不返還紙張。"
+    },
+    "ja": {
+      "name": "紙構造撤収",
+      "description": "自分の有効な紙構造物を取り除く。紙は返らない。"
+    }
+  },
+  {
+    "category": "paper_psychokinesis",
+    "id": "paper_plane",
+    "level": 2,
+    "prerequisites": [
+      "paper_blade"
+    ],
+    "mechanism": "发射可碰撞的短时无伤纸飞机",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "folded_paper",
+      "shape": "plane",
+      "state": "design"
+    },
+    "description": "检测构造许可",
+    "name": "检测构造许可",
+    "implemented": true,
+    "zh": {
+      "name": "纸飞机",
+      "description": "消耗一张纸发射短时真实纸飞机，碰触实体或方块时消散，不造成直接伤害。"
+    },
+    "en": {
+      "name": "Paper Plane",
+      "description": "Consume one sheet to launch a temporary physical paper plane that disappears on contact without direct damage."
+    },
+    "motif": "paper_plane",
+    "zh_tw": {
+      "name": "紙飛機",
+      "description": "消耗一張紙發射短時真實紙飛機，碰觸實體或方塊時消散，不造成直接傷害。"
+    },
+    "ja": {
+      "name": "紙飛行機",
+      "description": "紙を一枚消費して短時間存在する実体の紙飛行機を飛ばす。実体やブロックに触れると消え、直接ダメージは与えない。"
+    }
+  },
+  {
+    "category": "paper_psychokinesis",
+    "id": "paper_walkway",
+    "level": 2,
+    "prerequisites": [
+      "paper_patch"
+    ],
+    "mechanism": "连续临时承载桥",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "folded_paper",
+      "shape": "walkway",
+      "state": "design"
+    },
+    "description": "连续临时承载桥",
+    "name": "连续临时承载桥",
+    "implemented": true,
+    "zh": {
+      "name": "纸桥",
+      "description": "消耗六张纸，在许可位置构成三格临时桥面。"
+    },
+    "en": {
+      "name": "Paper Walkway",
+      "description": "Consume six sheets to create a temporary three-block walkway at permitted positions."
+    },
+    "motif": "paper_walkway",
+    "zh_tw": {
+      "name": "紙橋",
+      "description": "消耗六張紙，在許可位置構成三格臨時橋面。"
+    },
+    "ja": {
+      "name": "紙橋",
+      "description": "紙を六枚消費し、設置可能な場所に三マス分の仮の橋を作る。"
+    }
+  },
+  {
+    "category": "paper_psychokinesis",
+    "id": "paper_step",
+    "level": 2,
+    "prerequisites": [
+      "paper_patch"
+    ],
+    "mechanism": "临时可攀爬台阶",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "folded_paper",
+      "shape": "step",
+      "state": "design"
+    },
+    "description": "临时可攀爬台阶",
+    "name": "临时可攀爬台阶",
+    "implemented": true,
+    "zh": {
+      "name": "纸阶",
+      "description": "消耗六张纸构造三段不同高度的临时台阶。"
+    },
+    "en": {
+      "name": "Paper Steps",
+      "description": "Consume six sheets to construct three temporary rising steps."
+    },
+    "motif": "paper_step",
+    "zh_tw": {
+      "name": "紙階",
+      "description": "消耗六張紙構造三段不同高度的臨時台階。"
+    },
+    "ja": {
+      "name": "紙の階段",
+      "description": "紙を六枚消費し、高さの異なる三段の仮の階段を作る。"
+    }
+  },
+  {
+    "category": "paper_psychokinesis",
+    "id": "paper_ramp",
+    "level": 2,
+    "prerequisites": [
+      "paper_step"
+    ],
+    "mechanism": "多级连通通路",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "folded_paper",
+      "shape": "ramp",
+      "state": "design"
+    },
+    "description": "消耗八张纸搭建四级可承重纸阶。",
+    "name": "纸长阶",
+    "implemented": true,
+    "zh": {
+      "name": "纸长阶",
+      "description": "消耗八张纸搭建四级可承重纸阶。"
+    },
+    "en": {
+      "name": "Paper Ramp",
+      "description": "Consume eight sheets to build four solid rising steps."
+    },
+    "motif": "paper_ramp",
+    "zh_tw": {
+      "name": "紙長階",
+      "description": "消耗八張紙搭建四級可承重紙階。"
+    },
+    "ja": {
+      "name": "長い紙階段",
+      "description": "紙を八枚消費し、上に立てる四段の紙階段を作る。"
+    }
+  },
+  {
+    "category": "paper_psychokinesis",
+    "id": "paper_pad",
+    "level": 2,
+    "prerequisites": [
+      "paper_patch"
+    ],
+    "mechanism": "扩展临时站台",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "folded_paper",
+      "shape": "pad",
+      "state": "design"
+    },
+    "description": "扩展临时站台",
+    "name": "扩展临时站台",
+    "implemented": true,
+    "zh": {
+      "name": "纸站台",
+      "description": "消耗八张纸在许可位置构造四格限时实体站台。"
+    },
+    "en": {
+      "name": "Paper Platform",
+      "description": "Consume eight sheets to build a temporary four-block solid platform."
+    },
+    "motif": "paper_pad",
+    "zh_tw": {
+      "name": "紙站台",
+      "description": "消耗八張紙在許可位置構造四格限時實體站台。"
+    },
+    "ja": {
+      "name": "紙の足場",
+      "description": "紙を八枚消費し、設置可能な場所に四マスの実体を持つ仮の足場を作る。"
+    }
+  },
+  {
+    "category": "paper_psychokinesis",
+    "id": "paper_screen",
+    "level": 2,
+    "prerequisites": [
+      "paper_patch"
+    ],
+    "mechanism": "遮挡视线的纸壁",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "folded_paper",
+      "shape": "screen",
+      "state": "design"
+    },
+    "description": "遮挡视线的纸壁",
+    "name": "遮挡视线的纸壁",
+    "implemented": true,
+    "zh": {
+      "name": "纸屏障",
+      "description": "消耗六张纸构造三格高的实体纸屏。"
+    },
+    "en": {
+      "name": "Paper Screen",
+      "description": "Consume six sheets to create a three-block-high solid screen."
+    },
+    "motif": "paper_screen",
+    "zh_tw": {
+      "name": "紙屏障",
+      "description": "消耗六張紙構造三格高的實體紙屏。"
+    },
+    "ja": {
+      "name": "紙の遮蔽",
+      "description": "紙を六枚消費し、高さ三マスの実体を持つ紙の壁を作る。"
+    }
+  },
+  {
+    "category": "paper_psychokinesis",
+    "id": "paper_armor",
+    "level": 3,
+    "prerequisites": [
+      "paper_blade"
+    ],
+    "mechanism": "既有消耗纸的防箭",
+    "status": "existing_runtime_validation_varies",
+    "icon": {
+      "family": "folded_paper",
+      "shape": "armor",
+      "state": "design"
+    },
+    "description": "既有消耗纸的防箭",
+    "name": "既有消耗纸的防箭",
+    "implemented": true,
+    "zh": {
+      "name": "纸盾",
+      "description": "消耗三张纸，短时拦截真实来袭箭矢。"
+    },
+    "en": {
+      "name": "Paper Armor",
+      "description": "Consume three sheets to briefly deflect incoming arrows."
+    },
+    "motif": "paper_armor",
+    "zh_tw": {
+      "name": "紙盾",
+      "description": "消耗三張紙，短時攔截真實來襲箭矢。"
+    },
+    "ja": {
+      "name": "紙盾",
+      "description": "紙を三枚消費し、実際に飛来する矢を短時間防ぐ。"
+    }
+  },
+  {
+    "category": "paper_psychokinesis",
+    "id": "paper_wing",
+    "level": 3,
+    "prerequisites": [
+      "paper_blade"
+    ],
+    "mechanism": "既有消耗纸滑翔",
+    "status": "existing_runtime_validation_varies",
+    "icon": {
+      "family": "folded_paper",
+      "shape": "wing",
+      "state": "design"
+    },
+    "description": "既有消耗纸滑翔",
+    "name": "既有消耗纸滑翔",
+    "implemented": true,
+    "zh": {
+      "name": "纸翼滑翔",
+      "description": "消耗八张纸展开短时纸翼，抬头上升，潜行收起。"
+    },
+    "en": {
+      "name": "Paper Wing Glide",
+      "description": "Consume eight sheets to glide briefly; look up to rise and sneak to stop."
+    },
+    "motif": "paper_wing",
+    "zh_tw": {
+      "name": "紙翼滑翔",
+      "description": "消耗八張紙展開短時紙翼，抬頭上升，潛行收起。"
+    },
+    "ja": {
+      "name": "紙翼滑空",
+      "description": "紙を八枚消費して短時間紙の翼を広げる。上を向くと上昇し、スニークで畳む。"
+    }
+  },
+  {
+    "category": "paper_psychokinesis",
+    "id": "paper_switch",
+    "level": 3,
+    "prerequisites": [
+      "paper_patch"
+    ],
+    "mechanism": "可交互纸按钮",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "folded_paper",
+      "shape": "switch",
+      "state": "design"
+    },
+    "description": "可交互纸按钮",
+    "name": "可交互纸按钮",
+    "implemented": true,
+    "zh": {
+      "name": "纸按钮",
+      "description": "消耗两张纸，在自己的纸构造上安装可由玩家操作的红石按钮。"
+    },
+    "en": {
+      "name": "Paper Button",
+      "description": "Consume two sheets to attach a player-operated redstone button to your paper construct."
+    },
+    "motif": "paper_switch",
+    "zh_tw": {
+      "name": "紙按鈕",
+      "description": "消耗兩張紙，在自己的紙構造上安裝可由玩家操作的紅石按鈕。"
+    },
+    "ja": {
+      "name": "紙のボタン",
+      "description": "紙を二枚消費し、自分の紙構造物にプレイヤーが操作できるレッドストーンボタンを設置する。"
+    }
+  },
+  {
+    "category": "paper_psychokinesis",
+    "id": "paper_plate",
+    "level": 3,
+    "prerequisites": [
+      "paper_patch"
+    ],
+    "mechanism": "实体踏触发红石纸板",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "folded_paper",
+      "shape": "plate",
+      "state": "design"
+    },
+    "description": "实体踏触发红石纸板",
+    "name": "实体踏触发红石纸板",
+    "implemented": true,
+    "zh": {
+      "name": "纸压板",
+      "description": "消耗两张纸在本人纸构造上安装可被实体踩下的红石压板。"
+    },
+    "en": {
+      "name": "Paper Pressure Plate",
+      "description": "Consume two sheets to install a redstone pressure plate on your own paper construct."
+    },
+    "motif": "paper_plate",
+    "zh_tw": {
+      "name": "紙壓板",
+      "description": "消耗兩張紙在本人紙構造上安裝可被實體踩下的紅石壓板。"
+    },
+    "ja": {
+      "name": "紙の感圧板",
+      "description": "紙を二枚消費し、自分の紙構造物に実体が踏めるレッドストーン感圧板を設置する。"
+    }
+  },
+  {
+    "category": "paper_psychokinesis",
+    "id": "paper_lift_bridge",
+    "level": 3,
+    "prerequisites": [
+      "paper_walkway"
+    ],
+    "mechanism": "跨越一格高差的承载通路",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "folded_paper",
+      "shape": "lift_bridge",
+      "state": "design"
+    },
+    "description": "消耗八张纸搭建中途升高一格的四段承重桥。",
+    "name": "纸升桥",
+    "implemented": true,
+    "zh": {
+      "name": "纸升桥",
+      "description": "消耗八张纸搭建中途升高一格的四段承重桥。"
+    },
+    "en": {
+      "name": "Raised Paper Bridge",
+      "description": "Consume eight sheets to build a four-block bridge rising one block midway."
+    },
+    "motif": "paper_lift_bridge",
+    "zh_tw": {
+      "name": "紙升橋",
+      "description": "消耗八張紙搭建中途升高一格的四段承重橋。"
+    },
+    "ja": {
+      "name": "段差のある紙橋",
+      "description": "紙を八枚消費し、途中で一マス高くなる四マスの歩ける橋を作る。"
+    }
+  },
+  {
+    "category": "paper_psychokinesis",
+    "id": "paper_cover",
+    "level": 3,
+    "prerequisites": [
+      "paper_screen"
+    ],
+    "mechanism": "独立朝向纸屏",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "folded_paper",
+      "shape": "cover",
+      "state": "design"
+    },
+    "description": "消耗十二张纸搭建三宽两高的临时实体掩壁。",
+    "name": "纸掩壁",
+    "implemented": true,
+    "zh": {
+      "name": "纸掩壁",
+      "description": "消耗十二张纸搭建三宽两高的临时实体掩壁。"
+    },
+    "en": {
+      "name": "Paper Cover",
+      "description": "Consume twelve sheets to build a temporary three-wide, two-high solid screen."
+    },
+    "motif": "paper_cover",
+    "zh_tw": {
+      "name": "紙掩壁",
+      "description": "消耗十二張紙搭建三寬兩高的臨時實體掩壁。"
+    },
+    "ja": {
+      "name": "紙の遮蔽壁",
+      "description": "紙を十二枚消費し、幅三マス、高さ二マスの実体を持つ仮の壁を作る。"
+    }
+  },
+  {
+    "category": "paper_psychokinesis",
+    "id": "paper_gate",
+    "level": 4,
+    "prerequisites": [
+      "paper_switch"
+    ],
+    "mechanism": "受控开启临时纸门",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "folded_paper",
+      "shape": "gate",
+      "state": "design"
+    },
+    "description": "受控开启临时纸门",
+    "name": "受控开启临时纸门",
+    "implemented": true,
+    "zh": {
+      "name": "纸门",
+      "description": "消耗两张纸，在本人纸构造上安装可开合的实体纸门。"
+    },
+    "en": {
+      "name": "Paper Gate",
+      "description": "Consume two sheets to attach an operable solid paper gate to your construct."
+    },
+    "motif": "paper_gate",
+    "zh_tw": {
+      "name": "紙門",
+      "description": "消耗兩張紙，在本人紙構造上安裝可開合的實體紙門。"
+    },
+    "ja": {
+      "name": "紙の扉",
+      "description": "紙を二枚消費し、自分の紙構造物に開閉できる実体の紙扉を設置する。"
+    }
+  },
+  {
+    "category": "paper_psychokinesis",
+    "id": "paper_platform",
+    "level": 4,
+    "prerequisites": [
+      "paper_pad"
+    ],
+    "mechanism": "较大承载台",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "folded_paper",
+      "shape": "platform",
+      "state": "design"
+    },
+    "description": "消耗十八张纸搭建三乘三的临时承重平台。",
+    "name": "纸平台",
+    "implemented": true,
+    "zh": {
+      "name": "纸平台",
+      "description": "消耗十八张纸搭建三乘三的临时承重平台。"
+    },
+    "en": {
+      "name": "Paper Platform",
+      "description": "Consume eighteen sheets to build a temporary solid three-by-three platform."
+    },
+    "motif": "paper_platform",
+    "zh_tw": {
+      "name": "紙平台",
+      "description": "消耗十八張紙搭建三乘三的臨時承重平台。"
+    },
+    "ja": {
+      "name": "紙の足場台",
+      "description": "紙を十八枚消費し、三マス四方の上に立てる仮の足場を作る。"
+    }
+  },
+  {
+    "category": "paper_psychokinesis",
+    "id": "paper_puzzle_link",
+    "level": 4,
+    "prerequisites": [
+      "paper_plate"
+    ],
+    "mechanism": "相邻红石触发构件",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "folded_paper",
+      "shape": "puzzle_link",
+      "state": "design"
+    },
+    "description": "消耗四张纸组合实体支撑块与压力板；生物踩踏产生真实红石信号。",
+    "name": "纸构触发座",
+    "implemented": true,
+    "zh": {
+      "name": "纸构触发座",
+      "description": "消耗四张纸组合实体支撑块与压力板；生物踩踏产生真实红石信号。"
+    },
+    "en": {
+      "name": "Paper Trigger Base",
+      "description": "Consume four sheets to assemble a solid support and pressure plate that emits real redstone when stepped on."
+    },
+    "motif": "paper_puzzle_link",
+    "zh_tw": {
+      "name": "紙構觸發座",
+      "description": "消耗四張紙組合實體支撐塊與壓力板；生物踩踏產生真實紅石訊號。"
+    },
+    "ja": {
+      "name": "紙の感圧台",
+      "description": "紙を四枚消費し、実体の支えと感圧板を組み立てる。生物が踏むと実際のレッドストーン信号を発する。"
+    }
+  },
+  {
+    "category": "paper_psychokinesis",
+    "id": "paper_safety_rail",
+    "level": 4,
+    "prerequisites": [
+      "paper_screen"
+    ],
+    "mechanism": "纸侧栏防跌",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "folded_paper",
+      "shape": "safety_rail",
+      "state": "design"
+    },
+    "description": "纸侧栏防跌",
+    "name": "纸侧栏防跌",
+    "implemented": true,
+    "zh": {
+      "name": "纸护栏",
+      "description": "消耗六张纸布置三格实体护栏。"
+    },
+    "en": {
+      "name": "Paper Rail",
+      "description": "Consume six sheets to place a three-block solid safety rail."
+    },
+    "motif": "paper_safety_rail",
+    "zh_tw": {
+      "name": "紙護欄",
+      "description": "消耗六張紙佈置三格實體護欄。"
+    },
+    "ja": {
+      "name": "紙の手すり",
+      "description": "紙を六枚消費し、実体を持つ三マスの手すりを設置する。"
+    }
+  },
+  {
+    "category": "paper_psychokinesis",
+    "id": "paper_ladder",
+    "level": 4,
+    "prerequisites": [
+      "paper_step"
+    ],
+    "mechanism": "贴壁攀爬构件",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "folded_paper",
+      "shape": "ladder",
+      "state": "design"
+    },
+    "description": "贴壁攀爬构件",
+    "name": "贴壁攀爬构件",
+    "implemented": true,
+    "zh": {
+      "name": "纸梯",
+      "description": "消耗两张纸，在本人纸构造侧面安装可攀爬纸梯。"
+    },
+    "en": {
+      "name": "Paper Ladder",
+      "description": "Consume two sheets to attach a climbable ladder to your paper construct."
+    },
+    "motif": "paper_ladder",
+    "zh_tw": {
+      "name": "紙梯",
+      "description": "消耗兩張紙，在本人紙構造側面安裝可攀爬紙梯。"
+    },
+    "ja": {
+      "name": "紙の梯子",
+      "description": "紙を二枚消費し、自分の紙構造物の側面に登れる梯子を設置する。"
+    }
+  },
+  {
+    "category": "paper_psychokinesis",
+    "id": "paper_array",
+    "level": 5,
+    "prerequisites": [
+      "paper_armor"
+    ],
+    "mechanism": "既有纸刃阵",
+    "status": "existing_runtime_validation_varies",
+    "icon": {
+      "family": "folded_paper",
+      "shape": "array",
+      "state": "design"
+    },
+    "description": "既有纸刃阵",
+    "name": "既有纸刃阵",
+    "implemented": true,
+    "zh": {
+      "name": "纸阵",
+      "description": "消耗六张纸，对附近敌人分配一次攻击。"
+    },
+    "en": {
+      "name": "Paper Array",
+      "description": "Consume six sheets to allocate one attack among nearby enemies."
+    },
+    "motif": "paper_array",
+    "zh_tw": {
+      "name": "紙陣",
+      "description": "消耗六張紙，對附近敵人分配一次攻擊。"
+    },
+    "ja": {
+      "name": "紙刃陣",
+      "description": "紙を六枚消費し、近くの敵へ一回分の攻撃を配分する。"
+    }
+  },
+  {
+    "category": "paper_psychokinesis",
+    "id": "paper_catwalk",
+    "level": 5,
+    "prerequisites": [
+      "paper_walkway"
+    ],
+    "mechanism": "有限长度承载走道",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "folded_paper",
+      "shape": "catwalk",
+      "state": "design"
+    },
+    "description": "消耗十张纸搭建横向五格的临时承重桥。",
+    "name": "纸横桥",
+    "implemented": true,
+    "zh": {
+      "name": "纸横桥",
+      "description": "消耗十张纸搭建横向五格的临时承重桥。"
+    },
+    "en": {
+      "name": "Paper Catwalk",
+      "description": "Consume ten sheets to build a temporary five-block transverse walkway."
+    },
+    "motif": "paper_catwalk",
+    "zh_tw": {
+      "name": "紙橫橋",
+      "description": "消耗十張紙搭建橫向五格的臨時承重橋。"
+    },
+    "ja": {
+      "name": "横向きの紙橋",
+      "description": "紙を十枚消費し、横に五マス延びる上に立てる仮の橋を作る。"
+    }
+  },
+  {
+    "category": "paper_psychokinesis",
+    "id": "paper_switch_bridge",
+    "level": 5,
+    "prerequisites": [
+      "paper_switch",
+      "paper_gate"
+    ],
+    "mechanism": "触发式开闭纸桥",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "folded_paper",
+      "shape": "switch_bridge",
+      "state": "design"
+    },
+    "description": "消耗六张纸组合支撑、按钮与可开合纸门；按钮通过真实红石信号打开桥面。",
+    "name": "纸控开合桥",
+    "implemented": true,
+    "zh": {
+      "name": "纸控开合桥",
+      "description": "消耗六张纸组合支撑、按钮与可开合纸门；按钮通过真实红石信号打开桥面。"
+    },
+    "en": {
+      "name": "Paper Switch Bridge",
+      "description": "Consume six sheets to assemble a support, button and paper gate; real redstone opens the bridge surface."
+    },
+    "motif": "paper_switch_bridge",
+    "zh_tw": {
+      "name": "紙控開合橋",
+      "description": "消耗六張紙組合支撐、按鈕與可開合紙門；按鈕透過真實紅石訊號開啟橋面。"
+    },
+    "ja": {
+      "name": "紙の可動橋",
+      "description": "紙を六枚消費し、支え、ボタン、開閉式の紙扉を組み立てる。ボタンの実際のレッドストーン信号で橋面が開く。"
+    }
+  },
+  {
+    "category": "paper_psychokinesis",
+    "id": "paper_emergency_stairs",
+    "level": 5,
+    "prerequisites": [
+      "paper_step"
+    ],
+    "mechanism": "有限材料临时逃生阶梯",
+    "status": "implemented_unverified",
+    "icon": {
+      "family": "folded_paper",
+      "shape": "emergency_stairs",
+      "state": "design"
+    },
+    "description": "消耗八张纸搭建四级向下延伸的临时逃生台阶。",
+    "name": "纸逃生阶",
+    "implemented": true,
+    "zh": {
+      "name": "纸逃生阶",
+      "description": "消耗八张纸搭建四级向下延伸的临时逃生台阶。"
+    },
+    "en": {
+      "name": "Paper Escape Stairs",
+      "description": "Consume eight sheets to build four temporary descending escape steps."
+    },
+    "motif": "paper_emergency_stairs",
+    "zh_tw": {
+      "name": "紙逃生階",
+      "description": "消耗八張紙搭建四級向下延伸的臨時逃生台階。"
+    },
+    "ja": {
+      "name": "紙の脱出階段",
+      "description": "紙を八枚消費し、下へ四段延びる仮の脱出階段を作る。"
+    }
+  },
+  {
+    "id": "hydro_douse_self",
+    "category": "hydro_hand",
+    "level": 1,
+    "implemented": true,
+    "zh": {
+      "name": "水流自救",
+      "description": "借助已选择的真实水源熄灭自身火焰。"
+    },
+    "en": {
+      "name": "Self Douse",
+      "description": "Use a selected real water source to extinguish your own fire."
+    },
+    "motif": "WATER_TRANSFER",
+    "phase": "HIT",
+    "zh_tw": {
+      "name": "水流自救",
+      "description": "藉助已選擇的真實水源熄滅自身火焰。"
+    },
+    "ja": {
+      "name": "水流消火・自身",
+      "description": "選択済みの実際の水源を使い、自分の火を消す。"
+    },
+    "prerequisites": [
+      "hydro_whip"
+    ]
+  },
+  {
+    "id": "hydro_douse_ally",
+    "category": "hydro_hand",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "水流援护",
+      "description": "借助水源熄灭潜行同意的队友身上的火焰。"
+    },
+    "en": {
+      "name": "Ally Douse",
+      "description": "Extinguish a sneaking, consenting teammate using real water."
+    },
+    "motif": "WATER_TRANSFER",
+    "phase": "HIT",
+    "zh_tw": {
+      "name": "水流援護",
+      "description": "藉助水源熄滅潛行同意的隊友身上的火焰。"
+    },
+    "ja": {
+      "name": "水流消火・仲間",
+      "description": "水源を使い、スニークして同意した仲間の火を消す。"
+    },
+    "prerequisites": [
+      "hydro_douse_self"
+    ]
+  },
+  {
+    "id": "hydro_douse_hostile",
+    "category": "hydro_hand",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "水流熄火",
+      "description": "借助水源熄灭瞄准的敌对生物身上的火焰。"
+    },
+    "en": {
+      "name": "Hostile Douse",
+      "description": "Extinguish a targeted hostile creature using real water."
+    },
+    "motif": "WATER_TRANSFER",
+    "phase": "HIT",
+    "zh_tw": {
+      "name": "水流熄火",
+      "description": "藉助水源熄滅瞄準的敵對生物身上的火焰。"
+    },
+    "ja": {
+      "name": "水流消火・敵",
+      "description": "水源を使い、狙った敵対生物の火を消す。"
+    },
+    "prerequisites": [
+      "hydro_douse_self"
+    ]
+  },
+  {
+    "id": "hydro_campfire_out",
+    "category": "hydro_hand",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "营火扑灭",
+      "description": "利用水源熄灭瞄准的营火，保留其中物品。"
+    },
+    "en": {
+      "name": "Campfire Douse",
+      "description": "Extinguish the targeted campfire while preserving its inventory."
+    },
+    "motif": "WATER_TRANSFER",
+    "phase": "HIT",
+    "zh_tw": {
+      "name": "營火撲滅",
+      "description": "利用水源熄滅瞄準的營火，保留其中物品。"
+    },
+    "ja": {
+      "name": "焚き火消し",
+      "description": "水源を使って狙った焚き火を消し、中のアイテムは残す。"
+    },
+    "prerequisites": [
+      "hydro_extinguish"
+    ]
+  },
+  {
+    "id": "hydro_candle_out",
+    "category": "hydro_hand",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "烛火扑灭",
+      "description": "利用水源熄灭瞄准的蜡烛。"
+    },
+    "en": {
+      "name": "Candle Douse",
+      "description": "Extinguish the targeted candle using real water."
+    },
+    "motif": "WATER_TRANSFER",
+    "phase": "HIT",
+    "zh_tw": {
+      "name": "燭火撲滅",
+      "description": "利用水源熄滅瞄準的蠟燭。"
+    },
+    "ja": {
+      "name": "ろうそく消し",
+      "description": "水源を使って狙ったろうそくの火を消す。"
+    },
+    "prerequisites": [
+      "hydro_extinguish"
+    ]
+  },
+  {
+    "id": "hydro_pressure_jet",
+    "category": "hydro_hand",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "高压水束",
+      "description": "以真实水源向瞄准的敌对生物发射水束。"
+    },
+    "en": {
+      "name": "Pressure Jet",
+      "description": "Project water from a real source along a targeted line."
+    },
+    "motif": "WATER_WHIP",
+    "phase": "HIT",
+    "zh_tw": {
+      "name": "高壓水束",
+      "description": "以真實水源向瞄準的敵對生物發射水束。"
+    },
+    "ja": {
+      "name": "高圧水流",
+      "description": "実際の水源から、狙った敵対生物へ水流を放つ。"
+    },
+    "prerequisites": [
+      "hydro_whip"
+    ]
+  },
+  {
+    "id": "hydro_fan",
+    "category": "hydro_hand",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "扇形水击",
+      "description": "以真实水源攻击前方扇形范围内至多四个敌人。"
+    },
+    "en": {
+      "name": "Water Fan",
+      "description": "Strike up to four enemies within a forward water fan."
+    },
+    "motif": "WATER_DOMAIN",
+    "phase": "HIT",
+    "zh_tw": {
+      "name": "扇形水擊",
+      "description": "以真實水源攻擊前方扇形範圍內至多四個敵人。"
+    },
+    "ja": {
+      "name": "扇状水撃",
+      "description": "実際の水源を使い、前方の扇形範囲にいる敵を最大四体攻撃する。"
+    },
+    "prerequisites": [
+      "hydro_pressure_jet"
+    ]
+  },
+  {
+    "id": "hydro_eddy",
+    "category": "hydro_hand",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "水中涡流",
+      "description": "以真实水源攻击周围水中的至多六个敌人。"
+    },
+    "en": {
+      "name": "Water Eddy",
+      "description": "Strike up to six nearby enemies actually in water."
+    },
+    "motif": "WATER_DOMAIN",
+    "phase": "HIT",
+    "zh_tw": {
+      "name": "水中渦流",
+      "description": "以真實水源攻擊周圍水中的至多六個敵人。"
+    },
+    "ja": {
+      "name": "水中渦流",
+      "description": "実際の水源を使い、周囲の水中にいる敵を最大六体攻撃する。"
+    },
+    "prerequisites": [
+      "hydro_domain"
+    ]
+  },
+  {
+    "id": "hydro_dive",
+    "category": "hydro_hand",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "下潜水流",
+      "description": "在水中用水流加速自身下潜。"
+    },
+    "en": {
+      "name": "Dive Current",
+      "description": "Use an existing water current to dive while submerged."
+    },
+    "motif": "WATER_TRANSFER",
+    "phase": "HIT",
+    "zh_tw": {
+      "name": "下潛水流",
+      "description": "在水中用水流加速自身下潛。"
+    },
+    "ja": {
+      "name": "潜行水流",
+      "description": "水中で水流を使い、自分の潜行を加速する。"
+    },
+    "prerequisites": [
+      "hydro_current"
+    ]
+  },
+  {
+    "id": "hydro_lateral_current",
+    "category": "hydro_hand",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "侧向水流",
+      "description": "借已经选择的真实水源，在实际浸水时向视线侧方短距移动。"
+    },
+    "en": {
+      "name": "Lateral Current",
+      "description": "Move sideways through existing water."
+    },
+    "motif": "WATER_TRANSFER",
+    "phase": "HIT",
+    "zh_tw": {
+      "name": "側向水流",
+      "description": "借已經選擇的真實水源，在實際浸水時向視線側方短距移動。"
+    },
+    "ja": {
+      "name": "側方水流",
+      "description": "選択済みの実際の水源を使い、水に浸かっている間に視線の横へ短距離移動する。"
+    },
+    "prerequisites": [
+      "hydro_current"
+    ]
+  },
+  {
+    "id": "hydro_undertow",
+    "category": "hydro_hand",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "回卷水流",
+      "description": "将瞄准的水中敌人向自己拉动。"
+    },
+    "en": {
+      "name": "Undertow",
+      "description": "Draw a targeted submerged hostile toward you."
+    },
+    "motif": "WATER_TRANSFER",
+    "phase": "HIT",
+    "zh_tw": {
+      "name": "回捲水流",
+      "description": "將瞄準的水中敵人向自己拉動。"
+    },
+    "ja": {
+      "name": "引き戻す水流",
+      "description": "狙った水中の敵を自分の方へ引き寄せる。"
+    },
+    "prerequisites": [
+      "hydro_current"
+    ]
+  },
+  {
+    "id": "hydro_tow_ally",
+    "category": "hydro_hand",
+    "level": 4,
+    "implemented": true,
+    "zh": {
+      "name": "水中牵引",
+      "description": "将潜行同意的水中队友向自己牵引。"
+    },
+    "en": {
+      "name": "Ally Tow",
+      "description": "Tow a submerged, sneaking teammate toward you."
+    },
+    "motif": "WATER_TRANSFER",
+    "phase": "HIT",
+    "zh_tw": {
+      "name": "水中牽引",
+      "description": "將潛行同意的水中隊友向自己牽引。"
+    },
+    "ja": {
+      "name": "水中牽引",
+      "description": "スニークして同意した水中の仲間を自分の方へ引き寄せる。"
+    },
+    "prerequisites": [
+      "hydro_rescue"
+    ]
+  },
+  {
+    "id": "hydro_brake_field",
+    "category": "hydro_hand",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "水中缓流域",
+      "description": "减缓附近水中自身和潜行队友的运动。"
+    },
+    "en": {
+      "name": "Water Brake Field",
+      "description": "Slow your own and consenting teammates’ movement in nearby water."
+    },
+    "motif": "WATER_DOMAIN",
+    "phase": "HIT",
+    "zh_tw": {
+      "name": "水中緩流域",
+      "description": "減緩附近水中自身和潛行隊友的運動。"
+    },
+    "ja": {
+      "name": "水中緩流域",
+      "description": "近くの水中にいる自分とスニーク中の仲間の動きを抑える。"
+    },
+    "prerequisites": [
+      "hydro_brake"
+    ]
+  },
+  {
+    "id": "float_hover",
+    "category": "float_dial",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "浮力悬停",
+      "description": "在空中短时维持施术时的高度。"
+    },
+    "en": {
+      "name": "Buoyant Hover",
+      "description": "Hold your current altitude briefly in air."
+    },
+    "motif": "FIELD",
+    "phase": "START/END",
+    "zh_tw": {
+      "name": "浮力懸停",
+      "description": "在空中短時維持施術時的高度。"
+    },
+    "ja": {
+      "name": "浮力ホバリング",
+      "description": "空中で発動時の高さを短時間維持する。"
+    },
+    "prerequisites": [
+      "float_lift"
+    ]
+  },
+  {
+    "id": "float_ascent",
+    "category": "float_dial",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "浮力上升",
+      "description": "用短时浮力租约在空中持续缓慢上升，不授予无限飞行或关闭重力。"
+    },
+    "en": {
+      "name": "Buoyant Ascent",
+      "description": "Rise slowly through buoyant air."
+    },
+    "motif": "FIELD",
+    "phase": "START/END",
+    "zh_tw": {
+      "name": "浮力上升",
+      "description": "用短時浮力租約在空中持續緩慢上升，不授予無限飛行或關閉重力。"
+    },
+    "ja": {
+      "name": "浮力上昇",
+      "description": "短時間の浮力制御で空中をゆっくり上昇する。無制限の飛行や重力の無効化はできない。"
+    },
+    "prerequisites": [
+      "float_lift"
+    ]
+  },
+  {
+    "id": "float_descent",
+    "category": "float_dial",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "浮力下降",
+      "description": "用短时浮力租约在空中受控缓慢下降，保留原版地形碰撞。"
+    },
+    "en": {
+      "name": "Buoyant Descent",
+      "description": "Descend under controlled buoyancy."
+    },
+    "motif": "FIELD",
+    "phase": "START/END",
+    "zh_tw": {
+      "name": "浮力下降",
+      "description": "用短時浮力租約在空中受控緩慢下降，保留原版地形碰撞。"
+    },
+    "ja": {
+      "name": "浮力降下",
+      "description": "短時間の浮力制御で空中をゆっくり降下する。通常の地形との衝突は有効。"
+    },
+    "prerequisites": [
+      "float_lift"
+    ]
+  },
+  {
+    "id": "float_air_brake",
+    "category": "float_dial",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "空中制动",
+      "description": "调节本人浮力以减缓下落和水平动量，只在有限租约期间生效。"
+    },
+    "en": {
+      "name": "Air Brake",
+      "description": "Dampen falling and horizontal motion."
+    },
+    "motif": "FIELD",
+    "phase": "START/END",
+    "zh_tw": {
+      "name": "空中制動",
+      "description": "調節本人浮力以減緩下落和水平動量，只在有限租約期間生效。"
+    },
+    "ja": {
+      "name": "空中制動",
+      "description": "自分の浮力を調整して落下と水平移動を抑える。効果は一定時間のみ。"
+    },
+    "prerequisites": [
+      "float_rescue"
+    ]
+  },
+  {
+    "id": "float_ally_hover",
+    "category": "float_dial",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "队友悬停",
+      "description": "使潜行同意的空中队友短时悬停。"
+    },
+    "en": {
+      "name": "Ally Hover",
+      "description": "Hold a consenting airborne teammate at their height."
+    },
+    "motif": "FIELD",
+    "phase": "START/END",
+    "zh_tw": {
+      "name": "隊友懸停",
+      "description": "使潛行同意的空中隊友短時懸停。"
+    },
+    "ja": {
+      "name": "仲間のホバリング",
+      "description": "スニークして同意した空中の仲間を短時間その高さに留める。"
+    },
+    "prerequisites": [
+      "float_rescue"
+    ]
+  },
+  {
+    "id": "float_ally_ascent",
+    "category": "float_dial",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "队友升浮",
+      "description": "使潜行同意的空中队友缓慢上升。"
+    },
+    "en": {
+      "name": "Ally Ascent",
+      "description": "Lift a consenting airborne teammate slowly."
+    },
+    "motif": "FIELD",
+    "phase": "START/END",
+    "zh_tw": {
+      "name": "隊友升浮",
+      "description": "使潛行同意的空中隊友緩慢上升。"
+    },
+    "ja": {
+      "name": "仲間の浮上",
+      "description": "スニークして同意した空中の仲間をゆっくり上昇させる。"
+    },
+    "prerequisites": [
+      "float_rescue"
+    ]
+  },
+  {
+    "id": "float_ally_descent",
+    "category": "float_dial",
+    "level": 4,
+    "implemented": true,
+    "zh": {
+      "name": "队友缓降",
+      "description": "使潜行同意的空中队友受控下降。"
+    },
+    "en": {
+      "name": "Ally Descent",
+      "description": "Lower a consenting airborne teammate safely."
+    },
+    "motif": "FIELD",
+    "phase": "START/END",
+    "zh_tw": {
+      "name": "隊友緩降",
+      "description": "使潛行同意的空中隊友受控下降。"
+    },
+    "ja": {
+      "name": "仲間の緩降下",
+      "description": "スニークして同意した空中の仲間を制御しながら降下させる。"
+    },
+    "prerequisites": [
+      "float_rescue"
+    ]
+  },
+  {
+    "id": "float_suspend",
+    "category": "float_dial",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "敌体悬浮",
+      "description": "使瞄准的敌对生物暂时保持高度。"
+    },
+    "en": {
+      "name": "Hostile Suspension",
+      "description": "Temporarily hold a targeted hostile at its height."
+    },
+    "motif": "FIELD",
+    "phase": "START/END",
+    "zh_tw": {
+      "name": "敵體懸浮",
+      "description": "使瞄準的敵對生物暫時保持高度。"
+    },
+    "ja": {
+      "name": "敵の浮遊",
+      "description": "狙った敵対生物の高さを一時的に保つ。"
+    },
+    "prerequisites": [
+      "float_lift"
+    ]
+  },
+  {
+    "id": "float_hostile_descent",
+    "category": "float_dial",
+    "level": 4,
+    "implemented": true,
+    "zh": {
+      "name": "敌体下降",
+      "description": "使瞄准敌对生物受控下降，不附加坠落伤害。"
+    },
+    "en": {
+      "name": "Hostile Descent",
+      "description": "Lower a hostile under control without adding fall damage."
+    },
+    "motif": "FIELD",
+    "phase": "START/END",
+    "zh_tw": {
+      "name": "敵體下降",
+      "description": "使瞄準敵對生物受控下降，不附加墜落傷害。"
+    },
+    "ja": {
+      "name": "敵の降下",
+      "description": "狙った敵対生物を制御しながら降下させる。追加の落下ダメージは与えない。"
+    },
+    "prerequisites": [
+      "float_suspend"
+    ]
+  },
+  {
+    "id": "float_hover_field",
+    "category": "float_dial",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "悬浮场",
+      "description": "使附近至多六个敌对生物短时保持高度。"
+    },
+    "en": {
+      "name": "Suspension Field",
+      "description": "Hold up to six nearby hostile creatures at their heights."
+    },
+    "motif": "FIELD",
+    "phase": "START/END",
+    "zh_tw": {
+      "name": "懸浮場",
+      "description": "使附近至多六個敵對生物短時保持高度。"
+    },
+    "ja": {
+      "name": "浮遊場",
+      "description": "近くの敵対生物を最大六体、短時間その高さに留める。"
+    },
+    "prerequisites": [
+      "float_field"
+    ]
+  },
+  {
+    "id": "float_rescue_field",
+    "category": "float_dial",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "群体缓坠",
+      "description": "减缓自身和潜行同意的队友的下坠与水平运动。"
+    },
+    "en": {
+      "name": "Rescue Field",
+      "description": "Brake falling for yourself and consenting teammates."
+    },
+    "motif": "FIELD",
+    "phase": "START/END",
+    "zh_tw": {
+      "name": "群體緩墜",
+      "description": "減緩自身和潛行同意的隊友的下墜與水平運動。"
+    },
+    "ja": {
+      "name": "集団緩降下",
+      "description": "自分とスニークして同意した仲間の落下と水平移動を抑える。"
+    },
+    "prerequisites": [
+      "float_rescue"
+    ]
+  },
+  {
+    "id": "float_item_shelf",
+    "category": "float_dial",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "浮空置物",
+      "description": "使自己扔出的物品短时停留在原处。"
+    },
+    "en": {
+      "name": "Floating Shelf",
+      "description": "Hold your own dropped item near its original position."
+    },
+    "motif": "FIELD",
+    "phase": "START/END",
+    "zh_tw": {
+      "name": "浮空置物",
+      "description": "使自己扔出的物品短時停留在原處。"
+    },
+    "ja": {
+      "name": "浮遊物置き",
+      "description": "自分が投げたアイテムを短時間その場に留める。"
+    },
+    "prerequisites": [
+      "float_item_lift"
+    ]
+  },
+  {
+    "id": "float_item_orbit",
+    "category": "float_dial",
+    "level": 4,
+    "implemented": true,
+    "zh": {
+      "name": "浮空环绕",
+      "description": "使自己扔出的物品短时绕身旋转。"
+    },
+    "en": {
+      "name": "Floating Orbit",
+      "description": "Orbit your own dropped item around you briefly."
+    },
+    "motif": "ORBIT",
+    "phase": "START/END",
+    "zh_tw": {
+      "name": "浮空環繞",
+      "description": "使自己扔出的物品短時繞身旋轉。"
+    },
+    "ja": {
+      "name": "浮遊物周回",
+      "description": "自分が投げたアイテムを短時間、自分の周囲に回す。"
+    },
+    "prerequisites": [
+      "float_item_lift"
+    ]
+  },
+  {
+    "id": "float_item_shelf_field",
+    "category": "float_dial",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "浮空置物场",
+      "description": "使附近至多四个自己扔出的物品短时停留。"
+    },
+    "en": {
+      "name": "Floating Shelf Field",
+      "description": "Hold up to four of your own nearby drops in place."
+    },
+    "motif": "FIELD",
+    "phase": "START/END",
+    "zh_tw": {
+      "name": "浮空置物場",
+      "description": "使附近至多四個自己扔出的物品短時停留。"
+    },
+    "ja": {
+      "name": "浮遊物置き場",
+      "description": "近くにある自分が投げたアイテムを最大四個、短時間その場に留める。"
+    },
+    "prerequisites": [
+      "float_item_field"
+    ]
+  },
+  {
+    "id": "liquid_grapple",
+    "category": "liquid_shadow",
+    "level": 2,
+    "implemented": true,
+    "zh": {
+      "name": "液影擒束",
+      "description": "让已具现的液影接触敌人，短时间限制其水平移动。"
+    },
+    "en": {
+      "name": "Liquid Grapple",
+      "description": "Have the existing shadow contact a hostile and briefly restrict horizontal movement."
+    },
+    "motif": "SHADOW_CONTACT",
+    "phase": "START/END",
+    "zh_tw": {
+      "name": "液影擒束",
+      "description": "讓已具現的液影接觸敵人，短時間限制其水平移動。"
+    },
+    "ja": {
+      "name": "液影拘束",
+      "description": "実体化した液影を敵に接触させ、短時間その水平移動を制限する。"
+    },
+    "prerequisites": [
+      "liquid_scout"
+    ]
+  },
+  {
+    "id": "liquid_contact_cut",
+    "category": "liquid_shadow",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "液影近刃",
+      "description": "使已具现的液影在贴身接触时切击瞄准的敌人。"
+    },
+    "en": {
+      "name": "Contact Cut",
+      "description": "Cut a targeted hostile in direct contact with the existing shadow."
+    },
+    "motif": "SHADOW_CONTACT",
+    "phase": "HIT",
+    "zh_tw": {
+      "name": "液影近刃",
+      "description": "使已具現的液影在貼身接觸時切擊瞄準的敵人。"
+    },
+    "ja": {
+      "name": "液影近接刃",
+      "description": "実体化した液影が狙った敵に密着して斬りつける。"
+    },
+    "prerequisites": [
+      "liquid_strike"
+    ]
+  },
+  {
+    "id": "liquid_contact_sweep",
+    "category": "liquid_shadow",
+    "level": 4,
+    "implemented": true,
+    "zh": {
+      "name": "液影近扫",
+      "description": "由液影近身扫击最多四个接触范围内的敌人，共享单次攻击的伤害预算。"
+    },
+    "en": {
+      "name": "Contact Sweep",
+      "description": "Sweep up to four hostiles in contact range, sharing one damage budget."
+    },
+    "motif": "SHADOW_CONTACT",
+    "phase": "HIT",
+    "zh_tw": {
+      "name": "液影近掃",
+      "description": "由液影近身掃擊最多四個接觸範圍內的敵人，共享單次攻擊的傷害預算。"
+    },
+    "ja": {
+      "name": "液影近接薙ぎ",
+      "description": "液影が接触範囲の敵を最大四体薙ぎ払う。ダメージは一回分の攻撃量を分配する。"
+    },
+    "prerequisites": [
+      "liquid_strike"
+    ]
+  },
+  {
+    "id": "liquid_contact_crush",
+    "category": "liquid_shadow",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "液影压制",
+      "description": "让液影贴身压击敌人，命中后短暂限制其水平移动。"
+    },
+    "en": {
+      "name": "Contact Crush",
+      "description": "Crush a hostile in close contact and briefly restrict horizontal movement on hit."
+    },
+    "motif": "SHADOW_CONTACT",
+    "phase": "HIT/END",
+    "zh_tw": {
+      "name": "液影壓制",
+      "description": "讓液影貼身壓擊敵人，命中後短暫限制其水平移動。"
+    },
+    "ja": {
+      "name": "液影圧撃",
+      "description": "液影が敵に密着して圧撃し、命中後に短時間その水平移動を制限する。"
+    },
+    "prerequisites": [
+      "liquid_contact_cut"
+    ]
+  },
+  {
+    "id": "mental_puppet",
+    "category": "mental_out",
+    "level": 5,
+    "implemented": true,
+    "zh": {
+      "name": "心灵傀儡",
+      "description": "让注视的一只非玩家生物成为傀儡10秒：不再攻击你和盟友，自动攻击附近的敌对生物，没有敌人时跟随你。"
+    },
+    "en": {
+      "name": "Mind Puppet",
+      "description": "Turn one non-player creature you look at into your puppet for 10 seconds: it stops attacking you and your allies, attacks nearby hostile creatures, and follows you when none are left."
+    },
+    "motif": "REMOTE",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "心靈傀儡",
+      "description": "讓注視的一隻非玩家生物成為傀儡10秒：不再攻擊你和盟友，自動攻擊附近的敵對生物，沒有敵人時跟隨你。"
+    },
+    "ja": {
+      "name": "精神傀儡",
+      "description": "見つめたプレイヤー以外の生物を10秒間傀儡にする。自分と味方を攻撃せず、近くの敵対生物を攻撃し、敵がいなければ後を追う。"
+    },
+    "prerequisites": [
+      "mental_conflict"
+    ]
+  },
+  {
+    "id": "dark_synthesis",
+    "category": "dark_matter",
+    "level": 3,
+    "implemented": true,
+    "zh": {
+      "name": "未元合成",
+      "description": "消耗1个未元物质结晶，把主手物品变成两个，完整复制全部数据（含附魔、名称与容器内容）。"
+    },
+    "en": {
+      "name": "Dark Synthesis",
+      "description": "Spend one Dark Matter Crystal to turn the item in your main hand into two, copying every data component exactly, including enchantments, names and container contents."
+    },
+    "motif": "SHARD",
+    "phase": "START,HIT or ACTIVE/END as applicable",
+    "zh_tw": {
+      "name": "未元合成",
+      "description": "消耗1個未元物質結晶，把主手物品變成兩個，完整複製全部資料（含附魔、名稱與容器內容）。"
+    },
+    "ja": {
+      "name": "未元合成",
+      "description": "未元物質の結晶を1個消費し、メインハンドのアイテムを2つにする。エンチャント・名前・容器の中身まで全データを完全に複製する。"
+    },
+    "prerequisites": [
+      "dark_blade"
+    ]
+  }
+]

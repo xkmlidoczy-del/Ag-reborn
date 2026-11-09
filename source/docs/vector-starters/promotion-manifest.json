@@ -1,0 +1,249 @@
+{
+  "stage": "vector-starters",
+  "source": "AcademyCraft 1.0.7 commit 00d19ec0cf538f61c1095c9292f5ee6863db4521 and LambdaLib 1.2.3",
+  "active_additions": [
+    "vec_accel",
+    "vec_deviation"
+  ],
+  "native_game_tests_compiled_only": 12,
+  "isolated_checks_passed": 5,
+  "runtime_pixel_audio_fidelity": "Pending aggregate/native/physical input/GPU/audio validation by main",
+  "additive": [
+    {
+      "path": "src/main/java/cn/academy/port/client/ClassicVectorStarterEffects.java",
+      "sha256": "ca84dd7e567f6c95ff671e673c8483a0819bde99e690316bcea1bbf12d8abf8f"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/client/ClassicVectorStarterRenderTypes.java",
+      "sha256": "5126c48584ebdabad6989d340a10bd34dfdafcd31d1def47f684b395d5f8176e"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/client/ClassicVectorStarterTimeline.java",
+      "sha256": "15f16efd346db9dd113133efb913b5697f62d2f910c9bbca9bd6872ef4b0b243"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/gametest/AcademyVectorStarterRuntimeTests.java",
+      "sha256": "180472864e7d8d6b3dbba4e6cbf5882cdece3b598893d73c76227fbda1827ef2"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/skill/VecAccel.java",
+      "sha256": "0587251e266be170366a610a106830357ab3d1011e19045ccfe7ca368d8fd00c"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/skill/VecAccelSession.java",
+      "sha256": "71ba44e276a8e43f426599e66e1c2f07e546082a0fe7988213ab0516bc492369"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/skill/VecDeviation.java",
+      "sha256": "4695698d4d4f533ee94d28fa9e6b30b35d3430d61cefd79fbc1ab303fe3f44c7"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/skill/VecDeviationSession.java",
+      "sha256": "d6ece5919b7e4432865854b8cc582a756ef25e1bf8e0b0a51078bac955ab3c7d"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/skill/VectorStarterSupport.java",
+      "sha256": "f19c799c2de89b5ec77ded4b4f4bbb517b98a8a2deb51a651c20f944af60e72d"
+    },
+    {
+      "path": "src/test/java/cn/academy/port/client/VectorStarterVisualRegressionTest.java",
+      "sha256": "f5ba7cf017a62d8e46dbb042874af5cdfa2175da5def8d8465899e493ad9de07"
+    },
+    {
+      "path": "src/test/java/cn/academy/port/skill/VectorSourceFixtures.java",
+      "sha256": "dcb1dc3523258493d9170e25aa02dc0d9d1371c7f5f50f3e3a424139f39580e8"
+    },
+    {
+      "path": "src/test/java/cn/academy/port/skill/VectorStarterLearningRegressionTest.java",
+      "sha256": "38eff7812b3c1ddb441a98b40b8f7023976e5d4e791ce294fcf6f096dc0a1996"
+    },
+    {
+      "path": "src/test/java/cn/academy/port/skill/VectorStarterRegressionTest.java",
+      "sha256": "5124f9d67373c218775d4d2721708ac1d6328b80a53b77433cb530ea71e85c0f"
+    },
+    {
+      "path": "src/test/java/cn/academy/port/skill/VectorStarterServerLinkTest.java",
+      "sha256": "8f5de54d316ab5e3f324098697101b3ae3e8d23f41959eef3757c5f3c757bdea"
+    },
+    {
+      "path": "src/test/java/cn/academy/port/skill/VectorStarterSourceOracleTest.java",
+      "sha256": "183202dd0046399d5559122eb9c23ef947204bdf285cca6ab89dcea5baa715fa"
+    },
+    {
+      "path": "src/test/java/cn/academy/port/skill/vectororacle/CubicCurve.java",
+      "sha256": "04ee119c22b4a03a4d84df58ef5825af19afc427dd5487e60df689b2c303377a"
+    },
+    {
+      "path": "src/test/java/cn/academy/port/skill/vectororacle/IFittedCurve.java",
+      "sha256": "5a2fcc2131f1c569d2d2c5677239d2cb13940e737037b74531cb1d783dd2a20e"
+    },
+    {
+      "path": "src/test/java/cn/academy/port/skill/vectororacle/MathUtils.java",
+      "sha256": "30fabbf741d386935982387fdbace1e0e657cb34adf346901a8253bc4fe17490"
+    },
+    {
+      "path": "src/test/java/cn/academy/port/skill/vectororacle/OracleVec.java",
+      "sha256": "5227e4fe401fcee01944e3833d4c43a4cb25db5c5a66fe1447a03d88cbae6d43"
+    },
+    {
+      "path": "src/test/java/cn/academy/port/skill/vectororacle/ParabolaOracle.java",
+      "sha256": "eb9da5682ebb5178734605a429c52c692dfa448b6644351a2b0c6250ee27b293"
+    },
+    {
+      "path": "src/test/resources/classic-oracles/vector-starters/LICENSE-AcademyCraft-GPL3.txt",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "path": "src/test/resources/classic-oracles/vector-starters/NOTICE.txt",
+      "sha256": "8313bbcb54d5e46f99711c3edc9bc9c919d808e192921b9e73df79e5918fc6cf"
+    },
+    {
+      "path": "src/test/resources/classic-oracles/vector-starters/academy/CPData.java",
+      "sha256": "6ef3a87f06fa86e422b183d379c07093366bf60b89057adc94c01cb9088324c3"
+    },
+    {
+      "path": "src/test/resources/classic-oracles/vector-starters/academy/CatVecManip.scala",
+      "sha256": "2bf1907f5971692395a5556a927e08660f74dea45609459a42d13afab04daf45"
+    },
+    {
+      "path": "src/test/resources/classic-oracles/vector-starters/academy/EntityAffection.scala",
+      "sha256": "cb725ee2b4b5b4c824462e365945ee89bdfa8a70aa62d918ea6c1443f8e62a1c"
+    },
+    {
+      "path": "src/test/resources/classic-oracles/vector-starters/academy/KeyDelegates.scala",
+      "sha256": "33ef594c57d687914c36994f192bb5c0110c2058d563d841208dadd6d31e6532"
+    },
+    {
+      "path": "src/test/resources/classic-oracles/vector-starters/academy/ParabolaEffect.scala",
+      "sha256": "de29316c37fe79077f3d6c78bd7543f98a3999cbf6e56d1be77dd8cf46bffd0e"
+    },
+    {
+      "path": "src/test/resources/classic-oracles/vector-starters/academy/VecAccel.scala",
+      "sha256": "ab1e0ec582818fd9d91c0e96d1830f147f849c2257e6003a6ec34b91ab5f2df3"
+    },
+    {
+      "path": "src/test/resources/classic-oracles/vector-starters/academy/VecDeviation.scala",
+      "sha256": "19c3468244ecbb22de48fd09ab0b34f0aea10b00d4839f78539fd54cb648a193"
+    },
+    {
+      "path": "src/test/resources/classic-oracles/vector-starters/academy/WaveEffect.scala",
+      "sha256": "875ab902fa3f69aa69f6dd82e579a32eb14fc22ae648e7f8cf45b6d656dc135a"
+    },
+    {
+      "path": "src/test/resources/classic-oracles/vector-starters/academy/WaveEffectUI.scala",
+      "sha256": "18cf9922464536272590eb394320b4f3ba975246a67e5388f82f5749f1171b1c"
+    },
+    {
+      "path": "src/test/resources/classic-oracles/vector-starters/academy/default.conf",
+      "sha256": "700f42a545d761872daae8dfb6e65e5e4571f947d7dcd50eb60933b0542ef824"
+    },
+    {
+      "path": "src/test/resources/classic-oracles/vector-starters/academy/vm_wave_ui.frag",
+      "sha256": "ee9f306f9d63fdcf07aeaae9dce9733ff56bedbf5b296b2e532a95dc198b08cd"
+    },
+    {
+      "path": "src/test/resources/classic-oracles/vector-starters/academy/vm_wave_ui.vert",
+      "sha256": "53a4e0c53629704f17363b97b55698b96782f2a9420f09206a421babafa1b6ce"
+    },
+    {
+      "path": "src/test/resources/classic-oracles/vector-starters/lambdalib/CubicCurve.java",
+      "sha256": "6f381af595f9ab0b0d279c202743c59577e27ecbf01414b7259cf1844a64e218"
+    },
+    {
+      "path": "src/test/resources/classic-oracles/vector-starters/lambdalib/IFittedCurve.java",
+      "sha256": "859826124ada463e491c59d1bb52310b291bec79eb60873a2095a099f2eec8ad"
+    },
+    {
+      "path": "src/test/resources/classic-oracles/vector-starters/lambdalib/LICENSE",
+      "sha256": "852bcc033a46c62f99fb5ffd43b3241ba2c0c440c6034aa2114505f2c4f03c4a"
+    },
+    {
+      "path": "src/test/resources/classic-oracles/vector-starters/lambdalib/MathUtils.java",
+      "sha256": "e80c87ca15cbae89584bd9e1111e22d2f55866bf91b434c8813c20bb98176075"
+    },
+    {
+      "path": "src/test/resources/classic-oracles/vector-starters/lambdalib/NetworkS11n.java",
+      "sha256": "e9c9fa0f59ad34dab164f9afd4cc913fca3dffdbd2627d32b2877b310f0b0a5e"
+    },
+    {
+      "path": "src/test/resources/classic-oracles/vector-starters/lambdalib/RichEntity.scala",
+      "sha256": "775411d7469203db813f6bdbf482c205708c93014f46014c0967f594a252601a"
+    },
+    {
+      "path": "src/test/resources/classic-oracles/vector-starters/lambdalib/RichVec3.scala",
+      "sha256": "f0d2e66f5e7ab23335da2d742959a840f816e7f3567aa41c55da4c9bd916fcc2"
+    },
+    {
+      "path": "src/test/resources/classic-oracles/vector-starters/lambdalib/VecUtils.java",
+      "sha256": "d5950587fe04e53cfc53985cdbdf7a100e12648816e94eb3b660fd4f0418a59b"
+    },
+    {
+      "path": "src/test/resources/classic-oracles/vector-starters/lambdalib/WorldUtils.java",
+      "sha256": "22dc9e2c1594f8b97e31cf4075e953f5a7a95edb0db6cffe9fb9dcc0678a0f2e"
+    },
+    {
+      "path": "src/test/resources/classic-oracles/vector-starters/source-manifest.json",
+      "sha256": "d1eb0c34180a046302ffe289bc3989b31ab8311970fc83e0353e9f56a739cbff"
+    }
+  ],
+  "shared": [
+    {
+      "path": "build.gradle",
+      "baseline_sha256": "be2e3cd3c7a2253aef0a3944691d81af925fa976562dcfb257a42b29abfcd05f",
+      "after_sha256": "d7580a60a4cd5ac33a1cb91ea9006d5a46aa1dd32bc73f277d903bd142af8085"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/AcademyGameplay.java",
+      "baseline_sha256": "5bbdd1e13c8e25c0575a51ce208a9d8389c4f3c118cf00b7fcd9b5e813cd2bef",
+      "after_sha256": "d757b4fd2f1b8a03c63e8a157eb71f43d8c94fa8fc849f91242cce99e34c30f9"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/client/AcademyClient.java",
+      "baseline_sha256": "f8592c3d01e6343ab293aec0280487f34c27ae9d382a006d78fa5fce108ea7f5",
+      "after_sha256": "01278570aea87c6f1f56442ba73bc4d8c3ff720e80bfefed628f0defe0a92e5e"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/preset/PresetSkills.java",
+      "baseline_sha256": "fe5c966e77b088baa42fe4955762c495d8b62cc10f30259da62e396d3a2cf3f0",
+      "after_sha256": "4f7461d115a6f72a99ddb6ba0fbdf2ee22ea22b532f4f7d403509ea77e6f1827"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "docs/FIDELITY.md",
+      "sha256": "ad54ff5cfab6d4aeceabffa71b080a99f90977599e9c5991c2853365545839c9"
+    },
+    {
+      "path": "docs/QA.md",
+      "sha256": "76e7ead1ca9e5b38b1ab989c22189ab189ad5edb7742961968e65185106be1c0"
+    },
+    {
+      "path": "docs/integration.patch",
+      "sha256": "377fcdbf569d0bfb93294d379ae4483e858463b41ebbfe90bc0d756a9419783a"
+    }
+  ],
+  "patch_sha256": "377fcdbf569d0bfb93294d379ae4483e858463b41ebbfe90bc0d756a9419783a",
+  "original_media": [
+    {
+      "path": "textures/effects/glow_circle.png",
+      "sha256": "8e293110e074e2d6ada9cf966647831b6cbc9127930c07138432216e9ac36777"
+    },
+    {
+      "path": "textures/abilities/vecmanip/skills/vec_accel.png",
+      "sha256": "c2d92f5ca09bc648be0340e31b97d8c8f3b5ed71385a27f5e9bf162cd9625b98"
+    },
+    {
+      "path": "textures/abilities/vecmanip/skills/vec_deviation.png",
+      "sha256": "ade6f41c39b98855b8bf7949ec5a96da2b0ed3c51107b656d8e2428de52069ef"
+    },
+    {
+      "path": "sounds/vecmanip/vec_accel.ogg",
+      "sha256": "71ce53a55371887ae72c3c4ca6855f953b4c15d3ed4e394616c9cf107267ca7e"
+    },
+    {
+      "path": "sounds/vecmanip/vec_deviation.ogg",
+      "sha256": "4b62da3c11d8f1e2e58f48c954fb1991d0d2cceb121ec929a9f6eca949a78b9e"
+    }
+  ],
+  "complete_sounds_json_baseline_sha256": "08d579f8966d9406f070a2552db0326405a2269c17c0abfe5208ea0761955420"
+}

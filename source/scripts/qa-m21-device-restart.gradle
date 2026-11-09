@@ -1,0 +1,22 @@
+// Opt-in, owned native Anvil/new-JVM proofs; never touches client saves.
+allprojects {
+ afterEvaluate { testedProject ->
+  def restartCases = [
+   interferer: ['academy_interferer_restart','academy.interferer.restart','academy-interferer-restart-world'],
+   misc: ['academy_misc_restart','academy.misc.restart','academy-classic-misc-restart-world'],
+   rf: ['academy_rf_restart','academy.energybridges.restart','academy-energy-bridges-restart-world']
+  ]
+  def restartKind = testedProject.findProperty('deviceRestartKind')?.toString()
+  def restartMode = testedProject.findProperty('deviceRestartMode')?.toString()
+  if (!restartCases.containsKey(restartKind) || !(restartMode in ['seed','verify']))
+   throw new GradleException('Explicit interferer/misc/rf and seed/verify required')
+  if (testedProject.findProperty('gameTestDirectory') != 'run-restart-m21-'+restartKind)
+   throw new GradleException('Owned isolated m21 device restart directory required')
+  def selectedCase = restartCases[restartKind]
+  def testedRun = testedProject.extensions.getByName('neoForge').runs.getByName('gameTestServer')
+  testedRun.systemProperty('neoforge.enabledGameTestNamespaces',selectedCase[0])
+  testedRun.systemProperty(selectedCase[1],restartMode)
+  testedRun.programArgument('--world')
+  testedRun.programArgument(selectedCase[2])
+ }
+}

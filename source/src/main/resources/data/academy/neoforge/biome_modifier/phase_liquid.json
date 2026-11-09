@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": { "type": "neoforge:any" },
+  "features": [ "academy:phase_liquid" ],
+  "step": "underground_ores"
+}

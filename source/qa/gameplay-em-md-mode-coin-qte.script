@@ -1,0 +1,1 @@
+lang:zh_cn|cmd:time set day|cmd:gamerule doMobSpawning false|cmd:difficulty normal|keyup:82|keyup:340|tree:close|cam:first|cmd:tp @s 0.5 -60 0.5 0 0|gameem:modes:setup:coin|wait:30|aim:0.5,-58.4,6.5|wait:6|gameem:modes:baseline|gameem:modes:mouse:click|wait:16|keydown:82|wait:2|keyup:82|wait:14|gameem:modes:assert|shot:gameplay_mode_coin_qte|gameem:modes:verify|quit

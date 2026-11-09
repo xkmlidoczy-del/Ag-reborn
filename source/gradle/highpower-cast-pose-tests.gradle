@@ -1,0 +1,33 @@
+// Pure CINEMATIC cast-pose decorations: inert below layer 3, determinism, bounds, budgets, hostile input, identity, power scaling.
+tasks.register('castPoseTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.core.CastPoseRegressionTest'
+    enableAssertions = true
+    maxHeapSize = '128m'
+}
+tasks.named('check') { dependsOn 'castPoseTest' }
+tasks.register('constructPoseTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.core.ConstructPoseRegressionTest'
+    enableAssertions = true
+    maxHeapSize = '128m'
+}
+tasks.named('check') { dependsOn 'constructPoseTest' }
+tasks.register('castControlDecorTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.CastControlDecorRegressionTest'
+    enableAssertions = true
+    maxHeapSize = '128m'
+}
+tasks.named('check') { dependsOn 'castControlDecorTest' }
+tasks.register('constructCommandInputTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.ConstructCommandInputRegressionTest'
+    enableAssertions = true
+    maxHeapSize = '128m'
+}
+tasks.named('check') { dependsOn 'constructCommandInputTest' }

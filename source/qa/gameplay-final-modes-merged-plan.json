@@ -1,0 +1,130 @@
+[
+  {
+    "name": "final96-modegroup-em-input-modes",
+    "script": "gameplay-final-modes-group-em-input-modes.script",
+    "directory": "run-showcase-sable",
+    "sourceScripts": [
+      "gameplay-em-md-magnetic-block-far.script",
+      "gameplay-em-md-mode-arrow-separation.script",
+      "gameplay-em-md-mode-canopy-held.script",
+      "gameplay-em-md-mode-coin-qte.script",
+      "gameplay-em-md-mode-dual-secondary.script",
+      "gameplay-em-md-mode-net-hold.script",
+      "gameplay-em-md-mode-pulse-detect.script",
+      "gameplay-em-md-mode-rail-hold.script",
+      "gameplay-em-md-mode-semiconductor-fan.script",
+      "gameplay-em-md-mode-lance-orbit.script"
+    ],
+    "sourceCount": 10,
+    "status": "planned_not_run",
+    "props": "",
+    "independentRequired": false
+  },
+  {
+    "name": "final96-modegroup-em-environment-planning",
+    "script": "gameplay-final-modes-group-em-environment-planning.script",
+    "directory": "run-showcase-sable",
+    "sourceScripts": [
+      "gameplay-em-md-env-arc-creeper.script",
+      "gameplay-em-md-env-arc-fire.script",
+      "gameplay-em-md-env-charging-block.script",
+      "gameplay-em-md-env-etch-batch.script",
+      "gameplay-em-md-env-etch-hard-refusal.script",
+      "gameplay-em-md-env-fork-single.script",
+      "gameplay-em-md-env-jet-collision.script",
+      "gameplay-em-md-env-laminate-low.script",
+      "gameplay-em-md-env-light-touch.script",
+      "gameplay-em-md-env-mag-entity.script",
+      "gameplay-em-md-env-melt-terrain.script",
+      "gameplay-em-md-env-point-hard-refusal.script",
+      "gameplay-em-md-env-point-no-tool.script",
+      "gameplay-em-md-env-melt-overcharge.script",
+      "gameplay-em-md-planning-folded_mirror_array.script",
+      "gameplay-em-md-planning-remote_scatter_relay.script",
+      "gameplay-em-md-planning-scatter_locator_plate.script"
+    ],
+    "sourceCount": 17,
+    "status": "planned_not_run",
+    "props": "",
+    "independentRequired": false
+  },
+  {
+    "name": "final96-modegroup-tp-alternatives",
+    "script": "gameplay-final-modes-group-tp-alternatives.script",
+    "directory": "run-showcase-sable",
+    "sourceScripts": [
+      "gameplay-tp-alt-corner_exchange.script",
+      "gameplay-tp-alt-cross_substitution.script",
+      "gameplay-tp-alt-multidimensional_landing_array.script",
+      "gameplay-tp-alt-phase_sidestep.script",
+      "gameplay-tp-alt-short_interception.script",
+      "gameplay-tp-alt-spatial_relay.script",
+      "gameplay-tp-emergency-auto.script"
+    ],
+    "sourceCount": 7,
+    "status": "planned_not_run",
+    "props": "",
+    "independentRequired": false
+  },
+  {
+    "name": "final96-modegroup-vm-alternatives-efficiency",
+    "script": "gameplay-final-modes-group-vm-alternatives-efficiency.script",
+    "directory": "run-showcase-sable",
+    "sourceScripts": [
+      "gameplay-vm-efficiency-circulation_relief.script",
+      "gameplay-vm-efficiency-inertial_anchor.script",
+      "gameplay-vm-efficiency-vector_parry.script",
+      "gameplay-vm-alt-anchor-fall.script",
+      "gameplay-vm-alt-braking-fall.script",
+      "gameplay-vm-alt-braking-snowball.script",
+      "gameplay-vm-alt-listening-runner.script",
+      "gameplay-vm-alt-parry-full.script",
+      "gameplay-vm-alt-parry-left.script",
+      "gameplay-vm-alt-parry-right.script",
+      "gameplay-vm-alt-trajectory-hammer.script",
+      "gameplay-vm-direction-modes.script",
+      "gameplay-vm-cage-low.script"
+    ],
+    "sourceCount": 13,
+    "status": "planned_not_run",
+    "props": "",
+    "independentRequired": false
+  },
+  {
+    "name": "final96-modegroup-vm-native-late-window",
+    "script": "gameplay-final-modes-group-vm-native-late-window.script",
+    "directory": "run-showcase-sable",
+    "sourceScripts": [
+      "gameplay-vm-primary-impulse_split-late.script",
+      "gameplay-wind-sideways.script"
+    ],
+    "sourceCount": 2,
+    "status": "planned_not_run",
+    "props": "",
+    "independentRequired": false
+  },
+  {
+    "name": "final96-modegroup-cross-dimension",
+    "script": "gameplay-final-modes-group-cross-dimension.script",
+    "directory": "run-showcase-sable",
+    "sourceScripts": [
+      "gameplay-location-cross-dimension.script"
+    ],
+    "sourceCount": 1,
+    "status": "planned_not_run",
+    "props": "",
+    "independentRequired": true
+  },
+  {
+    "name": "final96-modegroup-respawn",
+    "script": "gameplay-final-modes-group-respawn.script",
+    "directory": "run-showcase-sable",
+    "sourceScripts": [
+      "gameplay-vm-impulse-window-respawn-native-damage.script"
+    ],
+    "sourceCount": 1,
+    "status": "planned_not_run",
+    "props": "",
+    "independentRequired": true
+  }
+]

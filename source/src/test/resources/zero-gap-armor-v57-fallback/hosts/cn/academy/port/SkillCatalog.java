@@ -1,0 +1,1 @@
+package cn.academy.port;public final class SkillCatalog {public static boolean available=true;public static boolean enabled(String category,String skill){if(!category.equals("meltdowner")||!skill.equals("zero_gap_armor"))throw new AssertionError("unexpected skill lookup");return available;}}

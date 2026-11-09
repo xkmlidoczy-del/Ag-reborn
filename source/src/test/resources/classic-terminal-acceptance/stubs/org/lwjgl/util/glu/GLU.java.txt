@@ -1,0 +1,1 @@
+package org.lwjgl.util.glu; public class GLU {public static void gluPerspective(float fov,float aspect,float near,float far){double cot=1/Math.tan(Math.toRadians(fov/2));double[] m=new double[16];m[0]=cot/aspect;m[5]=cot;m[10]=(far+near)/(near-far);m[11]=-1;m[14]=2d*far*near/(near-far);org.lwjgl.opengl.GL11.multiply(m);}}

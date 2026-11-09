@@ -1,0 +1,1 @@
+package net.minecraft.world.item;public class ItemStack {public final Item item;public int count;public boolean clean=true;public ItemStack(Item i,int c){item=i;count=c;}public boolean is(Item i){return item==i;}public int getCount(){return count;}public boolean isComponentsPatchEmpty(){return clean;}}

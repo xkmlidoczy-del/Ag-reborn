@@ -1,0 +1,7 @@
+/* Test-only platform host; numeric algorithms remain in unchanged source. */
+package com.typesafe.config;
+public class Config {
+ public final java.util.Map<String,Object> values=new java.util.HashMap<>();public Config getConfig(String name){return this;}
+ public int getInt(String key){return ((Number)values.get(key)).intValue();}public double getDouble(String key){return ((Number)values.get(key)).doubleValue();}
+ @SuppressWarnings("unchecked") public java.util.List<Double> getDoubleList(String key){return (java.util.List<Double>)values.get(key);}
+}

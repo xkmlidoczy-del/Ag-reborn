@@ -1,0 +1,486 @@
+package cn.academy.port.client;
+
+import cn.academy.ability.api.Skill;
+import cn.academy.ability.api.context.ClientRuntime;
+import cn.academy.ability.api.context.Context;
+import cn.academy.ability.api.context.KeyDelegate;
+import cn.academy.ability.api.cooldown.CooldownData;
+import cn.academy.ability.api.ctrl.ClientHandler;
+import cn.academy.ability.api.data.AbilityData;
+import cn.academy.ability.api.data.CPData;
+import cn.academy.ability.api.data.PresetData;
+import cn.academy.ability.api.event.*;
+import cn.academy.terminal.client.TerminalUI;
+import cn.lambdalib.util.client.ClientUtils;
+import cn.lambdalib.util.client.auxgui.AuxGuiHandler;
+import cn.lambdalib.util.datapart.EntityData;
+import cn.lambdalib.util.key.KeyManager;
+import cn.lambdalib.util.mc.ControlOverrider;
+import cn.lambdalib.util.mc.SideHelper;
+import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
+
+/** Executes the unchanged original Java runtime; every engine dependency is an explicit host. */
+public final class ClientRuntimeSourceOracle {
+    private static int assertions, scenarios;
+    private static final List<String> CASES = new ArrayList<>();
+    private static Object field(Object value, String name) {
+        try { Field f=value.getClass().getDeclaredField(name); f.setAccessible(true); return f.get(value); }
+        catch (ReflectiveOperationException ex) { throw new AssertionError(ex); }
+    }
+    private static void setField(Object value, String name, Object replacement) {
+        try { Field f=value.getClass().getDeclaredField(name); f.setAccessible(true); f.set(value,replacement); }
+        catch (ReflectiveOperationException ex) { throw new AssertionError(ex); }
+    }
+    private static void eq(Object actual, Object expected, String label) {
+        ++assertions;
+        if (!Objects.equals(actual,expected)) throw new AssertionError(label+"\nactual: "+actual+"\nexpected: "+expected);
+    }
+    private static void check(boolean condition, String label) { eq(condition,true,label); }
+    private static void scenario(String name, Runnable body) {
+        body.run(); ++scenarios; CASES.add(name); System.out.println("PASS "+name);
+    }
+
+    private static final class Pair {
+        final String name;
+        final Skill skill = new Skill();
+        KeyDelegate original;
+        ClassicClientRuntimeCoordinator.Delegate candidate;
+        Pair(String name) { this.name=name; }
+    }
+    private static final class HandlerPair {
+        boolean matches;
+        ClientRuntime.IActivateHandler original;
+        ClassicClientRuntimeCoordinator.ActivateHandler candidate;
+    }
+    private static final class ModernInputs implements ClassicClientRuntimeCoordinator.Inputs {
+        boolean available=true, category=true, raw=true, overloadFine=true, interfering, inGame=true, terminal;
+        final Set<Integer> down=new HashSet<>();
+        final Set<ClassicClientRuntimeCoordinator.Delegate> cooldown=Collections.newSetFromMap(new IdentityHashMap<>());
+        final List<Boolean> requests=new ArrayList<>();
+        final List<String> overrides=new ArrayList<>();
+        @Override public boolean runtimeAvailable() { return available; }
+        @Override public boolean playerInGame() { return inGame; }
+        @Override public boolean categoryActivated() { return category && raw; }
+        @Override public boolean canUseAbility() { return raw && overloadFine && !interfering; }
+        @Override public boolean terminalOpen() { return terminal; }
+        @Override public boolean keyDown(int key) { return down.contains(key); }
+        @Override public boolean inCooldown(ClassicClientRuntimeCoordinator.Delegate d) { return cooldown.contains(d); }
+        @Override public void requestRawActivation(boolean active) { raw=active; requests.add(active); }
+        @Override public void replaceOverrides(int[] keys) { overrides.add(Arrays.toString(keys)); }
+    }
+
+    private static final class Rig {
+        final EntityPlayer player=new EntityPlayer();
+        final ClientRuntime old=new ClientRuntime();
+        final ModernInputs inputs=new ModernInputs();
+        final ClassicClientRuntimeCoordinator modern=new ClassicClientRuntimeCoordinator(inputs);
+        final Map<String,Pair> pairs=new LinkedHashMap<>();
+        final List<String> oldTrace=new ArrayList<>(), newTrace=new ArrayList<>();
+        final Map<Integer,String> preset=new TreeMap<>();
+        final Map<String,Integer> oldBuildCount=new HashMap<>(), newBuildCount=new HashMap<>();
+        final Context oldContext=new Context(), newContext=new Context();
+        Rig() {
+            Minecraft.getMinecraft().thePlayer=player;
+            old.hostAttach(player);
+            EntityData.get(player).parts.put(ClientRuntime.class,old);
+            KeyManager.DOWN.clear(); ControlOverrider.CALLS.clear(); ControlOverrider.latest=new int[0];
+            AuxGuiHandler.ACTIVE.clear(); ClientUtils.playerInGame=true; SideHelper.client=true;
+            ClientHandler.mapping=new int[]{11,12,13,14};
+            setField(ClientRuntime.Events.instance,"requireFlush",false);
+            modern.setDefaultGroupRebuilder(() -> {
+                for (var entry:preset.entrySet()) {
+                    String stem=entry.getValue();
+                    int count=newBuildCount.merge(stem,1,Integer::sum);
+                    Pair p=pair(stem+"#"+count);
+                    newTrace.add("build:"+entry.getKey()+":"+ClientHandler.getKeyMapping(entry.getKey()));
+                    modern.addKey(ClientHandler.getKeyMapping(entry.getKey()),p.candidate);
+                }
+            });
+        }
+        Pair pair(String name) {
+            return pairs.computeIfAbsent(name,n -> {
+                Pair p=new Pair(n);
+                p.original=new KeyDelegate() {
+                    @Override public void onKeyDown() { oldTrace.add("down:"+n+":"+oldStates()); }
+                    @Override public void onKeyTick() { oldTrace.add("tick:"+n+":"+oldStates()); }
+                    @Override public void onKeyUp() { oldTrace.add("up:"+n+":"+oldStates()); }
+                    @Override public void onKeyAbort() { oldTrace.add("abort:"+n+":"+oldStates()); }
+                    @Override public ResourceLocation getIcon() { return p.skill.getHintIcon(); }
+                    @Override public int createID() { return 0; }
+                    @Override public Skill getSkill() { return p.skill; }
+                };
+                p.candidate=new ClassicClientRuntimeCoordinator.Delegate() {
+                    @Override public void onKeyDown() { newTrace.add("down:"+n+":"+newStates()); }
+                    @Override public void onKeyTick() { newTrace.add("tick:"+n+":"+newStates()); }
+                    @Override public void onKeyUp() { newTrace.add("up:"+n+":"+newStates()); }
+                    @Override public void onKeyAbort() { newTrace.add("abort:"+n+":"+newStates()); }
+                };
+                return p;
+            });
+        }
+        Pair passive(String name) {
+            Pair p=new Pair(name);
+            // Deliberately inherits the byte-identical original KeyDelegate.onKeyAbort no-op.
+            p.original=new KeyDelegate() {
+                @Override public void onKeyDown() { oldContext.status=Context.Status.ALIVE; oldTrace.add("persistent-down:"+name); }
+                @Override public ResourceLocation getIcon() { return p.skill.getHintIcon(); }
+                @Override public int createID() { return 0; }
+                @Override public Skill getSkill() { return p.skill; }
+            };
+            p.candidate=new ClassicClientRuntimeCoordinator.Delegate() {
+                @Override public void onKeyDown() { newContext.status=Context.Status.ALIVE; newTrace.add("persistent-down:"+name); }
+            };
+            pairs.put(name,p); return p;
+        }
+        String oldName(KeyDelegate d) {
+            for (Pair p:pairs.values()) if (p.original==d) return p.name;
+            throw new AssertionError("Unmapped original delegate");
+        }
+        String newName(ClassicClientRuntimeCoordinator.Delegate d) {
+            for (Pair p:pairs.values()) if (p.candidate==d) return p.name;
+            throw new AssertionError("Unmapped modern delegate");
+        }
+        @SuppressWarnings("unchecked") Map<Integer,String> oldStates() {
+            Map<Integer,Object> states=(Map<Integer,Object>)field(old,"keyStates");
+            Map<Integer,String> result=new TreeMap<>();
+            states.forEach((k,v)->result.put(k,field(v,"state")+"/"+field(v,"realState")));
+            return result;
+        }
+        Map<Integer,String> newStates() {
+            Map<Integer,String> result=new TreeMap<>();
+            modern.keyStateSnapshot().forEach((k,v)->result.put(k,v.state()+"/"+v.realState()));
+            return result;
+        }
+        @SuppressWarnings("unchecked") Map<Integer,String> oldRegistrations() {
+            Map<Integer,ClientRuntime.DelegateNode> nodes=(Map<Integer,ClientRuntime.DelegateNode>)field(old,"delegates");
+            Map<Integer,String> result=new TreeMap<>();
+            nodes.forEach((k,v)->result.put(k,oldName(v.delegate))); return result;
+        }
+        Map<Integer,String> newRegistrations() {
+            Map<Integer,String> result=new TreeMap<>();
+            modern.keyRegistrationSnapshot().forEach((k,v)->result.put(k,newName(v))); return result;
+        }
+        List<String> oldGroups() {
+            List<String> result=new ArrayList<>();
+            for (String group:old.getDelegateRawData().keySet())
+                for (ClientRuntime.DelegateNode node:old.getDelegateRawData().get(group))
+                    result.add(group+":"+node.keyID+":"+oldName(node.delegate));
+            return result;
+        }
+        List<String> newGroups() {
+            List<String> result=new ArrayList<>();
+            modern.groupSnapshot().forEach((group,nodes)->nodes.forEach(node->result.add(group+":"+node.keyID()+":"+newName(node.delegate()))));
+            return result;
+        }
+        void compare(String at) {
+            eq(newTrace,oldTrace,at+" callback trace, including callback-time logical/physical state");
+            eq(newStates(),oldStates(),at+" key state");
+            eq(newRegistrations(),oldRegistrations(),at+" physical registrations");
+            eq(newGroups(),oldGroups(),at+" group nodes and Guava key-set order");
+            eq(inputs.raw,CPData.get(player).activated,at+" raw predicted activation");
+            eq(inputs.requests,CPData.get(player).requests,at+" raw activation requests");
+            eq(modern.controlDirty(),field(old,"ctrlDirty"),at+" controlDirty");
+            eq(modern.flushPending(),field(ClientRuntime.Events.instance,"requireFlush"),at+" flushPending");
+            eq(Arrays.toString(modern.overrideSnapshot()),Arrays.toString(ControlOverrider.latest),at+" latest override");
+            eq(inputs.overrides,ControlOverrider.CALLS.stream().map(Arrays::toString).toList(),at+" each override rebuild");
+        }
+        void add(String group, int key, String name) {
+            Pair p=pair(name); old.addKey(group,key,p.original); modern.addKey(group,key,p.candidate); compare("add "+group+"/"+key+"/"+name);
+        }
+        void addPassive(String group,int key,String name) {
+            Pair p=passive(name); old.addKey(group,key,p.original); modern.addKey(group,key,p.candidate); compare("add passive");
+        }
+        void clear(String group) { old.clearKeys(group); modern.clearKeys(group); compare("clear "+group); }
+        void clearAll() { old.clearAllKeys(); modern.clearAllKeys(); compare("clear all"); }
+        void abort() { old.abortDelegates(); modern.abortDelegates(); compare("abort all"); }
+        void tick() { ClientRuntime.Events.instance.onClientTick(new ClientTickEvent(Phase.START)); modern.clientTickStart(); compare("START tick"); }
+        void down(int key,boolean value) {
+            if (value) { KeyManager.DOWN.add(key); inputs.down.add(key); }
+            else { KeyManager.DOWN.remove(key); inputs.down.remove(key); }
+        }
+        void raw(boolean raw) { CPData.get(player).activated=raw; inputs.raw=raw; }
+        void category(boolean category) { AbilityData.get(player).category=category; inputs.category=category; }
+        void blocked(String cause,Pair pair,boolean value) {
+            switch(cause) {
+                case "cooldown" -> { if(value) { CooldownData.of(player).blocked.add(pair.skill); inputs.cooldown.add(pair.candidate); }
+                                     else { CooldownData.of(player).blocked.remove(pair.skill); inputs.cooldown.remove(pair.candidate); } }
+                case "screen" -> { ClientUtils.playerInGame=!value; inputs.inGame=!value; }
+                case "terminal" -> { AuxGuiHandler.ACTIVE.clear(); if(value) AuxGuiHandler.ACTIVE.add(new TerminalUI()); inputs.terminal=value; }
+                case "overload" -> { CPData.get(player).overloadFine=!value; inputs.overloadFine=!value; }
+                case "interference" -> { CPData.get(player).interfering=value; inputs.interfering=value; }
+                case "raw-off" -> raw(!value);
+                default -> throw new AssertionError(cause);
+            }
+        }
+        void preset(int slot,int key,String stem) {
+            preset.put(slot,stem); ClientHandler.mapping[slot]=key;
+            PresetData.get(player).current.mappings.put(slot,(rt,k)-> {
+                int count=oldBuildCount.merge(stem,1,Integer::sum);
+                oldTrace.add("build:"+slot+":"+k); rt.addKey(k,pair(stem+"#"+count).original);
+            });
+        }
+        void update() {
+            try { Method m=ClientRuntime.Events.class.getDeclaredMethod("updateDefaultGroup"); m.setAccessible(true); m.invoke(ClientRuntime.Events.instance); }
+            catch(ReflectiveOperationException ex) { throw new AssertionError(ex); }
+            modern.updateDefaultGroup(); compare("actual private updateDefaultGroup");
+        }
+        void activateObserver() { ClientRuntime.Events.instance.activateAbility(new AbilityActivateEvent(player)); if(SideHelper.client) modern.observerActivate(); compare("activation observer"); }
+        void deactivateObserver() { ClientRuntime.Events.instance.deactivateAbility(new AbilityDeactivateEvent(player)); if(SideHelper.client) modern.observerDeactivate(); compare("deactivation observer"); }
+        void presetSwitch() { ClientRuntime.Events.instance.presetSwitch(new PresetSwitchEvent(player)); modern.presetSwitch(); compare("preset switch"); }
+        void presetEdit() { ClientRuntime.Events.instance.presetEdit(new PresetUpdateEvent(player)); if(SideHelper.client) modern.presetEdit(); compare("preset edit"); }
+        void flush() { ClientRuntime.Events.instance.flushControl(new FlushControlEvent()); modern.requestFlush(); compare("flush requested"); }
+        boolean active() { boolean a=old.hasActiveDelegate(),b=modern.hasActiveDelegate(); eq(b,a,"hasActiveDelegate"); compare("hasActiveDelegate query"); return a; }
+        String hint() { String a=old.getActivateHandler().getHint(),b=modern.activationHint(); eq(b,a,"selected handler hint"); compare("selected hint"); return a; }
+        void activationKey() { old.getActivateHandler().onKeyDown(player); modern.activateKeyDown(); compare("activation key"); }
+        HandlerPair handler(String name,String hint,boolean matches) {
+            HandlerPair p=new HandlerPair(); p.matches=matches;
+            p.original=new ClientRuntime.IActivateHandler() {
+                @Override public boolean handles(EntityPlayer player) { oldTrace.add("handles:"+name); return p.matches; }
+                @Override public void onKeyDown(EntityPlayer player) { oldTrace.add("handler:"+name); }
+                @Override public String getHint() { return hint; }
+            };
+            p.candidate=new ClassicClientRuntimeCoordinator.ActivateHandler() {
+                @Override public boolean handles() { newTrace.add("handles:"+name); return p.matches; }
+                @Override public void onKeyDown() { newTrace.add("handler:"+name); }
+                @Override public String getHint() { return hint; }
+            }; return p;
+        }
+        void addHandler(HandlerPair p) { old.addActivateHandler(p.original); modern.addActivateHandler(p.candidate); compare("add handler"); }
+        void removeHandler(HandlerPair p) { old.removeActiveHandler(p.original); modern.removeActiveHandler(p.candidate); compare("remove first handler match"); }
+        void contextHandler() {
+            old.addActivateHandler(ClientRuntime.ActivateHandlers.terminatesContext(oldContext));
+            modern.addActivateHandler(ClassicClientRuntimeCoordinator.terminatesContext(()->newContext.getStatus()==Context.Status.ALIVE,newContext::terminate));
+            compare("add live-context termination handler");
+        }
+    }
+
+    public static void main(String[] args) {
+        eq(ClassicClientRuntimeCoordinator.class.getProtectionDomain().getCodeSource().getLocation().getPath(),
+           System.getProperty("academy.candidate.classes")+"/","coordinator loaded from independently compiled stage directory");
+        scenario("constructor and END tick phase boundary",()-> {
+            Rig r=new Rig(); check(r.old.tickEnabled && r.old.clearOnDeath,"original DataPart initializer contracts");
+            check(ClientRuntime.instance()==r.old && ClientRuntime.available(),"actual original instance lookup");
+            r.add("def",8,"eight"); r.down(8,true);
+            ClientRuntime.Events.instance.onClientTick(new ClientTickEvent(Phase.END));
+            r.compare("END event skipped"); check(r.oldTrace.isEmpty(),"END did not invoke delegate"); r.tick();
+        });
+        scenario("default-only rebuild aborts every active group",()-> {
+            Rig r=new Rig(); r.add("def",11,"obsolete"); r.add("special",90,"special");
+            r.down(11,true); r.down(90,true); r.tick(); r.preset(0,11,"mapped"); r.update();
+            eq(r.newRegistrations(),Map.of(11,"mapped#1",90,"special"),"custom registration survives default rebuild");
+            check(!r.active(),"all groups are logically aborted");
+            r.tick(); eq(r.newTrace.stream().filter(s->s.startsWith("down:mapped")).count(),0L,"held rebuilt default cannot down again");
+            r.down(11,false); r.tick(); r.down(11,true); r.tick(); check(r.active(),"release rearms mapped default");
+        });
+        scenario("clearAll preserves physical history and source stale-held cleanup",()-> {
+            Rig r=new Rig(); r.add("special",7,"original"); r.down(7,true); r.tick(); r.clearAll();
+            eq(r.newStates().get(7),"false/true","held history survives clearAll");
+            r.down(7,false); r.tick(); eq(r.newStates().get(7),"false/true","unregistered held history is not polled");
+            r.add("new",7,"rebuilt"); r.down(7,true); r.tick(); check(!r.active(),"history fences held re-registration");
+            r.down(7,false); r.tick(); r.down(7,true); r.tick(); check(r.active(),"registered physical release rearms");
+            Rig empty=new Rig(); empty.clearAll(); eq(empty.inputs.overrides,List.of("[]"),"empty clearAll still rebuilds once");
+        });
+        scenario("duplicate physical keys and cross-group shadow removal",()-> {
+            Rig r=new Rig(); r.add("first",20,"shadow"); r.add("second",20,"live");
+            eq(r.old.getDelegates("first").size(),1,"shadow stays in group metadata");
+            eq(r.newRegistrations(),Map.of(20,"live"),"latest physical mapping wins");
+            r.down(20,true); r.tick(); r.clear("first");
+            eq(r.newRegistrations(),Map.of(20,"live"),"clearing unequal shadow keeps latest key");
+            check(r.oldTrace.stream().anyMatch(s->s.startsWith("abort:live:")),"clear shadow aborts current live mapping");
+            r.clear("second"); check(r.newRegistrations().isEmpty(),"clear live does not restore shadow");
+            Rig reverse=new Rig(); reverse.add("first",20,"shadow"); reverse.add("second",20,"live"); reverse.clear("second");
+            eq(reverse.old.getDelegates("first").size(),1,"metadata shadow remains after live removed");
+            check(reverse.newRegistrations().isEmpty(),"shadow is never revived");
+            Rig same=new Rig(); same.add("same",20,"a"); same.add("same",20,"b");
+            eq(same.modern.getDelegates("same").size(),2,"same-group duplicates accepted"); same.clear("same");
+        });
+        scenario("same delegate identity across keys changes group removal",()-> {
+            Rig r=new Rig(); r.add("one",21,"shared"); r.add("two",22,"shared");
+            r.down(21,true); r.down(22,true); r.tick(); r.clear("one");
+            check(r.newRegistrations().isEmpty(),"delegate identity equality removes mapped node at another key");
+            eq(r.old.getDelegates("two").size(),1,"other group metadata remains");
+            eq(r.oldTrace.stream().filter(s->s.startsWith("abort:shared:")).count(),2L,"per-key logical state aborts same identity twice");
+            Rig sameKey=new Rig(); sameKey.add("one",21,"shared"); sameKey.add("two",21,"shared"); sameKey.clear("one");
+            check(sameKey.newRegistrations().isEmpty(),"same identity shadow removal deletes latest same-key node");
+        });
+        scenario("empty and nonempty clear abort all active delegates",()-> {
+            Rig r=new Rig(); r.add("a",3,"a"); r.add("b",4,"b"); r.down(3,true); r.down(4,true); r.tick();
+            r.clear("missing"); check(!r.active(),"empty group still aborts every key");
+            eq(r.newRegistrations(),Map.of(3,"a",4,"b"),"empty clear preserves registrations");
+            r.down(3,false); r.down(4,false); r.tick(); r.down(3,true); r.down(4,true); r.tick(); r.clear("a");
+            check(!r.active(),"nonempty clear aborts unrelated group"); eq(r.newRegistrations(),Map.of(4,"b"),"only named unequal group removed");
+        });
+        scenario("unchanged no-op abort survives persistent-context callback contract",()-> {
+            Rig r=new Rig(); r.addPassive("special",30,"persistent"); r.down(30,true); r.tick(); r.clear("missing");
+            eq(r.oldContext.status,Context.Status.ALIVE,"no-op abort leaves host context alive");
+            eq(r.newContext.status,r.oldContext.status,"candidate callback contract also leaves context alive");
+            r.contextHandler(); eq(r.hint(),"endspecial","live host context wins fallback"); r.activationKey();
+            eq(r.oldContext.terminations,1,"actual original terminatesContext invokes host terminate once");
+            eq(r.newContext.terminations,r.oldContext.terminations,"candidate context termination callback");
+            eq(r.hint(),null,"terminated host context falls back to raw toggle");
+        });
+        scenario("last registered matching handler only and first duplicate removal",()-> {
+            Rig r=new Rig(); HandlerPair first=r.handler("first","first",true), second=r.handler("second","second",true), skip=r.handler("skip","skip",false);
+            r.addHandler(first); r.addHandler(second); r.addHandler(skip); eq(r.hint(),"second","latest matching handler wins"); r.activationKey();
+            check(r.oldTrace.contains("handler:second") && !r.oldTrace.contains("handler:first"),"dispatch invokes one matching handler");
+            r.addHandler(first); r.addHandler(first); r.removeHandler(first); eq(r.hint(),"first","remove drops first duplicate only");
+            r.removeHandler(first); eq(r.hint(),"second","older second wins after duplicate removals");
+            r.removeHandler(second); eq(r.hint(),"first","original first registration remains");
+            r.removeHandler(first); r.removeHandler(first); eq(r.hint(),null,"remove absent is a no-op");
+        });
+        scenario("two live persistent host contexts terminate newest one per activation",()-> {
+            Rig r=new Rig(); Context oldOlder=new Context(),oldNewer=new Context(),newOlder=new Context(),newNewer=new Context();
+            r.old.addActivateHandler(ClientRuntime.ActivateHandlers.terminatesContext(oldOlder));
+            r.old.addActivateHandler(ClientRuntime.ActivateHandlers.terminatesContext(oldNewer));
+            r.modern.addActivateHandler(ClassicClientRuntimeCoordinator.terminatesContext(()->newOlder.getStatus()==Context.Status.ALIVE,newOlder::terminate));
+            r.modern.addActivateHandler(ClassicClientRuntimeCoordinator.terminatesContext(()->newNewer.getStatus()==Context.Status.ALIVE,newNewer::terminate));
+            eq(r.hint(),"endspecial","two live contexts expose special hint"); r.activationKey();
+            eq(oldNewer.status,Context.Status.TERMINATED,"first V terminates newest original host context");
+            eq(oldOlder.status,Context.Status.ALIVE,"first V leaves older original host context alive");
+            eq(newNewer.status,oldNewer.status,"candidate newest context state"); eq(newOlder.status,oldOlder.status,"candidate older context state");
+            eq(r.hint(),"endspecial","older live context still advertises endspecial"); r.activationKey();
+            eq(oldOlder.status,Context.Status.TERMINATED,"second V terminates older original host context");
+            eq(newOlder.status,oldOlder.status,"candidate second V state");
+            eq(oldOlder.terminations+oldNewer.terminations,2,"only one terminate per V");
+            eq(newOlder.terminations+newNewer.terminations,2,"candidate only one terminate per V");
+            eq(r.inputs.requests,List.of(),"context terminations do not fall through to activation toggle");
+            eq(r.hint(),null,"all terminated contexts expose fallback null");
+        });
+        scenario("endspecial endskill and null fallback hints",()-> {
+            Rig r=new Rig(); eq(r.hint(),null,"idle fallback null"); r.activationKey(); eq(r.inputs.requests,List.of(false),"idle activation toggles off");
+            eq(r.modern.activationHintTranslated("key-47",k->"translated:"+k),r.old.getActivateHandler().getHintTranslated(),"idle translated hint empty");
+            r.raw(true); r.add("def",1,"skill"); r.down(1,true); r.tick(); eq(r.hint(),"endskill","active delegate fallback");
+            eq(r.modern.activationHintTranslated("key-47",k->"translated:"+k),r.old.getActivateHandler().getHintTranslated(),"source translated skill hint");
+            r.contextHandler(); eq(r.hint(),"endspecial","special context precedence"); r.activationKey(); eq(r.hint(),"endskill","terminated special exposes active skill");
+            r.activationKey(); eq(r.hint(),null,"aborted skill exposes default toggle"); check(r.inputs.raw,"aborting skill keeps raw activated");
+        });
+        scenario("category-absent raw-activated guard",()-> {
+            Rig r=new Rig(); r.category(false); r.raw(true); r.add("def",5,"raw-allowed"); r.down(5,true); r.tick();
+            check(r.active(),"source canUseAbility does not add a category gate");
+            eq(r.inputs.overrides,List.of("[]"),"source isActivated category guard empties override");
+            r.abort(); r.activationKey(); eq(r.inputs.requests,List.of(true),"default handler negates category-gated state, not raw flag");
+            r.activationKey(); eq(r.inputs.requests,List.of(true,true),"category absent repeated toggle requests true");
+        });
+        for(String cause:List.of("cooldown","screen","terminal","overload","interference","raw-off")) {
+            scenario("held-key fences for "+cause,()-> {
+                Rig r=new Rig(); r.add("def",6,"skill"); Pair p=r.pair("skill"); r.blocked(cause,p,true); r.down(6,true); r.tick();
+                eq(r.newStates().get(6),"false/true","blocked down records physical history");
+                r.blocked(cause,p,false); r.tick(); check(!r.active(),"unblocked held key cannot activate");
+                r.down(6,false); r.tick(); r.down(6,true); r.tick(); check(r.active(),"release rearms after block");
+                r.blocked(cause,p,true); r.tick(); check(!r.active(),"active key aborts on block");
+                check(r.oldTrace.stream().anyMatch(s->s.startsWith("abort:skill:{6=true/true}")),"tick abort callback runs before state clears");
+                r.blocked(cause,p,false); r.tick(); check(!r.active(),"post-abort held key stays fenced");
+            });
+        }
+        scenario("external abort state-before-callback and normal callback ordering",()-> {
+            Rig r=new Rig(); r.add("def",8,"a"); r.down(8,true); r.tick(); r.tick(); r.abort();
+            check(r.oldTrace.contains("down:a:{8=false/false}"),"down callback sees state before transition");
+            check(r.oldTrace.contains("tick:a:{8=true/true}"),"tick callback sees active state");
+            check(r.oldTrace.contains("abort:a:{8=false/true}"),"abortDelegates clears before callback");
+            r.down(8,false); r.tick(); r.down(8,true); r.tick(); r.down(8,false); r.tick();
+            check(r.oldTrace.contains("up:a:{8=true/true}"),"up callback sees state before clear");
+            r.clear("def"); r.tick(); check(r.newStates().isEmpty(),"unregistered physically false state is removed on START");
+        });
+        scenario("bounded abort callback reentry clears and rebuilds without repeat abort",()-> {
+            Rig r=new Rig(); Pair replacement=r.pair("replacement"), hook=new Pair("hook");
+            hook.original=new KeyDelegate() {
+                @Override public void onKeyDown() { r.oldTrace.add("down:hook:"+r.oldStates()); }
+                @Override public void onKeyAbort() {
+                    r.oldTrace.add("abort:hook:"+r.oldStates());
+                    r.old.clearKeys("def"); r.old.addKey(15,replacement.original);
+                }
+                @Override public ResourceLocation getIcon() { return hook.skill.getHintIcon(); }
+                @Override public int createID() { return 0; }
+                @Override public Skill getSkill() { return hook.skill; }
+            };
+            hook.candidate=new ClassicClientRuntimeCoordinator.Delegate() {
+                @Override public void onKeyDown() { r.newTrace.add("down:hook:"+r.newStates()); }
+                @Override public void onKeyAbort() {
+                    r.newTrace.add("abort:hook:"+r.newStates());
+                    r.modern.clearKeys("def"); r.modern.addKey(15,replacement.candidate);
+                }
+            };
+            r.pairs.put("hook",hook); r.old.addKey(15,hook.original); r.modern.addKey(15,hook.candidate);
+            r.compare("reentrant hook registration"); r.down(15,true); r.tick(); r.abort();
+            eq(r.oldTrace.stream().filter(s->s.startsWith("abort:hook:")).count(),1L,"external abort false-before-callback prevents nested repeat");
+            eq(r.newRegistrations(),Map.of(15,"replacement"),"bounded reentry rebuilds current group");
+            r.tick(); check(!r.active(),"reentry replacement inherits held physical history");
+        });
+        scenario("onDown and onTick external-abort reentry retains source independent conditions",()-> {
+            Rig r=new Rig(); Pair hook=new Pair("reentry");
+            hook.original=new KeyDelegate() {
+                @Override public void onKeyDown() { r.oldTrace.add("down:reentry:"+r.oldStates()); r.old.abortDelegates(); }
+                @Override public void onKeyTick() { r.oldTrace.add("tick:reentry:"+r.oldStates()); r.old.abortDelegates(); }
+                @Override public void onKeyAbort() { r.oldTrace.add("abort:reentry:"+r.oldStates()); }
+                @Override public ResourceLocation getIcon() { return hook.skill.getHintIcon(); }
+                @Override public int createID() { return 0; }
+                @Override public Skill getSkill() { return hook.skill; }
+            };
+            hook.candidate=new ClassicClientRuntimeCoordinator.Delegate() {
+                @Override public void onKeyDown() { r.newTrace.add("down:reentry:"+r.newStates()); r.modern.abortDelegates(); }
+                @Override public void onKeyTick() { r.newTrace.add("tick:reentry:"+r.newStates()); r.modern.abortDelegates(); }
+                @Override public void onKeyAbort() { r.newTrace.add("abort:reentry:"+r.newStates()); }
+            };
+            r.pairs.put("reentry",hook); r.old.addKey(16,hook.original); r.modern.addKey(16,hook.candidate); r.down(16,true); r.tick();
+            check(r.active(),"onDown external abort of false state is followed by source true assignment");
+            r.tick(); check(!r.active(),"onTick external abort stays false with held physical state");
+            eq(r.newStates().get(16),"false/true","tick external abort retains physical fence");
+            r.tick(); eq(r.oldTrace.stream().filter(s->s.startsWith("down:reentry:")).count(),1L,"independent conditions do not re-down already held key");
+        });
+        scenario("duplicate explicit activation and deactivation observers",()-> {
+            Rig r=new Rig(); r.preset(0,11,"mapped"); r.add("special",90,"custom"); r.activateObserver(); r.activateObserver();
+            eq(r.newBuildCount.get("mapped"),2,"activation event repeats default reconstruction");
+            eq(r.newRegistrations(),Map.of(11,"mapped#2",90,"custom"),"repeated activation retains special group");
+            int before=r.inputs.overrides.size(); r.deactivateObserver(); r.deactivateObserver();
+            check(r.newRegistrations().isEmpty(),"each deactivate clears registry");
+            eq(r.inputs.overrides.size()-before,4,"two-group first clearAll plus empty second clearAll rebuild history");
+            r.raw(true); r.tick(); check(r.newRegistrations().isEmpty(),"raw activation alone does not reconstruct registry");
+        });
+        scenario("actual event side gates and unconditional preset switch",()-> {
+            Rig r=new Rig(); r.preset(0,11,"mapped"); r.add("special",90,"special"); SideHelper.client=false;
+            r.activateObserver(); r.deactivateObserver(); r.presetEdit(); eq(r.newBuildCount.size(),0,"server-side observer methods do nothing");
+            r.presetSwitch(); eq(r.newBuildCount.get("mapped"),1,"source presetSwitch rebuild is unconditional");
+            SideHelper.client=true; r.presetEdit(); eq(r.newBuildCount.get("mapped"),2,"client preset edit rebuilds");
+        });
+        scenario("flush START ordering coalescing and unavailable runtime retention",()-> {
+            Rig r=new Rig(); r.add("def",11,"old"); r.preset(0,11,"mapped"); r.down(11,true); r.flush(); r.flush();
+            Minecraft.getMinecraft().thePlayer=null; r.inputs.available=false; r.tick(); check(r.modern.flushPending(),"no player preserves pending flush");
+            Minecraft.getMinecraft().thePlayer=r.player; r.inputs.available=true; r.tick();
+            eq(r.newBuildCount.get("mapped"),1,"flush requests coalesce");
+            check(r.oldTrace.get(0).startsWith("down:old:"),"old delegates run before pending default rebuild");
+            check(r.oldTrace.get(1).startsWith("abort:old:"),"flush rebuild aborts after old tick/down");
+            check(!r.modern.flushPending() && r.modern.controlDirty(),"flush clears latch and add leaves next-tick dirty");
+            eq(r.inputs.overrides,List.of("[11]","[]"),"dirty override rebuild happens before flush clear/add");
+            r.tick(); eq(r.inputs.overrides,List.of("[11]","[]","[11]"),"newly added overrides rebuild next START");
+        });
+        scenario("getDelegates preserves order duplicates and missing group view isolation",()-> {
+            Rig r=new Rig(); r.add("g",9,"a"); r.add("g",2,"b"); r.add("g",9,"a");
+            eq(r.old.getDelegates("g").stream().map(r::oldName).toList(),List.of("a","b","a"),"original group insertion order");
+            eq(r.modern.getDelegates("g").stream().map(r::newName).toList(),List.of("a","b","a"),"candidate group insertion order");
+            Collection<KeyDelegate> copy=r.old.getDelegates("g"); copy.clear();
+            eq(r.old.getDelegates("g").size(),3,"original getDelegates is a detached collection");
+            eq(r.old.getDelegates("missing").size(),r.modern.getDelegates("missing").size(),"missing group query"); r.compare("group views");
+            r.down(2,true); r.down(9,true); r.tick();
+            check(r.oldTrace.get(0).startsWith("down:b:"),"key dispatch uses numeric TreeMap order");
+        });
+        scenario("negative mouse ids dispatch by physical numeric key rather than preset slot",()-> {
+            Rig r=new Rig(); r.preset(0,11,"slot0"); r.preset(1,-100,"slot1"); r.preset(2,3,"slot2"); r.preset(3,-99,"slot3");
+            r.update();
+            eq(r.oldTrace,List.of("build:0:11","build:1:-100","build:2:3","build:3:-99"),"actual updateDefaultGroup activation slot order");
+            for(int key:List.of(11,-100,3,-99)) r.down(key,true);
+            r.tick();
+            eq(r.oldTrace.stream().filter(s->s.startsWith("down:")).map(s->s.substring(5,s.indexOf(':',5))).toList(),
+               List.of("slot1#1","slot3#1","slot2#1","slot0#1"),"numeric physical key order includes negative mouse ids");
+            eq(r.inputs.overrides.get(r.inputs.overrides.size()-1),"[-100, -99, 3, 11]","override keys preserve numeric source order");
+        });
+        System.out.println("PASS ClientRuntime source oracle: "+scenarios+" scenarios, "+assertions+" assertions");
+        System.out.println("HOST BOUNDARY: unchanged original ClientRuntime/KeyDelegate/event Java; CPData predicates, engine, context lifecycle, presets, keys and overrides are declared deterministic hosts. KeyDelegates.scala is witnessed, not executed. No real engine or XP/Level client event evidence.");
+    }
+}

@@ -1,0 +1,15 @@
+// NEW133 second mode: pure bounds plus mandatory native owner/trajectory GameTests in academy_highpower.
+tasks.register('highPowerMagneticArrowSeparationTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.MagneticArrowSeparationRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerMagneticArrowSeparationTest' }
+tasks.register('magneticArrowSeparationVisualTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.MagneticArrowSeparationVisualRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'magneticArrowSeparationVisualTest' }

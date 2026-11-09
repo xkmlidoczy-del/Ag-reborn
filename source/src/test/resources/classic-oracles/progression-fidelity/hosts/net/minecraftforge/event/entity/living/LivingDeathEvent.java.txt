@@ -1,0 +1,3 @@
+/* Test-only platform host; numeric algorithms remain in unchanged source. */
+package net.minecraftforge.event.entity.living;
+public class LivingDeathEvent { public net.minecraft.entity.Entity entityLiving; }

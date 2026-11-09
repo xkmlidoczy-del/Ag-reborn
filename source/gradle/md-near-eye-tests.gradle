@@ -1,0 +1,20 @@
+tasks.register('mdNearEyeVisibilityTest', JavaExec) {
+ dependsOn testClasses
+ classpath = sourceSets.test.runtimeClasspath
+ mainClass = 'cn.academy.port.client.MdNearEyeVisibilityRegressionTest'
+ enableAssertions = true
+}
+tasks.named('check') { dependsOn 'mdNearEyeVisibilityTest' }
+tasks.register('mdNearEyeIntegrationTest', Exec) {
+ commandLine 'python3', 'scripts/verify-md-near-eye-integration.py', '--report', layout.buildDirectory.file('reports/md-near-eye-integration.json').get().asFile.absolutePath
+}
+tasks.named('check') { dependsOn 'mdNearEyeIntegrationTest' }
+
+// Resolve the existing configured Gradle cache; the verifier still enforces its original JOML SHA.
+tasks.named('mdNearEyeIntegrationTest', Exec) {
+    doFirst {
+        def jars = fileTree(new File(gradle.gradleUserHomeDir, 'caches/modules-2/files-2.1/org.joml/joml/1.10.5')) { include '**/joml-1.10.5.jar' }.files
+        if (jars.size() != 1) throw new GradleException('Expected one cached JOML 1.10.5 archive')
+        args '--joml', jars.first().absolutePath
+    }
+}

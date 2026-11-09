@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PPP",
+    "GNG",
+    "SCR"
+  ],
+  "key": {
+    "P": {
+      "item": "academy:constraint_plate"
+    },
+    "G": {
+      "item": "minecraft:glowstone"
+    },
+    "N": {
+      "item": "academy:developer_normal"
+    },
+    "S": {
+      "item": "academy:wireless_node_standard"
+    },
+    "C": {
+      "item": "academy:crystal_pure"
+    },
+    "R": {
+      "item": "academy:reso_crystal"
+    }
+  },
+  "result": {
+    "id": "academy:developer_advanced",
+    "count": 1
+  }
+}

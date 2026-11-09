@@ -1,0 +1,37 @@
+// Opt-in visual showcase client (-PshowcaseQA=true). The driver is compiled into the dev classpath only;
+// the distributable JAR excludes it. Usage:
+//   gradlew -PshowcaseQA=true -PshowScript='wait:60|shot:name|quit' [-PshowProps='k=v;k=v'] [-PshowHidden=true] runShowcaseClient
+if (providers.gradleProperty('showcaseQA').getOrElse('false').toBoolean()) {
+    tasks.named('jar') { exclude('cn/academy/port/qa/**') }
+    sourceSets.main.java.srcDir(layout.projectDirectory.dir('src/showcaseQa/java'))
+    neoForge {
+        runs {
+            showcaseClient {
+                client()
+                gameDirectory = layout.projectDirectory.dir(providers.gradleProperty('showDirectory').getOrElse('run-showcase'))
+                systemProperty 'academy.qa.showcase', 'true'
+                systemProperty 'academy.qa.script', providers.gradleProperty('showScript').getOrElse('wait:60|quit')
+                systemProperty 'academy.visual.qa', 'true'
+                providers.gradleProperty('showProps').getOrElse('').split(';').each { entry ->
+                    int eq = entry.indexOf('=')
+                    if (eq > 0) systemProperty entry.substring(0, eq).trim(), entry.substring(eq + 1).trim()
+                }
+                if (providers.gradleProperty('showHidden').getOrElse('false').toBoolean())
+                    jvmArgument "-javaagent:${layout.projectDirectory.file('qa/hidden-window-agent.jar').asFile.absolutePath}"
+                programArgument '--width'; programArgument providers.gradleProperty('showWidth').getOrElse('1280')
+                programArgument '--height'; programArgument providers.gradleProperty('showHeight').getOrElse('720')
+            }
+        }
+    }
+    // Export the actual JavaExec launch contract so two native clients can run without competing Gradle tasks.
+    tasks.register('writeShowcaseLaunchMetadata') {
+        dependsOn 'prepareShowcaseClientRun', 'classes', 'writeShowcaseClientLegacyClasspath'
+        doLast {
+            def launch = tasks.named('runShowcaseClient').get()
+            def out = layout.buildDirectory.file('moddev/showcaseClientLaunch.json').get().asFile
+            out.text = groovy.json.JsonOutput.toJson([classpath: launch.classpathProvider.asPath,
+                    modArguments: launch.jvmArgumentProviders.collectMany { it.asArguments() as List }.findAll { it.startsWith('-Dfml.modFolders=') },
+                    environment: launch.environmentProperty.get().findAll { k, v -> k == 'MOD_CLASSES' }])
+        }
+    }
+}

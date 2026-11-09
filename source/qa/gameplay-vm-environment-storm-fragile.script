@@ -1,0 +1,1 @@
+lang:zh_cn|cmd:time set day|cmd:gamerule doMobSpawning false|cmd:difficulty normal|keyup:82|keyup:87|keyup:340|tree:close|cam:first|cmd:tp @s 0.5 -60 0.5 0 0|gamevmenv:setup:storm-fragile|wait:30|gamevmenv:baseline|keydown:82|wait:1|keyup:82|wait:170|gamevmenv:assert|shot:gameplay_vm_storm_low_mastery_real_glass|keydown:82|wait:1|keyup:82|wait:8|gamevmenv:verify|quit

@@ -1,0 +1,248 @@
+[
+  {
+    "name": "final22-itemsplit-vm-extra-split-narrow",
+    "script": "gameplay-vm-extra-split-narrow.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "impulse_split"
+    ],
+    "modes": [
+      "actual approximately20 degree pair slows naturally",
+      "native integer budget partition",
+      "two real native arrow impacts and bounded combined actual target damage"
+    ],
+    "status": "planned_not_run",
+    "props": "",
+    "suiteGroup": "itemSplit",
+    "sourcePlan": "gameplay-vm-extra-plan.json",
+    "sourceCaseName": "candidate-vm-extra-split-narrow",
+    "scriptSha256": "f208a6cb59c5f0497768e176e41624ed693dea580ccefd639c2dc3dab645e486",
+    "nominalFixedTicks": 420,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_MODE_PASS mode=split-narrow skill=impulse_split "
+    ]
+  },
+  {
+    "name": "final22-stormcycle-storm-cycle-costs",
+    "script": "gameplay-storm-cycle-costs.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "fixture": "Finite initial CP and 84-percent initial heat before baseline only; natural native cooling and CP depletion after actual R start, never refilled.",
+    "props": "",
+    "suiteGroup": "stormcycle",
+    "sourcePlan": "gameplay-storm-cycle-plan.json",
+    "sourceCaseName": "diagnostic-storm-cycle-costs",
+    "scriptSha256": "20aefe57a381ec681402fe466fbe41af324fa5ee923136fedd515a151433f7e2",
+    "nominalFixedTicks": 1467,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 2,
+      "conditionalEscape": 0
+    },
+    "skills": [
+      "storm_wing"
+    ],
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_STORM_COSTS_PASS skill=storm_wing ",
+      "QA_GAMEPLAY_STORM_COOLING_ENTRY ",
+      "QA_GAMEPLAY_STORM_COOLING_RECOVERED ",
+      "QA_GAMEPLAY_STORM_CYCLE_PASS skill=storm_wing ",
+      "QA_LIVE_CAMERA_NEUTRAL_PASS skill=storm_wing"
+    ]
+  },
+  {
+    "name": "final22-visual-vfx-iron-nearplane",
+    "script": "gameplay-visual-iron-nearplane.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "iron_sand_lance"
+    ],
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Normal key input, original mechanical assertions, native framebuffer tick sequence plus representative action/release images; inspect actual frames after run, not generated visual injection.",
+    "suiteGroup": "visual",
+    "sourcePlan": "gameplay-visual-followup-plan.json",
+    "sourceCaseName": "candidate-vfx-iron-nearplane",
+    "scriptSha256": "a61ea2de6d21687223c65d86b57128e25a2a15f9eb491788df978c3c2a242891",
+    "nominalFixedTicks": 664,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_PASS skill=iron_sand_lance ",
+      "QA_FINAL_VISUAL_PASS skill=iron_sand_lance ",
+      "QA_REC_START ",
+      "QA_REC_END "
+    ]
+  },
+  {
+    "name": "final22-visual-vfx-railgun-charge",
+    "script": "gameplay-visual-railgun-charge.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "railgun"
+    ],
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Normal key input, original mechanical assertions, native framebuffer tick sequence plus representative action/release images; inspect actual frames after run, not generated visual injection.",
+    "suiteGroup": "visual",
+    "sourcePlan": "gameplay-visual-followup-plan.json",
+    "sourceCaseName": "candidate-vfx-railgun-charge",
+    "scriptSha256": "d2f0d247385cc3b3a70942b266308aedd075b366845eadecc2b3820097d78eb8",
+    "nominalFixedTicks": 460,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_PASS skill=railgun ",
+      "QA_FINAL_VISUAL_PASS skill=railgun ",
+      "QA_REC_START ",
+      "QA_REC_END "
+    ]
+  },
+  {
+    "name": "final22-visual-vfx-thunderclap-peak",
+    "script": "gameplay-visual-thunderclap-peak.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "thunder_clap"
+    ],
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Normal key input, original mechanical assertions, native framebuffer tick sequence plus representative action/release images; inspect actual frames after run, not generated visual injection.",
+    "suiteGroup": "visual",
+    "sourcePlan": "gameplay-visual-followup-plan.json",
+    "sourceCaseName": "candidate-vfx-thunderclap-peak",
+    "scriptSha256": "68089d9c26d81585629a686271a9ec6c02e63c9fc08acecf601f75ca5523224b",
+    "nominalFixedTicks": 475,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_PASS skill=thunder_clap ",
+      "QA_FINAL_VISUAL_PASS skill=thunder_clap ",
+      "QA_REC_START ",
+      "QA_REC_END "
+    ]
+  },
+  {
+    "name": "final22-visual-vfx-mine-tiers-mid",
+    "script": "gameplay-visual-mine-ray-tiers.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "mine_ray_basic",
+      "mine_ray_expert",
+      "mine_ray_luck"
+    ],
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Normal real sustained mining with all existing finite-resource/native-drop assertions, native full-frame tick sequence and middle-of-hold pictures; no new production decoration before actual frame comparison.",
+    "suiteGroup": "visual",
+    "sourcePlan": "gameplay-visual-followup-plan.json",
+    "sourceCaseName": "candidate-vfx-mine-tiers-mid",
+    "scriptSha256": "45e7540726391033df0d889d171723366209789514ed112cf5cc9b6a02caceef",
+    "nominalFixedTicks": 879,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_PASS skill=mine_ray_basic ",
+      "QA_GAMEPLAY_PASS skill=mine_ray_expert ",
+      "QA_GAMEPLAY_PASS skill=mine_ray_luck ",
+      "QA_FINAL_VISUAL_PASS skill=mine_ray_basic ",
+      "QA_FINAL_VISUAL_PASS skill=mine_ray_expert ",
+      "QA_FINAL_VISUAL_PASS skill=mine_ray_luck ",
+      "QA_REC_START ",
+      "QA_REC_END "
+    ]
+  },
+  {
+    "name": "final22-supplemental-storm-sustain-40s",
+    "script": "codex-storm-sustain.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "required": true,
+    "purpose": "Real finite LV5 survival CP, at least800 ACTIVE ticks/850 elapsed ticks, actual R stop and airborne slow falling.",
+    "scriptSha256": "f0fa746b26e7e026b8455e5bce3411426e05235a5be53a39da61446abd68b85e",
+    "props": "",
+    "suiteGroup": "supplemental",
+    "sourcePlan": "gameplay-final-supplemental-plan.json",
+    "sourceCaseName": "final-supplement-storm-sustain-40s",
+    "nominalFixedTicks": 1347,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "skills": [
+      "storm_wing"
+    ],
+    "requiredLogMarkers": [
+      "QA_LIVE_STORM_ACTIVE_PASS ",
+      "QA_LIVE_STORM_SUSTAIN_PASS ",
+      "QA_LIVE_STORM_STOP_PASS ",
+      "QA_LIVE_CAMERA_NEUTRAL_PASS skill=storm_wing"
+    ]
+  },
+  {
+    "name": "final22-supplemental-four-category-shield-hud",
+    "script": "codex-shield-hud-final.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "required": true,
+    "purpose": "All four categories: actual ordinary damage debits positive S without HP loss, then genuine overflow damages HP and holding ends; compact native/skill CP HUD.",
+    "scriptSha256": "e6dc00b2eb96b809e8d30c00aa1692f126f863ef8f49f74b6bea2c97eff17394",
+    "props": "",
+    "suiteGroup": "supplemental",
+    "sourcePlan": "gameplay-final-supplemental-plan.json",
+    "sourceCaseName": "final-supplement-four-category-shield-hud",
+    "nominalFixedTicks": 1120,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "skills": [
+      "forked_arc",
+      "scatter_bomb",
+      "phase_sidestep",
+      "deflection_strike",
+      "grounding_return",
+      "storm_wing"
+    ],
+    "requiredLogMarkers": [
+      "QA_LIVE_SHIELD_PAID_PASS category=electromaster ",
+      "QA_LIVE_SHIELD_BROKEN_PASS category=electromaster ",
+      "QA_LIVE_SHIELD_PAID_PASS category=meltdowner ",
+      "QA_LIVE_SHIELD_BROKEN_PASS category=meltdowner ",
+      "QA_LIVE_SHIELD_PAID_PASS category=teleporter ",
+      "QA_LIVE_SHIELD_BROKEN_PASS category=teleporter ",
+      "QA_LIVE_SHIELD_PAID_PASS category=vecmanip ",
+      "QA_LIVE_SHIELD_BROKEN_PASS category=vecmanip ",
+      "QA_LIVE_HUD_BUDGET_PASS expectation=classic category=electromaster ",
+      "QA_LIVE_HUD_BUDGET_PASS expectation=classic category=vecmanip ",
+      "QA_LIVE_HUD_BUDGET_PASS expectation=expansion category=vecmanip "
+    ]
+  }
+]

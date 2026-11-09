@@ -1,0 +1,8 @@
+// NEW152 literal two-tranche arithmetic, persistence and native adapter witnesses.
+tasks.register('highPowerMagneticDomainShieldTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.MagneticDomainShieldRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerMagneticDomainShieldTest' }

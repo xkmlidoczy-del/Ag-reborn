@@ -1,0 +1,1 @@
+package cn.academy.ability.api.event;public class LevelChangeEvent extends cpw.mods.fml.common.gameevent.PlayerEvent {public LevelChangeEvent(net.minecraft.entity.player.EntityPlayer p){super(p);}public cn.academy.ability.api.data.AbilityData getAbilityData(){return player.data;}}

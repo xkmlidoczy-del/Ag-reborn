@@ -1,0 +1,12 @@
+// NEW312 genuine classic fresh-edge/Post packet ordering and bounded receipt-only endpoint VFX.
+['phaseSidestepInputTest':'cn.academy.port.client.PhaseSidestepInputRegressionTest',
+ 'phaseSidestepVisualTest':'cn.academy.port.client.PhaseSidestepVisualRegressionTest',
+ 'phaseSidestepDispatchTest':'cn.academy.port.client.PhaseSidestepDispatchRegressionTest'].each { taskName, className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+    }
+    tasks.named('check') { dependsOn taskName }
+}

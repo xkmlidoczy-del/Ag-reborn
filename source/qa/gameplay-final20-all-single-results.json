@@ -1,0 +1,172 @@
+[
+  {
+    "name": "final20-main-em-damage",
+    "script": "gameplay-em-damage.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-md-damage",
+    "script": "gameplay-md-damage.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-em-md-advanced-attacks",
+    "script": "gameplay-em-md-advanced-attacks.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-em-md-utility",
+    "script": "gameplay-em-md-utility.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-em-md-motion-basic",
+    "script": "gameplay-em-md-motion-basic.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-em-md-motion-air",
+    "script": "gameplay-em-md-motion-air.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-final-magnetic-bracer",
+    "script": "gameplay-final-magnetic-bracer.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-em-md-retry-charge_decoy",
+    "script": "gameplay-em-md-retry-charge_decoy.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-em-defense-rest",
+    "script": "gameplay-final-em-defense-rest.script",
+    "exit": 1
+  },
+  {
+    "name": "final20-main-em-md-defense-md-core",
+    "script": "gameplay-em-md-defense-md-core.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-em-md-defense-scatter_plates",
+    "script": "gameplay-em-md-defense-scatter_plates.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-em-md-defense-directional_dissipation_curtain",
+    "script": "gameplay-em-md-defense-directional_dissipation_curtain.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-em-md-defense-zero_gap_armor",
+    "script": "gameplay-em-md-defense-zero_gap_armor.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-em-md-multistage-attacks",
+    "script": "gameplay-em-md-multistage-attacks.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-em-md-magnetic-block",
+    "script": "gameplay-em-md-magnetic-block.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-em-md-circuit-crossing",
+    "script": "gameplay-em-md-circuit-crossing.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-em-md-pulse-interference",
+    "script": "gameplay-em-md-pulse-interference.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-em-md-rail-route",
+    "script": "gameplay-em-md-rail-route.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-em-md-folded_mirror_array",
+    "script": "gameplay-em-md-folded_mirror_array.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-em-md-scatter_locator_plate",
+    "script": "gameplay-em-md-scatter_locator_plate.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-em-md-remote_scatter_relay",
+    "script": "gameplay-em-md-remote_scatter_relay.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-em-md-particle-corridor",
+    "script": "gameplay-em-md-particle-corridor.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-em-md-owned-item-pull",
+    "script": "gameplay-em-md-owned-item-pull.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-ground-release",
+    "script": "codex-ground-release.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-tp-vm-damage",
+    "script": "gameplay-tp-vm-damage.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-tp-basic",
+    "script": "gameplay-tp-basic.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-tp-complex",
+    "script": "gameplay-tp-complex.script",
+    "exit": 1
+  },
+  {
+    "name": "final20-main-tp-gui-full",
+    "script": "gameplay-tp-gui-full.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-incident-bypass",
+    "script": "gameplay-incident-bypass.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-gameplay-vm-utility",
+    "script": "codex-gameplay-vm-utility.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-vm-cage-storm",
+    "script": "gameplay-vm-cage-storm.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-wind-sable-proof",
+    "script": "codex-wind-sable-proof.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-main-construct-full",
+    "script": "gameplay-construct-full.script",
+    "exit": 0
+  },
+  {
+    "name": "final20-modes-em-input-modes",
+    "script": "gameplay-final-modes-group-em-input-modes.script",
+    "exit": 0
+  }
+]

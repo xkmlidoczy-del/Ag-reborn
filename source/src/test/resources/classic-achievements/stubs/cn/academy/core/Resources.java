@@ -1,0 +1,1 @@
+package cn.academy.core; import net.minecraft.util.ResourceLocation; public class Resources {public static ResourceLocation getTexture(String p){return new ResourceLocation("academy:textures/"+p+".png");}}

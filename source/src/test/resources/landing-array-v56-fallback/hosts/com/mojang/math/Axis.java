@@ -1,0 +1,1 @@
+package com.mojang.math;import org.joml.Matrix4f;public final class Axis{public static final Axis YP=new Axis();public Matrix4f rotationDegrees(float degrees){double a=Math.toRadians(degrees);Matrix4f m=new Matrix4f();m.m[0]=(float)Math.cos(a);m.m[2]=-(float)Math.sin(a);m.m[8]=(float)Math.sin(a);m.m[10]=(float)Math.cos(a);return m;}}

@@ -1,0 +1,2 @@
+package cn.academy.core.item;
+import net.minecraft.item.ItemStack; import net.minecraft.entity.player.EntityPlayer; import net.minecraft.world.World; import java.util.List; public class ACItem {protected boolean bFull3D; protected int maxStackSize=64; public ACItem(String n){} public void setTextureName(String n){} public ItemStack onItemRightClick(ItemStack s,World w,EntityPlayer p){return s;} public void addInformation(ItemStack s,EntityPlayer p,List list,boolean x){} }

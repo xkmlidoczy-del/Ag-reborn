@@ -1,0 +1,118 @@
+package cn.academy.port.client;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.world.phys.Vec3;
+import org.joml.Matrix4f;
+import java.io.*;
+import java.lang.reflect.*;
+import java.nio.file.*;
+import java.util.*;
+
+/** Executes wrapper-bound renderer ClassResource bytecode with real cached Vec3/PoseStack/VertexConsumer/JOML.
+ * Only Minecraft.getInstance() is a declared third-person view host, with a null player.
+ * Does not start Minecraft, create a world, render GPU output, or assert source ribbon parity.
+ */
+public final class ThunderBoltCurrentMainGeometryHarness {
+    static final Class<?> ARC;
+    static final Constructor<?> CONSTRUCTOR;
+    static final Method DRAW;
+    static final boolean BASELINE;
+    static int stateChecks, coordinates, mismatches;
+    static double largestError;
+    static {
+        try {
+            ARC = Class.forName("cn.academy.port.client.ClassicThunderBoltEffects$Arc");
+            CONSTRUCTOR = ARC.getDeclaredConstructor(Vec3.class, Vec3.class, double.class, int.class, boolean.class, int.class);
+            CONSTRUCTOR.setAccessible(true);
+            Method draw;
+            boolean baseline;
+            try {
+                draw = ClassicThunderBoltEffects.class.getDeclaredMethod("render", ARC, Vec3.class, Matrix4f.class, VertexConsumer.class);
+                baseline = false;
+            } catch (NoSuchMethodException expectedOldSignature) {
+                draw = ClassicThunderBoltEffects.class.getDeclaredMethod("render", ARC, Matrix4f.class, VertexConsumer.class);
+                baseline = true;
+            }
+            DRAW = draw; BASELINE = baseline;
+            DRAW.setAccessible(true);
+        } catch (ReflectiveOperationException failure) { throw new ExceptionInInitializerError(failure); }
+    }
+    static Field field(Class<?> type, String name) throws Exception {
+        Field result = type.getDeclaredField(name); result.setAccessible(true); return result;
+    }
+    static void require(boolean result, String message) { stateChecks++; if (!result) throw new AssertionError(message); }
+    static List<float[]> draw(Vec3 camera, Vec3 origin, Vec3 direction, double clip, boolean strong,
+            List<List<ClassicArcGeometry.Segment>> pattern, boolean rotated) throws Exception {
+        Object arc = CONSTRUCTOR.newInstance(camera.add(origin), direction, clip, 20, strong, 734);
+        field(ARC, "patterns").set(arc, List.of(pattern));
+        Random own = (Random) field(ARC, "random").get(arc);
+        Random global = (Random) field(ClassicThunderBoltEffects.class, "RANDOM").get(null);
+        Random rotation = (Random) field(ClassicArcGeometry.class, "ROTATION_RANDOM").get(null);
+        own.setSeed(9819); global.setSeed(3481); rotation.setSeed(8321);
+        var rows = new ArrayList<float[]>();
+        VertexConsumer vertices = (VertexConsumer) Proxy.newProxyInstance(VertexConsumer.class.getClassLoader(),
+            new Class<?>[]{VertexConsumer.class}, (proxy, method, args) -> {
+                if (method.isDefault()) return InvocationHandler.invokeDefault(proxy, method, args);
+                if (method.getName().equals("addVertex")) {
+                    rows.add(new float[]{((Number) args[0]).floatValue(), ((Number) args[1]).floatValue(),
+                        ((Number) args[2]).floatValue(), 0, 0, 0, 0, 0, 0});
+                } else if (method.getName().equals("setUv")) {
+                    float[] row = rows.getLast(); row[3] = ((Number) args[0]).floatValue(); row[4] = ((Number) args[1]).floatValue();
+                } else if (method.getName().equals("setColor") && args.length == 4) {
+                    float[] row = rows.getLast(); for (int i = 0; i < 4; i++) row[5 + i] = ((Number) args[i]).floatValue();
+                }
+                return proxy;
+            });
+        PoseStack poses = new PoseStack();
+        if (rotated) poses.mulPose(new org.joml.Quaternionf().rotationXYZ(.27F, -.73F, .11F));
+        if (BASELINE) poses.translate(-camera.x, -camera.y, -camera.z);
+        if (BASELINE) DRAW.invoke(null, arc, poses.last().pose(), vertices);
+        else DRAW.invoke(null, arc, camera, poses.last().pose(), vertices);
+        require(field(ARC, "age").getInt(arc) == 0 && field(ARC, "pattern").getInt(arc) == 0
+            && field(ARC, "show").getBoolean(arc), "render changed animation state");
+        require(own.nextLong() == new Random(9819).nextLong(), "render consumed per-arc RNG");
+        require(global.nextLong() == new Random(3481).nextLong(), "render consumed effect RNG");
+        require(rotation.nextLong() == new Random(8321).nextLong(), "render consumed ArcFactory rotation RNG");
+        return rows;
+    }
+    public static void main(String[] args) throws Exception {
+        List<Vec3> cameras = List.of(new Vec3(64.5, 72.25, -32.75), new Vec3(14502577.5, -59, 4277858.5),
+            new Vec3(29999999.75, 319.875, -29999999.125), new Vec3(-29999999.5, -63.75, 29999999.5));
+        List<Vec3> directions = List.of(new Vec3(.3, -.2, .8), new Vec3(-.7, .21, -.13),
+            new Vec3(1, 0, 0), new Vec3(0, 1, 0), new Vec3(0, -1, 0), new Vec3(0, 0, -1));
+        int cases = 0, vertices = 0;
+        try (DataOutputStream near = new DataOutputStream(Files.newOutputStream(Path.of(args[0])))) {
+            for (boolean strong : List.of(true, false)) {
+                List<List<ClassicArcGeometry.Segment>> pattern = ClassicArcGeometry.generate(new Random(7345), new Random(4218),
+                    20, 5, strong ? .3 : .13, strong ? 1.4 : 1.2, strong ? .3 : .28, .7);
+                for (Vec3 direction : directions) for (boolean rotated : List.of(false, true))
+                        for (double clip : strong ? List.of(Double.POSITIVE_INFINITY) : List.of(0.0, 7.25, 20.0)) {
+                    Vec3 origin = new Vec3(.37, -.12, .7);
+                    List<float[]> expected = draw(Vec3.ZERO, origin, direction, clip, strong, pattern, rotated);
+                    require(!expected.isEmpty() && expected.size() % 4 == 0, "missing ribbon quad output");
+                    near.writeInt(expected.size());
+                    for (float[] row : expected) for (float value : row) near.writeInt(Float.floatToRawIntBits(value));
+                    cases++; vertices += expected.size();
+                    for (Vec3 camera : cameras) {
+                        List<float[]> actual = draw(camera, origin, direction, clip, strong, pattern, rotated);
+                        require(actual.size() == expected.size(), "camera changed ribbon/clip topology");
+                        for (int i = 0; i < actual.size(); i++) for (int axis = 0; axis < 9; axis++) {
+                            double error = Math.abs(actual.get(i)[axis] - expected.get(i)[axis]);
+                            if (axis < 3) {
+                                require(Float.isFinite(actual.get(i)[axis]) && Float.isFinite(expected.get(i)[axis]), "nonfinite renderer coordinate");
+                                coordinates++; largestError = Math.max(largestError, error); if (error > 1.0e-5) mismatches++;
+                            } else require(Float.floatToRawIntBits(actual.get(i)[axis]) == Float.floatToRawIntBits(expected.get(i)[axis]),
+                                "camera changed texture coordinates/color/alpha");
+                        }
+                    }
+                }
+            }
+        }
+        System.out.println("ThunderBoltCurrentMainGeometryHarness: cases=" + cases + " nearVertices=" + vertices
+            + " coordinateComparisons=" + coordinates + " mismatches=" + mismatches + " largestError=" + largestError
+            + " stateAndAttributeChecks=" + stateChecks + " baseline=" + BASELINE);
+        System.out.println("Bound renderer ClassResources and actual current-main geometry/timeline; cached MC Vec3/PoseStack/VertexConsumer/JOML; declared null-player third-person host; wrapper records actual-main or explicit staged mode; no game/GPU/source-geometry parity claim");
+        require(mismatches == 0, "THUNDERBOLT_FAR_ORIGIN_FAILURE mismatches=" + mismatches + " largestError=" + largestError);
+    }
+}

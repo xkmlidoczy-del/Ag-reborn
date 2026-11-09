@@ -1,0 +1,1 @@
+package net.minecraft.client.renderer.entity;public abstract class Render{public abstract void doRender(net.minecraft.entity.Entity e,double x,double y,double z,float a,float b);protected abstract net.minecraft.util.ResourceLocation getEntityTexture(net.minecraft.entity.Entity e);}

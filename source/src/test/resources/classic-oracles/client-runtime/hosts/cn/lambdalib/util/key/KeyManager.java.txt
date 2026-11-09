@@ -1,0 +1,8 @@
+package cn.lambdalib.util.key;
+import java.util.*;
+public class KeyManager {
+ public static final Set<Integer> DOWN = new HashSet<>();
+ public static boolean getKeyDown(int key) { return DOWN.contains(key); }
+ public static String getKeyName(int key) { return "key-"+key; }
+ public int getKeyID(Object handler) { return 47; }
+}

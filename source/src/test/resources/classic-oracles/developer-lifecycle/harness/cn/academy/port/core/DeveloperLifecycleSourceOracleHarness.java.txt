@@ -1,0 +1,133 @@
+/* Runs unchanged AcademyCraft1.0.7 developer actions and category/CP/preset/cooldown handlers. GPLv3. */
+package cn.academy.port.core;
+import cn.academy.ability.api.*;
+import cn.academy.ability.api.data.*;
+import cn.academy.ability.api.cooldown.CooldownData;
+import cn.academy.ability.api.event.*;
+import cn.academy.ability.develop.action.*;
+import cn.academy.ability.item.ItemInductionFactor;
+import cn.academy.misc.achievements.DispatcherAch;
+import cn.academy.misc.achievements.aches.AchEvLevelChange;
+import cn.academy.port.develop.DevelopmentActions;
+import cn.academy.port.achievements.ClassicAchievementCatalog;
+import cn.lambdalib.util.datapart.EntityData;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
+import java.lang.reflect.Field;
+import java.util.*;
+public final class DeveloperLifecycleSourceOracleHarness {
+ static int checks,differences;static boolean baseline;static final Map<String,Integer> reasons=new TreeMap<>();
+ static Field field(Class<?> c,String n)throws Exception{var f=c.getDeclaredField(n);f.setAccessible(true);return f;}
+ static void set(Object o,String n,Object v)throws Exception{field(o.getClass(),n).set(o,v);}
+ static float f(Object o,String n)throws Exception{return field(o.getClass(),n).getFloat(o);}
+ static int i(Object o,String n)throws Exception{return field(o.getClass(),n).getInt(o);}
+ static boolean b(Object o,String n)throws Exception{return field(o.getClass(),n).getBoolean(o);}
+ static void same(boolean ok,String why){checks++;if(!ok){differences++;reasons.merge(why,1,Integer::sum);if(!baseline)throw new AssertionError(why);}}
+ static void bits(double m,float o,String why){same(Double.doubleToRawLongBits(m)==Double.doubleToRawLongBits((double)o),why);}
+ static Category category(String name){return CategoryManager.INSTANCE.categories.stream().filter(c->c.name.equals(name)).findFirst().orElseThrow();}
+ static final class Pair {
+  final EntityPlayer player=new EntityPlayer();final AbilityData ability=new AbilityData();final CPData cp=new CPData();final PresetData preset=new PresetData();final CooldownData cooldown=new CooldownData();final Controllable control=new Controllable();final AbilityProgress modern=new AbilityProgress();
+  final List<String> originalEvents=new ArrayList<>(),modernEvents=new ArrayList<>();final Set<String> modernEarned=new LinkedHashSet<>();
+  final ItemStack factor;final DevelopmentActions.CategoryItems items;final String target;boolean recording;
+  Pair(String target)throws Exception{
+   this.target=target;factor=new ItemStack(new ItemInductionFactor(category(target)),7);player.inventory.mainInventory[4]=factor;
+   EntityData.bind(player,ability,cp,preset,cooldown);cp.wake();
+   items=new DevelopmentActions.CategoryItems(){public Optional<String> differentFactor(String current){return player.inventory.mainInventory[4]==null||target.equals(current)?Optional.empty():Optional.of(target);}public boolean hasHeldMagneticCoil(){return player.inventory.mainInventory[0]!=null;}public void consumeFactor(String cat){modernEvents.add("factor-clear");player.inventory.mainInventory[4]=null;}public void consumeHeldMagneticCoil(){modernEvents.add("coil-clear");player.inventory.mainInventory[0]=null;}};
+   for(Category c:CategoryManager.INSTANCE.categories)for(int lv=1;lv<=5;lv++)DispatcherAch.INSTANCE.rgLevelChange(c,lv,new AchEvLevelChange<>(lv,c,c.name+".lv"+lv,0,0,new net.minecraft.item.Item(),null));
+   MinecraftForge.EVENT_BUS.high=e->{try{sourceHigh(e);}catch(Exception x){throw new AssertionError(x);}};
+   MinecraftForge.EVENT_BUS.low=e->{try{sourceLow(e);}catch(Exception x){throw new AssertionError(x);}};
+   modern.bindProgress(id->{if(recording)modernEvents.add("learn:"+id);},lv->{if(recording){modernEvents.add("level-low:"+modernState());awardModern(lv);}});
+   modern.bindCategoryChanges(effects->{if(recording)modernEvents.add("category-high:"+modernState());effects.run();if(recording)modernEvents.add("category-low:"+modernState());});
+   modern.bindCalculations(r->{if(recording&&(r.kind==AbilityCalculation.Kind.MAX_CP||r.kind==AbilityCalculation.Kind.MAX_OVERLOAD)){modernEvents.add("calc:"+r.kind+":"+modern.level+":"+modern.cooldowns.isEmpty()+":"+modern.presets.skill(2,0).isEmpty());r.value=(float)r.value+17.25f;}});
+  }
+  void awardModern(int level){for(var e:ClassicAchievementCatalog.matching(ClassicAchievementCatalog.Kind.LEVEL,modern.category,level))modernEarned.add(e.id());}
+  void sourceHigh(Object e)throws Exception{
+   if(!recording)return;
+   if(e instanceof CategoryChangeEvent)originalEvents.add("category-high:"+originalState());
+   if(e instanceof CalcEvent.MaxCP x){originalEvents.add("calc:MAX_CP:"+ability.getLevel()+":"+!cooldown.isInCooldown(control)+":"+!preset.getPreset(2).hasMapping(0));x.value+=17.25f;}
+   if(e instanceof CalcEvent.MaxOverload x){originalEvents.add("calc:MAX_OVERLOAD:"+ability.getLevel()+":"+!cooldown.isInCooldown(control)+":"+!preset.getPreset(2).hasMapping(0));x.value+=17.25f;}
+  }
+  void sourceLow(Object e)throws Exception{if(!recording)return;if(e instanceof CategoryChangeEvent)originalEvents.add("category-low:"+originalState());if(e instanceof LevelChangeEvent)originalEvents.add("level-low:"+originalState());}
+  String originalState()throws Exception{return (ability.getCategoryNullable()==null?state("",ability.getLevel(),b(cp,"activated"),cp.getCP(),cp.getOverload(),cp.getRawMaxCP(),cp.getRawMaxOverload(),cp.getAddMaxCP(),cp.getAddMaxOverload(),f(ability,"expAddedThisLevel"),!cooldown.isInCooldown(control),!preset.getPreset(2).hasMapping(0)):state(ability.getCategory().name,ability.getLevel(),b(cp,"activated"),cp.getCP(),cp.getOverload(),cp.getRawMaxCP(),cp.getRawMaxOverload(),cp.getAddMaxCP(),cp.getAddMaxOverload(),f(ability,"expAddedThisLevel"),!cooldown.isInCooldown(control),!preset.getPreset(2).hasMapping(0)))+slotState()+":slots="+sourceSlotsCleared();}
+  String modernState(){return state(modern.category,modern.level,modern.activated,(float)modern.cp,(float)modern.overload,(float)modern.baseCp(),(float)modern.baseOverload(),(float)modern.extraCp,(float)modern.extraOverload,(float)modern.levelExperience,modern.cooldowns.isEmpty(),modern.presets.skill(2,0).isEmpty())+slotState()+":slots="+(modern.experience.isEmpty()&&modern.unlearnedExperience.isEmpty());}
+  boolean sourceSlotsCleared()throws Exception{for(float value:(float[])field(AbilityData.class,"skillExps").get(ability))if(value!=0)return false;return ((BitSet)field(AbilityData.class,"learnedSkills").get(ability)).isEmpty();}
+  String slotState(){return ":factor="+(player.inventory.mainInventory[4]!=null)+":coil="+(player.inventory.mainInventory[0]!=null);}
+  void prepareCategory(int level,boolean activated)throws Exception{
+   ability.setCategory(category("electromaster"));ability.setLevel(level);ability.learnSkill(category("electromaster").skills.getFirst());
+   modern.selectCategory("electromaster");modern.setLevel(level);modern.learn("arc_gen");
+   set(cp,"activated",activated);modern.activated=activated;
+   set(cp,"maxCP",9999f);set(cp,"maxOverload",444f);modern.restoreCalculatedMaxima(9999,444);
+   set(cp,"curCP",713.125f);modern.cp=713.125f;set(cp,"curOverload",17.75f);modern.overload=17.75f;
+   set(cp,"addMaxCP",100.125f);modern.extraCp=100.125f;set(cp,"addMaxOverload",33.25f);modern.extraOverload=33.25f;
+   set(ability,"expAddedThisLevel",7.7f);modern.levelExperience=7.7f;
+   set(cp,"untilRecover",13);modern.cpDelay=13;set(cp,"untilOverloadRecover",21);modern.overloadDelay=21;
+   set(cp,"overloadFine",false);modern.overloadFine=false;set(cp,"interfering",true);modern.interfering=true;
+   float[] raw=(float[])field(AbilityData.class,"skillExps").get(ability);raw[0]=.4f;raw[1]=.3f;modern.experience.put("arc_gen",(double).4f);modern.unlearnedExperience.put("charging",(double).3f);
+   preset.switchCurrent(2);preset.setPreset(2,new PresetData.Preset(new Controllable[]{control,null,null,null}));modern.presets.switchTo(2);modern.presets.edit(2,0,"arc_gen",id->true);cooldown.set(control,91);modern.setCooldown("arc_gen",91);
+   player.inventory.mainInventory[0]=new ItemStack(cn.academy.ability.ModuleAbility.magneticCoil,9);player.earned.clear();modernEarned.clear();
+  }
+  void start(){recording=true;originalEvents.clear();modernEvents.clear();player.mutations.clear();MinecraftForge.EVENT_BUS.handlers.clear();}
+  void compare(String label)throws Exception{
+   same(modern.category.equals(ability.hasCategory()?ability.getCategory().name:""),label+".category");same(modern.level==ability.getLevel(),label+".level");same(modern.activated==cp.isActivated(),label+".activation");
+   bits(modern.cp,cp.getCP(),label+".cp");bits(modern.overload,cp.getOverload(),label+".overload");bits(modern.baseCp(),cp.getRawMaxCP(),label+".cached-cp");bits(modern.baseOverload(),cp.getRawMaxOverload(),label+".cached-overload");bits(modern.extraCp,cp.getAddMaxCP(),label+".cp-training");bits(modern.extraOverload,cp.getAddMaxOverload(),label+".overload-training");bits(modern.levelExperience,f(ability,"expAddedThisLevel"),label+".level-progress");
+   same(modern.cpDelay==i(cp,"untilRecover")&&modern.overloadDelay==i(cp,"untilOverloadRecover"),label+".delays");same(modern.overloadFine==b(cp,"overloadFine")&&modern.interfering==b(cp,"interfering"),label+".flags");
+   same(modern.presets.current()==preset.getCurrentID(),label+".selected-preset");for(int x=0;x<4;x++)for(int k=0;k<4;k++)same(modern.presets.skill(x,k).isEmpty()==!preset.getPreset(x).hasMapping(k),label+".mappings");
+   same(modern.cooldowns.isEmpty()==!cooldown.isInCooldown(control),label+".cooldown");same(modern.cooldownMaxTicks.isEmpty()==!cooldown.isInCooldown(control),label+".cooldown-max");
+   float[] raw=(float[])field(AbilityData.class,"skillExps").get(ability);for(float value:raw)same(value==0,label+".source-raw-slots-cleared");same(modern.experience.isEmpty()&&modern.unlearnedExperience.isEmpty(),label+".modern-learned-raw-cleared");
+   same(originalEvents.equals(modernEvents),label+".events:"+originalEvents+" / "+modernEvents);same(player.earned.equals(modernEarned),label+".achievement-events");
+  }
+ }
+ static String state(String category,int level,boolean active,float cp,float overload,float rawCp,float rawO,float extraCp,float extraO,float progress,boolean cdEmpty,boolean presetsEmpty){return category+":"+level+":"+active+":"+cp+":"+overload+":"+rawCp+":"+rawO+":"+extraCp+":"+extraO+":"+progress+":"+cdEmpty+":"+presetsEmpty;}
+ static void originalAcquisition(Pair p,boolean factor)throws Exception{if(!factor)p.player.inventory.mainInventory[4]=null;new DevelopActionLevel().onLearned(p.player);if(factor)p.originalEvents.add(0,"factor-clear");}
+ static void modernAcquisition(Pair p,boolean factor){if(factor)p.player.inventory.mainInventory[4]=p.factor;else p.player.inventory.mainInventory[4]=null;DevelopmentActions.level(p.modern,p.items,n->cn.lambdalib.util.generic.RandUtils.next).complete();}
+ static void acquisitionCases()throws Exception{
+  for(int target=0;target<4;target++)for(boolean factor:new boolean[]{false,true}){
+   String name=CategoryManager.INSTANCE.categories.get(target).name;var p=new Pair(name);cn.lambdalib.util.generic.RandUtils.next=target;p.start();originalAcquisition(p,factor);boolean originalConsumed=p.player.inventory.mainInventory[4]==null;modernAcquisition(p,factor);p.compare("acquire-"+name+"-"+factor);same(originalConsumed&&p.player.inventory.mainInventory[4]==null,"acquire.full-factor-slot");same(p.player.earned.isEmpty(),"acquire.source-no-level-achievement");same(p.modernEarned.isEmpty(),"acquire.modern-no-level-achievement");
+  }
+  var p=new Pair("teleporter");p.prepareCategory(4,true);p.ability.setCategory(null);p.modern.changeCategoryClassic("");p.start();originalAcquisition(p,true);modernAcquisition(p,true);p.compare("reacquire-retained-absent-ledgers");same(p.modern.extraCp==100.125f&&p.modern.levelExperience==7.7f,"reacquire.preserve-trained-capacity-and-progress");
+ }
+ static void resetCases()throws Exception{
+  for(int level=3;level<=5;level++)for(boolean activation:new boolean[]{false,true}){
+   var p=new Pair("teleporter");p.prepareCategory(level,activation);p.start();var source=new DevelopActionReset();same(source.validate(p.player,()->cn.academy.ability.develop.DeveloperType.ADVANCED),"reset.source-admission");same(DevelopmentActions.canReset(p.modern,cn.academy.port.develop.DeveloperType.ADVANCED,p.items),"reset.modern-admission");source.onLearned(p.player);p.originalEvents.add("coil-clear");p.originalEvents.add("factor-clear");boolean sourceConsumed=p.player.inventory.mainInventory[0]==null&&p.player.inventory.mainInventory[4]==null;p.player.inventory.mainInventory[0]=new ItemStack(cn.academy.ability.ModuleAbility.magneticCoil,9);p.player.inventory.mainInventory[4]=p.factor;DevelopmentActions.reset(p.modern,p.items).complete();p.compare("reset-"+level+"-"+activation);same(sourceConsumed&&p.player.inventory.mainInventory[0]==null&&p.player.inventory.mainInventory[4]==null,"reset.entire-item-slots");same(p.modern.extraCp==0&&p.modern.extraOverload==0&&p.modern.levelExperience==0,"reset.level-phase-clears-training-progress");
+   System.out.println("VECTOR reset-"+level+"-"+activation+" source="+p.originalEvents+" modern="+p.modernEvents);
+  }
+ }
+ static void directCategoryCases()throws Exception{
+  for(String target:new String[]{"teleporter",""}){var p=new Pair("teleporter");p.prepareCategory(5,true);p.start();p.ability.setCategory(target.isEmpty()?null:category(target));p.modern.changeCategoryClassic(target);p.compare("direct-"+target);same(p.modern.levelExperience==7.7f&&p.modern.extraCp==100.125f&&p.modern.extraOverload==33.25f,"direct.retained-ledgers");if(target.isEmpty())same(!p.modern.activated,"direct.absent-deactivates-at-handler");}
+  var p=new Pair("teleporter");p.prepareCategory(5,true);p.start();String before=p.originalState();String mBefore=p.modernState();long revision=p.modern.presets.revision();p.ability.setCategory(category("electromaster"));p.modern.changeCategoryClassic("electromaster");same(before.equals(p.originalState())&&mBefore.equals(p.modernState())&&revision==p.modern.presets.revision()&&p.originalEvents.isEmpty()&&p.modernEvents.isEmpty(),"same-category.full-no-op");
+ }
+ static void freshCacheCases()throws Exception{
+  var unwoken=new CPData();var modern=new AbilityProgress();bits(modern.cp,unwoken.getCP(),"fresh.pre-wake-cp");bits(modern.baseCp(),unwoken.getRawMaxCP(),"fresh.pre-wake-raw-cp");bits(modern.baseOverload(),unwoken.getRawMaxOverload(),"fresh.pre-wake-raw-overload");same(modern.overloadFine==b(unwoken,"overloadFine")&&modern.overload==0&&!modern.activated&&!modern.interfering,"fresh.pre-wake-flags");
+  var p=new Pair("teleporter");p.start();p.compare("fresh.after-wake");same(p.originalEvents.isEmpty()&&p.modernEvents.isEmpty(),"fresh.wake-getters-emit-no-calc");
+  set(p.cp,"untilRecover",7);set(p.cp,"untilOverloadRecover",9);p.modern.cpDelay=7;p.modern.overloadDelay=9;set(p.cp,"overloadFine",false);p.modern.overloadFine=false;
+  for(int tick=0;tick<40;tick++){p.cp.tick();p.modern.tick();}p.compare("fresh.absent-category-tick");same(p.originalEvents.isEmpty()&&p.modernEvents.isEmpty(),"fresh.absent-category-no-calc-or-recovery");
+  p.cp.recoverAll();p.modern.recoverAll();p.compare("fresh.recover-all-cached-defaults");same(p.modern.cp==100&&!p.modern.overloadFine,"fresh.recover-all-does-not-configure-capacity");
+  p.ability.setCategory(category("teleporter"));p.modern.changeCategoryClassic("teleporter");p.compare("fresh.first-explicit-category");same(p.originalEvents.equals(List.of("category-high:teleporter:1:false:100.0:0.0:100.0:100.0:0.0:0.0:0.0:true:true:factor=true:coil=false:slots=true","calc:MAX_CP:1:true:true","calc:MAX_OVERLOAD:1:true:true","category-low:teleporter:1:false:1817.25:0.0:1817.25:117.25:0.0:0.0:0.0:true:true:factor=true:coil=false:slots=true")),"fresh.first-category-retained-default-high-phase");
+  p.originalEvents.clear();p.modernEvents.clear();int[] rebindMax={0};p.modern.bindCalculations(r->{if(r.kind==AbilityCalculation.Kind.MAX_CP||r.kind==AbilityCalculation.Kind.MAX_OVERLOAD)rebindMax[0]++;});
+  for(int read=0;read<50;read++){bits(p.modern.baseCp(),p.cp.getRawMaxCP(),"cache.rebind-cp");bits(p.modern.maxOverload(),p.cp.getMaxOverload(),"cache.rebind-overload");}same(rebindMax[0]==0&&p.originalEvents.isEmpty(),"cache.rebind-and-getters-no-recalculation");
+  p.recording=false;MinecraftForge.EVENT_BUS.high=e->{};MinecraftForge.EVENT_BUS.low=e->{};
+  set(p.cp,"curCP",73.125f);set(p.cp,"curOverload",13.25f);set(p.cp,"untilRecover",0);set(p.cp,"untilOverloadRecover",0);p.modern.cp=73.125f;p.modern.overload=13.25f;p.modern.cpDelay=0;p.modern.overloadDelay=0;
+  var recoveryKinds=new ArrayList<AbilityCalculation.Kind>();p.modern.bindCalculations(r->recoveryKinds.add(r.kind));p.cp.tick();p.modern.tick();bits(p.modern.cp,p.cp.getCP(),"cache.tick-cp-uses-retained-raw");bits(p.modern.overload,p.cp.getOverload(),"cache.tick-overload-uses-retained-raw");same(recoveryKinds.equals(List.of(AbilityCalculation.Kind.CP_RECOVERY,AbilityCalculation.Kind.OVERLOAD_RECOVERY)),"cache.tick-posts-recovery-only");
+ }
+ static void wakeConfigSnapshotCases()throws Exception{
+  var old=cn.academy.core.config.ACConfig.instance();var p=new Pair("teleporter");final SkillConsumption.Config[] live={SkillConsumption.Config.DEFAULT};p.modern.bindConsumption(()->live[0],SkillConsumption.UNMODIFIED,SkillConsumption.NO_OVERLOAD_EVENT,()->true);
+  var next=new com.typesafe.config.Config();next.values.putAll(old.values);next.values.put("init_cp",List.of(9100.,9100.,9200.,9300.,9400.,9500.));next.values.put("init_overload",List.of(210.,210.,220.,230.,240.,250.));next.values.put("cp_recover_cooldown",2);next.values.put("overload_recover_cooldown",3);next.values.put("cp_recover_speed",3.0);next.values.put("overload_recover_speed",4.0);next.values.put("maxcp_incr_rate",.05);next.values.put("maxo_incr_rate",.15);
+  live[0]=new SkillConsumption.Config(2,3,.05,.15,3,4,2,new double[]{9100,9100,9200,9300,9400,9500},new double[]{210,210,220,230,240,250},ClassicRules.EXTRA_CP_CAP,ClassicRules.EXTRA_OVERLOAD_CAP,Map.of("teleporter.mark_teleport.damage_scale",2D,"teleporter.mark_teleport.cp_consume_speed",1D),Map.of());
+  cn.academy.core.config.ACConfig.replace(next);try{
+   p.modern.bindConsumption(()->live[0],SkillConsumption.UNMODIFIED,SkillConsumption.NO_OVERLOAD_EVENT,()->true);MinecraftForge.EVENT_BUS.high=e->{};MinecraftForge.EVENT_BUS.low=e->{};p.ability.setCategory(category("teleporter"));p.modern.changeCategoryClassic("teleporter");bits(p.modern.baseCp(),p.cp.getRawMaxCP(),"config.replacement-retains-wake-cp-vector");bits(p.modern.baseOverload(),p.cp.getRawMaxOverload(),"config.replacement-retains-wake-overload-vector");same(p.modern.baseCp()==1800&&p.modern.baseOverload()==100,"config.old-data-snapshot");
+   set(p.cp,"curCP",80.125f);set(p.cp,"curOverload",13.25f);p.modern.cp=80.125f;p.modern.overload=13.25f;p.cp.tick();p.modern.tick();bits(p.modern.cp,p.cp.getCP(),"config.old-recovery-speed-cp");bits(p.modern.overload,p.cp.getOverload(),"config.old-recovery-speed-overload");
+   same(p.cp.perform(20,10)==p.modern.consume(10,20,false),"config.consume-success");bits(p.modern.cp,p.cp.getCP(),"config.consume-old-ledger");bits(p.modern.extraCp,p.cp.getAddMaxCP(),"config.old-training-rate");bits(p.modern.extraOverload,p.cp.getAddMaxOverload(),"config.old-overload-training-rate");same(p.modern.cpDelay==i(p.cp,"untilRecover")&&p.modern.overloadDelay==i(p.cp,"untilOverloadRecover")&&p.modern.cpDelay==15&&p.modern.overloadDelay==32,"config.old-cooldowns");
+   same(p.modern.consumptionConfig()==live[0]&&p.modern.consumptionConfig().cp("teleporter","mark_teleport",10)==20&&p.modern.consumptionConfig().progress("teleporter",.25)==.5,"config.skill-and-progress-provider-remain-live");
+   var second=new Pair("teleporter");second.modern.bindConsumption(()->live[0],SkillConsumption.UNMODIFIED,SkillConsumption.NO_OVERLOAD_EVENT,()->true);MinecraftForge.EVENT_BUS.high=e->{};MinecraftForge.EVENT_BUS.low=e->{};second.ability.setCategory(category("teleporter"));second.modern.changeCategoryClassic("teleporter");bits(second.modern.baseCp(),second.cp.getRawMaxCP(),"config.new-wake-new-vector-cp");bits(second.modern.baseOverload(),second.cp.getRawMaxOverload(),"config.new-wake-new-vector-overload");same(second.modern.baseCp()==9100&&second.modern.baseOverload()==210,"config.new-wake-captures-new-data");
+  }finally{cn.academy.core.config.ACConfig.replace(old);MinecraftForge.EVENT_BUS.high=e->{};MinecraftForge.EVENT_BUS.low=e->{};}
+ }
+ static void registrationOrder()throws Exception{
+  var fields=new ArrayList<Field>(List.of(CPData.Events.class.getField("instance"),PresetData.Events.class.getField("instance"),CooldownData._Events.class.getField("instance")));fields.sort(Comparator.comparing(Field::toString));
+  same(fields.stream().map(f->f.getDeclaringClass().getName()).toList().equals(List.of("cn.academy.ability.api.cooldown.CooldownData$_Events","cn.academy.ability.api.data.CPData$Events","cn.academy.ability.api.data.PresetData$Events")),"unchanged-annoreg-FIELD.toString-normal-order");System.out.println("SOURCE_REGISTER_ORDER "+fields);
+ }
+ public static void main(String[] args)throws Exception{
+  baseline=args.length>0&&args[0].equals("baseline");CategoryManager.INSTANCE.categories.clear();for(int n=0;n<4;n++){var c=new Category(n,DevelopmentActions.CATEGORIES.get(n));new Skill(0,1,c);new Skill(1,1,c);CategoryManager.INSTANCE.categories.add(c);}
+  registrationOrder();freshCacheCases();wakeConfigSnapshotCases();acquisitionCases();resetCases();directCategoryCases();if(baseline)same(differences>0,"baseline-exposes-lifecycle-regression");System.out.println((baseline?"AUDIT":"PASS")+" "+checks+" unchanged-source developer/category lifecycle checks; differences="+differences);if(baseline)System.out.println("BASELINE_DIFFERENCES "+reasons);
+ }
+}

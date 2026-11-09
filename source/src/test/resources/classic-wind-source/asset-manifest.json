@@ -1,0 +1,152 @@
+[
+  {
+    "path": "src/main/resources/assets/academy/models/windgen_base.obj",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/models/windgen_base.obj",
+    "sha256": "6efa5a824fee17e981324b589225bb5e8969e1de32fc519ee0a15daeb05c270d",
+    "mode": "additive"
+  },
+  {
+    "path": "src/main/resources/assets/academy/models/windgen_pillar.obj",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/models/windgen_pillar.obj",
+    "sha256": "8a1b2fbf1b408c55ebe8bb26a3c142ef13cc989e32756c0d77046ebb3ff20907",
+    "mode": "additive"
+  },
+  {
+    "path": "src/main/resources/assets/academy/models/windgen_main.obj",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/models/windgen_main.obj",
+    "sha256": "eb735fd00e078da82488570f8ec68b62737767d4490c49c67fda551ebd8890b9",
+    "mode": "additive"
+  },
+  {
+    "path": "src/main/resources/assets/academy/models/windgen_fan.obj",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/models/windgen_fan.obj",
+    "sha256": "c046e072321ad918954b3efde7477f1c82517231a93c47ee637601d670ab6986",
+    "mode": "additive"
+  },
+  {
+    "path": "src/main/resources/assets/academy/textures/models/windgen_base.png",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/models/windgen_base.png",
+    "sha256": "fd66f80b69a85eecb35a4f5a38deec4d064466da20d19df34a581c5eaf11372e",
+    "mode": "existing-byte-identical-dependency"
+  },
+  {
+    "path": "src/main/resources/assets/academy/textures/models/windgen_base_disabled.png",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/models/windgen_base_disabled.png",
+    "sha256": "203edd028fb6d4fe351df250cac490a69441cf2b6ef89e2c19108eb5014d8780",
+    "mode": "existing-byte-identical-dependency"
+  },
+  {
+    "path": "src/main/resources/assets/academy/textures/models/windgen_pillar.png",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/models/windgen_pillar.png",
+    "sha256": "d633d6b7d99cde288d7011bba0d105864b92eb5347b5ee70c6fe2c3d7df49e7a",
+    "mode": "existing-byte-identical-dependency"
+  },
+  {
+    "path": "src/main/resources/assets/academy/textures/models/windgen_main.png",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/models/windgen_main.png",
+    "sha256": "b90a7574de6249852cb13732dc069da673cd98c760e27e0dba448015c7483a7a",
+    "mode": "existing-byte-identical-dependency"
+  },
+  {
+    "path": "src/main/resources/assets/academy/textures/models/windgen_fan.png",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/models/windgen_fan.png",
+    "sha256": "f3aa6789248648dd137f1a1a362cdb7e88e64b3f3f0c77cba0e8fdee2b38ebed",
+    "mode": "existing-byte-identical-dependency"
+  },
+  {
+    "path": "src/main/resources/assets/academy/textures/blocks/windgen_base.png",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/blocks/windgen_base.png",
+    "sha256": "64d98dc8aa32d0e2a6b7419ea37691b94f44108c897da353e7fd7ffe8dd85e4a",
+    "mode": "existing-byte-identical-dependency"
+  },
+  {
+    "path": "src/main/resources/assets/academy/textures/blocks/windgen_pillar.png",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/blocks/windgen_pillar.png",
+    "sha256": "2642fbc3af572225b5627c35e74828b4bc4379b9d82ec5786c2a48fd5e353573",
+    "mode": "existing-byte-identical-dependency"
+  },
+  {
+    "path": "src/main/resources/assets/academy/textures/blocks/windgen_main.png",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/blocks/windgen_main.png",
+    "sha256": "ebb3fdc4f2f836af4d4494d3b6ea20a432effc7695df0970dae608d9707d39bd",
+    "mode": "existing-byte-identical-dependency"
+  },
+  {
+    "path": "src/main/resources/assets/academy/textures/items/windgen_fan.png",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/items/windgen_fan.png",
+    "sha256": "7ecb93261487dbe8f12941a6703b89ab0867c9b50e83836513426424f903dc65",
+    "mode": "existing-byte-identical-dependency"
+  },
+  {
+    "path": "src/main/resources/assets/academy/textures/guis/ui/ui_windbase.png",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/ui/ui_windbase.png",
+    "sha256": "15e0b44df6bb1ad396bf1bf066e57bf3ffb9a577da768c536e6109cf7ec932c5",
+    "mode": "existing-byte-identical-dependency"
+  },
+  {
+    "path": "src/main/resources/assets/academy/textures/guis/ui/ui_windmain.png",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/ui/ui_windmain.png",
+    "sha256": "2ca415e5bf114dc685cd3f55d2d6e0be95037085f9edfdcf367914a5918c6e07",
+    "mode": "existing-byte-identical-dependency"
+  },
+  {
+    "path": "src/main/resources/assets/academy/textures/guis/ui/ui_inventory.png",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/ui/ui_inventory.png",
+    "sha256": "3df45b3dcd70ccbcf6ab0334bf2ed36345113d7ae71c8c42187d7ab9a3cc6887",
+    "mode": "existing-byte-identical-dependency"
+  },
+  {
+    "path": "src/main/resources/assets/academy/textures/guis/icons/icon_wind_base.png",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/icons/icon_wind_base.png",
+    "sha256": "4f3a6f416643e35968d9cf604a0462abfb7b91b4242c6706928b212394c049b0",
+    "mode": "existing-byte-identical-dependency"
+  },
+  {
+    "path": "src/main/resources/assets/academy/textures/guis/icons/icon_wind_middle.png",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/icons/icon_wind_middle.png",
+    "sha256": "3cbb5eef0bfdf0b91749e02cafad318065d9f977a84ac333b0eb09670ec98bd6",
+    "mode": "existing-byte-identical-dependency"
+  },
+  {
+    "path": "src/main/resources/assets/academy/textures/guis/icons/icon_wind_main.png",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/icons/icon_wind_main.png",
+    "sha256": "f564f4190a363218e823fbed5508d6fb62db578e197fc9990108ba89e0b4a996",
+    "mode": "existing-byte-identical-dependency"
+  },
+  {
+    "path": "src/main/resources/assets/academy/textures/guis/icons/icon_inv.png",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/icons/icon_inv.png",
+    "sha256": "01bf54ad90bb6c0dd4a5d67fc4bff4443afb7389a7cf4f81621da8c5e760c201",
+    "mode": "existing-byte-identical-dependency"
+  },
+  {
+    "path": "src/main/resources/assets/academy/textures/guis/icons/icon_wireless.png",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/icons/icon_wireless.png",
+    "sha256": "628058163c6d7f59a43067c292f85b834297ebe0a4470c000915a1e193e02602",
+    "mode": "existing-byte-identical-dependency"
+  },
+  {
+    "path": "src/main/resources/assets/academy/textures/guis/parent/parent_background.png",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/parent/parent_background.png",
+    "sha256": "bd0f8650f74c7eecd3b81aac8c3f1b359a4265517d860b7f45482faea583217d",
+    "mode": "existing-byte-identical-dependency"
+  },
+  {
+    "path": "src/main/resources/assets/academy/textures/guis/histogram.png",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/histogram.png",
+    "sha256": "13048f7541f94b21beb1f052ce51626d398cb6aa2656c5bc6798c166f8e09f4a",
+    "mode": "existing-byte-identical-dependency"
+  },
+  {
+    "path": "src/main/resources/assets/academy/textures/guis/blend_quad.png",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/blend_quad.png",
+    "sha256": "79a3e404e11d7e8ff702710cc8889709e96bb3e93804972b8a0f6c92847a689b",
+    "mode": "existing-byte-identical-dependency"
+  },
+  {
+    "path": "src/main/resources/assets/academy/textures/guis/line.png",
+    "reference": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/line.png",
+    "sha256": "7798a3503bebcd5c25cb13259964ce367641b458d2b3bc5e6b45c77023ea939f",
+    "mode": "existing-byte-identical-dependency"
+  }
+]

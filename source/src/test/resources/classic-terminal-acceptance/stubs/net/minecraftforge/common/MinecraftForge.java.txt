@@ -1,0 +1,1 @@
+package net.minecraftforge.common; public class MinecraftForge {public static final Bus EVENT_BUS=new Bus();public static class Bus {public void register(Object o){}public boolean post(Object o){return false;}}}

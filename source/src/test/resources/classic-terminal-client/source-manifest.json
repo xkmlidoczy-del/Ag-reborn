@@ -1,0 +1,110 @@
+[
+  {
+    "name": "TerminalUI.java.txt",
+    "source": "src/main/java/cn/academy/terminal/client/TerminalUI.java",
+    "license": "GPL-3.0",
+    "sha256": "f2e34701184d33058a0c616f07fb04904d5aeca3d89cf40764b0decbdb4a7249"
+  },
+  {
+    "name": "TerminalInstallEffect.java.txt",
+    "source": "src/main/java/cn/academy/terminal/client/TerminalInstallEffect.java",
+    "license": "GPL-3.0",
+    "sha256": "693f465c952b52035c706778d4af1b7042c4a69d9d62048be2143d7bc1b8e1c3"
+  },
+  {
+    "name": "TerminalInstallerRenderer.java.txt",
+    "source": "src/main/java/cn/academy/terminal/client/TerminalInstallerRenderer.java",
+    "license": "GPL-3.0",
+    "sha256": "408c447fc7b0189735d143eebbf4fc50e071c4940bafce90fd12d1b243757c98"
+  },
+  {
+    "name": "FreqTransmitterUI.java.txt",
+    "source": "src/main/java/cn/academy/energy/client/app/FreqTransmitterUI.java",
+    "license": "GPL-3.0",
+    "sha256": "51053975758e8fdcc978113d88e3d3785e814645d2509bc69019492bfeadeee3"
+  },
+  {
+    "name": "SettingsUI.java.txt",
+    "source": "src/main/java/cn/academy/terminal/app/settings/SettingsUI.java",
+    "license": "GPL-3.0",
+    "sha256": "1c9eed01289a86bbf9d4a5ce52b8088bcc54539b3ee94af8a2cdde45cd71a502"
+  },
+  {
+    "name": "PropertyElements.java.txt",
+    "source": "src/main/java/cn/academy/terminal/app/settings/PropertyElements.java",
+    "license": "GPL-3.0",
+    "sha256": "08590595cbf3ebeecf585db4b1fb2e97ffe7344ec49f63b92769fd7f3d5efae1"
+  },
+  {
+    "name": "CustomizeUI.java.txt",
+    "source": "src/main/java/cn/academy/core/client/ui/CustomizeUI.java",
+    "license": "GPL-3.0",
+    "sha256": "068c1e225d668fb2d222028bbdbe58e2ca6590818ad50a20aa3827a29477549e"
+  },
+  {
+    "name": "SkillTree.scala.txt",
+    "source": "src/main/scala/cn/academy/ability/client/ui/SkillTree.scala",
+    "license": "GPL-3.0",
+    "sha256": "231fe571c937aa7930f0ddec209aae431d405fe9def2f6377094d98b52e6e2f8"
+  },
+  {
+    "name": "terminal.xml.txt",
+    "source": "src/main/resources/assets/academy/guis/terminal.xml",
+    "license": "GPL-3.0",
+    "sha256": "c63d1fc77c55f60da5e459bfc20df4dadd1df18156de97713077e3342fb5de7b"
+  },
+  {
+    "name": "terminal_installing.xml.txt",
+    "source": "src/main/resources/assets/academy/guis/terminal_installing.xml",
+    "license": "GPL-3.0",
+    "sha256": "97b31d61ae579ef5c2c41672b51a16f7452d70371cb82f9008015f7db58716a2"
+  },
+  {
+    "name": "settings.xml.txt",
+    "source": "src/main/resources/assets/academy/guis/settings.xml",
+    "license": "GPL-3.0",
+    "sha256": "78617bc2edf2308c4d7c15a7a6e608c298c1c7a7747d4abe994ca0802b8e3e52"
+  },
+  {
+    "name": "ui_edit.xml.txt",
+    "source": "src/main/resources/assets/academy/guis/ui_edit.xml",
+    "license": "GPL-3.0",
+    "sha256": "8d16f224d5cf17ca2a6bf0336a1095e1c82e9abc457e1cde06577888a2ba158c"
+  },
+  {
+    "name": "RenderModelItem.java.txt",
+    "source": "src/main/java/cn/lambdalib/template/client/render/item/RenderModelItem.java",
+    "license": "MIT",
+    "sha256": "90850c0d133cf8c42d7ee000ec62bd82884e16047f32b4fbdcc56020e3ad5afd"
+  },
+  {
+    "name": "ItemModelCustom.java.txt",
+    "source": "src/main/java/cn/lambdalib/util/deprecated/ItemModelCustom.java",
+    "license": "MIT",
+    "sha256": "c99ad0ce7f220c34e9d412243174fbad34f1c0e4876288e4e745dc8e8549c89a"
+  },
+  {
+    "name": "CPBar.java.txt",
+    "source": "src/main/java/cn/academy/ability/client/ui/CPBar.java",
+    "license": "GPL-3.0",
+    "sha256": "cc348449cabc70d68899dac460bf6bdb7ec5d4bd077a6ac6297b98492e8665e4"
+  },
+  {
+    "name": "KeyHintUI.java.txt",
+    "source": "src/main/java/cn/academy/ability/client/ui/KeyHintUI.java",
+    "license": "GPL-3.0",
+    "sha256": "04d2886e9b106fe12369b638ce40026292cbd801dee9d14b8f20e05573a1cdd9"
+  },
+  {
+    "name": "NotifyUI.java.txt",
+    "source": "src/main/java/cn/academy/core/client/ui/NotifyUI.java",
+    "license": "GPL-3.0",
+    "sha256": "728af5468e781913425647121c93f609fff704ea3f1e681c304c80888ee6e766"
+  },
+  {
+    "name": "GameTimer.java.txt",
+    "source": "src/main/java/cn/lambdalib/util/helper/GameTimer.java",
+    "license": "MIT",
+    "sha256": "5ef55c16e064b6fd176e652bff4cc7f76d0b0f80bd35c0f2c398adb28b684680"
+  }
+]

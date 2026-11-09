@@ -1,0 +1,1 @@
+package cn.lambdalib.cgui.xml; public class CGUIDocument {public static cn.lambdalib.cgui.gui.WidgetContainer panicRead(Object r){return new cn.lambdalib.cgui.gui.WidgetContainer();}}

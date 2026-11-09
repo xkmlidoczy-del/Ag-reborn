@@ -1,0 +1,1 @@
+package cn.lambdalib.util.key; public class KeyManager {public static String getKeyName(int id){return "L ALT";}}

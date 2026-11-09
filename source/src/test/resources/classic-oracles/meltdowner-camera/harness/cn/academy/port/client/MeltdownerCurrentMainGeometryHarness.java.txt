@@ -1,0 +1,90 @@
+package cn.academy.port.client;
+
+import com.mojang.blaze3d.vertex.*;
+import net.minecraft.client.*;
+import net.minecraft.client.renderer.*;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import java.io.*;
+import java.lang.reflect.*;
+import java.nio.file.*;
+import java.util.*;
+
+/** Actual private port methods with official cached CPU math; declared view/entity hosts.
+ * Same-port zero-camera output is only a relocation control, never an original oracle.
+ */
+public final class MeltdownerCurrentMainGeometryHarness {
+ static final boolean BASELINE=Arrays.stream(ClassicMeltdownerStarterEffects.class.getDeclaredMethods()).anyMatch(m->m.getName().equals("renderShield")&&m.getParameterCount()==3);
+ static int checks,cases,coordinates,mismatches,nearVertices,batches;
+ static double largestError;
+ static final List<float[]> rows=new ArrayList<>();
+ static final List<String> flushes=new ArrayList<>();
+ static final List<Class<?>> TYPES=List.of(ClassicMeltdownerStarterEffects.class,ClassicMeltdownerBeamEffects.class,ClassicMeltdownerLateEffects.class);
+ static void require(boolean p,String m){checks++;if(!p)throw new AssertionError(m);}
+ static Field field(Class<?> type,String name)throws Exception {Field f=type.getDeclaredField(name);f.setAccessible(true);return f;}
+ static Method method(Class<?> type,String name)throws Exception {for(Method m:type.getDeclaredMethods())if(m.getName().equals(name)){m.setAccessible(true);return m;}throw new NoSuchMethodException(name);}
+ static Class<?> nested(Class<?> type,String name){return Arrays.stream(type.getDeclaredClasses()).filter(c->c.getSimpleName().equals(name)).findFirst().orElseThrow();}
+ static Object object(Class<?> type,Object...args)throws Exception {Constructor<?> c=type.getDeclaredConstructors()[0];c.setAccessible(true);return c.newInstance(args);}
+ static void set(Object o,String name,Object value)throws Exception {field(o.getClass(),name).set(o,value);}
+ static void clock(Class<?> type,long age)throws Exception {Object clock=field(type,"CLOCK").get(null);field(clock.getClass(),"elapsed").setLong(clock,age);}
+ static class Sink extends MultiBufferSource.BufferSource {
+  final VertexConsumer out=(VertexConsumer)Proxy.newProxyInstance(VertexConsumer.class.getClassLoader(),new Class<?>[]{VertexConsumer.class},(p,m,a)->{
+   if(m.isDefault())return InvocationHandler.invokeDefault(p,m,a);
+   switch(m.getName()) {
+    case "addVertex" -> rows.add(new float[]{((Number)a[0]).floatValue(),((Number)a[1]).floatValue(),((Number)a[2]).floatValue(),0,0,0,0,0,0});
+    case "setUv" -> {float[] r=rows.getLast();r[3]=((Number)a[0]).floatValue();r[4]=((Number)a[1]).floatValue();}
+    case "setColor" -> {float[] r=rows.getLast();for(int i=0;i<4;i++)r[5+i]=((Number)a[i]).floatValue();}
+   }
+   return p;
+  });
+  Sink(){super(null,new LinkedHashMap<>());}
+  @Override public VertexConsumer getBuffer(RenderType type){return out;}
+  @Override public void endBatch(RenderType type){flushes.add(type.toString().split(":",2)[0]);}
+ }
+ static void install()throws Exception {for(Class<?> type:TYPES){Class.forName(type.getName());field(type,"buffers").set(null,new Sink());}}
+ static PoseStack poses(Vec3 camera,boolean rotated){PoseStack p=new PoseStack();if(rotated)p.mulPose(new Quaternionf().rotationXYZ(.27F,-.73F,.11F));if(BASELINE)p.translate(-camera.x,-camera.y,-camera.z);return p;}
+ static RenderLevelStageEvent event(PoseStack poses)throws Exception {Camera c=new Camera();c.rotation().rotationXYZ(.13F,-.34F,.2F);return new RenderLevelStageEvent(null,null,poses,new Matrix4f(),new Matrix4f(),0,null,c,null);}
+ record Draw(List<float[]> rows,List<String> flushes,long rng){}
+ static Draw finish(Class<?> type)throws Exception {return new Draw(new ArrayList<>(rows),new ArrayList<>(flushes),((Random)field(type,"RANDOM").get(null)).nextLong());}
+ static void begin(Class<?> type,long age)throws Exception {rows.clear();flushes.clear();clock(type,age);((Random)field(type,"RANDOM").get(null)).setSeed(4321);}
+ static final List<ClassicMeltdownerBeamTimeline.Spec> SPECS=List.of(ClassicMeltdownerBeamTimeline.MD,ClassicMeltdownerBeamTimeline.BASIC,ClassicAdvancedMineRayTimeline.EXPERT,ClassicAdvancedMineRayTimeline.LUCK,ClassicMeltdownerLateTimeline.SMALL,ClassicMeltdownerLateTimeline.PRE_PLAIN,ClassicMeltdownerLateTimeline.PRE_HIT,ClassicMeltdownerLateTimeline.BARRAGE_RAY);
+ static Draw ray(int family,Vec3 camera,Vec3 origin,Vec3 direction,double length,long age,boolean rotated,boolean first)throws Exception {
+  int lane=family==0?0:family<=4?1:2;Class<?> type=TYPES.get(lane);begin(type,age);PoseStack p=poses(camera,rotated);
+  Object ray;Minecraft mc=Minecraft.getInstance();mc.options.view=first?CameraType.FIRST_PERSON:CameraType.THIRD_PERSON_BACK;
+  Player player=first?mc.player:new Player();
+  if(lane==0){ray=object(nested(type,"SmallRay"),origin,direction,length,0L);method(type,"renderRay").invoke(null,ray,camera,p.last().pose());}
+  else if(lane==1){ray=object(nested(type,"Ray"),player,null,null,SPECS.get(family-1),origin,direction,length,0L);method(type,"renderRay").invoke(null,ray,mc,camera,p.last().pose());}
+  else {Object c=object(nested(type,"Context"),player,"ray_barrage",null,null,1L,1L,true,first);ray=object(nested(type,"Ray"),c,origin,List.of(direction,direction.scale(-1)),length,SPECS.get(family-1),0L);method(type,"ray").invoke(null,ray,camera,p.last().pose());}
+  return finish(type);
+ }
+ static Draw billboard(int family,Vec3 camera,Vec3 origin,long age,boolean rotated,boolean local)throws Exception {
+  Class<?> type=TYPES.get(family<2?0:2);begin(type,age);Minecraft mc=Minecraft.getInstance();Player player=local?mc.player:new Player();player.at=origin;
+  PoseStack p=poses(camera,rotated);Matrix4f before=new Matrix4f(p.last().pose());Object c;
+  if(family<2){c=object(nested(type,"Context"),player,null,null,family==0?"scatter_bomb":"light_shield",1L,true);
+   if(family==0){Object b=object(nested(type,"Ball"),new Vec3(.2,-.15,.4),0L);((Random)field(b.getClass(),"random").get(b)).setSeed(6123);if(BASELINE)method(type,"renderBall").invoke(null,c,b,mc,event(p),p);else method(type,"renderBall").invoke(null,c,b,mc,event(p),p,camera);}
+   else {set(c,"ticks",15);set(c,"shieldPosition",origin.add(.3,.4,-.2));set(c,"previousShieldPosition",origin.add(-.1,.2,.15));set(c,"rotation",37F);set(c,"lastRender",1L);if(BASELINE)method(type,"renderShield").invoke(null,c,p,.375F);else method(type,"renderShield").invoke(null,c,p,.375F,camera);require((long)field(c.getClass(),"lastRender").get(c)==age+1,"shield time update changed");}
+  }else{c=object(nested(type,"Context"),player,"electron_missile",null,null,1L,1L,true,local);
+   if(family==2){Object b=object(nested(type,"Ball"),new Vec3(.2,-.15,.4),0L);((Random)field(b.getClass(),"random").get(b)).setSeed(6123);if(BASELINE)method(type,"ball").invoke(null,c,b,event(p),p);else method(type,"ball").invoke(null,c,b,event(p),p,camera);}
+   else {if(BASELINE)method(type,"diamond").invoke(null,c,p);else method(type,"diamond").invoke(null,c,p,camera);}
+  }
+  require(p.last().pose().equals(before),"private billboard did not restore caller pose");return finish(type);
+ }
+ static void compare(Draw expected,Draw actual){require(expected.rows.size()==actual.rows.size(),"relocation changed topology");require(expected.flushes.equals(actual.flushes),"relocation changed layer/material/batch order");require(expected.rng==actual.rng,"relocation changed draw RNG state");for(int i=0;i<actual.rows.size();i++)for(int j=0;j<9;j++){float a=actual.rows.get(i)[j],b=expected.rows.get(i)[j];require(Float.isFinite(a),"nonfinite coordinate/attribute");if(j<3){coordinates++;double e=Math.abs(a-b);largestError=Math.max(e,largestError);if(e>1E-5)mismatches++;}else require(Float.floatToRawIntBits(a)==Float.floatToRawIntBits(b),"UV/RGBA changed");}}
+ static void record(DataOutputStream out,Draw d)throws Exception {out.writeInt(d.rows.size());for(float[] row:d.rows)for(float f:row)out.writeInt(Float.floatToRawIntBits(f));out.writeLong(d.rng);out.writeInt(d.flushes.size());for(String s:d.flushes)out.writeUTF(s);nearVertices+=d.rows.size();batches+=d.flushes.size();cases++;}
+ static void motion(int... families)throws Exception {for(int family:families){Vec3 world=new Vec3(14502578.37,72.25,4277859.2);float prior=Float.NaN;int frozen=0;double error=0;for(int f=0;f<=16;f++){Vec3 camera=new Vec3(14502577.5+f*.125,72.25,4277858.5);float x=ray(family,camera,world,new Vec3(1,0,0),15,200,false,false).rows.getFirst()[0];if(f>0){if(x==prior)frozen++;error=Math.max(error,Math.abs(x-prior+.125));}prior=x;}require(BASELINE?frozen>0:frozen==0&&error<1E-6,"camera motion boundary was not detected/restored: family="+family);System.out.println("cameraMotion: family="+family+" frames=16 frozenFrames="+frozen+" maxStepError="+error);}}
+ public static void main(String[] args)throws Exception {install();if(args.length>1){motion(Integer.parseInt(args[1]));return;}List<Vec3> cameras=List.of(new Vec3(64.5,72.25,-32.75),new Vec3(14502577.5,-59,4277858.5),new Vec3(29999999.75,319.875,-29999999.125),new Vec3(-29999999.5,-63.75,29999999.5));List<Vec3> directions=List.of(new Vec3(.3,-.2,.8).normalize(),new Vec3(-.7,.21,-.13).normalize(),new Vec3(1,0,0),new Vec3(0,1,0),new Vec3(0,-1,0),new Vec3(0,0,-1));Vec3 origin=new Vec3(.37,-.12,.7);
+  java.security.MessageDigest near=java.security.MessageDigest.getInstance("SHA-256");
+  try(DataOutputStream out=new DataOutputStream(new java.security.DigestOutputStream(OutputStream.nullOutputStream(),near))){
+   for(int family=0;family<9;family++)for(Vec3 dir:directions)for(boolean rotated:List.of(false,true))for(boolean first:List.of(false,true))for(long age:List.of(0L,200L,499L))for(double length:List.of(0.0,.1,15.0,64.0)){Draw expected=ray(family,Vec3.ZERO,origin,dir,length,age,rotated,first);record(out,expected);for(Vec3 camera:cameras)compare(expected,ray(family,camera,camera.add(origin),dir,length,age,rotated,first));}
+   for(int family=0;family<4;family++)for(long age:List.of(0L,200L,499L))for(boolean rotated:List.of(false,true))for(boolean local:List.of(false,true)){Draw expected=billboard(family,Vec3.ZERO,origin,age,rotated,local);record(out,expected);for(Vec3 camera:cameras)compare(expected,billboard(family,camera,camera.add(origin),age,rotated,local));}
+  }
+  motion(0,2,5);
+  System.out.println("near.sha256="+HexFormat.of().formatHex(near.digest()));
+  System.out.println("MeltdownerCurrentMainGeometryHarness: cases="+cases+" nearVertices="+nearVertices+" batches="+batches+" coordinateComparisons="+coordinates+" mismatches="+mismatches+" largestError="+largestError+" stateAndAttributeChecks="+checks+" baseline="+BASELINE);
+  System.out.println("Wrapper-bound actual ClassResources private ray/ball/shield/diamond; seven declared view/entity/glint hosts; cached official CPU math. Zero-camera reviewed same-port digest only, no ingress/world/GPU/audio/original-engine or complete source fidelity claim");
+  require(mismatches==0,"MELTDOWNER_FAR_ORIGIN_FAILURE mismatches="+mismatches+" largestError="+largestError);
+ }
+}

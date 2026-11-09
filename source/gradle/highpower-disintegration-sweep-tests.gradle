@@ -1,0 +1,12 @@
+// NEW231 continuous fan contacts, conserved budgets and authenticated input/rendering.
+['highPowerDisintegrationSweepGeometryTest':'cn.academy.port.highpower.core.DisintegrationSweepGeometryRegressionTest',
+ 'highPowerDisintegrationSweepRulesTest':'cn.academy.port.highpower.core.DisintegrationSweepRulesRegressionTest',
+ 'disintegrationSweepVisualTest':'cn.academy.port.client.DisintegrationSweepVisualRegressionTest'].each { taskName, className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+    }
+    tasks.named('check') { dependsOn taskName }
+}

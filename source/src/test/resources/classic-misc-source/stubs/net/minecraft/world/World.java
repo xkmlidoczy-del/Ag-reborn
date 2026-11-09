@@ -1,0 +1,1 @@
+package net.minecraft.world; public class World {public boolean isRemote;public net.minecraft.tileentity.TileEntity tile;public net.minecraft.tileentity.TileEntity getTileEntity(int x,int y,int z){return tile;}}

@@ -1,0 +1,22 @@
+// Actual compileJava ClassResources, closed declared view host, cached CPU geometry APIs only.
+tasks.register('classicThunderBoltGeometryTest', JavaExec) {
+    dependsOn compileJava, processResources, testClasses
+    // ModDev exposes slim and merged official archives with identical CPU API classes.
+    // Bind the pinned merged build artifact first, matching the reviewed closed oracle.
+    def geometryApi = layout.buildDirectory.file('moddev/artifacts/neoforge-21.1.252-merged.jar')
+    classpath = files(sourceSets.test.output, sourceSets.main.output, geometryApi, sourceSets.test.runtimeClasspath)
+    mainClass = 'cn.academy.port.client.ClassicThunderBoltGeometryClassResourcesTest'
+    enableAssertions = true
+    maxHeapSize = '256m'
+    doFirst {
+        def digest = { File file -> java.security.MessageDigest.getInstance('SHA-256').digest(file.bytes).encodeHex().toString() }
+        systemProperty 'academy.thunderbolt.project.dir', project.projectDir.canonicalPath
+        systemProperty 'academy.thunderbolt.main.classes', tasks.named('compileJava').get().destinationDirectory.get().asFile.canonicalPath
+        systemProperty 'academy.thunderbolt.main.resources', sourceSets.main.output.resourcesDir.canonicalPath
+        systemProperty 'academy.thunderbolt.source.effects.sha256', digest(file('src/main/java/cn/academy/port/client/ClassicThunderBoltEffects.java'))
+        systemProperty 'academy.thunderbolt.source.geometry.sha256', digest(file('src/main/java/cn/academy/port/client/ClassicArcGeometry.java'))
+        systemProperty 'academy.thunderbolt.source.timeline.sha256', digest(file('src/main/java/cn/academy/port/client/ClassicThunderBoltTimeline.java'))
+        systemProperty 'academy.thunderbolt.report', layout.buildDirectory.dir('reports/classic-thunderbolt-geometry').get().asFile.absolutePath
+    }
+}
+tasks.named('check') { dependsOn 'classicThunderBoltGeometryTest' }

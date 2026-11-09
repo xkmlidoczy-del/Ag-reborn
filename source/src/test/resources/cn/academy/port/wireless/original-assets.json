@@ -1,0 +1,174 @@
+[
+  {
+    "asset": "models/matrix.obj",
+    "sha256": "37e3944eb0ff7efcd90f3f3b0a83db9769fc6f8cec4a712b9d0b3a07970c6b8b"
+  },
+  {
+    "asset": "textures/models/matrix.png",
+    "sha256": "9d761959f3aa06a78ad4c9c5afcbd6642705dd1093f252548fb2c67b729f074e"
+  },
+  {
+    "asset": "textures/guis/ui/ui_node.png",
+    "sha256": "0fa508ecd7d56abc6a5da3c86c430225a4716968413fda520ce798235811f8f0"
+  },
+  {
+    "asset": "textures/guis/ui/ui_matrix.png",
+    "sha256": "3067477b8497bc9d1eec1af46eb07ef0c3b6427993339aa9f8ddced70bfd3f2b"
+  },
+  {
+    "asset": "textures/guis/ui/ui_inventory.png",
+    "sha256": "3df45b3dcd70ccbcf6ab0334bf2ed36345113d7ae71c8c42187d7ab9a3cc6887"
+  },
+  {
+    "asset": "textures/guis/parent/parent_background.png",
+    "sha256": "bd0f8650f74c7eecd3b81aac8c3f1b359a4265517d860b7f45482faea583217d"
+  },
+  {
+    "asset": "textures/guis/effect/effect_node.png",
+    "sha256": "b7e1a9016cc6e9ab90e68a91b9ddd1e4153edd8c5b53eea6bad594602ff5b4cd"
+  },
+  {
+    "asset": "textures/guis/histogram.png",
+    "sha256": "13048f7541f94b21beb1f052ce51626d398cb6aa2656c5bc6798c166f8e09f4a"
+  },
+  {
+    "asset": "textures/guis/blend_quad.png",
+    "sha256": "79a3e404e11d7e8ff702710cc8889709e96bb3e93804972b8a0f6c92847a689b"
+  },
+  {
+    "asset": "textures/guis/line.png",
+    "sha256": "7798a3503bebcd5c25cb13259964ce367641b458d2b3bc5e6b45c77023ea939f"
+  },
+  {
+    "asset": "textures/guis/element/element_background300x32.png",
+    "sha256": "f01f5c2879fd2999c3dc47d7db173ed396fb49eb9d5dcc85caf00949089d2cff"
+  },
+  {
+    "asset": "textures/guis/button/button_arrowupb.png",
+    "sha256": "c8fd4d838781696e3f2e0e8b24bbdab3e42580b3e012f2ca9f88d10dbe5c65d6"
+  },
+  {
+    "asset": "textures/guis/button/button_arrowdownb.png",
+    "sha256": "38b79a7ed9432199ff4e6bb5c4857242d0e9cc1559b44b892fddb40478d70fa1"
+  },
+  {
+    "asset": "textures/guis/icons/icon_inv.png",
+    "sha256": "01bf54ad90bb6c0dd4a5d67fc4bff4443afb7389a7cf4f81621da8c5e760c201"
+  },
+  {
+    "asset": "textures/guis/icons/icon_wireless.png",
+    "sha256": "628058163c6d7f59a43067c292f85b834297ebe0a4470c000915a1e193e02602"
+  },
+  {
+    "asset": "textures/guis/icons/icon_node.png",
+    "sha256": "858b20bdfae3be675760a8257b5c07e3b4c9a3958846fa18e84f68b93fee4776"
+  },
+  {
+    "asset": "textures/guis/icons/icon_matrix.png",
+    "sha256": "474955bf65b2d93ab4661f20015b45e20056a4a649b79808bcaebe53f7e2e371"
+  },
+  {
+    "asset": "textures/guis/icons/icon_key.png",
+    "sha256": "0edcd1baf2a606a7a19b92c09c3cd130e79dd27c52c99e09bc08bddbd8754ad9"
+  },
+  {
+    "asset": "textures/guis/icons/icon_connected.png",
+    "sha256": "11a3834026ea52e5e2ee006df366dec733a65d369c1eec28b3531c26cb9bf73b"
+  },
+  {
+    "asset": "textures/guis/icons/icon_unconnected.png",
+    "sha256": "153388bc704d4a8b44c6a45402dece2cae994dbcb4f00ceb47ca5539719b7813"
+  },
+  {
+    "asset": "textures/guis/icons/icon_tomatrix.png",
+    "sha256": "80b0df04c9c7afd960b12f68dadf54dbfb21157b5ea71fd4d10a38281b205cc3"
+  },
+  {
+    "asset": "textures/guis/icons/icon_tonode.png",
+    "sha256": "f470d23c1c2bf94b1727b64687c0e322cd3597e785c5d17badf057cd143d1b13"
+  },
+  {
+    "asset": "textures/blocks/node_top_0.png",
+    "sha256": "6c863217d00ffc8a1e886e89c73f7d5131d54841413accd731998f7a06148d73"
+  },
+  {
+    "asset": "textures/blocks/node_top_1.png",
+    "sha256": "438174d015987f3106d7255fa49bd4b011913c4191860bde98a16b8d7027a07c"
+  },
+  {
+    "asset": "textures/blocks/node_basic_side_0.png",
+    "sha256": "441fc5e16c33326554ffb8f249829e3e7a85534c6b43857e8059085f78f0fc0d"
+  },
+  {
+    "asset": "textures/blocks/node_basic_side_1.png",
+    "sha256": "24214f202b6d66c56638aedfc10e6e9378f1eb5d1b400b994a4c3320b93ea6e9"
+  },
+  {
+    "asset": "textures/blocks/node_basic_side_2.png",
+    "sha256": "4aeb8ae3bb4474f316f29ac1044e00f55427b6766eed95e5c63734e9076cd159"
+  },
+  {
+    "asset": "textures/blocks/node_basic_side_3.png",
+    "sha256": "6a953e880c78ebcf1f917a46baaa21733aeb64ff71d14d444a3aa9ba34b0bc20"
+  },
+  {
+    "asset": "textures/blocks/node_basic_side_4.png",
+    "sha256": "60a5eea0ca88b8da0227fa54c25958acead68468b0f66745b9f9379bcd56bcf2"
+  },
+  {
+    "asset": "textures/blocks/node_standard_side_0.png",
+    "sha256": "ab5bb60a7a3148d65182c3830767bf273debe4f485254339df607b88656e7d6d"
+  },
+  {
+    "asset": "textures/blocks/node_standard_side_1.png",
+    "sha256": "b3fb6255e318a02b8c60f816ca514ed782552663a6ba0eb04044dca8dbdef13f"
+  },
+  {
+    "asset": "textures/blocks/node_standard_side_2.png",
+    "sha256": "451202b3a06b5e2da21996f68a9210517d907df191e05452987af068303ccf06"
+  },
+  {
+    "asset": "textures/blocks/node_standard_side_3.png",
+    "sha256": "7e1ab82aeeee102692fa72031968ea2cc5026f7e79e9f4561a6cb79674567802"
+  },
+  {
+    "asset": "textures/blocks/node_standard_side_4.png",
+    "sha256": "4cac3b0b9ee73c7c113750ff8d5296427877d602b2f8274625e0d84744a36b73"
+  },
+  {
+    "asset": "textures/blocks/node_advanced_side_0.png",
+    "sha256": "25667b1d581967853386466fff4f55f771c626414dd1216a690309d49efcfba5"
+  },
+  {
+    "asset": "textures/blocks/node_advanced_side_1.png",
+    "sha256": "038f87f6b73814ad22000e8d598a2d55f4477b7d0a0c86f2eea59701a0c24289"
+  },
+  {
+    "asset": "textures/blocks/node_advanced_side_2.png",
+    "sha256": "2e9f0c0fd37e618f20f5cd402368b6a3cdd08f0b82d9c5fbd0bae1c2d103b121"
+  },
+  {
+    "asset": "textures/blocks/node_advanced_side_3.png",
+    "sha256": "27581e071e113cb4eeb9aa1bc7fe6f68598fa29644ecb2bcf455820ae091214f"
+  },
+  {
+    "asset": "textures/blocks/node_advanced_side_4.png",
+    "sha256": "a2355a8c40cbc84249bb91ca673505835a7afba44d93f76303e0788df2cb0600"
+  },
+  {
+    "asset": "guis/rework/page_wireless.xml",
+    "sha256": "f5bb6c8c84398934b518282775c3997220c890f77a50f0d23eb648538476b8eb"
+  },
+  {
+    "asset": "guis/rework/page_inv.xml",
+    "sha256": "9d9bd5c2fe179a235bab17db0a8789d14339fcc163fe05ff2529adc6a1d1644d"
+  },
+  {
+    "asset": "guis/rework/pageselect.xml",
+    "sha256": "ac6ca7a304f9dbc38d634fe2c42dfb2aac4ce32da80e7c4db6a64901151e7053"
+  },
+  {
+    "asset": "textures/blocks/matrix.png",
+    "sha256": "1fae7a844f66b9c0ec11c5c3510e7a21292c721da22d08f1744af31be65da0cb"
+  }
+]

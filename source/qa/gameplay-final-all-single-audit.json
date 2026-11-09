@@ -1,0 +1,1300 @@
+{
+  "status": "planned_not_run",
+  "doesNotLaunchBuildOrGame": true,
+  "caseCount": 66,
+  "plans": {
+    "all": "gameplay-final-all-single-plan.json",
+    "main": "gameplay-final16-main-plan.json",
+    "modes": "gameplay-final16-modes-plan.json",
+    "passives": "gameplay-final16-passives-plan.json",
+    "extras": "gameplay-final16-extras-plan.json"
+  },
+  "groups": {
+    "main": [
+      "final16-main-em-damage",
+      "final16-main-md-damage",
+      "final16-main-em-md-advanced-attacks",
+      "final16-main-em-md-utility",
+      "final16-main-em-md-motion-basic",
+      "final16-main-em-md-motion-air",
+      "final16-main-final-magnetic-bracer",
+      "final16-main-em-md-retry-charge_decoy",
+      "final16-main-em-defense-rest",
+      "final16-main-em-md-defense-md-core",
+      "final16-main-em-md-defense-scatter_plates",
+      "final16-main-em-md-defense-directional_dissipation_curtain",
+      "final16-main-em-md-defense-zero_gap_armor",
+      "final16-main-em-md-multistage-attacks",
+      "final16-main-em-md-magnetic-block",
+      "final16-main-em-md-circuit-crossing",
+      "final16-main-em-md-pulse-interference",
+      "final16-main-em-md-rail-route",
+      "final16-main-em-md-folded_mirror_array",
+      "final16-main-em-md-scatter_locator_plate",
+      "final16-main-em-md-remote_scatter_relay",
+      "final16-main-em-md-particle-corridor",
+      "final16-main-em-md-owned-item-pull",
+      "final16-main-ground-release",
+      "final16-main-tp-vm-damage",
+      "final16-main-tp-basic",
+      "final16-main-tp-complex",
+      "final16-main-tp-gui-full",
+      "final16-main-incident-bypass",
+      "final16-main-gameplay-vm-utility",
+      "final16-main-vm-cage-storm",
+      "final16-main-wind-sable-proof",
+      "final16-main-construct-full"
+    ],
+    "modes": [
+      "final16-modes-em-input-modes",
+      "final16-modes-em-environment-planning",
+      "final16-modes-tp-alternatives",
+      "final16-modes-vm-alternatives-efficiency",
+      "final16-modes-vm-native-late-window",
+      "final16-modes-cross-dimension",
+      "final16-modes-respawn"
+    ],
+    "passives": [
+      "final16-passives-training-electromaster",
+      "final16-passives-training-meltdowner",
+      "final16-passives-training-teleporter",
+      "final16-passives-training-vecmanip",
+      "final16-passives-rad_intensify",
+      "final16-passives-dim_folding_theorem",
+      "final16-passives-space_fluct"
+    ],
+    "tpvm": [
+      "final16-tpvm-tp-cancel-register",
+      "final16-tpvm-tp-ordinary-stock",
+      "final16-tpvm-tp-target-air-movement",
+      "final16-tpvm-tp-two-needles",
+      "final16-tpvm-native-arrow-vector_parry",
+      "final16-tpvm-native-arrow-autonomous_vector_circle",
+      "final16-tpvm-native-arrow-phase-corridor"
+    ],
+    "vmenv": [
+      "final16-vmenv-vm-environment-legacy-three",
+      "final16-vmenv-vm-environment-storm-fragile",
+      "final16-vmenv-vm-environment-plasma-terrain"
+    ],
+    "itemSplit": [
+      "final16-itemsplit-vm-extra-yaw-q-items",
+      "final16-itemsplit-vm-extra-split-narrow"
+    ],
+    "stormcycle": [
+      "final16-stormcycle-storm-cycle-costs"
+    ],
+    "visual": [
+      "final16-visual-vfx-iron-nearplane",
+      "final16-visual-vfx-railgun-charge",
+      "final16-visual-vfx-thunderclap-peak",
+      "final16-visual-vfx-mine-tiers-mid"
+    ],
+    "supplemental": [
+      "final16-supplemental-storm-sustain-40s",
+      "final16-supplemental-four-category-shield-hud"
+    ]
+  },
+  "groupCounts": {
+    "main": 33,
+    "modes": 7,
+    "passives": 7,
+    "tpvm": 7,
+    "vmenv": 3,
+    "itemSplit": 2,
+    "stormcycle": 1,
+    "visual": 4,
+    "supplemental": 2
+  },
+  "verifierMapping": {
+    "main": {
+      "plan": "gameplay-final16-main-plan.json",
+      "resultsSelection": "suiteGroup == 'main'",
+      "count": 33
+    },
+    "modes": {
+      "plan": "gameplay-final16-modes-plan.json",
+      "resultsSelection": "suiteGroup == 'modes'",
+      "count": 7,
+      "originalModesSourcePlan": "gameplay-final-modes-plan.json",
+      "sourceScenarioCount": 51
+    },
+    "passives": {
+      "plan": "gameplay-final16-passives-plan.json",
+      "resultsSelection": "suiteGroup == 'passives'",
+      "count": 7,
+      "categoryRecordCount": 15
+    },
+    "extraCasesOutsideCurrentVerifier": 19,
+    "note": "Filter the combined runner results by these exact case names and preserve original name/script/exit rows; do not rename historical results. The existing verifier validates47 specified clients plus dual grounding; all19 extra cases also independently require actual exit0/QA_DONE/no failures/same snapshot and their original strict assertions. They are not covered merely by the47-client verifier passing.",
+    "extras": {
+      "plan": "gameplay-final16-extras-plan.json",
+      "count": 19,
+      "selection": "suiteGroup not in {'main','modes','passives'}",
+      "requiresOptionalVerifierExtension": "Coordinate with cast_vfx_camera agent; no completed verifier execution claimed."
+    }
+  },
+  "catalogCoverage": {
+    "registeredRecords": 111,
+    "activeCount": 96,
+    "singleMainActiveCount": 95,
+    "separateRequiredDualGrounding": "grounding_return",
+    "passiveAndTrainingRecords": 15,
+    "mainDuplicateSkillDeclarations": {
+      "disintegration_sweep": 2
+    }
+  },
+  "branchSources": {
+    "final16-main-em-damage": {
+      "declaredSkills": [
+        "arc_gen",
+        "thunder_bolt",
+        "railgun",
+        "thunder_clap",
+        "forked_arc",
+        "iron_sand_lance"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-em-damage.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-md-damage": {
+      "declaredSkills": [
+        "electron_bomb",
+        "meltdowner",
+        "ray_barrage",
+        "dual_point"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-md-damage.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-em-md-advanced-attacks": {
+      "declaredSkills": [
+        "scatter_bomb",
+        "electron_missile",
+        "thunder_net",
+        "disintegration_sweep"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-em-md-advanced-attacks.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-em-md-utility": {
+      "declaredSkills": [
+        "charging",
+        "mine_detect",
+        "body_intensify",
+        "mine_ray_basic",
+        "mine_ray_expert",
+        "mine_ray_luck",
+        "beam_etching",
+        "point_meltdown",
+        "disintegration_sweep"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-em-md-utility.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-em-md-motion-basic": {
+      "declaredSkills": [
+        "mag_movement",
+        "polarity_tether",
+        "jet_engine"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-em-md-motion-basic.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-em-md-motion-air": {
+      "declaredSkills": [
+        "beam_step",
+        "reverse_jet_brake"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-em-md-motion-air.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-final-magnetic-bracer": {
+      "declaredSkills": [
+        "magnetic_bracer"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-final-magnetic-bracer.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-em-md-retry-charge_decoy": {
+      "declaredSkills": [
+        "charge_decoy"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-em-md-retry-charge_decoy.script"
+      ],
+      "modes": [],
+      "purpose": "Use corrected decoy aim + decoy-placed, not obsolete combined defense-em aim."
+    },
+    "final16-main-em-defense-rest": {
+      "declaredSkills": [
+        "potential_buffer",
+        "magnetic_domain"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-final-em-defense-rest.script"
+      ],
+      "modes": [],
+      "purpose": "Exact independent potential-buffer/domain flows; grounding_return is exclusively the real two-client arc_gen case in gameplay-final-dual-manifest.json."
+    },
+    "final16-main-em-md-defense-md-core": {
+      "declaredSkills": [
+        "light_shield",
+        "thermal_shell"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-em-md-defense-md-core.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-em-md-defense-scatter_plates": {
+      "declaredSkills": [
+        "scatter_plates"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-em-md-defense-scatter_plates.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-em-md-defense-directional_dissipation_curtain": {
+      "declaredSkills": [
+        "directional_dissipation_curtain"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-em-md-defense-directional_dissipation_curtain.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-em-md-defense-zero_gap_armor": {
+      "declaredSkills": [
+        "zero_gap_armor"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-em-md-defense-zero_gap_armor.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-em-md-multistage-attacks": {
+      "declaredSkills": [
+        "rail_thunder_array",
+        "multicore_canopy"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-em-md-multistage-attacks.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-em-md-magnetic-block": {
+      "declaredSkills": [
+        "mag_manip"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-em-md-magnetic-block.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-em-md-circuit-crossing": {
+      "declaredSkills": [
+        "conductive_circuit"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-em-md-circuit-crossing.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-em-md-pulse-interference": {
+      "declaredSkills": [
+        "pulse_shield"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-em-md-pulse-interference.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-em-md-rail-route": {
+      "declaredSkills": [
+        "rail_relay"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-em-md-rail-route.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-em-md-folded_mirror_array": {
+      "declaredSkills": [
+        "folded_mirror_array"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-em-md-folded_mirror_array.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-em-md-scatter_locator_plate": {
+      "declaredSkills": [
+        "scatter_locator_plate"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-em-md-scatter_locator_plate.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-em-md-remote_scatter_relay": {
+      "declaredSkills": [
+        "remote_scatter_relay"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-em-md-remote_scatter_relay.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-em-md-particle-corridor": {
+      "declaredSkills": [
+        "particle_laminate"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-em-md-particle-corridor.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-em-md-owned-item-pull": {
+      "declaredSkills": [
+        "magnetic_item_pull"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-em-md-owned-item-pull.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-ground-release": {
+      "declaredSkills": [
+        "magnetic_ground_step"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "codex-ground-release.script"
+      ],
+      "modes": [],
+      "purpose": "Default-enabled real LV3 machine learning; no opt-in property."
+    },
+    "final16-main-tp-vm-damage": {
+      "declaredSkills": [
+        "dir_shock",
+        "ground_shock",
+        "dir_blast",
+        "blood_retro",
+        "plasma_cannon",
+        "threatening_teleport",
+        "flesh_ripping",
+        "shift_tp",
+        "deflection_strike",
+        "shear_windblade",
+        "yaw_palm",
+        "zenith_vector_dominion"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-tp-vm-damage.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-tp-basic": {
+      "declaredSkills": [
+        "phase_sidestep",
+        "safe_landing_probe",
+        "return_mark",
+        "emergency_return",
+        "phase_corridor",
+        "mark_teleport",
+        "penetrate_teleport"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-tp-basic.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-tp-complex": {
+      "declaredSkills": [
+        "corner_exchange",
+        "cross_substitution",
+        "spatial_pincer_corridor",
+        "multidimensional_landing_array",
+        "displaced_projection",
+        "short_interception",
+        "recovery_mark",
+        "spatial_relay",
+        "flashing",
+        "vec_accel"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-tp-complex.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-tp-gui-full": {
+      "declaredSkills": [
+        "location_teleport",
+        "tactical_coordinate_formation"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-tp-gui-full.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-incident-bypass": {
+      "declaredSkills": [
+        "incident_bypass"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-incident-bypass.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-gameplay-vm-utility": {
+      "declaredSkills": [
+        "vec_deviation",
+        "vec_reflection",
+        "vector_parry",
+        "inertial_anchor",
+        "circulation_relief",
+        "autonomous_vector_circle",
+        "multi_axis_reflection",
+        "circulation_listening",
+        "trajectory_return",
+        "braking_touch",
+        "impulse_split"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "codex-gameplay-vm-utility.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-vm-cage-storm": {
+      "declaredSkills": [
+        "vector_cage",
+        "storm_wing"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-vm-cage-storm.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-wind-sable-proof": {
+      "declaredSkills": [
+        "wind_pressure_lift"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "codex-wind-sable-proof.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-main-construct-full": {
+      "declaredSkills": [
+        "vector_construct"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-construct-full.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-modes-em-input-modes": {
+      "declaredSkills": [],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-em-md-magnetic-block-far.script",
+        "gameplay-em-md-mode-arrow-separation.script",
+        "gameplay-em-md-mode-canopy-held.script",
+        "gameplay-em-md-mode-coin-qte.script",
+        "gameplay-em-md-mode-dual-secondary.script",
+        "gameplay-em-md-mode-net-hold.script",
+        "gameplay-em-md-mode-pulse-detect.script",
+        "gameplay-em-md-mode-rail-hold.script",
+        "gameplay-em-md-mode-semiconductor-fan.script",
+        "gameplay-em-md-mode-lance-orbit.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-modes-em-environment-planning": {
+      "declaredSkills": [],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-em-md-env-arc-creeper.script",
+        "gameplay-em-md-env-arc-fire.script",
+        "gameplay-em-md-env-charging-block.script",
+        "gameplay-em-md-env-etch-batch.script",
+        "gameplay-em-md-env-etch-hard-refusal.script",
+        "gameplay-em-md-env-fork-single.script",
+        "gameplay-em-md-env-jet-collision.script",
+        "gameplay-em-md-env-laminate-low.script",
+        "gameplay-em-md-env-light-touch.script",
+        "gameplay-em-md-env-mag-entity.script",
+        "gameplay-em-md-env-melt-terrain.script",
+        "gameplay-em-md-env-point-hard-refusal.script",
+        "gameplay-em-md-env-point-no-tool.script",
+        "gameplay-em-md-env-melt-overcharge.script",
+        "gameplay-em-md-planning-folded_mirror_array.script",
+        "gameplay-em-md-planning-remote_scatter_relay.script",
+        "gameplay-em-md-planning-scatter_locator_plate.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-modes-tp-alternatives": {
+      "declaredSkills": [],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-tp-alt-corner_exchange.script",
+        "gameplay-tp-alt-cross_substitution.script",
+        "gameplay-tp-alt-multidimensional_landing_array.script",
+        "gameplay-tp-alt-phase_sidestep.script",
+        "gameplay-tp-alt-short_interception.script",
+        "gameplay-tp-alt-spatial_relay.script",
+        "gameplay-tp-emergency-auto.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-modes-vm-alternatives-efficiency": {
+      "declaredSkills": [],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-vm-efficiency-circulation_relief.script",
+        "gameplay-vm-efficiency-inertial_anchor.script",
+        "gameplay-vm-efficiency-vector_parry.script",
+        "gameplay-vm-alt-anchor-fall.script",
+        "gameplay-vm-alt-braking-fall.script",
+        "gameplay-vm-alt-braking-snowball.script",
+        "gameplay-vm-alt-listening-runner.script",
+        "gameplay-vm-alt-parry-full.script",
+        "gameplay-vm-alt-parry-left.script",
+        "gameplay-vm-alt-parry-right.script",
+        "gameplay-vm-alt-trajectory-hammer.script",
+        "gameplay-vm-direction-modes.script",
+        "gameplay-vm-cage-low.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-modes-vm-native-late-window": {
+      "declaredSkills": [],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-vm-primary-impulse_split-late.script",
+        "gameplay-wind-sideways.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-modes-cross-dimension": {
+      "declaredSkills": [],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-location-cross-dimension.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-modes-respawn": {
+      "declaredSkills": [],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-vm-impulse-window-respawn-native-damage.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-passives-training-electromaster": {
+      "declaredSkills": [],
+      "passiveRecords": [
+        "brain_course",
+        "brain_course_advanced",
+        "mind_course"
+      ],
+      "category": "electromaster",
+      "sourceScenarios": [
+        "gameplay-passives-training-electromaster.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-passives-training-meltdowner": {
+      "declaredSkills": [],
+      "passiveRecords": [
+        "brain_course",
+        "brain_course_advanced",
+        "mind_course"
+      ],
+      "category": "meltdowner",
+      "sourceScenarios": [
+        "gameplay-passives-training-meltdowner.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-passives-training-teleporter": {
+      "declaredSkills": [],
+      "passiveRecords": [
+        "brain_course",
+        "brain_course_advanced",
+        "mind_course"
+      ],
+      "category": "teleporter",
+      "sourceScenarios": [
+        "gameplay-passives-training-teleporter.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-passives-training-vecmanip": {
+      "declaredSkills": [],
+      "passiveRecords": [
+        "brain_course",
+        "brain_course_advanced",
+        "mind_course"
+      ],
+      "category": "vecmanip",
+      "sourceScenarios": [
+        "gameplay-passives-training-vecmanip.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-passives-rad_intensify": {
+      "declaredSkills": [],
+      "passiveRecords": [
+        "rad_intensify"
+      ],
+      "category": "meltdowner",
+      "sourceScenarios": [
+        "gameplay-passives-rad_intensify.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-passives-dim_folding_theorem": {
+      "declaredSkills": [],
+      "passiveRecords": [
+        "dim_folding_theorem"
+      ],
+      "category": "teleporter",
+      "sourceScenarios": [
+        "gameplay-passives-dim_folding_theorem.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-passives-space_fluct": {
+      "declaredSkills": [],
+      "passiveRecords": [
+        "space_fluct"
+      ],
+      "category": "teleporter",
+      "sourceScenarios": [
+        "gameplay-passives-space_fluct.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-tpvm-tp-cancel-register": {
+      "declaredSkills": [],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-tp-play-cancel-return_mark.script",
+        "gameplay-tp-play-cancel-short_interception.script",
+        "gameplay-tp-play-cancel-spatial_relay.script",
+        "gameplay-tp-play-cancel-emergency_return.script",
+        "gameplay-tp-play-cancel-spatial_pincer_corridor.script",
+        "gameplay-tp-play-cancel-multidimensional_landing_array.script",
+        "gameplay-tp-play-probe-move.script",
+        "gameplay-tp-play-probe-pose.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-tpvm-tp-ordinary-stock": {
+      "declaredSkills": [],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-tp-play-item-transport.script",
+        "gameplay-tp-play-block-placement.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-tpvm-tp-target-air-movement": {
+      "declaredSkills": [],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-tp-play-mark-entity.script",
+        "gameplay-tp-play-mark-air.script",
+        "gameplay-tp-play-accel-air.script",
+        "gameplay-tp-play-flash-air.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-tpvm-tp-two-needles": {
+      "declaredSkills": [],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-tp-play-two-needles.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-tpvm-native-arrow-vector_parry": {
+      "declaredSkills": [],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-native-arrow-vector_parry.script"
+      ],
+      "modes": [],
+      "purpose": "Same real native arrow must commit dedicated source capture/quota/exact resource debit; no base reflection substitution"
+    },
+    "final16-tpvm-native-arrow-autonomous_vector_circle": {
+      "declaredSkills": [],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-native-arrow-autonomous_vector_circle.script"
+      ],
+      "modes": [],
+      "purpose": "Same real native arrow must commit dedicated source capture/quota/exact resource debit; no base reflection substitution"
+    },
+    "final16-tpvm-native-arrow-phase-corridor": {
+      "declaredSkills": [],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-native-arrow-phase_corridor.script"
+      ],
+      "modes": [],
+      "purpose": "Two real enemy arrows from actual shooter: first reaches native incoming in2tick phase and pays no S/HP; second reaches3tick exposure and truly damages S/HP"
+    },
+    "final16-vmenv-vm-environment-legacy-three": {
+      "declaredSkills": [],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-vm-environment-blast-block.script",
+        "gameplay-vm-environment-ground-wave.script",
+        "gameplay-vm-environment-ground-soft.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-vmenv-vm-environment-storm-fragile": {
+      "declaredSkills": [],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-vm-environment-storm-fragile.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-vmenv-vm-environment-plasma-terrain": {
+      "declaredSkills": [],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-vm-environment-plasma-terrain.script"
+      ],
+      "modes": [],
+      "purpose": ""
+    },
+    "final16-itemsplit-vm-extra-yaw-q-items": {
+      "declaredSkills": [
+        "yaw_palm"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-vm-extra-yaw-q-items.script"
+      ],
+      "modes": [
+        "actual owner Q item left push",
+        "actual owner Q item crouching right push"
+      ],
+      "purpose": ""
+    },
+    "final16-itemsplit-vm-extra-split-narrow": {
+      "declaredSkills": [
+        "impulse_split"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-vm-extra-split-narrow.script"
+      ],
+      "modes": [
+        "actual approximately20 degree pair slows naturally",
+        "native integer budget partition",
+        "two real native arrow impacts and bounded combined actual target damage"
+      ],
+      "purpose": ""
+    },
+    "final16-stormcycle-storm-cycle-costs": {
+      "declaredSkills": [],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-storm-cycle-costs.script"
+      ],
+      "modes": [],
+      "purpose": "Finite initial CP and 84-percent initial heat before baseline only; natural native cooling and CP depletion after actual R start, never refilled."
+    },
+    "final16-visual-vfx-iron-nearplane": {
+      "declaredSkills": [
+        "iron_sand_lance"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-visual-iron-nearplane.script"
+      ],
+      "modes": [],
+      "purpose": "Normal key input, original mechanical assertions, native framebuffer tick sequence plus representative action/release images; inspect actual frames after run, not generated visual injection."
+    },
+    "final16-visual-vfx-railgun-charge": {
+      "declaredSkills": [
+        "railgun"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-visual-railgun-charge.script"
+      ],
+      "modes": [],
+      "purpose": "Normal key input, original mechanical assertions, native framebuffer tick sequence plus representative action/release images; inspect actual frames after run, not generated visual injection."
+    },
+    "final16-visual-vfx-thunderclap-peak": {
+      "declaredSkills": [
+        "thunder_clap"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-visual-thunderclap-peak.script"
+      ],
+      "modes": [],
+      "purpose": "Normal key input, original mechanical assertions, native framebuffer tick sequence plus representative action/release images; inspect actual frames after run, not generated visual injection."
+    },
+    "final16-visual-vfx-mine-tiers-mid": {
+      "declaredSkills": [
+        "mine_ray_basic",
+        "mine_ray_expert",
+        "mine_ray_luck"
+      ],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "gameplay-visual-mine-ray-tiers.script"
+      ],
+      "modes": [],
+      "purpose": "Normal real sustained mining with all existing finite-resource/native-drop assertions, native full-frame tick sequence and middle-of-hold pictures; no new production decoration before actual frame comparison."
+    },
+    "final16-supplemental-storm-sustain-40s": {
+      "declaredSkills": [],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "codex-storm-sustain.script"
+      ],
+      "modes": [],
+      "purpose": "Real finite LV5 survival CP, at least800 ACTIVE ticks/850 elapsed ticks, actual R stop and airborne slow falling."
+    },
+    "final16-supplemental-four-category-shield-hud": {
+      "declaredSkills": [],
+      "passiveRecords": [],
+      "category": null,
+      "sourceScenarios": [
+        "codex-shield-hud-final.script"
+      ],
+      "modes": [],
+      "purpose": "All four categories: actual ordinary damage debits positive S without HP loss, then genuine overflow damages HP and holding ends; compact native/skill CP HUD."
+    }
+  },
+  "sourceFileSha256": {
+    "gameplay-final-plan.json": "420ad8e351f74bfdff78dda28a409270158a82ba606c1fca07a8b6277ea0f6cb",
+    "gameplay-em-damage.script": "9cf684c10a8936d337ffeb9e6af49ac3afcf5a5563345ceef859ea0cb44afffb",
+    "gameplay-md-damage.script": "a0c3549e52e489bbc29cfeab6923ad19398ba6715d68b0730ac3b712c8fa9c32",
+    "gameplay-em-md-advanced-attacks.script": "4135cce3796d77a6f67a6e913cee7f4c0c72b900706949b481e09e19b2227b68",
+    "gameplay-em-md-utility.script": "66e6cd793628bce3d452dddfe126d9c08e36afaf9868df21d8e97c2da736de0b",
+    "gameplay-em-md-motion-basic.script": "3d72c71007f16695be1fcdc98042c56c9bf4e1d0fbe5bd175385464c94059f7d",
+    "gameplay-em-md-motion-air.script": "6dd1c53bd833f7819ee5ec1cc5c63e976dadb1d0cf1f2a1a98e9eca1ec5b7d2c",
+    "gameplay-final-magnetic-bracer.script": "c53a5ad6268c65dcd77b333c0b45e295fb0cc93c06a66a11a0fa6ce336496a60",
+    "gameplay-em-md-retry-charge_decoy.script": "0278140456ea55510f95841a296bd008effef488b330ab98a5c159b57e541099",
+    "gameplay-final-em-defense-rest.script": "40ab496bd5f87fab579ca23ad4a97954cda35affcc7ea371143839df25b84a4e",
+    "gameplay-em-md-defense-md-core.script": "a14a79f6dedc548f38c08b0429a67b94869ba913559f174bc4fc1f091623ff25",
+    "gameplay-em-md-defense-scatter_plates.script": "bc06e51e5c4ad4a0b4a93197bff34e4d8b8760a82c80bfb2f5c78e0f0f45667b",
+    "gameplay-em-md-defense-directional_dissipation_curtain.script": "c535abc8c3c9ffe0d4bfc7b36258f0373a9c684f940b6e11b977a0eb83fb7c04",
+    "gameplay-em-md-defense-zero_gap_armor.script": "d37583ae0b65b42f9ab2decaa509264e80f9086adf4b023e6226d55f797d3cee",
+    "gameplay-em-md-multistage-attacks.script": "be2538de77a86c1b498632e81cc85ba33b06d68062f312a64934681fe2313b9b",
+    "gameplay-em-md-magnetic-block.script": "3024e90b93c3ab276d464a0169a95ae6bb1e88d729104e8f4a2d8580e8765455",
+    "gameplay-em-md-circuit-crossing.script": "eb6b7f4fd4ef25ded2df463e51648eda4c8331343f341262272e9a591f752fe1",
+    "gameplay-em-md-pulse-interference.script": "c71f13eb0345ae65d7e3e425069d215c63b0c872ae78b5b4603fc3b1c63420f0",
+    "gameplay-em-md-rail-route.script": "32c2997c1ff122b0e2fe541343614f9fa308875291777f17d783da4e2e4485c4",
+    "gameplay-em-md-folded_mirror_array.script": "cc7c975ef0be7c3dc76736c531dce02fb5c48a87fc6caeae9a96db8dc3d115c5",
+    "gameplay-em-md-scatter_locator_plate.script": "7d5d0c37632bf485341718f2e26746ea344b9c4125362f2c94a5ea7c732a2a68",
+    "gameplay-em-md-remote_scatter_relay.script": "55e9775c244e04a1165a85ad5fc3555f43ce8b52505001217daaf2bc0ba0fcdc",
+    "gameplay-em-md-particle-corridor.script": "0d0843416ea1bfee3413f462883b13f82a394169df43ed07a49d2f037bde13e6",
+    "gameplay-em-md-owned-item-pull.script": "ea9324ea35100c7e2174e3ec69acc081565526fc8f807d95f1f7669df2cd51ac",
+    "codex-ground-release.script": "8f71afbbf9716e0560fa46802f522b5aa1eb6a041c36504866fdae80a9582f40",
+    "gameplay-tp-vm-damage.script": "670603d0bf7690aff82a5b8783987c7f3e643eacc09410574061238002971892",
+    "gameplay-tp-basic.script": "aab7613465ce46c4142af15101fa9a9fa66406e2db2d30f659ccdb0b76ef961d",
+    "gameplay-tp-complex.script": "74b0520ca8d63d4f2671c421dfed594eb19aeea2e5a4ed290e9be1ffbc74c0f6",
+    "gameplay-tp-gui-full.script": "8eedf055fe5a9d782a056841a7939de5189688b74185d42aedd6236ee973a108",
+    "gameplay-incident-bypass.script": "6ccf67db50d98ff8623d871356431f25c54f388d33f1ad89a830e3272311f0c1",
+    "codex-gameplay-vm-utility.script": "9a5fddc44f917596acaf671693f986c4db6019ba2eec00827dac4d583e91c933",
+    "gameplay-vm-cage-storm.script": "93bd32bf85b9232486662d39bcbfb3bc8444a95fcab9ebf17c604a6c8aab128f",
+    "codex-wind-sable-proof.script": "e8305b23e0e1cd376555f0fcd0b594ab7865a99f1f8384e39845ef94b515b63d",
+    "gameplay-construct-full.script": "df10d71a70bd1b586d263ff4bd460b6966a8819c4dec54bd94c17fcac1e6c33e",
+    "gameplay-final-modes-merged-plan.json": "d61d99756ca118424e089ce527a0c829472eb8d4c8934d09574819dd63c8e0e8",
+    "gameplay-final-modes-group-em-input-modes.script": "0cfd19bdac558725dd9608d1e627f49f4402f2967fa4854fc8ab9ca300976245",
+    "gameplay-em-md-magnetic-block-far.script": "f5c4c2f94b734b41afe3bcd391303840ee38f1e2831fe128bff2457604520227",
+    "gameplay-em-md-mode-arrow-separation.script": "43079af1e36bff8b350fcb430ec049f027fc16b7205a4aad9438291fa26c41fc",
+    "gameplay-em-md-mode-canopy-held.script": "e93b36be9a2a42354fb76a9b9c9d700b4c27a8c455f2180a0e824d4982ba1ad5",
+    "gameplay-em-md-mode-coin-qte.script": "f72f9f2ca6a2f25f10871f41a766af7c4006dce8df99b1e8fefef9f14f37c733",
+    "gameplay-em-md-mode-dual-secondary.script": "587f63bc95dd73edb2a57aceba833efe22fd442716e7c22ea6449f8030fa7364",
+    "gameplay-em-md-mode-net-hold.script": "02ad2d083556a47319d12d616731fdc302085985ebe3529aff7edd9bf5a320e6",
+    "gameplay-em-md-mode-pulse-detect.script": "2f0ff42f095dbe5494093c3aca82c90e1447ea217134b5de3871df976df47b64",
+    "gameplay-em-md-mode-rail-hold.script": "5ba7a598d1778f97db524b96639a79a1e85bc27d5450f0ac6bf91978b3034a51",
+    "gameplay-em-md-mode-semiconductor-fan.script": "5516af39fe1866a0b21a192b0df99831d738a401d47aa136934eb0d3c5d626c4",
+    "gameplay-em-md-mode-lance-orbit.script": "0dfcfb35a09f056f306c79d59caf4404bf9d14ab4cfd1b064d2736c1bbd57868",
+    "gameplay-final-modes-group-em-environment-planning.script": "8dc7c8358c2d1308349abf575fabbca8fbf9b17213974ed2f875ea884f17f619",
+    "gameplay-em-md-env-arc-creeper.script": "8acd59e6317b930c54eeff3be68ac5f706227617f9600278b3dddd238fecd72a",
+    "gameplay-em-md-env-arc-fire.script": "e52c47bcff7dd84acdecc857616a10093eb037363ab624ab0a9f348163e61ad8",
+    "gameplay-em-md-env-charging-block.script": "1a965de6f2ec11dc13048294cc3ef504f4846dd49a2b77323d6874d2f15c9daf",
+    "gameplay-em-md-env-etch-batch.script": "e95db8c0d8141c03907d8956cb1837f731768e5f0d1795ac1670bcb2b7958fbf",
+    "gameplay-em-md-env-etch-hard-refusal.script": "b36eda7406ca029c06ace17896113c0a4b2d462241b1658094a5c9e3e91c77b7",
+    "gameplay-em-md-env-fork-single.script": "a66d3c543d3e73589eca091063f727e80f401b98bb0b8837963f8632b5b9a1f6",
+    "gameplay-em-md-env-jet-collision.script": "27afc71df799d9dbb46e4b6994237535ffb57a96f3a93503e1e6d7bd2b5274c4",
+    "gameplay-em-md-env-laminate-low.script": "f955622226ee1d85336aa05c0ac684702c212edaa373df16b029619687e95740",
+    "gameplay-em-md-env-light-touch.script": "ce946c9b54e9a3af8ba962f58740acd835ed2c106933015edd12f89417c90c99",
+    "gameplay-em-md-env-mag-entity.script": "c259cf086087780b7422d3de64c138d9d5a9d0421f80caef14ebc53b29801750",
+    "gameplay-em-md-env-melt-terrain.script": "17264474ebaf2dfeeb9db3adde45428fa2bb3837463e087a66aa9fa5f6005c70",
+    "gameplay-em-md-env-point-hard-refusal.script": "52dedfd04d23dbe955f7cfcf0a48205fac9c480e91e7082c10ac8751f87f19ad",
+    "gameplay-em-md-env-point-no-tool.script": "d6471e3bf22f54baad5fb03a70feb4c9cc278963c470ad384f1363bbd2ed7ddc",
+    "gameplay-em-md-env-melt-overcharge.script": "c8cb569e28254e8c26fb6ca1e7d7d4616541595b71ff33b0cf675ab52fc8a4db",
+    "gameplay-em-md-planning-folded_mirror_array.script": "a2ebd85607934741fe1ea3d805fa472ddd2475668a3614448b18a6199ab13845",
+    "gameplay-em-md-planning-remote_scatter_relay.script": "d1fbc73cfa977b97cfaf27d91dc4fc906aa706afbd77920228efd828a94e45d3",
+    "gameplay-em-md-planning-scatter_locator_plate.script": "384204306aaae07a604976b84ad99f91a42218ffe8546e41af934bba7edf844e",
+    "gameplay-final-modes-group-tp-alternatives.script": "b73cc6edbfdc495860e3ce3c80abf2cee69354950782ea3b7bfa2578086e23a3",
+    "gameplay-tp-alt-corner_exchange.script": "ba5462be7a210a007433e7de0085a858a450488228613eecf9ceed47045732d9",
+    "gameplay-tp-alt-cross_substitution.script": "318b6c25af2033a074e569241c6f60a1375061f1075ee71d3af68e919a59e0ce",
+    "gameplay-tp-alt-multidimensional_landing_array.script": "898b069cd4d87a845c05d8c0f43995160adfefc55007a26213474bdd39a931b6",
+    "gameplay-tp-alt-phase_sidestep.script": "03c6c115304fcf8c93b17ab218e1d491cfca59c795a7c872feeb928f91f05be0",
+    "gameplay-tp-alt-short_interception.script": "a9f5269debedbca3f5b21c634002a2d40198a879c93e4c2d67ceddc0f30368a7",
+    "gameplay-tp-alt-spatial_relay.script": "8ae9e19f05da0a3ba613005ac3d125e887f9c2d8487c125f07561f5c5cdac2b9",
+    "gameplay-tp-emergency-auto.script": "f041c886c87aa09e6b54d08006d5a2f6bc060079969654b1c062df52c83f6eea",
+    "gameplay-final-modes-group-vm-alternatives-efficiency.script": "1e02503959dc0461a3d042be0eee86b0b7e3eebd8d32b42c386c794aeb7febcd",
+    "gameplay-vm-efficiency-circulation_relief.script": "39faf33adaf0fc50719dc0f553a7df73744a43b7dc120e8df659daac41b1d6d4",
+    "gameplay-vm-efficiency-inertial_anchor.script": "565a1cfd717650bb77c67a04974ff75fd22a28cdccc97e1e147c44c937dcb0a2",
+    "gameplay-vm-efficiency-vector_parry.script": "b0ada82c09b4cac6071bfdfc4c8899bebb07ff0e69e57c3e802ed7c25673cdd8",
+    "gameplay-vm-alt-anchor-fall.script": "f45e04020fe14a082db49eb62b3dee4be052d8396533dc8249d026af1b59ff0d",
+    "gameplay-vm-alt-braking-fall.script": "766e064e3fe43c801626b74ad56f10b1d1e08122d94d1a6f8d98e5b368ad48a6",
+    "gameplay-vm-alt-braking-snowball.script": "0626c84384fd57786e3446306129a6919e1779eb0b14c1f8bb042e33f3bc58af",
+    "gameplay-vm-alt-listening-runner.script": "ee8281f6231efc5036a90777ce93f7e251df5f42ff40b68ab25a1f19a480a384",
+    "gameplay-vm-alt-parry-full.script": "fb4c284d257f4efce826c78a2594f50f3d49e629f8d886fe2ba9991b6315e17e",
+    "gameplay-vm-alt-parry-left.script": "fc8e8f44f0506497e3173f783cb3094d0921ddebb2b02401f4e9295cef0c6c33",
+    "gameplay-vm-alt-parry-right.script": "c4fe0240c0343145e7b09cfa72f0ac2a03fb185d8a68e379823a6c2b7cfa7695",
+    "gameplay-vm-alt-trajectory-hammer.script": "b91c4deaecf2166ef26c4be7de6e85d9599dd1094c305240a1c02aada4b73995",
+    "gameplay-vm-direction-modes.script": "8195a922a5baeb5dedb25313832832b6aed6c46b6f839a8fd726bc9557205fd4",
+    "gameplay-vm-cage-low.script": "a89cefab05b01649a140def13316c02eb75af50754d73c1f22e92d20e8bf5e32",
+    "gameplay-final-modes-group-vm-native-late-window.script": "cd653f8a1f57dcfbbbcf9ff0e1a94b44f64ff29d166c71670e2a2ad26c87320b",
+    "gameplay-vm-primary-impulse_split-late.script": "c113c6b88e46eac96731e0f7612c4b7cf7f6de163fe34303da60998c30661d29",
+    "gameplay-wind-sideways.script": "5ea0f802bc7dba6f8fedcfd2d1cb78e3a19643d07432defbd24c7f51aabf1f4e",
+    "gameplay-final-modes-group-cross-dimension.script": "75b56f6e12ad65fb846dd8917b39419acb08494e5415e97f4b0a1e077dccae00",
+    "gameplay-location-cross-dimension.script": "b4fadeb3f7a990530f3ef548bdc39275d50f4de468c9e755846ac8e4681f6d62",
+    "gameplay-final-modes-group-respawn.script": "ce2dcfd263b0366ab7ff7f93a19cb5e450a384e11775246759f5df500dd0600d",
+    "gameplay-vm-impulse-window-respawn-native-damage.script": "3be1216087edbb3446027c781fa0b9bde100b2c7d84a90e55534b9ac9dda6fbe",
+    "gameplay-passives-plan.json": "6756fbd53b202febff4eb426c249bbffd48a8881fc4f60382dfeacbb7b2033d9",
+    "gameplay-passives-training-electromaster.script": "475af63586ec246aa50eef64ac48ce791c4f0c9007276d2a77f8babc6d5f798a",
+    "gameplay-passives-training-meltdowner.script": "6d9d5528a0fee3aedf145828c1e59c347aa50e96df95471ca9ebb02fe03e4b14",
+    "gameplay-passives-training-teleporter.script": "28697d198b540399680b9ac6cbd53c8e6aaf712cdf0229d24b23a57424d34af3",
+    "gameplay-passives-training-vecmanip.script": "cd13de314e3b77a983312e48da330b4e73a733fba636cd71fe1155b5a1378f63",
+    "gameplay-passives-rad_intensify.script": "1ba30d2d447aa6e4b1ced3aa2502fdcc9799a42af434b87b42453744849af5be",
+    "gameplay-passives-dim_folding_theorem.script": "dac9e4ea6829a5338699a12c4ef0063136c512fc2b1f9e4f03a1f48ca6ede0d4",
+    "gameplay-passives-space_fluct.script": "5bb43af657f8ac73ea3ba4604f75235ad6414b1cbed35bd71794d597ed0662e3",
+    "gameplay-tp-vm-extension-plan.json": "9e33cae24c9e0cd32f49b4459a2a0c004bee46dda659b18878e2d836c0b279b6",
+    "gameplay-tp-play-group-cancel-register.script": "737b76e081eeb115321258cfc9e1c0c8e1ce0b59c5a16d11246fd963d56b613a",
+    "gameplay-tp-play-cancel-return_mark.script": "03aa49bf4669f51ed2eefa56db380199bf7621dc0e963f1958bbd0c399848490",
+    "gameplay-tp-play-cancel-short_interception.script": "67ac53cc6ee55dd09e9d4c762bae0d89a2b3a536c11d6d5a86f8dcf31bce0d2d",
+    "gameplay-tp-play-cancel-spatial_relay.script": "73c8e7670e52f6d823dbdf14f61acfa0d5b33b033017da5c9fafb652e10aa73d",
+    "gameplay-tp-play-cancel-emergency_return.script": "88c792d7b9c091deec8d92d7956e110f0ceb029db6b1b73cc454442717a97b14",
+    "gameplay-tp-play-cancel-spatial_pincer_corridor.script": "f449d813a65af48817eb5fa2cc592015c24538a028afd9e600be8eecf9be42d5",
+    "gameplay-tp-play-cancel-multidimensional_landing_array.script": "5cfa2f7e9c9b1a1d273580a3db80c9bc5d843346846b47b6d0c1a42dd24a5d37",
+    "gameplay-tp-play-probe-move.script": "ec64386a7857bf9d01b4b18f84efe28d9acbdb82b37d552324b14afaf7f99179",
+    "gameplay-tp-play-probe-pose.script": "20da9f079e445e6130f014f82b25615e66018d5c192a729390863f0f3c09393d",
+    "gameplay-tp-play-group-ordinary-stock.script": "28dcfc483685b9df8376d180c3de81ee56ae55d62fa3f5f09ab345c68b8de398",
+    "gameplay-tp-play-item-transport.script": "1028c3821e45e27a495ad7ac68f7f90cfe46e2ccb3f83513f2055021ecc58add",
+    "gameplay-tp-play-block-placement.script": "701d16c8f277cc4f64cc7a41167dfd02075fd298c7dfb71a389f4ba9a7e1a23b",
+    "gameplay-tp-play-group-target-air-movement.script": "6ec153549d94c7afa9da7b8bf4e0964b9cdd0f1ff39e1c7a0737f1b9f0855971",
+    "gameplay-tp-play-mark-entity.script": "8043e21f64f2a3aad87cf88a94870b82de29f3fc8ac06a06dd48fe36b4ffc092",
+    "gameplay-tp-play-mark-air.script": "77421c8c03f8bb9b9f411a36bf900bc02beeeb12ffbf1c534d0adf87e03a443b",
+    "gameplay-tp-play-accel-air.script": "2d5deeeae7fd94fa4167b66f0c952eef11f809baef2f42faaaafc39cdbf183cb",
+    "gameplay-tp-play-flash-air.script": "b6b9169423b31602196640b9e7e1b80e58948b7175186149633553bdec3e8e03",
+    "gameplay-tp-play-group-two-needles.script": "ebbd628966becb3a682b52120c030e7d93a93a718feb2b4cffcf1bab0d10e0e2",
+    "gameplay-tp-play-two-needles.script": "7c887388da1fa04e5887ddefcc6772fc390e61ea4b088893141d96c8a90f3c31",
+    "gameplay-native-arrow-vector_parry.script": "fdd72dd5f3894a731ffc5d241411b2b31c67683ce0b563a5fa2cf183ea3c4401",
+    "gameplay-native-arrow-autonomous_vector_circle.script": "1004ec5898b4a9591f678a72e16679336db634c612232c2cba2e1697ca8d36f9",
+    "gameplay-native-arrow-phase_corridor.script": "f903935b24229973670905367b6224db6fd10b4a0b9e5fe67840195217c53cc4",
+    "gameplay-vm-environment-grouped-plan.json": "911c1d531d72ba05b2d7aa933b865a5c2abbddd63f964901c5b21b9c0dc44049",
+    "gameplay-vm-environment-legacy-three.script": "79f29d9d56fac06d473827e4a732c2f565eeb5b0391e724601344f121d456728",
+    "gameplay-vm-environment-blast-block.script": "48171034ea1b32ee7230c40a106327f366c87ad1cb0621c7516cfb02b6d9ae7a",
+    "gameplay-vm-environment-ground-wave.script": "21a59f6a85cf908dd810b0b779cf790cf888a2b123e1a4620ded1cdea8c08014",
+    "gameplay-vm-environment-ground-soft.script": "b7a23e64f75c8bababe1a2af876f4decf5bfa159153315813e1e099deced608a",
+    "gameplay-vm-environment-storm-fragile.script": "07e0025ccf6a87ecf9fa91b384241b559f9e2aefa2bedd6285b59c9a516df697",
+    "gameplay-vm-environment-plasma-terrain.script": "1caef2e9d2793497779ce6df1706b4a97388f1491969105cbf45f230077c5689",
+    "gameplay-vm-extra-plan.json": "65b29258b7c31f8f27f9eb0bf3f12d462645e7b55ed01306d4da3b7133c8a9b8",
+    "gameplay-vm-extra-yaw-q-items.script": "b56280564e776895270e418949bf6f623e6bdb0363b39191a9b82eec9ccdba5b",
+    "gameplay-vm-extra-split-narrow.script": "f208a6cb59c5f0497768e176e41624ed693dea580ccefd639c2dc3dab645e486",
+    "gameplay-storm-cycle-plan.json": "491b90f2aaa12bfa877d708d05e43ac88c17381b7dfe6d1dbbd836f00682c41b",
+    "gameplay-storm-cycle-costs.script": "20aefe57a381ec681402fe466fbe41af324fa5ee923136fedd515a151433f7e2",
+    "gameplay-visual-followup-plan.json": "6ecbc64d3a61ec99d10c43d3e4726784a00ace754f644f06d386ab2ad72b58ed",
+    "gameplay-visual-iron-nearplane.script": "a61ea2de6d21687223c65d86b57128e25a2a15f9eb491788df978c3c2a242891",
+    "gameplay-visual-railgun-charge.script": "d2f0d247385cc3b3a70942b266308aedd075b366845eadecc2b3820097d78eb8",
+    "gameplay-visual-thunderclap-peak.script": "68089d9c26d81585629a686271a9ec6c02e63c9fc08acecf601f75ca5523224b",
+    "gameplay-visual-mine-ray-tiers.script": "45e7540726391033df0d889d171723366209789514ed112cf5cc9b6a02caceef",
+    "gameplay-final-supplemental-plan.json": "7868169c94a8e8cdb33e389e69d366ea3b55bed17f11ef7fddf35078f015c325",
+    "codex-storm-sustain.script": "f0fa746b26e7e026b8455e5bce3411426e05235a5be53a39da61446abd68b85e",
+    "codex-shield-hud-final.script": "e6dc00b2eb96b809e8d30c00aa1692f126f863ef8f49f74b6bea2c97eff17394"
+  },
+  "directoryMods": {
+    "run-showcase": {},
+    "run-showcase-sable": {
+      "sable-neoforge-1.21.1-2.0.6.jar": "9c199157843bf953a47dff625fc5bb41c01a90538d35ad18e6996bbcb8a617c2"
+    }
+  },
+  "sameModBoundary": "All66 specified single clients use run-showcase-sable. run-showcase is an empty external mods directory today and is not the same-mod configuration; keep vanilla compatibility controls as separate additional evidence, not silently part of this same-mod suite. This inventory excludes built-in launch classpath dependencies; actual per-run compiled snapshots remain authoritative.",
+  "timeEstimate": {
+    "method": "For each script:120 world-settle ticks plus one dispatch tick per step and every ShowcaseDriver fixed wait, using current source wait values. Nominal20TPS only; not a wall-clock guarantee. Dynamic walk retries, storm await-active retries, blocking server work, resource reloads, PNG capture, rendering lag, launch/exit, artifact hashing/archive are additional.",
+    "byGroup": {
+      "main": {
+        "clients": 33,
+        "fixedTicksAt20Tps": 25744,
+        "fixedMinutesAt20Tps": 21.45,
+        "explicitWaitTicks": 10359,
+        "walkPolls": 5,
+        "stormAwaitActivePolls": 0,
+        "conditionalEscapes": 4
+      },
+      "modes": {
+        "clients": 7,
+        "fixedTicksAt20Tps": 16951,
+        "fixedMinutesAt20Tps": 14.13,
+        "explicitWaitTicks": 5253,
+        "walkPolls": 3,
+        "stormAwaitActivePolls": 0,
+        "conditionalEscapes": 2
+      },
+      "passives": {
+        "clients": 7,
+        "fixedTicksAt20Tps": 20246,
+        "fixedMinutesAt20Tps": 16.87,
+        "explicitWaitTicks": 12323,
+        "walkPolls": 0,
+        "stormAwaitActivePolls": 0,
+        "conditionalEscapes": 0
+      },
+      "tpvm": {
+        "clients": 7,
+        "fixedTicksAt20Tps": 5953,
+        "fixedMinutesAt20Tps": 4.96,
+        "explicitWaitTicks": 1297,
+        "walkPolls": 2,
+        "stormAwaitActivePolls": 0,
+        "conditionalEscapes": 0
+      },
+      "vmenv": {
+        "clients": 3,
+        "fixedTicksAt20Tps": 1864,
+        "fixedMinutesAt20Tps": 1.55,
+        "explicitWaitTicks": 532,
+        "walkPolls": 0,
+        "stormAwaitActivePolls": 0,
+        "conditionalEscapes": 0
+      },
+      "itemSplit": {
+        "clients": 2,
+        "fixedTicksAt20Tps": 1232,
+        "fixedMinutesAt20Tps": 1.03,
+        "explicitWaitTicks": 335,
+        "walkPolls": 0,
+        "stormAwaitActivePolls": 0,
+        "conditionalEscapes": 0
+      },
+      "stormcycle": {
+        "clients": 1,
+        "fixedTicksAt20Tps": 1467,
+        "fixedMinutesAt20Tps": 1.22,
+        "explicitWaitTicks": 1203,
+        "walkPolls": 0,
+        "stormAwaitActivePolls": 2,
+        "conditionalEscapes": 0
+      },
+      "visual": {
+        "clients": 4,
+        "fixedTicksAt20Tps": 2478,
+        "fixedMinutesAt20Tps": 2.06,
+        "explicitWaitTicks": 763,
+        "walkPolls": 0,
+        "stormAwaitActivePolls": 0,
+        "conditionalEscapes": 0
+      },
+      "supplemental": {
+        "clients": 2,
+        "fixedTicksAt20Tps": 2467,
+        "fixedMinutesAt20Tps": 2.06,
+        "explicitWaitTicks": 1516,
+        "walkPolls": 0,
+        "stormAwaitActivePolls": 0,
+        "conditionalEscapes": 0
+      }
+    },
+    "totalFixedTicksAt20Tps": 78402,
+    "totalFixedMinutesAt20Tps": 65.33,
+    "walkAdditionalTicksUpperBound": 2400,
+    "conditionalEscapeAdditionalTicksUpperBound": 24,
+    "startupAssumptionSecondsPerClient": [
+      25,
+      35
+    ],
+    "startupAdditionalMinutes": [
+      27.5,
+      38.5
+    ],
+    "nominalFixedPlusStartupMinutes": [
+      92.83,
+      103.83
+    ]
+  },
+  "limits": [
+    "No script bytes, Java sources, production defaults, assertions, build artifacts or historical evidence were changed.",
+    "This is an execution plan, not pass evidence. Final screenshots/animation aesthetics still require actual image review.",
+    "All66 cases and separate required dual/compatibility work remain mandatory; repeated skills cover distinct requested modes and are not removed.",
+    "Ordinary-item prior failure is unresolved as to cause; final16 must independently reconfirm its strict actual transfer assertions."
+  ],
+  "mechanicalRoutes": "gameplay-final16-main-mechanical-routes.json"
+}

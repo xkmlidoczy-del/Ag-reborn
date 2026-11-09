@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "X"
+  ],
+  "key": {
+    "X": {
+      "item": "academy:rf_output"
+    }
+  },
+  "result": {
+    "id": "academy:rf_input",
+    "count": 1
+  }
+}

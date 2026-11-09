@@ -1,0 +1,1 @@
+package cn.academy.core.tile;import net.minecraft.tileentity.TileEntity;public class TileInventory extends TileEntity{public final String invName;public final int size;public TileInventory(String name,int size){invName=name;this.size=size;}}

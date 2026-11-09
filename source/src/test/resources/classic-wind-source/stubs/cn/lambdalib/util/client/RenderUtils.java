@@ -1,0 +1,1 @@
+package cn.lambdalib.util.client;import net.minecraft.util.ResourceLocation;public class RenderUtils{public static void loadTexture(ResourceLocation texture){org.lwjgl.opengl.GL11.operations.add("texture:"+texture.name());}}

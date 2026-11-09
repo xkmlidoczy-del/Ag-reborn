@@ -1,0 +1,25 @@
+# TEST0.73 wind-lift visual-only candidate
+
+Optional `/aca_vfx2 wind_lift on|off|status`; default OFF. The .72 controller, movement/payment protocol and authoritative six-metre column remain unchanged. No teammate lifting or gentle descent is added. Native fall damage still applies.
+
+Four staggered, tapered rising packets use the unchanged original Tornado texture and glow-line spine. There are 44 segments, two quads per segment, 352 vertices per controller and at most four controllers / 1,408 submitted vertices, below the existing global 2,048 cap. No particles. Sparse open floor arcs are decoration, not physical support or contact confirmation. Only authenticated nonterminal visible controller state can render; unchanged receipt age drives the pause-aware phase.
+
+The old renderer remains byte-identical after removal of its single optional call. A frozen .72 source/class manifest verifies all movement/payment/protocol classes. Resources and the optional shader must be ready before admission. Missing or invalid resources use the entire old renderer. Failure after submission retires enhancement without drawing a second classic group in the same frame; the next frame is classic. This avoids exceeding the hard budget during failure.
+
+Actual .72 and first candidate were recorded with native UI capture at 20 TPS, same isolated cloned world and camera. The first candidate was too faint in daylight; night pixels exposed clipped shoulder bands from the vanilla shader's alpha<0.1 discard. The bounded revision uses a dedicated position/UV/color shader with near-zero alpha discard, brighter sparse spine, max .54 m decorative shoulder and open rotating floor arcs. These are cosmetic sizes, never damage/collision radii. Original texture bytes are unchanged. The original candidate footage is retained, not relabelled as final acceptance.
+
+Tests cover geometry, exact shared shoulders, actual near-clipped corners/UV, world-border translation, source/class identity, budget and failure models. They are not a substitute for GPU pixels or performance measurements. Actual native 20 TPS captures now cover revised third-person daylight and night, first-person daylight, a temporary solid wall, and F3+T reload/termination. The game-only comparison is a cropped continuous 20 fps UI recording, not a fixed-phase renderer preview; it does not establish default-hardware performance or four-player GPU cost. Bright spines and transparent shoulders are readable, but segmented/faceted ribbon appearance remains. Final regression and final production-JAR restart/fallback are reported separately rather than inferred from these frames.
+
+The three historical geometry hash guards and .72 restored whole-native-archive identity mismatch remain openly recorded; no expected identity is refreshed by this visual change. .72 remains independently recoverable.
+
+## Preserved movement limitation
+
+One first revised-ON attempt stopped after two small impulses (maximum Y 220.064 from 220). Same-process OFF and original .72 controls subsequently rose normally; a temporary read-only diagnostic ON run reached Y 224.134, as did a later daylight run. The diagnostic first-draw CPU-side wall time was 9.433 ms. This does not measure GPU compilation and does not identify the cause of the earlier stop. A late duplicate receipt was proven to return without aborting the valid local state; existing clock-skew protection remains unchanged. The original failure movie and trace are retained. No claim is made that this occasional stop was repaired or that ON is universally stable.
+
+All temporary motion and renderer timing instrumentation was removed before final build. This release changes no movement/payment/protocol implementation and does not relax freshness, impulse budgets or collision checks. The enhancement remains optional and OFF by default. Native fall damage is retained, and neither gentle descent nor teammate lift is implemented.
+
+## Final native fixture isolation
+
+The 17-group native run retained 1,998 passes, then exposed an intermittent exhaustion assertion in the remaining 55-test group. The old fixture's private `publish()` invokes global server Post processing; concurrent GameTest startup can therefore mark another context's tick before its fake native connection pump decrements the payment window. A forced early-publication counterexample reproduced CP=0, original receipt=1 and remaining=0 while that tick's context was still open. The counterexample and original failure are retained.
+
+Only the exhaustion test's batch annotation was isolated. Its original twentieth-tick assertion, costs and production logic are unchanged. The corrected full 55-test group passed, completing all 2,053 unique IDs across 17 serial fresh worlds. The unchanged v1 runtime-class proof still passes: GameTest classes are excluded from the shipped JAR. An appended v2 companion proves the exact single annotation edit, rejects weakened timeout/payment/assertions, and compiles both fixture source versions without claiming their reconstructed bytes are a historical JAR oracle.

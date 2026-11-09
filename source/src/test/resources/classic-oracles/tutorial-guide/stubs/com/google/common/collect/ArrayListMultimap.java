@@ -1,0 +1,2 @@
+package com.google.common.collect;
+public final class ArrayListMultimap<K,V> implements Multimap<K,V> { private final java.util.Map<K,java.util.List<V>> map=new java.util.IdentityHashMap<>(); public static <K,V>ArrayListMultimap<K,V> create(){return new ArrayListMultimap<>();} public void put(K key,V value){get(key).add(value);} public java.util.Collection<V> get(K key){return map.computeIfAbsent(key,k->new java.util.ArrayList<>());} }

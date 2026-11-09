@@ -1,0 +1,52 @@
+// Recompile the archived unchanged declarations against boundary-only legacy
+// stubs, outside main/test outputs. The projection excludes private work trees.
+def achievementFixtures = layout.projectDirectory.dir('src/test/resources/classic-achievements')
+def achievementRoot = layout.buildDirectory.dir('achievement-portable-root')
+def achievementOracleClasses = layout.buildDirectory.dir('achievement-original-classes')
+def achievementOracle = layout.buildDirectory.file('achievement-original-oracle.tsv')
+tasks.register('prepareAchievementPortableRoot', Sync) {
+ from('src/main/resources') { into 'src/main/resources' }
+ from(achievementFixtures.dir('original/resources')) { into 'src/test/resources/classic-achievements/original/resources' }
+ into achievementRoot
+}
+tasks.register('compileAchievementOriginalOracle', JavaCompile) {
+ source fileTree(achievementFixtures.dir('original/java')) {
+  include 'cn/academy/misc/achievements/aches/*.java'
+  include 'cn/academy/misc/achievements/pages/*.java'
+  include 'cn/academy/misc/achievements/conds/CondItemCrafted.java'
+  include 'cn/academy/misc/achievements/DispatcherAch.java'
+  include 'cn/academy/misc/achievements/ItemAchievement.java'
+ }
+ source fileTree(achievementFixtures.dir('stubs')) { include '**/*.java' }
+ classpath = files()
+ destinationDirectory = achievementOracleClasses
+ options.release = 21
+ options.encoding = 'UTF-8'
+ javaCompiler = javaToolchains.compilerFor { languageVersion = JavaLanguageVersion.of(21) }
+}
+tasks.register('classicAchievementOriginalOracle', JavaExec) {
+ dependsOn 'compileAchievementOriginalOracle'
+ classpath = files(achievementOracleClasses)
+ mainClass = 'test.OriginalOracle'
+ enableAssertions = true
+ def captured = new ByteArrayOutputStream()
+ standardOutput = captured
+ doFirst { captured.reset() }
+ doLast { achievementOracle.get().asFile.text = captured.toString('UTF-8') }
+}
+tasks.register('classicAchievementTest', JavaExec) {
+ dependsOn testClasses, 'prepareAchievementPortableRoot', 'classicAchievementOriginalOracle'
+ classpath = sourceSets.test.runtimeClasspath
+ mainClass = 'cn.academy.port.achievements.ClassicAchievementRegressionTest'
+ enableAssertions = true
+ systemProperty 'java.awt.headless', 'true'
+ systemProperty 'academy.achievement.root', achievementRoot.get().asFile.absolutePath
+ systemProperty 'academy.achievement.oracle', achievementOracle.get().asFile.absolutePath
+}
+tasks.register('classicAchievementColdlinkTest', JavaExec) {
+ dependsOn testClasses
+ classpath = sourceSets.test.runtimeClasspath
+ mainClass = 'cn.academy.port.achievements.ClassicAchievementColdlinkTest'
+ enableAssertions = true
+}
+tasks.named('check') { dependsOn 'classicAchievementTest', 'classicAchievementColdlinkTest' }

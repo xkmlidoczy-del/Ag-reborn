@@ -1,0 +1,117 @@
+[
+  {
+    "resource": "academy/TutorialData.java",
+    "sha256": "39d9a7ffb9b2dfc5531a533b3b5b26831c774c434f473c75fb2b76796d76da45",
+    "canonical_path": "AcademyCraft-1.0.7/src/main/java/cn/academy/misc/tutorial/TutorialData.java"
+  },
+  {
+    "resource": "academy/Conditions.java",
+    "sha256": "1bad2206e50b7b26cdcd0ed06405b3aab09b495b4adfa44a35e59322ea99b9e1",
+    "canonical_path": "AcademyCraft-1.0.7/src/main/java/cn/academy/misc/tutorial/Conditions.java"
+  },
+  {
+    "resource": "academy/ModuleTutorial.java",
+    "sha256": "f901af8a47373811992c22d7804be37ceed8905e0ee0b56594900f19a696b3e8",
+    "canonical_path": "AcademyCraft-1.0.7/src/main/java/cn/academy/misc/tutorial/ModuleTutorial.java"
+  },
+  {
+    "resource": "academy/ACTutorial.java",
+    "sha256": "4d3d5e3940c6db455ca488ec1533637c9dcf21168097007ddf145af407142655",
+    "canonical_path": "AcademyCraft-1.0.7/src/main/java/cn/academy/misc/tutorial/ACTutorial.java"
+  },
+  {
+    "resource": "academy/TutorialRegistry.java",
+    "sha256": "4fa70cde3c5fc56b68800b87c05819ce958da03c28b44115ba91127776428853",
+    "canonical_path": "AcademyCraft-1.0.7/src/main/java/cn/academy/misc/tutorial/TutorialRegistry.java"
+  },
+  {
+    "resource": "academy/Condition.java",
+    "sha256": "655ea395b1ec26484080cf7bff8e6cb8bdb6c463d20414154c5b74cde8ad9dd6",
+    "canonical_path": "AcademyCraft-1.0.7/src/main/java/cn/academy/misc/tutorial/Condition.java"
+  },
+  {
+    "resource": "academy/ItemTutorial.java",
+    "sha256": "3fab9ff391a8b68c84edecf80c8b2612f33d393b0e50a7294533aaa39221e5af",
+    "canonical_path": "AcademyCraft-1.0.7/src/main/java/cn/academy/misc/tutorial/ItemTutorial.java"
+  },
+  {
+    "resource": "academy/TutorialActivatedEvent.java",
+    "sha256": "139c072e88dd458f72544f0e5d5d6492dfd4d0fb4d2051e235dcb603e833233a",
+    "canonical_path": "AcademyCraft-1.0.7/src/main/java/cn/academy/misc/tutorial/TutorialActivatedEvent.java"
+  },
+  {
+    "resource": "academy/App.java",
+    "sha256": "00242d3ab2b0e96a1bf9f93b0c59850532faa112a5d45234b279808965224425",
+    "canonical_path": "AcademyCraft-1.0.7/src/main/java/cn/academy/terminal/App.java"
+  },
+  {
+    "resource": "academy/AppRegistry.java",
+    "sha256": "01961301c1812c7690b2419851fd0ce81485fc380abc2a1f0cf9b227f5c2ab56",
+    "canonical_path": "AcademyCraft-1.0.7/src/main/java/cn/academy/terminal/AppRegistry.java"
+  },
+  {
+    "resource": "academy/ModuleTerminal.java",
+    "sha256": "b8d9b9b3d67f9e695be3e578524a575e472e5ba0ac8fa2e339bc30f38dd51a6c",
+    "canonical_path": "AcademyCraft-1.0.7/src/main/java/cn/academy/terminal/ModuleTerminal.java"
+  },
+  {
+    "resource": "academy/ItemApp.java",
+    "sha256": "6098f54d0850d8f1684c93424b7d0cc7d8cf4e9a3ee6a45ae6f20c0447691f42",
+    "canonical_path": "AcademyCraft-1.0.7/src/main/java/cn/academy/terminal/item/ItemApp.java"
+  },
+  {
+    "resource": "academy/AppRegistration.java",
+    "sha256": "a55b43059730aafff525e726679c629cb4e66ace0b05f687affe7504fdc38216",
+    "canonical_path": "AcademyCraft-1.0.7/src/main/java/cn/academy/terminal/registry/AppRegistration.java"
+  },
+  {
+    "resource": "academy/AppSkillTree.java",
+    "sha256": "7ae29f03624d42a7adc10bd909fb1d3e8d86b9e247fe4d579cf6933c3d4fea58",
+    "canonical_path": "AcademyCraft-1.0.7/src/main/java/cn/academy/ability/app/AppSkillTree.java"
+  },
+  {
+    "resource": "academy/AppFreqTransmitter.java",
+    "sha256": "7fbfb8dd9833730bba61a4ecafdf84a9fdb0654b761ca29dca4f97208d1a60a3",
+    "canonical_path": "AcademyCraft-1.0.7/src/main/java/cn/academy/energy/client/app/AppFreqTransmitter.java"
+  },
+  {
+    "resource": "academy/AppSettings.java",
+    "sha256": "6c6e6a4dbcd4bd9f6ad1e0e85490741fca5bfc7665ab1526548c134b6a054f7a",
+    "canonical_path": "AcademyCraft-1.0.7/src/main/java/cn/academy/terminal/app/settings/AppSettings.java"
+  },
+  {
+    "resource": "academy/MediaApp.scala",
+    "sha256": "f8a5260f26e8a1da47d1161cddbd84118c39b62277d87e8c57e819a38db629f9",
+    "canonical_path": "AcademyCraft-1.0.7/src/main/scala/cn/academy/misc/media/MediaApp.scala"
+  },
+  {
+    "resource": "lambdalib/TickScheduler.java",
+    "sha256": "1dc6b67f01253e10ed7d212bc897d595fbaae15bd4784f468044d6ebb8fe5f32",
+    "canonical_path": "LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/helper/TickScheduler.java"
+  },
+  {
+    "resource": "lambdalib/RandUtils.java",
+    "sha256": "e06e74399c3fbb5de54672c1198135da76d16427e2ab75e943e847e1f05623eb",
+    "canonical_path": "LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/generic/RandUtils.java"
+  },
+  {
+    "resource": "lambdalib/RegistrationManager.java",
+    "sha256": "606f12506897ffdc5dcfa0fdd675418592f306b31dc14b8ad6d7448377bd66f5",
+    "canonical_path": "LambdaLib-1.2.3/src/main/java/cn/lambdalib/annoreg/core/RegistrationManager.java"
+  },
+  {
+    "resource": "NOTICE-upstream-port.txt",
+    "sha256": "3bc6b79e44b92cfd5bf574ce23a339708b1034479237150a55b5faab3ecfdaab",
+    "canonical_path": "NOTICE"
+  },
+  {
+    "resource": "LICENSE-GPL-3.0.txt",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+    "canonical_path": "LICENSE"
+  },
+  {
+    "resource": "LICENSE-LambdaLib-MIT.txt",
+    "sha256": "852bcc033a46c62f99fb5ffd43b3241ba2c0c440c6034aa2114505f2c4f03c4a",
+    "canonical_path": "LambdaLib-1.2.3/LICENSE"
+  }
+]

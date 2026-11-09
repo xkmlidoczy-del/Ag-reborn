@@ -1,0 +1,461 @@
+[
+  {
+    "group": "em-input-modes",
+    "source": "gameplay-em-md-magnetic-block-far.script",
+    "sha256": "f5c4c2f94b734b41afe3bcd391303840ee38f1e2831fe128bff2457604520227",
+    "retainedOriginalSteps": 24,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "em-input-modes",
+    "source": "gameplay-em-md-mode-arrow-separation.script",
+    "sha256": "43079af1e36bff8b350fcb430ec049f027fc16b7205a4aad9438291fa26c41fc",
+    "retainedOriginalSteps": 25,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "em-input-modes",
+    "source": "gameplay-em-md-mode-canopy-held.script",
+    "sha256": "e93b36be9a2a42354fb76a9b9c9d700b4c27a8c455f2180a0e824d4982ba1ad5",
+    "retainedOriginalSteps": 25,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "em-input-modes",
+    "source": "gameplay-em-md-mode-coin-qte.script",
+    "sha256": "f72f9f2ca6a2f25f10871f41a766af7c4006dce8df99b1e8fefef9f14f37c733",
+    "retainedOriginalSteps": 23,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "em-input-modes",
+    "source": "gameplay-em-md-mode-dual-secondary.script",
+    "sha256": "587f63bc95dd73edb2a57aceba833efe22fd442716e7c22ea6449f8030fa7364",
+    "retainedOriginalSteps": 29,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "em-input-modes",
+    "source": "gameplay-em-md-mode-net-hold.script",
+    "sha256": "02ad2d083556a47319d12d616731fdc302085985ebe3529aff7edd9bf5a320e6",
+    "retainedOriginalSteps": 21,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "em-input-modes",
+    "source": "gameplay-em-md-mode-pulse-detect.script",
+    "sha256": "2f0ff42f095dbe5494093c3aca82c90e1447ea217134b5de3871df976df47b64",
+    "retainedOriginalSteps": 21,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "em-input-modes",
+    "source": "gameplay-em-md-mode-rail-hold.script",
+    "sha256": "5ba7a598d1778f97db524b96639a79a1e85bc27d5450f0ac6bf91978b3034a51",
+    "retainedOriginalSteps": 37,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "em-input-modes",
+    "source": "gameplay-em-md-mode-semiconductor-fan.script",
+    "sha256": "5516af39fe1866a0b21a192b0df99831d738a401d47aa136934eb0d3c5d626c4",
+    "retainedOriginalSteps": 23,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "em-input-modes",
+    "source": "gameplay-em-md-mode-lance-orbit.script",
+    "sha256": "0dfcfb35a09f056f306c79d59caf4404bf9d14ab4cfd1b064d2736c1bbd57868",
+    "retainedOriginalSteps": 25,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "em-environment-planning",
+    "source": "gameplay-em-md-env-arc-creeper.script",
+    "sha256": "8acd59e6317b930c54eeff3be68ac5f706227617f9600278b3dddd238fecd72a",
+    "retainedOriginalSteps": 65,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "em-environment-planning",
+    "source": "gameplay-em-md-env-arc-fire.script",
+    "sha256": "e52c47bcff7dd84acdecc857616a10093eb037363ab624ab0a9f348163e61ad8",
+    "retainedOriginalSteps": 57,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "em-environment-planning",
+    "source": "gameplay-em-md-env-charging-block.script",
+    "sha256": "1a965de6f2ec11dc13048294cc3ef504f4846dd49a2b77323d6874d2f15c9daf",
+    "retainedOriginalSteps": 21,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "em-environment-planning",
+    "source": "gameplay-em-md-env-etch-batch.script",
+    "sha256": "e95db8c0d8141c03907d8956cb1837f731768e5f0d1795ac1670bcb2b7958fbf",
+    "retainedOriginalSteps": 34,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "em-environment-planning",
+    "source": "gameplay-em-md-env-etch-hard-refusal.script",
+    "sha256": "b36eda7406ca029c06ace17896113c0a4b2d462241b1658094a5c9e3e91c77b7",
+    "retainedOriginalSteps": 21,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "em-environment-planning",
+    "source": "gameplay-em-md-env-fork-single.script",
+    "sha256": "a66d3c543d3e73589eca091063f727e80f401b98bb0b8837963f8632b5b9a1f6",
+    "retainedOriginalSteps": 23,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "em-environment-planning",
+    "source": "gameplay-em-md-env-jet-collision.script",
+    "sha256": "27afc71df799d9dbb46e4b6994237535ffb57a96f3a93503e1e6d7bd2b5274c4",
+    "retainedOriginalSteps": 21,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "em-environment-planning",
+    "source": "gameplay-em-md-env-laminate-low.script",
+    "sha256": "f955622226ee1d85336aa05c0ac684702c212edaa373df16b029619687e95740",
+    "retainedOriginalSteps": 29,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "em-environment-planning",
+    "source": "gameplay-em-md-env-light-touch.script",
+    "sha256": "ce946c9b54e9a3af8ba962f58740acd835ed2c106933015edd12f89417c90c99",
+    "retainedOriginalSteps": 21,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "em-environment-planning",
+    "source": "gameplay-em-md-env-mag-entity.script",
+    "sha256": "c259cf086087780b7422d3de64c138d9d5a9d0421f80caef14ebc53b29801750",
+    "retainedOriginalSteps": 21,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "em-environment-planning",
+    "source": "gameplay-em-md-env-melt-terrain.script",
+    "sha256": "17264474ebaf2dfeeb9db3adde45428fa2bb3837463e087a66aa9fa5f6005c70",
+    "retainedOriginalSteps": 21,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "em-environment-planning",
+    "source": "gameplay-em-md-env-point-hard-refusal.script",
+    "sha256": "52dedfd04d23dbe955f7cfcf0a48205fac9c480e91e7082c10ac8751f87f19ad",
+    "retainedOriginalSteps": 21,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "em-environment-planning",
+    "source": "gameplay-em-md-env-point-no-tool.script",
+    "sha256": "d6471e3bf22f54baad5fb03a70feb4c9cc278963c470ad384f1363bbd2ed7ddc",
+    "retainedOriginalSteps": 21,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "em-environment-planning",
+    "source": "gameplay-em-md-env-melt-overcharge.script",
+    "sha256": "c8cb569e28254e8c26fb6ca1e7d7d4616541595b71ff33b0cf675ab52fc8a4db",
+    "retainedOriginalSteps": 21,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "em-environment-planning",
+    "source": "gameplay-em-md-planning-folded_mirror_array.script",
+    "sha256": "a2ebd85607934741fe1ea3d805fa472ddd2475668a3614448b18a6199ab13845",
+    "retainedOriginalSteps": 30,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "em-environment-planning",
+    "source": "gameplay-em-md-planning-remote_scatter_relay.script",
+    "sha256": "d1fbc73cfa977b97cfaf27d91dc4fc906aa706afbd77920228efd828a94e45d3",
+    "retainedOriginalSteps": 36,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "em-environment-planning",
+    "source": "gameplay-em-md-planning-scatter_locator_plate.script",
+    "sha256": "384204306aaae07a604976b84ad99f91a42218ffe8546e41af934bba7edf844e",
+    "retainedOriginalSteps": 35,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "tp-alternatives",
+    "source": "gameplay-tp-alt-corner_exchange.script",
+    "sha256": "ba5462be7a210a007433e7de0085a858a450488228613eecf9ceed47045732d9",
+    "retainedOriginalSteps": 35,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "tp-alternatives",
+    "source": "gameplay-tp-alt-cross_substitution.script",
+    "sha256": "318b6c25af2033a074e569241c6f60a1375061f1075ee71d3af68e919a59e0ce",
+    "retainedOriginalSteps": 35,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "tp-alternatives",
+    "source": "gameplay-tp-alt-multidimensional_landing_array.script",
+    "sha256": "898b069cd4d87a845c05d8c0f43995160adfefc55007a26213474bdd39a931b6",
+    "retainedOriginalSteps": 52,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "tp-alternatives",
+    "source": "gameplay-tp-alt-phase_sidestep.script",
+    "sha256": "03c6c115304fcf8c93b17ab218e1d491cfca59c795a7c872feeb928f91f05be0",
+    "retainedOriginalSteps": 24,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "tp-alternatives",
+    "source": "gameplay-tp-alt-short_interception.script",
+    "sha256": "a9f5269debedbca3f5b21c634002a2d40198a879c93e4c2d67ceddc0f30368a7",
+    "retainedOriginalSteps": 28,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "tp-alternatives",
+    "source": "gameplay-tp-alt-spatial_relay.script",
+    "sha256": "8ae9e19f05da0a3ba613005ac3d125e887f9c2d8487c125f07561f5c5cdac2b9",
+    "retainedOriginalSteps": 39,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "tp-alternatives",
+    "source": "gameplay-tp-emergency-auto.script",
+    "sha256": "f041c886c87aa09e6b54d08006d5a2f6bc060079969654b1c062df52c83f6eea",
+    "retainedOriginalSteps": 27,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "vm-alternatives-efficiency",
+    "source": "gameplay-vm-efficiency-circulation_relief.script",
+    "sha256": "39faf33adaf0fc50719dc0f553a7df73744a43b7dc120e8df659daac41b1d6d4",
+    "retainedOriginalSteps": 20,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "vm-alternatives-efficiency",
+    "source": "gameplay-vm-efficiency-inertial_anchor.script",
+    "sha256": "565a1cfd717650bb77c67a04974ff75fd22a28cdccc97e1e147c44c937dcb0a2",
+    "retainedOriginalSteps": 30,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "vm-alternatives-efficiency",
+    "source": "gameplay-vm-efficiency-vector_parry.script",
+    "sha256": "b0ada82c09b4cac6071bfdfc4c8899bebb07ff0e69e57c3e802ed7c25673cdd8",
+    "retainedOriginalSteps": 17,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "vm-alternatives-efficiency",
+    "source": "gameplay-vm-alt-anchor-fall.script",
+    "sha256": "f45e04020fe14a082db49eb62b3dee4be052d8396533dc8249d026af1b59ff0d",
+    "retainedOriginalSteps": 26,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "vm-alternatives-efficiency",
+    "source": "gameplay-vm-alt-braking-fall.script",
+    "sha256": "766e064e3fe43c801626b74ad56f10b1d1e08122d94d1a6f8d98e5b368ad48a6",
+    "retainedOriginalSteps": 24,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "vm-alternatives-efficiency",
+    "source": "gameplay-vm-alt-braking-snowball.script",
+    "sha256": "0626c84384fd57786e3446306129a6919e1779eb0b14c1f8bb042e33f3bc58af",
+    "retainedOriginalSteps": 22,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "vm-alternatives-efficiency",
+    "source": "gameplay-vm-alt-listening-runner.script",
+    "sha256": "ee8281f6231efc5036a90777ce93f7e251df5f42ff40b68ab25a1f19a480a384",
+    "retainedOriginalSteps": 24,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "vm-alternatives-efficiency",
+    "source": "gameplay-vm-alt-parry-full.script",
+    "sha256": "fb4c284d257f4efce826c78a2594f50f3d49e629f8d886fe2ba9991b6315e17e",
+    "retainedOriginalSteps": 21,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "vm-alternatives-efficiency",
+    "source": "gameplay-vm-alt-parry-left.script",
+    "sha256": "fc8e8f44f0506497e3173f783cb3094d0921ddebb2b02401f4e9295cef0c6c33",
+    "retainedOriginalSteps": 22,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "vm-alternatives-efficiency",
+    "source": "gameplay-vm-alt-parry-right.script",
+    "sha256": "c4fe0240c0343145e7b09cfa72f0ac2a03fb185d8a68e379823a6c2b7cfa7695",
+    "retainedOriginalSteps": 21,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "vm-alternatives-efficiency",
+    "source": "gameplay-vm-alt-trajectory-hammer.script",
+    "sha256": "b91c4deaecf2166ef26c4be7de6e85d9599dd1094c305240a1c02aada4b73995",
+    "retainedOriginalSteps": 21,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "vm-alternatives-efficiency",
+    "source": "gameplay-vm-direction-modes.script",
+    "sha256": "8195a922a5baeb5dedb25313832832b6aed6c46b6f839a8fd726bc9557205fd4",
+    "retainedOriginalSteps": 81,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "vm-alternatives-efficiency",
+    "source": "gameplay-vm-cage-low.script",
+    "sha256": "a89cefab05b01649a140def13316c02eb75af50754d73c1f22e92d20e8bf5e32",
+    "retainedOriginalSteps": 32,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "vm-native-late-window",
+    "source": "gameplay-vm-primary-impulse_split-late.script",
+    "sha256": "c113c6b88e46eac96731e0f7612c4b7cf7f6de163fe34303da60998c30661d29",
+    "retainedOriginalSteps": 34,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "vm-native-late-window",
+    "source": "gameplay-wind-sideways.script",
+    "sha256": "5ea0f802bc7dba6f8fedcfd2d1cb78e3a19643d07432defbd24c7f51aabf1f4e",
+    "retainedOriginalSteps": 29,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "cross-dimension",
+    "source": "gameplay-location-cross-dimension.script",
+    "sha256": "b4fadeb3f7a990530f3ef548bdc39275d50f4de468c9e755846ac8e4681f6d62",
+    "retainedOriginalSteps": 33,
+    "removedSteps": [
+      "quit"
+    ]
+  },
+  {
+    "group": "respawn",
+    "source": "gameplay-vm-impulse-window-respawn-native-damage.script",
+    "sha256": "3be1216087edbb3446027c781fa0b9bde100b2c7d84a90e55534b9ac9dda6fbe",
+    "retainedOriginalSteps": 40,
+    "removedSteps": [
+      "quit"
+    ]
+  }
+]

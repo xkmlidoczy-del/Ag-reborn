@@ -1,0 +1,4 @@
+package net.minecraft.world.phys;
+public final class AABB {public final double minX,minY,minZ,maxX,maxY,maxZ;
+ public AABB(double a,double b,double c,double d,double e,double f){minX=a;minY=b;minZ=c;maxX=d;maxY=e;maxZ=f;}
+ public AABB inflate(double n){return new AABB(minX-n,minY-n,minZ-n,maxX+n,maxY+n,maxZ+n);}}

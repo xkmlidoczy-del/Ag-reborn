@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "result": {
+    "id": "academy:wafer",
+    "count": 1
+  },
+  "ingredients": [
+    {
+      "item": "academy:imag_silicon_ingot"
+    }
+  ]
+}

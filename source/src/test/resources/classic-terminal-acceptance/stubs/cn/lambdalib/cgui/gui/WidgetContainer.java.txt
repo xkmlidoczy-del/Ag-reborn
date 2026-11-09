@@ -1,0 +1,1 @@
+package cn.lambdalib.cgui.gui; public class WidgetContainer {public Widget getWidget(String s){return new Widget();}}

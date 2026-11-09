@@ -1,0 +1,121 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "academy:blocks/city/ceiling_light_housing",
+    "housing": "academy:blocks/city/ceiling_light_housing",
+    "lens": "academy:blocks/city/ceiling_light"
+  },
+  "elements": [
+    {
+      "from": [
+        1,
+        15.25,
+        2
+      ],
+      "to": [
+        15,
+        16,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#housing"
+        },
+        "south": {
+          "texture": "#housing"
+        },
+        "east": {
+          "texture": "#housing"
+        },
+        "west": {
+          "texture": "#housing"
+        },
+        "up": {
+          "texture": "#housing",
+          "cullface": "up"
+        },
+        "down": {
+          "texture": "#housing"
+        }
+      }
+    },
+    {
+      "from": [
+        0.5,
+        13,
+        1.5
+      ],
+      "to": [
+        15.5,
+        15.25,
+        14.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#housing"
+        },
+        "south": {
+          "texture": "#housing"
+        },
+        "east": {
+          "texture": "#housing"
+        },
+        "west": {
+          "texture": "#housing"
+        },
+        "up": {
+          "texture": "#housing"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#housing"
+        }
+      }
+    },
+    {
+      "from": [
+        1.4,
+        12.35,
+        2.4
+      ],
+      "to": [
+        14.6,
+        13,
+        13.6
+      ],
+      "shade": false,
+      "faces": {
+        "north": {
+          "texture": "#lens"
+        },
+        "south": {
+          "texture": "#lens"
+        },
+        "east": {
+          "texture": "#lens"
+        },
+        "west": {
+          "texture": "#lens"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#lens",
+          "neoforge_data": {
+            "block_light": 14,
+            "ambient_occlusion": false
+          }
+        }
+      }
+    }
+  ]
+}

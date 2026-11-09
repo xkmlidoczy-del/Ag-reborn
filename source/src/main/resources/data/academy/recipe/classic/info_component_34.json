@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "result": {
+    "id": "academy:info_component",
+    "count": 1
+  },
+  "pattern": [
+    "A",
+    "B"
+  ],
+  "key": {
+    "A": {
+      "tag": "c:dusts/glowstone"
+    },
+    "B": {
+      "item": "academy:data_chip"
+    }
+  }
+}

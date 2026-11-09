@@ -1,0 +1,7 @@
+package net.minecraft.client;
+import net.minecraft.entity.player.EntityPlayer;
+public class Minecraft {
+ private static final Minecraft INSTANCE = new Minecraft();
+ public EntityPlayer thePlayer;
+ public static Minecraft getMinecraft() { return INSTANCE; }
+}

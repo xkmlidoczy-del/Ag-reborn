@@ -1,0 +1,260 @@
+{
+  "description": "AcademyCraft1.0.7 phase generator client source assets and LambdaLib1.2.3 renderer witnesses",
+  "source_witnesses": [
+    {
+      "fixture": "RenderPhaseGen.java",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/client/render/block/RenderPhaseGen.java",
+      "sha256": "d43d3d6cc463238888315307b15721933b5429cf5020ee04a02f1a0a41a27ab1"
+    },
+    {
+      "fixture": "GuiPhaseGen.scala",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/energy/client/ui/GuiPhaseGen.scala",
+      "sha256": "ee69fe61243f372d0c88000d23b9f8da08f4893a629290b59c8c8c2ca898a94f"
+    },
+    {
+      "fixture": "TechUI.scala",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/core/client/ui/TechUI.scala",
+      "sha256": "5a10ef61d2068e7677a47953f4e044db2200abde8e74727666b4315f5511ffc1"
+    },
+    {
+      "fixture": "TechUIContainer.java",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/core/container/TechUIContainer.java",
+      "sha256": "03a0b43816ff2667583c6dca3f629c026ff100e37ab88c9b6df41827fef8289f"
+    },
+    {
+      "fixture": "ContainerPhaseGen.java",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/block/ContainerPhaseGen.java",
+      "sha256": "0185244b06409618bd34587e4dff8cd68d7b4f816e842c0c25e32f0fa64ff63b"
+    },
+    {
+      "fixture": "page_inv.xml",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/guis/rework/page_inv.xml",
+      "sha256": "9d9bd5c2fe179a235bab17db0a8789d14339fcc163fe05ff2529adc6a1d1644d"
+    },
+    {
+      "fixture": "ModuleEnergy.java",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/ModuleEnergy.java",
+      "sha256": "fc38533a5d7f38114823471d53ac7f259501543585b8f7241a6b2753bb80598e"
+    },
+    {
+      "fixture": "TileEntityRegistration.java",
+      "source": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/annoreg/mc/TileEntityRegistration.java",
+      "sha256": "6f990cdff8422c127c18727dccddbdec7945597b0186517a350a23ee41ff890f"
+    },
+    {
+      "fixture": "RenderEmptyBlock.java",
+      "source": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/template/client/render/block/RenderEmptyBlock.java",
+      "sha256": "6f2dad3aa894c32fb3c743a049ced9448bec288033aae1f8da7a2598ef40cf57"
+    }
+  ],
+  "assets": [
+    {
+      "path": "models/ip_gen.obj",
+      "bytes": 6869,
+      "sha256": "070727ab1362282c79876f1a1e9e2f9a296e0096220e6dc936cf9fff4870bb88"
+    },
+    {
+      "path": "textures/blocks/phase_generator.png",
+      "bytes": 4490,
+      "sha256": "d55d527d5bd50713daaf635f2c9282bd0bad92606ad45bc7f0911b29b148184c",
+      "width": 32,
+      "height": 32,
+      "rgba_pixel_sha256": "3b480d492c7e3259d084cce1bb001871ba17cbb65733770958aa34a2971b1628",
+      "alpha_bounds": [
+        3,
+        2,
+        28,
+        29
+      ]
+    },
+    {
+      "path": "textures/guis/ui/ui_phasegen.png",
+      "bytes": 9978,
+      "sha256": "96e39761884223981e2d025f13eb3921eb2deb765fb708e30f1c178f30da2c91",
+      "width": 352,
+      "height": 374,
+      "rgba_pixel_sha256": "236a993b3214e3862fb6da04fa3c04dce9f36ee3e699a76fa9390ba456190784",
+      "alpha_bounds": [
+        13,
+        10,
+        275,
+        202
+      ]
+    },
+    {
+      "path": "textures/models/ip_gen0.png",
+      "bytes": 142571,
+      "sha256": "694db4af6f34e901d0ec2544e37e36c8eb94e6aa48381ba4d2cfd472aeed4496",
+      "width": 256,
+      "height": 256,
+      "rgba_pixel_sha256": "8c988dba70d069da19c0ecc58d8ae8b6acf70439dce7d8447cb52f9eddb846b1",
+      "alpha_bounds": [
+        0,
+        0,
+        256,
+        256
+      ]
+    },
+    {
+      "path": "textures/models/ip_gen1.png",
+      "bytes": 141486,
+      "sha256": "efd0d219669f3873671e43115601d145cd3c8630580ddc706bfe3652d345c236",
+      "width": 256,
+      "height": 256,
+      "rgba_pixel_sha256": "64d473296ce3e1890f4ca77d30d8364c0bdcc9b725164d4330e7c104e6cb0787",
+      "alpha_bounds": [
+        0,
+        0,
+        256,
+        256
+      ]
+    },
+    {
+      "path": "textures/models/ip_gen2.png",
+      "bytes": 140413,
+      "sha256": "abaa698ffd9f0012b937680c23f1f62ed54e9cabc253b2a21e65cbc3e8716a3f",
+      "width": 256,
+      "height": 256,
+      "rgba_pixel_sha256": "82482402905f3db19d12ea8e221f6489c00ab3748530dcede6eb10f2c3b1580c",
+      "alpha_bounds": [
+        0,
+        0,
+        256,
+        256
+      ]
+    },
+    {
+      "path": "textures/models/ip_gen3.png",
+      "bytes": 139023,
+      "sha256": "7696c6c54c443224ed02fd1558bfcae922f84e7f5a91919f786739ea6b4a2381",
+      "width": 256,
+      "height": 256,
+      "rgba_pixel_sha256": "c39a84356779e4f173e9aa9393c64f1e3072e0d871b57d7cdd27f6948a4bc556",
+      "alpha_bounds": [
+        0,
+        0,
+        256,
+        256
+      ]
+    },
+    {
+      "path": "textures/models/ip_gen4.png",
+      "bytes": 137952,
+      "sha256": "43b528440ddd8fa47fa961a467b7a7dd77de411e31d08f46101831d41b83c3cf",
+      "width": 256,
+      "height": 256,
+      "rgba_pixel_sha256": "397a393f5b30f31a3aa2e9983df970dbb1fa2001471a2a3129b0eaf7cf52f6a2",
+      "alpha_bounds": [
+        0,
+        0,
+        256,
+        256
+      ]
+    },
+    {
+      "path": "textures/guis/parent/parent_background.png",
+      "bytes": 4759,
+      "sha256": "bd0f8650f74c7eecd3b81aac8c3f1b359a4265517d860b7f45482faea583217d",
+      "existing_resource": true,
+      "width": 352,
+      "height": 374,
+      "rgba_pixel_sha256": "5070d431cc0de8b4e5c03995360f812f789126d8d7249c7f31d56666b29b1bf1",
+      "alpha_bounds": [
+        2,
+        0,
+        349,
+        374
+      ]
+    },
+    {
+      "path": "textures/guis/ui/ui_inventory.png",
+      "bytes": 9803,
+      "sha256": "3df45b3dcd70ccbcf6ab0334bf2ed36345113d7ae71c8c42187d7ab9a3cc6887",
+      "existing_resource": true,
+      "width": 352,
+      "height": 374,
+      "rgba_pixel_sha256": "658ae5bd2eb255eb64e58e401fa02d7f11c0fd7f34dc3a9dd9e5e83f75b538e4",
+      "alpha_bounds": [
+        13,
+        166,
+        341,
+        362
+      ]
+    },
+    {
+      "path": "textures/guis/histogram.png",
+      "bytes": 20314,
+      "sha256": "13048f7541f94b21beb1f052ce51626d398cb6aa2656c5bc6798c166f8e09f4a",
+      "existing_resource": true,
+      "width": 210,
+      "height": 210,
+      "rgba_pixel_sha256": "ac5a7e4f8575e424f71caa7f45ca949e936be7fe28602d6ad244a948f4f3c1e2",
+      "alpha_bounds": [
+        1,
+        55,
+        209,
+        203
+      ]
+    },
+    {
+      "path": "textures/guis/line.png",
+      "bytes": 17810,
+      "sha256": "7798a3503bebcd5c25cb13259964ce367641b458d2b3bc5e6b45c77023ea939f",
+      "existing_resource": true,
+      "width": 338,
+      "height": 15,
+      "rgba_pixel_sha256": "bc43e9ce49d8913c4ed2c559ad491dd4a4da2923e5966abddea658bf1163cdb8",
+      "alpha_bounds": [
+        0,
+        4,
+        338,
+        11
+      ]
+    },
+    {
+      "path": "textures/guis/blend_quad.png",
+      "bytes": 18033,
+      "sha256": "79a3e404e11d7e8ff702710cc8889709e96bb3e93804972b8a0f6c92847a689b",
+      "existing_resource": true,
+      "width": 48,
+      "height": 48,
+      "rgba_pixel_sha256": "24c593a7dc17bdfa30bce0b49b07bb7d969d5203417f2127d0094e36084e1a5b",
+      "alpha_bounds": [
+        0,
+        0,
+        48,
+        48
+      ]
+    },
+    {
+      "path": "textures/guis/icons/icon_inv.png",
+      "bytes": 3824,
+      "sha256": "01bf54ad90bb6c0dd4a5d67fc4bff4443afb7389a7cf4f81621da8c5e760c201",
+      "existing_resource": true,
+      "width": 48,
+      "height": 48,
+      "rgba_pixel_sha256": "8a6eaaf692dc60d60baf02bc6cd77c33e15557e5ecbb79fd9235a46e0dfb157e",
+      "alpha_bounds": [
+        1,
+        1,
+        47,
+        47
+      ]
+    },
+    {
+      "path": "textures/guis/icons/icon_wireless.png",
+      "bytes": 3892,
+      "sha256": "628058163c6d7f59a43067c292f85b834297ebe0a4470c000915a1e193e02602",
+      "existing_resource": true,
+      "width": 48,
+      "height": 48,
+      "rgba_pixel_sha256": "9ac699544f0f15102c0e186ff2a43de12982f135a2ad8e6054126bcb980549ac",
+      "alpha_bounds": [
+        1,
+        1,
+        47,
+        47
+      ]
+    }
+  ]
+}

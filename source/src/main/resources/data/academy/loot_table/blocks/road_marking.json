@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:block",
+  "random_sequence": "academy:blocks/road_marking",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "academy:road_marking",
+          "functions": [
+            {
+              "function": "minecraft:explosion_decay"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

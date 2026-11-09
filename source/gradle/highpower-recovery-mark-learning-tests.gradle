@@ -1,0 +1,8 @@
+// NEW323 finite LV2 learning, append-only identities, retained developer layout and localized help.
+tasks.register('highPowerRecoveryMarkLearningTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.RecoveryMarkLearningRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerRecoveryMarkLearningTest' }

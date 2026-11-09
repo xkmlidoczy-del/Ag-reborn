@@ -1,0 +1,14 @@
+{
+  "source_version": "AcademyCraft1.0.7 / 00d19ec0cf538f61c1095c9292f5ee6863db4521",
+  "copyright": "Copyright Lambda Innovation; GPLv3 and additional restrictions, see root LICENSE and NOTICE",
+  "assets": {
+    "textures/effects/mineview.png": {
+      "sha256": "ac3125585f6f5f75e0b4a2d8633cd1b2117f574dc58efaa6887f496f1f3e4a0a",
+      "bytes": 2948
+    },
+    "sounds/em/minedetect.ogg": {
+      "sha256": "a7bed9635b389a4e77133f116aa6eb4edfbc5e43b6048c23e910369539796b7e",
+      "bytes": 70254
+    }
+  }
+}

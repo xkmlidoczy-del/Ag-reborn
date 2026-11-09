@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Explicit console-only proof host. No workspace files, rollover, or native terminal. -->
+<Configuration status="ERROR"><Appenders><Console name="ProofConsole" target="SYSTEM_ERR"><PatternLayout pattern="%level %msg%n"/></Console></Appenders><Loggers><Root level="error"><AppenderRef ref="ProofConsole"/></Root></Loggers></Configuration>

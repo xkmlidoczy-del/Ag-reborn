@@ -1,0 +1,20 @@
+{
+  "ac.ability.vecmanip.autonomous_vector_circle.name": "自律ベクトルサークル [高出力]",
+  "ac.ability.vecmanip.autonomous_vector_circle.desc": "NEW452 運動エネルギー防御の暫定プロトタイプ。短く押して切り替え、キーを離しても継続。再度押すと解除。共有の基礎層＋下層＋上層リザーブ（上限 2S）を使い、発生源が 8 m 以内かつ前方の三次元 160 度領域にある、対応済みの敵対的な通常物理接触を吸収する。後方は開放。連続 20 サーバーティックで最大 8 回、同一ティックで最大 4 回の有効吸収。CP、熟練度、連続切り替えで物理上限は解除されない。未知のダメージと未対応攻撃は通常処理を維持し、投射物は反射しない。灰白色の開いた流線と 8 個の目盛りで確定済みの状態を示す。実際の吸収が確認された時だけ、接触位置に短い圧縮表現を表示。LV5、多軸反射の習得が前提。熟練度条件なし。数値は暫定。",
+  "hud.academy.highpower.autonomous_vector_circle": "サークル %s/8 | %s",
+  "hud.academy.highpower.autonomous_vector_circle.ready": "前方の運動防御が有効",
+  "hud.academy.highpower.autonomous_vector_circle.paused": "停止中：物理枠または残量不足",
+  "message.academy.highpower.autonomous_vector_circle.unavailable": "自律ベクトルサークルは現在使用できません",
+  "message.academy.highpower.autonomous_vector_circle.resource": "CP または共有防御リザーブが不足しています",
+  "message.academy.highpower.autonomous_vector_circle.capacity": "共有防御リザーブを使用できません",
+  "message.academy.highpower.autonomous_vector_circle.cooldown": "自律ベクトルサークルは回復中です",
+  "message.academy.highpower.autonomous_vector_circle.corrupt": "保存された防御状態を確認できません",
+  "message.academy.highpower.autonomous_vector_circle.unsupported": "現在の防御連携は未対応です",
+  "message.academy.highpower.autonomous_vector_circle.not_ready": "能力、CP、リザーブ、クールダウンを確認してください",
+  "message.academy.highpower.autonomous_vector_circle.conflict": "先に他の実行中のベクトル制御を解除してください",
+  "hud.academy.highpower.autonomous_vector_circle.shield_label": "サークル · 使用可能シールド",
+  "hud.academy.highpower.autonomous_vector_circle.shield_unknown": "利用不可",
+  "hud.academy.highpower.autonomous_vector_circle.quota_label": "回数",
+  "hud.academy.highpower.autonomous_vector_circle.state_ready": "有効",
+  "hud.academy.highpower.autonomous_vector_circle.state_paused": "停止中"
+}

@@ -1,0 +1,1 @@
+package net.minecraftforge.fluids; public class FluidStack { private final Fluid fluid; public int amount; public FluidStack(Fluid fluid, int amount) { this.fluid = fluid; this.amount = amount; } public Fluid getFluid() { return fluid; } }

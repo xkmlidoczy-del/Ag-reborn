@@ -1,0 +1,1 @@
+package net.minecraft.network.chat;import java.util.Arrays;public record Component(String key,Object[] args){public static Component translatable(String s,Object...v){return new Component(s,v);}public String toString(){return key+Arrays.toString(args);}}

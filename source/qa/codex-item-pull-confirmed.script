@@ -1,0 +1,1 @@
+cmd:time set day|cmd:gamerule doMobSpawning false|keyup:82|tree:close|cmd:tp @s 80.5 -60 0.5 0 0|live:setup:magnetic_item_pull|wait:40|cam:first|key:81|wait:10|live:item-dropped|keydown:82|wait:8|live:gui:item-pull-drag|keyup:82|wait:3|live:visual|live:confirmed|shot:codex_item_pull_confirmed|wait:15|live:item-pulled|wait:35|live:camera-neutral|quit

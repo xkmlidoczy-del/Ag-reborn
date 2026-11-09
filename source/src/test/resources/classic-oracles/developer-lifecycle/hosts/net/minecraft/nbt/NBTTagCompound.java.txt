@@ -1,0 +1,2 @@
+/* Test-only lifecycle platform plumbing; business methods run unchanged originals. */
+package net.minecraft.nbt;public class NBTTagCompound extends NBTBase {public void setTag(String k,NBTBase v){}public boolean hasKey(String k){return false;}public NBTBase getTag(String k){return null;}}

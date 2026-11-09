@@ -1,0 +1,3 @@
+/* Test-only platform host; numeric algorithms remain in unchanged source. */
+package net.minecraft.entity.player;
+public class EntityPlayer extends net.minecraft.entity.Entity { public final Capabilities capabilities=new Capabilities(); public static class Capabilities { public boolean isCreativeMode; } }

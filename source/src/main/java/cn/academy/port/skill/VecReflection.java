@@ -1,0 +1,50 @@
+/* AcademyCraft1.0.7 VecReflection/EntityAffection adaptation. GPLv3; see NOTICE. */
+package cn.academy.port.skill;
+
+import cn.academy.port.core.SkillTuning;
+import cn.academy.port.*;
+import cn.academy.port.api.SkillReflectEvent;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.*;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.projectile.*;
+import net.minecraft.world.phys.*;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import java.util.*;
+/** Source contextActivate survives delegate flush, has no release/cooldown, and affects caster itself. */
+@EventBusSubscriber(modid="academy")
+public final class VecReflection {
+ public static final String ID=VecReflectionSession.ID;private static final Map<UUID,Hold> HOLDS=new HashMap<>();private static final Map<UUID,Long> INPUTS=new HashMap<>();private static final Set<UUID> TICKING=new HashSet<>(),REFLECTING=new HashSet<>();private static long nextToken;
+ private VecReflection(){}
+ public static boolean start(ServerPlayer p){if(cn.academy.port.AbilityConsumption.busy(p))return false;return start(p,0);}public static boolean start(ServerPlayer p,long input){if(cn.academy.port.AbilityConsumption.busy(p))return false;if(!VectorStarterSupport.ready(p)||input<0||input>0&&input<=INPUTS.getOrDefault(p.getUUID(),0L)||TICKING.contains(p.getUUID()))return false;var old=HOLDS.get(p.getUUID());if(old!=null&&valid(old)){if(input>0)INPUTS.put(p.getUUID(),input);finish(old);return true;}if(old!=null)remove(p);var session=VecReflectionSession.begin(AbilityStorage.get(p),p.getAbilities().instabuild);if(session==null)return false;var h=new Hold(p,session,++nextToken,input);HOLDS.put(p.getUUID(),h);if(input>0)INPUTS.put(p.getUUID(),input);send(h,"vec_reflection_start");return true;}
+ public static void tick(ServerPlayer p){if(!VectorStarterSupport.serverThread(p))return;var h=HOLDS.get(p.getUUID());if(h==null)return;if(!valid(h)){remove(p);return;}if(!h.session.state().overloadFine){finish(h);return;}long now=p.serverLevel().getGameTime();if(now<=h.lastTick||!TICKING.add(p.getUUID()))return;h.lastTick=now;try{if(h.session.beginTick()){double radius = SkillTuning.number(ID, "radius");var candidates=new ArrayList<>(p.serverLevel().getEntities((Entity)null,new AABB(p.position(),p.position()).inflate(radius),e->e.distanceToSqr(p)<=radius*radius));if(!candidates.contains(p))candidates.add(p);candidates.removeAll(h.visited);for(var e:candidates){if(!h.session.active()||!p.isAlive()||p.isRemoved())break;if(VecDeviation.marked(e)||VecDeviation.excluded(e)||!VectorStarterSupport.finite(e.getDeltaMovement()))continue;cn.academy.port.achievements.ClassicAchievements.trigger(p,"vecmanip.vec_reflection");if(!h.session.affect(VecDeviation.difficulty(e),p.getAbilities().instabuild))continue;if(HOLDS.get(p.getUUID())!=h||!valid(h)||e.isRemoved()||e.level()!=h.world)break;Vec3 at=e.getEyePosition();Entity reflected=e;if(e instanceof AbstractHurtingProjectile fireball)reflected=replaceFireball(p,fireball);else{reflect(p,e,p.getEyePosition());e.getPersistentData().putBoolean(VecDeviation.MARK,true);}if(reflected!=null){var tag=VectorStarterSupport.packet(p,"vec_reflection_entity",h.token,h.input);tag.putInt("target",e.getId());tag.putLong("sequence",++h.sequence);VectorStarterSupport.position(tag,at);Vec3 v=reflected.getDeltaMovement();tag.putDouble("vx",v.x);tag.putDouble("vy",v.y);tag.putDouble("vz",v.z);tag.putFloat("yaw",p.getYHeadRot());tag.putFloat("pitch",p.getXRot());VectorStarterSupport.send(h.audience,tag);}}h.visited.addAll(candidates);h.session.endTick(p.getAbilities().instabuild);}}finally{TICKING.remove(p.getUUID());}if(h.session.ending())finish(h);}
+ private static void reflect(ServerPlayer p,Entity e,Vec3 origin){Vec3 look=VectorFinalSupport.looking(p,20,false);e.setDeltaMovement(look.subtract(origin).normalize().scale(e.getDeltaMovement().length()));e.hasImpulse=true;e.hurtMarked=true;}
+ private static Entity replaceFireball(ServerPlayer p,AbstractHurtingProjectile source){var world=p.serverLevel();Entity owner=source.getOwner();Vec3 at=source.position(),head=source.getEyePosition(),old=source.getDeltaMovement();source.discard();AbstractHurtingProjectile replacement;if(source instanceof LargeFireball large){int power=large.saveWithoutId(new CompoundTag()).getInt("ExplosionPower");replacement=owner instanceof LivingEntity living?new LargeFireball(world,living,Vec3.ZERO,power):new LargeFireball(EntityType.FIREBALL,world);if(!(owner instanceof LivingEntity)){var tag=replacement.saveWithoutId(new CompoundTag());tag.putInt("ExplosionPower",power);replacement.load(tag);}}else{replacement=new SmallFireball(EntityType.SMALL_FIREBALL,world);replacement.setOwner(owner);}replacement.setPos(at);replacement.setDeltaMovement(old);reflect(p,replacement,head);replacement.getPersistentData().putBoolean(VecDeviation.MARK,true);return world.addFreshEntity(replacement)?replacement:null;}
+ @SubscribeEvent public static void reflectSkill(SkillReflectEvent event){if(!(event.target instanceof ServerPlayer p)||event.attacker==null||event.isCanceled()||!VectorStarterSupport.serverThread(p))return;var h=HOLDS.get(p.getUUID());if(h==null||!valid(h))return;event.setCanceled(true);Vec3 delta=event.attacker.getEyePosition().subtract(p.getEyePosition()).normalize();effect(h,p.position().add(0,.4+p.serverLevel().random.nextDouble()*.9,0).add(delta.scale(.5)));}
+ /** Classic passby path never cancels LivingAttackEvent; mapped hurt stage remains pre mitigation. */
+ @SubscribeEvent public static void hurt(LivingIncomingDamageEvent event){if(!(event.getEntity() instanceof ServerPlayer p)||event.isCanceled()||!VectorStarterSupport.serverThread(p)||REFLECTING.contains(p.getUUID()))return;var h=HOLDS.get(p.getUUID());if(h==null||!valid(h)||h.session.state().consumptionInProgress())return;var damage=h.session.damage(event.getAmount(),false,p.getAbilities().instabuild);if(!damage.performed()||HOLDS.get(p.getUUID())!=h||!valid(h))return;Entity source=event.getSource().getDirectEntity();if(source!=null&&source!=p&&REFLECTING.add(p.getUUID()))try{VectorFinalSupport.attack(p,ID,source,damage.reflected());effect(h,source.position());}finally{REFLECTING.remove(p.getUUID());}event.setAmount(damage.remaining());AbilityStorage.save(p);AcademyNetwork.sync(p);}
+ private static void effect(Hold h,Vec3 at){var tag=VectorStarterSupport.packet(h.player,"vec_reflection_wave",h.token,h.input);tag.putLong("sequence",++h.sequence);VectorStarterSupport.position(tag,at);tag.putFloat("yaw",h.player.getYHeadRot());tag.putFloat("pitch",h.player.getXRot());VectorStarterSupport.send(h.audience,tag);}
+ public static boolean release(ServerPlayer p){return release(p,0);}public static boolean release(ServerPlayer p,long input){var h=p==null?null:HOLDS.get(p.getUUID());return VectorStarterSupport.serverThread(p)&&h!=null&&(input==0||input==h.input)&&valid(h);}public static void abort(ServerPlayer p){abort(p,0);}public static boolean abort(ServerPlayer p,long input){if(!VectorStarterSupport.serverThread(p))return false;var h=HOLDS.get(p.getUUID());if(h==null||input>0&&input!=h.input)return false;finish(h);return true;}public static void remove(ServerPlayer p){if(!VectorStarterSupport.serverThread(p))return;var h=HOLDS.get(p.getUUID());if(h!=null)finish(h);INPUTS.remove(p.getUUID());TICKING.remove(p.getUUID());REFLECTING.remove(p.getUUID());}
+ private static boolean valid(Hold h){var p=h.player;var s=AbilityStorage.get(p);return VectorStarterSupport.ready(p)&&h.world==p.serverLevel()&&h.session.state()==s&&h.session.active()&&s.category.equals("vecmanip")&&s.level>=4&&s.learned(ID)&&Double.isFinite(s.cp)&&Double.isFinite(s.overload)&&Double.isFinite(s.exp(ID))&&p.serverLevel().getGameTime()>=h.lastTick;}
+ private static void finish(Hold h){if(HOLDS.remove(h.player.getUUID(),h)){h.session.discard();send(h,"vec_reflection_end");}}private static void send(Hold h,String kind){VectorStarterSupport.send(h.audience,VectorStarterSupport.packet(h.player,kind,h.token,h.input));}public static boolean active(ServerPlayer p){return p!=null&&HOLDS.containsKey(p.getUUID());}public static int heldTicks(ServerPlayer p){var h=p==null?null:HOLDS.get(p.getUUID());return h==null?0:h.session.ticks();}public static void clear(){HOLDS.clear();INPUTS.clear();TICKING.clear();REFLECTING.clear();nextToken=0;}
+ private static final class Hold{final ServerPlayer player;final ServerLevel world;final VecReflectionSession session;final long token,input;final Set<ServerPlayer> audience;final Set<Entity> visited=Collections.newSetFromMap(new IdentityHashMap<>());long lastTick,sequence;Hold(ServerPlayer p,VecReflectionSession s,long t,long i){player=p;world=p.serverLevel();session=s;token=t;input=i;audience=VectorStarterSupport.audience(p);lastTick=world.getGameTime()-1;}}
+ /** Modern pending-start cancellation obtains the token solely from the matching live Hold. */
+ public static boolean abortPendingContext(ServerPlayer p,long input){
+  if(!VectorStarterSupport.serverThread(p)||input<=0)return false;
+  var h=HOLDS.get(p.getUUID());
+  return h!=null&&h.input==input&&h.token>0&&abortContext(p,input,h.token);
+ }
+ /** Strict accepted context terminal; inherited key-abort semantics remain unchanged. */
+ public static boolean abortContext(ServerPlayer p,long input,long token){
+  if(!VectorStarterSupport.serverThread(p)||p.hasDisconnected()||!p.isAlive()||p.isRemoved()||p.isSpectator()
+    ||cn.academy.port.AbilityConsumption.busy(p)||TICKING.contains(p.getUUID())||REFLECTING.contains(p.getUUID())
+    ||p.serverLevel().getEntity(p.getId())!=p)return false;
+  var h=HOLDS.get(p.getUUID());
+  if(h==null||!cn.academy.port.core.TargetedContextTermination.matches(
+    new cn.academy.port.core.TargetedContextTermination.Binding(h.player,h.world,h.session.state(),h.input,h.token),
+    p,p.serverLevel(),AbilityStorage.get(p),input,token)||!valid(h)||h.session.ending()||h.session.state().level>5)return false;
+  finish(h);return true;
+ }
+}

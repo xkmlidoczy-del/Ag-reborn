@@ -1,0 +1,90 @@
+{
+  "scope": "Four exact unchanged GPLv3 AcademyCraft/MIT LambdaLib business sources. Declared legacy-shape cached-modern-vector/Mth/recording-GL hosts; no old Minecraft or GPU engine.",
+  "files": [
+    {
+      "fixture": "oracle-sources/cn/academy/vanilla/electromaster/client/effect/ArcFactory.java",
+      "sha256": "3cf3040e586ca80899fab53ff5b82475e881a97f203419131b2b703220ed6645",
+      "kind": "unchangedOriginal"
+    },
+    {
+      "fixture": "oracle-sources/cn/lambdalib/util/client/RenderUtils.java",
+      "sha256": "4a9ce2079c7837c4950034b61d699dbf7e80a44c373bbe4de4f8c74eef4bfdd7",
+      "kind": "declaredPlatformHost"
+    },
+    {
+      "fixture": "oracle-sources/cn/lambdalib/util/client/shader/ShaderSimple.java",
+      "sha256": "b1117e534e92ee637bf734fa6803f940939d2e6428fd2a97033c4fb92742d33e",
+      "kind": "declaredPlatformHost"
+    },
+    {
+      "fixture": "oracle-sources/cn/lambdalib/util/generic/MathUtils.java",
+      "sha256": "e80c87ca15cbae89584bd9e1111e22d2f55866bf91b434c8813c20bb98176075",
+      "kind": "unchangedOriginal"
+    },
+    {
+      "fixture": "oracle-sources/cn/lambdalib/util/generic/RandUtils.java",
+      "sha256": "e06e74399c3fbb5de54672c1198135da76d16427e2ab75e943e847e1f05623eb",
+      "kind": "unchangedOriginal"
+    },
+    {
+      "fixture": "oracle-sources/cn/lambdalib/util/generic/VecUtils.java",
+      "sha256": "d5950587fe04e53cfc53985cdbdf7a100e12648816e94eb3b660fd4f0418a59b",
+      "kind": "unchangedOriginal"
+    },
+    {
+      "fixture": "oracle-sources/cn/lambdalib/util/mc/SideHelper.java",
+      "sha256": "1a75ffb660ea5cd35ce398838ad043de1b771752a0750d7f70741ef8156232ed",
+      "kind": "declaredPlatformHost"
+    },
+    {
+      "fixture": "oracle-sources/net/minecraft/client/Minecraft.java",
+      "sha256": "6a942abcf508b5c27011e427b2835f658a037ad393d9df443dd47eba8bdd6401",
+      "kind": "declaredPlatformHost"
+    },
+    {
+      "fixture": "oracle-sources/net/minecraft/entity/Entity.java",
+      "sha256": "57cdb8c601ede5ef0ee44d4ccef87affcf1ba0ee78a73f78352723f843001137",
+      "kind": "declaredPlatformHost"
+    },
+    {
+      "fixture": "oracle-sources/net/minecraft/util/AxisAlignedBB.java",
+      "sha256": "30d5530345c738c5d48aadb2d54b459e3e4070a620ddb0ce191e2fb17306e19f",
+      "kind": "declaredPlatformHost"
+    },
+    {
+      "fixture": "oracle-sources/net/minecraft/util/MathHelper.java",
+      "sha256": "1bc45def881ce9f00e9181ce72ad0f1df8020a0d2feebe1af026ccbce32911d0",
+      "kind": "declaredPlatformHost"
+    },
+    {
+      "fixture": "oracle-sources/net/minecraft/util/ResourceLocation.java",
+      "sha256": "1bf5ec3af2bc307f3724502f474dc0e9d461d0c7c382004c48ae0f7de3b88e2e",
+      "kind": "declaredPlatformHost"
+    },
+    {
+      "fixture": "oracle-sources/net/minecraft/util/Vec3.java",
+      "sha256": "4c0cba5fdd130974d97fe07d01a33aa70fa902bf73eca25c28ba5080e9afffac",
+      "kind": "declaredPlatformHost"
+    },
+    {
+      "fixture": "oracle-sources/org/lwjgl/opengl/GL11.java",
+      "sha256": "d9cc03337f60c49d058c82b2a24573ad9e5d3be7f00935e6321f1c10f4f756ba",
+      "kind": "declaredPlatformHost"
+    },
+    {
+      "fixture": "oracle-sources/org/lwjgl/opengl/GL20.java",
+      "sha256": "17cc6259dbd46da3e46567d8120de6911019cea368aa87c7f306f6f5818c04db",
+      "kind": "declaredPlatformHost"
+    },
+    {
+      "fixture": "oracle-sources/org/lwjgl/util/vector/Matrix4f.java",
+      "sha256": "d0292abecd46b53569eaaab56b134dcf77d7b4d25ebeac0bc1e291c7d466cf6f",
+      "kind": "declaredPlatformHost"
+    },
+    {
+      "fixture": "oracle-sources/org/lwjgl/util/vector/Vector3f.java",
+      "sha256": "ade0cb270bde83d01d423a7163bb99f18b3394c3286628726beb3f0367a2b27f",
+      "kind": "declaredPlatformHost"
+    }
+  ]
+}

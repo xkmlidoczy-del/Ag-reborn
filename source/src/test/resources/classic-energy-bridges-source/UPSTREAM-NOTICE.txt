@@ -1,0 +1,47 @@
+AcademyCraft Classic NeoForge Port
+================================
+
+Original work: Copyright (c) Lambda Innovation, 2013-2016.
+Official project: https://github.com/LambdaInnovation/AcademyCraft
+Behavior/asset baseline: tag 1.0.7, expected commit 00d19ec0cf538f61c1095c9292f5ee6863db4521.
+The upstream tag has build.properties mod_ver=1.0.6; the release/tag is the reference.
+
+Original licensing notice, preserved verbatim:
+
+All versions of AcademyCraft are licensed under [GPLv3](http://www.gnu.org/licenses/gpl.html).   
+And all versions of AcademyCraft are additionally licensed as following:  
+Prohibits any person, company, business, organization, etc. from selling AcademyCraft and its contents in any form, including but not limited to paid downloads (including but not limited to various legal currencies, virtual currency, game token, etc.) AcademyCraft's items, the sale of AcademyCraft ability within the game, etc.
+Lambda Innovation retains the copyright, the right of authorship, the ownership, etc. of AcademyCraft, regardless of all agreements, and any provision that requires these rights or a part of them is deemed invalid.  
+Lambda Innovation reserves the right of final interpretation and reserves the right to deny all agreements to revoke all authorizations.    
+所有版本的AcademyCraft使用[GPLv3](http://www.gnu.org/licenses/gpl.html)协议。  
+并且所有版本的AcademyCraft同时附加有以下版权限制：  
+禁止任何个人、公司、企业、组织等以任何形式出售AcademyCraft及其内容，包括但不限于付费下载(包括但不限于各种法定货币、虚拟货币、虚拟币、游戏代币等)，游戏内出售AcademyCraft物品，游戏内出售AcademyCraft能力等。  
+LambdaInnovation对于AcademyCraft的著作权、署名权、拥有权、版权等无视一切协议而保留，任何要求这些权利或其中一部分的条款均视为无效。  
+LambdaInnovation保留最终解释权，并保留否定一切协议撤销一切授权的权利。  
+
+
+This development port does not resolve the compatibility/enforceability of upstream additional terms. Review these terms before redistribution. No sale is authorized. The media directory and song-specific assets are excluded from the distributable. No rights to third-party songs are asserted.
+
+Official NeoForge MDK scaffold: copyright NeoForged contributors; see docs/NEOFORGE-MDK-LICENSE.txt. Minecraft/Mojang mappings retain their own notices and terms; they are build dependencies, not bundled in this project.
+
+Port adaptations and new code remain under the upstream terms described above. See LICENSE for the standard GPLv3 text; do not treat this file as removal of additional upstream notices.
+
+Classic tutorial guide state/events/pages, source Markdown, source UI/media and preview references derive from AcademyCraft1.0.7 under its preserved GPLv3 and additional notices. LambdaLib1.2.3 TickScheduler, MarkdownParser/MarkdownRenderer and TrueTypeFont-derived algorithms retain its MIT notice and included licence. Original third-party songs, covers and song-item artwork remain excluded. See docs/TUTORIAL_GUIDE_FIDELITY.md for source semantics, modern transport/registry adaptations and unverified runtime/client/pixel/audio boundaries.
+
+Selected mathematical/ray/physics algorithms are adapted from LambdaLib1.2.3, Copyright (c) Lambda Innovation, 2013-2016, MIT license. Full MIT license is included in docs/LAMBDALIB-LICENSE and the JAR metadata.
+
+Classic phase-liquid flow semantics/compatibility algorithms are adapted from MinecraftForge1.7.10 BlockFluidClassic, BlockFluidBase and RenderBlockFluid. Forge-derived portions retain the Minecraft Forge Public Licence1.0, rather than being relicensed by this port. Official source and licence: https://github.com/MinecraftForge/MinecraftForge/tree/1.7.10 and https://raw.githubusercontent.com/MinecraftForge/MinecraftForge/1.7.10/MinecraftForge-License.txt. No MCP data is included. This local development task does not authorize redistribution or resolve licence compatibility. See docs/LEGACY-FORGE-FLOW-NOTICE.md.
+
+Mine Detection gameplay/visual adaptation derives from AcademyCraft1.0.7 MineDetect.scala and CatElectromaster.java under the upstream notices above. Scan traversal/box UV algorithms derive from LambdaLib1.2.3 WorldUtils/MeshUtils/SimpleMaterial, retaining its MIT notice and included licence. Canonical mineview.png and em/minedetect.ogg bytes are retained; no song or media rights are asserted.
+
+ThunderClap and BodyIntensify preserve AcademyCraft1.0.7 active context arithmetic, lifecycle and source quirks. New modern visual adapters derive from original EntitySurroundArc/EntityRippleMark/EntityIntensifyEffect/CurrentChargingHUD and MIT LambdaLib arc geometry. Pixel/audio parity is unverified; see docs/ELECTROMASTER_FINAL_SKILLS_FIDELITY.md.
+
+Expert/Luck Mine Ray, RayBarrage, JetEngine, ElectronMissile and Silicon Barn adaptations derive from AcademyCraft1.0.7 under the original GPLv3 and additional upstream notices above. Geometry, expression math and particle/model helpers derived from LambdaLib1.2.3 retain its MIT notice. Canonical source test fixtures preserve their original headers and pinned notices. Modern negative-Y capture state, authoritative transport/movement and rendering bridges are explicit adaptations. See docs/ADVANCED_MINING_FIDELITY.md and docs/MELTDOWNER_LATE_COMBAT_FIDELITY.md; native/client/pixel/audio acceptance must be reported separately from source tests.
+
+PenetrateTeleport, MarkTeleport, FleshRipping, VecAccel and VecDeviation adaptations derive from AcademyCraft1.0.7 under the original GPLv3 and additional upstream notices above. Original source test resources, texture and audio materials retain upstream notices. Selected trace, curve, physics and geometry algorithms from LambdaLib1.2.3 retain its MIT license. Modern nonce transport, authoritative movement, native collision/damage APIs and rendering bridges are explicit adaptations. See docs/teleporter-progression/FIDELITY.md and docs/vector-starters/FIDELITY.md for preserved source quirks and remaining shared cost-event/config, achievements, natural-acquisition, pixel and audio limitations.
+
+Classic terminal installation, persistent semantic app state, application ingress and source terminal/settings/installer/Frequency Transmitter/Media Player presentation derive from AcademyCraft1.0.7 under the preserved GPLv3 and additional upstream notices. Packaged unchanged source/oracle fixtures retain original notices. LambdaLib1.2.3 UI/list/item-rendering and serialization-derived algorithms retain its MIT license. General local user-provided Ogg playback and safe app controls contain no bundled songs, third-party covers or song-item artwork. Modern transport/session/file boundaries and native audio ownership are explicit adaptations; see docs/TERMINAL_APPS_FIDELITY.md. No redistribution rights or live visual/audio parity are asserted.
+
+Classic Phase Generator implementation, unchanged source oracle and original ip_gen OBJ/five textures/phasegen UI derive from AcademyCraft1.0.7 under its preserved GPLv3 and additional upstream notices. LambdaLib TechUI/TrueTypeFont helpers retain its MIT notice. Modern conserved energy persistence, finite-input validation, native fluid contract and safe menu mapping are explicit adaptations; see docs/PHASE_GENERATOR_FIDELITY.md. No third-party media or redistribution rights are added.
+
+Classic Wind Generator family, unchanged source oracle and original windgen OBJ/texture/UI assets derive from AcademyCraft1.0.7 under its preserved GPLv3 and additional upstream notices. LambdaLib1.2.3 multiblock and scheduler witnesses retain its MIT license. Origin-owned payloads, atomic placement, finite IF persistence, loaded-chunk guards and sender-bound native menus are explicit lifecycle/security adaptations; see docs/WIND-GENERATOR-FIDELITY.md. No weather multiplier or third-party media was added.

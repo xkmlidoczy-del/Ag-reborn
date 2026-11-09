@@ -1,0 +1,9 @@
+allprojects {
+ afterEvaluate { p ->
+  if(!p.findProperty('gameTestDirectory')?.toString()?.startsWith('run-generated-harvest-m24'))throw new GradleException('Owned copied generated-world fixture directory required')
+  def r=p.extensions.getByName('neoForge').runs.getByName('gameTestServer')
+  r.systemProperty('neoforge.enabledGameTestNamespaces','academy_generated_harvest')
+  r.systemProperty('academy.generated.harvest.qa','true')
+  r.programArgument('--world');r.programArgument('m24-copied-generated-world')
+ }
+}

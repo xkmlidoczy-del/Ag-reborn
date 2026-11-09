@@ -1,0 +1,11 @@
+Disintegration Sweep icon attribution
+====================================
+
+disintegration_sweep.png is a byte-identical copy of meltdowner.png from AcademyCraft classic 1.0.7. The inspected narrow green-white beam pixels are retained without alteration.
+
+Original work: Copyright (c) Lambda Innovation, 2013-2016.
+Official project: https://github.com/LambdaInnovation/AcademyCraft
+Reference tag: 1.0.7, commit 00d19ec0cf538f61c1095c9292f5ee6863db4521.
+Original resource: assets/academy/textures/abilities/meltdowner/skills/meltdowner.png
+
+This reused asset retains GPLv3 and the upstream additional notices, preserved in the repository LICENSE and NOTICE and included in the distributable. No new licensing grant, ownership claim or permission to sell is asserted.

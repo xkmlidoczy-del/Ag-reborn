@@ -1,0 +1,1 @@
+AcademyCraft1.0.7 source and media copyright Lambda Innovation, GPLv3. Source commit00d19ec0cf538f61c1095c9292f5ee6863db4521. LambdaLib1.2.3 source copyright Lambda Innovation, MIT. ImprovedNoise retains the upstream Ken Perlin2002 reference attribution. See bundled licenses. Original source oracles are immutable resources; no old Forge runtime claim.

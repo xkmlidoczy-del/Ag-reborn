@@ -1,0 +1,37 @@
+[
+  {
+    "resource": "assets/academy/textures/abilities/meltdowner/skills/rad_intensify.png",
+    "sha256": "091956308e65b000893dd0b844c84a3d168abbb8c234081d14c4160f02918dd0",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/abilities/meltdowner/skills/rad_intensify.png"
+  },
+  {
+    "resource": "assets/academy/textures/abilities/teleporter/skills/dim_folding_theorem.png",
+    "sha256": "6665b1b5dd37c4b0771ddf70c5f23bc074b3c96cbb6071f76fc81ab05a249ce5",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/abilities/teleporter/skills/dim_folding_theorem.png"
+  },
+  {
+    "resource": "assets/academy/textures/abilities/teleporter/skills/space_fluct.png",
+    "sha256": "903d57fb085e651f5dcc243512c3b617ae1db4fa192b7fce4ecfe4d6b92146d8",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/abilities/teleporter/skills/space_fluct.png"
+  },
+  {
+    "resource": "assets/academy/textures/abilities/generic/skills/brain_course.png",
+    "sha256": "df83cb0782c501b34bfbb49421d29f28bb58d748b9b216539379f800065b901e",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/abilities/generic/skills/brain_course.png"
+  },
+  {
+    "resource": "assets/academy/textures/abilities/generic/skills/brain_course_advanced.png",
+    "sha256": "822eecc648a210d3e5aa3094c50f64286efa1b1c7d4945ba8da6cbb01805460d",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/abilities/generic/skills/brain_course_advanced.png"
+  },
+  {
+    "resource": "assets/academy/textures/abilities/generic/skills/mind_course.png",
+    "sha256": "32b99d5bec659d0860beb006f4408d01713b8de4c29999fdbd45626a137c44f1",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/abilities/generic/skills/mind_course.png"
+  },
+  {
+    "resource": "assets/academy/textures/effects/md_particle.png",
+    "sha256": "57660d9947391b14d0df5683ee4820332db0c1a25233130e3a02bb05e34bea70",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/effects/md_particle.png"
+  }
+]

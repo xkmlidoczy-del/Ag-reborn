@@ -1,0 +1,1 @@
+package com.google.common.collect; public class ImmutableList {public static <T> java.util.List<T> copyOf(java.util.List<T> a){return java.util.List.copyOf(a);}}

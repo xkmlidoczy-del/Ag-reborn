@@ -1,0 +1,1 @@
+package net.neoforged.neoforge.client.event;public class RegisterClientCommandsEvent {public net.minecraft.commands.Commands.Dispatcher getDispatcher(){return new net.minecraft.commands.Commands.Dispatcher();}}

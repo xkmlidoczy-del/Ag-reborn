@@ -1,0 +1,107 @@
+[
+  {
+    "name": "final-mode-tp-play-cancel-return_mark",
+    "script": "gameplay-tp-play-cancel-return_mark.script",
+    "directory": "run-showcase-sable",
+    "purpose": "Real cancellation input is free, old plan absent and next tap only registers one fresh point/target",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final-mode-tp-play-cancel-short_interception",
+    "script": "gameplay-tp-play-cancel-short_interception.script",
+    "directory": "run-showcase-sable",
+    "purpose": "Real cancellation input is free, old plan absent and next tap only registers one fresh point/target",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final-mode-tp-play-cancel-spatial_relay",
+    "script": "gameplay-tp-play-cancel-spatial_relay.script",
+    "directory": "run-showcase-sable",
+    "purpose": "Real cancellation input is free, old plan absent and next tap only registers one fresh point/target",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final-mode-tp-play-cancel-emergency_return",
+    "script": "gameplay-tp-play-cancel-emergency_return.script",
+    "directory": "run-showcase-sable",
+    "purpose": "Real cancellation input is free, old plan absent and next tap only registers one fresh point/target",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final-mode-tp-play-cancel-spatial_pincer_corridor",
+    "script": "gameplay-tp-play-cancel-spatial_pincer_corridor.script",
+    "directory": "run-showcase-sable",
+    "purpose": "Real cancellation input is free, old plan absent and next tap only registers one fresh point/target",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final-mode-tp-play-cancel-multidimensional_landing_array",
+    "script": "gameplay-tp-play-cancel-multidimensional_landing_array.script",
+    "directory": "run-showcase-sable",
+    "purpose": "Real cancellation input is free, old plan absent and next tap only registers one fresh point/target",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final-mode-tp-play-probe-move",
+    "script": "gameplay-tp-play-probe-move.script",
+    "directory": "run-showcase-sable",
+    "purpose": "Actual movement/posture cancels unpaid preview; next tap is a new preview, not transport",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final-mode-tp-play-probe-pose",
+    "script": "gameplay-tp-play-probe-pose.script",
+    "directory": "run-showcase-sable",
+    "purpose": "Actual movement/posture cancels unpaid preview; next tap is a new preview, not transport",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final-mode-tp-play-item-transport",
+    "script": "gameplay-tp-play-item-transport.script",
+    "directory": "run-showcase-sable",
+    "purpose": "Ordinary main-hand iron item transported to native first surface, actual stack debit, same actor remains",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final-mode-tp-play-block-placement",
+    "script": "gameplay-tp-play-block-placement.script",
+    "directory": "run-showcase-sable",
+    "purpose": "One actual held cobblestone is placed at the real remote endpoint, exactly one stock consumed",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final-mode-tp-play-mark-entity",
+    "script": "gameplay-tp-play-mark-entity.script",
+    "directory": "run-showcase-sable",
+    "purpose": "True native entity target, paid distant actor arrival by release",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final-mode-tp-play-mark-air",
+    "script": "gameplay-tp-play-mark-air.script",
+    "directory": "run-showcase-sable",
+    "purpose": "True empty elevated ray endpoint with actual paid upward teleport",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final-mode-tp-play-accel-air",
+    "script": "gameplay-tp-play-accel-air.script",
+    "directory": "run-showcase-sable",
+    "purpose": "Real unsupported airborne high-mastery charge/release, normal gravity and actual horizontal acceleration",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final-mode-tp-play-flash-air",
+    "script": "gameplay-tp-play-flash-air.script",
+    "directory": "run-showcase-sable",
+    "purpose": "True airborne retained flash mode and actual A-release lateral hop",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final-mode-tp-play-two-needles",
+    "script": "gameplay-tp-play-two-needles.script",
+    "directory": "run-showcase-sable",
+    "purpose": "Two separate genuine Q-tossed needles, free clear, re-registration, aimed second-first recovery and actual original stock conservation",
+    "status": "planned_not_run"
+  }
+]

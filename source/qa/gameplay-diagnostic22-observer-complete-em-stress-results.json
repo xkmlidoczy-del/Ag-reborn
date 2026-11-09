@@ -1,0 +1,7 @@
+[
+  {
+    "name": "diagnostic22-observer-complete-em-stress",
+    "script": "gameplay-diagnostic22-observer-complete-em-stress.script",
+    "exit": 1
+  }
+]

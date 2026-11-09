@@ -1,0 +1,18 @@
+AcademyCraft classic achievement restoration
+
+The 56 achievement declarations, five page layouts, conditions, manual success-point
+hooks, achievement names and descriptions, and AcademyCraft bitmap icons are adapted
+from AcademyCraft 1.0.7, commit 00d19ec0cf538f61c1095c9292f5ee6863db4521.
+Copyright Lambda Innovation and original contributors, 2013-2016. GPLv3; see
+META-INF/ACADEMY-GPLv3 and the root NOTICE.
+
+The archived test witnesses include unchanged AcademyCraft source and unchanged
+LambdaLib 1.2.3 HudUtils/RenderUtils inventory-icon dependencies, with their existing
+GPLv3/MIT notices. These witnesses are test resources, not production class replacements.
+
+Minecraft 1.7.10 achievements/Forge pages no longer exist in the target game. The
+modern adapter uses vanilla advancement persistence plus a dedicated client screen
+and toast. Its classic cave motif references the installed target game's textures;
+no Mojang 1.7.10 texture archive or source is bundled. ItemAchievement's unsafe mutable
+metadata texture list is replaced by trusted catalog texture paths rendered directly
+at 16x16 in the original inventory-icon role.

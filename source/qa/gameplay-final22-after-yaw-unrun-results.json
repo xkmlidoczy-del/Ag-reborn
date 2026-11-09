@@ -1,0 +1,42 @@
+[
+  {
+    "name": "final22-itemsplit-vm-extra-split-narrow",
+    "script": "gameplay-vm-extra-split-narrow.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-stormcycle-storm-cycle-costs",
+    "script": "gameplay-storm-cycle-costs.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-visual-vfx-iron-nearplane",
+    "script": "gameplay-visual-iron-nearplane.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-visual-vfx-railgun-charge",
+    "script": "gameplay-visual-railgun-charge.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-visual-vfx-thunderclap-peak",
+    "script": "gameplay-visual-thunderclap-peak.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-visual-vfx-mine-tiers-mid",
+    "script": "gameplay-visual-mine-ray-tiers.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-supplemental-storm-sustain-40s",
+    "script": "codex-storm-sustain.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-supplemental-four-category-shield-hud",
+    "script": "codex-shield-hud-final.script",
+    "exit": 0
+  }
+]

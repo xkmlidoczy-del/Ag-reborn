@@ -1,0 +1,1 @@
+package net.minecraftforge.common.util;public enum ForgeDirection{DOWN(0,-1,0),UP(0,1,0),NORTH(0,0,-1),SOUTH(0,0,1),WEST(-1,0,0),EAST(1,0,0),UNKNOWN(0,0,0);public final int offsetX,offsetY,offsetZ;ForgeDirection(int x,int y,int z){offsetX=x;offsetY=y;offsetZ=z;}public static ForgeDirection getOrientation(int side){return values()[side>=0&&side<6?side:6];}}

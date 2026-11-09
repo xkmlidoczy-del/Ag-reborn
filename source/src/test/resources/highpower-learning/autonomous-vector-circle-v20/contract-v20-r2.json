@@ -1,0 +1,1821 @@
+{
+  "version": 20,
+  "baseline_revision": "c334bbc6583d991bcd4bfa28de4312213d156089",
+  "scope": "Authentic .80 sources; retain pinned v18 temporary amendments and add only exact NEW452 registration/page-count append clauses. Original sources, fixtures and verifiers stay immutable.",
+  "legacy_contract": {
+    "path": "src/test/resources/highpower-learning/scatter-locator-v18/contract-v18-r4.json",
+    "sha256": "bafedc33c26c1f8aea6ddec0c6c263b54b839656e197ad719d5c08b5e8dfe920"
+  },
+  "production": {
+    "src/main/java/cn/academy/port/highpower/HighPowerSkills.java": {
+      "snapshot": "baseline-v80/HighPowerSkills.java",
+      "input_sha256": "3b6748cebdd095fd295d18fe0f9f4c742f3dfc41ae345cd11e8bc11221731608",
+      "output_sha256": "82ccff7739ae4c2886e992a6874ff26795cacf1b28087d71284e706ae0d356a6",
+      "patches": [
+        {
+          "name": "new452-canonical-constants",
+          "before": "    public static final String CIRCULATION_RELIEF = \"circulation_relief\";\n",
+          "after": "    public static final String AUTONOMOUS_VECTOR_CIRCLE = \"autonomous_vector_circle\";\n    public static final int AUTONOMOUS_VECTOR_CIRCLE_PROPOSAL = 452;\n    public static final String CIRCULATION_RELIEF = \"circulation_relief\";\n",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-id-set-append",
+          "before": "REMOTE_SCATTER_RELAY, SCATTER_LOCATOR_PLATE);",
+          "after": "REMOTE_SCATTER_RELAY, SCATTER_LOCATOR_PLATE, AUTONOMOUS_VECTOR_CIRCLE);",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-record-index52-append",
+          "before": "            new SkillCatalog.Skill(HighPowerCategories.MELTDOWNER, SCATTER_LOCATOR_PLATE, 2, true,\n                    List.of(new SkillCatalog.Requirement(FOLDED_MIRROR_ARRAY, 0)), 0));",
+          "after": "            new SkillCatalog.Skill(HighPowerCategories.MELTDOWNER, SCATTER_LOCATOR_PLATE, 2, true,\n                    List.of(new SkillCatalog.Requirement(FOLDED_MIRROR_ARRAY, 0)), 0),\n            new SkillCatalog.Skill(HighPowerCategories.VECMANIP, AUTONOMOUS_VECTOR_CIRCLE, 5, true,\n                    List.of(new SkillCatalog.Requirement(MULTI_AXIS_REFLECTION, 0)), 0));",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/main/java/cn/academy/port/highpower/HighPowerLearningProtocol.java": {
+      "snapshot": "baseline-v80/HighPowerLearningProtocol.java",
+      "input_sha256": "52de9bb9e43ade057eb81ce148c304fad86302985c87b6abea36d1d569f7469f",
+      "output_sha256": "6675814688db456041707ca878d2bb9c21ae8c617df9bfdc8c6f617761cbbc85",
+      "patches": [
+        {
+          "name": "new452-wire-encode-only",
+          "before": "wireSkill(String skill){return ",
+          "after": "wireSkill(String skill){return HighPowerSkills.AUTONOMOUS_VECTOR_CIRCLE.equals(skill)?\"avc\":",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-wire-decode-only",
+          "before": "canonicalSkill(String wire){return ",
+          "after": "canonicalSkill(String wire){return \"avc\".equals(wire)?HighPowerSkills.AUTONOMOUS_VECTOR_CIRCLE:",
+          "occurrences": 1
+        }
+      ]
+    }
+  },
+  "files": {
+    "src/test/java/cn/academy/port/highpower/CirculationListeningLearningRegressionTest.java": {
+      "snapshot": "baseline-v80/CirculationListeningLearningRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.CirculationListeningLearningRegressionTest",
+      "input_sha256": "e0ee07c171361a921f07a65bf69712985cb0352cef11612dd697cee530d1fdea",
+      "output_sha256": "1a51e4f3cabb616df749d216fae5518a87ca34b819d942257473fe727a310396",
+      "legacy_patch_count": 4,
+      "legacy_output_sha256": "296fdf1613a42240cc65f39ee2430a1a0e2151379458c5be521e7a9c13def833",
+      "assertion_call_tokens": 25,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-registry",
+          "before": "HighPowerSkills.ALL.size() == 52",
+          "after": "HighPowerSkills.ALL.size() == 53 && cn.academy.port.highpower.HighPowerSkills.ALL.get(52).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.AUTONOMOUS_VECTOR_CIRCLE_PROPOSAL == 452",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 102",
+          "after": "SkillCatalog.REGISTERED.size() == 103 && SkillCatalog.REGISTERED.get(102).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 87",
+          "after": "PresetSkills.REGISTERED.size() == 88 && PresetSkills.REGISTERED.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 94 && SkillCatalog.REGISTERED_CONFIG_KEYS.contains(cn.academy.port.core.ClassicSkillConfiguration.key(\"vecmanip\", \"autonomous_vector_circle\"))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-vector-page-page",
+          "before": "page.size() == 12 &&",
+          "after": "page.size() == 13 && page.get(12).id().equals(\"autonomous_vector_circle\") &&",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/CirculationReliefLearningRegressionTest.java": {
+      "snapshot": "baseline-v80/CirculationReliefLearningRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.CirculationReliefLearningRegressionTest",
+      "input_sha256": "3eff6059546dffd9b5773889a60f68ada624f418409019d391560f2c98fb98b6",
+      "output_sha256": "0cfe3503c3f30c2bf84ba97f19d4f2a85999bbe19f9af4be865167c02c7470ed",
+      "legacy_patch_count": 4,
+      "legacy_output_sha256": "616acb7f8098843a8940107f2262e4284866cb0cd04762c55090f757f912c107",
+      "assertion_call_tokens": 31,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-registry",
+          "before": "HighPowerSkills.ALL.size() == 52",
+          "after": "HighPowerSkills.ALL.size() == 53 && cn.academy.port.highpower.HighPowerSkills.ALL.get(52).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.AUTONOMOUS_VECTOR_CIRCLE_PROPOSAL == 452",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 102",
+          "after": "SkillCatalog.REGISTERED.size() == 103 && SkillCatalog.REGISTERED.get(102).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 87",
+          "after": "PresetSkills.REGISTERED.size() == 88 && PresetSkills.REGISTERED.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 94 && SkillCatalog.REGISTERED_CONFIG_KEYS.contains(cn.academy.port.core.ClassicSkillConfiguration.key(\"vecmanip\", \"autonomous_vector_circle\"))",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/CornerExchangeLearningRegressionTest.java": {
+      "snapshot": "baseline-v80/CornerExchangeLearningRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.CornerExchangeLearningRegressionTest",
+      "input_sha256": "df538862d9caaa6509345d74c858af3aa8726a85ffb8a70be7000c72e89ec20d",
+      "output_sha256": "1702717e499611a6ac4123e918be0b137f7ecd66aa0bc436675861a515c04e3e",
+      "legacy_patch_count": 5,
+      "legacy_output_sha256": "0f781ed0b3c51b933a6c51138269ead55a35aa47ac6dd493aa2092c8a925b263",
+      "assertion_call_tokens": 67,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-hp-ids",
+          "before": "HighPowerSkills.IDS.size() == 51",
+          "after": "HighPowerSkills.IDS.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-registry",
+          "before": "HighPowerSkills.ALL.size() == 52",
+          "after": "HighPowerSkills.ALL.size() == 53 && cn.academy.port.highpower.HighPowerSkills.ALL.get(52).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.AUTONOMOUS_VECTOR_CIRCLE_PROPOSAL == 452",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-ids",
+          "before": "HighPowerSkills.IDS.size() == 52",
+          "after": "HighPowerSkills.IDS.size() == 53 && HighPowerSkills.IDS.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 102",
+          "after": "SkillCatalog.REGISTERED.size() == 103 && SkillCatalog.REGISTERED.get(102).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 87",
+          "after": "PresetSkills.REGISTERED.size() == 88 && PresetSkills.REGISTERED.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 94 && SkillCatalog.REGISTERED_CONFIG_KEYS.contains(cn.academy.port.core.ClassicSkillConfiguration.key(\"vecmanip\", \"autonomous_vector_circle\"))",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/CrossSubstitutionLearningRegressionTest.java": {
+      "snapshot": "baseline-v80/CrossSubstitutionLearningRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.CrossSubstitutionLearningRegressionTest",
+      "input_sha256": "55506d106213ffd9b57b5d273aecb224513b1c4ea1211eb5ef15e77c637e7381",
+      "output_sha256": "e06c42f4b378665a285968716f2e3454d3ae74aec04aed35eb33a3e816290f03",
+      "legacy_patch_count": 5,
+      "legacy_output_sha256": "93ed33889757b7eda5da8f3fede2f2499470b63d72310f7bb5761d790815fc8e",
+      "assertion_call_tokens": 73,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-hp-ids",
+          "before": "HighPowerSkills.IDS.size() == 51",
+          "after": "HighPowerSkills.IDS.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-registry",
+          "before": "HighPowerSkills.ALL.size() == 52",
+          "after": "HighPowerSkills.ALL.size() == 53 && cn.academy.port.highpower.HighPowerSkills.ALL.get(52).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.AUTONOMOUS_VECTOR_CIRCLE_PROPOSAL == 452",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-ids",
+          "before": "HighPowerSkills.IDS.size() == 52",
+          "after": "HighPowerSkills.IDS.size() == 53 && HighPowerSkills.IDS.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 102",
+          "after": "SkillCatalog.REGISTERED.size() == 103 && SkillCatalog.REGISTERED.get(102).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 87",
+          "after": "PresetSkills.REGISTERED.size() == 88 && PresetSkills.REGISTERED.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 94 && SkillCatalog.REGISTERED_CONFIG_KEYS.contains(cn.academy.port.core.ClassicSkillConfiguration.key(\"vecmanip\", \"autonomous_vector_circle\"))",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/DisplacedProjectionLearningRegressionTest.java": {
+      "snapshot": "baseline-v80/DisplacedProjectionLearningRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.DisplacedProjectionLearningRegressionTest",
+      "input_sha256": "55e79ad21fc5f2d18e7fa83a0f299655ce0613865012c8be0e51e390aa9b13c6",
+      "output_sha256": "2e5d6a9427fd945596f4792996293e6ed36e1251be703bfa055553ada32dece1",
+      "legacy_patch_count": 4,
+      "legacy_output_sha256": "2c8c2c13597cb05e4412fc7dcecfe4d3a57eba896cfecf9fbe3128284b061017",
+      "assertion_call_tokens": 57,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-hp-ids",
+          "before": "HighPowerSkills.IDS.size() == 51",
+          "after": "HighPowerSkills.IDS.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-registry",
+          "before": "HighPowerSkills.ALL.size() == 52",
+          "after": "HighPowerSkills.ALL.size() == 53 && cn.academy.port.highpower.HighPowerSkills.ALL.get(52).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.AUTONOMOUS_VECTOR_CIRCLE_PROPOSAL == 452",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-ids",
+          "before": "HighPowerSkills.IDS.size() == 52",
+          "after": "HighPowerSkills.IDS.size() == 53 && HighPowerSkills.IDS.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 102",
+          "after": "SkillCatalog.REGISTERED.size() == 103 && SkillCatalog.REGISTERED.get(102).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 87",
+          "after": "PresetSkills.REGISTERED.size() == 88 && PresetSkills.REGISTERED.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/EmergencyReturnLearningRegressionTest.java": {
+      "snapshot": "baseline-v80/EmergencyReturnLearningRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.EmergencyReturnLearningRegressionTest",
+      "input_sha256": "a3a3e3d7b690001201e74710f689d997fb77c72921eb4d488fe4d66d8e716cc2",
+      "output_sha256": "c0f865f7006436558705fc92ecf772d3717dca103ae75892d92ab2d89799d4b0",
+      "legacy_patch_count": 5,
+      "legacy_output_sha256": "5f8f03bbe5cee0cd0084cc0fc8768f32123bb7ef4684a3ce6007b42984772816",
+      "assertion_call_tokens": 72,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-hp-ids",
+          "before": "HighPowerSkills.IDS.size() == 51",
+          "after": "HighPowerSkills.IDS.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-registry",
+          "before": "HighPowerSkills.ALL.size() == 52",
+          "after": "HighPowerSkills.ALL.size() == 53 && cn.academy.port.highpower.HighPowerSkills.ALL.get(52).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.AUTONOMOUS_VECTOR_CIRCLE_PROPOSAL == 452",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-ids",
+          "before": "HighPowerSkills.IDS.size() == 52",
+          "after": "HighPowerSkills.IDS.size() == 53 && HighPowerSkills.IDS.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 102",
+          "after": "SkillCatalog.REGISTERED.size() == 103 && SkillCatalog.REGISTERED.get(102).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 87",
+          "after": "PresetSkills.REGISTERED.size() == 88 && PresetSkills.REGISTERED.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 94 && SkillCatalog.REGISTERED_CONFIG_KEYS.contains(cn.academy.port.core.ClassicSkillConfiguration.key(\"vecmanip\", \"autonomous_vector_circle\"))",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/HighPowerProgressionRegressionTest.java": {
+      "snapshot": "baseline-v80/HighPowerProgressionRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.HighPowerProgressionRegressionTest",
+      "input_sha256": "1d7f468c574ec43f4ee03a8f0c8eeba34e08a1a51fac1ca50f343f6e54ccd86e",
+      "output_sha256": "31420b414bc59372492ced60a19618a59e00bb7df11d39b875b5cdd299bf85ae",
+      "legacy_patch_count": 13,
+      "legacy_output_sha256": "b721d10a8ec27bd6c175f5a83e88c6019154d5a45aefa1c0d6cdf2c2bece7333",
+      "assertion_call_tokens": 673,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 2
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "md-actual-page-current14",
+          "before": "page.size()==13&&shown.x()==110",
+          "after": "page.size()==14&&shown.x()==110",
+          "occurrences": 1
+        },
+        {
+          "name": "md-current-category14",
+          "before": "filter(entry->entry.category().equals(\"meltdowner\")).count()==13",
+          "after": "filter(entry->entry.category().equals(\"meltdowner\")).count()==14",
+          "occurrences": 1
+        },
+        {
+          "name": "md-old-source-and-page-prefix",
+          "before": "raw.size() == 13 && page.size() == 13",
+          "after": "raw.size() == 14 && page.size() == 14",
+          "occurrences": 1
+        },
+        {
+          "name": "md-current-source14-combined28",
+          "before": "additions.size()==13&&ClassicDeveloperLayout.category(\"meltdowner\").size()==27",
+          "after": "additions.size()==14&&ClassicDeveloperLayout.category(\"meltdowner\").size()==28",
+          "occurrences": 1
+        },
+        {
+          "name": "exact-original26-source-coordinate-domain",
+          "before": "ClassicDeveloperLayout.category(\"meltdowner\").stream().filter(n->!n.id().equals(HighPowerSkills.REMOTE_SCATTER_RELAY)).toList();",
+          "after": "ClassicDeveloperLayout.category(\"meltdowner\").stream().filter(n->java.util.Set.of(\"electron_bomb\", \"rad_intensify\", \"scatter_bomb\", \"light_shield\", \"meltdowner\", \"mine_ray_basic\", \"ray_barrage\", \"jet_engine\", \"mine_ray_expert\", \"mine_ray_luck\", \"electron_missile\", \"brain_course\", \"brain_course_advanced\", \"mind_course\", \"dual_point\", \"scatter_plates\", \"beam_etching\", \"thermal_shell\", \"folded_mirror_array\", \"disintegration_sweep\", \"beam_step\", \"point_meltdown\", \"particle_laminate\", \"directional_dissipation_curtain\", \"multicore_canopy\", \"zero_gap_armor\").contains(n.id())).toList();",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-md-page-id-list-append",
+          "before": "\"multicore_canopy\",\"zero_gap_armor\",\"remote_scatter_relay\"))",
+          "after": "\"multicore_canopy\",\"zero_gap_armor\",\"remote_scatter_relay\",\"scatter_locator_plate\"))",
+          "occurrences": 1
+        },
+        {
+          "name": "reviewed-new232-display-x-only",
+          "before": "node.index()==232&&node.x()==50&&node.y()==20",
+          "after": "node.index()==232&&node.x()==54&&node.y()==20",
+          "occurrences": 1
+        },
+        {
+          "name": "reviewed-new232-page-array-only",
+          "before": "double[][] pagePositions = {{26,61},{110,29},{110,97},{206,29},{206,97},{160,105},{50,20},{20,105},{225,63},{160,20},{62,106},{160,61}};",
+          "after": "double[][] pagePositions = {{26,61},{110,29},{110,97},{206,29},{206,97},{160,105},{54,20},{20,105},{225,63},{160,20},{62,106},{160,61}};",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-actual-display-route-selector",
+          "before": "var edges=node.id().equals(HighPowerSkills.SCATTER_PLATES)?",
+          "after": "var edges=node.id().equals(HighPowerSkills.SCATTER_LOCATOR_PLATE)?HighPowerDeveloperLayout.scatterLocatorDependency(step/100d):node.id().equals(HighPowerSkills.SCATTER_PLATES)?",
+          "occurrences": 1
+        },
+        {
+          "name": "reviewed-new232-zero-gap-display-prefix-only",
+          "before": "var priorCoordinates=List.of(List.of(26d,61d),List.of(110d,29d),List.of(110d,97d),List.of(206d,29d),List.of(206d,97d),List.of(160d,105d),List.of(50d,20d),List.of(225d,63d),List.of(160d,20d),List.of(62d,106d));",
+          "after": "var priorCoordinates=List.of(List.of(26d,61d),List.of(110d,29d),List.of(110d,97d),List.of(206d,29d),List.of(206d,97d),List.of(160d,105d),List.of(54d,20d),List.of(225d,63d),List.of(160d,20d),List.of(62d,106d));",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-registry",
+          "before": "HighPowerSkills.ALL.size() == 52",
+          "after": "HighPowerSkills.ALL.size() == 53 && cn.academy.port.highpower.HighPowerSkills.ALL.get(52).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.AUTONOMOUS_VECTOR_CIRCLE_PROPOSAL == 452",
+          "occurrences": 2
+        },
+        {
+          "name": "new452-total-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 102",
+          "after": "SkillCatalog.REGISTERED.size() == 103 && SkillCatalog.REGISTERED.get(102).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 87",
+          "after": "PresetSkills.REGISTERED.size() == 88 && PresetSkills.REGISTERED.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/InertialAnchorLearningRegressionTest.java": {
+      "snapshot": "baseline-v80/InertialAnchorLearningRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.InertialAnchorLearningRegressionTest",
+      "input_sha256": "98d3b77006efa6a8067d7be670f47a4e7ebd07391c2ca4b067ef97f579672c30",
+      "output_sha256": "b66612b21200d62160418cf2d5085725c2e678ca29aaf27b91a01ed80e299419",
+      "legacy_patch_count": 4,
+      "legacy_output_sha256": "25316cd83fdbee4f65edca715fef3c9ccaf5932f69f6f19ca4bc8fcee2041861",
+      "assertion_call_tokens": 43,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-registry",
+          "before": "HighPowerSkills.ALL.size() == 52",
+          "after": "HighPowerSkills.ALL.size() == 53 && cn.academy.port.highpower.HighPowerSkills.ALL.get(52).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.AUTONOMOUS_VECTOR_CIRCLE_PROPOSAL == 452",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 102",
+          "after": "SkillCatalog.REGISTERED.size() == 103 && SkillCatalog.REGISTERED.get(102).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 87",
+          "after": "PresetSkills.REGISTERED.size() == 88 && PresetSkills.REGISTERED.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 94 && SkillCatalog.REGISTERED_CONFIG_KEYS.contains(cn.academy.port.core.ClassicSkillConfiguration.key(\"vecmanip\", \"autonomous_vector_circle\"))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-vector-page-page",
+          "before": "page.size() == 12 &&",
+          "after": "page.size() == 13 && page.get(12).id().equals(\"autonomous_vector_circle\") &&",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/MultiAxisReflectionLearningRegressionTest.java": {
+      "snapshot": "baseline-v80/MultiAxisReflectionLearningRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.MultiAxisReflectionLearningRegressionTest",
+      "input_sha256": "eb954e039d9d56be002791bb8769bf6d66b49cc708a2c4d5265346ad16eaba0d",
+      "output_sha256": "9b114e1d7fe1d23d34f8be1b4eb96618e3d5245f9e567510517387e65b5e5821",
+      "legacy_patch_count": 4,
+      "legacy_output_sha256": "2c28d4622add6aa73eccaff12a38367ca5992c1e475d1272cf7fd6a9293b9eb4",
+      "assertion_call_tokens": 18,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-registry",
+          "before": "HighPowerSkills.ALL.size() == 52",
+          "after": "HighPowerSkills.ALL.size() == 53 && cn.academy.port.highpower.HighPowerSkills.ALL.get(52).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.AUTONOMOUS_VECTOR_CIRCLE_PROPOSAL == 452",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 102",
+          "after": "SkillCatalog.REGISTERED.size() == 103 && SkillCatalog.REGISTERED.get(102).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 87",
+          "after": "PresetSkills.REGISTERED.size() == 88 && PresetSkills.REGISTERED.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 94 && SkillCatalog.REGISTERED_CONFIG_KEYS.contains(cn.academy.port.core.ClassicSkillConfiguration.key(\"vecmanip\", \"autonomous_vector_circle\"))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-vector-page-page",
+          "before": "page.size() == 12 &&",
+          "after": "page.size() == 13 && page.get(12).id().equals(\"autonomous_vector_circle\") &&",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/MultidimensionalLandingArrayLearningRegressionTest.java": {
+      "snapshot": "baseline-v80/MultidimensionalLandingArrayLearningRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.MultidimensionalLandingArrayLearningRegressionTest",
+      "input_sha256": "eb606b358612454eb49eee002f27d9d35045e885ecd475a9ef67069181196539",
+      "output_sha256": "d6631bb18c86636c647b11eb52852f38713d3e50291d970b6d36128ec75fea62",
+      "legacy_patch_count": 4,
+      "legacy_output_sha256": "72cdadc86863b9b5e93c8b651d38a6bb7c612352dc0eb61dde465256d0a37f97",
+      "assertion_call_tokens": 20,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-registry",
+          "before": "HighPowerSkills.ALL.size() == 52",
+          "after": "HighPowerSkills.ALL.size() == 53 && cn.academy.port.highpower.HighPowerSkills.ALL.get(52).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.AUTONOMOUS_VECTOR_CIRCLE_PROPOSAL == 452",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 102",
+          "after": "SkillCatalog.REGISTERED.size() == 103 && SkillCatalog.REGISTERED.get(102).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 87",
+          "after": "PresetSkills.REGISTERED.size() == 88 && PresetSkills.REGISTERED.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 94 && SkillCatalog.REGISTERED_CONFIG_KEYS.contains(cn.academy.port.core.ClassicSkillConfiguration.key(\"vecmanip\", \"autonomous_vector_circle\"))",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/PhaseSidestepLearningRegressionTest.java": {
+      "snapshot": "baseline-v80/PhaseSidestepLearningRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.PhaseSidestepLearningRegressionTest",
+      "input_sha256": "6577560374501a5d5af41b86ed5cf98728aaf56ede6038977186f1b4894f1b76",
+      "output_sha256": "16b50ec541a1f269505ca8d6aaa2aa0018207b773f204f2d6eb228f4d6d3760d",
+      "legacy_patch_count": 4,
+      "legacy_output_sha256": "76c7ee2021fb97f9f90ef1551007e190858a88d39be7517c7d6d557d382a9860",
+      "assertion_call_tokens": 51,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-hp-ids",
+          "before": "HighPowerSkills.IDS.size() == 51",
+          "after": "HighPowerSkills.IDS.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-registry",
+          "before": "HighPowerSkills.ALL.size() == 52",
+          "after": "HighPowerSkills.ALL.size() == 53 && cn.academy.port.highpower.HighPowerSkills.ALL.get(52).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.AUTONOMOUS_VECTOR_CIRCLE_PROPOSAL == 452",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-ids",
+          "before": "HighPowerSkills.IDS.size() == 52",
+          "after": "HighPowerSkills.IDS.size() == 53 && HighPowerSkills.IDS.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 102",
+          "after": "SkillCatalog.REGISTERED.size() == 103 && SkillCatalog.REGISTERED.get(102).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 87",
+          "after": "PresetSkills.REGISTERED.size() == 88 && PresetSkills.REGISTERED.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/RecoveryMarkLearningRegressionTest.java": {
+      "snapshot": "baseline-v80/RecoveryMarkLearningRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.RecoveryMarkLearningRegressionTest",
+      "input_sha256": "0d5c6ea32adb9de48cf64d7612a81d3c9452a06ecb8b5be82ba442beb82aa73c",
+      "output_sha256": "5d6bf18966c8fec7c0494efbf462cb6e654ca96df23f3f55cf7c12ee8454d5c0",
+      "legacy_patch_count": 4,
+      "legacy_output_sha256": "6da71f431ebef03a3dbd6ce2100fe8b1423ee0e834eeaa6e5804dd3df0a6bae4",
+      "assertion_call_tokens": 65,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-hp-ids",
+          "before": "HighPowerSkills.IDS.size() == 51",
+          "after": "HighPowerSkills.IDS.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-registry",
+          "before": "HighPowerSkills.ALL.size() == 52",
+          "after": "HighPowerSkills.ALL.size() == 53 && cn.academy.port.highpower.HighPowerSkills.ALL.get(52).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.AUTONOMOUS_VECTOR_CIRCLE_PROPOSAL == 452",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-ids",
+          "before": "HighPowerSkills.IDS.size() == 52",
+          "after": "HighPowerSkills.IDS.size() == 53 && HighPowerSkills.IDS.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 102",
+          "after": "SkillCatalog.REGISTERED.size() == 103 && SkillCatalog.REGISTERED.get(102).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 87",
+          "after": "PresetSkills.REGISTERED.size() == 88 && PresetSkills.REGISTERED.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/RemoteScatterRelayLearningRegressionTest.java": {
+      "snapshot": "baseline-v80/RemoteScatterRelayLearningRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.RemoteScatterRelayLearningRegressionTest",
+      "input_sha256": "03e3f049de81463d9b2c3a2a74c0e8d027dcb8b73a1916f81791d0601507b7cf",
+      "output_sha256": "178629f5421e54a5b6221c5cdbea3c7f3d5db5a49fc0db6067df9ae559c63bb5",
+      "legacy_patch_count": 7,
+      "legacy_output_sha256": "813ff36d7e1ce7f453aa941551ee62ea87ae1f1cf9b2d25e599fed209167ecc5",
+      "assertion_call_tokens": 52,
+      "patches": [
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        },
+        {
+          "name": "retain-old50-plus253-and-exact223",
+          "before": "return candidate.size() == 51 && candidate.subList(0, 50).equals(previous) && candidate.get(50).id().equals(ID);",
+          "after": "return candidate.size() == 52 && candidate.subList(0, 50).equals(previous) && candidate.get(50).id().equals(ID)\n                && candidate.get(51).equals(new SkillCatalog.Skill(\"meltdowner\", \"scatter_locator_plate\", 2, true, List.of(new SkillCatalog.Requirement(\"folded_mirror_array\", 0)), 0));",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-canonical-id-set",
+          "before": "previous.forEach(skill -> expectedIds.add(skill.id())); expectedIds.add(ID);",
+          "after": "previous.forEach(skill -> expectedIds.add(skill.id())); expectedIds.add(ID); expectedIds.add(\"scatter_locator_plate\");",
+          "occurrences": 1
+        },
+        {
+          "name": "md-page-current14",
+          "before": "retained == 12 && page.size() == 13",
+          "after": "retained == 12 && page.size() == 14",
+          "occurrences": 1
+        },
+        {
+          "name": "reviewed-new232-display-only-frozen-coordinate-amendment",
+          "before": "node.x() == Double.parseDouble(baseline.group(2)) && node.y() == Double.parseDouble(baseline.group(3))",
+          "after": "node.x() == (id.equals(HighPowerSkills.BEAM_STEP) ? 54 : Double.parseDouble(baseline.group(2))) && node.y() == Double.parseDouble(baseline.group(3))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 102",
+          "after": "SkillCatalog.REGISTERED.size() == 103 && SkillCatalog.REGISTERED.get(102).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 87",
+          "after": "PresetSkills.REGISTERED.size() == 88 && PresetSkills.REGISTERED.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 94 && SkillCatalog.REGISTERED_CONFIG_KEYS.contains(cn.academy.port.core.ClassicSkillConfiguration.key(\"vecmanip\", \"autonomous_vector_circle\"))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-exact-candidate-tail",
+          "before": "candidate.size() == 52",
+          "after": "candidate.size() == 53 && candidate.get(52).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-id-set",
+          "before": "expectedIds.add(\"scatter_locator_plate\");",
+          "after": "expectedIds.add(\"scatter_locator_plate\"); expectedIds.add(\"autonomous_vector_circle\");",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/ReturnMarkLearningRegressionTest.java": {
+      "snapshot": "baseline-v80/ReturnMarkLearningRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.ReturnMarkLearningRegressionTest",
+      "input_sha256": "0848a17b3e5358bee78f411fed5a4406cbc6dccde9b1a583fc1fa65c8eeea105",
+      "output_sha256": "33366def5463d2fc87da3f3764dfe8d0eddf7f30545a42461b9e03137cfd566e",
+      "legacy_patch_count": 4,
+      "legacy_output_sha256": "70e2ad73a4d0d826c82ef8adfd3cef0379b1849903fac1f47e6ae8fdeb118396",
+      "assertion_call_tokens": 62,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-hp-ids",
+          "before": "HighPowerSkills.IDS.size() == 51",
+          "after": "HighPowerSkills.IDS.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-registry",
+          "before": "HighPowerSkills.ALL.size() == 52",
+          "after": "HighPowerSkills.ALL.size() == 53 && cn.academy.port.highpower.HighPowerSkills.ALL.get(52).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.AUTONOMOUS_VECTOR_CIRCLE_PROPOSAL == 452",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-ids",
+          "before": "HighPowerSkills.IDS.size() == 52",
+          "after": "HighPowerSkills.IDS.size() == 53 && HighPowerSkills.IDS.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 102",
+          "after": "SkillCatalog.REGISTERED.size() == 103 && SkillCatalog.REGISTERED.get(102).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 87",
+          "after": "PresetSkills.REGISTERED.size() == 88 && PresetSkills.REGISTERED.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/ShortInterceptionLearningRegressionTest.java": {
+      "snapshot": "baseline-v80/ShortInterceptionLearningRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.ShortInterceptionLearningRegressionTest",
+      "input_sha256": "96ff1443504853a8b3631fa5acfb54d6efe7033e104a8f3dec0a6a8960cfcfcb",
+      "output_sha256": "2b552804e4d4209ef1fd328720e1ebc32ac12a77ea1b7e4e49c433699c106c6a",
+      "legacy_patch_count": 5,
+      "legacy_output_sha256": "f463aec26f9f14e219f97c75c7df413a2ef8947eda116bbfee9aa3a19283233d",
+      "assertion_call_tokens": 72,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-hp-ids",
+          "before": "HighPowerSkills.IDS.size() == 51",
+          "after": "HighPowerSkills.IDS.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-registry",
+          "before": "HighPowerSkills.ALL.size() == 52",
+          "after": "HighPowerSkills.ALL.size() == 53 && cn.academy.port.highpower.HighPowerSkills.ALL.get(52).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.AUTONOMOUS_VECTOR_CIRCLE_PROPOSAL == 452",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-ids",
+          "before": "HighPowerSkills.IDS.size() == 52",
+          "after": "HighPowerSkills.IDS.size() == 53 && HighPowerSkills.IDS.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 102",
+          "after": "SkillCatalog.REGISTERED.size() == 103 && SkillCatalog.REGISTERED.get(102).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 87",
+          "after": "PresetSkills.REGISTERED.size() == 88 && PresetSkills.REGISTERED.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 94 && SkillCatalog.REGISTERED_CONFIG_KEYS.contains(cn.academy.port.core.ClassicSkillConfiguration.key(\"vecmanip\", \"autonomous_vector_circle\"))",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/SpatialPincerCorridorLearningRegressionTest.java": {
+      "snapshot": "baseline-v80/SpatialPincerCorridorLearningRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.SpatialPincerCorridorLearningRegressionTest",
+      "input_sha256": "15fc9016616b5a01934329d2bf5447c89cdf1b363156f173ad6061ab40eafcfb",
+      "output_sha256": "97a65c54ac370d0af605100cfae4e0e37564807bcacd007852bd80f5dbc743af",
+      "legacy_patch_count": 5,
+      "legacy_output_sha256": "6c1ed54f90471046a5eca3b6a05f349a1dd7fbe1d6d129a68672b33b2238b9be",
+      "assertion_call_tokens": 44,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-hp-ids",
+          "before": "HighPowerSkills.IDS.size() == 51",
+          "after": "HighPowerSkills.IDS.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-registry",
+          "before": "HighPowerSkills.ALL.size() == 52",
+          "after": "HighPowerSkills.ALL.size() == 53 && cn.academy.port.highpower.HighPowerSkills.ALL.get(52).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.AUTONOMOUS_VECTOR_CIRCLE_PROPOSAL == 452",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-ids",
+          "before": "HighPowerSkills.IDS.size() == 52",
+          "after": "HighPowerSkills.IDS.size() == 53 && HighPowerSkills.IDS.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 102",
+          "after": "SkillCatalog.REGISTERED.size() == 103 && SkillCatalog.REGISTERED.get(102).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 87",
+          "after": "PresetSkills.REGISTERED.size() == 88 && PresetSkills.REGISTERED.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 94 && SkillCatalog.REGISTERED_CONFIG_KEYS.contains(cn.academy.port.core.ClassicSkillConfiguration.key(\"vecmanip\", \"autonomous_vector_circle\"))",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/SpatialRelayLearningRegressionTest.java": {
+      "snapshot": "baseline-v80/SpatialRelayLearningRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.SpatialRelayLearningRegressionTest",
+      "input_sha256": "d4482b2d62e479ae7b1168c20c167295275c7111eb7a6c76611efb880f4411c6",
+      "output_sha256": "f2b1057807605440d3eed3f8d32104c070a8d1d56fa4f70e82ec634c8ff5648f",
+      "legacy_patch_count": 5,
+      "legacy_output_sha256": "5024dbd8201994532868dae0312d292ffa5e9d7df368cbf1f415d030512a4f78",
+      "assertion_call_tokens": 69,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-hp-ids",
+          "before": "HighPowerSkills.IDS.size() == 51",
+          "after": "HighPowerSkills.IDS.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-registry",
+          "before": "HighPowerSkills.ALL.size() == 52",
+          "after": "HighPowerSkills.ALL.size() == 53 && cn.academy.port.highpower.HighPowerSkills.ALL.get(52).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.AUTONOMOUS_VECTOR_CIRCLE_PROPOSAL == 452",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-ids",
+          "before": "HighPowerSkills.IDS.size() == 52",
+          "after": "HighPowerSkills.IDS.size() == 53 && HighPowerSkills.IDS.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 102",
+          "after": "SkillCatalog.REGISTERED.size() == 103 && SkillCatalog.REGISTERED.get(102).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 87",
+          "after": "PresetSkills.REGISTERED.size() == 88 && PresetSkills.REGISTERED.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 94 && SkillCatalog.REGISTERED_CONFIG_KEYS.contains(cn.academy.port.core.ClassicSkillConfiguration.key(\"vecmanip\", \"autonomous_vector_circle\"))",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/TacticalCoordinateLearningRegressionTest.java": {
+      "snapshot": "baseline-v80/TacticalCoordinateLearningRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.TacticalCoordinateLearningRegressionTest",
+      "input_sha256": "c0d2c01e2ba6591c170a65c5436a7230c9b159ca03873f3e84dd71ab28a281fc",
+      "output_sha256": "b80e8650db87ad846a3ab5585cba2ff58f4d78a23446306f1be9809bad9f043a",
+      "legacy_patch_count": 5,
+      "legacy_output_sha256": "f3d3b747bfe0eefdb3a683ccc085070f2c8f584905fed607d7b4bf261f0483d9",
+      "assertion_call_tokens": 46,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-hp-ids",
+          "before": "HighPowerSkills.IDS.size() == 51",
+          "after": "HighPowerSkills.IDS.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-registry",
+          "before": "HighPowerSkills.ALL.size() == 52",
+          "after": "HighPowerSkills.ALL.size() == 53 && cn.academy.port.highpower.HighPowerSkills.ALL.get(52).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.AUTONOMOUS_VECTOR_CIRCLE_PROPOSAL == 452",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-ids",
+          "before": "HighPowerSkills.IDS.size() == 52",
+          "after": "HighPowerSkills.IDS.size() == 53 && HighPowerSkills.IDS.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 102",
+          "after": "SkillCatalog.REGISTERED.size() == 103 && SkillCatalog.REGISTERED.get(102).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 87",
+          "after": "PresetSkills.REGISTERED.size() == 88 && PresetSkills.REGISTERED.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 94 && SkillCatalog.REGISTERED_CONFIG_KEYS.contains(cn.academy.port.core.ClassicSkillConfiguration.key(\"vecmanip\", \"autonomous_vector_circle\"))",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/TeleporterFoundationRegressionTest.java": {
+      "snapshot": "baseline-v80/TeleporterFoundationRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.TeleporterFoundationRegressionTest",
+      "input_sha256": "2a627f7d4ba7e8dbea62ab9c754098a0e42cfb2557edadb90ca3e4f67ad92905",
+      "output_sha256": "d221e509b34d80c5e02cbb010df1ce49782eb13e4298ea241fff560ce590ee33",
+      "legacy_patch_count": 1,
+      "legacy_output_sha256": "bf4c1d6241117589f9837b1217bfc9205c44f86c095d92c1d42b6295ac9568fb",
+      "assertion_call_tokens": 52,
+      "patches": [
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 102",
+          "after": "SkillCatalog.REGISTERED.size() == 103 && SkillCatalog.REGISTERED.get(102).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/TrajectoryReturnLearningRegressionTest.java": {
+      "snapshot": "baseline-v80/TrajectoryReturnLearningRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.TrajectoryReturnLearningRegressionTest",
+      "input_sha256": "98b8315867251f1efbe3a98ccea1cda88238f9f801c0f3312a9f6703aeb79947",
+      "output_sha256": "2efb497b19a73b6b2b7d5f4b40ad438682fa2532fcae7d543db49ecd57c6c806",
+      "legacy_patch_count": 4,
+      "legacy_output_sha256": "64dd83d76a32a220c805f49540a2e9f03fd6b8282002c780470641aa4c577cdc",
+      "assertion_call_tokens": 51,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-registry",
+          "before": "HighPowerSkills.ALL.size() == 52",
+          "after": "HighPowerSkills.ALL.size() == 53 && cn.academy.port.highpower.HighPowerSkills.ALL.get(52).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.AUTONOMOUS_VECTOR_CIRCLE_PROPOSAL == 452",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 102",
+          "after": "SkillCatalog.REGISTERED.size() == 103 && SkillCatalog.REGISTERED.get(102).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 87",
+          "after": "PresetSkills.REGISTERED.size() == 88 && PresetSkills.REGISTERED.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 94 && SkillCatalog.REGISTERED_CONFIG_KEYS.contains(cn.academy.port.core.ClassicSkillConfiguration.key(\"vecmanip\", \"autonomous_vector_circle\"))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-vector-page-page",
+          "before": "page.size() == 12 &&",
+          "after": "page.size() == 13 && page.get(12).id().equals(\"autonomous_vector_circle\") &&",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/VectorCageLearningRegressionTest.java": {
+      "snapshot": "baseline-v80/VectorCageLearningRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.VectorCageLearningRegressionTest",
+      "input_sha256": "84314e690953b5bf3774462dd76665b9de4dab6ba92e6f0fb0622b7a41e139f2",
+      "output_sha256": "88677ac9f5f5ca9983c5645ef53afc2fa8657169e04867c0f25c7ea0e23d8e4d",
+      "legacy_patch_count": 4,
+      "legacy_output_sha256": "dd7c64c346aa412f013606c23d47f3dabf9036b408da9916d420ffe950a567f7",
+      "assertion_call_tokens": 24,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-registry",
+          "before": "HighPowerSkills.ALL.size() == 52",
+          "after": "HighPowerSkills.ALL.size() == 53 && cn.academy.port.highpower.HighPowerSkills.ALL.get(52).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.AUTONOMOUS_VECTOR_CIRCLE_PROPOSAL == 452",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 102",
+          "after": "SkillCatalog.REGISTERED.size() == 103 && SkillCatalog.REGISTERED.get(102).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 87",
+          "after": "PresetSkills.REGISTERED.size() == 88 && PresetSkills.REGISTERED.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 94 && SkillCatalog.REGISTERED_CONFIG_KEYS.contains(cn.academy.port.core.ClassicSkillConfiguration.key(\"vecmanip\", \"autonomous_vector_circle\"))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-vector-page-page",
+          "before": "page.size() == 12 &&",
+          "after": "page.size() == 13 && page.get(12).id().equals(\"autonomous_vector_circle\") &&",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/VectorFoundationRegressionTest.java": {
+      "snapshot": "baseline-v80/VectorFoundationRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.VectorFoundationRegressionTest",
+      "input_sha256": "6d5b591e27aed57f0f633999cb05ddc7a1b704e3ad1fbe01993ed37411b73ee6",
+      "output_sha256": "79904353efa13d2bac8bb6de7ff3c83f8ee9dfd9c84611a409b802e7422791f2",
+      "legacy_patch_count": 4,
+      "legacy_output_sha256": "a4e92650dad835ebd6709dda035c73a7da968c9ff7e941826f474d07d7bbe9f8",
+      "assertion_call_tokens": 44,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-registry",
+          "before": "HighPowerSkills.ALL.size() == 52",
+          "after": "HighPowerSkills.ALL.size() == 53 && cn.academy.port.highpower.HighPowerSkills.ALL.get(52).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.AUTONOMOUS_VECTOR_CIRCLE_PROPOSAL == 452",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 102",
+          "after": "SkillCatalog.REGISTERED.size() == 103 && SkillCatalog.REGISTERED.get(102).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 87",
+          "after": "PresetSkills.REGISTERED.size() == 88 && PresetSkills.REGISTERED.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 94 && SkillCatalog.REGISTERED_CONFIG_KEYS.contains(cn.academy.port.core.ClassicSkillConfiguration.key(\"vecmanip\", \"autonomous_vector_circle\"))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-vector-page-high",
+          "before": "high.size() == 12 &&",
+          "after": "high.size() == 13 && high.get(12).id().equals(\"autonomous_vector_circle\") &&",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-vector-catalog-order",
+          "before": "HighPowerSkills.find(HighPowerSkills.WIND_PRESSURE_LIFT).orElseThrow()))",
+          "after": "HighPowerSkills.find(HighPowerSkills.WIND_PRESSURE_LIFT).orElseThrow(), HighPowerSkills.find(HighPowerSkills.AUTONOMOUS_VECTOR_CIRCLE).orElseThrow()))",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/WindPressureLiftLearningRegressionTest.java": {
+      "snapshot": "baseline-v80/WindPressureLiftLearningRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.WindPressureLiftLearningRegressionTest",
+      "input_sha256": "5295d3477865e29c4df4b0bf3c192e0e3692a9ebb6811e8c0bac24e8bc8deccd",
+      "output_sha256": "6cd433c355abd5dbd1d19213872e769f1400394ad16f4d2179d32ab2b2a7689a",
+      "legacy_patch_count": 6,
+      "legacy_output_sha256": "41afac33aba7ffde6d1881dbaed098c0e8796ea153a52b2d50ae3c3d0a8596fd",
+      "assertion_call_tokens": 63,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-canonical-id-set",
+          "before": "expectedIds.add(\"remote_scatter_relay\");",
+          "after": "expectedIds.add(\"remote_scatter_relay\");\n        expectedIds.add(\"scatter_locator_plate\");",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-md-append-after-frozen71-prefix",
+          "before": "entry.getKey().equals(\"meltdowner\")?2:0",
+          "after": "entry.getKey().equals(\"meltdowner\")?3:0",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-registry",
+          "before": "HighPowerSkills.ALL.size() == 52",
+          "after": "HighPowerSkills.ALL.size() == 53 && cn.academy.port.highpower.HighPowerSkills.ALL.get(52).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.AUTONOMOUS_VECTOR_CIRCLE_PROPOSAL == 452",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 102",
+          "after": "SkillCatalog.REGISTERED.size() == 103 && SkillCatalog.REGISTERED.get(102).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 87",
+          "after": "PresetSkills.REGISTERED.size() == 88 && PresetSkills.REGISTERED.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 94 && SkillCatalog.REGISTERED_CONFIG_KEYS.contains(cn.academy.port.core.ClassicSkillConfiguration.key(\"vecmanip\", \"autonomous_vector_circle\"))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-vector-page-page",
+          "before": "page.size()==12&&",
+          "after": "page.size()==13&& page.get(12).id().equals(\"autonomous_vector_circle\") &&",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-id-set",
+          "before": "expectedIds.add(\"scatter_locator_plate\");",
+          "after": "expectedIds.add(\"scatter_locator_plate\"); expectedIds.add(\"autonomous_vector_circle\");",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-vector-append-count",
+          "before": "entry.getKey().equals(CATEGORY)?1:",
+          "after": "entry.getKey().equals(CATEGORY)?2:",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/YawPalmLearningRegressionTest.java": {
+      "snapshot": "baseline-v80/YawPalmLearningRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.YawPalmLearningRegressionTest",
+      "input_sha256": "330a6db87622c01602b55ae681bdad294a337f73cf5e14c11ced7b9ba933e3a4",
+      "output_sha256": "17a6ffa94aabba357f49d424417d73e4c3f793ba2e0c67129c18e41336f4c387",
+      "legacy_patch_count": 4,
+      "legacy_output_sha256": "a7a8ed970357fbfe72d5d178913cfe2a10e886d0de4c2654e4025455cdd1052b",
+      "assertion_call_tokens": 43,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-registry",
+          "before": "HighPowerSkills.ALL.size() == 52",
+          "after": "HighPowerSkills.ALL.size() == 53 && cn.academy.port.highpower.HighPowerSkills.ALL.get(52).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0)) && cn.academy.port.highpower.HighPowerSkills.AUTONOMOUS_VECTOR_CIRCLE_PROPOSAL == 452",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 102",
+          "after": "SkillCatalog.REGISTERED.size() == 103 && SkillCatalog.REGISTERED.get(102).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 87",
+          "after": "PresetSkills.REGISTERED.size() == 88 && PresetSkills.REGISTERED.contains(\"autonomous_vector_circle\")",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 94 && SkillCatalog.REGISTERED_CONFIG_KEYS.contains(cn.academy.port.core.ClassicSkillConfiguration.key(\"vecmanip\", \"autonomous_vector_circle\"))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-vector-page-page",
+          "before": "page.size() == 12 &&",
+          "after": "page.size() == 13 && page.get(12).id().equals(\"autonomous_vector_circle\") &&",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/client/SafeLandingProbeLayoutRegressionTest.java": {
+      "snapshot": "baseline-v80/SafeLandingProbeLayoutRegressionTest.java",
+      "main_class": "cn.academy.port.client.SafeLandingProbeLayoutRegressionTest",
+      "input_sha256": "c15a59406b7b7aab3809761b7896cb9fc339150543dd538e979dea6ec445bb95",
+      "output_sha256": "3207473fe1527f6332f0edcf9ef253dce836f37e6075a15015d619bab14381c8",
+      "legacy_patch_count": 2,
+      "legacy_output_sha256": "3207473fe1527f6332f0edcf9ef253dce836f37e6075a15015d619bab14381c8",
+      "assertion_call_tokens": 42,
+      "patches": [
+        {
+          "name": "md-old-source-and-page-prefix",
+          "before": "raw.size() == 13 && page.size() == 13",
+          "after": "raw.size() == 14 && page.size() == 14",
+          "occurrences": 1
+        },
+        {
+          "name": "reviewed-new232-page-array-only",
+          "before": "double[][] pagePositions = {{26,61},{110,29},{110,97},{206,29},{206,97},{160,105},{50,20},{20,105},{225,63},{160,20},{62,106},{160,61}};",
+          "after": "double[][] pagePositions = {{26,61},{110,29},{110,97},{206,29},{206,97},{160,105},{54,20},{20,105},{225,63},{160,20},{62,106},{160,61}};",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/ScatterLocatorPlateLearningRegressionTest.java": {
+      "snapshot": "baseline-v80/ScatterLocatorPlateLearningRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.ScatterLocatorPlateLearningRegressionTest",
+      "input_sha256": "7866f94f04aae105f2c553d3aa06a1f25cb37e02a45f50f7bdc5504958c185f2",
+      "output_sha256": "c6efee5ba8d1cdb1a0454bf946bc574743d3238b8b7c62f4ed885a0defa503ae",
+      "legacy_patch_count": 0,
+      "legacy_output_sha256": "7866f94f04aae105f2c553d3aa06a1f25cb37e02a45f50f7bdc5504958c185f2",
+      "assertion_call_tokens": 66,
+      "patches": [
+        {
+          "name": "new452-total-catalog",
+          "before": "SkillCatalog.REGISTERED.size() == 102",
+          "after": "SkillCatalog.REGISTERED.size() == 103 && SkillCatalog.REGISTERED.get(102).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 94 && SkillCatalog.REGISTERED_CONFIG_KEYS.contains(cn.academy.port.core.ClassicSkillConfiguration.key(\"vecmanip\", \"autonomous_vector_circle\"))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-exact-candidate-tail",
+          "before": "candidate.size() == 52",
+          "after": "candidate.size() == 53 && candidate.get(52).equals(new cn.academy.port.SkillCatalog.Skill(\"vecmanip\", \"autonomous_vector_circle\", 5, true, java.util.List.of(new cn.academy.port.SkillCatalog.Requirement(\"multi_axis_reflection\", 0)), 0))",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-id-set",
+          "before": "expectedIds.add(ID);",
+          "after": "expectedIds.add(ID); expectedIds.add(\"autonomous_vector_circle\");",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-source-record-count",
+          "before": "currentBytes.size() == 52",
+          "after": "currentBytes.size() == 53",
+          "occurrences": 1
+        },
+        {
+          "name": "new452-derived-preset-count",
+          "before": "presets.size() == 87",
+          "after": "presets.size() == 88",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/VectorParryLearningRegressionTest.java": {
+      "snapshot": "baseline-v80/VectorParryLearningRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.VectorParryLearningRegressionTest",
+      "input_sha256": "f6584f9bda9fbbba00a265f3c60f4ddae2144dab6b89b215fd2430699f45b4b9",
+      "output_sha256": "f899d0a90dad1c857725b2f04a39b8cdd690e23c3a2f5b1dc278ea2cd133932c",
+      "legacy_patch_count": 0,
+      "legacy_output_sha256": "f6584f9bda9fbbba00a265f3c60f4ddae2144dab6b89b215fd2430699f45b4b9",
+      "assertion_call_tokens": 20,
+      "patches": [
+        {
+          "name": "new452-vector-page-page",
+          "before": "page.size() == 12 &&",
+          "after": "page.size() == 13 && page.get(12).id().equals(\"autonomous_vector_circle\") &&",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/BrakingTouchLearningRegressionTest.java": {
+      "snapshot": "baseline-v80/BrakingTouchLearningRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.BrakingTouchLearningRegressionTest",
+      "input_sha256": "ef3a350d2457aca3c5efa4707a4b07dc6a355d25c9c2845fe648fbdabf9a7210",
+      "output_sha256": "b5dd20d25f21bd22d4d5deaf7776cefb4898447e5b73ef979cca3ef37f779467",
+      "legacy_patch_count": 0,
+      "legacy_output_sha256": "ef3a350d2457aca3c5efa4707a4b07dc6a355d25c9c2845fe648fbdabf9a7210",
+      "assertion_call_tokens": 20,
+      "patches": [
+        {
+          "name": "new452-vector-page-page",
+          "before": "page.size() == 12 &&",
+          "after": "page.size() == 13 && page.get(12).id().equals(\"autonomous_vector_circle\") &&",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/ShearWindbladeLearningRegressionTest.java": {
+      "snapshot": "baseline-v80/ShearWindbladeLearningRegressionTest.java",
+      "main_class": "cn.academy.port.highpower.ShearWindbladeLearningRegressionTest",
+      "input_sha256": "25c3ba2eb3643a59f70776bd0d9dd2e1b15ec8f61c5e4106549378e3eb589d23",
+      "output_sha256": "9e0d0644b0e98d45f4b7bc03bca7d10b43ea96655c9635fb3302fd1b150dce11",
+      "legacy_patch_count": 0,
+      "legacy_output_sha256": "25c3ba2eb3643a59f70776bd0d9dd2e1b15ec8f61c5e4106549378e3eb589d23",
+      "assertion_call_tokens": 20,
+      "patches": [
+        {
+          "name": "new452-vector-page-page",
+          "before": "page.size() == 12 &&",
+          "after": "page.size() == 13 && page.get(12).id().equals(\"autonomous_vector_circle\") &&",
+          "occurrences": 1
+        }
+      ]
+    }
+  },
+  "classic_inputs": {
+    "src/main/resources/classic-skills.json": "fe698b35ce94e9cbd628dc63950bfd706749177d3b0ebe4048c1b4e7905e4433",
+    "src/main/resources/classic-developer-layout.json": "04d11a41b95e9b2a86814ccedb85cb3a772d43c44e8910c2f58bfc5d0b09aa78",
+    "src/main/java/cn/academy/port/SkillCatalog.java": "2407b5935a19fcbc38d96bdf29313b123ddc34287bada418ae8964de72b4646c",
+    "src/main/java/cn/academy/port/preset/PresetSkills.java": "3054f71ae59c913816d7ce352a0fef10065c24cde7ea2601c3d32942babcc47c",
+    "src/main/java/cn/academy/port/core/ClassicRules.java": "4abfac645ae9a33263573001064ff1c023fab88d6417e6137407c1f741b32c8d",
+    "src/main/java/cn/academy/port/core/ClassicSkillConfiguration.java": "16999cb9bc9ef347644ac855ee29c4866741b6a518edbd7a7e23c4c3ee92b03b",
+    "src/main/java/cn/academy/port/develop/DeveloperType.java": "c107823dc1cb45faaacb6de3ffaaf47fef7f35b7e3051d7de61c8be4c4af5c29",
+    "src/main/java/cn/academy/port/develop/DevelopmentActions.java": "31420978fa1cfe7c04e9e45fa1d7181d0d94f88d3ca32dcc5038a00cc3fffacc",
+    "src/main/java/cn/academy/port/develop/DevelopmentProcess.java": "be488dcfbad153d875ea0f0ec926a7ac4fcdaaf090606c470637abcf60044411",
+    "src/main/java/cn/academy/port/client/ClassicDeveloperLayout.java": "7c23cce16b4621d8b29bb1a68fffebad49ab673198b85e5f88dc7720f3bfe470"
+  },
+  "limits": {
+    "highpower": 53,
+    "registered": 103,
+    "presets": 88,
+    "configuration": 94,
+    "old_records": 52,
+    "new_ordinal": 52
+  },
+  "source_count": 29,
+  "patch_count": 236,
+  "append_patch_count": 120,
+  "revision": 2,
+  "previous_contract": {
+    "path": "src/test/resources/highpower-learning/autonomous-vector-circle-v20/contract-v20.json",
+    "sha256": "3113207f7f1a607d1fa4edf618cd278202eb39449aca100be65afdad38939e97",
+    "amendment": "Correct only SafeLandingProbeLayoutRegressionTest main_class to its authentic .80 package; source patches and all source pins remain unchanged."
+  }
+}

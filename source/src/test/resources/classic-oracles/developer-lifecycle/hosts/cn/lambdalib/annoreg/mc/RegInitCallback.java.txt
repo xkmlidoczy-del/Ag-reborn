@@ -1,0 +1,2 @@
+/* Test-only lifecycle platform plumbing; business methods run unchanged originals. */
+package cn.lambdalib.annoreg.mc;public @interface RegInitCallback {}

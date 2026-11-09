@@ -1,0 +1,9 @@
+{
+  "required": true,
+  "minVersion": "0.8.5",
+  "package": "cn.academy.port.highpower.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "plugin": "cn.academy.port.highpower.mixin.NativeBrakingTouchMixinPlugin",
+  "mixins": ["ServerConnectionBrakingTouchMixin", "EntityBrakingTouchMixin", "LivingEntityBrakingTouchMixin"],
+  "injectors": {"defaultRequire": 1}
+}

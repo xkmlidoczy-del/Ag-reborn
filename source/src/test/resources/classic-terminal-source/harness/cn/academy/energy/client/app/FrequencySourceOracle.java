@@ -1,0 +1,27 @@
+package cn.academy.energy.client.app;
+import cn.academy.energy.api.*;import cn.academy.energy.api.block.*;import cn.academy.energy.internal.*;import cn.academy.energy.api.event.*;import cn.academy.energy.api.event.wen.LinkNodeEvent;import cn.academy.energy.api.event.node.LinkUserEvent;import cn.lambdalib.s11n.network.*;import net.minecraftforge.common.MinecraftForge;import java.util.*;
+public final class FrequencySourceOracle {
+ static int assertions;static void eq(Object a,Object b){assertions++;if(!Objects.equals(a,b))throw new AssertionError(a+" != "+b);}
+ static final class Matrix implements IWirelessMatrix {public int getCapacity(){return 8;}public double getBandwidth(){return 100;}public double getRange(){return 16;}}
+ static final class Node implements IWirelessNode {String password="nSecret";public String getPassword(){return password;}public double getMaxEnergy(){return 1000;}public double getEnergy(){return 0;}public void setEnergy(double value){}public double getBandwidth(){return 10;}public int getCapacity(){return 8;}public double getRange(){return 8;}public String getNodeName(){return "NodeName";}}
+ static final class Generator implements IWirelessGenerator {public double getProvidedEnergy(double required){return required;}public double getBandwidth(){return 10;}}
+ static final class Receiver implements IWirelessReceiver {public double getRequiredEnergy(){return 2;}public double injectEnergy(double value){return 0;}public double pullEnergy(double value){return 0;}public double getBandwidth(){return 10;}}
+ public static void main(String[] args){
+  Matrix matrix=new Matrix(),canonical=new Matrix(),missing=new Matrix();Node node=new Node();WirelessHelper.networks.put(matrix,new WirelessNet("SSID-sensitive-case","mSecret",canonical));
+  Future<String> queried=new Future<>();Syncs.hQuerySSID(matrix,queried);eq(queried.result,"SSID-sensitive-case");eq(queried.sends,1);Future<String> absent=new Future<>();Syncs.hQuerySSID(missing,absent);eq(absent.result,null);eq(absent.sends,1);
+  for(String pass:Arrays.asList("mSecret","msecret"," mSecret","mSecret ","",null)){Future<Boolean> f=new Future<>();Syncs.hAuthorizeMatrix(matrix,pass,f);eq(f.result,"mSecret".equals(pass));eq(f.sends,1);Future<Boolean> none=new Future<>();Syncs.hAuthorizeMatrix(missing,pass,none);eq(none.result,false);eq(none.sends,1);}
+  for(String pass:Arrays.asList("nSecret","nsecret"," nSecret","nSecret ","",null)){Future<Boolean> f=new Future<>();Syncs.hAuthNode(node,pass,f);eq(f.result,"nSecret".equals(pass));eq(f.sends,1);}
+  for(boolean cancel:new boolean[]{false,true})for(String pass:List.of("mSecret","wrong")){
+   MinecraftForge.EVENT_BUS.events.clear();MinecraftForge.EVENT_BUS.canceled=e->cancel;Future<Boolean> f=new Future<>();Syncs.hLinkNodeToMatrix(node,matrix,pass,f);eq(f.result,!cancel);eq(f.sends,1);eq(MinecraftForge.EVENT_BUS.events.size(),1);LinkNodeEvent event=(LinkNodeEvent)MinecraftForge.EVENT_BUS.events.get(0);eq(event.node,node);eq(event.matrix,canonical);eq(event.pwd,pass);eq(event.tile,node);
+  }
+  MinecraftForge.EVENT_BUS.events.clear();Future<Boolean> noNet=new Future<>();Syncs.hLinkNodeToMatrix(node,missing,"mSecret",noNet);eq(noNet.result,false);eq(noNet.sends,1);eq(MinecraftForge.EVENT_BUS.events.isEmpty(),true);
+  for(IWirelessUser user:List.of(new Generator(),new Receiver()))for(boolean cancel:new boolean[]{false,true}){MinecraftForge.EVENT_BUS.events.clear();MinecraftForge.EVENT_BUS.canceled=e->cancel;Future<Boolean> f=new Future<>();Syncs.hLinkUserToNode(user,node,f);eq(f.result,!cancel);eq(f.sends,1);eq(MinecraftForge.EVENT_BUS.events.size(),1);LinkUserEvent event=(LinkUserEvent)MinecraftForge.EVENT_BUS.events.get(0);eq(event.tile,user);eq(event.node,node);eq(event.needAuth,false);eq(event.password,"invalid");eq(event.type,user instanceof Generator?WirelessUserEvent.UserType.GENERATOR:WirelessUserEvent.UserType.RECEIVER);}
+  LinkUserEvent authenticated=new LinkUserEvent(new Receiver(),node,"nSecret");eq(authenticated.needAuth,true);eq(authenticated.password,"nSecret");eq(new LinkNodeEvent(node,matrix).pwd,"");
+  // All source request channels forward exact endpoint/password/future objects without rewrites.
+  NetworkMessage.serverCalls.clear();Future<String> q=new Future<>();Future<Boolean> a=new Future<>();Generator user=new Generator();Syncs.querySSID(matrix,q);Syncs.authorizeMatrix(matrix,"mSecret",a);Syncs.authorizeNode(node,"nSecret",a);Syncs.linkNodeToMatrix(node,matrix,"mSecret",a);Syncs.linkUserToNode(user,node,a);
+  List<String> channels=List.of("query_ssid","auth_matrix","auth_node","link_node","link_user");List<Object[]> expected=List.of(new Object[]{matrix,q},new Object[]{matrix,"mSecret",a},new Object[]{node,"nSecret",a},new Object[]{node,matrix,"mSecret",a},new Object[]{user,node,a});eq(NetworkMessage.serverCalls.size(),5);
+  for(int i=0;i<5;i++){var call=NetworkMessage.serverCalls.get(i);eq(call.delegate(),Syncs.class);eq(call.channel(),channels.get(i));eq(Arrays.asList(call.args()),Arrays.asList(expected.get(i)));}
+  // Exact canceled result is owned by the original event route; packet/ray/session hardening is tested separately.
+  MinecraftForge.EVENT_BUS.canceled=e->false;System.out.println("SUMMARY|frequency-original|"+assertions);
+ }
+}

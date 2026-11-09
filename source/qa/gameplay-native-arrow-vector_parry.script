@@ -1,0 +1,1 @@
+lang:zh_cn|cmd:time set night|cmd:gamerule doMobSpawning false|cmd:difficulty normal|keyup:82|keyup:87|keyup:340|tree:close|cam:first|cmd:tp @s 0.5 -60 0.5 0 0|arrowmode:setup:vector_parry|wait:30|arrowmode:baseline|keydown:82|wait:6|arrowmode:launch|wait:16|arrowmode:assert|shot:play_specialist_native_arrow_vector_parry|keyup:82|wait:3|quit

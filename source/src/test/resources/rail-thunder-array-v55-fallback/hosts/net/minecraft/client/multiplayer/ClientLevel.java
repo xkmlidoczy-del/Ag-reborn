@@ -1,0 +1,3 @@
+package net.minecraft.client.multiplayer;
+import java.util.*;import net.minecraft.world.entity.Entity;import net.minecraft.core.BlockPos;import net.minecraft.world.phys.*;import net.minecraft.world.level.ClipContext;
+public class ClientLevel {public final Map<Integer,Entity> entities=new LinkedHashMap<>();public boolean chunks=true,blocked;public double blockFraction=.5;public Entity getEntity(int id){return entities.get(id);}public boolean hasChunkAt(BlockPos p){return chunks;}public HitResult clip(ClipContext c){return new HitResult(blocked?HitResult.Type.BLOCK:HitResult.Type.MISS,blocked?c.from().lerp(c.to(),blockFraction):c.to());}}

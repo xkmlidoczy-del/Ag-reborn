@@ -1,0 +1,6 @@
+AcademyCraft1.0.7 Vector background-mask canonical source witnesses
+Copyright (c) Lambda Innovation, 2013-2016
+Official project: https://github.com/LambdaInnovation/AcademyCraft
+Pinned source tag:1.0.7, expected commit00d19ec0cf538f61c1095c9292f5ee6863db4521
+
+ClientResources.java, BackgroundMask.java and CatVecManip.scala are complete unchanged canonical source files. Their source headers are preserved. README.md preserves all original licensing/additional restriction text verbatim, and GPLv3-LICENSE contains the port's complete GPLv3 licence. These are test-only witnesses, not runtime code. No Minecraft/Mojang source or binaries are bundled.

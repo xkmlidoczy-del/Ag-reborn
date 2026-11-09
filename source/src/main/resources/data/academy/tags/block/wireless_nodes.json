@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "academy:wireless_node_basic",
+    "academy:wireless_node_standard",
+    "academy:wireless_node_advanced"
+  ]
+}

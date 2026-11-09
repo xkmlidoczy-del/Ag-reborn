@@ -1,0 +1,17 @@
+private void onMove(long p_91562_, double p_91563_, double p_91564_) {
+        if (p_91562_ == Minecraft.getInstance().getWindow().getWindow()) {
+            if (this.ignoreFirstMove) {
+                this.xpos = p_91563_;
+                this.ypos = p_91564_;
+                this.ignoreFirstMove = false;
+            } else {
+                if (this.minecraft.isWindowActive()) {
+                    this.accumulatedDX = this.accumulatedDX + (p_91563_ - this.xpos);
+                    this.accumulatedDY = this.accumulatedDY + (p_91564_ - this.ypos);
+                }
+
+                this.xpos = p_91563_;
+                this.ypos = p_91564_;
+            }
+        }
+    }

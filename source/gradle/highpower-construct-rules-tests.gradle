@@ -1,0 +1,9 @@
+// V-ADV-01 Vector Construct Manipulation: pure budgets, costs, hover/upright control convergence, landing and throw rules.
+tasks.register('constructRulesTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.core.ConstructRulesRegressionTest'
+    enableAssertions = true
+    maxHeapSize = '128m'
+}
+tasks.named('check') { dependsOn 'constructRulesTest' }

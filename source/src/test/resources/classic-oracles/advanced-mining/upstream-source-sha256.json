@@ -1,0 +1,261 @@
+{
+  "academycraft_tag": "1.0.7",
+  "academycraft_expected_commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521",
+  "lambda_lib_tag": "1.2.3",
+  "execution_scope": "Unchanged entire Java class/interface bodies; only package/import relocation. Minimal test-local Minecraft/GL/particle contract stubs, not a game/render or loot oracle. Scala gameplay is a pinned source audit, not executed.",
+  "sources": [
+    {
+      "name": "MineRayExpert.scala",
+      "upstream_path": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/meltdowner/skill/MineRayExpert.scala",
+      "resource": "MineRayExpert.scala.txt",
+      "sha256": "62b7b89ebedb25a6a56af23a17fa4c310cef56c78a9a73b492d8b370a4273e5d",
+      "licence": "GPLv3 plus upstream additional notices"
+    },
+    {
+      "name": "MineRayLuck.scala",
+      "upstream_path": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/meltdowner/skill/MineRayLuck.scala",
+      "resource": "MineRayLuck.scala.txt",
+      "sha256": "ddd2773143e2a52f19407fddc023075631b37262b211d2ffe7736f47a297a8eb",
+      "licence": "GPLv3 plus upstream additional notices"
+    },
+    {
+      "name": "MineRaysBase.scala",
+      "upstream_path": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/meltdowner/skill/MineRaysBase.scala",
+      "resource": "MineRaysBase.scala.txt",
+      "sha256": "39d791417af63ffeaaec1f57e4fbb79cc613474ba0353ffa277bb703a70922eb",
+      "licence": "GPLv3 plus upstream additional notices"
+    },
+    {
+      "name": "MineRayBasic.scala",
+      "upstream_path": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/meltdowner/skill/MineRayBasic.scala",
+      "resource": "MineRayBasic.scala.txt",
+      "sha256": "6c45d0b528ce98447840c66a33ee6c44f7b9b82175802b8a770be3182e82b130",
+      "licence": "GPLv3 plus upstream additional notices"
+    },
+    {
+      "name": "CatMeltdowner.java",
+      "upstream_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/meltdowner/CatMeltdowner.java",
+      "resource": "CatMeltdowner.java.txt",
+      "sha256": "fd9ccdbc902682b65f41f11fa583fed526ee1ed80a69efc72f6b6ab670be28be",
+      "licence": "GPLv3 plus upstream additional notices"
+    },
+    {
+      "name": "Skill.java",
+      "upstream_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/Skill.java",
+      "resource": "Skill.java.txt",
+      "sha256": "afc9c70de37bfb393f62ee3c9fe1d4e02cedf1c73c75f935bf9d8d5e638f698c",
+      "licence": "GPLv3 plus upstream additional notices"
+    },
+    {
+      "name": "AbilityContext.java",
+      "upstream_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/AbilityContext.java",
+      "resource": "AbilityContext.java.txt",
+      "sha256": "9830d2efcfec0e86539a8cf49f5984e1a5cf1e48e5d9b50ad6c167fd454db00a",
+      "licence": "GPLv3 plus upstream additional notices"
+    },
+    {
+      "name": "DeveloperType.java",
+      "upstream_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/develop/DeveloperType.java",
+      "resource": "DeveloperType.java.txt",
+      "sha256": "767d3d6fc66b5bb67c657dca44ffc4cb25adb36c530a50f504c63ec7d364e85a",
+      "licence": "GPLv3 plus upstream additional notices"
+    },
+    {
+      "name": "DevelopData.java",
+      "upstream_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/develop/DevelopData.java",
+      "resource": "DevelopData.java.txt",
+      "sha256": "c8dfbc8fbec9d3905d4362f75507c8b67a6afe354b6295773e04559aca307d68",
+      "licence": "GPLv3 plus upstream additional notices"
+    },
+    {
+      "name": "LearningHelper.java",
+      "upstream_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/develop/LearningHelper.java",
+      "resource": "LearningHelper.java.txt",
+      "sha256": "015173ee7abc49ad12e2f2ad42c1229d38b2baafd2e33f99421492ebacae87df",
+      "licence": "GPLv3 plus upstream additional notices"
+    },
+    {
+      "name": "DevelopActionSkill.java",
+      "upstream_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/develop/action/DevelopActionSkill.java",
+      "resource": "DevelopActionSkill.java.txt",
+      "sha256": "01ec5df090826815e719d7a979c1680d6f2ef85b3ee87b4c2aad940492dadfe9",
+      "licence": "GPLv3 plus upstream additional notices"
+    },
+    {
+      "name": "DevConditionDep.java",
+      "upstream_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/develop/condition/DevConditionDep.java",
+      "resource": "DevConditionDep.java.txt",
+      "sha256": "0dace28d10b1d397137aa554f33af9b662c84459306aefcc91ba6f60fab7046f",
+      "licence": "GPLv3 plus upstream additional notices"
+    },
+    {
+      "name": "DevConditionDeveloperType.java",
+      "upstream_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/develop/condition/DevConditionDeveloperType.java",
+      "resource": "DevConditionDeveloperType.java.txt",
+      "sha256": "195dfc7fceb3927a86714a6451d07293afac36f4808f19d93e38c94f757296d8",
+      "licence": "GPLv3 plus upstream additional notices"
+    },
+    {
+      "name": "DevConditionLevel.java",
+      "upstream_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/develop/condition/DevConditionLevel.java",
+      "resource": "DevConditionLevel.java.txt",
+      "sha256": "670eec9c2007f63a0718ec9964f27a56bf6655161998951c74e2b3f4189a9ea4",
+      "licence": "GPLv3 plus upstream additional notices"
+    },
+    {
+      "name": "EntityMineRayExpert.java",
+      "upstream_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/meltdowner/entity/EntityMineRayExpert.java",
+      "resource": "EntityMineRayExpert.java.txt",
+      "sha256": "adc47e64f4c5dfceac0441cf8e53ef0665dda9c9a9da5bf603e762606f2e8ad2",
+      "licence": "GPLv3 plus upstream additional notices",
+      "execution_java": "src/test/java/cn/academy/port/skill/oracle/EntityMineRayExpert.java",
+      "relocated_resource": "EntityMineRayExpert.java.relocated.txt",
+      "class_body_sha256": "f50bd94ac5ae5fdc1aad71a70777708301d768e7fec1cb5505d90a5936af9fe8",
+      "relocated_sha256": "d9198d248e16bd6abfbc90eaef1ee2db20dd4837790114eb1b85c4d5db12a636"
+    },
+    {
+      "name": "EntityMineRayLuck.java",
+      "upstream_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/meltdowner/entity/EntityMineRayLuck.java",
+      "resource": "EntityMineRayLuck.java.txt",
+      "sha256": "0f96e68d2e054d4c8d55c3e778b42c8148b61e7cead1ab1e06fff9301f0961ac",
+      "licence": "GPLv3 plus upstream additional notices",
+      "execution_java": "src/test/java/cn/academy/port/skill/oracle/EntityMineRayLuck.java",
+      "relocated_resource": "EntityMineRayLuck.java.relocated.txt",
+      "class_body_sha256": "9523960ad83d8d2a0df3f2d7a9df934ddb0eafe23590fb701775dfc0e097166b",
+      "relocated_sha256": "d16d43cf9c16197bcf956199049046637db65f0d2f6368d4fdfbd2c4195a0390"
+    },
+    {
+      "name": "EntityRayBase.java",
+      "upstream_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/core/entity/EntityRayBase.java",
+      "resource": "EntityRayBase.java.txt",
+      "sha256": "c92031238e72442a0a484907336867eef1197013c5013588ede6a614173cdbd8",
+      "licence": "GPLv3 plus upstream additional notices",
+      "execution_java": "src/test/java/cn/academy/port/skill/oracle/EntityRayBase.java",
+      "relocated_resource": "EntityRayBase.java.relocated.txt",
+      "class_body_sha256": "426b5d053694335ae3288daf0bd466a8c8a62c9c8f23912618b00776da91ef5d",
+      "relocated_sha256": "165a1be88920917d0e394124728e7b7abeb31919a6068583bfb3be5fa7132a38"
+    },
+    {
+      "name": "IRay.java",
+      "upstream_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/core/entity/IRay.java",
+      "resource": "IRay.java.txt",
+      "sha256": "8c8b4e20ec02c2c7cc12cd203c45a226d36b98938b33e3a33e023a505d61cdaf",
+      "licence": "GPLv3 plus upstream additional notices",
+      "execution_java": "src/test/java/cn/academy/port/skill/oracle/IRay.java",
+      "relocated_resource": "IRay.java.relocated.txt",
+      "class_body_sha256": "4461cb3b8f2a54bbb502dc76f18055efda96a4efca868d9eac33c030f755eebd",
+      "relocated_sha256": "f98444a3ed7b2621c9b2b0061307616f934eafb2683798988c3829762214e6d8"
+    },
+    {
+      "name": "RendererRayComposite.java",
+      "upstream_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/core/client/render/ray/RendererRayComposite.java",
+      "resource": "RendererRayComposite.java.txt",
+      "sha256": "08a2eb2caef7f1bb5f3287f83393e3bfd692b465ac8aafc79fb1999c483076c4",
+      "licence": "GPLv3 plus upstream additional notices",
+      "execution_java": "src/test/java/cn/academy/port/skill/oracle/RendererRayComposite.java",
+      "relocated_resource": "RendererRayComposite.java.relocated.txt",
+      "class_body_sha256": "6dee19727eaf2855db0f0aa7ba5dadf1e820a156423d15e1af4dc964a1ae0d92",
+      "relocated_sha256": "2711ccf1dd45ef603d9653e747f9b455e802015ca1d4a8b03abf91380de29242"
+    },
+    {
+      "name": "RendererRayCylinder.java",
+      "upstream_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/core/client/render/ray/RendererRayCylinder.java",
+      "resource": "RendererRayCylinder.java.txt",
+      "sha256": "fe3fd76d90e5835c7311c60db58f82d63236850d2965e0399e4714fff191ca7d",
+      "licence": "GPLv3 plus upstream additional notices"
+    },
+    {
+      "name": "RendererRayBaseSimple.java",
+      "upstream_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/core/client/render/ray/RendererRayBaseSimple.java",
+      "resource": "RendererRayBaseSimple.java.txt",
+      "sha256": "7e9165978ea2608f166b2726ffe03c0eea95a162b3ec68bc99d41a872331a32f",
+      "licence": "GPLv3 plus upstream additional notices"
+    },
+    {
+      "name": "RendererRayBaseGlow.java",
+      "upstream_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/core/client/render/ray/RendererRayBaseGlow.java",
+      "resource": "RendererRayBaseGlow.java.txt",
+      "sha256": "f1cc35cb06dba90a5a67d2c7d3464cbc4283742b4ffc8dc5ad22dfbf2572cb1a",
+      "licence": "GPLv3 plus upstream additional notices"
+    },
+    {
+      "name": "RendererRayGlow.java",
+      "upstream_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/core/client/render/ray/RendererRayGlow.java",
+      "resource": "RendererRayGlow.java.txt",
+      "sha256": "d4168311b956a4258f0eae6ff71c9dd67ce9f1f98abd4eeb2dd0f4f6f2621cd7",
+      "licence": "GPLv3 plus upstream additional notices"
+    },
+    {
+      "name": "RendererList.java",
+      "upstream_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/core/client/render/RendererList.java",
+      "resource": "RendererList.java.txt",
+      "sha256": "98477c6d274aa7e281d6063c5f90b86d3cecc228ae14f4b152015012765da93e",
+      "licence": "GPLv3 plus upstream additional notices",
+      "execution_java": "src/test/java/cn/academy/port/skill/oracle/RendererList.java",
+      "relocated_resource": "RendererList.java.relocated.txt",
+      "class_body_sha256": "f0c8a9d67c827ed7f918d8de27f2657dd8a5385a4058a2c302525a1032f01051",
+      "relocated_sha256": "eef3456945f5b0e8d0e1109c4dd960b07c455e3ce1526e57a39749fd0e102023"
+    },
+    {
+      "name": "MdParticleFactory.java",
+      "upstream_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/meltdowner/client/render/MdParticleFactory.java",
+      "resource": "MdParticleFactory.java.txt",
+      "sha256": "9e0f1e2c80235184e886d76e51d375e8ec312505d39b331da52f66d5af551cdd",
+      "licence": "GPLv3 plus upstream additional notices",
+      "execution_java": "src/test/java/cn/academy/port/skill/oracle/MdParticleFactory.java",
+      "relocated_resource": "MdParticleFactory.java.relocated.txt",
+      "class_body_sha256": "b62691d9dcea47813e716188f3b47dcc07aba20a7e4f0d30135008c6ffbf2e62",
+      "relocated_sha256": "6edf60d083e75afad437d1e563f0ef6dae6706dc157ea2483aac739b54150b2f"
+    },
+    {
+      "name": "Motion3D.java",
+      "upstream_path": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/helper/Motion3D.java",
+      "resource": "Motion3D.java.txt",
+      "sha256": "85d514c11b5130b994c2ceb7efa3bd93a7c0a832e65a9abb0f196cc6d2897a56",
+      "licence": "MIT",
+      "execution_java": "src/test/java/cn/academy/port/skill/oracle/Motion3D.java",
+      "relocated_resource": "Motion3D.java.relocated.txt",
+      "class_body_sha256": "7a539f9671d6823b6cdc0944561abf4ef301550c9c5bebc144e538366c5adb6b",
+      "relocated_sha256": "b8aa00a9cac04a08abc0ecef9bda41852a342a3b36de1acd735444a87d323f1c"
+    },
+    {
+      "name": "RandUtils.java",
+      "upstream_path": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/generic/RandUtils.java",
+      "resource": "RandUtils.java.txt",
+      "sha256": "e06e74399c3fbb5de54672c1198135da76d16427e2ab75e943e847e1f05623eb",
+      "licence": "MIT",
+      "execution_java": "src/test/java/cn/academy/port/skill/oracle/RandUtils.java",
+      "relocated_resource": "RandUtils.java.relocated.txt",
+      "class_body_sha256": "ca1982e23fc107d246ac2bdb5206a8ce83ab95e3be7a6c8026e1e4b5878f0a4b",
+      "relocated_sha256": "3454ceab770637bd24720d170aaffe366e65e4962ae78eb24e206221af1717ed"
+    },
+    {
+      "name": "ViewOptimize.java",
+      "upstream_path": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/deprecated/ViewOptimize.java",
+      "resource": "ViewOptimize.java.txt",
+      "sha256": "4fbd82ec5ea86dde328d8c089280ab3a3a0ec4c12912edc14faa2fc472803364",
+      "licence": "MIT"
+    },
+    {
+      "name": "ParticleFactory.java",
+      "upstream_path": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/particle/ParticleFactory.java",
+      "resource": "ParticleFactory.java.txt",
+      "sha256": "b6e897ccb656b1bb579b6bc08a002575760e79f0d0953f9af9476f6e42c78a6f",
+      "licence": "MIT"
+    },
+    {
+      "name": "MathUtils.java",
+      "upstream_path": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/generic/MathUtils.java",
+      "resource": "MathUtils.java.txt",
+      "sha256": "e80c87ca15cbae89584bd9e1111e22d2f55866bf91b434c8813c20bb98176075",
+      "licence": "MIT"
+    },
+    {
+      "name": "Raytrace.java",
+      "upstream_path": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/mc/Raytrace.java",
+      "resource": "Raytrace.java.txt",
+      "sha256": "c893f0a9434bf6e33564aa4aebe8eaecda3d502a79f7b9862402bff852e9ac0b",
+      "licence": "MIT header; legacy block-ray routine explicitly identified upstream as Mojang-derived; underlying rights not resolved here"
+    }
+  ]
+}

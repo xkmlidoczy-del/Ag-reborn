@@ -1,0 +1,108 @@
+[
+  {
+    "name": "preflight18-complete-frame-em",
+    "script": "gameplay-em-damage.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "arc_gen",
+      "thunder_bolt",
+      "railgun",
+      "thunder_clap",
+      "forked_arc",
+      "iron_sand_lance"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-em-damage",
+    "scriptSha256": "9cf684c10a8936d337ffeb9e6af49ac3afcf5a5563345ceef859ea0cb44afffb",
+    "nominalFixedTicks": 1089,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "arc_gen",
+        "setupStepIndex": 9,
+        "setupOperation": "gameem:setup:arc_gen",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 18,
+            "operation": "gameem:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=arc_gen "
+      },
+      {
+        "skill": "thunder_bolt",
+        "setupStepIndex": 22,
+        "setupOperation": "gameem:setup:thunder_bolt",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 31,
+            "operation": "gameem:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=thunder_bolt "
+      },
+      {
+        "skill": "railgun",
+        "setupStepIndex": 35,
+        "setupOperation": "gameem:setup:railgun",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 44,
+            "operation": "gameem:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=railgun "
+      },
+      {
+        "skill": "thunder_clap",
+        "setupStepIndex": 48,
+        "setupOperation": "gameem:setup:thunder_clap",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 57,
+            "operation": "gameem:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=thunder_clap "
+      },
+      {
+        "skill": "forked_arc",
+        "setupStepIndex": 61,
+        "setupOperation": "gameem:setup:forked_arc",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 70,
+            "operation": "gameem:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=forked_arc "
+      },
+      {
+        "skill": "iron_sand_lance",
+        "setupStepIndex": 74,
+        "setupOperation": "gameem:setup:iron_sand_lance",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 83,
+            "operation": "gameem:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=iron_sand_lance "
+      }
+    ]
+  }
+]

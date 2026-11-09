@@ -1,0 +1,77 @@
+{
+  "academy_commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521",
+  "lambda_version": "1.2.3",
+  "files": [
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/data/CPData.java",
+      "fixture": "fixtures/source/cn/academy/ability/api/data/CPData.java",
+      "sha256": "6ef3a87f06fa86e422b183d379c07093366bf60b89057adc94c01cb9088324c3",
+      "existing_witness": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/ability/api/data/CPData.java.txt"
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/data/AbilityData.java",
+      "fixture": "fixtures/source/cn/academy/ability/api/data/AbilityData.java",
+      "sha256": "a2be759d022d4992bbbba1cfc6e1fa3874015a8f615445864f65f62c250f126e",
+      "existing_witness": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/ability/api/data/AbilityData.java.txt"
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/CalcEvent.java",
+      "fixture": "fixtures/source/cn/academy/ability/api/event/CalcEvent.java",
+      "sha256": "45cf7ef4ab13a1d3e29d467aa4b1aa9e3b800a883b96496f88cbffcee7ce1dc3",
+      "existing_witness": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/ability/api/event/CalcEvent.java.txt"
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/AbilityEvent.java",
+      "fixture": "fixtures/source/cn/academy/ability/api/event/AbilityEvent.java",
+      "sha256": "c096901f6ad91d86433a35700470bdc3eb286fb6b0ba367f4aa357c2c1f9654f",
+      "existing_witness": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/ability/api/event/AbilityEvent.java.txt"
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/OverloadEvent.java",
+      "fixture": "fixtures/source/cn/academy/ability/api/event/OverloadEvent.java",
+      "sha256": "01125823dbc66ace71781e859c68fbb6d2f6456ac966727d675da6678dfcf13c",
+      "existing_witness": "src/test/resources/classic-oracles/shared-skill-consumption/academycraft/src/main/java/cn/academy/ability/api/event/OverloadEvent.java.txt"
+    },
+    {
+      "source": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/generic/MathUtils.java",
+      "fixture": "fixtures/source/cn/lambdalib/util/generic/MathUtils.java",
+      "sha256": "e80c87ca15cbae89584bd9e1111e22d2f55866bf91b434c8813c20bb98176075",
+      "existing_witness": "src/test/resources/classic-oracles/shared-skill-consumption/lambdalib/src/main/java/cn/lambdalib/util/generic/MathUtils.java.txt"
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/LevelChangeEvent.java",
+      "fixture": "fixtures/source/cn/academy/ability/api/event/LevelChangeEvent.java",
+      "sha256": "72b765e3dc1cf772ff27500024e674bf8c79749d72aa38e192097654344b6fbf"
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/CategoryChangeEvent.java",
+      "fixture": "fixtures/source/cn/academy/ability/api/event/CategoryChangeEvent.java",
+      "sha256": "80bd81523812dc8b43a22a068d969764d7177b1b1f0d085168d9008183438b4a"
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/SkillLearnEvent.java",
+      "fixture": "fixtures/source/cn/academy/ability/api/event/SkillLearnEvent.java",
+      "sha256": "e655da809f578a1370ce9e750c90316d78e94b6d1b943fda82a8583b55d903b0"
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/SkillExpChangedEvent.java",
+      "fixture": "fixtures/source/cn/academy/ability/api/event/SkillExpChangedEvent.java",
+      "sha256": "19984b460d037ac483afe8f2e6741b59dde44251643fe773d0e408e9bf08ba56"
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/SkillExpAddedEvent.java",
+      "fixture": "fixtures/source/cn/academy/ability/api/event/SkillExpAddedEvent.java",
+      "sha256": "e2e2a5562c259faf970a860442cb0af336b3660a4d0264dc87b55b883914d388"
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/AbilityActivateEvent.java",
+      "fixture": "fixtures/source/cn/academy/ability/api/event/AbilityActivateEvent.java",
+      "sha256": "dbeb149c6cda24e4fbcb234f415a9984190ab4cbf5da1912288b71128a43b2ce"
+    },
+    {
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/AbilityDeactivateEvent.java",
+      "fixture": "fixtures/source/cn/academy/ability/api/event/AbilityDeactivateEvent.java",
+      "sha256": "7bbc73c3214ff8550c2849ea379795ffbb16165fb0db6a6a388bf5137a9f9e04"
+    }
+  ]
+}

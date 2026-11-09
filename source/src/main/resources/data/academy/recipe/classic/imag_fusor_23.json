@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "ABA",
+    "CDC",
+    "AEA"
+  ],
+  "key": {
+    "A": {
+      "item": "academy:constraint_plate"
+    },
+    "B": {
+      "item": "academy:crystal_low"
+    },
+    "C": {
+      "item": "academy:calc_chip"
+    },
+    "D": {
+      "item": "academy:machine_frame"
+    },
+    "E": {
+      "item": "academy:matter_unit"
+    }
+  },
+  "result": {
+    "id": "academy:imag_fusor",
+    "count": 1
+  }
+}

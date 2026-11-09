@@ -1,0 +1,42 @@
+// Actual compileJava ClassResources; closed M41 matrix/seven hosts; no game bootstrap.
+tasks.register('classicMeltdownerGeometryTest', JavaExec) {
+    dependsOn compileJava, processResources, testClasses
+    def geometryApi = layout.buildDirectory.file('moddev/artifacts/neoforge-21.1.252-merged.jar')
+    // Official merged API has priority over ModDev's slimmer, differently packaged archive.
+    classpath = files(geometryApi) + sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.ClassicMeltdownerGeometryClassResourcesTest'
+    enableAssertions = true
+    maxHeapSize = '512m'
+    doFirst {
+        def digest = { File input -> java.security.MessageDigest.getInstance('SHA-256').digest(input.bytes).encodeHex().toString() }
+        def mainRoot = tasks.named('compileJava').get().destinationDirectory.get().asFile
+        systemProperty 'academy.meltdowner.project.dir', project.projectDir.canonicalPath
+        systemProperty 'academy.meltdowner.main.classes', mainRoot.canonicalPath
+        systemProperty 'academy.meltdowner.main.resources', sourceSets.main.output.resourcesDir.canonicalPath
+        systemProperty 'academy.meltdowner.api.minecraft.jar', geometryApi.get().asFile.canonicalPath
+        def sources = [
+            'src/main/java/cn/academy/port/client/ClassicMeltdownerStarterEffects.java',
+            'src/main/java/cn/academy/port/client/ClassicMeltdownerBeamEffects.java',
+            'src/main/java/cn/academy/port/client/ClassicMeltdownerLateEffects.java',
+            'src/main/java/cn/academy/port/client/ClassicMeltdownerStarterTimeline.java',
+            'src/main/java/cn/academy/port/client/ClassicMeltdownerBeamTimeline.java',
+            'src/main/java/cn/academy/port/client/ClassicAdvancedMineRayTimeline.java',
+            'src/main/java/cn/academy/port/client/ClassicMeltdownerLateTimeline.java',
+            'src/main/java/cn/academy/port/clientless/ClassicLateTrig.java'
+        ]
+        sources.eachWithIndex { path, index -> systemProperty "academy.meltdowner.source.sha256.${index}", digest(file(path)) }
+        def families = ['ClassicMeltdownerStarterEffects', 'ClassicMeltdownerBeamEffects', 'ClassicMeltdownerLateEffects',
+                        'ClassicMeltdownerStarterTimeline', 'ClassicMeltdownerBeamTimeline', 'ClassicMeltdownerLateTimeline', 'ClassicAdvancedMineRayTimeline']
+        def subjectFiles = fileTree(mainRoot) {
+            families.each { family -> include "cn/academy/port/client/${family}*.class" }
+            include 'cn/academy/port/clientless/ClassicLateTrig.class'
+        }
+        subjectFiles.each { input ->
+            def relative = mainRoot.toPath().relativize(input.toPath()).toString().replace(File.separatorChar, '/' as char)
+            def name = relative.substring(0, relative.length() - 6).replace('/', '.')
+            systemProperty "academy.meltdowner.main.sha256.${name}", digest(input)
+        }
+        systemProperty 'academy.meltdowner.report', layout.buildDirectory.dir('reports/classic-meltdowner-geometry').get().asFile.absolutePath
+    }
+}
+tasks.named('check') { dependsOn 'classicMeltdownerGeometryTest' }

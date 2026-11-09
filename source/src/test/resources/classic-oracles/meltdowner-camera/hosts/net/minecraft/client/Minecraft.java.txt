@@ -1,0 +1,7 @@
+package net.minecraft.client;
+public final class Minecraft {
+ private static final Minecraft INSTANCE=new Minecraft();
+ public net.minecraft.client.player.LocalPlayer player=new net.minecraft.client.player.LocalPlayer();
+ public Options options=new Options();
+ public static Minecraft getInstance(){return INSTANCE;}
+}

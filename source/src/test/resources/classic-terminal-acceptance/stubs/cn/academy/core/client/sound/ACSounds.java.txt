@@ -1,0 +1,1 @@
+package cn.academy.core.client.sound; public class ACSounds {public static void playClient(Object p,String s,float f){}}

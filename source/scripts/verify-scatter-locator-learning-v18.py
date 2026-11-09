@@ -1,0 +1,299 @@
+#!/usr/bin/env python3
+"""Execute 25 immutable .79 regressions through exact NEW223 append amendments.
+
+Original sources remain untouched. Pinned reversible hunks produce temporary
+copies with the original main call graphs. Only test copies are compiled;
+production classes are the supplied actual compileJava output.
+"""
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import runpy
+import subprocess
+import sys
+
+sys.dont_write_bytecode = True
+BASELINE = "27ecc8d869ae6389253c2e5c8fe4df68b6291424"
+ROOT = "src/test/resources/highpower-learning/scatter-locator-v18"
+CONTRACT = ROOT + "/contract-v18-r4.json"
+CONTRACT_SHA = "bafedc33c26c1f8aea6ddec0c6c263b54b839656e197ad719d5c08b5e8dfe920"
+NEW_TEST = "cn.academy.port.highpower.ScatterLocatorPlateLearningRegressionTest"
+
+
+def require(condition, marker):
+    if not condition:
+        raise AssertionError(marker)
+
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def read(path):
+    require(path.is_file() and not path.is_symlink(), "NONREGULAR_OR_MISSING_INPUT " + str(path))
+    return path.read_bytes()
+
+
+def git(project, *args):
+    return subprocess.check_output(["git", "-C", str(project), *args])
+
+
+def exact_output(candidate, spec):
+    require(sha(candidate) == spec["output_sha256"], "COMPANION_UNAPPROVED_SOURCE_CHANGE")
+
+
+def reconstruct(source, spec):
+    require(sha(source) == spec["input_sha256"], "HISTORICAL_RUNNER_SOURCE_CHANGED")
+    candidate = source
+    for patch in spec["patches"]:
+        before, after = patch["before"].encode(), patch["after"].encode()
+        require(before != after and candidate.count(before) == patch["occurrences"],
+                "APPROVED_PATCH_SITE_CHANGED " + patch["name"])
+        candidate = candidate.replace(before, after)
+    exact_output(candidate, spec)
+    reverse = candidate
+    for patch in reversed(spec["patches"]):
+        before, after = patch["before"].encode(), patch["after"].encode()
+        require(reverse.count(after) == patch["occurrences"], "REVERSE_PATCH_SITE_CHANGED " + patch["name"])
+        reverse = reverse.replace(after, before)
+    require(reverse == source, "ORIGINAL_RUNNER_NOT_RECONSTRUCTED_BYTE_EXACTLY")
+    require(source.count(b"check(") == candidate.count(b"check(") == spec["assertion_call_tokens"],
+            "ASSERTION_CALL_COUNT_CHANGED")
+    require(source.count(b"System.out.println") == candidate.count(b"System.out.println"), "ORIGINAL_RESULT_REPORT_CHANGED")
+    return candidate
+
+
+def rejected(name, operation, marker):
+    try:
+        operation()
+    except AssertionError as error:
+        require(str(error).startswith(marker), "WRONG_NEGATIVE_REJECTION " + name + ": " + str(error))
+        return {"mutation": name, "result": "EXPECTED_REJECTION", "marker": str(error)}
+    raise AssertionError("NEGATIVE_CONTROL_SURVIVED " + name)
+
+
+def source_controls(source, candidate, spec):
+    name = spec["main_class"]
+    result = [rejected(name + ":historical-source-byte", lambda: reconstruct(source + b"\n", spec),
+                       "HISTORICAL_RUNNER_SOURCE_CHANGED")]
+    result.append(rejected(name + ":unrelated-output-byte", lambda: exact_output(candidate + b"\n", spec),
+                           "COMPANION_UNAPPROVED_SOURCE_CHANGE"))
+    check = re.search(rb"\bcheck\(", candidate)
+    require(check is not None, "NEGATIVE_ASSERTION_SITE_MISSING")
+    removed_assertion = candidate[:check.start()] + b"unreviewedCheck(" + candidate[check.end():]
+    result.append(rejected(name + ":renamed-assertion", lambda: exact_output(removed_assertion, spec),
+                           "COMPANION_UNAPPROVED_SOURCE_CHANGE"))
+    main = re.search(rb"public static void main\([^)]*\)[^{]*\{", candidate)
+    require(main is not None, "NEGATIVE_MAIN_SITE_MISSING")
+    skipped = candidate[:main.end()] + b" if (true) return; " + candidate[main.end():]
+    result.append(rejected(name + ":skipped-main-call-graph", lambda: exact_output(skipped, spec),
+                           "COMPANION_UNAPPROVED_SOURCE_CHANGE"))
+    for patch in spec["patches"]:
+        reverted = candidate.replace(patch["after"].encode(), patch["before"].encode(), 1)
+        require(reverted != candidate, "NEGATIVE_PATCH_SITE_MISSING " + patch["name"])
+        result.append(rejected(name + ":omitted-" + patch["name"],
+                               lambda reverted=reverted: exact_output(reverted, spec),
+                               "COMPANION_UNAPPROVED_SOURCE_CHANGE"))
+    return result
+
+
+def audit(project):
+    require(git(project, "rev-parse", "--verify", BASELINE + "^{commit}").decode().strip() == BASELINE,
+            "GENUINE_BASELINE_COMMIT_MISSING")
+    raw = read(project / CONTRACT)
+    require(sha(raw) == CONTRACT_SHA, "APPEND_PATCH_CONTRACT_CHANGED")
+    contract = json.loads(raw)
+    previous = contract["previous_contract"]
+    require(sha(read(project / previous["path"])) == previous["sha256"] == "3966ff91374d4ddbc87837c062e33c1ba09406e8e2a42ad2437cd3a5245eb356", "V18_R3_CONTRACT_CHANGED")
+    require(sha(read(project / ROOT / "contract-v18-r2.json")) == "f2c291aa823257c53e8bcbb17ed00906263b622939146cbdd61f8e1777fd1ed3", "V18_R2_CONTRACT_CHANGED")
+    require(sha(read(project / ROOT / "contract-v18.json")) == "8db0c02e3106584fda341a0dce89cba1f6a5f7863695936a57d5f11fe2eda542", "INITIAL_V18_CONTRACT_CHANGED")
+    require(contract["version"] == 18 and contract["baseline_revision"] == BASELINE and len(contract["files"]) == 25,
+            "CONTRACT_SCOPE_CHANGED")
+    domain = contract["retained_source_coordinate_domain"]
+    require(len(domain) == len(set(domain)) == 26, "RETAINED_SOURCE_COORDINATE_DOMAIN_CHANGED")
+    gate = contract["registration_gate"]
+    require(sha(read(project / gate["path"])) == gate["sha256"], "V17_REGISTRATION_GATE_CHANGED")
+    namespace = runpy.run_path(str(project / gate["path"]))
+    registration = namespace["prove"](project)
+    require(registration["result"] == "PASS_REGISTRATION_SCOPE_ONLY", "CURRENT_REGISTRATION_GATE_FAILED")
+    generated, controls, inputs = {}, [], {CONTRACT: sha(raw), gate["path"]: gate["sha256"]}
+    for path, spec in contract["files"].items():
+        source = read(project / path)
+        baseline = git(project, "show", BASELINE + ":" + path)
+        snapshot_path = ROOT + "/" + spec["snapshot"]
+        snapshot = read(project / snapshot_path)
+        require(source == snapshot == baseline, "RUNNER_NOT_GENUINE_UNCHANGED_BASELINE " + path)
+        companion = reconstruct(source, spec)
+        generated[path] = companion
+        controls.extend(source_controls(source, companion, spec))
+        inputs[path], inputs[snapshot_path] = sha(source), sha(snapshot)
+    require(sum(len(spec["patches"]) for spec in contract["files"].values()) == 116, "REVIEWED_PATCH_HUNK_COUNT_CHANGED")
+    require(sum(patch["occurrences"] for spec in contract["files"].values() for patch in spec["patches"]) == 117,
+            "REVIEWED_PATCH_OCCURRENCE_COUNT_CHANGED")
+    require(len(controls) == 216, "SOURCE_NEGATIVE_CONTROL_COVERAGE_CHANGED")
+    return contract, generated, controls, inputs, registration
+
+
+def inventory(root, suffix=None):
+    require(root.is_dir() and not root.is_symlink(), "MISSING_COMPILED_OR_RESOURCE_ROOT " + str(root))
+    result = {}
+    for path in sorted(root.rglob("*")):
+        if path.is_file() and (suffix is None or path.name.endswith(suffix)):
+            result[str(path.relative_to(root))] = sha(read(path))
+    require(result, "EMPTY_COMPILED_OR_RESOURCE_ROOT " + str(root))
+    return result
+
+
+def inventory_sha(value):
+    return sha(json.dumps(value, sort_keys=True).encode())
+
+
+def invoke(command, cwd, log, timeout=180):
+    try:
+        result = subprocess.run(command, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=timeout)
+        output, code = result.stdout, result.returncode
+    except subprocess.TimeoutExpired as error:
+        output, code = (error.stdout or b"") + b"\nV18 PROCESS TIMEOUT\n", 124
+    log.write_bytes(output)
+    return code, output
+
+
+def run_class(java, classpath, main, project, work):
+    log = work / (main.rsplit(".", 1)[-1] + ".log")
+    command = [str(java), "-Xms32m", "-Xmx256m", "-ea", "-cp", classpath, main]
+    code, output = invoke(command, project, log)
+    text = output.decode(errors="replace")
+    count = re.search(r"(?:PASS\s+(\d+)\s+|RegressionTest:\s*(\d+)\s+checks)", text)
+    checks = int(next(value for value in count.groups() if value is not None)) if count else None
+    status = "PASS" if code == 0 and checks and checks > 0 else "FAIL"
+    print(status, main, "checks=" + str(checks), "exit=" + str(code), flush=True)
+    if status == "FAIL":
+        print(text[-4000:], flush=True)
+    return {"main_class": main, "result": status, "checks": checks, "exit_code": code,
+            "log": str(log), "log_sha256": sha(output), "command": command}
+
+
+def execute(project, args, report):
+    contract, generated, controls, inputs, registration = audit(project)
+    report.update({
+        "contract": "scatter-locator-current-learning-v18",
+        "baseline_commit": BASELINE,
+        "candidate_head": git(project, "rev-parse", "HEAD").decode().strip(),
+        "source_negative_controls": controls,
+        "historical_input_hashes": inputs,
+        "source_reconstruction": {
+            path: {"input_sha256": spec["input_sha256"], "output_sha256": spec["output_sha256"],
+                   "hunks": len(spec["patches"]), "assertion_call_tokens": spec["assertion_call_tokens"]}
+            for path, spec in contract["files"].items()},
+        "registry_gate": {"result": registration["result"], "registry": registration["registry"],
+                          "historical_status": registration["historical_status"]},
+        "limitations": [
+            "Current-version companion execution; immutable original count-bound runners still fail independently.",
+            "Only enumerated append-sensitive expressions are amended in temporary copies; production classes are never substituted or recompiled.",
+            "No old hash, source, fixture or registered task is replaced; v17 and historical hash failures remain independent.",
+            "This is not an aggregate check pass, native gameplay proof, visual acceptance or whole-tree source audit."]})
+    if args.audit_only:
+        report["result"] = "PASS_PATCH_PROVENANCE_ONLY"
+        report["execution"] = "NOT_REQUESTED; NO_JAVA_OR_COMPILER_STARTED"
+        return
+    main_root = (args.main_classes or project / "build/classes/java/main").resolve()
+    test_root = (args.test_classes or project / "build/classes/java/test").resolve()
+    resource_root = (args.resources or project / "build/resources/main").resolve()
+    test_resource_root = (args.test_resources or project / "build/resources/test").resolve()
+    classpath_file = (args.classpath_file or project / "build/vfx2/native-classpath.txt").resolve()
+    java = (args.java or project / ".tools/jdk-21.0.12.1+1/bin/java").resolve()
+    javac = (args.javac or java.with_name("javac")).resolve()
+    require(java.is_file() and javac.is_file(), "EXISTING_JDK_REQUIRED")
+    dependency_classpath = read(classpath_file).decode().strip()
+    require(dependency_classpath and all(Path(path).exists() for path in dependency_classpath.split(os.pathsep)),
+            "CURRENT_COMPILE_CLASSPATH_INPUT_MISSING")
+    roots = {"production_classes": (main_root, ".class"), "test_classes": (test_root, ".class"),
+             "main_resources": (resource_root, None), "test_resources": (test_resource_root, None)}
+    before = {name: inventory(root, suffix) for name, (root, suffix) in roots.items()}
+    require("cn/academy/port/highpower/HighPowerSkills.class" in before["production_classes"]
+            and "cn/academy/port/highpower/ScatterLocatorPlate.class" in before["production_classes"],
+            "ACTUAL_CURRENT_PRODUCTION_CLASSES_MISSING")
+    require(NEW_TEST.replace(".", "/") + ".class" in before["test_classes"], "ACTUAL_NEW223_LEARNING_TEST_CLASS_MISSING")
+    report["actual_compiled_inputs"] = {
+        name: {"directory": str(roots[name][0]), "files": len(value), "inventory_sha256": inventory_sha(value)}
+        for name, value in before.items()}
+    report["actual_production_class_hashes"] = before["production_classes"]
+    report["classpath_file"] = {"path": str(classpath_file), "sha256": sha(read(classpath_file))}
+    work = (args.work_dir or args.report.with_name(args.report.stem + "-work")).resolve()
+    work.mkdir(parents=True, exist_ok=False)
+    report["work_directory"] = str(work)
+    baseline_cp = os.pathsep.join(map(str, (main_root, test_root, resource_root, test_resource_root))) + os.pathsep + dependency_classpath
+    gate = run_class(java, baseline_cp, NEW_TEST, project, work)
+    report["new223_behavior_gate"] = gate
+    require(gate["result"] == "PASS", "CURRENT_NEW223_BEHAVIOR_GATE_FAILED")
+    source_root, classes = work / "sources", work / "classes"
+    source_root.mkdir()
+    classes.mkdir()
+    source_paths = []
+    for path, content in generated.items():
+        target = source_root / Path(path).relative_to("src/test/java")
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(content)
+        source_paths.append(target)
+    command = [str(javac), "-J-Xmx384m", "-proc:none", "-encoding", "UTF-8", "-sourcepath", str(source_root),
+               "-cp", baseline_cp, "-d", str(classes)] + list(map(str, source_paths))
+    compilation, compiler_output = invoke(command, project, work / "compile-companions.log")
+    report["compilation"] = {"exit_code": compilation, "log": str(work / "compile-companions.log"),
+                             "log_sha256": sha(compiler_output), "production_recompiled": False,
+                             "source_count": len(source_paths)}
+    require(compilation == 0, "COMPANION_TEST_COMPILATION_FAILED " + compiler_output.decode(errors="replace")[-4000:])
+    outputs = inventory(classes, ".class")
+    prefixes = [spec["main_class"].replace(".", "/") for spec in contract["files"].values()]
+    require(all(any(path == prefix + ".class" or path.startswith(prefix + "$") for prefix in prefixes)
+                for path in outputs), "UNAPPROVED_COMPILED_CLASS_OUTPUT")
+    require(all(prefix + ".class" in outputs for prefix in prefixes), "COMPANION_MAIN_CLASS_OUTPUT_MISSING")
+    report["generated_companion_class_hashes"] = outputs
+    classpath = str(classes) + os.pathsep + baseline_cp
+    executions = []
+    for spec in contract["files"].values():
+        executions.append(run_class(java, classpath, spec["main_class"], project, work))
+    report["executions"] = executions
+    report["total_companion_checks"] = sum(value["checks"] or 0 for value in executions)
+    for name, (root, suffix) in roots.items():
+        require(inventory(root, suffix) == before[name], "ACTUAL_COMPILED_INPUT_CHANGED_DURING_RUN " + name)
+    require(inventory(classes, ".class") == outputs, "GENERATED_CLASS_CHANGED_DURING_RUN")
+    for path, expected in inputs.items():
+        require(sha(read(project / path)) == expected, "SOURCE_INPUT_CHANGED_DURING_RUN " + path)
+    for path, content in generated.items():
+        require(read(source_root / Path(path).relative_to("src/test/java")) == content, "GENERATED_SOURCE_CHANGED_DURING_RUN " + path)
+    failures = [value["main_class"] for value in executions if value["result"] != "PASS"]
+    require(not failures, "CURRENT_COMPANION_FAILURES " + ", ".join(failures))
+    require(len(executions) == 25, "CURRENT_COMPANION_EXECUTION_COUNT_CHANGED")
+    report["result"] = "PASS_CURRENT_LEARNING_COMPANION_ONLY"
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--project", type=Path, default=Path(__file__).resolve().parents[1])
+    parser.add_argument("--report", type=Path, required=True, help="Fresh JSON report; existing file is never overwritten")
+    parser.add_argument("--audit-only", action="store_true", help="Provenance and exact patches only; never claim execution passed")
+    for name in ("work-dir", "main-classes", "test-classes", "resources", "test-resources", "classpath-file", "java", "javac"):
+        parser.add_argument("--" + name, type=Path)
+    args = parser.parse_args()
+    args.report = args.report.resolve()
+    args.report.parent.mkdir(parents=True, exist_ok=True)
+    with args.report.open("x") as output:
+        report = {"result": "FAIL", "contract": "scatter-locator-current-learning-v18"}
+        try:
+            execute(args.project.resolve(), args, report)
+        except Exception as error:
+            report["result"], report["reason"] = "FAIL", str(error)
+        json.dump(report, output, indent=2)
+        output.write("\n")
+    print(report["result"], args.report, flush=True)
+    if report["result"] == "FAIL":
+        print(report["reason"], file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

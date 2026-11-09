@@ -1,0 +1,1 @@
+lang:zh_cn|cmd:time set night|cmd:gamerule doMobSpawning false|cmd:difficulty normal|keyup:82|keyup:87|keyup:65|keyup:68|keyup:340|tree:close|cam:first|cmd:tp @s 0.5 -60 0.5 0 0|playmode:setup:flash-air|wait:30|cmd:tp @s 0.5 20 0.5 0 0|playmode:baseline|keydown:82|keyup:82|wait:6|keydown:65|wait:2|keyup:65|wait:8|playmode:assert|shot:tp_play_flash_air|keydown:82|keyup:82|quit

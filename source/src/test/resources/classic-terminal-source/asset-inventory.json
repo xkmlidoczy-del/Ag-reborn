@@ -1,0 +1,398 @@
+[
+  {
+    "source": "src/main/resources/assets/academy/guis/media_player.xml",
+    "sha256": "f8fb3197e5d9794c6fd1f5e5c9e4e841cd67743eca08c4c869bdce784563d01d",
+    "size": 13349,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "docs/reference-visuals/assets/academy/guis/media_player.xml"
+  },
+  {
+    "source": "src/main/resources/assets/academy/guis/media_player_aux.xml",
+    "sha256": "9345ecf573b2c07415a8a317a7f8fcb8d606df2a4fc41dae04a5fd30e55752a6",
+    "size": 3376,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "docs/reference-visuals/assets/academy/guis/media_player_aux.xml"
+  },
+  {
+    "source": "src/main/resources/assets/academy/guis/settings.xml",
+    "sha256": "78617bc2edf2308c4d7c15a7a6e608c298c1c7a7747d4abe994ca0802b8e3e52",
+    "size": 10541,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "docs/reference-visuals/assets/academy/guis/settings.xml"
+  },
+  {
+    "source": "src/main/resources/assets/academy/guis/terminal.xml",
+    "sha256": "c63d1fc77c55f60da5e459bfc20df4dadd1df18156de97713077e3342fb5de7b",
+    "size": 9741,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "docs/reference-visuals/assets/academy/guis/terminal.xml"
+  },
+  {
+    "source": "src/main/resources/assets/academy/guis/terminal_installing.xml",
+    "sha256": "97b31d61ae579ef5c2c41672b51a16f7452d70371cb82f9008015f7db58716a2",
+    "size": 3857,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "docs/reference-visuals/assets/academy/guis/terminal_installing.xml"
+  },
+  {
+    "source": "src/main/resources/assets/academy/media/cover/level5_judgelight.png",
+    "sha256": "9be0a97cb1757eab25776d2b00b53af2c7fb8398c4d846c38c5adf5447e24996",
+    "size": 13083,
+    "classification": "excluded-third-party-song-cover-or-song-item",
+    "included": false,
+    "license": "third-party-rights-not-established; excluded",
+    "expectedDestination": "docs/reference-visuals/assets/academy/media/cover/level5_judgelight.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/media/cover/only_my_railgun.png",
+    "sha256": "7d4f5a65c846c6a1eb8e134002b36bdd0240bdffc4e1449b6bfd82d111d72b5e",
+    "size": 13483,
+    "classification": "excluded-third-party-song-cover-or-song-item",
+    "included": false,
+    "license": "third-party-rights-not-established; excluded",
+    "expectedDestination": "docs/reference-visuals/assets/academy/media/cover/only_my_railgun.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/media/cover/sisters_noise.png",
+    "sha256": "914556325d83a009c203efaae7e7085e1cce18635d27bf942a1445b9c8c3b3a5",
+    "size": 12849,
+    "classification": "excluded-third-party-song-cover-or-song-item",
+    "included": false,
+    "license": "third-party-rights-not-established; excluded",
+    "expectedDestination": "docs/reference-visuals/assets/academy/media/cover/sisters_noise.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/media/default.conf",
+    "sha256": "c49edddc6cbfd7a9ffa50ce39b83273b8bd62a758508da88eb7a4e500fdf191e",
+    "size": 81,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "docs/reference-visuals/assets/academy/media/default.conf"
+  },
+  {
+    "source": "src/main/resources/assets/academy/media/readme_template.txt",
+    "sha256": "a2361385afb80a12e181e015b5865ca7ccd285efbacbb10cdd6292708d0514dc",
+    "size": 1510,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "docs/reference-visuals/assets/academy/media/readme_template.txt"
+  },
+  {
+    "source": "src/main/resources/assets/academy/media/source/level5_judgelight.ogg",
+    "sha256": "af95b9d3acb90e2e14a8ef14119d6d75f1f696e9ef652c8610b21e3a745c4018",
+    "size": 4135413,
+    "classification": "excluded-third-party-song-cover-or-song-item",
+    "included": false,
+    "license": "third-party-rights-not-established; excluded",
+    "expectedDestination": "docs/reference-visuals/assets/academy/media/source/level5_judgelight.ogg"
+  },
+  {
+    "source": "src/main/resources/assets/academy/media/source/only_my_railgun.ogg",
+    "sha256": "ac94578bd9f50bd50a15c2be9701ba5f3596de18a410293c9aa48d671187510e",
+    "size": 4186731,
+    "classification": "excluded-third-party-song-cover-or-song-item",
+    "included": false,
+    "license": "third-party-rights-not-established; excluded",
+    "expectedDestination": "docs/reference-visuals/assets/academy/media/source/only_my_railgun.ogg"
+  },
+  {
+    "source": "src/main/resources/assets/academy/media/source/sisters_noise.ogg",
+    "sha256": "9229d9b48d5643665f41d9998cea57a4ae55b98334db71a1a1a27183457cfa81",
+    "size": 4260666,
+    "classification": "excluded-third-party-song-cover-or-song-item",
+    "included": false,
+    "license": "third-party-rights-not-established; excluded",
+    "expectedDestination": "docs/reference-visuals/assets/academy/media/source/sisters_noise.ogg"
+  },
+  {
+    "source": "src/main/resources/assets/academy/models/terminal_installer.obj",
+    "sha256": "20fa447f729d2fa0ea52be90b1f98d30058b9d0a9b7ad9704c8ee2186c337149",
+    "size": 5755,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "docs/reference-visuals/assets/academy/models/terminal_installer.obj"
+  },
+  {
+    "source": "src/main/resources/assets/academy/sounds/terminal/confirm.ogg",
+    "sha256": "ba7eb99cb5823dd71f8d09d2fe6d03796a0b1c092ac974515c3fcde6735acabc",
+    "size": 7843,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/sounds/terminal/confirm.ogg"
+  },
+  {
+    "source": "src/main/resources/assets/academy/sounds/terminal/select.ogg",
+    "sha256": "3396c80283d076452403b18d9ae56d4af2ac07699bbaa8fac5895831a44a250f",
+    "size": 5494,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/sounds/terminal/select.ogg"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/guis/apps/freq_transmitter/icon.png",
+    "sha256": "ec1cd39ffd382bd27f28725e9aa95596831d6b02adc3f00dac744e555ee09716",
+    "size": 6161,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/textures/guis/apps/freq_transmitter/icon.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/guis/apps/media_player/back.png",
+    "sha256": "c8c133009726f0c7c1a1487e80206b24ba0255811b6d91832a8041a70ff25fd5",
+    "size": 10957,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/textures/guis/apps/media_player/back.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/guis/apps/media_player/icon.png",
+    "sha256": "a8a2bb100128b98308532a9726b1f01e1a657fb1831b298ead3d942a18fbc063",
+    "size": 4356,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/textures/guis/apps/media_player/icon.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/guis/apps/media_player/pause.png",
+    "sha256": "a99d4b7ef95bab9be239022eb4fee4fa44b793355866a1b047cbaed12249c7cc",
+    "size": 3575,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/textures/guis/apps/media_player/pause.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/guis/apps/media_player/play.png",
+    "sha256": "7bd9b0bf884c226a7d3c4e6cd8a5bc6dfe567b11a95139974e7167ac3dd21bb1",
+    "size": 3804,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/textures/guis/apps/media_player/play.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/guis/apps/media_player/stop.png",
+    "sha256": "4ec2ae5284d168cb87fc2eb2878cbbd38da4ba35ec312bd7c139b9de7c6044f8",
+    "size": 3421,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/textures/guis/apps/media_player/stop.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/guis/apps/settings/icon.png",
+    "sha256": "925cc1b37de2a5d00eb7af288d5bf07341319ba8dda9b5a1bbbacc587513bcc7",
+    "size": 5150,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/textures/guis/apps/settings/icon.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/guis/apps/skill_tree/icon.png",
+    "sha256": "0336f5328caed65d02a175a1cfd7b134aeab9e9b80c9ec6a757e99a714113961",
+    "size": 6384,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/textures/guis/apps/skill_tree/icon.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/guis/apps/tutorial/icon_0.png",
+    "sha256": "44ad0858f630a90b6049de608900f9e4019e1b68532f3b61f107fc6b7bbc19d1",
+    "size": 12253,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/textures/guis/apps/tutorial/icon_0.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/guis/apps/tutorial/icon_1.png",
+    "sha256": "5ff0fa02d181cd09426c526780018f203a359d03d80426654059f36a38d0cbe4",
+    "size": 23854,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/textures/guis/apps/tutorial/icon_1.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/guis/apps/tutorial/icon_2.png",
+    "sha256": "cac820e3dc3f042fc4b0cef97ffe1a63b9ea0059c20bc5e5d3e662c7ad9ea666",
+    "size": 18659,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/textures/guis/apps/tutorial/icon_2.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/guis/data_terminal/app_back.png",
+    "sha256": "419ef4ac79b285e7fea1881e6a793595c9c0582aacf426ceec18a2fff1f0ba97",
+    "size": 4394,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/textures/guis/data_terminal/app_back.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/guis/data_terminal/app_back_highlight.png",
+    "sha256": "d5e7a39e8ba55bc59ff370320d9fa3c1abe1ffde4311f33fc003a0985c2d4f53",
+    "size": 4839,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/textures/guis/data_terminal/app_back_highlight.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/guis/data_terminal/arrow_down.png",
+    "sha256": "b607fbb548ffeccb24c592948a0c0e9905c43f263917a42e88bd2aee467e2054",
+    "size": 3184,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/textures/guis/data_terminal/arrow_down.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/guis/data_terminal/arrow_up.png",
+    "sha256": "0149f0d429a096aeacfde42889757f2c884f8be1d0d06528487a9ad432849183",
+    "size": 3164,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/textures/guis/data_terminal/arrow_up.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/guis/data_terminal/back.png",
+    "sha256": "8712d0875e7e2dc58f3259594c84bdef5e030f95b09f8bcb02ac2aff1d8b56be",
+    "size": 4074,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/textures/guis/data_terminal/back.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/guis/data_terminal/cursor.png",
+    "sha256": "200fbb7302cafb4cc22aeb57bd727c383fefe8ac7db378782eb6c5475a118bb4",
+    "size": 18126,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/textures/guis/data_terminal/cursor.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/guis/data_terminal/loading.png",
+    "sha256": "fcc4b43006c14531ca100776c83fd41e18f1ca22ec6876a0bfb1358a59ead07d",
+    "size": 575,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/textures/guis/data_terminal/loading.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/guis/data_terminal/logo.png",
+    "sha256": "5fc0022454846e973daa8fc765f6b23ab47609f7253507f0872de081f57b7a94",
+    "size": 6339,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/textures/guis/data_terminal/logo.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/items/app_freq_transmitter.png",
+    "sha256": "d7834c3f5e565df98ae332c902d76478a45cb022fe3e7d93fe241b2cb3d3f785",
+    "size": 3627,
+    "classification": "non-song-terminal-app-asset",
+    "included": true,
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/textures/items/app_freq_transmitter.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/items/app_media_player.png",
+    "sha256": "716d1b193c50d2c23d7da49fd8af0636cf8033ad334ba64ee2637d79047a19a0",
+    "size": 3592,
+    "classification": "non-song-terminal-app-asset",
+    "included": true,
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/textures/items/app_media_player.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/items/app_settings.png",
+    "sha256": "d550644f3b69a884e25dcc4974daafb576609bce1df5a5294ae4bc3128659701",
+    "size": 3607,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/textures/items/app_settings.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/items/app_skill_tree.png",
+    "sha256": "faf2203ab6e4f00eeb8c8a140cecedcd45ff29328a5486f4dc196364137dd624",
+    "size": 3675,
+    "classification": "non-song-terminal-app-asset",
+    "included": true,
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/textures/items/app_skill_tree.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/items/media_level5_judgelight.png",
+    "sha256": "52f335c03d847775f11078d8d51f4e6ec1100dfe8899feb709c212ce94de8d5e",
+    "size": 3790,
+    "classification": "excluded-third-party-song-cover-or-song-item",
+    "included": false,
+    "license": "third-party-rights-not-established; excluded",
+    "expectedDestination": "src/main/resources/assets/academy/textures/items/media_level5_judgelight.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/items/media_only_my_railgun.png",
+    "sha256": "6ace1e262c328806342006210545c6ed374048125575e2135d48139457882c05",
+    "size": 3757,
+    "classification": "excluded-third-party-song-cover-or-song-item",
+    "included": false,
+    "license": "third-party-rights-not-established; excluded",
+    "expectedDestination": "src/main/resources/assets/academy/textures/items/media_only_my_railgun.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/items/media_sisters_noise.png",
+    "sha256": "77342ac9c68f797f9ddfb234edba17903fd1ad83781e18b9ba7849d52daecfdf",
+    "size": 3848,
+    "classification": "excluded-third-party-song-cover-or-song-item",
+    "included": false,
+    "license": "third-party-rights-not-established; excluded",
+    "expectedDestination": "src/main/resources/assets/academy/textures/items/media_sisters_noise.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/items/terminal_installer.png",
+    "sha256": "81d295a64c055582f496a687015a36fa3e1e77a27715fc75028229c2e397ab15",
+    "size": 4081,
+    "classification": "non-song-terminal-app-asset",
+    "included": true,
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/textures/items/terminal_installer.png"
+  },
+  {
+    "source": "src/main/resources/assets/academy/textures/models/terminal_installer.png",
+    "sha256": "fdfd0873529f88922722f098023c05211b1676cee5c742f383cd223d425e8bde",
+    "size": 85450,
+    "classification": "non-song-terminal-app-asset",
+    "included": "inventory-only",
+    "license": "AcademyCraft GPLv3 source project notice",
+    "expectedDestination": "src/main/resources/assets/academy/textures/models/terminal_installer.png"
+  }
+]

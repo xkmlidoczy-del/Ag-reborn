@@ -1,0 +1,49 @@
+[
+  {
+    "name": "final-extension-tp-cancel-register",
+    "script": "gameplay-tp-play-group-cancel-register.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "sourceScripts": [
+      "gameplay-tp-play-cancel-return_mark.script",
+      "gameplay-tp-play-cancel-short_interception.script",
+      "gameplay-tp-play-cancel-spatial_relay.script",
+      "gameplay-tp-play-cancel-emergency_return.script",
+      "gameplay-tp-play-cancel-spatial_pincer_corridor.script",
+      "gameplay-tp-play-cancel-multidimensional_landing_array.script",
+      "gameplay-tp-play-probe-move.script",
+      "gameplay-tp-play-probe-pose.script"
+    ]
+  },
+  {
+    "name": "final-extension-tp-ordinary-stock",
+    "script": "gameplay-tp-play-group-ordinary-stock.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "sourceScripts": [
+      "gameplay-tp-play-item-transport.script",
+      "gameplay-tp-play-block-placement.script"
+    ]
+  },
+  {
+    "name": "final-extension-tp-target-air-movement",
+    "script": "gameplay-tp-play-group-target-air-movement.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "sourceScripts": [
+      "gameplay-tp-play-mark-entity.script",
+      "gameplay-tp-play-mark-air.script",
+      "gameplay-tp-play-accel-air.script",
+      "gameplay-tp-play-flash-air.script"
+    ]
+  },
+  {
+    "name": "final-extension-tp-two-needles",
+    "script": "gameplay-tp-play-group-two-needles.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "sourceScripts": [
+      "gameplay-tp-play-two-needles.script"
+    ]
+  }
+]

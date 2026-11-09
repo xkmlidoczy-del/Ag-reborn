@@ -1,0 +1,13 @@
+// NEW242 exact shared reserve migration, finite facets and scoped client presentation.
+['sharedShieldReserveSharesTest':'cn.academy.port.highpower.core.SharedShieldReserveSharesRegressionTest',
+ 'dissipationCurtainShieldRulesTest':'cn.academy.port.highpower.core.DissipationCurtainShieldRulesRegressionTest',
+ 'dissipationCurtainGeometryTest':'cn.academy.port.highpower.core.DissipationCurtainGeometryRegressionTest',
+ 'dissipationCurtainVisualTest':'cn.academy.port.client.DissipationCurtainVisualRegressionTest'].each { taskName, className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+    }
+    tasks.named('check') { dependsOn taskName }
+}

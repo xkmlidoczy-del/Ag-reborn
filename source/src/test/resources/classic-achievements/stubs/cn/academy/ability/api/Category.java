@@ -1,0 +1,1 @@
+package cn.academy.ability.api;public class Category {private final String name;public Category(String n){name=n;}public String getName(){return name;}public net.minecraft.util.ResourceLocation getIcon(){return cn.academy.core.Resources.getTexture("abilities/"+name+"/icon");}}

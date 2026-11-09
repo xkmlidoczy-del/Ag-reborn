@@ -1,0 +1,1 @@
+package cn.lambdalib.cgui.gui.event; public interface IGuiEventHandler<T>{void handleEvent(cn.lambdalib.cgui.gui.Widget w,T event);}

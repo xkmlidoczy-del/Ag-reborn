@@ -1,0 +1,5 @@
+AcademyCraft 1.0.7 canonical vector combat source/media fixtures.
+Copyright Lambda Innovation, 2013-2016; GPLv3 and additional upstream notices retained in UPSTREAM-NOTICE.txt.
+LambdaLib 1.2.3 fixtures retain MIT license. ImprovedNoise retains Ken Perlin copyright 2002.
+These source-derived tests do not establish native rendered-pixel or audible fidelity.
+No third-party music is included. Raw originals are SHA-256 anchored in visual-source-manifest.json.

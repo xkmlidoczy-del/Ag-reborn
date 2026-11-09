@@ -1,0 +1,1 @@
+package cn.academy.terminal.event; public class AppInstalledEvent {}

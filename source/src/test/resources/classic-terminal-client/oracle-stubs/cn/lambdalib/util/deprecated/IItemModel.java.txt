@@ -1,0 +1,1 @@
+package cn.lambdalib.util.deprecated; public interface IItemModel{void render(net.minecraft.item.ItemStack item,float scale,float f);void setRotationAngles(net.minecraft.item.ItemStack item,double x,double y,double z,float f);}

@@ -1,0 +1,367 @@
+[
+  {
+    "name": "final23-main-md-damage",
+    "script": "gameplay-md-damage.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "electron_bomb",
+      "meltdowner",
+      "ray_barrage",
+      "dual_point"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-md-damage",
+    "scriptSha256": "a0c3549e52e489bbc29cfeab6923ad19398ba6715d68b0730ac3b712c8fa9c32",
+    "nominalFixedTicks": 778,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "electron_bomb",
+        "setupStepIndex": 9,
+        "setupOperation": "gameem:setup:electron_bomb",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 18,
+            "operation": "gameem:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=electron_bomb "
+      },
+      {
+        "skill": "meltdowner",
+        "setupStepIndex": 22,
+        "setupOperation": "gameem:setup:meltdowner",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 31,
+            "operation": "gameem:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=meltdowner "
+      },
+      {
+        "skill": "ray_barrage",
+        "setupStepIndex": 35,
+        "setupOperation": "gameem:setup:ray_barrage",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 44,
+            "operation": "gameem:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=ray_barrage "
+      },
+      {
+        "skill": "dual_point",
+        "setupStepIndex": 48,
+        "setupOperation": "gameem:setup:dual_point",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 57,
+            "operation": "gameem:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=dual_point "
+      }
+    ]
+  },
+  {
+    "name": "final23-main-tp-vm-damage",
+    "script": "gameplay-tp-vm-damage.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "dir_shock",
+      "ground_shock",
+      "dir_blast",
+      "blood_retro",
+      "plasma_cannon",
+      "threatening_teleport",
+      "flesh_ripping",
+      "shift_tp",
+      "deflection_strike",
+      "shear_windblade",
+      "yaw_palm",
+      "zenith_vector_dominion"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-tp-vm-damage",
+    "scriptSha256": "670603d0bf7690aff82a5b8783987c7f3e643eacc09410574061238002971892",
+    "nominalFixedTicks": 2621,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "dir_shock",
+        "setupStepIndex": 12,
+        "setupOperation": "gametp:setup:dir_shock",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 23,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=dir_shock "
+      },
+      {
+        "skill": "ground_shock",
+        "setupStepIndex": 29,
+        "setupOperation": "gametp:setup:ground_shock",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 40,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=ground_shock "
+      },
+      {
+        "skill": "dir_blast",
+        "setupStepIndex": 46,
+        "setupOperation": "gametp:setup:dir_blast",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 57,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=dir_blast "
+      },
+      {
+        "skill": "blood_retro",
+        "setupStepIndex": 63,
+        "setupOperation": "gametp:setup:blood_retro",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 74,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=blood_retro "
+      },
+      {
+        "skill": "plasma_cannon",
+        "setupStepIndex": 80,
+        "setupOperation": "gametp:setup:plasma_cannon",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 91,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=plasma_cannon "
+      },
+      {
+        "skill": "threatening_teleport",
+        "setupStepIndex": 97,
+        "setupOperation": "gametp:setup:threatening_teleport",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 108,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=threatening_teleport "
+      },
+      {
+        "skill": "flesh_ripping",
+        "setupStepIndex": 114,
+        "setupOperation": "gametp:setup:flesh_ripping",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 125,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=flesh_ripping "
+      },
+      {
+        "skill": "shift_tp",
+        "setupStepIndex": 131,
+        "setupOperation": "gametp:setup:shift_tp",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 142,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=shift_tp "
+      },
+      {
+        "skill": "deflection_strike",
+        "setupStepIndex": 148,
+        "setupOperation": "gametp:setup:deflection_strike",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 159,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=deflection_strike "
+      },
+      {
+        "skill": "shear_windblade",
+        "setupStepIndex": 165,
+        "setupOperation": "gametp:setup:shear_windblade",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 176,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=shear_windblade "
+      },
+      {
+        "skill": "yaw_palm",
+        "setupStepIndex": 182,
+        "setupOperation": "gametp:setup:yaw_palm",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 193,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=yaw_palm "
+      },
+      {
+        "skill": "zenith_vector_dominion",
+        "setupStepIndex": 199,
+        "setupOperation": "gametp:setup:zenith_vector_dominion",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 210,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=zenith_vector_dominion "
+      }
+    ]
+  },
+  {
+    "name": "final23-modes-em-input-modes",
+    "script": "gameplay-final-modes-group-em-input-modes.script",
+    "directory": "run-showcase-sable",
+    "sourceScripts": [
+      "gameplay-em-md-magnetic-block-far.script",
+      "gameplay-em-md-mode-arrow-separation.script",
+      "gameplay-em-md-mode-canopy-held.script",
+      "gameplay-em-md-mode-coin-qte.script",
+      "gameplay-em-md-mode-dual-secondary.script",
+      "gameplay-em-md-mode-net-hold.script",
+      "gameplay-em-md-mode-pulse-detect.script",
+      "gameplay-em-md-mode-rail-hold.script",
+      "gameplay-em-md-mode-semiconductor-fan.script",
+      "gameplay-em-md-mode-lance-orbit.script"
+    ],
+    "sourceCount": 10,
+    "status": "planned_not_run",
+    "props": "",
+    "independentRequired": false,
+    "suiteGroup": "modes",
+    "sourcePlan": "gameplay-final-modes-merged-plan.json",
+    "sourceCaseName": "final96-modegroup-em-input-modes",
+    "scriptSha256": "0cfd19bdac558725dd9608d1e627f49f4402f2967fa4854fc8ab9ca300976245",
+    "nominalFixedTicks": 2998,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "scope": "Unexecuted optional final23 fallback; exact complete original merged input/wait/assertion script. No execution results or prior pass claims are copied."
+  },
+  {
+    "name": "final23-modes-vm-alternatives-efficiency",
+    "script": "gameplay-final-modes-group-vm-alternatives-efficiency.script",
+    "directory": "run-showcase-sable",
+    "sourceScripts": [
+      "gameplay-vm-efficiency-circulation_relief.script",
+      "gameplay-vm-efficiency-inertial_anchor.script",
+      "gameplay-vm-efficiency-vector_parry.script",
+      "gameplay-vm-alt-anchor-fall.script",
+      "gameplay-vm-alt-braking-fall.script",
+      "gameplay-vm-alt-braking-snowball.script",
+      "gameplay-vm-alt-listening-runner.script",
+      "gameplay-vm-alt-parry-full.script",
+      "gameplay-vm-alt-parry-left.script",
+      "gameplay-vm-alt-parry-right.script",
+      "gameplay-vm-alt-trajectory-hammer.script",
+      "gameplay-vm-direction-modes.script",
+      "gameplay-vm-cage-low.script"
+    ],
+    "sourceCount": 13,
+    "status": "planned_not_run",
+    "props": "",
+    "independentRequired": false,
+    "suiteGroup": "modes",
+    "sourcePlan": "gameplay-final-modes-merged-plan.json",
+    "sourceCaseName": "final96-modegroup-vm-alternatives-efficiency",
+    "scriptSha256": "1e02503959dc0461a3d042be0eee86b0b7e3eebd8d32b42c386c794aeb7febcd",
+    "nominalFixedTicks": 3921,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  },
+  {
+    "name": "final23-itemsplit-vm-extra-yaw-q-items",
+    "script": "gameplay-vm-extra-yaw-q-items.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "yaw_palm"
+    ],
+    "modes": [
+      "actual owner Q item left push",
+      "actual owner Q item crouching right push"
+    ],
+    "status": "planned_not_run",
+    "props": "",
+    "suiteGroup": "itemSplit",
+    "sourcePlan": "gameplay-vm-extra-plan.json",
+    "sourceCaseName": "candidate-vm-extra-yaw-q-items",
+    "scriptSha256": "b56280564e776895270e418949bf6f623e6bdb0363b39191a9b82eec9ccdba5b",
+    "nominalFixedTicks": 812,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_MODE_PASS mode=yaw-left skill=yaw_palm ",
+      "QA_GAMEPLAY_MODE_PASS mode=yaw-right skill=yaw_palm "
+    ]
+  }
+]

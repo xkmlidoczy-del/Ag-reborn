@@ -1,0 +1,3 @@
+/* Test-only lifecycle platform plumbing; business methods run unchanged originals. */
+package cn.academy.ability.api;
+public class Category { public final int id; public final String name;public Category(int id,String name){this.id=id;this.name=name;}public final java.util.List<Skill> skills=new java.util.ArrayList<>();public float progressRate=1;public int getCategoryID(){return id;}public java.util.List<Skill> getSkillList(){return skills;}public int getSkillCount(){return skills.size();}public float getProgIncrRate(){return progressRate;} }

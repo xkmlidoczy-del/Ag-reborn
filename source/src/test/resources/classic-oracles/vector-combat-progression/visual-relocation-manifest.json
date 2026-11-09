@@ -1,0 +1,23 @@
+[
+  {
+    "class": "IFittedCurve",
+    "source": "src/main/java/cn/lambdalib/vis/curve/IFittedCurve.java",
+    "sha256": "859826124ada463e491c59d1bb52310b291bec79eb60873a2095a099f2eec8ad",
+    "relocated_sha256": "09864719834824aa23ed1797b2fadb423d4d67e95db848f9b760a2e4b115de0a",
+    "edits": "package relocation; CubicCurve only: removed Gson imports/serialization adapter"
+  },
+  {
+    "class": "CubicCurve",
+    "source": "src/main/java/cn/lambdalib/vis/curve/CubicCurve.java",
+    "sha256": "6f381af595f9ab0b0d279c202743c59577e27ecbf01414b7259cf1844a64e218",
+    "relocated_sha256": "55c4d3cda2b8e8a8851a3991be62524236f746e38c9cd81a82948925c2ccf5fd",
+    "edits": "package relocation; CubicCurve only: removed Gson imports/serialization adapter"
+  },
+  {
+    "class": "ImprovedNoise",
+    "source": "src/main/java/cn/academy/core/util/ImprovedNoise.java",
+    "sha256": "9638f3c2f446559b9e8835e32640ea2ecab4d0b319c92eaa39b507a668116cf1",
+    "relocated_sha256": "1c4b1334b48caf3d2ff0950544291f7c0b207f0d9c42243ef2971507124ff4b5",
+    "edits": "package relocation; CubicCurve only: removed Gson imports/serialization adapter"
+  }
+]

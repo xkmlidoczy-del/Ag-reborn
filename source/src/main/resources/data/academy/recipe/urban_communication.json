@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [" P ", "CDC", " R "],
+  "key": {
+    "P": {"item": "minecraft:paper"},
+    "C": {"item": "academy:info_component"},
+    "D": {"item": "academy:data_chip"},
+    "R": {"item": "minecraft:redstone"}
+  },
+  "result": {"id": "academy:app_urban_communication", "count": 1}
+}

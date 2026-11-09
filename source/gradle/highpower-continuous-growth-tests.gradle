@@ -1,0 +1,7 @@
+tasks.register('highPowerContinuousGrowthTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.core.ContinuousHighPowerGrowthRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerContinuousGrowthTest' }

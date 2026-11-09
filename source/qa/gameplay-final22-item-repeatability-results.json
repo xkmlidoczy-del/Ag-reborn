@@ -1,0 +1,17 @@
+[
+  {
+    "name": "final22-item-repeatability-1",
+    "script": "gameplay-tp-play-item-transport.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-item-repeatability-2",
+    "script": "gameplay-tp-play-item-transport.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-item-repeatability-3",
+    "script": "gameplay-tp-play-item-transport.script",
+    "exit": 1
+  }
+]

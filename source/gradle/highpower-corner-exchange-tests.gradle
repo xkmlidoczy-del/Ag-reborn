@@ -1,0 +1,15 @@
+// NEW333 append-only learning, release input, native preview and closed24m geometry contracts.
+['highPowerCornerExchangeLearningTest':'cn.academy.port.highpower.CornerExchangeLearningRegressionTest',
+ 'highPowerCornerExchangeRulesTest':'cn.academy.port.highpower.core.CornerExchangeRulesRegressionTest',
+ 'highPowerCornerExchangeGeometryTest':'cn.academy.port.highpower.core.CornerExchangeGeometryRegressionTest',
+ 'cornerExchangeInputTest':'cn.academy.port.client.CornerExchangeInputRegressionTest',
+ 'cornerExchangeVisualTest':'cn.academy.port.client.CornerExchangeVisualRegressionTest',
+ 'cornerExchangeDispatchTest':'cn.academy.port.client.CornerExchangeDispatchRegressionTest'].each { taskName, className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+    }
+    tasks.named('check') { dependsOn taskName }
+}

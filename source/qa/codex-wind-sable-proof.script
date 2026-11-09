@@ -1,0 +1,1 @@
+cmd:time set day|cmd:gamerule doMobSpawning false|cmd:difficulty normal|keyup:82|tree:close|cmd:tp @s 128.5 -60 128.5 0 0|live:setup:wind_pressure_lift|wait:60|cam:first|live:wind-diagnostic|keydown:82|wait:18|cmd:data get entity @s Pos|live:moved|live:visual|live:camera|shot:codex_wind_sable_native_proof|keyup:82|wait:45|live:wind-diagnostic|live:camera-neutral|quit

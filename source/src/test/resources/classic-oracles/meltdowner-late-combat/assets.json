@@ -1,0 +1,129 @@
+{
+  "assets": [
+    {
+      "path": "models/silbarn.obj",
+      "sha256": "d83220765daa256c1d0b102e94523602d50d2dd606717657c207a3ef865993e5",
+      "route": "additive"
+    },
+    {
+      "path": "textures/items/silbarn.png",
+      "sha256": "d3b5b3a6e3ad42192f7e41b1851994dcf5db55d93c6baac8a00a04dcb6daf314",
+      "route": "reuse-identical"
+    },
+    {
+      "path": "textures/models/silbarn.png",
+      "sha256": "532e352760e1ecbbc007b08ab6d821d157d7e5174ff403976375a62fbbe63559",
+      "route": "reuse-identical"
+    },
+    {
+      "path": "textures/entities/silbarn_frag.png",
+      "sha256": "8834c77906a185be05484b6c11f64d5729065fd128aa92bb104160125fb69452",
+      "route": "reuse-identical"
+    },
+    {
+      "path": "textures/effects/md_particle.png",
+      "sha256": "57660d9947391b14d0df5683ee4820332db0c1a25233130e3a02bb05e34bea70",
+      "route": "reuse-identical"
+    },
+    {
+      "path": "textures/effects/diamond_shield.png",
+      "sha256": "4cd4e9a60e3d247532d78962e5997a3aac6ca46071ce95321d99497f0a3f7a52",
+      "route": "reuse-identical"
+    },
+    {
+      "path": "textures/effects/ripple.png",
+      "sha256": "0d98e68d84652ba7b2d347ed7d97dfb0f586fe545f176bd8e8ee6dc231646215",
+      "route": "reuse-identical"
+    },
+    {
+      "path": "textures/effects/mdray_small/blend_in.png",
+      "sha256": "ac97e7a452ecdc5a41f6b2379c98225e443693337f3dd90e2ba54707f1b38104",
+      "route": "reuse-identical"
+    },
+    {
+      "path": "textures/effects/mdray_small/tile.png",
+      "sha256": "591ab5e780dc406a1d32e4dbf938fc584a56fe8898dcc9c596cf5e07b912e88f",
+      "route": "reuse-identical"
+    },
+    {
+      "path": "textures/effects/mdray_small/blend_out.png",
+      "sha256": "0c71ed58ed0c122517e09a3db39addf931934ed22b58f880c781f0c31d916620",
+      "route": "reuse-identical"
+    },
+    {
+      "path": "textures/effects/mdball/0.png",
+      "sha256": "01130bef3ab1d82cfaf41892cae654f8d77d40ed0c00d3642d4fffd31d09546b",
+      "route": "reuse-identical"
+    },
+    {
+      "path": "textures/effects/mdball/1.png",
+      "sha256": "e98893f6f46ba618a715cf214452c3d351669d3c72e6efa87c02ec370d9c4518",
+      "route": "reuse-identical"
+    },
+    {
+      "path": "textures/effects/mdball/2.png",
+      "sha256": "537f631eed7be706abf0000c4cb75358be117faf9738d88c922d2085de14c8c7",
+      "route": "reuse-identical"
+    },
+    {
+      "path": "textures/effects/mdball/3.png",
+      "sha256": "27e55f9292f346ff24cc25e9bebcf1a7d6e0046e21ac019755c5c6faf017b3db",
+      "route": "reuse-identical"
+    },
+    {
+      "path": "textures/effects/mdball/4.png",
+      "sha256": "d48f594e02b49f7dd5e59faddb538d249b7a9f0fb9ff697e5493226db50cf82a",
+      "route": "reuse-identical"
+    },
+    {
+      "path": "textures/effects/mdball/glow.png",
+      "sha256": "2dd6e193adfbf100cf00671aa40ada6c40acd01156c9c44ee231edf50e9208b5",
+      "route": "reuse-identical"
+    },
+    {
+      "path": "sounds/md/ray_small.ogg",
+      "sha256": "26acbe4b77b229c3e082afd8196641c3ac3745234c2baf94b32eeafabce3d28f",
+      "route": "reuse-identical"
+    },
+    {
+      "path": "sounds/entity/silbarn_heavy.ogg",
+      "sha256": "93a33216a105c5f952c485ba86306d9ceab897d2af6dc093f98739822dd76a65",
+      "route": "reuse-identical"
+    },
+    {
+      "path": "sounds/entity/silbarn_light.ogg",
+      "sha256": "c617946d6e21722bb4865ce672472225e59cd87d596a25a2964d5b6b811879a0",
+      "route": "reuse-identical"
+    }
+  ],
+  "events": {
+    "md.ray_small": {
+      "category": "master",
+      "sounds": [
+        {
+          "name": "md/ray_small",
+          "stream": false
+        }
+      ]
+    },
+    "entity.silbarn_heavy": {
+      "category": "master",
+      "sounds": [
+        {
+          "name": "entity/silbarn_heavy",
+          "stream": false
+        }
+      ]
+    },
+    "entity.silbarn_light": {
+      "category": "master",
+      "sounds": [
+        {
+          "name": "entity/silbarn_light",
+          "stream": false
+        }
+      ]
+    }
+  },
+  "existing_complete_sounds_sha256": "08d579f8966d9406f070a2552db0326405a2269c17c0abfe5208ea0761955420"
+}

@@ -1,0 +1,268 @@
+[
+  {
+    "resource": "academycraft/src/main/java/cn/academy/terminal/TerminalData.java",
+    "upstream": "academycraft",
+    "source": "src/main/java/cn/academy/terminal/TerminalData.java",
+    "sha256": "b4ab082fc70d4e9c1e23f595642ce2d00f9c304281af9a9ab24afb0c790143f6",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  },
+  {
+    "resource": "academycraft/src/main/java/cn/academy/terminal/App.java",
+    "upstream": "academycraft",
+    "source": "src/main/java/cn/academy/terminal/App.java",
+    "sha256": "00242d3ab2b0e96a1bf9f93b0c59850532faa112a5d45234b279808965224425",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  },
+  {
+    "resource": "academycraft/src/main/java/cn/academy/terminal/AppRegistry.java",
+    "upstream": "academycraft",
+    "source": "src/main/java/cn/academy/terminal/AppRegistry.java",
+    "sha256": "01961301c1812c7690b2419851fd0ce81485fc380abc2a1f0cf9b227f5c2ab56",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  },
+  {
+    "resource": "academycraft/src/main/java/cn/academy/terminal/ModuleTerminal.java",
+    "upstream": "academycraft",
+    "source": "src/main/java/cn/academy/terminal/ModuleTerminal.java",
+    "sha256": "b8d9b9b3d67f9e695be3e578524a575e472e5ba0ac8fa2e339bc30f38dd51a6c",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  },
+  {
+    "resource": "academycraft/src/main/java/cn/academy/terminal/AppEnvironment.java",
+    "upstream": "academycraft",
+    "source": "src/main/java/cn/academy/terminal/AppEnvironment.java",
+    "sha256": "5c9cc6b8f5be90aed3480522b00fb643557a3e39be90319eb4233305b3088591",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  },
+  {
+    "resource": "academycraft/src/main/java/cn/academy/terminal/item/ItemApp.java",
+    "upstream": "academycraft",
+    "source": "src/main/java/cn/academy/terminal/item/ItemApp.java",
+    "sha256": "6098f54d0850d8f1684c93424b7d0cc7d8cf4e9a3ee6a45ae6f20c0447691f42",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  },
+  {
+    "resource": "academycraft/src/main/java/cn/academy/terminal/item/ItemTerminalInstaller.java",
+    "upstream": "academycraft",
+    "source": "src/main/java/cn/academy/terminal/item/ItemTerminalInstaller.java",
+    "sha256": "075b82a99fce56480c2866946a31160ebe2d22e1008607023153cdc54ff5d04e",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  },
+  {
+    "resource": "academycraft/src/main/java/cn/academy/terminal/app/settings/AppSettings.java",
+    "upstream": "academycraft",
+    "source": "src/main/java/cn/academy/terminal/app/settings/AppSettings.java",
+    "sha256": "6c6e6a4dbcd4bd9f6ad1e0e85490741fca5bfc7665ab1526548c134b6a054f7a",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  },
+  {
+    "resource": "academycraft/src/main/java/cn/academy/terminal/event/AppInstalledEvent.java",
+    "upstream": "academycraft",
+    "source": "src/main/java/cn/academy/terminal/event/AppInstalledEvent.java",
+    "sha256": "b246fbaa46464804e03b643a44bb4fbd585e0823e11c3fa437d2c647315e7a93",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  },
+  {
+    "resource": "academycraft/src/main/java/cn/academy/terminal/event/TerminalInstalledEvent.java",
+    "upstream": "academycraft",
+    "source": "src/main/java/cn/academy/terminal/event/TerminalInstalledEvent.java",
+    "sha256": "84f0529e6dd1c0d2b9eee91d2ab738e90ddebbec81030b165c83956eee52ee0b",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  },
+  {
+    "resource": "academycraft/src/main/java/cn/academy/misc/tutorial/ModuleTutorial.java",
+    "upstream": "academycraft",
+    "source": "src/main/java/cn/academy/misc/tutorial/ModuleTutorial.java",
+    "sha256": "f901af8a47373811992c22d7804be37ceed8905e0ee0b56594900f19a696b3e8",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  },
+  {
+    "resource": "academycraft/src/main/java/cn/academy/ability/app/AppSkillTree.java",
+    "upstream": "academycraft",
+    "source": "src/main/java/cn/academy/ability/app/AppSkillTree.java",
+    "sha256": "7ae29f03624d42a7adc10bd909fb1d3e8d86b9e247fe4d579cf6933c3d4fea58",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  },
+  {
+    "resource": "academycraft/src/main/java/cn/academy/energy/client/app/AppFreqTransmitter.java",
+    "upstream": "academycraft",
+    "source": "src/main/java/cn/academy/energy/client/app/AppFreqTransmitter.java",
+    "sha256": "7fbfb8dd9833730bba61a4ecafdf84a9fdb0654b761ca29dca4f97208d1a60a3",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  },
+  {
+    "resource": "academycraft/src/main/scala/cn/academy/misc/media/MediaApp.scala",
+    "upstream": "academycraft",
+    "source": "src/main/scala/cn/academy/misc/media/MediaApp.scala",
+    "sha256": "f8a5260f26e8a1da47d1161cddbd84118c39b62277d87e8c57e819a38db629f9",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  },
+  {
+    "resource": "academycraft/src/main/resources/assets/academy/recipes/default.recipe",
+    "upstream": "academycraft",
+    "source": "src/main/resources/assets/academy/recipes/default.recipe",
+    "sha256": "a9dc4aa3477ad246f7cb9bb6bea3c33e033aaa8431f3c8a03acaf0845374da1f",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  },
+  {
+    "resource": "academycraft/README.md",
+    "upstream": "academycraft",
+    "source": "README.md",
+    "sha256": "6666d51532b31b3f6c1506ad1855aa22241926ffcec9f452e64e5e54285f9794",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  },
+  {
+    "resource": "lambdalib/src/main/java/cn/lambdalib/crafting/RecipeParser.java",
+    "upstream": "lambdalib",
+    "source": "src/main/java/cn/lambdalib/crafting/RecipeParser.java",
+    "sha256": "7509625c05987c72c836e16e2eb9f7a8aa227b06aa46b2c160047ca4b219d158",
+    "release": "1.2.3"
+  },
+  {
+    "resource": "lambdalib/src/main/java/cn/lambdalib/crafting/ParsedRecipeElement.java",
+    "upstream": "lambdalib",
+    "source": "src/main/java/cn/lambdalib/crafting/ParsedRecipeElement.java",
+    "sha256": "2b3cf451ca1cea221dc93fd455f7730631193fc3356aef67ec472fcd1ed45eb8",
+    "release": "1.2.3"
+  },
+  {
+    "resource": "lambdalib/src/main/java/cn/lambdalib/crafting/RecipeParsingException.java",
+    "upstream": "lambdalib",
+    "source": "src/main/java/cn/lambdalib/crafting/RecipeParsingException.java",
+    "sha256": "bfdbee5774050782bb6924194d3be9a9bfdfbd4ca3cddadbacf933056019c103",
+    "release": "1.2.3"
+  },
+  {
+    "resource": "lambdalib/src/main/java/cn/lambdalib/s11n/SerializationHelper.java",
+    "upstream": "lambdalib",
+    "source": "src/main/java/cn/lambdalib/s11n/SerializationHelper.java",
+    "sha256": "4ccd06cce559d7d9f53a3f68898ff1e6df713e17ca0c9d8f99c1564e5465c5c3",
+    "release": "1.2.3"
+  },
+  {
+    "resource": "lambdalib/src/main/java/cn/lambdalib/s11n/SerializeIncluded.java",
+    "upstream": "lambdalib",
+    "source": "src/main/java/cn/lambdalib/s11n/SerializeIncluded.java",
+    "sha256": "a3cdba163c384ffa2de09fd22cc889b007076e745d874ecda34a95354b725163",
+    "release": "1.2.3"
+  },
+  {
+    "resource": "lambdalib/src/main/java/cn/lambdalib/s11n/SerializeDynamic.java",
+    "upstream": "lambdalib",
+    "source": "src/main/java/cn/lambdalib/s11n/SerializeDynamic.java",
+    "sha256": "5f2c26623624e3c8fd92753ef26fa0b1742a6e9198d6590ac8f454ba3f83d9c8",
+    "release": "1.2.3"
+  },
+  {
+    "resource": "lambdalib/src/main/java/cn/lambdalib/s11n/SerializeType.java",
+    "upstream": "lambdalib",
+    "source": "src/main/java/cn/lambdalib/s11n/SerializeType.java",
+    "sha256": "5c98e52f9f8cc4b7f379dbc9dff53582bb05a3401b754a67359de65ab6e937be",
+    "release": "1.2.3"
+  },
+  {
+    "resource": "lambdalib/src/main/java/cn/lambdalib/s11n/SerializeStrategy.java",
+    "upstream": "lambdalib",
+    "source": "src/main/java/cn/lambdalib/s11n/SerializeStrategy.java",
+    "sha256": "b6257a40573f6c996ea9650702372ecf956276fd630349174a90f1d1565b4c8c",
+    "release": "1.2.3"
+  },
+  {
+    "resource": "lambdalib/src/main/java/cn/lambdalib/s11n/SerializeExcluded.java",
+    "upstream": "lambdalib",
+    "source": "src/main/java/cn/lambdalib/s11n/SerializeExcluded.java",
+    "sha256": "c3a30eb343f86f0b64b406fa7a9bdf04fb27d54e62568d39f16d33e189651aef",
+    "release": "1.2.3"
+  },
+  {
+    "resource": "lambdalib/src/main/java/cn/lambdalib/s11n/nbt/NBTS11n.java",
+    "upstream": "lambdalib",
+    "source": "src/main/java/cn/lambdalib/s11n/nbt/NBTS11n.java",
+    "sha256": "857c7f0acb3e80dbbf89b8609b159b7c9e03c44c24b691d59b365a240ca01de5",
+    "release": "1.2.3"
+  },
+  {
+    "resource": "lambdalib/LICENSE",
+    "upstream": "lambdalib",
+    "source": "LICENSE",
+    "sha256": "852bcc033a46c62f99fb5ffd43b3241ba2c0c440c6034aa2114505f2c4f03c4a",
+    "release": "1.2.3"
+  },
+  {
+    "resource": "academycraft/src/main/java/cn/academy/energy/client/app/Syncs.java",
+    "upstream": "academycraft",
+    "source": "src/main/java/cn/academy/energy/client/app/Syncs.java",
+    "sha256": "3b9a9613a71f0cab256e2d6c22405507c952e9709272d7544d46e09e19598207",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  },
+  {
+    "resource": "academycraft/src/main/java/cn/academy/energy/api/event/wen/LinkNodeEvent.java",
+    "upstream": "academycraft",
+    "source": "src/main/java/cn/academy/energy/api/event/wen/LinkNodeEvent.java",
+    "sha256": "0a4e862141a35a1e008e85a29eb6763d15e405fc2d980c4d2e841a46b84eeb69",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  },
+  {
+    "resource": "academycraft/src/main/java/cn/academy/energy/api/event/node/LinkUserEvent.java",
+    "upstream": "academycraft",
+    "source": "src/main/java/cn/academy/energy/api/event/node/LinkUserEvent.java",
+    "sha256": "e077dd1e2fc16723f39513bb2216839e08a9bc2558743c060732884f203fa829",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  },
+  {
+    "resource": "academycraft/src/main/java/cn/academy/energy/api/event/WirelessEvent.java",
+    "upstream": "academycraft",
+    "source": "src/main/java/cn/academy/energy/api/event/WirelessEvent.java",
+    "sha256": "c8628240e46f5f2576f252f72557beaf915598a3ec56e149693e2d69fc308a04",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  },
+  {
+    "resource": "academycraft/src/main/java/cn/academy/energy/api/event/WirelessUserEvent.java",
+    "upstream": "academycraft",
+    "source": "src/main/java/cn/academy/energy/api/event/WirelessUserEvent.java",
+    "sha256": "9c183063c07f093b115696ebc0cd80f02d12e4cc4b27b3f2ad3456313739e53f",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  },
+  {
+    "resource": "academycraft/src/main/java/cn/academy/energy/api/block/IWirelessTile.java",
+    "upstream": "academycraft",
+    "source": "src/main/java/cn/academy/energy/api/block/IWirelessTile.java",
+    "sha256": "581a8ac1ce24b33372984b29245649f7b10d5c125d1ff13c66cd552ecc4bc3a8",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  },
+  {
+    "resource": "academycraft/src/main/java/cn/academy/energy/api/block/IWirelessMatrix.java",
+    "upstream": "academycraft",
+    "source": "src/main/java/cn/academy/energy/api/block/IWirelessMatrix.java",
+    "sha256": "7b1dc2e8d0734cd570bac98d310ba21f1bbc21c5af289288933f03a7d199a59f",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  },
+  {
+    "resource": "academycraft/src/main/java/cn/academy/energy/api/block/IWirelessNode.java",
+    "upstream": "academycraft",
+    "source": "src/main/java/cn/academy/energy/api/block/IWirelessNode.java",
+    "sha256": "d5a9be95e8dc141c2445242a9dafb02072bd04a9dbc6a0b3fbe9b44052a28fcc",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  },
+  {
+    "resource": "academycraft/src/main/java/cn/academy/energy/api/block/IWirelessUser.java",
+    "upstream": "academycraft",
+    "source": "src/main/java/cn/academy/energy/api/block/IWirelessUser.java",
+    "sha256": "bc4f849fd6cafcb9ffa042235e96f775522e1a8fe92adb5f7c0543cabceeb61d",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  },
+  {
+    "resource": "academycraft/src/main/java/cn/academy/energy/api/block/IWirelessGenerator.java",
+    "upstream": "academycraft",
+    "source": "src/main/java/cn/academy/energy/api/block/IWirelessGenerator.java",
+    "sha256": "9c6f947ddca0f1ac241be0eb69c7fea9c8110f93ebc2756df1ae5659ab9d5a9f",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  },
+  {
+    "resource": "academycraft/src/main/java/cn/academy/energy/api/block/IWirelessReceiver.java",
+    "upstream": "academycraft",
+    "source": "src/main/java/cn/academy/energy/api/block/IWirelessReceiver.java",
+    "sha256": "24db52572f29504f62ee0923481b506bbbc3348caa60421c73ca192fbbef49a8",
+    "commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521"
+  }
+]

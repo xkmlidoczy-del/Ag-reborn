@@ -1,0 +1,9 @@
+// Pure presentation of the seven post-0.81.2 skills.
+tasks.register('newSkillFxTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.NewSkillFxRegressionTest'
+    enableAssertions = true
+    maxHeapSize = '256m'
+}
+tasks.named('check') { dependsOn 'newSkillFxTest' }

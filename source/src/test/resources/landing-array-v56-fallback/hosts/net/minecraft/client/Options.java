@@ -1,0 +1,1 @@
+package net.minecraft.client;public class Options{public boolean hideGui,firstPerson=true;public CameraType getCameraType(){return new CameraType(firstPerson);}public record CameraType(boolean isFirstPerson){}}

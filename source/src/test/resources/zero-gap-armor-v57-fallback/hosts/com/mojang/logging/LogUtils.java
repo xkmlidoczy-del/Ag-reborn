@@ -1,0 +1,1 @@
+package com.mojang.logging; public final class LogUtils {private static final Logger LOGGER=new Logger();public static Logger getLogger(){return LOGGER;}public static class Logger {public void info(String s){ }public void error(String s,Object o){ }public void warn(String s,Object o){ }}}

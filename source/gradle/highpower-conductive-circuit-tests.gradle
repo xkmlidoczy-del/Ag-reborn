@@ -1,0 +1,8 @@
+// Additive NEW-121 geometry policy; native hurt/session acceptance remains in the GameTest batch.
+tasks.register('highPowerConductiveCircuitTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.ConductiveCircuitRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerConductiveCircuitTest' }

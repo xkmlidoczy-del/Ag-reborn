@@ -1,0 +1,8 @@
+// NEW131 server-side finite trajectories, ordinary native damage, and exact offhand commit.
+tasks.register('highPowerIronSandLanceTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.IronSandLanceRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerIronSandLanceTest' }

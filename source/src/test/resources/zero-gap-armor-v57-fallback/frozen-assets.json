@@ -1,0 +1,7 @@
+{
+  "src/main/resources/assets/academy/textures/port/white.png": "7ac2abfce2be8b46dd9826d597d94edeefc1570b4a992622721b90a1850e3ee9",
+  "src/main/resources/assets/academy/textures/effects/mdshield.png": "5a0cf5f61bea467687820983efb76cfd14f68abbc38667e091b6b0f27965c5dc",
+  "src/main/resources/assets/academy/shaders/core/folded_mirror_energy.json": "06eeaa51e4f8fdb2471dba7eff89ff76549942c4126df6f376d786bf00f1793a",
+  "src/main/resources/assets/academy/shaders/core/folded_mirror_energy.vsh": "7bf24710f868582a38a23a0f0c9935c47b4271d04f5a7bd1774a08c8bf65f94c",
+  "src/main/resources/assets/academy/shaders/core/folded_mirror_energy.fsh": "75b9fe2510f00815c2febf1aa0cb225113d6aa72f2e2f078195227e17aa26b40"
+}

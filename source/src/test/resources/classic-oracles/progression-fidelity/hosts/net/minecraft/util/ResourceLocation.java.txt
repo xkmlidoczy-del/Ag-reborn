@@ -1,0 +1,3 @@
+/* Inert UI type host; prerequisite algorithms are unchanged original sources. */
+package net.minecraft.util;
+public final class ResourceLocation {}

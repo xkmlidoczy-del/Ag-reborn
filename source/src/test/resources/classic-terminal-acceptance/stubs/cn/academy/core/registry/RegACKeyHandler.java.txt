@@ -1,0 +1,1 @@
+package cn.academy.core.registry; public @interface RegACKeyHandler {String name();int defaultKey();}

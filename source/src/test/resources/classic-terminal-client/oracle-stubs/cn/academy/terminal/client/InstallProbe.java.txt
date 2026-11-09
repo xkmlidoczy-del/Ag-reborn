@@ -1,0 +1,3 @@
+package cn.academy.terminal.client;
+public class InstallProbe {public static double[] sample(long elapsed)throws Exception{var init=TerminalInstallEffect.class.getDeclaredMethod("__init");init.setAccessible(true);init.invoke(null);TerminalUI.keyHandler.calls=0;cn.lambdalib.util.mc.PlayerUtils.calls=0;var effect=new TerminalInstallEffect();effect.time=elapsed;effect.draw(new net.minecraft.client.gui.ScaledResolution());var root=effect.gui.getWidget("main");return new double[]{effect.gui.getWidget("main/progbar").bar.progress,root.texture.color.a,root.children.get("tag").text.option.color.a,effect.disposed?1:0,TerminalUI.keyHandler.calls,cn.lambdalib.util.mc.PlayerUtils.calls};}}
+

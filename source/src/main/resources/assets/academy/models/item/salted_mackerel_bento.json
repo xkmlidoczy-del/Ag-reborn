@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "academy:items/city/salted_mackerel_bento"
+  }
+}

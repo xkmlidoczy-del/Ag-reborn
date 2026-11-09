@@ -1,0 +1,1 @@
+package net.minecraftforge.client.event; public class RenderGameOverlayEvent {public enum ElementType {EXPERIENCE,OTHER}public ElementType type=ElementType.EXPERIENCE;public net.minecraft.client.gui.ScaledResolution resolution=new net.minecraft.client.gui.ScaledResolution();}

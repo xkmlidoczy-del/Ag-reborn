@@ -1,0 +1,31 @@
+; AcademyCraft1.0.7 default.recipe exact selected excerpts, GPLv3
+
+shaped(node0) { 
+    [nil,       calc_chip,    nil]
+    [ingotIron, frame,        ingotIron]
+    [crystal0,  reso_crystal, crystal0]
+}
+
+shaped(node1) {
+    [nil,       crystal1,  nil]
+    [calc_chip, conv_comp, calc_chip]
+    [nil,       node0,     nil]
+}
+
+shaped(node2) {
+    [crystal2]
+    [reso_comp]
+    [node1]
+}
+
+shaped(mat) {
+    [nil,          reso_crystal, nil]
+    [dustRedstone, frame,        dustRedstone]
+    [data_chip,    reso_crystal, data_chip]
+}
+
+shaped(dev_advanced) {
+    [cons_plate, cons_plate, cons_plate]
+    [glowstone,  dev_normal, glowstone]
+    [node1,      crystal2,   reso_crystal]
+}

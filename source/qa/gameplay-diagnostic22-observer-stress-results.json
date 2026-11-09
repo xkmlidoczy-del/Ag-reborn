@@ -1,0 +1,17 @@
+[
+  {
+    "name": "diagnostic22-observer-item-stress",
+    "script": "gameplay-diagnostic22-observer-item-stress.script",
+    "exit": 1
+  },
+  {
+    "name": "diagnostic22-observer-yaw-stress",
+    "script": "gameplay-diagnostic22-observer-yaw-stress.script",
+    "exit": 1
+  },
+  {
+    "name": "diagnostic22-observer-dual-stress",
+    "script": "gameplay-diagnostic22-observer-dual-stress.script",
+    "exit": 0
+  }
+]

@@ -1,0 +1,23 @@
+{
+  "replace": false,
+  "values": [
+    "#academy:city_materials",
+    "academy:machine_frame",
+    "academy:reso_crystal_ore",
+    "academy:constraint_metal_ore",
+    "academy:crystal_ore",
+    "academy:imag_silicon_ore",
+    "#academy:developers",
+    "academy:solar_gen",
+    "academy:imag_fusor",
+    "#academy:wireless_nodes",
+    "academy:wireless_matrix",
+    "academy:metal_former",
+    "academy:phase_gen",
+    "academy:windgen_base",
+    "academy:windgen_pillar",
+    "academy:windgen_main",
+    "academy:rf_input",
+    "academy:rf_output"
+  ]
+}

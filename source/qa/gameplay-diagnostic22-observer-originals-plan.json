@@ -1,0 +1,26 @@
+[
+  {
+    "name": "diagnostic22-observer-item-original",
+    "script": "gameplay-tp-play-item-transport.script",
+    "directory": "run-diagnostic22-observer",
+    "props": "academy.qa.observerItems=true;academy.qa.observerClient=true",
+    "scriptSha256": "1028c3821e45e27a495ad7ac68f7f90cfe46e2ccb3f83513f2055021ecc58add",
+    "scope": "Exact original script with independent read-only spawn/trajectory observer. No trace/teleport/native state changes. Retain original and diagnostic failure; passing does not erase original."
+  },
+  {
+    "name": "diagnostic22-observer-yaw-original",
+    "script": "gameplay-vm-extra-yaw-q-items.script",
+    "directory": "run-diagnostic22-observer",
+    "props": "academy.qa.observerYaw=true;academy.qa.observerClient=true;academy.qa.observerItems=true",
+    "scriptSha256": "b56280564e776895270e418949bf6f623e6bdb0363b39191a9b82eec9ccdba5b",
+    "scope": "Diagnostic added read-only observer mod; exact original input/wait/assertions. Not same-mod final acceptance and does not resolve prior failure merely by passing."
+  },
+  {
+    "name": "diagnostic22-observer-em-group-original",
+    "script": "gameplay-final-modes-group-em-input-modes.script",
+    "directory": "run-diagnostic22-observer",
+    "props": "academy.qa.observerYaw=true;academy.qa.observerClient=true;academy.qa.observerItems=true",
+    "scriptSha256": "0cfd19bdac558725dd9608d1e627f49f4402f2967fa4854fc8ab9ca300976245",
+    "scope": "Diagnostic added read-only observer mod; exact original input/wait/assertions. Not same-mod final acceptance and does not resolve prior failure merely by passing."
+  }
+]

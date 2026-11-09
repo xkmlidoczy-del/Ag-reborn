@@ -1,0 +1,1522 @@
+{
+  "canonical": "AcademyCraft 1.0.7 / LambdaLib 1.2.3",
+  "materials": [
+    "crystal_low",
+    "crystal_normal",
+    "crystal_pure",
+    "calc_chip",
+    "data_chip",
+    "wafer",
+    "constraint_ingot",
+    "imag_silicon_ingot",
+    "reinforced_iron_plate",
+    "imag_silicon_piece",
+    "reso_crystal",
+    "constraint_plate",
+    "brain_component",
+    "info_component",
+    "resonance_component",
+    "energy_convert_component"
+  ],
+  "blocks": [
+    "machine_frame",
+    "reso_crystal_ore",
+    "constraint_metal_ore",
+    "crystal_ore",
+    "imag_silicon_ore"
+  ],
+  "ore_rules": [
+    {
+      "id": "reso_crystal_ore",
+      "hardness": 3,
+      "harvest_level": 2,
+      "vein_size": 4,
+      "attempts": 18,
+      "drop": "reso_crystal",
+      "minimum_drop": 1,
+      "maximum_drop": 1
+    },
+    {
+      "id": "constraint_metal_ore",
+      "hardness": 4,
+      "harvest_level": 1,
+      "vein_size": 4,
+      "attempts": 24,
+      "drop": "constraint_metal_ore",
+      "minimum_drop": 1,
+      "maximum_drop": 1
+    },
+    {
+      "id": "crystal_ore",
+      "hardness": 3,
+      "harvest_level": 2,
+      "vein_size": 3,
+      "attempts": 48,
+      "drop": "crystal_low",
+      "minimum_drop": 1,
+      "maximum_drop": 2
+    },
+    {
+      "id": "imag_silicon_ore",
+      "hardness": 3.75,
+      "harvest_level": 2,
+      "vein_size": 4,
+      "attempts": 22,
+      "drop": "imag_silicon_ore",
+      "minimum_drop": 1,
+      "maximum_drop": 1
+    }
+  ],
+  "recipes": [
+    {
+      "ordinal": 1,
+      "source_type": "shapeless",
+      "source_output": "si_piece*2",
+      "rows": [
+        [
+          "wafer"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "academy:classic/imag_silicon_piece_01"
+    },
+    {
+      "ordinal": 2,
+      "source_type": "shaped",
+      "source_output": "data_chip",
+      "rows": [
+        [
+          "dustRedstone",
+          "dustRedstone",
+          "dustRedstone"
+        ],
+        [
+          "nil",
+          "plateIron",
+          "nil"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "academy:classic/data_chip_02"
+    },
+    {
+      "ordinal": 3,
+      "source_type": "shaped",
+      "source_output": "data_chip",
+      "rows": [
+        [
+          "dustRedstone",
+          "dustRedstone",
+          "dustRedstone"
+        ],
+        [
+          "nil",
+          "si_piece",
+          "nil"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "academy:classic/data_chip_03"
+    },
+    {
+      "ordinal": 4,
+      "source_type": "shapeless",
+      "source_output": "calc_chip",
+      "rows": [
+        [
+          "data_chip",
+          "quartz",
+          "quartz"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "academy:classic/calc_chip_04"
+    },
+    {
+      "ordinal": 5,
+      "source_type": "shapeless",
+      "source_output": "calc_chip",
+      "rows": [
+        [
+          "data_chip",
+          "reso_crystal"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "academy:classic/calc_chip_05"
+    },
+    {
+      "ordinal": 6,
+      "source_type": "shaped",
+      "source_output": "plateIron *2",
+      "rows": [
+        [
+          "ingotIron"
+        ],
+        [
+          "ingotIron"
+        ],
+        [
+          "ingotIron"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "academy:classic/reinforced_iron_plate_06"
+    },
+    {
+      "ordinal": 7,
+      "source_type": "shaped",
+      "source_output": "frame",
+      "rows": [
+        [
+          "nil",
+          "plateIron",
+          "nil"
+        ],
+        [
+          "plateIron",
+          "dustRedstone",
+          "plateIron"
+        ],
+        [
+          "nil",
+          "plateIron",
+          "nil"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "academy:classic/machine_frame_07"
+    },
+    {
+      "ordinal": 8,
+      "source_type": "shaped",
+      "source_output": "phase_gen",
+      "rows": [
+        [
+          "crystal0",
+          "frame",
+          "crystal0"
+        ],
+        [
+          "matter_unit",
+          "nil",
+          "matter_unit"
+        ]
+      ],
+      "status": "deferred",
+      "recipe_id": null
+    },
+    {
+      "ordinal": 9,
+      "source_type": "shaped",
+      "source_output": "solar_gen",
+      "rows": [
+        [
+          "glass_pane",
+          "glass_pane",
+          "glass_pane"
+        ],
+        [
+          "nil",
+          "wafer",
+          "nil"
+        ],
+        [
+          "conv_comp",
+          "frame",
+          "conv_comp"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "classic/solar_gen_09"
+    },
+    {
+      "ordinal": 10,
+      "source_type": "shaped",
+      "source_output": "windgen_base",
+      "rows": [
+        [
+          "ingotIron"
+        ],
+        [
+          "frame"
+        ],
+        [
+          "conv_comp"
+        ]
+      ],
+      "status": "deferred",
+      "recipe_id": null
+    },
+    {
+      "ordinal": 11,
+      "source_type": "shaped",
+      "source_output": "windgen_pillar",
+      "rows": [
+        [
+          "iron_bars"
+        ],
+        [
+          "dustRedstone"
+        ],
+        [
+          "iron_bars"
+        ]
+      ],
+      "status": "deferred",
+      "recipe_id": null
+    },
+    {
+      "ordinal": 12,
+      "source_type": "shaped",
+      "source_output": "windgen_main",
+      "rows": [
+        [
+          "nil",
+          "frame",
+          "nil"
+        ],
+        [
+          "cons_plate",
+          "conv_comp",
+          "cons_plate"
+        ],
+        [
+          "nil",
+          "frame",
+          "nil"
+        ]
+      ],
+      "status": "deferred",
+      "recipe_id": null
+    },
+    {
+      "ordinal": 13,
+      "source_type": "shaped",
+      "source_output": "windgen_fan",
+      "rows": [
+        [
+          "nil",
+          "plateIron",
+          "nil"
+        ],
+        [
+          "plateIron",
+          "iron_bars",
+          "plateIron"
+        ],
+        [
+          "nil",
+          "plateIron",
+          "nil"
+        ]
+      ],
+      "status": "deferred",
+      "recipe_id": null
+    },
+    {
+      "ordinal": 14,
+      "source_type": "shaped",
+      "source_output": "node0",
+      "rows": [
+        [
+          "nil",
+          "calc_chip",
+          "nil"
+        ],
+        [
+          "ingotIron",
+          "frame",
+          "ingotIron"
+        ],
+        [
+          "crystal0",
+          "reso_crystal",
+          "crystal0"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "academy:classic/wireless_node_basic_14",
+      "note": "Genuine finite source device and dependencies integrated; physical client/human acquisition is distinct from native fixtures"
+    },
+    {
+      "ordinal": 15,
+      "source_type": "shaped",
+      "source_output": "node1",
+      "rows": [
+        [
+          "nil",
+          "crystal1",
+          "nil"
+        ],
+        [
+          "calc_chip",
+          "conv_comp",
+          "calc_chip"
+        ],
+        [
+          "nil",
+          "node0",
+          "nil"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "academy:classic/wireless_node_standard_15",
+      "note": "Genuine finite source device and dependencies integrated; physical client/human acquisition is distinct from native fixtures"
+    },
+    {
+      "ordinal": 16,
+      "source_type": "shaped",
+      "source_output": "node2",
+      "rows": [
+        [
+          "crystal2"
+        ],
+        [
+          "reso_comp"
+        ],
+        [
+          "node1"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "academy:classic/wireless_node_advanced_16",
+      "note": "Genuine finite source device and dependencies integrated; physical client/human acquisition is distinct from native fixtures"
+    },
+    {
+      "ordinal": 17,
+      "source_type": "shaped",
+      "source_output": "matter_unit*4",
+      "rows": [
+        [
+          "nil",
+          "cons_plate",
+          "nil"
+        ],
+        [
+          "cons_plate",
+          "glass",
+          "cons_plate"
+        ],
+        [
+          "nil",
+          "cons_plate",
+          "nil"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "classic/matter_unit_17"
+    },
+    {
+      "ordinal": 18,
+      "source_type": "shaped",
+      "source_output": "ene_unit",
+      "rows": [
+        [
+          "nil",
+          "cons_plate",
+          "nil"
+        ],
+        [
+          "cons_plate",
+          "crystal0",
+          "cons_plate"
+        ],
+        [
+          "nil",
+          "data_chip",
+          "nil"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "classic/energy_unit_18"
+    },
+    {
+      "ordinal": 19,
+      "source_type": "shaped",
+      "source_output": "ene_unit*2",
+      "rows": [
+        [
+          "nil",
+          "cons_plate",
+          "nil"
+        ],
+        [
+          "cons_plate",
+          "crystal1",
+          "cons_plate"
+        ],
+        [
+          "nil",
+          "data_chip",
+          "nil"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "classic/energy_unit_19"
+    },
+    {
+      "ordinal": 20,
+      "source_type": "shaped",
+      "source_output": "ene_unit*4",
+      "rows": [
+        [
+          "nil",
+          "cons_plate",
+          "nil"
+        ],
+        [
+          "cons_plate",
+          "crystal2",
+          "cons_plate"
+        ],
+        [
+          "nil",
+          "data_chip",
+          "nil"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "classic/energy_unit_20"
+    },
+    {
+      "ordinal": 21,
+      "source_type": "shaped",
+      "source_output": "cons_plate*2",
+      "rows": [
+        [
+          "cons_ingot",
+          "cons_ingot",
+          "cons_ingot"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "academy:classic/constraint_plate_21"
+    },
+    {
+      "ordinal": 22,
+      "source_type": "shaped",
+      "source_output": "terminal",
+      "rows": [
+        [
+          "data_chip",
+          "glass_pane",
+          "data_chip"
+        ],
+        [
+          "plateIron",
+          "brain_comp",
+          "plateIron"
+        ],
+        [
+          "info_comp",
+          "blockRedstone",
+          "info_comp"
+        ]
+      ],
+      "status": "deferred",
+      "recipe_id": null
+    },
+    {
+      "ordinal": 23,
+      "source_type": "shaped",
+      "source_output": "fusor",
+      "rows": [
+        [
+          "cons_plate",
+          "crystal0",
+          "cons_plate"
+        ],
+        [
+          "calc_chip",
+          "frame",
+          "calc_chip"
+        ],
+        [
+          "cons_plate",
+          "matter_unit",
+          "cons_plate"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "classic/imag_fusor_23"
+    },
+    {
+      "ordinal": 24,
+      "source_type": "shaped",
+      "source_output": "fusor",
+      "rows": [
+        [
+          "nil",
+          "crystal0",
+          "nil"
+        ],
+        [
+          "calc_chip",
+          "frame",
+          "conv_comp"
+        ],
+        [
+          "nil",
+          "matter_unit",
+          "nil"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "classic/imag_fusor_24"
+    },
+    {
+      "ordinal": 25,
+      "source_type": "shaped",
+      "source_output": "fusor",
+      "rows": [
+        [
+          "nil",
+          "crystal0",
+          "nil"
+        ],
+        [
+          "conv_comp",
+          "frame",
+          "calc_chip"
+        ],
+        [
+          "nil",
+          "matter_unit",
+          "nil"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "classic/imag_fusor_25"
+    },
+    {
+      "ordinal": 26,
+      "source_type": "shaped",
+      "source_output": "metal_former",
+      "rows": [
+        [
+          "nil",
+          "shears",
+          "nil"
+        ],
+        [
+          "calc_chip",
+          "frame",
+          "calc_chip"
+        ],
+        [
+          "cons_plate",
+          "matter_unit",
+          "cons_plate"
+        ]
+      ],
+      "status": "deferred",
+      "recipe_id": null
+    },
+    {
+      "ordinal": 27,
+      "source_type": "shaped",
+      "source_output": "mat",
+      "rows": [
+        [
+          "nil",
+          "reso_crystal",
+          "nil"
+        ],
+        [
+          "dustRedstone",
+          "frame",
+          "dustRedstone"
+        ],
+        [
+          "data_chip",
+          "reso_crystal",
+          "data_chip"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "academy:classic/wireless_matrix_27",
+      "note": "Genuine finite source device and dependencies integrated; physical client/human acquisition is distinct from native fixtures"
+    },
+    {
+      "ordinal": 28,
+      "source_type": "shaped",
+      "source_output": "mat_core#0",
+      "rows": [
+        [
+          "nil",
+          "crystal0",
+          "nil"
+        ],
+        [
+          "calc_chip",
+          "reso_crystal",
+          "data_chip"
+        ],
+        [
+          "nil",
+          "conv_comp",
+          "nil"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "classic/matrix_core_0_28"
+    },
+    {
+      "ordinal": 29,
+      "source_type": "shaped",
+      "source_output": "mat_core#1",
+      "rows": [
+        [
+          "reso_crystal"
+        ],
+        [
+          "crystal1"
+        ],
+        [
+          "mat_core#0"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "classic/matrix_core_1_29"
+    },
+    {
+      "ordinal": 30,
+      "source_type": "shaped",
+      "source_output": "mat_core#2",
+      "rows": [
+        [
+          "dustGlowstone",
+          "dustGlowstone",
+          "dustGlowstone"
+        ],
+        [
+          "reso_crystal",
+          "ender_pearl",
+          "reso_crystal"
+        ],
+        [
+          "nil",
+          "mat_core#1",
+          "nil"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "classic/matrix_core_2_30"
+    },
+    {
+      "ordinal": 31,
+      "source_type": "smelting",
+      "source_output": "imagsil_ingot",
+      "rows": [
+        [
+          "imagsil_ore"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "academy:classic/imag_silicon_ingot_31",
+      "experience": 0.8
+    },
+    {
+      "ordinal": 32,
+      "source_type": "smelting",
+      "source_output": "cons_ingot",
+      "rows": [
+        [
+          "cons_ore"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "academy:classic/constraint_ingot_32",
+      "experience": 0.7
+    },
+    {
+      "ordinal": 33,
+      "source_type": "smelting",
+      "source_output": "crystal0",
+      "rows": [
+        [
+          "crystal_ore"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "academy:classic/crystal_low_33",
+      "experience": 0.8
+    },
+    {
+      "ordinal": 34,
+      "source_type": "shaped",
+      "source_output": "info_comp",
+      "rows": [
+        [
+          "dustGlowstone"
+        ],
+        [
+          "data_chip"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "academy:classic/info_component_34"
+    },
+    {
+      "ordinal": 35,
+      "source_type": "shaped",
+      "source_output": "brain_comp",
+      "rows": [
+        [
+          "nil",
+          "nuggetGold",
+          "nil"
+        ],
+        [
+          "dustRedstone",
+          "calc_chip",
+          "dustRedstone"
+        ],
+        [
+          "nil",
+          "nuggetGold",
+          "nil"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "academy:classic/brain_component_35"
+    },
+    {
+      "ordinal": 36,
+      "source_type": "shaped",
+      "source_output": "reso_comp",
+      "rows": [
+        [
+          "cons_plate",
+          "reso_crystal",
+          "cons_plate"
+        ],
+        [
+          "nil",
+          "dustRedstone",
+          "nil"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "academy:classic/resonance_component_36"
+    },
+    {
+      "ordinal": 37,
+      "source_type": "shaped",
+      "source_output": "conv_comp",
+      "rows": [
+        [
+          "calc_chip"
+        ],
+        [
+          "ene_unit"
+        ],
+        [
+          "reso_crystal"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "classic/energy_convert_component_37"
+    },
+    {
+      "ordinal": 38,
+      "source_type": "shaped",
+      "source_output": "app_skill_tree",
+      "rows": [
+        [
+          "compass"
+        ],
+        [
+          "data_chip"
+        ],
+        [
+          "info_comp"
+        ]
+      ],
+      "status": "deferred",
+      "recipe_id": null
+    },
+    {
+      "ordinal": 39,
+      "source_type": "shaped",
+      "source_output": "app_media_player",
+      "rows": [
+        [
+          "noteblock",
+          "noteblock",
+          "noteblock"
+        ],
+        [
+          "nil",
+          "data_chip",
+          "nil"
+        ],
+        [
+          "nil",
+          "info_comp",
+          "nil"
+        ]
+      ],
+      "status": "deferred",
+      "recipe_id": null
+    },
+    {
+      "ordinal": 40,
+      "source_type": "shaped",
+      "source_output": "app_freq_transmitter",
+      "rows": [
+        [
+          "reso_comp"
+        ],
+        [
+          "data_chip"
+        ],
+        [
+          "info_comp"
+        ]
+      ],
+      "status": "deferred",
+      "recipe_id": null
+    },
+    {
+      "ordinal": 41,
+      "source_type": "shaped",
+      "source_output": "mag_hook*3",
+      "rows": [
+        [
+          "nil",
+          "plateIron",
+          "nil"
+        ],
+        [
+          "plateIron",
+          "plateIron",
+          "plateIron"
+        ],
+        [
+          "nil",
+          "plateIron",
+          "nil"
+        ]
+      ],
+      "status": "deferred",
+      "recipe_id": null
+    },
+    {
+      "ordinal": 42,
+      "source_type": "shaped",
+      "source_output": "dev_portable",
+      "rows": [
+        [
+          "data_chip",
+          "glass_pane",
+          "calc_chip"
+        ],
+        [
+          "brain_comp",
+          "info_comp",
+          "conv_comp"
+        ],
+        [
+          "cons_plate",
+          "crystal0",
+          "cons_plate"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "academy:classic/portable_developer_42"
+    },
+    {
+      "ordinal": 43,
+      "source_type": "shapeless",
+      "source_output": "silbarn",
+      "rows": [
+        [
+          "si_piece",
+          "si_piece"
+        ]
+      ],
+      "status": "deferred",
+      "recipe_id": null
+    },
+    {
+      "ordinal": 44,
+      "source_type": "shaped",
+      "source_output": "dev_normal",
+      "rows": [
+        [
+          "nil",
+          "dev_portable",
+          "nil"
+        ],
+        [
+          "mat_core#0",
+          "bed",
+          "piston"
+        ],
+        [
+          "crystal1",
+          "frame",
+          "dustRedstone"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "classic/developer_normal_44"
+    },
+    {
+      "ordinal": 45,
+      "source_type": "shaped",
+      "source_output": "dev_normal",
+      "rows": [
+        [
+          "brain_comp",
+          "info_comp",
+          "conv_comp"
+        ],
+        [
+          "mat_core#0",
+          "bed",
+          "piston"
+        ],
+        [
+          "crystal1",
+          "frame",
+          "dustRedstone"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "classic/developer_normal_45"
+    },
+    {
+      "ordinal": 46,
+      "source_type": "shaped",
+      "source_output": "dev_advanced",
+      "rows": [
+        [
+          "cons_plate",
+          "cons_plate",
+          "cons_plate"
+        ],
+        [
+          "glowstone",
+          "dev_normal",
+          "glowstone"
+        ],
+        [
+          "node1",
+          "crystal2",
+          "reso_crystal"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "academy:classic/developer_advanced_46",
+      "note": "Genuine finite source device and dependencies integrated; physical client/human acquisition is distinct from native fixtures"
+    },
+    {
+      "ordinal": 47,
+      "source_type": "shapeless",
+      "source_output": "wafer",
+      "rows": [
+        [
+          "imagsil_ingot"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "academy:classic/wafer_47"
+    },
+    {
+      "ordinal": 48,
+      "source_type": "shapeless",
+      "source_output": "tutorial",
+      "rows": [
+        [
+          "book",
+          "crystal0"
+        ]
+      ],
+      "status": "deferred",
+      "recipe_id": null
+    },
+    {
+      "ordinal": 49,
+      "source_type": "shaped",
+      "source_output": "magnetic_coil",
+      "rows": [
+        [
+          "cons_plate",
+          "reso_crystal",
+          "cons_plate"
+        ],
+        [
+          "cons_plate",
+          "reso_crystal",
+          "cons_plate"
+        ],
+        [
+          "plateIron",
+          "diamond",
+          "plateIron"
+        ]
+      ],
+      "status": "implemented",
+      "recipe_id": "academy:classic/magnetic_coil_49"
+    }
+  ],
+  "registry_inventory": [
+    {
+      "kind": "Item",
+      "class": "ItemDeveloper",
+      "field": "developerPortable",
+      "recipe_alias": "dev_portable",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/ModuleAbility.java",
+      "status": "existing"
+    },
+    {
+      "kind": "Block",
+      "class": "BlockDeveloper",
+      "field": "developerNormal",
+      "recipe_alias": "dev_normal",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/ModuleAbility.java",
+      "status": "implemented_functional_machine; authentic_recipe_dependency_deferred"
+    },
+    {
+      "kind": "Block",
+      "class": "BlockDeveloper",
+      "field": "developerAdvanced",
+      "recipe_alias": "dev_advanced",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/ModuleAbility.java",
+      "status": "implemented_functional_machine; authentic_recipe_dependency_deferred"
+    },
+    {
+      "kind": "Block",
+      "class": "AbilityInterferer",
+      "field": "abilityInterferer",
+      "recipe_alias": null,
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/ModuleAbility.java",
+      "status": "deferred"
+    },
+    {
+      "kind": "Item",
+      "class": "ACItem",
+      "field": "magneticCoil",
+      "recipe_alias": "magnetic_coil",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/ModuleAbility.java",
+      "status": "existing"
+    },
+    {
+      "kind": "Item",
+      "class": "ItemInductionFactor",
+      "field": "inductionFactor",
+      "recipe_alias": "induction_factor",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/ModuleAbility.java",
+      "status": "existing"
+    },
+    {
+      "kind": "Item",
+      "class": "Item",
+      "field": "logo",
+      "recipe_alias": null,
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/core/AcademyCraft.java",
+      "status": "deferred"
+    },
+    {
+      "kind": "Block",
+      "class": "BlockImagPhase",
+      "field": "imagPhase",
+      "recipe_alias": null,
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/ModuleCrafting.java",
+      "status": "implemented"
+    },
+    {
+      "kind": "Block",
+      "class": "Block",
+      "field": "machineFrame",
+      "recipe_alias": "frame",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/ModuleCrafting.java",
+      "status": "foundation"
+    },
+    {
+      "kind": "Block",
+      "class": "BlockGenericOre",
+      "field": "oreConstraintMetal",
+      "recipe_alias": "cons_ore",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/ModuleCrafting.java",
+      "status": "foundation"
+    },
+    {
+      "kind": "Block",
+      "class": "BlockGenericOre",
+      "field": "oreImagCrystal",
+      "recipe_alias": "crystal_ore",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/ModuleCrafting.java",
+      "status": "foundation"
+    },
+    {
+      "kind": "Block",
+      "class": "BlockGenericOre",
+      "field": "oreImagSil",
+      "recipe_alias": "imagsil_ore",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/ModuleCrafting.java",
+      "status": "foundation"
+    },
+    {
+      "kind": "Block",
+      "class": "BlockGenericOre",
+      "field": "oreResoCrystal",
+      "recipe_alias": "reso_ore",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/ModuleCrafting.java",
+      "status": "foundation"
+    },
+    {
+      "kind": "Block",
+      "class": "BlockImagFusor",
+      "field": "imagFusor",
+      "recipe_alias": "fusor",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/ModuleCrafting.java",
+      "status": "implemented"
+    },
+    {
+      "kind": "Block",
+      "class": "BlockMetalFormer",
+      "field": "metalFormer",
+      "recipe_alias": "metal_former",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/ModuleCrafting.java",
+      "status": "deferred"
+    },
+    {
+      "kind": "Item",
+      "class": "Item",
+      "field": "crystalLow",
+      "recipe_alias": "crystal0",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/ModuleCrafting.java",
+      "status": "foundation"
+    },
+    {
+      "kind": "Item",
+      "class": "Item",
+      "field": "crystalNormal",
+      "recipe_alias": "crystal1",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/ModuleCrafting.java",
+      "status": "foundation"
+    },
+    {
+      "kind": "Item",
+      "class": "Item",
+      "field": "crystalPure",
+      "recipe_alias": "crystal2",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/ModuleCrafting.java",
+      "status": "foundation"
+    },
+    {
+      "kind": "Item",
+      "class": "Item",
+      "field": "calcChip",
+      "recipe_alias": "calc_chip",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/ModuleCrafting.java",
+      "status": "foundation"
+    },
+    {
+      "kind": "Item",
+      "class": "Item",
+      "field": "dataChip",
+      "recipe_alias": "data_chip",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/ModuleCrafting.java",
+      "status": "foundation"
+    },
+    {
+      "kind": "Item",
+      "class": "Item",
+      "field": "wafer",
+      "recipe_alias": "wafer",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/ModuleCrafting.java",
+      "status": "foundation"
+    },
+    {
+      "kind": "Item",
+      "class": "Item",
+      "field": "ingotConst",
+      "recipe_alias": "cons_ingot",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/ModuleCrafting.java",
+      "status": "foundation"
+    },
+    {
+      "kind": "Item",
+      "class": "Item",
+      "field": "ingotImagSil",
+      "recipe_alias": "imagsil_ingot",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/ModuleCrafting.java",
+      "status": "foundation"
+    },
+    {
+      "kind": "Item",
+      "class": "Item",
+      "field": "rfIronPlate",
+      "recipe_alias": "rf_iron_plate",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/ModuleCrafting.java",
+      "status": "foundation"
+    },
+    {
+      "kind": "Item",
+      "class": "Item",
+      "field": "silPiece",
+      "recipe_alias": "si_piece",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/ModuleCrafting.java",
+      "status": "foundation"
+    },
+    {
+      "kind": "Item",
+      "class": "Item",
+      "field": "resoCrystal",
+      "recipe_alias": "reso_crystal",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/ModuleCrafting.java",
+      "status": "foundation"
+    },
+    {
+      "kind": "Item",
+      "class": "Item",
+      "field": "constPlate",
+      "recipe_alias": "cons_plate",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/ModuleCrafting.java",
+      "status": "foundation"
+    },
+    {
+      "kind": "Item",
+      "class": "Item",
+      "field": "brainComp",
+      "recipe_alias": "brain_comp",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/ModuleCrafting.java",
+      "status": "foundation"
+    },
+    {
+      "kind": "Item",
+      "class": "Item",
+      "field": "infoComp",
+      "recipe_alias": "info_comp",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/ModuleCrafting.java",
+      "status": "foundation"
+    },
+    {
+      "kind": "Item",
+      "class": "Item",
+      "field": "resoComp",
+      "recipe_alias": "reso_comp",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/ModuleCrafting.java",
+      "status": "foundation"
+    },
+    {
+      "kind": "Item",
+      "class": "Item",
+      "field": "convComp",
+      "recipe_alias": "conv_comp",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/ModuleCrafting.java",
+      "status": "foundation"
+    },
+    {
+      "kind": "Item",
+      "class": "ItemMatterUnit",
+      "field": "matterUnit",
+      "recipe_alias": "matter_unit",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/ModuleCrafting.java",
+      "status": "implemented"
+    },
+    {
+      "kind": "Item",
+      "class": "ItemTerminalInstaller",
+      "field": "terminalInstaller",
+      "recipe_alias": "terminal",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/terminal/ModuleTerminal.java",
+      "status": "deferred"
+    },
+    {
+      "kind": "Item",
+      "class": "ItemCoin",
+      "field": "coin",
+      "recipe_alias": "coin",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/ModuleVanilla.java",
+      "status": "existing"
+    },
+    {
+      "kind": "Item",
+      "class": "ItemMagHook",
+      "field": "magHook",
+      "recipe_alias": "mag_hook",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/ModuleVanilla.java",
+      "status": "deferred"
+    },
+    {
+      "kind": "Item",
+      "class": "ItemSilbarn",
+      "field": "silbarn",
+      "recipe_alias": "silbarn",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/ModuleVanilla.java",
+      "status": "deferred"
+    },
+    {
+      "kind": "Item",
+      "class": "Item",
+      "field": "needle",
+      "recipe_alias": "needle",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/ModuleVanilla.java",
+      "status": "existing"
+    },
+    {
+      "kind": "Block",
+      "class": "BlockNode",
+      "field": "nodeBasic",
+      "recipe_alias": "node0",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/ModuleEnergy.java",
+      "status": "deferred"
+    },
+    {
+      "kind": "Block",
+      "class": "BlockNode",
+      "field": "nodeStandard",
+      "recipe_alias": "node1",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/ModuleEnergy.java",
+      "status": "deferred"
+    },
+    {
+      "kind": "Block",
+      "class": "BlockNode",
+      "field": "nodeAdvanced",
+      "recipe_alias": "node2",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/ModuleEnergy.java",
+      "status": "deferred"
+    },
+    {
+      "kind": "Block",
+      "class": "BlockMatrix",
+      "field": "matrix",
+      "recipe_alias": "mat",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/ModuleEnergy.java",
+      "status": "deferred"
+    },
+    {
+      "kind": "Block",
+      "class": "BlockCatEngine",
+      "field": "infiniteGen",
+      "recipe_alias": null,
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/ModuleEnergy.java",
+      "status": "deferred"
+    },
+    {
+      "kind": "Block",
+      "class": "BlockSolarGen",
+      "field": "solarGen",
+      "recipe_alias": "solar_gen",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/ModuleEnergy.java",
+      "status": "implemented_direct_native_recharge_generator; wireless_network_deferred"
+    },
+    {
+      "kind": "Block",
+      "class": "BlockPhaseGen",
+      "field": "phaseGen",
+      "recipe_alias": "phase_gen",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/ModuleEnergy.java",
+      "status": "deferred"
+    },
+    {
+      "kind": "Block",
+      "class": "BlockWindGenBase",
+      "field": "windgenBase",
+      "recipe_alias": "windgen_base",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/ModuleEnergy.java",
+      "status": "deferred"
+    },
+    {
+      "kind": "Block",
+      "class": "BlockWindGenPillar",
+      "field": "windgenPillar",
+      "recipe_alias": "windgen_pillar",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/ModuleEnergy.java",
+      "status": "deferred"
+    },
+    {
+      "kind": "Block",
+      "class": "BlockWindGenMain",
+      "field": "windgenMain",
+      "recipe_alias": "windgen_main",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/ModuleEnergy.java",
+      "status": "deferred"
+    },
+    {
+      "kind": "Item",
+      "class": "Item",
+      "field": "energyUnit",
+      "recipe_alias": "ene_unit",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/ModuleEnergy.java",
+      "status": "implemented_IF_item; source imagProj fluid exchange deferred"
+    },
+    {
+      "kind": "Item",
+      "class": "ItemMatrixCore",
+      "field": "matrixCore",
+      "recipe_alias": "mat_core",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/ModuleEnergy.java",
+      "status": "implemented"
+    },
+    {
+      "kind": "Item",
+      "class": "Item",
+      "field": "windgenFan",
+      "recipe_alias": "windgen_fan",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/ModuleEnergy.java",
+      "status": "deferred"
+    },
+    {
+      "kind": "Block",
+      "class": "Block",
+      "field": "rfInput",
+      "recipe_alias": null,
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/support/rf/RFSupport.java",
+      "status": "deferred"
+    },
+    {
+      "kind": "Block",
+      "class": "Block",
+      "field": "rfOutput",
+      "recipe_alias": null,
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/support/rf/RFSupport.java",
+      "status": "deferred"
+    },
+    {
+      "kind": "Item",
+      "class": "ItemTutorial",
+      "field": "itemTutorial",
+      "recipe_alias": "tutorial",
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/misc/tutorial/ModuleTutorial.java",
+      "status": "deferred"
+    },
+    {
+      "kind": "Item",
+      "class": "ItemAchievement",
+      "field": "DUMMY_ITEM",
+      "recipe_alias": null,
+      "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/misc/achievements/ModuleAchievements.java",
+      "status": "deferred"
+    }
+  ],
+  "manual_registry_inventory": [
+    {
+      "name": "eu_input/eu_output",
+      "status": "deferred optional IC2 converters plus four recipes",
+      "source": "java/cn/academy/support/ic2/IC2Support.java"
+    },
+    {
+      "name": "rf_input/rf_output recipes",
+      "status": "deferred four RF converter recipes",
+      "source": "java/cn/academy/support/rf/RFSupport.java"
+    },
+    {
+      "name": "MediaItem",
+      "status": "deferred excluded licensed media",
+      "source": "scala/cn/academy/misc/media/MediaItem.scala"
+    },
+    {
+      "name": "app_skill_tree/app_freq_transmitter/app_media_player",
+      "status": "deferred functional terminal apps",
+      "source": "java/cn/academy/terminal/item/ItemApp.java"
+    }
+  ]
+}

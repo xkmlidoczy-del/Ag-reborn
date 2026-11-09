@@ -1,0 +1,2 @@
+NEW433 icon reuses the original AcademyCraft vec_deviation.png byte-for-byte. Original author/license attribution remains in META-INF/ACADEMY-NOTICE. No newly authored raster or external assets.
+SHA256 ade6f41c39b98855b8bf7949ec5a96da2b0ed3c51107b656d8e2428de52069ef

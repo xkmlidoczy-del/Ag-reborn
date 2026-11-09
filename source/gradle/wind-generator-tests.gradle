@@ -1,0 +1,7 @@
+// Portable finite checks only. Main exclusively owns the serial native/client runtime lane.
+['classicWindGeneratorSourceTest':'cn.academy.port.wind.ClassicWindSourceOracleTest',
+ 'classicWindGeneratorDataTest':'cn.academy.port.wind.ClassicWindDataRegressionTest',
+ 'classicWindGeneratorVisualTest':'cn.academy.port.client.ClassicWindVisualRegressionTest'].each { taskName,className ->
+ tasks.register(taskName,JavaExec) { dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true;systemProperty 'java.awt.headless','true' }
+ tasks.named('check') { dependsOn taskName }
+}

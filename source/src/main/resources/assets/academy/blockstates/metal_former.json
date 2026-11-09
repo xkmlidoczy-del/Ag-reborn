@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "rotation=0": {
+      "model": "academy:block/metal_former_0"
+    },
+    "rotation=1": {
+      "model": "academy:block/metal_former_1"
+    },
+    "rotation=2": {
+      "model": "academy:block/metal_former_2"
+    },
+    "rotation=3": {
+      "model": "academy:block/metal_former_3"
+    }
+  }
+}

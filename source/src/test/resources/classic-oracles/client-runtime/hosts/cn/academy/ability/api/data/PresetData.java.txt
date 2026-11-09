@@ -1,0 +1,16 @@
+package cn.academy.ability.api.data;
+import cn.academy.ability.api.Controllable;
+import java.util.*;
+import net.minecraft.entity.player.EntityPlayer;
+public class PresetData {
+ public static final int MAX_PRESETS = 4;
+ public static final Map<EntityPlayer,PresetData> DATA = new IdentityHashMap<>();
+ public Preset current = new Preset();
+ public static PresetData get(EntityPlayer p) { return DATA.computeIfAbsent(p, ignored -> new PresetData()); }
+ public Preset getCurrentPreset() { return current; }
+ public static class Preset {
+  public final Map<Integer,Controllable> mappings = new HashMap<>();
+  public boolean hasMapping(int i) { return mappings.containsKey(i); }
+  public Controllable getControllable(int i) { return mappings.get(i); }
+ }
+}

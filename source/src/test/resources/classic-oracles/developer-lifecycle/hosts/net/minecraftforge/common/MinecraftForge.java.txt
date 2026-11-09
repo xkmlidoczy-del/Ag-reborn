@@ -1,0 +1,10 @@
+/* Test-only lifecycle platform plumbing; business methods run unchanged originals. */
+package net.minecraftforge.common;
+public class MinecraftForge {public static final Bus EVENT_BUS=new Bus();public static class Bus{
+ public java.util.function.Consumer<Object> high=e->{},low=e->{};public final java.util.List<String> handlers=new java.util.ArrayList<>();public void register(Object o){}
+ public boolean post(Object e){high.accept(e);
+ if(e instanceof cn.academy.ability.api.event.CategoryChangeEvent x){handlers.add("cooldown");cn.academy.ability.api.cooldown.CooldownData._Events.instance.onCategoryChange(x);handlers.add("cp");cn.academy.ability.api.data.CPData.Events.instance.changedCategory(x);handlers.add("preset");cn.academy.ability.api.data.PresetData.Events.instance.onCategoryChanged(x);}
+ if(e instanceof cn.academy.ability.api.event.SkillLearnEvent x)cn.academy.ability.api.data.CPData.Events.instance.learnedSkill(x);
+ if(e instanceof cn.academy.ability.api.event.LevelChangeEvent x){cn.academy.ability.api.data.CPData.Events.instance.changedLevel(x);cn.academy.misc.achievements.DispatcherAch.INSTANCE.onLevelChange(x);}
+ low.accept(e);return false;}}
+}

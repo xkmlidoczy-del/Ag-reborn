@@ -1,0 +1,26 @@
+[
+  {
+    "name": "final18-item-repeatability-1",
+    "script": "gameplay-tp-play-item-transport.script",
+    "directory": "run-showcase-sable",
+    "props": "",
+    "status": "planned_not_run",
+    "scope": "Repeat original strict ordinary item transport >5m / actor stable / finite item conservation; retain any coordinate diagnostic on failure."
+  },
+  {
+    "name": "final18-item-repeatability-2",
+    "script": "gameplay-tp-play-item-transport.script",
+    "directory": "run-showcase-sable",
+    "props": "",
+    "status": "planned_not_run",
+    "scope": "Repeat original strict ordinary item transport >5m / actor stable / finite item conservation; retain any coordinate diagnostic on failure."
+  },
+  {
+    "name": "final18-item-repeatability-3",
+    "script": "gameplay-tp-play-item-transport.script",
+    "directory": "run-showcase-sable",
+    "props": "",
+    "status": "planned_not_run",
+    "scope": "Repeat original strict ordinary item transport >5m / actor stable / finite item conservation; retain any coordinate diagnostic on failure."
+  }
+]

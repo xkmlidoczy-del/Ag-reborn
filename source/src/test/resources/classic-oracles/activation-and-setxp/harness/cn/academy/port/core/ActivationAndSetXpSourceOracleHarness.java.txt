@@ -1,0 +1,95 @@
+/* Unchanged CPData/AbilityData activation and raw setter differential against actual modern classes. GPLv3. */
+package cn.academy.port.core;
+import cn.academy.ability.api.*;
+import cn.academy.ability.api.data.*;
+import cn.academy.ability.api.event.*;
+import cn.academy.port.SkillCatalog;
+import cn.lambdalib.util.datapart.EntityData;
+import cn.lambdalib.s11n.network.NetworkMessage;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.MinecraftForge;
+import java.lang.reflect.*;
+import java.util.*;
+public final class ActivationAndSetXpSourceOracleHarness {
+ static int checks,differences;static boolean baseline;static final Map<String,Integer> reasons=new TreeMap<>();
+ static Field field(Class<?> c,String name)throws Exception{var f=c.getDeclaredField(name);f.setAccessible(true);return f;}
+ static void set(Object target,String name,Object value)throws Exception{field(target.getClass(),name).set(target,value);}
+ static float f(Object target,String name)throws Exception{return field(target.getClass(),name).getFloat(target);}
+ static boolean b(Object target,String name)throws Exception{return field(target.getClass(),name).getBoolean(target);}
+ static int i(Object target,String name)throws Exception{return field(target.getClass(),name).getInt(target);}
+ static void same(boolean value,String why){checks++;if(!value){differences++;reasons.merge(why,1,Integer::sum);if(!baseline)throw new AssertionError(why);}}
+ static Category cat(String name){return CategoryManager.INSTANCE.categories.stream().filter(c->c.name.equals(name)).findFirst().orElseThrow();}
+ static Skill skill(String category,String id){int index=SkillCatalog.ALL.stream().filter(s->s.category().equals(category)).map(SkillCatalog.Skill::id).toList().indexOf(id);return cat(category).skills.get(index);}
+ static String id(Skill s){return SkillCatalog.ALL.stream().filter(x->x.category().equals(s.category.name)).toList().get(s.id).id();}
+ static void invoke(AbilityProgress state,String method,Class<?>[] types,Object...args){try{AbilityProgress.class.getMethod(method,types).invoke(state,args);}catch(InvocationTargetException e){if(e.getCause() instanceof RuntimeException r)throw r;throw new AssertionError(e.getCause());}catch(ReflectiveOperationException e){throw new AssertionError(e);}}
+ static String failure(Runnable action){try{action.run();return "none";}catch(IllegalStateException e){return e.getClass().getSimpleName();}}
+ static final class Pair {
+  final EntityPlayer player=new EntityPlayer();final AbilityData ability=new AbilityData();final CPData cp=new CPData();final AbilityProgress modern=new AbilityProgress();
+  final List<String> originalEvents=new ArrayList<>(),modernEvents=new ArrayList<>();boolean recording;Runnable originalActive=()->{},modernActive=()->{},originalChanged=()->{},modernChanged=()->{};
+  Pair(String category)throws Exception{
+   EntityData.bind(player,ability,cp,new PresetData(),new cn.academy.ability.api.cooldown.CooldownData());cp.wake();
+   MinecraftForge.EVENT_BUS.high=event->{try{sourcePhase(event,"high");}catch(Exception e){throw new AssertionError(e);}};
+   MinecraftForge.EVENT_BUS.low=event->{try{sourcePhase(event,"low");}catch(Exception e){throw new AssertionError(e);}};
+   modern.bindCalculations(request->{if(recording&&(request.kind==AbilityCalculation.Kind.MAX_CP||request.kind==AbilityCalculation.Kind.MAX_OVERLOAD))modernEvents.add("calc:"+request.kind+":"+modernState());});
+   modern.bindProgressEvents((id,effects)->effects.run(),(lv,effects)->effects.run(),award->{if(recording){modernEvents.add("changed-high:"+award.skill()+":"+modernState());modernChanged.run();modernEvents.add("changed-low:"+award.skill()+":"+modernState());}},award->{if(recording)modernEvents.add("added:"+award.skill());});
+   modern.bindCategoryChanges(effects->{if(recording)modernEvents.add("category-high:"+modernState());effects.run();if(recording)modernEvents.add("category-low:"+modernState());});
+   if(!baseline)invoke(modern,"bindActivationEvents",new Class<?>[]{java.util.function.Consumer.class},(java.util.function.Consumer<Boolean>)value->{if(recording){String kind=value?"activate":"deactivate";modernEvents.add(kind+"-high:"+modernState());if(value)modernActive.run();modernEvents.add(kind+"-low:"+modernState());}});
+   if(!category.isEmpty()){ability.setCategory(cat(category));ability.setLevel(3);modern.changeCategoryClassic(category);modern.setLevel(3);}
+  }
+  void sourcePhase(Object event,String phase)throws Exception{
+   if(!recording)return;
+   if(event instanceof AbilityActivateEvent){originalEvents.add("activate-"+phase+":"+originalState());if(phase.equals("high"))originalActive.run();}
+   if(event instanceof AbilityDeactivateEvent)originalEvents.add("deactivate-"+phase+":"+originalState());
+   if(event instanceof SkillExpChangedEvent changed){originalEvents.add("changed-"+phase+":"+id(changed.skill)+":"+originalState());if(phase.equals("high"))originalChanged.run();}
+   if(event instanceof SkillExpAddedEvent added)originalEvents.add("added:"+id(added.skill));
+   if(event instanceof CategoryChangeEvent)originalEvents.add("category-"+phase+":"+originalState());
+   if(phase.equals("high")&&event instanceof CalcEvent.MaxCP)originalEvents.add("calc:MAX_CP:"+originalState());
+   if(phase.equals("high")&&event instanceof CalcEvent.MaxOverload)originalEvents.add("calc:MAX_OVERLOAD:"+originalState());
+  }
+  String originalState()throws Exception{return state(ability.hasCategory()?ability.getCategory().name:"",ability.getLevel(),b(cp,"activated"),cp.getCP(),cp.getOverload(),cp.getRawMaxCP(),cp.getRawMaxOverload(),cp.getAddMaxCP(),cp.getAddMaxOverload(),f(ability,"expAddedThisLevel"),b(cp,"overloadFine"),b(cp,"interfering"),i(cp,"untilRecover"),i(cp,"untilOverloadRecover"),true);}
+  String modernState(){return state(modern.category,modern.level,modern.activated,(float)modern.cp,(float)modern.overload,(float)modern.baseCp(),(float)modern.baseOverload(),(float)modern.extraCp,(float)modern.extraOverload,(float)modern.levelExperience,modern.overloadFine,modern.interfering,modern.cpDelay,modern.overloadDelay,false);}
+  String state(String category,int lv,boolean active,float currentCp,float overload,float rawCp,float rawOver,float growthCp,float growthOver,float progress,boolean fine,boolean interference,int cpDelay,int overDelay,boolean old){
+   var result=new StringBuilder(category+":"+lv+":"+active+":"+currentCp+":"+overload+":"+rawCp+":"+rawOver+":"+growthCp+":"+growthOver+":"+progress+":"+fine+":"+interference+":"+cpDelay+":"+overDelay);
+   if(!category.isEmpty())for(var s:SkillCatalog.ALL)if(s.category().equals(category))try{Skill source=skill(category,s.id());float raw=old?((float[])field(AbilityData.class,"skillExps").get(ability))[source.id]:modern.experience.getOrDefault(s.id(),modern.unlearnedExperience.getOrDefault(s.id(),0.0)).floatValue();result.append(':').append(s.id()).append('=').append(old?ability.isSkillLearned(source):modern.learned(s.id())).append('/').append(Float.floatToIntBits(raw));}catch(Exception e){throw new AssertionError(e);}
+   return result.toString();
+  }
+  void prepare(String id,boolean learned)throws Exception{
+   if(!modern.hasCategory())return;Skill source=skill(modern.category,id);ability.setSkillLearnState(source,learned);if(learned)modern.learn(id);
+   ((float[])field(AbilityData.class,"skillExps").get(ability))[source.id]=.73f;if(learned)modern.experience.put(id,(double).73f);else modern.unlearnedExperience.put(id,(double).73f);
+   set(cp,"maxCP",9999f);set(cp,"maxOverload",444f);modern.restoreCalculatedMaxima(9999,444);set(cp,"curCP",713.125f);modern.cp=713.125f;set(cp,"curOverload",17.75f);modern.overload=17.75f;
+   set(cp,"addMaxCP",100.125f);modern.extraCp=100.125f;set(cp,"addMaxOverload",33.25f);modern.extraOverload=33.25f;set(ability,"expAddedThisLevel",7.7f);modern.levelExperience=7.7f;
+   set(cp,"overloadFine",false);modern.overloadFine=false;set(cp,"interfering",true);modern.interfering=true;set(cp,"untilRecover",13);modern.cpDelay=13;set(cp,"untilOverloadRecover",21);modern.overloadDelay=21;
+  }
+  void start(){recording=true;originalEvents.clear();modernEvents.clear();NetworkMessage.messages.clear();}
+  void compare(String label)throws Exception{same(originalState().equals(modernState()),label+".state");same(originalEvents.equals(modernEvents),label+".phases");}
+  void active(boolean value){if(baseline)modern.activated=value;else invoke(modern,"setActivateState",new Class<?>[]{boolean.class},value);}
+  void exp(String id,float value){if(baseline){if(modern.learned(id))modern.experience.put(id,(double)value);}else invoke(modern,"setSkillExp",new Class<?>[]{String.class,float.class},id,value);}
+ }
+ static void activation()throws Exception{
+  for(String category:List.of("electromaster","meltdowner","teleporter","vecmanip")){
+   String id=SkillCatalog.ALL.stream().filter(s->s.category().equals(category)).findFirst().orElseThrow().id();var p=new Pair(category);p.prepare(id,true);
+   p.start();p.cp.setActivateState(true);p.active(true);p.compare("activation-real-"+category);same(NetworkMessage.messages.equals(List.of("self:post_event:[true]","remote:post_event:[true]")),"source-self-before-remote-on-change");same(b(p.cp,"dataDirty"),"source-real-change-marks-dirty");
+   p.start();set(p.cp,"dataDirty",false);String before=p.originalState();p.cp.setActivateState(true);p.active(true);p.compare("activation-same");same(p.originalEvents.isEmpty()&&NetworkMessage.messages.isEmpty()&&before.equals(p.originalState())&&b(p.cp,"dataDirty"),"source-same-state-only-marks-dirty");
+   p.start();p.cp.setActivateState(false);p.active(false);p.compare("deactivation-real");p.start();p.cp.setActivateState(false);p.active(false);p.compare("deactivation-same");same(p.originalEvents.isEmpty()&&NetworkMessage.messages.isEmpty(),"same-deactivation-is-silent");
+   p.cp.setActivateState(true);p.active(true);p.start();p.ability.setCategory(null);p.modern.changeCategoryClassic("");p.compare("category-removal-while-active");same(p.originalEvents.getFirst().startsWith("category-high:")&&p.originalEvents.get(1).startsWith("deactivate-high:")&&p.originalEvents.getLast().startsWith("category-low:"),"source-category-event-nests-deactivation-before-recalc");
+   p.start();p.ability.setCategory(null);p.modern.changeCategoryClassic("");p.compare("category-removal-duplicate");same(p.originalEvents.isEmpty()&&NetworkMessage.messages.isEmpty(),"same-category-removal-is-silent");
+   p=new Pair(category);p.prepare(id,true);p.cp.setActivateState(true);p.active(true);p.start();var death=new net.minecraftforge.event.entity.living.LivingDeathEvent();death.entityLiving=p.player;CPData.Events.instance.playerDeath(death);p.modern.recoverAll();p.active(false);p.compare("death-recover-before-deactivate");same(p.originalEvents.getFirst().startsWith("deactivate-high:")&&p.cp.getCP()==p.cp.getMaxCP()&&!b(p.cp,"overloadFine"),"death-event-sees-recovered-cp-and-overload-lock");
+   p.start();CPData.Events.instance.playerDeath(death);p.modern.recoverAll();p.active(false);p.compare("death-duplicate-no-deactivate");same(p.originalEvents.isEmpty(),"already-inactive-death-no-event");
+  }
+  var absent=new Pair("");absent.start();same(failure(()->absent.cp.setActivateState(true)).equals(failure(()->absent.active(true))),"no-category-activation-rejects-before-write");if(!baseline){absent.compare("absent-category-rejection");set(absent.cp,"activated",true);absent.modern.activated=true;same(failure(()->absent.cp.setActivateState(true)).equals(failure(()->absent.active(true))),"no-category-already-active-still-rejects-before-same-state");absent.start();absent.cp.setActivateState(false);absent.active(false);absent.compare("no-category-deactivation-allowed");same(!(Boolean)AbilityProgress.class.getMethod("isActivated").invoke(absent.modern)&&!absent.cp.isActivated(),"isActivated-always-requires-category");}
+  if(!baseline){var nested=new Pair("teleporter");nested.prepare("space_fluct",true);nested.originalActive=()->nested.cp.setActivateState(false);nested.modernActive=()->nested.active(false);nested.start();nested.cp.setActivateState(true);nested.active(true);nested.compare("synchronous-activation-reentry");same(NetworkMessage.messages.equals(List.of("self:post_event:[true]","self:post_event:[false]","remote:post_event:[false]","remote:post_event:[false]")),"original-remote-message-reads-live-flag-after-synchronous-self-listener");}
+ }
+ static void setters()throws Exception{
+  for(var s:SkillCatalog.ALL)for(boolean learned:List.of(false,true))for(float value:new float[]{0f,-0f,.73f,.2f,1f,1.25f,-.25f,Float.MAX_VALUE,Float.NaN,Float.POSITIVE_INFINITY,Float.NEGATIVE_INFINITY}){
+   var p=new Pair(s.category());p.prepare(s.id(),learned);p.start();p.ability.setSkillExp(skill(s.category(),s.id()),value);p.exp(s.id(),value);p.compare("set-exp-"+(learned?"learned":"unlearned"));same(p.originalEvents.size()==(learned?2:0),"raw-setter-Changed-only-and-learned-only");same(i(p.ability,"updateTicker")==(learned?25:0),"source-setter-schedules-25-only-when-learned");
+   if(learned){p.start();p.ability.setSkillExp(skill(s.category(),s.id()),value);p.exp(s.id(),value);p.compare("set-exp-equal-value");same(i(p.ability,"updateTicker")==24&&p.originalEvents.size()==2,"source-equal-setter-still-posts-Changed-and-pulls-sync-earlier");}
+  }
+  if(!baseline){for(String category:List.of("","electromaster")){var p=new Pair(category);p.start();String before=p.originalState();same(failure(()->p.ability.setSkillExp(skill("teleporter","space_fluct"),.2f)).equals(failure(()->p.exp("space_fluct",.2f))),"setter-checks-category-even-if-unlearned");p.compare("wrong-category-setter");same(before.equals(p.originalState())&&p.originalEvents.isEmpty(),"wrong-category-setter-has-no-partial-write");}
+   var p=new Pair("teleporter");p.prepare("space_fluct",true);p.originalChanged=()->p.ability.setCategory(cat("electromaster"));p.modernChanged=()->p.modern.changeCategoryClassic("electromaster");p.start();p.ability.setSkillExp(skill("teleporter","space_fluct"),.2f);p.exp("space_fluct",.2f);p.compare("setter-changed-listener-may-change-category");same(p.originalEvents.getFirst().startsWith("changed-high:space_fluct:teleporter:")&&p.originalEvents.getLast().startsWith("changed-low:space_fluct:electromaster:"),"Changed-retains-skill-identity-and-live-mutated-state");
+  }
+ }
+ public static void main(String[] args)throws Exception{
+  baseline=args.length>0&&args[0].equals("baseline");CategoryManager.INSTANCE.categories.clear();for(String name:List.of("electromaster","meltdowner","teleporter","vecmanip")){var category=new Category(CategoryManager.INSTANCE.categories.size(),name);for(var s:SkillCatalog.ALL)if(s.category().equals(name)){var source=new Skill(category.skills.size(),s.level(),category);source.controllable=s.controllable();}CategoryManager.INSTANCE.categories.add(category);}
+  activation();setters();if(baseline)same(differences>0,"baseline-exposes-missing-activation-and-setter-events");System.out.println((baseline?"AUDIT":"PASS")+" "+checks+" unchanged-source activation/raw-XP setter checks; differences="+differences);if(baseline)System.out.println("BASELINE_DIFFERENCES "+reasons);
+ }
+}

@@ -1,0 +1,1 @@
+package cn.lambdalib.cgui.gui.component; public class Component {public cn.lambdalib.cgui.gui.Widget widget;public Component(String s){}public void onAdded(){}public <T> void listen(Class<T> c,java.util.function.BiConsumer<cn.lambdalib.cgui.gui.Widget,T> f){}}

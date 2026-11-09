@@ -1,0 +1,24 @@
+[
+  {
+    "name": "final23-yaw-stress",
+    "script": "gameplay-diagnostic22-observer-yaw-stress.script",
+    "directory": "run-showcase-sable",
+    "props": "",
+    "scriptSha256": "13858c9b893d85738f885c9e47b873df30c017b9e3bc72689844b1bba8e77fa4",
+    "sourceScript": "gameplay-vm-extra-yaw-q-items.script",
+    "sourceScriptSha256": "b56280564e776895270e418949bf6f623e6bdb0363b39191a9b82eec9ccdba5b",
+    "scope": "Post-fix current23 original unchanged input/wait/assertions; normal Sable mod set without observer. Eight original yaw bodies / three complete original EM groups; first assertion failure terminates the client.",
+    "status": "planned_not_run"
+  },
+  {
+    "name": "final23-complete-em-stress",
+    "script": "gameplay-diagnostic22-observer-complete-em-stress.script",
+    "directory": "run-showcase-sable",
+    "props": "",
+    "scriptSha256": "31b6ac1f79956234c90b0407a99e3f367382144bbbfd2c3aeb840c6f5e824bd9",
+    "sourceScript": "gameplay-final-modes-group-em-input-modes.script",
+    "sourceScriptSha256": "0cfd19bdac558725dd9608d1e627f49f4402f2967fa4854fc8ab9ca300976245",
+    "scope": "Post-fix current23 original unchanged input/wait/assertions; normal Sable mod set without observer. Eight original yaw bodies / three complete original EM groups; first assertion failure terminates the client.",
+    "status": "planned_not_run"
+  }
+]

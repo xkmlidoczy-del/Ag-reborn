@@ -1,0 +1,8 @@
+// NEW131 exact input/receiver and bounded solid-lance client geometry regression.
+tasks.register('ironSandLanceVisualTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.IronSandLanceVisualRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'ironSandLanceVisualTest' }

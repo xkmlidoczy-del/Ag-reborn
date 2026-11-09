@@ -1,0 +1,1 @@
+package net.minecraft.client;public class Minecraft{static final Minecraft INSTANCE=new Minecraft();public net.minecraft.entity.player.EntityPlayer thePlayer;public static Minecraft getMinecraft(){return INSTANCE;}}

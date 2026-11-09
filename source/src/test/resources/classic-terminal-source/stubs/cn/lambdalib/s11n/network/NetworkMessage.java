@@ -1,0 +1,3 @@
+package cn.lambdalib.s11n.network;
+import java.util.*; import java.lang.annotation.*; import cpw.mods.fml.relauncher.Side;
+public class NetworkMessage { public static final List<String> calls=new ArrayList<>(); public static void sendTo(Object p,Object target,String channel,Object...args){calls.add(channel+Arrays.toString(args));} public static final List<Dispatch> serverCalls=new ArrayList<>();public record Dispatch(Object delegate,String channel,Object[] args){}public static void sendToServer(Object target,String channel,Object...args){serverCalls.add(new Dispatch(target,channel,args));} public static Object staticCaller(Class<?> c){return c;} @Retention(RetentionPolicy.RUNTIME) public @interface Listener {String channel(); Side side();} }

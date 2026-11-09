@@ -1,0 +1,1 @@
+consent:await:invited|consent:review|wait:10|shot:dual_tactical_recipient_review|consent:click:accept|wait:10|consent:signal:accepted|consent:await:checked|shot:dual_tactical_recipient_arrived|dual:await-disconnect

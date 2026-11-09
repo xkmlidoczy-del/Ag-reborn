@@ -1,0 +1,1 @@
+NEW412 vector_parry.png is a byte-identical copy of the original ACA vec_reflection.png icon in this directory. Original artwork attribution and licensing are retained. No new externally sourced artwork is included.

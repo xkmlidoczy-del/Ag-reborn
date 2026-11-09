@@ -1,0 +1,34 @@
+package cn.academy.port.core;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+/** Combat reach in blocks. Controllers, aiming art, and developer details use the same values. */
+public final class RangedSkillRanges {
+    public record Reach(double novice,double mastered) {
+        public double at(double mastery){double e=Double.isFinite(mastery)?Math.max(0,Math.min(1,mastery)):0;return novice+(mastered-novice)*e;}
+    }
+    private static final Map<String,Reach> VALUES=new LinkedHashMap<>();
+    public static final double CANON_TARGET=24, MENTAL_PRIMARY=32, MENTAL_REMOTE=32;
+    /** A medium may begin beside the caster; its visual span can exceed the target's eye distance. */
+    public static final double MAX_CANON_VISUAL_SPAN=64;
+    public static final double MAX_CANON_AREA_RADIUS=32;
+    public static final java.util.Set<String> REMOTE_SCANS=java.util.Set.of("mental_life_scan","mental_hostile_scan","mental_intent_scan","mental_target_sense");
+    static {
+        put(8,24,"arc_gen");put(64,64,"railgun");
+        put(32,32,"mental_probe","mental_disrupt","mental_out_crowd");
+        put(24,24,"mental_life_scan","mental_hostile_scan","mental_intent_scan","mental_target_sense","mental_attention_shift","mental_focus_break","mental_route_interrupt",
+                "mental_disengage","mental_interpose","mental_redirect","mental_conflict","mental_suppress_pair","mental_lure_pair","mental_puppet");
+        put(24,24,"dark_shard","dark_spear_fan","dark_matter_barrage","aero_barrage");
+        put(32,32,"dark_pierce","aero_pressure_lance","paper_blade");
+        put(12,12,"dark_spread","aero_cone","aero_ground_blast");put(10,10,"aero_gust","nitrogen_cone");
+        put(24,24,"hydro_whip","float_lift","float_rescue","float_ally_hover","float_ally_ascent","float_ally_descent","float_suspend","float_hostile_descent",
+                "float_item_lift","float_item_lower","float_item_release","float_item_pull","float_item_push","float_item_shelf");
+    }
+    private RangedSkillRanges(){}
+    private static void put(double novice,double mastered,String...skills){for(String id:skills)VALUES.put(id,new Reach(novice,mastered));}
+    public static Map<String,Reach> all(){return Map.copyOf(VALUES);}
+    public static Reach find(String skill){return VALUES.get(skill);}
+    public static double fixed(String skill){var r=VALUES.get(skill);if(r==null||r.novice()!=r.mastered())throw new IllegalArgumentException("No fixed reach for "+skill);return r.novice();}
+    public static double at(String skill,double mastery,double fallback){var r=VALUES.get(skill);return r==null?fallback:r.at(mastery);}
+}

@@ -1,0 +1,2 @@
+/* Test-only lifecycle platform plumbing; business methods run unchanged originals. */
+package cn.academy.ability;public class ModuleAbility {public static final net.minecraft.item.Item magneticCoil=new net.minecraft.item.Item();}

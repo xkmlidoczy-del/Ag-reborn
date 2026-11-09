@@ -1,0 +1,125 @@
+{
+  "academyCommit": "00d19ec0cf538f61c1095c9292f5ee6863db4521",
+  "files": [
+    {
+      "resource": "classic-oracles/passive-skills/witness/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/meltdowner/passiveskill/RadiationIntensify.scala.txt",
+      "sha256": "2503b35a6ade995c7db8b5cd0d0464eb590bf27db6e381fc517f31ff01fb8787",
+      "source": "AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/meltdowner/passiveskill/RadiationIntensify.scala"
+    },
+    {
+      "resource": "classic-oracles/passive-skills/witness/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/teleporter/passiveskill/DimFoldingTheorem.scala.txt",
+      "sha256": "7efea380e8412150860e4047fa538afde1acb95913cbcd6d2e26d2714bc9ebdf",
+      "source": "AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/teleporter/passiveskill/DimFoldingTheorem.scala"
+    },
+    {
+      "resource": "classic-oracles/passive-skills/witness/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/teleporter/passiveskill/SpaceFluctuation.scala.txt",
+      "sha256": "af20640305bf905147690c91ad7b170e0fc4acca356dfa268d7fc5a4f21d49ea",
+      "source": "AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/teleporter/passiveskill/SpaceFluctuation.scala"
+    },
+    {
+      "resource": "classic-oracles/passive-skills/witness/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/generic/skill/SkillBrainCourse.java.txt",
+      "sha256": "27bf6d24d664817d50ec1fdccac093074c7b0585d6365663d75902ef7fecab75",
+      "source": "AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/generic/skill/SkillBrainCourse.java"
+    },
+    {
+      "resource": "classic-oracles/passive-skills/witness/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/generic/skill/SkillBrainCourseAdvanced.java.txt",
+      "sha256": "0a3f16f8fc66e34d6cdf89a597402a5aac90091b8385d143af1359e7b1470622",
+      "source": "AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/generic/skill/SkillBrainCourseAdvanced.java"
+    },
+    {
+      "resource": "classic-oracles/passive-skills/witness/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/generic/skill/SkillMindCourse.java.txt",
+      "sha256": "e496aa36a3b2d9e534c3ca8e66aeb868f877a2b9354ff96239574879ee83a994",
+      "source": "AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/generic/skill/SkillMindCourse.java"
+    },
+    {
+      "resource": "classic-oracles/passive-skills/witness/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/ModuleVanilla.java.txt",
+      "sha256": "5028171ed587fc4e54994133ae02e78b885c4d53e73e03218aea86ffb354960a",
+      "source": "AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/ModuleVanilla.java"
+    },
+    {
+      "resource": "classic-oracles/passive-skills/witness/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/meltdowner/CatMeltdowner.java.txt",
+      "sha256": "fd9ccdbc902682b65f41f11fa583fed526ee1ed80a69efc72f6b6ab670be28be",
+      "source": "AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/meltdowner/CatMeltdowner.java"
+    },
+    {
+      "resource": "classic-oracles/passive-skills/witness/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/teleporter/CatTeleporter.java.txt",
+      "sha256": "43b8839e0205a0a28aecaf7f02d037c754f04368b3b855a76a69f3061a132cb6",
+      "source": "AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/teleporter/CatTeleporter.java"
+    },
+    {
+      "resource": "classic-oracles/passive-skills/witness/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/teleporter/util/TPSkillHelper.java.txt",
+      "sha256": "eabc8ff27c3332b7f846eb24377ed5c50a2e32feb35d17cb25bbe6dbd008446c",
+      "source": "AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/teleporter/util/TPSkillHelper.java"
+    },
+    {
+      "resource": "classic-oracles/passive-skills/witness/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/meltdowner/skill/MDDamageHelper.java.txt",
+      "sha256": "70745964a291380a08c7723cd14920c42ac21fd932aac0b472cf405810665925",
+      "source": "AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/meltdowner/skill/MDDamageHelper.java"
+    },
+    {
+      "resource": "classic-oracles/passive-skills/witness/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/meltdowner/client/render/MdParticleFactory.java.txt",
+      "sha256": "9e0f1e2c80235184e886d76e51d375e8ec312505d39b331da52f66d5af551cdd",
+      "source": "AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/meltdowner/client/render/MdParticleFactory.java"
+    },
+    {
+      "resource": "classic-oracles/passive-skills/witness/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/data/CPData.java.txt",
+      "sha256": "6ef3a87f06fa86e422b183d379c07093366bf60b89057adc94c01cb9088324c3",
+      "source": "AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/data/CPData.java"
+    },
+    {
+      "resource": "classic-oracles/passive-skills/witness/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/data/AbilityData.java.txt",
+      "sha256": "a2be759d022d4992bbbba1cfc6e1fa3874015a8f615445864f65f62c250f126e",
+      "source": "AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/data/AbilityData.java"
+    },
+    {
+      "resource": "classic-oracles/passive-skills/witness/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/CalcEvent.java.txt",
+      "sha256": "45cf7ef4ab13a1d3e29d467aa4b1aa9e3b800a883b96496f88cbffcee7ce1dc3",
+      "source": "AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/event/CalcEvent.java"
+    },
+    {
+      "resource": "classic-oracles/passive-skills/witness/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/develop/action/DevelopActionSkill.java.txt",
+      "sha256": "01ec5df090826815e719d7a979c1680d6f2ef85b3ee87b4c2aad940492dadfe9",
+      "source": "AcademyCraft-1.0.7/src/main/java/cn/academy/ability/develop/action/DevelopActionSkill.java"
+    },
+    {
+      "resource": "classic-oracles/passive-skills/witness/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/develop/condition/DevConditionAnySkillOfLevel.java.txt",
+      "sha256": "b9f01f57d2d57529a8e6683b2a68713ad155d4be8aaf6ecdd25acc6456c09dd0",
+      "source": "AcademyCraft-1.0.7/src/main/java/cn/academy/ability/develop/condition/DevConditionAnySkillOfLevel.java"
+    },
+    {
+      "resource": "classic-oracles/passive-skills/witness/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/Skill.java.txt",
+      "sha256": "afc9c70de37bfb393f62ee3c9fe1d4e02cedf1c73c75f935bf9d8d5e638f698c",
+      "source": "AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/Skill.java"
+    },
+    {
+      "resource": "classic-oracles/passive-skills/witness/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/Category.java.txt",
+      "sha256": "c85163a52d7711896d9dcd458ef80c50b587f749c8e01e882869c08974ccf563",
+      "source": "AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/Category.java"
+    },
+    {
+      "resource": "classic-oracles/passive-skills/witness/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/electromaster/CatElectromaster.java.txt",
+      "sha256": "c7dbf694dfb100051a85c2126bfdcdb4b02aa04e6f72d336e4370dd540229082",
+      "source": "AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/electromaster/CatElectromaster.java"
+    },
+    {
+      "resource": "classic-oracles/passive-skills/witness/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/vecmanip/CatVecManip.scala.txt",
+      "sha256": "2bf1907f5971692395a5556a927e08660f74dea45609459a42d13afab04daf45",
+      "source": "AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/vecmanip/CatVecManip.scala"
+    },
+    {
+      "resource": "classic-oracles/passive-skills/witness/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/generic/MathUtils.java.txt",
+      "sha256": "e80c87ca15cbae89584bd9e1111e22d2f55866bf91b434c8813c20bb98176075",
+      "source": "LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/generic/MathUtils.java"
+    },
+    {
+      "resource": "classic-oracles/passive-skills/witness/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/generic/RandUtils.java.txt",
+      "sha256": "e06e74399c3fbb5de54672c1198135da76d16427e2ab75e943e847e1f05623eb",
+      "source": "LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/generic/RandUtils.java"
+    },
+    {
+      "resource": "classic-oracles/passive-skills/witness/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/generic/VecUtils.java.txt",
+      "sha256": "d5950587fe04e53cfc53985cdbdf7a100e12648816e94eb3b660fd4f0418a59b",
+      "source": "LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/generic/VecUtils.java"
+    }
+  ]
+}

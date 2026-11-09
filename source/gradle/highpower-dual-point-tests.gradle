@@ -1,0 +1,17 @@
+// NEW211 immutable endpoints, two native opportunities and bounded per-beam accounting.
+tasks.register('highPowerDualPointTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.DualPointRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerDualPointTest' }
+
+// Execute the actual compiled AcademyClient gates: own-CD may not cancel prepaid slot 2.
+tasks.register('dualPointDispatchTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.DualPointDispatchRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'dualPointDispatchTest' }

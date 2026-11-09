@@ -1,0 +1,4 @@
+AcademyCraft 1.0.7 source fixtures: Copyright Lambda Innovation, 2013-2016, GPLv3.
+LambdaLib 1.2.3 CleanContainer.java: its original LICENSE is included.
+Executable sources are copied byte-for-byte. Old API stubs and oracle harness are test-only.
+No Forge, Minecraft client, world renderer, or native library is started by this oracle.

@@ -1,0 +1,1 @@
+Original AcademyCraft1.0.7 Java/Scala/resource witnesses copied unchanged under GPLv3. Original LambdaLib1.2.3 sources copied unchanged under MIT. Minimal old Minecraft/Forge API stubs are only finite test scaffolding; original arithmetic/tower/obstacle/rotation/scheduler code executes unchanged. No native game process or renderer starts.

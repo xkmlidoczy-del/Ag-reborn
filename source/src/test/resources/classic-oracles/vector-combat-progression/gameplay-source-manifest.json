@@ -1,0 +1,147 @@
+{
+  "academycraft_commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521",
+  "lambdalib_tag": "1.2.3",
+  "lambdalib_archive_sha256": "06dab431270e1c36351f403c67a24a2e968b50b16293bfb762b66a6a92c987d3",
+  "sources": [
+    {
+      "project": "academycraft",
+      "source": "src/main/scala/cn/academy/vanilla/vecmanip/skill/DirectedBlastwave.scala",
+      "fixture": "gameplay-source/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/DirectedBlastwave.scala.txt",
+      "sha256": "17dd7552fcb7eeb27778369f3a9b5400d84c04b2af1ae9f81f1ac85238862ce9",
+      "bytes": 7934
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/scala/cn/academy/vanilla/vecmanip/skill/StormWing.scala",
+      "fixture": "gameplay-source/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/StormWing.scala.txt",
+      "sha256": "979bfaa893d962b006fb091dd267bb840bb48c0ee59678fad2501e1d6742f097",
+      "bytes": 10766
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/scala/cn/academy/vanilla/vecmanip/skill/BloodRetrograde.scala",
+      "fixture": "gameplay-source/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/skill/BloodRetrograde.scala.txt",
+      "sha256": "9b65735f6614f750592b4cdd88604904215d7adc9f006fd87650bc717afe8817",
+      "bytes": 3890
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/scala/cn/academy/vanilla/vecmanip/CatVecManip.scala",
+      "fixture": "gameplay-source/academycraft/src/main/scala/cn/academy/vanilla/vecmanip/CatVecManip.scala.txt",
+      "sha256": "2bf1907f5971692395a5556a927e08660f74dea45609459a42d13afab04daf45",
+      "bytes": 1254
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/java/cn/academy/ability/api/AbilityContext.java",
+      "fixture": "gameplay-source/academycraft/src/main/java/cn/academy/ability/api/AbilityContext.java.txt",
+      "sha256": "9830d2efcfec0e86539a8cf49f5984e1a5cf1e48e5d9b50ad6c167fd454db00a",
+      "bytes": 5244
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/java/cn/academy/ability/api/AbilityPipeline.java",
+      "fixture": "gameplay-source/academycraft/src/main/java/cn/academy/ability/api/AbilityPipeline.java.txt",
+      "sha256": "177f03df90d2de410f0dbddffd866b4d8b42f2d10ae2f1b2234ab3b3d5971b83",
+      "bytes": 3132
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/java/cn/academy/ability/api/Skill.java",
+      "fixture": "gameplay-source/academycraft/src/main/java/cn/academy/ability/api/Skill.java.txt",
+      "sha256": "afc9c70de37bfb393f62ee3c9fe1d4e02cedf1c73c75f935bf9d8d5e638f698c",
+      "bytes": 13981
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/java/cn/academy/ability/api/event/CalcEvent.java",
+      "fixture": "gameplay-source/academycraft/src/main/java/cn/academy/ability/api/event/CalcEvent.java.txt",
+      "sha256": "45cf7ef4ab13a1d3e29d467aa4b1aa9e3b800a883b96496f88cbffcee7ce1dc3",
+      "bytes": 2322
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/java/cn/academy/ability/api/data/CPData.java",
+      "fixture": "gameplay-source/academycraft/src/main/java/cn/academy/ability/api/data/CPData.java.txt",
+      "sha256": "6ef3a87f06fa86e422b183d379c07093366bf60b89057adc94c01cb9088324c3",
+      "bytes": 17003
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/java/cn/academy/ability/api/data/AbilityData.java",
+      "fixture": "gameplay-source/academycraft/src/main/java/cn/academy/ability/api/data/AbilityData.java.txt",
+      "sha256": "a2be759d022d4992bbbba1cfc6e1fa3874015a8f615445864f65f62c250f126e",
+      "bytes": 9799
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/java/cn/academy/ability/develop/condition/DevConditionDep.java",
+      "fixture": "gameplay-source/academycraft/src/main/java/cn/academy/ability/develop/condition/DevConditionDep.java.txt",
+      "sha256": "0dace28d10b1d397137aa554f33af9b662c84459306aefcc91ba6f60fab7046f",
+      "bytes": 1273
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/java/cn/academy/ability/develop/LearningHelper.java",
+      "fixture": "gameplay-source/academycraft/src/main/java/cn/academy/ability/develop/LearningHelper.java.txt",
+      "sha256": "015173ee7abc49ad12e2f2ad42c1229d38b2baafd2e33f99421492ebacae87df",
+      "bytes": 1797
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/java/cn/academy/ability/develop/action/DevelopActionSkill.java",
+      "fixture": "gameplay-source/academycraft/src/main/java/cn/academy/ability/develop/action/DevelopActionSkill.java.txt",
+      "sha256": "01ec5df090826815e719d7a979c1680d6f2ef85b3ee87b4c2aad940492dadfe9",
+      "bytes": 1224
+    },
+    {
+      "project": "academycraft",
+      "source": "src/main/resources/assets/academy/config/default.conf",
+      "fixture": "gameplay-source/academycraft/src/main/resources/assets/academy/config/default.conf.txt",
+      "sha256": "700f42a545d761872daae8dfb6e65e5e4571f947d7dcd50eb60933b0542ef824",
+      "bytes": 4701
+    },
+    {
+      "project": "academycraft",
+      "source": "README.md",
+      "fixture": "gameplay-source/academycraft/README.md.txt",
+      "sha256": "6666d51532b31b3f6c1506ad1855aa22241926ffcec9f452e64e5e54285f9794",
+      "bytes": 4531
+    },
+    {
+      "project": "lambdalib",
+      "source": "src/main/java/cn/lambdalib/util/mc/Raytrace.java",
+      "fixture": "gameplay-source/lambdalib/src/main/java/cn/lambdalib/util/mc/Raytrace.java.txt",
+      "sha256": "c893f0a9434bf6e33564aa4aebe8eaecda3d502a79f7b9862402bff852e9ac0b",
+      "bytes": 9888
+    },
+    {
+      "project": "lambdalib",
+      "source": "src/main/java/cn/lambdalib/util/mc/EntitySelectors.java",
+      "fixture": "gameplay-source/lambdalib/src/main/java/cn/lambdalib/util/mc/EntitySelectors.java.txt",
+      "sha256": "6cc57bea7aa410f3d93fab085a1f64ac6110ab510ba47a2d15048acf344713f2",
+      "bytes": 2636
+    },
+    {
+      "project": "lambdalib",
+      "source": "src/main/java/cn/lambdalib/util/mc/WorldUtils.java",
+      "fixture": "gameplay-source/lambdalib/src/main/java/cn/lambdalib/util/mc/WorldUtils.java.txt",
+      "sha256": "22dc9e2c1594f8b97e31cf4075e953f5a7a95edb0db6cffe9fb9dcc0678a0f2e",
+      "bytes": 7408
+    },
+    {
+      "project": "lambdalib",
+      "source": "src/main/java/cn/lambdalib/util/generic/MathUtils.java",
+      "fixture": "gameplay-source/lambdalib/src/main/java/cn/lambdalib/util/generic/MathUtils.java.txt",
+      "sha256": "e80c87ca15cbae89584bd9e1111e22d2f55866bf91b434c8813c20bb98176075",
+      "bytes": 3879
+    },
+    {
+      "project": "lambdalib",
+      "source": "src/main/java/cn/lambdalib/util/generic/RandUtils.java",
+      "fixture": "gameplay-source/lambdalib/src/main/java/cn/lambdalib/util/generic/RandUtils.java.txt",
+      "sha256": "e06e74399c3fbb5de54672c1198135da76d16427e2ab75e943e847e1f05623eb",
+      "bytes": 951
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+package cn.lambdalib.util.datapart;
+public class DataPart<T> {
+ private T entity;
+ public boolean tickEnabled, clearOnDeath;
+ public void setTick(boolean enabled) { tickEnabled=enabled; }
+ public void setClearOnDeath() { clearOnDeath=true; }
+ public T getEntity() { return entity; }
+ public void hostAttach(T value) { entity=value; }
+}

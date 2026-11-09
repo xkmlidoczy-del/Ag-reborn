@@ -1,0 +1,8 @@
+['passiveSkillsTest':'cn.academy.port.passive.PassiveSkillsRegressionTest',
+ 'passiveSkillsSourceTest':'cn.academy.port.passive.PassiveSkillsSourceOracleTest',
+ 'passiveSkillsLearningTest':'cn.academy.port.passive.PassiveSkillsLearningRegressionTest',
+ 'passiveSkillsEventBusTest':'cn.academy.port.passive.PassiveSkillsEventBusTest',
+ 'passiveSkillsServerLinkTest':'cn.academy.port.passive.PassiveSkillsServerLinkTest'].each {taskName,className ->
+ tasks.register(taskName,JavaExec){dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+ tasks.named('check'){dependsOn taskName}
+}

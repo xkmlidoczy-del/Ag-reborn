@@ -1,0 +1,48 @@
+import java.nio.file.*;
+import org.objectweb.asm.*;
+
+/** Negative controls operate only on temporary copies of the actual compiled renderer. */
+public final class MutateThunderBolt {
+    public static void main(String[] args) throws Exception {
+        ClassReader reader = new ClassReader(Files.readAllBytes(Path.of(args[0])));
+        ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_MAXS);
+        int[] edits = {0};
+        reader.accept(new ClassVisitor(Opcodes.ASM9, writer) {
+            @Override public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
+                MethodVisitor visitor = super.visitMethod(access, name, descriptor, signature, exceptions);
+                return new MethodVisitor(Opcodes.ASM9, visitor) {
+                    @Override public void visitCode() {
+                        super.visitCode();
+                        if (name.equals("render") && args[2].equals("rng")) {
+                            super.visitFieldInsn(Opcodes.GETSTATIC, "cn/academy/port/client/ClassicThunderBoltEffects", "RANDOM", "Ljava/util/Random;");
+                            super.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/util/Random", "nextLong", "()J", false);
+                            super.visitInsn(Opcodes.POP2); edits[0]++;
+                        }
+                    }
+                    @Override public void visitFieldInsn(int opcode, String owner, String field, String desc) {
+                        if (name.equals("vertex") && args[2].equals("coordinate") && owner.equals("net/minecraft/world/phys/Vec3") && field.equals("x")) {
+                            field = "z"; edits[0]++;
+                        }
+                        super.visitFieldInsn(opcode, owner, field, desc);
+                    }
+                    @Override public void visitMethodInsn(int opcode, String owner, String method, String descriptor, boolean isInterface) {
+                        if (name.equals("render") && args[2].equals("camera") && edits[0] == 0
+                                && owner.equals("net/minecraft/world/phys/Vec3") && method.equals("subtract")) {
+                            method = "add"; edits[0]++;
+                        }
+                        super.visitMethodInsn(opcode, owner, method, descriptor, isInterface);
+                    }
+                    @Override public void visitVarInsn(int opcode, int index) {
+                        if (name.equals("vertex") && args[2].equals("uv") && opcode == Opcodes.FLOAD && index == 3) {
+                            index = 4; edits[0]++;
+                        }
+                        super.visitVarInsn(opcode, index);
+                    }
+                };
+            }
+        }, 0);
+        if (edits[0] != 1) throw new AssertionError("Mutation must hit exactly one instruction: " + edits[0]);
+        Files.createDirectories(Path.of(args[1]).getParent()); Files.write(Path.of(args[1]), writer.toByteArray());
+        System.out.println("MUTATION " + args[2] + " actual-bytecode-edits=" + edits[0]);
+    }
+}

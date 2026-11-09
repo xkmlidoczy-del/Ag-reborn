@@ -1,0 +1,1 @@
+package cn.lambdalib.util.generic; public class MathUtils {public static double clampd(double low,double high,double value){return Math.max(low,Math.min(high,value));}}

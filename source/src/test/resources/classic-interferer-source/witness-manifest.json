@@ -1,0 +1,146 @@
+{
+  "academyCommit": "00d19ec0cf538f61c1095c9292f5ee6863db4521",
+  "lambdaLib": "1.2.3",
+  "files": [
+    {
+      "path": "AcademyCraft/README.md",
+      "sha256": "6666d51532b31b3f6c1506ad1855aa22241926ffcec9f452e64e5e54285f9794"
+    },
+    {
+      "path": "AcademyCraft/src/main/java/cn/academy/ability/ModuleAbility.java",
+      "sha256": "068c22e92b8c94cb54c4d66f033ddd7b3a63fa36459e6f24bd7095e098d05b94"
+    },
+    {
+      "path": "AcademyCraft/src/main/java/cn/academy/ability/api/data/CPData.java",
+      "sha256": "6ef3a87f06fa86e422b183d379c07093366bf60b89057adc94c01cb9088324c3"
+    },
+    {
+      "path": "AcademyCraft/src/main/java/cn/academy/core/block/ACBlockContainer.java",
+      "sha256": "2be6d8c71c943dc4e2141b5794de66fcd5883507aeeea8efc8c47bbbd4b72034"
+    },
+    {
+      "path": "AcademyCraft/src/main/java/cn/academy/core/client/ClientResources.java",
+      "sha256": "4bb75d45b6c3ac5f0dcb5eae00638fe748d33ff36d392315ad7a8a9a55a9e352"
+    },
+    {
+      "path": "AcademyCraft/src/main/java/cn/academy/core/client/render/block/RenderDynamicBlock.java",
+      "sha256": "86ec4ea912297ad70fcd19ab890ff7e36a2e985bd26d42611ec5728f62eaa15a"
+    },
+    {
+      "path": "AcademyCraft/src/main/resources/assets/academy/guis/rework/page_interfere.xml",
+      "sha256": "ca649b043db3139b8d94a44f82400955c799ae48a53cf4d8dfd39a0b706e7929"
+    },
+    {
+      "path": "AcademyCraft/src/main/resources/assets/academy/recipes/default.recipe",
+      "sha256": "a9dc4aa3477ad246f7cb9bb6bea3c33e033aaa8431f3c8a03acaf0845374da1f"
+    },
+    {
+      "path": "AcademyCraft/src/main/scala/cn/academy/ability/block/AbilityInterferer.scala",
+      "sha256": "5fcff778c9aefba9f517d1ba261a8e74ec89d1866b3bedc1a1df88d040c58774"
+    },
+    {
+      "path": "AcademyCraft/src/main/scala/cn/academy/core/client/ui/TechUI.scala",
+      "sha256": "5a10ef61d2068e7677a47953f4e044db2200abde8e74727666b4315f5511ffc1"
+    },
+    {
+      "path": "LICENSE-AcademyCraft-GPL3.txt",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "path": "LambdaLib/LICENSE",
+      "sha256": "852bcc033a46c62f99fb5ffd43b3241ba2c0c440c6034aa2114505f2c4f03c4a"
+    },
+    {
+      "path": "LambdaLib/src/main/java/cn/lambdalib/cgui/gui/component/ElementList.java",
+      "sha256": "d953dbddc6504e6dfd10c394db4989e93a991c2a97df56b383e734f19dc28965"
+    },
+    {
+      "path": "LambdaLib/src/main/java/cn/lambdalib/cgui/gui/component/TextBox.java",
+      "sha256": "dbe9f792cf539a20e1f633577478c4100ce288522fac31004c89bc87a52cd913"
+    },
+    {
+      "path": "LambdaLib/src/main/java/cn/lambdalib/s11n/nbt/NBTS11n.java",
+      "sha256": "857c7f0acb3e80dbbf89b8609b159b7c9e03c44c24b691d59b365a240ca01de5"
+    },
+    {
+      "path": "LambdaLib/src/main/java/cn/lambdalib/s11n/network/TargetPoints.java",
+      "sha256": "14968f91909e1744e793677bafd6affb078d00e2dc77eac230437cc6fbffbb87"
+    },
+    {
+      "path": "LambdaLib/src/main/java/cn/lambdalib/util/client/font/IFont.java",
+      "sha256": "cef5fd1c96b811c3e2a472ed5d8fedd9cb67e334a0d470115efd9956e7b5c1a4"
+    },
+    {
+      "path": "LambdaLib/src/main/java/cn/lambdalib/util/helper/TickScheduler.java",
+      "sha256": "1dc6b67f01253e10ed7d212bc897d595fbaae15bd4784f468044d6ebb8fe5f32"
+    },
+    {
+      "path": "LambdaLib/src/main/java/cn/lambdalib/util/mc/EntitySelectors.java",
+      "sha256": "6cc57bea7aa410f3d93fab085a1f64ac6110ab510ba47a2d15048acf344713f2"
+    },
+    {
+      "path": "LambdaLib/src/main/java/cn/lambdalib/util/mc/WorldUtils.java",
+      "sha256": "22dc9e2c1594f8b97e31cf4075e953f5a7a95edb0db6cffe9fb9dcc0678a0f2e"
+    },
+    {
+      "path": "assets/textures/blocks/ability_interf_off.png",
+      "sha256": "3297f42cf8b1f13b0e1f8a920c75d78ddb0dc6ed5a45a4fee82f4187d6dd0663"
+    },
+    {
+      "path": "assets/textures/blocks/ability_interf_on.png",
+      "sha256": "b12fbbec882c91a37794209d0b2480d7e6ab659982f890ef4d50819ae19e7470"
+    },
+    {
+      "path": "assets/textures/guis/button/button_add.png",
+      "sha256": "64298d098751879e0a6ff9b17f29d45af40e585c69cb3ae1d0dc29a118d6a19e"
+    },
+    {
+      "path": "assets/textures/guis/button/button_arrowdownb.png",
+      "sha256": "38b79a7ed9432199ff4e6bb5c4857242d0e9cc1559b44b892fddb40478d70fa1"
+    },
+    {
+      "path": "assets/textures/guis/button/button_arrowlefta.png",
+      "sha256": "ebc6512b7b3e7cd9c85bfc7965008fcca582a2031ee3ec248b1e92e99716048e"
+    },
+    {
+      "path": "assets/textures/guis/button/button_arrowrighta.png",
+      "sha256": "9af9f01eada40d158a807ca2d33614cf6e6988695a3f0cb3e5aa9c5f8e5dcd57"
+    },
+    {
+      "path": "assets/textures/guis/button/button_arrowupb.png",
+      "sha256": "c8fd4d838781696e3f2e0e8b24bbdab3e42580b3e012f2ca9f88d10dbe5c65d6"
+    },
+    {
+      "path": "assets/textures/guis/button/button_remove.png",
+      "sha256": "5d692720c403b8e4acd33d724d4611fc51a8d4b8de80732569d331c9dd50a1b9"
+    },
+    {
+      "path": "assets/textures/guis/button/button_switch_off.png",
+      "sha256": "44a13f902bcdb0773cdc09ac96b5aab57210b6285c592cc98384e60530358418"
+    },
+    {
+      "path": "assets/textures/guis/button/button_switch_on.png",
+      "sha256": "2f3cc7b87cd8c5e5a33f7c6400b373210352587fb6f0a28ff93b439e4534814c"
+    },
+    {
+      "path": "assets/textures/guis/element/element_background300x32.png",
+      "sha256": "f01f5c2879fd2999c3dc47d7db173ed396fb49eb9d5dcc85caf00949089d2cff"
+    },
+    {
+      "path": "assets/textures/guis/icons/icon_inv.png",
+      "sha256": "01bf54ad90bb6c0dd4a5d67fc4bff4443afb7389a7cf4f81621da8c5e760c201"
+    },
+    {
+      "path": "assets/textures/guis/icons/icon_whitelist_single.png",
+      "sha256": "bfee95c83e2b3f46492e1c72cf95a762ec4c3d0ac8373863d47f98e4b17006f1"
+    },
+    {
+      "path": "assets/textures/guis/parent/parent_background.png",
+      "sha256": "bd0f8650f74c7eecd3b81aac8c3f1b359a4265517d860b7f45482faea583217d"
+    },
+    {
+      "path": "assets/textures/guis/ui/ui_interfere.png",
+      "sha256": "db109b1734aa6ca568a28c6adfd6a22a4fd2d5c9a275c8fd4b0adb81741cb168"
+    }
+  ]
+}

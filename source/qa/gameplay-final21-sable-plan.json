@@ -1,0 +1,8 @@
+[
+  {
+    "name": "final21-native-sable-ten",
+    "script": "gameplay-native-sable-ten.script",
+    "props": "neoforge.enableGameTest=true;neoforge.enabledGameTestNamespaces=academy_construct_sable",
+    "scope": "Ten exact named native Sable integration cases at near origin; no far-coordinate skip accepted."
+  }
+]

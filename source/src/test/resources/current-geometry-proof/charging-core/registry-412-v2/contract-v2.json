@@ -1,0 +1,36 @@
+{
+  "version": 2,
+  "scope": "NEW412-only append to the v1 current HighPowerSkills companion; old M41 differential and historical guards remain separate",
+  "base_contract": "../contract-v1.json",
+  "base_contract_sha256": "18764bbfd49693e9875928905caafc02016d9d6e499e19a875a8344216d32b3c",
+  "baseline_revision": "a5dda77b6b3b5ee4880c5a7d94255a7b12d7e4a1",
+  "baseline_source": "HighPowerSkills.v58.java",
+  "baseline_source_sha256": "ae786dbafd230eec42c45390cc33bb5778b9c7535a456451d0e00247fdbd2445",
+  "legacy_verifier": "verify-charging-m41-core-v1.py",
+  "legacy_verifier_sha256": "2e54fb91fdc704bd7456cfa6c07768ccbeee89cd51f24f42192aee790a815c6d",
+  "source_path": "src/main/java/cn/academy/port/highpower/HighPowerSkills.java",
+  "class_name": "cn.academy.port.highpower.HighPowerSkills",
+  "old_class_sha256": "33ee44e5efebc40930738e8a95376568e58f5855343b7bb30a4785b2481112de",
+  "reconstructed_source_sha256": "a602710107b954afda265d08392c399c17e53931b76e0a71c91d4e0713997411",
+  "reconstructed_class_sha256": "4e333d05a58e7a0ee09704e78c4290dda45b96e257dcd466df01cdb736e47362",
+  "registered_highpower_before": 38,
+  "registered_highpower_after": 39,
+  "approved_edits": [
+    {
+      "name": "new-412-constants",
+      "before": "    public static final String CATEGORY = \"electromaster\";\n",
+      "after": "    public static final String CATEGORY = \"electromaster\";\n    public static final String VECTOR_PARRY = \"vector_parry\";\n    public static final int VECTOR_PARRY_PROPOSAL = 412;\n"
+    },
+    {
+      "name": "append-412-id",
+      "before": "MULTIDIMENSIONAL_LANDING_ARRAY, DEFLECTION_STRIKE);\n",
+      "after": "MULTIDIMENSIONAL_LANDING_ARRAY, DEFLECTION_STRIKE, VECTOR_PARRY);\n"
+    },
+    {
+      "name": "append-412-record",
+      "before": "            new SkillCatalog.Skill(HighPowerCategories.VECMANIP, DEFLECTION_STRIKE, 1, true, List.of(), 0));\n",
+      "after": "            new SkillCatalog.Skill(HighPowerCategories.VECMANIP, DEFLECTION_STRIKE, 1, true, List.of(), 0),\n            new SkillCatalog.Skill(HighPowerCategories.VECMANIP, VECTOR_PARRY, 1, true,\n                    List.of(new SkillCatalog.Requirement(DEFLECTION_STRIKE, 0)), 0));\n"
+    }
+  ],
+  "historic_guard_status": "UNCHANGED_SEPARATE_FAILURES_NOT_REPAIRED"
+}

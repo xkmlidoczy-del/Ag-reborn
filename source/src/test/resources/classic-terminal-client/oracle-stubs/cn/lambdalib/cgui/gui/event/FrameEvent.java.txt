@@ -1,0 +1,1 @@
+package cn.lambdalib.cgui.gui.event; public class FrameEvent{}

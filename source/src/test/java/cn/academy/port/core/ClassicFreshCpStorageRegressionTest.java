@@ -1,0 +1,24 @@
+/* Fresh CPData/cache/wake configuration boundaries through the actual modern native-NBT codec. GPLv3. */
+package cn.academy.port.core;
+import cn.academy.port.AbilityStorage;
+import net.minecraft.nbt.CompoundTag;
+import java.util.*;
+public final class ClassicFreshCpStorageRegressionTest {
+ static int checks;static void check(boolean ok,String why){checks++;if(!ok)throw new AssertionError(why);}
+ static void bits(double a,double b,String why){check(Double.doubleToRawLongBits(a)==Double.doubleToRawLongBits(b),why+" actual="+a+" expected="+b);}
+ static SkillConsumption.Config changed(){return new SkillConsumption.Config(3,4,.5,.1,3,4,2,new double[]{9100,9100,9200,9300,9400,9500},new double[]{210,210,220,230,240,250},ClassicRules.EXTRA_CP_CAP,ClassicRules.EXTRA_OVERLOAD_CAP,Map.of(),Map.of());}
+ static void fresh(AbilityProgress s,String why){check(!s.hasCategory()&&s.level==0&&!s.activated&&s.cp==0&&s.overload==0&&s.baseCp()==100&&s.baseOverload()==100&&s.extraCp==0&&s.extraOverload==0&&s.overloadFine&&!s.interfering,why);}
+ public static void main(String[] args){
+  fresh(new AbilityProgress(),"actual constructor source defaults");var custom=changed();var s=AbilityStorage.decodeSaved(new CompoundTag(),custom);fresh(s,"no-schema wake uses source defaults despite custom vectors");check(s.cpDataConfig()==custom,"first storage bind captures actual data snapshot");
+  int[] maxima={0};s.bindCalculations(r->{maxima[0]++;});s.sanitize();for(int n=0;n<40;n++){s.maxCp();s.maxOverload();s.tick();}fresh(s,"sanitize/getters/absent-category ticks retain source cache");check(maxima[0]==0,"no Max events in wake/read/save phases");
+  var encoded=AbilityStorage.encodeSaved(s);check(encoded.getInt("schema")==3&&encoded.getDouble("cp")==0&&encoded.getDouble("raw_max_cp")==100&&encoded.getDouble("raw_max_overload")==100,"same-schema fresh encoding stores exact raw defaults");var round=AbilityStorage.decodeSaved(encoded,SkillConsumption.Config.DEFAULT);fresh(round,"cold valid fresh roundtrip retains raw default100");check(round.cpDataConfig()==SkillConsumption.Config.DEFAULT,"cold wake captures supplied data snapshot");
+  final SkillConsumption.Config[] live={SkillConsumption.Config.DEFAULT};var trained=new AbilityProgress();trained.bindConsumption(()->live[0],SkillConsumption.UNMODIFIED,SkillConsumption.NO_OVERLOAD_EVENT,()->true);trained.changeCategoryClassic("electromaster");trained.setLevel(5);trained.learn("brain_course");trained.extraCp=40;trained.extraOverload=3;trained.restoreCalculatedMaxima(19000,701);trained.cp=17000;trained.overload=611;
+  live[0]=custom;trained.bindConsumption(()->live[0],SkillConsumption.UNMODIFIED,SkillConsumption.NO_OVERLOAD_EVENT,()->true);bits(trained.baseCp(),19000,"replacement provider retains restored raw maximum");check(trained.cpDataConfig()==SkillConsumption.Config.DEFAULT&&trained.consumptionConfig()==custom,"data snapshot is distinct from live provider");
+  var saved=AbilityStorage.encodeSaved(trained);var cold=AbilityStorage.decodeSaved(saved,custom);bits(cold.baseCp(),19000,"cold NBT restores extension max without configured recalculation");bits(cold.cp,17000,"cold NBT current CP survives extension cache restore");bits(cold.overload,611,"cold NBT current overload survives extension cache restore");cold.setLevel(4);bits(cold.baseCp(),10400,"next explicit level event uses new cold-wake data plus learned course");
+  var cloneTransport=AbilityStorage.decode(AbilityStorage.encode(trained),trained.cpDataConfig());check(cloneTransport.cpDataConfig()==trained.cpDataConfig(),"live-clone transport preserves immutable data snapshot identity");cloneTransport.setLevel(4);bits(cloneTransport.baseCp(),6800,"clone next explicit level event uses source old wake data");
+  var legacy=saved.copy();legacy.remove("raw_max_cp");legacy.remove("raw_max_overload");legacy.putInt("schema",2);legacy.putDouble("cp",713.125);var migrated=AbilityStorage.decodeSaved(legacy,custom);bits(migrated.baseCp(),10500,"old schema gets explicit configured+course raw maximum");bits(migrated.cp,713.125,"old schema migration never refills CP");check(migrated.cpDataConfig()==custom,"migration captures wake snapshot once");
+  for(double invalid:new double[]{Double.NaN,Double.POSITIVE_INFINITY,-1,Double.MAX_VALUE}){var bad=saved.copy();bad.putDouble("raw_max_cp",invalid);bad.putDouble("cp",713.125);var bounded=AbilityStorage.decodeSaved(bad,custom);bits(bounded.baseCp(),10500,"malformed raw max retains modern configured repair");bits(bounded.cp,713.125,"malformed raw repair never refills CP");}
+  var unknown=saved.copy();unknown.remove("schema");fresh(AbilityStorage.decodeSaved(unknown,custom),"unrecognized data returns source fresh state");
+  System.out.println("PASS "+checks+" actual modern fresh/cache/cold NBT/data-snapshot/migration checks; no game bootstrap");
+ }
+}

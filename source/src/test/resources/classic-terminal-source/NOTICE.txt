@@ -1,0 +1,28 @@
+AcademyCraft terminal common original-source oracle fixtures
+
+AcademyCraft source files are copied unchanged from classic 1.0.7, canonical
+commit 00d19ec0cf538f61c1095c9292f5ee6863db4521. Copyright (c) Lambda
+Innovation, 2013-2016. Licensed under GNU GPL version 3; the complete license
+is in LICENSE-AcademyCraft-GPL3.txt. Source file copyright notices are retained.
+Upstream: https://github.com/LambdaInnovation/AcademyCraft
+
+LambdaLib 1.2.3 source files are copied unchanged. Copyright (c) Lambda
+Innovation, 2013-2016 (source notices) / Copyright (c) 2016 (root LICENSE).
+The complete MIT license and notice are retained in lambdalib/LICENSE.
+Upstream: https://github.com/LambdaInnovation/LambdaLib
+
+Harness and finite boundary stubs are newly written for this port under GPLv3.
+They are test doubles, not a Minecraft, Forge, Guava, or LambdaLib runtime.
+Unchanged original Java sources execute under javac/java without any mod launch.
+MediaApp.scala is source evidence for the media_player ID and non-default state;
+its Scala UI body is not executed, and the harness constructs a plain original
+App with that exact source-defined ID. Client UI bodies are never invoked.
+
+Original LambdaLib NBTS11n and SerializationHelper execute for terminal NBT
+round trips. Their Minecraft tag classes, cache/reflection integration, and
+logging are finite stubs. The original bitset is never passed to modern storage;
+modern persistence is compared through semantic app-name projection.
+
+No third-party music, album covers, or song-item artwork is included. Exact
+excluded source paths and SHA256 values are in asset-inventory.json. Terminal
+sound effects and UI images are separately identified non-song assets.

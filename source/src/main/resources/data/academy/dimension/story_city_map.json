@@ -1,0 +1,11 @@
+{
+  "type": "academy:story_city",
+  "generator": {
+    "type": "academy:city_greybox",
+    "plan_seed": 20261103,
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "minecraft:plains"
+    }
+  }
+}

@@ -1,0 +1,1 @@
+package net.minecraftforge.fluids; public class FluidTankInfo { public final FluidStack fluid; public final int capacity; public FluidTankInfo(FluidStack fluid, int capacity) { this.fluid = fluid; this.capacity = capacity; } }

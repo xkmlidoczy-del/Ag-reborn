@@ -1,0 +1,39 @@
+{
+  "src/test/java/cn/academy/port/client/ClassicFontCoverageRegressionTest.java": {
+    "baseline_sha256": null,
+    "staged_sha256": "7aaf125b657dbe1b43477cb775aea8585986ba34d8c72e754ab19145cdc0aa6b",
+    "bytes": 5019
+  },
+  "src/test/java/cn/academy/port/client/ClassicFontBindingRegressionTest.java": {
+    "baseline_sha256": null,
+    "staged_sha256": "af89588e5cfc83cc4ff2a038cb411392468f2599252241001a2dadec517596da",
+    "bytes": 17344
+  },
+  "src/test/resources/cn/academy/port/client/classic-font-checkpoints/original-text.json": {
+    "baseline_sha256": null,
+    "staged_sha256": "71912570c575e6701d08bac911aeb5523217f97749e8eaa96520126c595c9f34",
+    "bytes": 7906
+  },
+  "src/test/resources/cn/academy/port/client/classic-font-checkpoints/NOTICE": {
+    "baseline_sha256": null,
+    "staged_sha256": "f56554a2513e14cb97452ba79e16b1bc8b35439e03d1be26ae4ef978ffe5bf68",
+    "bytes": 4310
+  },
+  "src/test/resources/cn/academy/port/client/classic-font-checkpoints/LAMBDALIB-LICENSE": {
+    "baseline_sha256": null,
+    "staged_sha256": "852bcc033a46c62f99fb5ffd43b3241ba2c0c440c6034aa2114505f2c4f03c4a",
+    "bytes": 1067
+  },
+  "docs/DURABLE-FONT-BINDING-REGRESSION.md": {
+    "baseline_sha256": null,
+    "staged_sha256": "d9c2cb882d77b2d9b872d0497ebada8e711c002f21777cc975ecd8604f51c3b4",
+    "bytes": 5624
+  },
+  "gradle/live-hud-font-tests.gradle": {
+    "copy_as": "task declarations into ordinary production build configuration",
+    "staged_sha256": "b6190a80818c673914797aded74a83c3b03650b6150d48e4252e0ab389283c40"
+  },
+  "docs/durable-font-binding-additions.patch": {
+    "staged_sha256": "4a546b6fa30b3a217ea5e85048c5550b8ad732a080d438c89ceb6c63e70c88f0"
+  }
+}

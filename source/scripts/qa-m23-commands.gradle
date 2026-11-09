@@ -1,0 +1,9 @@
+allprojects {
+ afterEvaluate { p ->
+  if(p.findProperty('gameTestDirectory')!='run-commands-m23')throw new GradleException('Owned isolated classic command fixture directory required')
+  def r=p.extensions.getByName('neoForge').runs.getByName('gameTestServer')
+  r.systemProperty('neoforge.enabledGameTestNamespaces','academy_commands')
+  r.systemProperty('academy.commands.qa','true')
+  r.programArgument('--world');r.programArgument('m23-command-fixture-world')
+ }
+}

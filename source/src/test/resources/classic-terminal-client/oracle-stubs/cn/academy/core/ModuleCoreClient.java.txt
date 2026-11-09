@@ -1,0 +1,1 @@
+package cn.academy.core; public class ModuleCoreClient { public static Manager keyManager=new Manager(); public static class Manager {public int getKeyID(Object key){return 56;}}}

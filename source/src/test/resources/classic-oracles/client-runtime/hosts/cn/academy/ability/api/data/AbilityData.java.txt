@@ -1,0 +1,9 @@
+package cn.academy.ability.api.data;
+import java.util.*;
+import net.minecraft.entity.player.EntityPlayer;
+public class AbilityData {
+ public static final Map<EntityPlayer,AbilityData> DATA = new IdentityHashMap<>();
+ public boolean category = true;
+ public static AbilityData get(EntityPlayer p) { return DATA.computeIfAbsent(p, ignored -> new AbilityData()); }
+ public boolean hasCategory() { return category; }
+}

@@ -1,0 +1,242 @@
+[
+  {
+    "path": "src/main/java/cn/academy/port/client/ClassicDeveloperModels.java",
+    "sha256": "d0d28c046343ae7565fd3a79e4e7a5badb4ab8f5c7a01b885eaf329a12889274",
+    "bytes": 2644
+  },
+  {
+    "path": "src/main/java/cn/academy/port/client/ClassicDeveloperObj.java",
+    "sha256": "7ff9bce2ef847a41dea2c7deaa514bd17147bbc58a898cb74f317eb22da9171d",
+    "bytes": 7630
+  },
+  {
+    "path": "src/main/java/cn/academy/port/client/ClassicDeveloperRenderer.java",
+    "sha256": "ffb85492b7a480e10f53493d2046feff0de84a98c1b486d185c65ea65e0ecc2a",
+    "bytes": 4812
+  },
+  {
+    "path": "src/main/java/cn/academy/port/client/ClassicDeveloperRendering.java",
+    "sha256": "b9d445e0bd1338311b5f600ccafa50cb56503ffc9693878bbf618e623bda40df",
+    "bytes": 784
+  },
+  {
+    "path": "src/main/java/cn/academy/port/client/ClassicDeveloperTransform.java",
+    "sha256": "6adc313d3028ac8b3e4608c004ee521d46fed1acd5c586afd7c131eb097ac4d0",
+    "bytes": 2104
+  },
+  {
+    "path": "src/main/java/cn/academy/port/gametest/AcademyDeveloperMachineRuntimeTests.java",
+    "sha256": "9916b7d9ed3bfa18718907658b49c2f5e6d7662fba63c19d1f77b3844c21e465",
+    "bytes": 17943
+  },
+  {
+    "path": "src/main/java/cn/academy/port/machine/ImagFluxReceiver.java",
+    "sha256": "c877206c0f9654bfd0d3f065795c0c37ddbe0485627e40719ea225c71d86d9a1",
+    "bytes": 518
+  },
+  {
+    "path": "src/main/java/cn/academy/port/machine/MachineDeveloperBlock.java",
+    "sha256": "da425480d006b7f09be4120683c06b41a09adc8110b634fae335fd88bcdd08b3",
+    "bytes": 4796
+  },
+  {
+    "path": "src/main/java/cn/academy/port/machine/MachineDeveloperBlockEntity.java",
+    "sha256": "27b0260c4103f004c750fbc205990c38a21d3547ecf7a4b622400ba3b8b3e4ac",
+    "bytes": 6340
+  },
+  {
+    "path": "src/main/java/cn/academy/port/machine/MachineDeveloperEnergy.java",
+    "sha256": "992319ae4db2fe7c5b6f8de17670565a9e33a8f97e7ea83d5f5124c70e3991a3",
+    "bytes": 3161
+  },
+  {
+    "path": "src/main/java/cn/academy/port/machine/MachineDeveloperForgeEnergy.java",
+    "sha256": "46061fb838634a46c84bc063b1f2d9af188015dd3ee23b4fefb25e4c77e022c2",
+    "bytes": 1086
+  },
+  {
+    "path": "src/main/java/cn/academy/port/machine/MachineDeveloperItem.java",
+    "sha256": "34154404f86be37c4504cc2abf1fb517994c31eda19f881f7b5f61c0e2f89592",
+    "bytes": 1130
+  },
+  {
+    "path": "src/main/java/cn/academy/port/machine/MachineDeveloperRules.java",
+    "sha256": "15ccb56a04f3df8f4986d93251f107bd09b7fc87922cea1d3fa33c46f8e70995",
+    "bytes": 1226
+  },
+  {
+    "path": "src/main/java/cn/academy/port/machine/MachineDeveloperSessions.java",
+    "sha256": "5f95bf5eaf1ca9fb3b06cb2d65ce5f1da78c68199639e809789d4812a78e92b0",
+    "bytes": 6547
+  },
+  {
+    "path": "src/main/java/cn/academy/port/machine/MachineDeveloperStructure.java",
+    "sha256": "a06584d74117bedd12f96626fbcbf1ba9d10b2bcdd12281dfa269371145d35f4",
+    "bytes": 5979
+  },
+  {
+    "path": "src/main/java/cn/academy/port/machine/MachineDevelopers.java",
+    "sha256": "7850a0a21018da0b99f42cb36f598d60dc0e07350808effc5018395063823cd8",
+    "bytes": 3509
+  },
+  {
+    "path": "src/main/resources/assets/academy/blockstates/developer_advanced.json",
+    "sha256": "2e3b75971204ebea91cc8ed9e9399526ed6f047aee18982ca0ea2d045102022c",
+    "bytes": 90
+  },
+  {
+    "path": "src/main/resources/assets/academy/blockstates/developer_normal.json",
+    "sha256": "fd3ae96faab91c3f1d5a8a72ee4db53406dbad74e6909db8c858c216e21144a5",
+    "bytes": 88
+  },
+  {
+    "path": "src/main/resources/assets/academy/models/block/developer_advanced.json",
+    "sha256": "2d58ff0d18d5116ba1e97aba897e63f9c12e40591237e360dcce640c7d0f6a4a",
+    "bytes": 94
+  },
+  {
+    "path": "src/main/resources/assets/academy/models/block/developer_normal.json",
+    "sha256": "7acf4f458537c9f8756399c1035811bb6ec061bdee0980e4d2e49c7ebdcaf8c5",
+    "bytes": 92
+  },
+  {
+    "path": "src/main/resources/assets/academy/models/developer_advanced.obj",
+    "sha256": "202700c6338aea9e23676e942d0a22af5665c88cd1b344973f7096f3563f104b",
+    "bytes": 16512
+  },
+  {
+    "path": "src/main/resources/assets/academy/models/developer_normal.obj",
+    "sha256": "2e8c5dd427944493465ca1265b9abfe331a762ac0e965457a0af4f550af16e79",
+    "bytes": 14104
+  },
+  {
+    "path": "src/main/resources/assets/academy/models/item/developer_advanced.json",
+    "sha256": "261c7ce48450889832f3bebdb5900215a3a06c83fcc891c0a98f38757eff4f86",
+    "bytes": 114
+  },
+  {
+    "path": "src/main/resources/assets/academy/models/item/developer_normal.json",
+    "sha256": "752e76f7fada9199da93235e09ecf9d4c9ede3db339042e0cdf5760b7b76bad3",
+    "bytes": 112
+  },
+  {
+    "path": "src/main/resources/assets/academy/textures/blocks/developer_advanced.png",
+    "sha256": "57becb5864bab28ec5a7083653b04ceaf55fdcfeaff1d49801ca4af5b4d71b0c",
+    "bytes": 4201
+  },
+  {
+    "path": "src/main/resources/assets/academy/textures/blocks/developer_normal.png",
+    "sha256": "3ae44b1cf4b7b972333fc7140d24afaca61a92bbeabc4f4fbec641c90b9bda72",
+    "bytes": 4184
+  },
+  {
+    "path": "src/main/resources/assets/academy/textures/models/developer_advanced.png",
+    "sha256": "fc636210eb7809e334369817eb60a72aceda53d4f58d8efd533e339c6b4546ea",
+    "bytes": 1059201
+  },
+  {
+    "path": "src/main/resources/assets/academy/textures/models/developer_normal.png",
+    "sha256": "dfd0ad090c1caac5524e8e498e61d212afaefb955e16a3e88a7b668e02684493",
+    "bytes": 1036517
+  },
+  {
+    "path": "src/main/resources/data/academy/loot_table/blocks/developer_advanced.json",
+    "sha256": "8d441b5b4c304363dced9c1980c38179a76417578a560f99e63e9272c4fcf817",
+    "bytes": 315
+  },
+  {
+    "path": "src/main/resources/data/academy/loot_table/blocks/developer_normal.json",
+    "sha256": "ba089eb3e2eea76d45ce6311e900d0ef56c36159786bcab09cb98a8dd791eb65",
+    "bytes": 313
+  },
+  {
+    "path": "src/main/resources/data/academy/tags/block/developers.json",
+    "sha256": "c2cc78ed037777c13c94244330593141a4740c9f1bbb78d853b1858faa1a9eb9",
+    "bytes": 107
+  },
+  {
+    "path": "src/test/java/cn/academy/port/DeveloperModelRegressionTest.java",
+    "sha256": "07763b037268d6face8bb3a8777babe5f38981bcdfba6d8612519fb677488470",
+    "bytes": 8767
+  },
+  {
+    "path": "src/test/java/cn/academy/port/client/DeveloperModelEmissionRegressionTest.java",
+    "sha256": "b522376bae9e9acda12e95db9b5b740d0606444468e7694b80a872ebf595351c",
+    "bytes": 4845
+  },
+  {
+    "path": "src/test/java/cn/academy/port/machine/MachineDeveloperRegressionTest.java",
+    "sha256": "efc7c0a42e1c9c250afd0f005385e1f4a70a048465457037fa0f2eb56b53b897",
+    "bytes": 8064
+  },
+  {
+    "path": "integration/cn/academy/port/AcademyNetwork.java",
+    "sha256": "f1117257ec40a3708fe7987fb1317c0277734c9328dbc26498c7cc6010f19011",
+    "bytes": 3115
+  },
+  {
+    "path": "integration/cn/academy/port/DeveloperItem.java",
+    "sha256": "3527877f1105c85ff269a9ad87c1d81213c50b364ab63c9048ce9df31feb9cf7",
+    "bytes": 1149
+  },
+  {
+    "path": "integration/cn/academy/port/client/AcademyClient.java",
+    "sha256": "9cde0111d68c0670a8e67dedf8b1bd2a48517bed5b849060a38ddb125ec31b8c",
+    "bytes": 16726
+  },
+  {
+    "path": "integration/cn/academy/port/client/DeveloperScreen.java",
+    "sha256": "aa1dc576993feb65955017d3fb9c191ee21bc5e3462c5d5f90e778d10c6e6f24",
+    "bytes": 5969
+  },
+  {
+    "path": "integration/cn/academy/port/develop/DevelopmentController.java",
+    "sha256": "d5923f7248e322446bf0ec1d61176ae02ffa01d4b30f80a9eb28f23f0a427612",
+    "bytes": 5500
+  },
+  {
+    "path": "integration/resources/assets/academy/lang/en_us.json",
+    "sha256": "7da0189d444a1361deba48f1886ac4f6f462a9b6c761f71c62e96aeaa675053b",
+    "bytes": 35550
+  },
+  {
+    "path": "integration/resources/assets/academy/lang/zh_cn.json",
+    "sha256": "8cd05ce5cf28c263860ee3301395bf2469bfae47f7ed595c55850d611e372e6c",
+    "bytes": 35670
+  },
+  {
+    "path": "integration/resources/data/minecraft/tags/block/mineable/pickaxe.json",
+    "sha256": "a15f9c000bf4dd4c9717b0c2ed68d395a63cfbf3d43eb921cd554fe11b4935fb",
+    "bytes": 224
+  },
+  {
+    "path": "integration/resources/data/minecraft/tags/block/needs_iron_tool.json",
+    "sha256": "9a1c58fd167c368aac924a8cf57b8e24b000d527296835f251f04d1fd4184cc6",
+    "bytes": 159
+  },
+  {
+    "path": "docs/DEVELOPER-MACHINES.md",
+    "sha256": "3fbfc82e7d8f82122c6f162ac12cbe0b11c070bbd9cbc53e38ef3cc64cfe1e0a",
+    "bytes": 13916
+  },
+  {
+    "path": "docs/deferred-machine-recipes.json",
+    "sha256": "105b12304a3dddd36aed62adaba783098a487179a7a78409bd885103c97df031",
+    "bytes": 1602
+  },
+  {
+    "path": "docs/developer-machines-integration.patch",
+    "sha256": "4636c56b21328ce36ce19003f8c77c888b9af4f9151981250266a1be28411bad",
+    "bytes": 16445
+  },
+  {
+    "path": "scripts/verify-developer-machines.sh",
+    "sha256": "6dc2ea5bf0a3dba48c9f165c395cf8ecb1cc1cb73117ca86ba95caa043a20245",
+    "bytes": 1212
+  },
+  {
+    "path": "scripts/verify-machine-data.py",
+    "sha256": "2ca5e5a423c239f11741aed61dff5b0a775cafe0fc71594f0bf58bfe28430f01",
+    "bytes": 2391
+  }
+]

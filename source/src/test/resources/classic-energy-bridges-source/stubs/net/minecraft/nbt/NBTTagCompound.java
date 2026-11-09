@@ -1,0 +1,1 @@
+package net.minecraft.nbt;import java.util.*;public class NBTTagCompound{private final Map<String,Object> map=new HashMap<>();public void setDouble(String key,double value){map.put(key,value);}public double getDouble(String key){return map.get(key) instanceof Number n?n.doubleValue():0;}public boolean hasKey(String key){return map.containsKey(key);}}

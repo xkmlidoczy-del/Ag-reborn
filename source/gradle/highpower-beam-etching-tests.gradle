@@ -1,0 +1,12 @@
+// NEW213 bounded marking and confirmed native harvest input/visual contracts.
+['highPowerNativeMiningSeamTest':'cn.academy.port.highpower.NativeMiningSeamRegressionTest',
+ 'highPowerBeamEtchingRulesTest':'cn.academy.port.highpower.core.BeamEtchingRulesRegressionTest',
+ 'beamEtchingVisualTest':'cn.academy.port.client.BeamEtchingVisualRegressionTest'].each { taskName, className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+    }
+    tasks.named('check') { dependsOn taskName }
+}

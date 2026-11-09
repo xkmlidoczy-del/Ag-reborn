@@ -1,0 +1,45 @@
+// The original developer/category lifecycle compiles only in isolated hashed test resources.
+tasks.register('classicDeveloperLifecycleSourceTest',JavaExec) {
+ dependsOn testClasses
+ classpath=sourceSets.test.runtimeClasspath
+ mainClass='cn.academy.port.core.ClassicDeveloperLifecycleSourceOracleTest'
+ enableAssertions=true
+}
+tasks.named('check') { dependsOn 'classicDeveloperLifecycleSourceTest' }
+
+// Fresh CPData constructor/wake/cache semantics through the actual modern storage codec.
+tasks.register('classicFreshCpStorageTest',JavaExec) {
+ dependsOn testClasses
+ classpath=sourceSets.test.runtimeClasspath
+ mainClass='cn.academy.port.core.ClassicFreshCpStorageRegressionTest'
+ enableAssertions=true
+}
+tasks.named('check') { dependsOn 'classicFreshCpStorageTest' }
+
+// Generic AbilityData learning/XP and CPData priority boundaries against unchanged originals.
+['classicProgressEventsSourceTest':'cn.academy.port.core.ClassicProgressEventsSourceOracleTest',
+ 'classicProgressEventsBusTest':'cn.academy.port.api.ClassicProgressEventsBusTest',
+ 'classicProgressEventsServerLinkTest':'cn.academy.port.maintenance.ClassicProgressEventsServerLinkTest'].each {taskName,className ->
+ tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+ tasks.named('check') {dependsOn taskName}
+}
+
+// Source CPData activation and AbilityData direct-XP setter boundaries.
+['classicActivationAndSetXpSourceTest':'cn.academy.port.core.ClassicActivationAndSetXpSourceOracleTest',
+ 'classicActivationAndSetXpBusStorageTest':'cn.academy.port.api.ClassicActivationAndSetXpBusStorageTest',
+ 'classicActivationAndSetXpServerLinkTest':'cn.academy.port.maintenance.ClassicActivationAndSetXpServerLinkTest'].each { taskName,className ->
+ tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+ tasks.named('check') {dependsOn taskName}
+}
+
+// Source client activation prediction and server-self-before-remote observer delivery.
+['classicActivationTransportSourceTest':'cn.academy.port.core.ClassicActivationTransportSourceOracleTest',
+ 'classicActivationTransportBusTest':'cn.academy.port.api.ClassicActivationTransportBusTest',
+ 'classicActivationTransportServerLinkTest':'cn.academy.port.maintenance.ClassicActivationTransportServerLinkTest'].each {taskName,className ->
+ tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+ tasks.named('check') {dependsOn taskName}
+}
+
+// Execute the real client state/codec/activation adapter used by AcademyClient, without game bootstrap.
+tasks.register('classicActivationClientStateTest',JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass='cn.academy.port.client.ClassicActivationClientStateRegressionTest';enableAssertions=true}
+tasks.named('check') {dependsOn 'classicActivationClientStateTest'}

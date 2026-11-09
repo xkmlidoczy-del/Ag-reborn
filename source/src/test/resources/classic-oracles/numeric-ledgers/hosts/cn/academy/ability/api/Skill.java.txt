@@ -1,0 +1,6 @@
+/* Test-only platform host; numeric algorithms remain in unchanged source. */
+package cn.academy.ability.api;
+public class Skill {
+ public final int id,level;public final Category category;public boolean expCustomized;public boolean controllable=true;public Skill(int id,int level,Category category){this.id=id;this.level=level;this.category=category;category.skills.add(this);}
+ public int getID(){return id;}public int getLevel(){return level;}public Category getCategory(){return category;}public boolean canControl(){return controllable;}public float getSkillExp(cn.academy.ability.api.data.AbilityData d){return 0;}
+}

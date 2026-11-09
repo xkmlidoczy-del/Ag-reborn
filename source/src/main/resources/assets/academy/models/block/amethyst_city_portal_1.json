@@ -1,0 +1,43 @@
+{
+  "render_type": "minecraft:translucent",
+  "ambientocclusion": false,
+  "textures": {
+    "portal": "academy:block/amethyst_city_portal",
+    "particle": "academy:block/amethyst_fiber"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        14.4,
+        0
+      ],
+      "to": [
+        16,
+        14.5,
+        16
+      ],
+      "shade": false,
+      "faces": {
+        "up": {
+          "texture": "#portal",
+          "uv": [
+            8,
+            0,
+            16,
+            8
+          ]
+        },
+        "down": {
+          "texture": "#portal",
+          "uv": [
+            8,
+            0,
+            16,
+            8
+          ]
+        }
+      }
+    }
+  ]
+}

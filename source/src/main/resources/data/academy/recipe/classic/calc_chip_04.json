@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "result": {
+    "id": "academy:calc_chip",
+    "count": 1
+  },
+  "ingredients": [
+    {
+      "item": "academy:data_chip"
+    },
+    {
+      "item": "minecraft:quartz"
+    },
+    {
+      "item": "minecraft:quartz"
+    }
+  ]
+}

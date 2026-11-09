@@ -1,0 +1,14 @@
+// Additive NEW-122 exact defense and compiled client lifecycle acceptance.
+tasks.register('highPowerGroundingReturnTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.GroundingReturnRegressionTest'
+    enableAssertions = true
+}
+tasks.register('highPowerGroundingReturnVisualTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.GroundingReturnVisualRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerGroundingReturnTest', 'highPowerGroundingReturnVisualTest' }

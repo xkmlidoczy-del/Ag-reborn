@@ -1,0 +1,13 @@
+// Isolated, opt-in Phase Generator Anvil proof; ordinary academy tests stay unchanged.
+allprojects {
+    afterEvaluate { testedProject ->
+        def phaseProbeMode = testedProject.findProperty('phaseRestartMode')?.toString()
+        if (!(phaseProbeMode in ['seed', 'verify'])) throw new GradleException('Explicit phase seed or verify required')
+        if (testedProject.findProperty('gameTestDirectory') != 'run-restart-m19-phase-generator') throw new GradleException('Owned isolated phase restart directory required')
+        def phaseProbeRun = testedProject.extensions.getByName('neoForge').runs.getByName('gameTestServer')
+        phaseProbeRun.systemProperty('neoforge.enabledGameTestNamespaces', 'academy_phase_restart')
+        phaseProbeRun.systemProperty('academy.phasegen.restart', phaseProbeMode)
+        phaseProbeRun.programArgument('--world')
+        phaseProbeRun.programArgument('academy-phase-generator-restart-world')
+    }
+}

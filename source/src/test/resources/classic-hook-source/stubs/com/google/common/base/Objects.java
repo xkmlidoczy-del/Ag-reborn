@@ -1,0 +1,1 @@
+package com.google.common.base;public class Objects{public static Helper toStringHelper(Object o){return new Helper();}public static class Helper{public Helper add(String k,Object v){return this;}public String toString(){return "Motion3D";}}}

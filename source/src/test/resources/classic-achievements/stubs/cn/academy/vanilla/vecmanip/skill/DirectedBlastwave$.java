@@ -1,0 +1,1 @@
+package cn.academy.vanilla.vecmanip.skill;public class DirectedBlastwave$ extends cn.academy.ability.api.Skill {public static final DirectedBlastwave$ MODULE$=new DirectedBlastwave$();private DirectedBlastwave$(){super(cn.academy.vanilla.vecmanip.CatVecManip$.INSTANCE,"dir_blast");}}

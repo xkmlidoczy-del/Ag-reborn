@@ -1,0 +1,1 @@
+package cpw.mods.fml.common.registry;import java.util.*;import net.minecraft.item.ItemStack;public class GameRegistry{public static final List<Object[]> recipes=new ArrayList<>();public static void addRecipe(ItemStack out,Object... in){Object[] row=new Object[in.length+1];row[0]=out;System.arraycopy(in,0,row,1,in.length);recipes.add(row);}}

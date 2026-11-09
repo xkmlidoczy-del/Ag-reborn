@@ -1,0 +1,14 @@
+['classicMiscSourceTest':'cn.academy.port.cat.ClassicMiscSourceOracleTest',
+ 'classicMiscCommonTest':'cn.academy.port.cat.ClassicMiscRegressionTest',
+ 'classicMiscVisualTest':'cn.academy.port.client.ClassicMiscVisualRegressionTest'].each {taskName,className ->
+ tasks.register(taskName,JavaExec){dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+ tasks.named('check'){dependsOn taskName}
+}
+
+// Actual camera-relative ribbon vertices retain classic width at far-world coordinates.
+tasks.register('classicCameraRelativeRenderingTest',JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass='cn.academy.port.client.ClassicCameraRelativeRenderingTest';enableAssertions=true}
+tasks.named('check') {dependsOn 'classicCameraRelativeRenderingTest'}
+
+// Unchanged original ArcFactory/LambdaLib generation, baked/dynamic ribbons and RNG flow.
+tasks.register('classicArcFactorySourceTest',JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass='cn.academy.port.client.ClassicArcFactorySourceOracleTest';enableAssertions=true;maxHeapSize='512m'}
+tasks.named('check') {dependsOn 'classicArcFactorySourceTest'}

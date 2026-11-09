@@ -1,0 +1,1 @@
+package net.minecraft.entity;import java.util.*;public class DataWatcher{private final Map<Integer,Object> values=new HashMap<>();public void addObject(int k,Object v){values.put(k,v);}public void updateObject(int k,Object v){values.put(k,v);}public byte getWatchableObjectByte(int k){return(byte)values.get(k);}public int getWatchableObjectInt(int k){return(int)values.get(k);}}

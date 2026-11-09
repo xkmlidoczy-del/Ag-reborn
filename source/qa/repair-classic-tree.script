@@ -1,0 +1,1 @@
+cmd:time set day|cmd:tp @s 0.5 -60 0.5 0 0|clearchat|railgun:60|classiccheck|shot:repaired_classic_snapshots|wait:55|live:setup:reverse_jet_brake|wait:30|tree:open|shot:repaired_meltdowner_tree|tree:close|live:setup:phase_corridor|wait:30|tree:open|shot:repaired_teleporter_tree|tree:close|quit

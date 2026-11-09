@@ -1,0 +1,2 @@
+/* Test-only lifecycle platform plumbing; business methods run unchanged originals. */
+package cn.academy.misc.achievements.aches;public class AchEvSkillLearn extends net.minecraft.stats.Achievement {public AchEvSkillLearn(){super("unused");}public boolean accept(cn.academy.ability.api.event.SkillLearnEvent e){return false;}}

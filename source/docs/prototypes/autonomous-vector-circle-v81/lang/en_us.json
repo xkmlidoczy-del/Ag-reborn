@@ -1,0 +1,20 @@
+{
+  "ac.ability.vecmanip.autonomous_vector_circle.name": "Autonomous Vector Circle [High Power]",
+  "ac.ability.vecmanip.autonomous_vector_circle.desc": "NEW452 provisional kinetic-defense prototype. Tap to toggle; release is free, and a fresh tap turns it off. Uses the shared base + lower + upper reserve, capped at 2S, against supported hostile native kinetic contacts from within 8 m and the forward 160-degree 3D sector. The rear is open. At most 8 positive absorptions per rolling 20 server ticks and 4 in one tick; CP, mastery and rapid toggling cannot bypass these physical limits. Unknown damage sources and unsupported attacks keep native behavior. This prototype does not reflect projectiles. Gray-white open flow shows the received sector and eight physical quota marks; a brief local compression appears only after confirmed positive absorption. LV5 after learned Multi-Axis Reflection, with no mastery gate. All tuning is provisional.",
+  "hud.academy.highpower.autonomous_vector_circle": "Circle %s/8 | %s",
+  "hud.academy.highpower.autonomous_vector_circle.ready": "front kinetic defense ready",
+  "hud.academy.highpower.autonomous_vector_circle.paused": "paused: physical quota or reserve",
+  "message.academy.highpower.autonomous_vector_circle.unavailable": "Autonomous Vector Circle is unavailable",
+  "message.academy.highpower.autonomous_vector_circle.resource": "Not enough CP or shared defense reserve",
+  "message.academy.highpower.autonomous_vector_circle.capacity": "The shared defense reserve is unavailable",
+  "message.academy.highpower.autonomous_vector_circle.cooldown": "Autonomous Vector Circle is recovering",
+  "message.academy.highpower.autonomous_vector_circle.corrupt": "The saved defense state cannot be verified",
+  "message.academy.highpower.autonomous_vector_circle.unsupported": "The current defense integration is unsupported",
+  "message.academy.highpower.autonomous_vector_circle.not_ready": "Circle not ready: check ability, CP, reserve and cooldown",
+  "message.academy.highpower.autonomous_vector_circle.conflict": "End the other active vector controller first",
+  "hud.academy.highpower.autonomous_vector_circle.shield_label": "Circle · Available shield",
+  "hud.academy.highpower.autonomous_vector_circle.shield_unknown": "unavailable",
+  "hud.academy.highpower.autonomous_vector_circle.quota_label": "Quota",
+  "hud.academy.highpower.autonomous_vector_circle.state_ready": "Ready",
+  "hud.academy.highpower.autonomous_vector_circle.state_paused": "Paused"
+}

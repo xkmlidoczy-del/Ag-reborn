@@ -1,0 +1,50 @@
+[
+  {
+    "release": 9,
+    "tactical_insert": 26,
+    "empty_insert": 30,
+    "lock": 39,
+    "tactical_end": 41,
+    "empty_end": 49
+  },
+  {
+    "release": 10,
+    "tactical_insert": 34,
+    "empty_insert": 38,
+    "lock": 50,
+    "tactical_end": 50,
+    "empty_end": 62
+  },
+  {
+    "release": 11,
+    "tactical_insert": 36,
+    "empty_insert": 40,
+    "lock": 55,
+    "tactical_end": 54,
+    "empty_end": 67
+  },
+  {
+    "release": 12,
+    "tactical_insert": 39,
+    "empty_insert": 43,
+    "lock": 60,
+    "tactical_end": 63,
+    "empty_end": 73
+  },
+  {
+    "release": 13,
+    "tactical_insert": 41,
+    "empty_insert": 45,
+    "lock": 62,
+    "tactical_end": 60,
+    "empty_end": 73
+  },
+  {
+    "release": 16,
+    "tactical_insert": 51,
+    "empty_insert": 55,
+    "lock": 70,
+    "tactical_end": 69,
+    "empty_end": 83
+  }
+]

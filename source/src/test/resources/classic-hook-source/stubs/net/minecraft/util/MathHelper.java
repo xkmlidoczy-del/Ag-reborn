@@ -1,0 +1,1 @@
+package net.minecraft.util;public class MathHelper{static final float[] S=new float[65536];static{for(int i=0;i<65536;i++)S[i]=(float)Math.sin(i*Math.PI*2/65536);}public static float sin(float x){return S[(int)(x*10430.378F)&65535];}public static float cos(float x){return S[(int)(x*10430.378F+16384F)&65535];}}

@@ -1,0 +1,31 @@
+{
+  "version": "render-contract-v2",
+  "source": "Restored .35 archive and its supplied 0011 patch; no recovered Git commit",
+  "missingHistoricalCommit": "ec0c40bab302b878f3cf14df0540f83f61c184c7",
+  "patchSha256": "2b47ceffbf61bd2b7a5e9b0cb3e6c38df5b163ef287b9640a027a1793637e1a6",
+  "input31": {
+    "path": "src/test/resources/vfx2/railgun-grand/historical-31/ClassicEffects.java.txt",
+    "sha256": "96ac659d49b4ccddea08ada95670e198c3a83f088f7d5f5764bb4e0ebb359ab4",
+    "bytes": 34385,
+    "gitBlob": "f907f44716a97986df3f246bd3abbb4125dc4efd"
+  },
+  "pre31": {
+    "path": "src/test/resources/vfx2/render-contract-v2/ClassicEffects.pre31.java.txt",
+    "sha256": "106e7670ef6d7ba1b21f4acdc4d95fa9fd08eae1ea6da2062b1044c3a9a0438f",
+    "bytes": 23227,
+    "gitBlob": "0beeb102eef36326d76dd74c4afdec66b1c62aff"
+  },
+  "reconstruction": {
+    "reverseHunks": 11,
+    "offset": 0,
+    "fuzz": 0,
+    "forwardRoundTripRequired": true
+  },
+  "guardProvenance": "Byte-compared with the independently restored baseline-source archive at creation",
+  "guardSha256": {
+    "scripts/verify-displaced-needle-ledger.py": "2aa986c4b7e67319e8a0068ac21a296e435a93d307d6ac17d1084fe07a095aa4",
+    "scripts/verify-classic-terminal-ingress.py": "d0b349b1a418003f986a4d9f7f17edfb2dfe43406a87462652ee811cba0f109a",
+    "scripts/verify-classic-terminal-oracles.py": "13ba676ce718c9f590455207867fc0ced634435a95bc9cd77f948af5e8586ae8"
+  },
+  "claim": "Exact patch preimage only; neither pinned-git-show nor ec0c40 commit restoration"
+}

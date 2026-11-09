@@ -1,0 +1,1 @@
+package cn.academy.vanilla.vecmanip.skill;public class StormWing$ extends cn.academy.ability.api.Skill {public static final StormWing$ MODULE$=new StormWing$();private StormWing$(){super(cn.academy.vanilla.vecmanip.CatVecManip$.INSTANCE,"storm_wing");}}

@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "coordinate_system": "runtime_x_right_y_up_z_forward",
+  "units": "m",
+  "anchors": {
+    "grip": [
+      -0.035,
+      -0.014,
+      -0.12
+    ],
+    "support": [
+      0.036,
+      0.066,
+      0.065
+    ],
+    "shoulder": [
+      0,
+      0.14,
+      -0.14
+    ],
+    "sight": [
+      0,
+      0.228,
+      -0.058
+    ],
+    "mag": [
+      0,
+      0.035,
+      -0.108
+    ],
+    "mag_grip": [
+      0.037000000000000005,
+      -0.126,
+      -0.108
+    ],
+    "muzzle": [
+      0,
+      0.133,
+      0.17600000000000002
+    ],
+    "charge": [
+      0.075,
+      0.164,
+      -0.093
+    ]
+  },
+  "motion": {
+    "magazine_drop": 0.2,
+    "magazine_tilt_deg": -12,
+    "slide_travel": 0.043
+  },
+  "first_person": {
+    "hip": [
+      0.19,
+      -0.25,
+      -0.4
+    ],
+    "ads_distance": 0.34
+  }
+}

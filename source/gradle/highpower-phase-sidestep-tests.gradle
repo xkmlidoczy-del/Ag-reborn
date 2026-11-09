@@ -1,0 +1,11 @@
+// NEW312 pure policy and analytic sweep regressions; native/client acceptance remains separate.
+['highPowerPhaseSidestepRulesTest':'cn.academy.port.highpower.core.PhaseSidestepRulesRegressionTest',
+ 'highPowerPhaseSidestepGeometryTest':'cn.academy.port.highpower.core.PhaseSidestepGeometryRegressionTest'].each { taskName, className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+    }
+    tasks.named('check') { dependsOn taskName }
+}

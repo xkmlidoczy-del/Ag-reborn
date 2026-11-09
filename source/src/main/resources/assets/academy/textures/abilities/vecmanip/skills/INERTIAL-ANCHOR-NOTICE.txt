@@ -1,0 +1,1 @@
+NEW422 learning icon reuses the existing classic vec_deviation.png unchanged. This is an attributed internal prototype reuse, not a newly drawn texture. Original asset and source attribution remain applicable. SHA256 ade6f41c39b98855b8bf7949ec5a96da2b0ed3c51107b656d8e2428de52069ef

@@ -1,0 +1,8 @@
+[vectorFinalTest:'cn.academy.port.skill.VectorFinalRegressionTest',
+ vectorFinalSourceTest:'cn.academy.port.skill.VectorFinalSourceOracleTest',
+ vectorFinalLearningTest:'cn.academy.port.skill.VectorFinalLearningRegressionTest',
+ vectorFinalVisualTest:'cn.academy.port.client.VectorFinalVisualRegressionTest',
+ vectorFinalServerLinkTest:'cn.academy.port.skill.VectorFinalServerLinkTest'].each { taskName,className ->
+ tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+ tasks.named('check') {dependsOn taskName}
+}

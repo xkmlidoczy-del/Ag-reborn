@@ -1,0 +1,2 @@
+/* Test-only lifecycle platform plumbing; business methods run unchanged originals. */
+package cn.academy.ability.api;public class Controllable {public int getControlID(){return 0;}}

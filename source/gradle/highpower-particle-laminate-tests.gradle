@@ -1,0 +1,12 @@
+// NEW241 closed fixed-ray corridor, exact pulse shares and finite client receipts.
+['highPowerParticleLaminateGeometryTest':'cn.academy.port.highpower.core.ParticleLaminateGeometryRegressionTest',
+ 'highPowerParticleLaminateRulesTest':'cn.academy.port.highpower.core.ParticleLaminateRulesRegressionTest',
+ 'particleLaminateVisualTest':'cn.academy.port.client.ParticleLaminateVisualRegressionTest'].each { taskName, className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+    }
+    tasks.named('check') { dependsOn taskName }
+}

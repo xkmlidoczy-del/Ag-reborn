@@ -1,0 +1,522 @@
+[
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/en_US/ability_basis.md",
+    "target": "src/main/resources/assets/academy/tutorials/en_us/ability_basis.md",
+    "sha256": "765b57c57a2209d799bbbdc4e3b9e1a7a8ba0d41243b97eb21a53bd80df97672"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/en_US/ability_developer.md",
+    "target": "src/main/resources/assets/academy/tutorials/en_us/ability_developer.md",
+    "sha256": "457b1b7e2dcbb2c9c9b7750955a1f8441c66934bd3a4fad1a031c19db2519313"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/en_US/develop_ability.md",
+    "target": "src/main/resources/assets/academy/tutorials/en_us/develop_ability.md",
+    "sha256": "0a9206fbd6a4b85da9c82f9e28d541babb980706d6d0503f03da7cc1fc421d97"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/en_US/energy_bridge.md",
+    "target": "src/main/resources/assets/academy/tutorials/en_us/energy_bridge.md",
+    "sha256": "68b8a22177da32e4b23a080c3c12538cb32901a99b53e70dc984bfb2cb48e505"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/en_US/imag_fusor.md",
+    "target": "src/main/resources/assets/academy/tutorials/en_us/imag_fusor.md",
+    "sha256": "543c246888e5b627f54bac6a059fba3534b417afa1c7c40d28c086ada984299e"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/en_US/metal_former.md",
+    "target": "src/main/resources/assets/academy/tutorials/en_us/metal_former.md",
+    "sha256": "fe6434230c705f78c0a25274086edad3c5a442e3a47b8e217bf8d68da6f26611"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/en_US/misc.md",
+    "target": "src/main/resources/assets/academy/tutorials/en_us/misc.md",
+    "sha256": "d467feaecba9e65d4ce599b5321c9b21c15fbcbdc5622319740d90186f91cb21"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/en_US/ores.md",
+    "target": "src/main/resources/assets/academy/tutorials/en_us/ores.md",
+    "sha256": "4da62bf8806c30c46188bedd2d43f5172271d2ab6a6f133c36c505871bc3dc65"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/en_US/phase_generator.md",
+    "target": "src/main/resources/assets/academy/tutorials/en_us/phase_generator.md",
+    "sha256": "8d59fc7dbf71752c0eec7bac6120fdf19be1043a7d21772be84d8328a332c607"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/en_US/solar_generator.md",
+    "target": "src/main/resources/assets/academy/tutorials/en_us/solar_generator.md",
+    "sha256": "b3c843171b3026acf6ba657215ac10fea36da74e08c99121539cc86171df0ad8"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/en_US/terminal.md",
+    "target": "src/main/resources/assets/academy/tutorials/en_us/terminal.md",
+    "sha256": "d2b7a39778e5832771a93a52686f684feb6485674ab979ec09ee9b7a9afd098c"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/en_US/welcome.md",
+    "target": "src/main/resources/assets/academy/tutorials/en_us/welcome.md",
+    "sha256": "aeb7c1e0ff0b84b6c548468547ac92aa6818bb63f12f7e6aea0dec6707f92d39"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/en_US/wind_generator.md",
+    "target": "src/main/resources/assets/academy/tutorials/en_us/wind_generator.md",
+    "sha256": "126690a0abe4dbedbfaa24566a2b143a5a3e9551821328b96d167145d58308cd"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/en_US/wireless_network.md",
+    "target": "src/main/resources/assets/academy/tutorials/en_us/wireless_network.md",
+    "sha256": "7e40c6e97c8d73cbfb6e2833758195df37602644af16f96468e279aa94f49494"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/zh_CN/ability_basis.md",
+    "target": "src/main/resources/assets/academy/tutorials/zh_cn/ability_basis.md",
+    "sha256": "337a8f8da93755bda7f2ec74dab0829004fd7706a67d6edec80b18fec4826e1b"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/zh_CN/ability_developer.md",
+    "target": "src/main/resources/assets/academy/tutorials/zh_cn/ability_developer.md",
+    "sha256": "a449b8d08bd2908ac98a65f6ccff2344300b1698ec85c3169061ea70b04e4b92"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/zh_CN/develop_ability.md",
+    "target": "src/main/resources/assets/academy/tutorials/zh_cn/develop_ability.md",
+    "sha256": "de56564a81ccf6f1455b0275146cb1dd52d6804674a18a9b3d66c85d74b6693d"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/zh_CN/energy_bridge.md",
+    "target": "src/main/resources/assets/academy/tutorials/zh_cn/energy_bridge.md",
+    "sha256": "c2e7fdbdef094521da0d03b5f6d0e0d6b6c25b79aefa04bbaf28e61f8d4e785a"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/zh_CN/imag_fusor.md",
+    "target": "src/main/resources/assets/academy/tutorials/zh_cn/imag_fusor.md",
+    "sha256": "9963aa211b5658929cb4c0b6fb35994b7fd1722e02300c96e0a19350657291b8"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/zh_CN/metal_former.md",
+    "target": "src/main/resources/assets/academy/tutorials/zh_cn/metal_former.md",
+    "sha256": "15670e71c84c9430d80c342cc9b3a44617201772fcad15b7e1e8d88ac8e265de"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/zh_CN/misc.md",
+    "target": "src/main/resources/assets/academy/tutorials/zh_cn/misc.md",
+    "sha256": "28e4117b0a37d8312cdaec72dea48722b3c619b6075c2f7c5e417aafe6f5146d"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/zh_CN/ores.md",
+    "target": "src/main/resources/assets/academy/tutorials/zh_cn/ores.md",
+    "sha256": "303b7e3f8b61b32b0d2cfd855deea6d3671112662da541270f0a473d3ff9c708"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/zh_CN/phase_generator.md",
+    "target": "src/main/resources/assets/academy/tutorials/zh_cn/phase_generator.md",
+    "sha256": "a14631b40884d059f23e4e21d9b96fd05ed4eafe282f12f51ee52e3feed76a93"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/zh_CN/solar_generator.md",
+    "target": "src/main/resources/assets/academy/tutorials/zh_cn/solar_generator.md",
+    "sha256": "9be4b96ea4c3695e4f4f076fbd9969a63312b9da4fa029e0c167bbe34d3070f3"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/zh_CN/terminal.md",
+    "target": "src/main/resources/assets/academy/tutorials/zh_cn/terminal.md",
+    "sha256": "4de14a3384cf502a1999f7070cc19c0c19b5d4a4695173a3b55ff7713314f3d2"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/zh_CN/welcome.md",
+    "target": "src/main/resources/assets/academy/tutorials/zh_cn/welcome.md",
+    "sha256": "2115213892d51c11fba8510768a2ea1ac1eed49c81fb15d293cb2a27e943b777"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/zh_CN/wind_generator.md",
+    "target": "src/main/resources/assets/academy/tutorials/zh_cn/wind_generator.md",
+    "sha256": "79a5928d1d44326b79eb21e4fd76612d9b41930d9262f53498f39a2cdbcfaf54"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/tutorials/zh_CN/wireless_network.md",
+    "target": "src/main/resources/assets/academy/tutorials/zh_cn/wireless_network.md",
+    "sha256": "8ab0ff65d75eed0bbd0ce46342b9777cbb3fee285689af96d5f001e73583092e"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/window_tutorialLeft.png",
+    "target": "src/main/resources/assets/academy/textures/guis/window_tutorialleft.png",
+    "sha256": "60b6e77a658f9ca1085c90ea371de82064b9127c0124559551477c853e717b63"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/window_tutorialRight.png",
+    "target": "src/main/resources/assets/academy/textures/guis/window_tutorialright.png",
+    "sha256": "3d7f5d04f9b5517c2d7e8ae5630545b9c838f51db9cf6ebb1b180bf2232677c0"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/button/widget_scroll_1.png",
+    "target": "src/main/resources/assets/academy/textures/guis/button/widget_scroll_1.png",
+    "sha256": "16223f0671f8e62f3a9816e548de2521ecf178e27e03eec4c4e06d6b70a3fb33"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/button/widget_scroll_2.png",
+    "target": "src/main/resources/assets/academy/textures/guis/button/widget_scroll_2.png",
+    "sha256": "581487b7ea634a08a7ae180b0ed6d6bb2e67918bb4e4909f2b30473749242e06"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/button/button_left_2.png",
+    "target": "src/main/resources/assets/academy/textures/guis/button/button_left_2.png",
+    "sha256": "2dbb9ec9c4ec2d7dbddb00b995e63b5675933f7261be563bec7da6621845ad64"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/button/button_right_2.png",
+    "target": "src/main/resources/assets/academy/textures/guis/button/button_right_2.png",
+    "sha256": "1b9fa90d6b9df6ababc19a478e5d9bd595c08ae0ab08cf2e0c6f13a18d08d569"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/icons/icon_view.png",
+    "target": "src/main/resources/assets/academy/textures/guis/icons/icon_view.png",
+    "sha256": "6f9ea48c321954340d11c1341ed4d481fab1cc1ef9f6944650e1f159eb36d8f0"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/icons/icon_craft.png",
+    "target": "src/main/resources/assets/academy/textures/guis/icons/icon_craft.png",
+    "sha256": "9e57aff61b38a4da10e53cb41b67a699242b0074b5c90ce4cde51d655bd1ea78"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/tutorial_fusor.png",
+    "target": "src/main/resources/assets/academy/textures/guis/tutorial_fusor.png",
+    "sha256": "477f4297fe4a8844daa3fbe3d454899feee1a10a1d1e4954ac01588283dfef0d"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/tutorial_metalformer.png",
+    "target": "src/main/resources/assets/academy/textures/guis/tutorial_metalformer.png",
+    "sha256": "0849bcaec311beba0a62f4258f0bf61ea9301d87b9c4b8e1cafdec02937a2f5e"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/tutorial_smelting.png",
+    "target": "src/main/resources/assets/academy/textures/guis/tutorial_smelting.png",
+    "sha256": "3dbd38b473a995375997932e177ab0a5600edaee61a22a835290c6817e5f206b"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/ui/ui_phasegen.png",
+    "target": "src/main/resources/assets/academy/textures/guis/ui/ui_phasegen.png",
+    "sha256": "96e39761884223981e2d025f13eb3921eb2deb765fb708e30f1c178f30da2c91"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/blocks/rf_input.png",
+    "target": "src/main/resources/assets/academy/textures/blocks/rf_input.png",
+    "sha256": "b5e86bc7cb6b54a3383d9a2b55c73794e5347deeb03d667107dafca6afe7881a"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/blocks/rf_output.png",
+    "target": "src/main/resources/assets/academy/textures/blocks/rf_output.png",
+    "sha256": "ea900ec425d9851b7c9418dafd4efbeec24eb03d065ae6e381649e54da86c71f"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/items/terminal_installer.png",
+    "target": "src/main/resources/assets/academy/textures/items/terminal_installer.png",
+    "sha256": "81d295a64c055582f496a687015a36fa3e1e77a27715fc75028229c2e397ab15"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/items/windgen_fan.png",
+    "target": "src/main/resources/assets/academy/textures/items/windgen_fan.png",
+    "sha256": "7ecb93261487dbe8f12941a6703b89ab0867c9b50e83836513426424f903dc65"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/items/app_skill_tree.png",
+    "target": "src/main/resources/assets/academy/textures/items/app_skill_tree.png",
+    "sha256": "faf2203ab6e4f00eeb8c8a140cecedcd45ff29328a5486f4dc196364137dd624"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/items/app_media_player.png",
+    "target": "src/main/resources/assets/academy/textures/items/app_media_player.png",
+    "sha256": "716d1b193c50d2c23d7da49fd8af0636cf8033ad334ba64ee2637d79047a19a0"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/items/app_freq_transmitter.png",
+    "target": "src/main/resources/assets/academy/textures/items/app_freq_transmitter.png",
+    "sha256": "d7834c3f5e565df98ae332c902d76478a45cb022fe3e7d93fe241b2cb3d3f785"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/items/matter_unit/phase_liquid_mat.png",
+    "target": "src/main/resources/assets/academy/textures/items/matter_unit/phase_liquid_mat.png",
+    "sha256": "df1aa4f101cf99e10cbed3cd20ceec684a98d662548a201073e584727e976e59"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/tutorial/crafting_grid.png",
+    "target": "src/main/resources/assets/academy/textures/guis/tutorial/crafting_grid.png",
+    "sha256": "a9c5465c892b25991c14c738422b687a7b1181ec54a6aeb0dba85ca3f66e194b"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/tutorial/logo2.png",
+    "target": "src/main/resources/assets/academy/textures/guis/tutorial/logo2.png",
+    "sha256": "559be0b3d9c8dfeec232d3c838a04293960df528d5c874a4b55de3eaaab05aef"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/tutorial/logo0.png",
+    "target": "src/main/resources/assets/academy/textures/guis/tutorial/logo0.png",
+    "sha256": "af6e9cd947c41a671be7703ede17b5e911837c3f176a2da7e553fbd00ca1d0af"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/tutorial/logo1.png",
+    "target": "src/main/resources/assets/academy/textures/guis/tutorial/logo1.png",
+    "sha256": "89d99667ef5297bea8e4dcf83b0cbe42c2bee3b2e3c935bc0e1050857757ed37"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/tutorial/logo3.png",
+    "target": "src/main/resources/assets/academy/textures/guis/tutorial/logo3.png",
+    "sha256": "568d5717f194943cb8a506335f2cae8a98e446aac10f5e6b13c6473f8e00d8c2"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/tutorial/update_notify.png",
+    "target": "src/main/resources/assets/academy/textures/tutorial/update_notify.png",
+    "sha256": "e2191cdc58907e4e4971a8182f842e67c5d151a6aa3d115efa5daf3562779f05"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/tutorial/preset_selection_ui.png",
+    "target": "src/main/resources/assets/academy/textures/tutorial/preset_selection_ui.png",
+    "sha256": "55243381645be6b27f96be6a3da506605cb90e249a3b940c44aec4f61c34d183"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/tutorial/skill_tree_ui.png",
+    "target": "src/main/resources/assets/academy/textures/tutorial/skill_tree_ui.png",
+    "sha256": "07eb52c0485fb2e9dde72fbb890bf15b533b154fbf0b7b855603413d48c1e8ce"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/tutorial/wind_gen_ui.png",
+    "target": "src/main/resources/assets/academy/textures/tutorial/wind_gen_ui.png",
+    "sha256": "13d993cc86709a310bd9d5597a086fab0877847b18049d9c82e9b6eae884f75f"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/tutorial/ability_ui.png",
+    "target": "src/main/resources/assets/academy/textures/tutorial/ability_ui.png",
+    "sha256": "7cdaaf7f7b28ea79b9e0847bccb6ac6c442c693b42d2ad9b0a9e2e5e9c929aaa"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/tutorial/wind_gen.png",
+    "target": "src/main/resources/assets/academy/textures/tutorial/wind_gen.png",
+    "sha256": "c1ca598a26b1ddfd952b522c0fcfcb1dd56234845073e445633174d09d021111"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/tutorial/overload.png",
+    "target": "src/main/resources/assets/academy/textures/tutorial/overload.png",
+    "sha256": "8c8fe11d5ae33c3e363536f093ad244a4ebe28a65396b237cb84271a094eb2c0"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/glow_left.png",
+    "target": "src/main/resources/assets/academy/textures/guis/glow_left.png",
+    "sha256": "4cbc943c1bd2313013333051b7b44f8e97ade78506eb644280c07f7da2e85d60"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/glow_right.png",
+    "target": "src/main/resources/assets/academy/textures/guis/glow_right.png",
+    "sha256": "d29eb20f78d497e3d9919772a1a1753cfea28a93a729893c5afa03e6571eeaae"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/glow_up.png",
+    "target": "src/main/resources/assets/academy/textures/guis/glow_up.png",
+    "sha256": "c0589a4cf2d3efab107626b4aa22a84d91048e1c4aa202aef36d8708ee333973"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/glow_down.png",
+    "target": "src/main/resources/assets/academy/textures/guis/glow_down.png",
+    "sha256": "60cab181ffc83474f8e6efac80dad15f098f6984a58de642813be932527cd35a"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/glow_ru.png",
+    "target": "src/main/resources/assets/academy/textures/guis/glow_ru.png",
+    "sha256": "29ae09626218fbc15e850e3ff0f80cadfe61bf47c84b27f883e9d30771baaa08"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/glow_rd.png",
+    "target": "src/main/resources/assets/academy/textures/guis/glow_rd.png",
+    "sha256": "8dc872facf6ec7bca99289c1f56a8c05d2ead09e256570c3a19a1b9a2f7c71cb"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/glow_lu.png",
+    "target": "src/main/resources/assets/academy/textures/guis/glow_lu.png",
+    "sha256": "4190519c2905ff65fe41af90ebc17a30a5eeb97d9a1cfd3147f3202a831f4cdf"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/glow_ld.png",
+    "target": "src/main/resources/assets/academy/textures/guis/glow_ld.png",
+    "sha256": "bb4ec49f0c37bf6481d0864b83a87c70e8a21cd0313a8b93eb069976dadc164a"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/blocks/developer_advanced.png",
+    "target": "src/main/resources/assets/academy/textures/blocks/developer_advanced.png",
+    "sha256": "57becb5864bab28ec5a7083653b04ceaf55fdcfeaff1d49801ca4af5b4d71b0c"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/blocks/developer_normal.png",
+    "target": "src/main/resources/assets/academy/textures/blocks/developer_normal.png",
+    "sha256": "3ae44b1cf4b7b972333fc7140d24afaca61a92bbeabc4f4fbec641c90b9bda72"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/blocks/imag_silicon_ore.png",
+    "target": "src/main/resources/assets/academy/textures/blocks/imag_silicon_ore.png",
+    "sha256": "fb4b19bda86bd95fabd30078ee4027c1fc48a07a0c7f9ab2b550673d6777a504"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/blocks/machine_frame.png",
+    "target": "src/main/resources/assets/academy/textures/blocks/machine_frame.png",
+    "sha256": "4163cffdeb85459b87578e3ea61fe2fb216cbd81cbf5e9cc567008e8e52113a2"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/blocks/metal_former_front.png",
+    "target": "src/main/resources/assets/academy/textures/blocks/metal_former_front.png",
+    "sha256": "4e1be0b843673894d1a361a80e4dd7b1f88acf7819c17b709a603f1517284432"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/blocks/phase_generator.png",
+    "target": "src/main/resources/assets/academy/textures/blocks/phase_generator.png",
+    "sha256": "d55d527d5bd50713daaf635f2c9282bd0bad92606ad45bc7f0911b29b148184c"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/blocks/solar_gen.png",
+    "target": "src/main/resources/assets/academy/textures/blocks/solar_gen.png",
+    "sha256": "915d24bcbd0fd4d09e3b0530b6ca0c5976574a64ba1d022417e39045e6cb9633"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/blocks/windgen_base.png",
+    "target": "src/main/resources/assets/academy/textures/blocks/windgen_base.png",
+    "sha256": "64d98dc8aa32d0e2a6b7419ea37691b94f44108c897da353e7fd7ffe8dd85e4a"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/blocks/windgen_main.png",
+    "target": "src/main/resources/assets/academy/textures/blocks/windgen_main.png",
+    "sha256": "ebb3fdc4f2f836af4d4494d3b6ea20a432effc7695df0970dae608d9707d39bd"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/blocks/windgen_pillar.png",
+    "target": "src/main/resources/assets/academy/textures/blocks/windgen_pillar.png",
+    "sha256": "2642fbc3af572225b5627c35e74828b4bc4379b9d82ec5786c2a48fd5e353573"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/items/brain_component.png",
+    "target": "src/main/resources/assets/academy/textures/items/brain_component.png",
+    "sha256": "ff00606e048a0126764ae7426c13094c35a0bbeb6c17a79a6e2df5ccf9a9be47"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/items/calc_chip.png",
+    "target": "src/main/resources/assets/academy/textures/items/calc_chip.png",
+    "sha256": "c89fc1eb50401bbb0cf6e2e4330f7a98a5e26b8619eeb743d53df906b9928fcf"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/items/constraint_ingot.png",
+    "target": "src/main/resources/assets/academy/textures/items/constraint_ingot.png",
+    "sha256": "35b73a7c525415eebea67d0e5eca8b920e811866d8fafe2dedacb6c3fa793f40"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/items/constraint_plate.png",
+    "target": "src/main/resources/assets/academy/textures/items/constraint_plate.png",
+    "sha256": "1872a62b9f5b5fbda4a4643c560269ac3858affa8ca536b5ff276c0147625efa"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/items/crystal_low.png",
+    "target": "src/main/resources/assets/academy/textures/items/crystal_low.png",
+    "sha256": "7cbdc3a702aaf3ef6123d87473637322bfb5403d2d0a6b0065e9f73e38c125fa"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/items/crystal_normal.png",
+    "target": "src/main/resources/assets/academy/textures/items/crystal_normal.png",
+    "sha256": "15bd3d51eb8e0d7aec3207d20652d8280367e4f6518a37208794b36202a44bad"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/items/crystal_pure.png",
+    "target": "src/main/resources/assets/academy/textures/items/crystal_pure.png",
+    "sha256": "365dbb2511b19898467bd72ebc2d2665ed80c927aa7d541ee46b4b078de045a2"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/items/data_chip.png",
+    "target": "src/main/resources/assets/academy/textures/items/data_chip.png",
+    "sha256": "275900c15cdcafa24d80a5d90793f5adfaaacc2fa3fb2c2701ba2b34b92d8417"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/items/developer_portable_full.png",
+    "target": "src/main/resources/assets/academy/textures/items/developer_portable_full.png",
+    "sha256": "2f8aadfd137b19e62d1b84da54298b8f366309c92e25ab99efd83950d2d5422c"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/items/energy_convert_component.png",
+    "target": "src/main/resources/assets/academy/textures/items/energy_convert_component.png",
+    "sha256": "0dd33c2544ce09d452c3412c30f3fd9c6780938fd25343479f23d61d603f99ba"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/items/imag_silicon_ingot.png",
+    "target": "src/main/resources/assets/academy/textures/items/imag_silicon_ingot.png",
+    "sha256": "d53edc0bc39a7dc47a7265898e4580db01f89aeafcc9f1d96937b34ca9fb434f"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/items/imag_silicon_piece.png",
+    "target": "src/main/resources/assets/academy/textures/items/imag_silicon_piece.png",
+    "sha256": "25ec75b6a8b1e330f5b94a6fea0d3abc02e943bb389941de163c46330dc7d99f"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/items/info_component.png",
+    "target": "src/main/resources/assets/academy/textures/items/info_component.png",
+    "sha256": "001f02b2cc268814572d01b84b13d8818bcf399f5583df2aedec531c28276bb4"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/items/matrix_core_0.png",
+    "target": "src/main/resources/assets/academy/textures/items/matrix_core_0.png",
+    "sha256": "0cfd06e3afca7a8a8a5c89896243fd7879bfd54b08f84da813d380c5815f211c"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/items/matter_unit.png",
+    "target": "src/main/resources/assets/academy/textures/items/matter_unit.png",
+    "sha256": "6bdeae220df1685c594d4466706d0377b987a6376b20471e7d036f9feae090a9"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/items/reinforced_iron_plate.png",
+    "target": "src/main/resources/assets/academy/textures/items/reinforced_iron_plate.png",
+    "sha256": "6e15b792921fd37889d1703eadd0a1385af2c678b2ce65cefcf9b86048b41c7e"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/items/reso_crystal.png",
+    "target": "src/main/resources/assets/academy/textures/items/reso_crystal.png",
+    "sha256": "d3389404b13b0f26cb0284d217c3de2e2b13add5e18815ae658c87520c59bb84"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/items/resonance_component.png",
+    "target": "src/main/resources/assets/academy/textures/items/resonance_component.png",
+    "sha256": "14fb4dbc9315adf99880fa293d6768000cb30f4b188ef85df53a9acadfefb23a"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/items/wafer.png",
+    "target": "src/main/resources/assets/academy/textures/items/wafer.png",
+    "sha256": "40d5403a9b1151b5910208d814f42cf32250cb44943386b7d9c317a6bb85a95a"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/notification/back.png",
+    "target": "src/main/resources/assets/academy/textures/guis/notification/back.png",
+    "sha256": "8fc281439ba644d61eb28f8bdafc79f0cece5d1c521301786f0f1658fb127a14"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/icons/icon_former_etch.png",
+    "target": "src/main/resources/assets/academy/textures/guis/icons/icon_former_etch.png",
+    "sha256": "c08982634b28400fcaa68c1045063e74fcaec4512a097ba273ff715f050782ca"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/icons/icon_former_refine.png",
+    "target": "src/main/resources/assets/academy/textures/guis/icons/icon_former_refine.png",
+    "sha256": "3b8f872385901abd3d64a1599418f8f9b958c1dacb904acf5a2d4349b2fe643c"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/icons/icon_former_plate.png",
+    "target": "src/main/resources/assets/academy/textures/guis/icons/icon_former_plate.png",
+    "sha256": "a35f55791d5a922facd6cb5b38c3047d02f9ef814435e26682018a89df5703ff"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/icons/icon_former_incise.png",
+    "target": "src/main/resources/assets/academy/textures/guis/icons/icon_former_incise.png",
+    "sha256": "d2513040a30a9dde5f96fb704efccbc7bd03bface44c699f37d49ecc315d9128"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/guis/tutorial.xml",
+    "target": "src/main/resources/assets/academy/tutorials/source_layout/tutorial.xml",
+    "sha256": "1b2118f18c0eae10f788346325dbbc70f37c052e5c2adda59b43d52ad304071d"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/guis/tutorial_windows.xml",
+    "target": "src/main/resources/assets/academy/tutorials/source_layout/tutorial_windows.xml",
+    "sha256": "056f5487b4b0e824f0caec2c2c0431a706197324888c80bbf0074eb4663a6dab"
+  }
+]

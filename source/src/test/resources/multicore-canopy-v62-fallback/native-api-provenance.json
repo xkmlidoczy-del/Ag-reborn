@@ -1,0 +1,8 @@
+{
+  "method": "JDK21 javap; cached pinned NeoForge21.1.252 Minecraft1.21.1 and JOML1.10.5. Evidence of reviewed call signatures, not runtime host equivalence.",
+  "inputs": {
+    "build/moddev/artifacts/neoforge-21.1.252.jar": "5e3f933da54113ce5d24367e658806eee78da7ba971012ef3e1a03cb12ae0139",
+    ".gradle-user/caches/modules-2/files-2.1/org.joml/joml/1.10.5/22566d58af70ad3d72308bab63b8339906deb649/joml-1.10.5.jar": "cac9f22f83a7aa33eebda73c16ff5261e3cb4911b6bafcf4c79ea486099d0c9a"
+  },
+  "declarations_sha256": "ad64cb0a8fa1dddd037a16292f270264bf6ca93466593dec623260c853cc04f5"
+}

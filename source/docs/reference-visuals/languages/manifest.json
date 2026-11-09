@@ -1,0 +1,30 @@
+[
+  {
+    "source": "AcademyCraft1.0.7/assets/academy/lang/en_US.lang",
+    "sha256": "1bebd37b61e7e3fd7ba4af617a0a2deba588deb10c5abcfec71ca8ba404c42b6",
+    "keys": 470,
+    "output": "assets/academy/lang/en_us.json",
+    "numeric_printf_adapted": true
+  },
+  {
+    "source": "AcademyCraft1.0.7/assets/academy/lang/ja_JP.lang",
+    "sha256": "3ba5ff10c042aeed4773b4f30cfa3dce0cdd59a3d3a7a504dd3a630a0b679316",
+    "keys": 468,
+    "output": "assets/academy/lang/ja_jp.json",
+    "numeric_printf_adapted": true
+  },
+  {
+    "source": "AcademyCraft1.0.7/assets/academy/lang/zh_CN.lang",
+    "sha256": "40c35cd739abe858bb77b4b3df4b3a47b8ad117f0c1bb58dca938e9bb0fa700f",
+    "keys": 469,
+    "output": "assets/academy/lang/zh_cn.json",
+    "numeric_printf_adapted": true
+  },
+  {
+    "source": "AcademyCraft1.0.7/assets/academy/lang/zh_TW.lang",
+    "sha256": "4a2444fb6bfe5221fbc65d392aa68d7e291ec11338e837a6d67ead7dccfcbf54",
+    "keys": 468,
+    "output": "assets/academy/lang/zh_tw.json",
+    "numeric_printf_adapted": true
+  }
+]

@@ -1,0 +1,8 @@
+// Pure launch envelope and trails; no game, entity, native marker or render-thread dependency.
+tasks.register('railgunLaunchGeometryTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.RailgunLaunchGeometryRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'railgunLaunchGeometryTest' }

@@ -1,0 +1,2 @@
+package net.minecraft.entity.item;
+public final class EntityItem { public final double x,y,z;public final net.minecraft.world.World world;private final net.minecraft.item.ItemStack stack;public EntityItem(net.minecraft.world.World world,double x,double y,double z,net.minecraft.item.ItemStack stack){this.world=world;this.x=x;this.y=y;this.z=z;this.stack=stack;}public net.minecraft.item.ItemStack getEntityItem(){return stack;} }

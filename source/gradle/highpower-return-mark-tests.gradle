@@ -1,0 +1,11 @@
+// NEW322 pure economics/lifecycle fences and exact three-dimensional swept-body regressions.
+['highPowerReturnMarkRulesTest':'cn.academy.port.highpower.core.ReturnMarkRulesRegressionTest',
+ 'highPowerReturnMarkGeometryTest':'cn.academy.port.highpower.core.ReturnMarkGeometryRegressionTest'].each { taskName, className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+    }
+    tasks.named('check') { dependsOn taskName }
+}

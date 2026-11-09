@@ -1,0 +1,17 @@
+{
+  "parent": "academy:item/energy_unit_empty",
+  "overrides": [
+    {
+      "predicate": {
+        "academy:energy_unit_level": 1
+      },
+      "model": "academy:item/energy_unit_half"
+    },
+    {
+      "predicate": {
+        "academy:energy_unit_level": 2
+      },
+      "model": "academy:item/energy_unit_full"
+    }
+  ]
+}

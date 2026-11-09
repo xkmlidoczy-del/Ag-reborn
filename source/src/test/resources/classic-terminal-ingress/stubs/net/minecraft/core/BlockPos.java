@@ -1,0 +1,2 @@
+package net.minecraft.core;
+public record BlockPos(int x,int y,int z){public static BlockPos containing(net.minecraft.world.phys.Vec3 v){return new BlockPos((int)Math.floor(v.x),(int)Math.floor(v.y),(int)Math.floor(v.z));}public int getX(){return x;}public int getY(){return y;}public int getZ(){return z;}public long asLong(){return ((long)x&67108863L)<<38|((long)z&67108863L)<<12|((long)y&4095L);}}

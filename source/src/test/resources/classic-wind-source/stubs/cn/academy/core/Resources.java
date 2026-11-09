@@ -1,0 +1,1 @@
+package cn.academy.core;import net.minecraft.util.ResourceLocation;import net.minecraftforge.client.model.IModelCustom;public class Resources{public static ResourceLocation getTexture(String s){return new ResourceLocation(s);}public static IModelCustom getModel(String name){return ()->org.lwjgl.opengl.GL11.operations.add("mesh:"+name);}}

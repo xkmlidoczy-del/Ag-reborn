@@ -1,0 +1,26 @@
+{
+  "ClientResources.java": {
+    "canonical_path": "src/main/java/cn/academy/core/client/ClientResources.java",
+    "sha256": "4bb75d45b6c3ac5f0dcb5eae00638fe748d33ff36d392315ad7a8a9a55a9e352"
+  },
+  "BackgroundMask.java": {
+    "canonical_path": "src/main/java/cn/academy/ability/client/ui/BackgroundMask.java",
+    "sha256": "1e9986a65be3f4cdc4c30232a5063be335f8c8c9a4e0655d62fd834b74fb2b28"
+  },
+  "CatVecManip.scala": {
+    "canonical_path": "src/main/scala/cn/academy/vanilla/vecmanip/CatVecManip.scala",
+    "sha256": "2bf1907f5971692395a5556a927e08660f74dea45609459a42d13afab04daf45"
+  },
+  "README.md": {
+    "canonical_path": "README.md",
+    "sha256": "6666d51532b31b3f6c1506ad1855aa22241926ffcec9f452e64e5e54285f9794"
+  },
+  "GPLv3-LICENSE": {
+    "canonical_path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "NOTICE": {
+    "canonical_path": "stage notice",
+    "sha256": "56315189de82532056a477e26d3ebfcc79b6090c3fbd4c54d876f851895815e7"
+  }
+}

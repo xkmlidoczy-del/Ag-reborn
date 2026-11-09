@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:block",
+  "random_sequence": "academy:blocks/plaza_tile",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "academy:plaza_tile",
+          "functions": [
+            {
+              "function": "minecraft:explosion_decay"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

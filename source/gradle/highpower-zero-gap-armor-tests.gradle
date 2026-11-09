@@ -1,0 +1,29 @@
+// NEW252 foundation only; runtime enrollment is added after the resource gate passes.
+['zeroGapArmorSharesTest':'cn.academy.port.highpower.core.ZeroGapArmorSharesRegressionTest',
+ 'zeroGapArmorTimingTest':'cn.academy.port.highpower.core.ZeroGapArmorTimingRegressionTest',
+ 'zeroGapArmorGeometryTest':'cn.academy.port.highpower.core.ZeroGapArmorGeometryRegressionTest',
+ 'zeroGapArmorRulesTest':'cn.academy.port.highpower.core.ZeroGapArmorRulesRegressionTest',
+ 'zeroGapArmorEnhancedVisualTest':'cn.academy.port.client.ZeroGapArmorEnhancedMeshRegressionTest',
+ 'zeroGapArmorVisualTest':'cn.academy.port.client.ZeroGapArmorVisualRegressionTest'].each { taskName, className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+    }
+    tasks.named('check') { dependsOn taskName }
+}
+
+// Independent current-renderer evidence; historical geometry guards remain unchanged.
+tasks.register('zeroGapArmorFrozenFallbackTest', Exec) {
+    commandLine 'python3', 'scripts/verify-zero-gap-armor-v57-fallback.py',
+        '--java-home', System.getProperty('java.home'),
+        '--report', layout.buildDirectory.dir('reports/zero-gap-armor-v57-fallback-' + java.util.UUID.randomUUID()).get().asFile.absolutePath
+}
+tasks.named('check') { dependsOn 'zeroGapArmorFrozenFallbackTest' }
+// Explicit GPU diagnostic: optional host EGL availability is not a generic build prerequisite.
+tasks.register('zeroGapArmorMaterialGlTest', Exec) {
+    commandLine 'python3', 'scripts/verify-zero-gap-armor-material-gl.py',
+        '--java-home', System.getProperty('java.home'),
+        '--report', layout.buildDirectory.dir('reports/zero-gap-armor-material-gl-' + java.util.UUID.randomUUID()).get().asFile.absolutePath
+}

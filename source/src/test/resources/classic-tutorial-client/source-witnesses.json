@@ -1,0 +1,67 @@
+[
+  {
+    "fixture": "GuiTutorial.java.txt",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/misc/tutorial/client/GuiTutorial.java",
+    "sha256": "b8d3466d888b704a5a900a308a0187eed3860c03c961cf22a06e397118bef96b"
+  },
+  {
+    "fixture": "ViewGroups.java.txt",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/misc/tutorial/ViewGroups.java",
+    "sha256": "866ae977ef109721922ff9001d201fd6ff3c13d638bb5a69ea99d3baccfc6cda"
+  },
+  {
+    "fixture": "ViewGroup.java.txt",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/misc/tutorial/ViewGroup.java",
+    "sha256": "29d0a52b74e1f86ae3c56f7c2c398864f46d7afb4938dad94ffb49e51eb2fb18"
+  },
+  {
+    "fixture": "NotifyUI.java.txt",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/core/client/ui/NotifyUI.java",
+    "sha256": "728af5468e781913425647121c93f609fff704ea3f1e681c304c80888ee6e766"
+  },
+  {
+    "fixture": "ACMarkdownRenderer.scala.txt",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/misc/tutorial/client/ACMarkdownRenderer.scala",
+    "sha256": "da25889607bc8090e449fcd0970a1441cad7881a71c49e56d92dd78c0a8d5ac7"
+  },
+  {
+    "fixture": "MarkdownParser.scala.txt",
+    "source": ".reference/LambdaLib-1.2.3/src/main/scala/cn/lambdalib/util/markdown/MarkdownParser.scala",
+    "sha256": "40839077554d3cf5c021faef64cd1cdf9e9fd418125c36f3d63923ff32d772a5"
+  },
+  {
+    "fixture": "GLMarkdownRenderer.scala.txt",
+    "source": ".reference/LambdaLib-1.2.3/src/main/scala/cn/lambdalib/util/markdown/GLMarkdownRenderer.scala",
+    "sha256": "22dcd1ec0d9d8ad6cfb4fd101bc81a8a5c5f710d428f9ab32c52a703e0a90830"
+  },
+  {
+    "fixture": "Fragmentor.java.txt",
+    "source": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/client/font/Fragmentor.java",
+    "sha256": "7086f6713230d0bce433e1a7442886abb5786c5cb3f0433760eeafd3da928eee"
+  },
+  {
+    "fixture": "tutorial.xml",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/guis/tutorial.xml",
+    "sha256": "1b2118f18c0eae10f788346325dbbc70f37c052e5c2adda59b43d52ad304071d"
+  },
+  {
+    "fixture": "tutorial_windows.xml",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/guis/tutorial_windows.xml",
+    "sha256": "056f5487b4b0e824f0caec2c2c0431a706197324888c80bbf0074eb4663a6dab"
+  },
+  {
+    "fixture": "default.recipe.txt",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/recipes/default.recipe",
+    "sha256": "a9dc4aa3477ad246f7cb9bb6bea3c33e033aaa8431f3c8a03acaf0845374da1f"
+  },
+  {
+    "fixture": "RFSupport.java.txt",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/support/rf/RFSupport.java",
+    "sha256": "cf9d6f11afe77341868815c44f04a8c02869d9f9ff5a35edb031f313b92c4441"
+  },
+  {
+    "fixture": "ModuleCrafting.java.txt",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/ModuleCrafting.java",
+    "sha256": "f0ea3f22cc77815ecd0f4f6374d68ac0ca6334e720ee159d97aae0e3256a6b46"
+  }
+]

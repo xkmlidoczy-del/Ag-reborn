@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "scope": "Unchanged M41 CurrentCharging entry compiled against actual shared current native dependencies. Original ledger arithmetic is a separate proof; whole-M41 equivalence is not claimed.",
+  "original_zip_sha256": "8dd1dc1345cb687347d6a89abae5f30587a3dbd97a3dd31c7377da4e361c602b",
+  "member": "src/main/java/cn/academy/port/skill/CurrentCharging.java",
+  "member_sha256": "ea6c88aaa8a6abe6388c93053aa4315d0e839d94ad6e73c5f4278c5a1aaa108d",
+  "fixture": "original/CurrentCharging.java.txt",
+  "compiled_original_classes": [
+    "cn.academy.port.skill.CurrentCharging",
+    "cn.academy.port.skill.CurrentCharging$Hold"
+  ]
+}

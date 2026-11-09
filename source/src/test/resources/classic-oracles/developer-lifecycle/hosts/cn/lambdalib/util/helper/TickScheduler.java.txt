@@ -1,0 +1,2 @@
+/* Test-only lifecycle platform plumbing; business methods run unchanged originals. */
+package cn.lambdalib.util.helper;public class TickScheduler {public TickScheduler everyTick(){return this;}public TickScheduler every(int n){return this;}public TickScheduler atOnly(cpw.mods.fml.relauncher.Side side){return this;}public void run(Runnable r){}public void runTick(){}}

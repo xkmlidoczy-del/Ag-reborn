@@ -1,0 +1,1 @@
+package org.lwjgl.opengl;public final class GL20 {public static final int GL_LINK_STATUS=35714;public static boolean linked=true;public static int checks;public static int glGetProgrami(int program,int flag){if(flag!=GL_LINK_STATUS||program<=0)throw new AssertionError("invalid link query");checks++;return linked?1:0;}}

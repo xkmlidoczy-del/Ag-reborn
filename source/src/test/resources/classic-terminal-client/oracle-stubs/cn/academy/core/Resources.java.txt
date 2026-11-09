@@ -1,0 +1,1 @@
+package cn.academy.core; public class Resources{public static net.minecraft.util.ResourceLocation getTexture(String path){return new net.minecraft.util.ResourceLocation(path);}public static net.minecraftforge.client.model.IModelCustom getModel(String path){return ()->org.lwjgl.opengl.GL11.capture();}}

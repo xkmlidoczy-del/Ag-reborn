@@ -1,0 +1,18 @@
+// NEW133 bounded owned native ItemEntity pull and exact injected merge-seam guards.
+['highPowerMagneticItemPullTest':'cn.academy.port.highpower.MagneticItemPullRegressionTest',
+ 'highPowerNativeItemMergeGuardTest':'cn.academy.port.highpower.NativeItemMergeGuardRegressionTest'].each { taskName, className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+    }
+    tasks.named('check') { dependsOn taskName }
+}
+tasks.register('highPowerMagneticItemPullSelectionTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.MagneticItemPullSelectionRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerMagneticItemPullSelectionTest' }

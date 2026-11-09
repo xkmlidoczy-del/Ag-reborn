@@ -1,0 +1,64 @@
+/* Original CPData client/server branches and listener execute unchanged against actual modern transport/API. GPLv3. */
+package cn.academy.port.core;
+import cn.academy.ability.api.*;
+import cn.academy.ability.api.data.*;
+import cn.academy.ability.api.event.*;
+import cn.academy.port.SkillCatalog;
+import cn.academy.port.api.AbilityActivationLifecycle;
+import cn.lambdalib.util.datapart.EntityData;
+import cn.lambdalib.s11n.network.NetworkMessage;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.MinecraftForge;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.bus.api.EventPriority;
+import java.lang.reflect.*;
+import java.util.*;
+import java.util.function.Consumer;
+public final class ActivationTransportSourceOracleHarness {
+ static int checks;
+ static void check(boolean value,String why){checks++;if(!value)throw new AssertionError(why);}
+ static Field field(Class<?> type,String name)throws Exception{var field=type.getDeclaredField(name);field.setAccessible(true);return field;}
+ static String oldState(Original o)throws Exception{return o.ability.hasCategory()+":"+field(CPData.class,"activated").getBoolean(o.cp)+":"+o.cp.getCP()+":"+o.cp.getOverload()+":"+o.cp.getRawMaxCP()+":"+o.cp.getRawMaxOverload()+":"+o.cp.getAddMaxCP()+":"+o.cp.getAddMaxOverload()+":"+field(CPData.class,"overloadFine").getBoolean(o.cp)+":"+field(CPData.class,"interfering").getBoolean(o.cp)+":"+field(CPData.class,"untilRecover").getInt(o.cp)+":"+field(CPData.class,"untilOverloadRecover").getInt(o.cp);}
+ static String modernState(AbilityProgress s){return s.hasCategory()+":"+s.activated+":"+(float)s.cp+":"+(float)s.overload+":"+(float)s.baseCp()+":"+(float)s.baseOverload()+":"+(float)s.extraCp+":"+(float)s.extraOverload+":"+s.overloadFine+":"+s.interfering+":"+s.cpDelay+":"+s.overloadDelay;}
+ static Category cat(String name){return CategoryManager.INSTANCE.categories.stream().filter(c->c.name.equals(name)).findFirst().orElseThrow();}
+ static final class Original {
+  final EntityPlayer player=new EntityPlayer();final AbilityData ability=new AbilityData();final CPData cp=new CPData();
+  Original(String category,boolean client)throws Exception{EntityData.bind(player,ability,cp,new PresetData(),new cn.academy.ability.api.cooldown.CooldownData());cp.wake();if(!category.isEmpty()){ability.setCategory(cat(category));ability.setLevel(3);}cp.client=client;for(var value:Map.<String,Object>of("curCP",713.125f,"curOverload",17.75f,"maxCP",9999f,"maxOverload",444f,"addMaxCP",100.125f,"addMaxOverload",33.25f,"overloadFine",false,"interfering",true,"untilRecover",13,"untilOverloadRecover",21).entrySet())field(CPData.class,value.getKey()).set(cp,value.getValue());}
+ }
+ static final class Pair implements AutoCloseable {
+  final Original server,client;final AbilityProgress modernServer=new AbilityProgress(),modernClient=new AbilityProgress();
+  final List<String> originalPhases=new ArrayList<>(),modernPhases=new ArrayList<>();final List<Boolean> modernRequests=new ArrayList<>(),modernRemote=new ArrayList<>();boolean recording,nested;
+  final List<Object> listeners=new ArrayList<>();
+  Pair(String category)throws Exception{
+   MinecraftForge.EVENT_BUS.high=e->{};MinecraftForge.EVENT_BUS.low=e->{};server=new Original(category,false);client=new Original(category,true);
+   for(var s:List.of(modernServer,modernClient)){if(!category.isEmpty()){s.changeCategoryClassic(category);s.setLevel(3);}s.restoreCalculatedMaxima(9999,444);s.cp=713.125f;s.overload=17.75f;s.extraCp=100.125f;s.extraOverload=33.25f;s.overloadFine=false;s.interfering=true;s.cpDelay=13;s.overloadDelay=21;}
+   MinecraftForge.EVENT_BUS.high=e->{try{originalPhase(e,"high");}catch(Exception x){throw new AssertionError(x);}};MinecraftForge.EVENT_BUS.low=e->{try{originalPhase(e,"low");}catch(Exception x){throw new AssertionError(x);}};
+   Consumer<cn.academy.port.api.AbilityActivateEvent> activeHigh=e->modernPhase(e.state,true,"high");Consumer<cn.academy.port.api.AbilityActivateEvent> activeLow=e->modernPhase(e.state,true,"low");Consumer<cn.academy.port.api.AbilityDeactivateEvent> inactiveHigh=e->modernPhase(e.state,false,"high");Consumer<cn.academy.port.api.AbilityDeactivateEvent> inactiveLow=e->modernPhase(e.state,false,"low");
+   NeoForge.EVENT_BUS.addListener(EventPriority.HIGHEST,cn.academy.port.api.AbilityActivateEvent.class,activeHigh);NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST,cn.academy.port.api.AbilityActivateEvent.class,activeLow);NeoForge.EVENT_BUS.addListener(EventPriority.HIGHEST,cn.academy.port.api.AbilityDeactivateEvent.class,inactiveHigh);NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST,cn.academy.port.api.AbilityDeactivateEvent.class,inactiveLow);listeners.addAll(List.of(activeHigh,activeLow,inactiveHigh,inactiveLow));
+   modernServer.bindActivationEvents(value->ActivationTransport.dispatch(modernServer,value,active->AbilityActivationLifecycle.post((net.minecraft.world.entity.player.Player)null,modernServer,active),modernRemote::add));
+   NetworkMessage.clientSend=value->{try{if(recording)originalPhases.add("request:"+value+":"+oldState(client));}catch(Exception e){throw new AssertionError(e);}};
+   NetworkMessage.requested.clear();NetworkMessage.remote.clear();recording=true;
+  }
+  void originalPhase(Object event,String phase)throws Exception{
+   if(!recording||!(event instanceof AbilityActivateEvent||event instanceof AbilityDeactivateEvent))return;var value=(AbilityEvent)event;var actor=value.player==server.player?server:value.player==client.player?client:null;if(actor==null)return;boolean active=event instanceof AbilityActivateEvent;originalPhases.add((actor==server?"S":"C")+":"+active+":"+phase+":"+oldState(actor));if(nested&&actor==server&&active&&phase.equals("high"))server.cp.setActivateState(false);
+  }
+  void modernPhase(AbilityProgress state,boolean active,String phase){if(!recording||state!=modernServer&&state!=modernClient)return;modernPhases.add((state==modernServer?"S":"C")+":"+active+":"+phase+":"+modernState(state));if(nested&&state==modernServer&&active&&phase.equals("high"))modernServer.setActivateState(false);}
+  void predict(boolean value)throws Exception{client.cp.setActivateState(value);ActivationTransport.predict(modernClient,value,active->{modernRequests.add(active);modernPhases.add("request:"+active+":"+modernState(modernClient));});compare("prediction:"+value);check(originalPhases.stream().noneMatch(x->x.startsWith("C:")),"source prediction sends but does not post a local observer");}
+  void applyRequests()throws Exception{for(int index=0;index<NetworkMessage.requested.size();index++){server.cp.setActivateState(NetworkMessage.requested.get(index));modernServer.setActivateState(modernRequests.get(index));compare("server-request:"+index);}NetworkMessage.requested.clear();modernRequests.clear();}
+  void deliver()throws Exception{for(int index=0;index<NetworkMessage.remote.size();index++){NetworkMessage.sendToSelf(client.cp,"post_event",NetworkMessage.remote.get(index));AbilityActivationLifecycle.post((net.minecraft.world.entity.player.Player)null,modernClient,modernRemote.get(index));compare("observer-delivery:"+index);}}
+  void compare(String why)throws Exception{check(oldState(server).equals(modernState(modernServer)),why+" server state");check(oldState(client).equals(modernState(modernClient)),why+" client state");check(originalPhases.equals(modernPhases),why+" original/actual-native event and send phases ORIGINAL="+originalPhases+" MODERN="+modernPhases);check(NetworkMessage.requested.equals(modernRequests),why+" explicit desired request values");check(NetworkMessage.remote.equals(modernRemote),why+" post-self live remote arguments");}
+  public void close(){for(Object listener:listeners)NeoForge.EVENT_BUS.unregister(listener);recording=false;MinecraftForge.EVENT_BUS.high=e->{};MinecraftForge.EVENT_BUS.low=e->{};NetworkMessage.clientSend=value->{};}
+ }
+ public static void main(String[] args)throws Exception{
+  NeoForge.EVENT_BUS.start();CategoryManager.INSTANCE.categories.clear();for(String name:List.of("electromaster","meltdowner","teleporter","vecmanip")){var category=new Category(CategoryManager.INSTANCE.categories.size(),name);for(var skill:SkillCatalog.ALL)if(skill.category().equals(name))new Skill(category.skills.size(),skill.level(),category);CategoryManager.INSTANCE.categories.add(category);}
+  for(String category:List.of("electromaster","meltdowner","teleporter","vecmanip")){
+   try(var pair=new Pair(category)){pair.predict(true);check(pair.modernClient.activated&&!pair.modernServer.activated,"client raw prediction precedes server processing");pair.applyRequests();check(pair.modernRemote.equals(List.of(true)),"real server change sends one explicit observer");pair.deliver();check(pair.modernClient.activated,"observer delivery does not reassign raw flag");}
+   try(var pair=new Pair(category)){pair.predict(true);pair.predict(false);check(!pair.modernClient.activated&&NetworkMessage.requested.equals(List.of(true,false)),"rapid prediction retains latest local value and queues explicit desired states");pair.applyRequests();check(pair.modernRemote.equals(List.of(true,false)),"server executes explicit true/false instead of blindly toggling");pair.deliver();check(!pair.modernClient.activated,"late true observer cannot overwrite newer false prediction");}
+   try(var pair=new Pair(category)){pair.nested=true;pair.predict(true);pair.applyRequests();check(pair.modernRemote.equals(List.of(false,false))&&!pair.modernServer.activated,"nested activate→deactivate sends live false from inner and outer calls");pair.deliver();check(pair.modernClient.activated,"received false observers do not assign source-predicted true flag");long deactivations=pair.modernPhases.stream().filter(x->x.startsWith("C:false:high:")).count();check(deactivations==2,"duplicate explicit source observer messages each post a client event");}
+   try(var pair=new Pair(category)){pair.predict(false);pair.applyRequests();check(pair.modernRemote.isEmpty(),"same-state server request remains observer-silent");pair.predict(false);pair.applyRequests();check(pair.modernRemote.isEmpty(),"duplicate equal client request still sends but server emits nothing");}
+  }
+  try(var pair=new Pair("")){pair.predict(true);check(pair.modernClient.activated,"trusted source client setter has no category precondition");boolean oldRejected=false,newRejected=false;try{pair.server.cp.setActivateState(true);}catch(IllegalStateException e){oldRejected=true;}try{pair.modernServer.setActivateState(true);}catch(IllegalStateException e){newRejected=true;}check(oldRejected&&newRejected&&!pair.modernServer.activated&&pair.modernRemote.isEmpty(),"authoritative server category precondition remains before mutation/events");}
+  for(String value:List.of("","TRUE","False"," true","false ","1","0","null"))check(ActivationTransport.requested(value)==null,"wire parser rejects noncanonical desired boolean: "+value);check(ActivationTransport.requested(null)==null&&ActivationTransport.requested("true")==Boolean.TRUE&&ActivationTransport.requested("false")==Boolean.FALSE,"strict desired-boolean parser");
+  System.out.println("PASS "+checks+" unchanged-source prediction/explicit-request/self-before-live-remote/client-observer phase comparisons; no game or socket bootstrap");
+ }
+}

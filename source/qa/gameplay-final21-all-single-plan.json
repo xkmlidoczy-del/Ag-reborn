@@ -1,0 +1,3180 @@
+[
+  {
+    "name": "final21-main-em-damage",
+    "script": "gameplay-em-damage.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "arc_gen",
+      "thunder_bolt",
+      "railgun",
+      "thunder_clap",
+      "forked_arc",
+      "iron_sand_lance"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-em-damage",
+    "scriptSha256": "9cf684c10a8936d337ffeb9e6af49ac3afcf5a5563345ceef859ea0cb44afffb",
+    "nominalFixedTicks": 1089,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "arc_gen",
+        "setupStepIndex": 9,
+        "setupOperation": "gameem:setup:arc_gen",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 18,
+            "operation": "gameem:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=arc_gen "
+      },
+      {
+        "skill": "thunder_bolt",
+        "setupStepIndex": 22,
+        "setupOperation": "gameem:setup:thunder_bolt",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 31,
+            "operation": "gameem:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=thunder_bolt "
+      },
+      {
+        "skill": "railgun",
+        "setupStepIndex": 35,
+        "setupOperation": "gameem:setup:railgun",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 44,
+            "operation": "gameem:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=railgun "
+      },
+      {
+        "skill": "thunder_clap",
+        "setupStepIndex": 48,
+        "setupOperation": "gameem:setup:thunder_clap",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 57,
+            "operation": "gameem:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=thunder_clap "
+      },
+      {
+        "skill": "forked_arc",
+        "setupStepIndex": 61,
+        "setupOperation": "gameem:setup:forked_arc",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 70,
+            "operation": "gameem:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=forked_arc "
+      },
+      {
+        "skill": "iron_sand_lance",
+        "setupStepIndex": 74,
+        "setupOperation": "gameem:setup:iron_sand_lance",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 83,
+            "operation": "gameem:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=iron_sand_lance "
+      }
+    ]
+  },
+  {
+    "name": "final21-main-md-damage",
+    "script": "gameplay-md-damage.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "electron_bomb",
+      "meltdowner",
+      "ray_barrage",
+      "dual_point"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-md-damage",
+    "scriptSha256": "a0c3549e52e489bbc29cfeab6923ad19398ba6715d68b0730ac3b712c8fa9c32",
+    "nominalFixedTicks": 778,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "electron_bomb",
+        "setupStepIndex": 9,
+        "setupOperation": "gameem:setup:electron_bomb",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 18,
+            "operation": "gameem:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=electron_bomb "
+      },
+      {
+        "skill": "meltdowner",
+        "setupStepIndex": 22,
+        "setupOperation": "gameem:setup:meltdowner",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 31,
+            "operation": "gameem:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=meltdowner "
+      },
+      {
+        "skill": "ray_barrage",
+        "setupStepIndex": 35,
+        "setupOperation": "gameem:setup:ray_barrage",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 44,
+            "operation": "gameem:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=ray_barrage "
+      },
+      {
+        "skill": "dual_point",
+        "setupStepIndex": 48,
+        "setupOperation": "gameem:setup:dual_point",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 57,
+            "operation": "gameem:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=dual_point "
+      }
+    ]
+  },
+  {
+    "name": "final21-main-em-md-advanced-attacks",
+    "script": "gameplay-em-md-advanced-attacks.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "scatter_bomb",
+      "electron_missile",
+      "thunder_net",
+      "disintegration_sweep"
+    ],
+    "status": "planned_not_run",
+    "prerequisite": "Wait for current real-client diagnosis/fix closure and final production freeze; this plan is not acceptance.",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-em-md-advanced-attacks",
+    "scriptSha256": "4135cce3796d77a6f67a6e913cee7f4c0c72b900706949b481e09e19b2227b68",
+    "nominalFixedTicks": 952,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "scatter_bomb",
+        "setupStepIndex": 9,
+        "setupOperation": "gameem:setup:scatter_bomb",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 18,
+            "operation": "gameem:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=scatter_bomb "
+      },
+      {
+        "skill": "electron_missile",
+        "setupStepIndex": 22,
+        "setupOperation": "gameem:setup:electron_missile",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 31,
+            "operation": "gameem:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=electron_missile "
+      },
+      {
+        "skill": "thunder_net",
+        "setupStepIndex": 35,
+        "setupOperation": "gameem:setup:thunder_net",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 44,
+            "operation": "gameem:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=thunder_net "
+      },
+      {
+        "skill": "disintegration_sweep",
+        "setupStepIndex": 48,
+        "setupOperation": "gameem:setup:disintegration_sweep",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 57,
+            "operation": "gameem:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=disintegration_sweep "
+      }
+    ]
+  },
+  {
+    "name": "final21-main-em-md-utility",
+    "script": "gameplay-em-md-utility.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "charging",
+      "mine_detect",
+      "body_intensify",
+      "mine_ray_basic",
+      "mine_ray_expert",
+      "mine_ray_luck",
+      "beam_etching",
+      "point_meltdown",
+      "disintegration_sweep"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-em-md-utility",
+    "scriptSha256": "66e6cd793628bce3d452dddfe126d9c08e36afaf9868df21d8e97c2da736de0b",
+    "nominalFixedTicks": 1620,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "charging",
+        "setupStepIndex": 9,
+        "setupOperation": "gameem:utility:setup:charging",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 18,
+            "operation": "gameem:utility:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdUtility.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=charging "
+      },
+      {
+        "skill": "mine_detect",
+        "setupStepIndex": 22,
+        "setupOperation": "gameem:utility:setup:mine_detect",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 31,
+            "operation": "gameem:utility:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdUtility.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=mine_detect "
+      },
+      {
+        "skill": "body_intensify",
+        "setupStepIndex": 35,
+        "setupOperation": "gameem:utility:setup:body_intensify",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 44,
+            "operation": "gameem:utility:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdUtility.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=body_intensify "
+      },
+      {
+        "skill": "mine_ray_basic",
+        "setupStepIndex": 48,
+        "setupOperation": "gameem:utility:setup:mine_ray_basic",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 57,
+            "operation": "gameem:utility:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdUtility.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=mine_ray_basic "
+      },
+      {
+        "skill": "mine_ray_expert",
+        "setupStepIndex": 61,
+        "setupOperation": "gameem:utility:setup:mine_ray_expert",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 70,
+            "operation": "gameem:utility:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdUtility.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=mine_ray_expert "
+      },
+      {
+        "skill": "mine_ray_luck",
+        "setupStepIndex": 74,
+        "setupOperation": "gameem:utility:setup:mine_ray_luck",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 83,
+            "operation": "gameem:utility:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdUtility.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=mine_ray_luck "
+      },
+      {
+        "skill": "beam_etching",
+        "setupStepIndex": 87,
+        "setupOperation": "gameem:utility:setup:beam_etching",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 96,
+            "operation": "gameem:utility:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdUtility.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=beam_etching "
+      },
+      {
+        "skill": "point_meltdown",
+        "setupStepIndex": 100,
+        "setupOperation": "gameem:utility:setup:point_meltdown",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 109,
+            "operation": "gameem:utility:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdUtility.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=point_meltdown "
+      },
+      {
+        "skill": "disintegration_sweep",
+        "setupStepIndex": 113,
+        "setupOperation": "gameem:utility:setup:disintegration_sweep",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 125,
+            "operation": "gameem:utility:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdUtility.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=disintegration_sweep "
+      }
+    ]
+  },
+  {
+    "name": "final21-main-em-md-motion-basic",
+    "script": "gameplay-em-md-motion-basic.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "mag_movement",
+      "polarity_tether",
+      "jet_engine"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-em-md-motion-basic",
+    "scriptSha256": "3d72c71007f16695be1fcdc98042c56c9bf4e1d0fbe5bd175385464c94059f7d",
+    "nominalFixedTicks": 665,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "mag_movement",
+        "setupStepIndex": 12,
+        "setupOperation": "gameem:motion:setup:mag_movement",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 21,
+            "operation": "gameem:motion:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdMotion.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=mag_movement "
+      },
+      {
+        "skill": "polarity_tether",
+        "setupStepIndex": 24,
+        "setupOperation": "gameem:motion:setup:polarity_tether",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 37,
+            "operation": "gameem:motion:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdMotion.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=polarity_tether "
+      },
+      {
+        "skill": "jet_engine",
+        "setupStepIndex": 44,
+        "setupOperation": "gameem:motion:setup:jet_engine",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 53,
+            "operation": "gameem:motion:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdMotion.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=jet_engine "
+      }
+    ]
+  },
+  {
+    "name": "final21-main-em-md-motion-air",
+    "script": "gameplay-em-md-motion-air.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "beam_step",
+      "reverse_jet_brake"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-em-md-motion-air",
+    "scriptSha256": "6dd1c53bd833f7819ee5ec1cc5c63e976dadb1d0cf1f2a1a98e9eca1ec5b7d2c",
+    "nominalFixedTicks": 442,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "beam_step",
+        "setupStepIndex": 12,
+        "setupOperation": "gameem:motion:setup:beam_step",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 35,
+            "operation": "gameem:motion:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdMotion.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=beam_step "
+      },
+      {
+        "skill": "reverse_jet_brake",
+        "setupStepIndex": 38,
+        "setupOperation": "gameem:motion:setup:reverse_jet_brake",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 45,
+            "operation": "gameem:motion:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdMotion.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=reverse_jet_brake "
+      }
+    ]
+  },
+  {
+    "name": "final21-main-final-magnetic-bracer",
+    "script": "gameplay-final-magnetic-bracer.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "magnetic_bracer"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-final-magnetic-bracer",
+    "scriptSha256": "c53a5ad6268c65dcd77b333c0b45e295fb0cc93c06a66a11a0fa6ce336496a60",
+    "nominalFixedTicks": 407,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "magnetic_bracer",
+        "setupStepIndex": 9,
+        "setupOperation": "gameem:defense:setup:magnetic_bracer",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 18,
+            "operation": "gameem:defense:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdDefense.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=magnetic_bracer "
+      }
+    ]
+  },
+  {
+    "name": "final21-main-em-md-retry-charge_decoy",
+    "script": "gameplay-em-md-retry-charge_decoy.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "charge_decoy"
+    ],
+    "status": "planned_not_run",
+    "fixture_note": "Use corrected decoy aim + decoy-placed, not obsolete combined defense-em aim.",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-em-md-retry-charge_decoy",
+    "scriptSha256": "0278140456ea55510f95841a296bd008effef488b330ab98a5c159b57e541099",
+    "nominalFixedTicks": 410,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "charge_decoy",
+        "setupStepIndex": 9,
+        "setupOperation": "gameem:defense:setup:charge_decoy",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 21,
+            "operation": "gameem:defense:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdDefense.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=charge_decoy "
+      }
+    ]
+  },
+  {
+    "name": "preflight21-potential-original",
+    "script": "gameplay-final-em-defense-rest.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "potential_buffer",
+      "magnetic_domain"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "fixture_note": "Exact independent potential-buffer/domain flows; grounding_return is exclusively the real two-client arc_gen case in gameplay-final-dual-manifest.json.",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-em-defense-rest",
+    "scriptSha256": "40ab496bd5f87fab579ca23ad4a97954cda35affcc7ea371143839df25b84a4e",
+    "nominalFixedTicks": 787,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "potential_buffer",
+        "setupStepIndex": 10,
+        "setupOperation": "gameem:defense:setup:potential_buffer",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 21,
+            "operation": "gameem:defense:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdDefense.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=potential_buffer "
+      },
+      {
+        "skill": "magnetic_domain",
+        "setupStepIndex": 39,
+        "setupOperation": "gameem:defense:setup:magnetic_domain",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 54,
+            "operation": "gameem:defense:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdDefense.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=magnetic_domain "
+      }
+    ],
+    "evidenceReuseNote": "Use only after actual exit0/QA_DONE of this full original preflight21 script, with matching frozen production/QA/resources/mod snapshots. This is one actual run, not counted twice."
+  },
+  {
+    "name": "final21-main-em-md-defense-md-core",
+    "script": "gameplay-em-md-defense-md-core.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "light_shield",
+      "thermal_shell"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-em-md-defense-md-core",
+    "scriptSha256": "a14a79f6dedc548f38c08b0429a67b94869ba913559f174bc4fc1f091623ff25",
+    "nominalFixedTicks": 550,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "light_shield",
+        "setupStepIndex": 9,
+        "setupOperation": "gameem:defense:setup:light_shield",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 18,
+            "operation": "gameem:defense:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdDefense.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=light_shield "
+      },
+      {
+        "skill": "thermal_shell",
+        "setupStepIndex": 23,
+        "setupOperation": "gameem:defense:setup:thermal_shell",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 34,
+            "operation": "gameem:defense:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdDefense.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=thermal_shell "
+      }
+    ]
+  },
+  {
+    "name": "final21-main-em-md-defense-scatter_plates",
+    "script": "gameplay-em-md-defense-scatter_plates.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "scatter_plates"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-em-md-defense-scatter_plates",
+    "scriptSha256": "bc06e51e5c4ad4a0b4a93197bff34e4d8b8760a82c80bfb2f5c78e0f0f45667b",
+    "nominalFixedTicks": 425,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "scatter_plates",
+        "setupStepIndex": 9,
+        "setupOperation": "gameem:defense:setup:scatter_plates",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 20,
+            "operation": "gameem:defense:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdDefense.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=scatter_plates "
+      }
+    ]
+  },
+  {
+    "name": "final21-main-em-md-defense-directional_dissipation_curtain",
+    "script": "gameplay-em-md-defense-directional_dissipation_curtain.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "directional_dissipation_curtain"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-em-md-defense-directional_dissipation_curtain",
+    "scriptSha256": "c535abc8c3c9ffe0d4bfc7b36258f0373a9c684f940b6e11b977a0eb83fb7c04",
+    "nominalFixedTicks": 407,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "directional_dissipation_curtain",
+        "setupStepIndex": 9,
+        "setupOperation": "gameem:defense:setup:directional_dissipation_curtain",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 18,
+            "operation": "gameem:defense:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdDefense.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=directional_dissipation_curtain "
+      }
+    ]
+  },
+  {
+    "name": "final21-main-em-md-defense-zero_gap_armor",
+    "script": "gameplay-em-md-defense-zero_gap_armor.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "zero_gap_armor"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-em-md-defense-zero_gap_armor",
+    "scriptSha256": "d37583ae0b65b42f9ab2decaa509264e80f9086adf4b023e6226d55f797d3cee",
+    "nominalFixedTicks": 425,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "zero_gap_armor",
+        "setupStepIndex": 9,
+        "setupOperation": "gameem:defense:setup:zero_gap_armor",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 20,
+            "operation": "gameem:defense:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdDefense.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=zero_gap_armor "
+      }
+    ]
+  },
+  {
+    "name": "final21-main-em-md-multistage-attacks",
+    "script": "gameplay-em-md-multistage-attacks.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "rail_thunder_array",
+      "multicore_canopy"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-em-md-multistage-attacks",
+    "scriptSha256": "be2538de77a86c1b498632e81cc85ba33b06d68062f312a64934681fe2313b9b",
+    "nominalFixedTicks": 640,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "rail_thunder_array",
+        "setupStepIndex": 9,
+        "setupOperation": "gameem:setup:rail_thunder_array",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 34,
+            "operation": "gameem:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=rail_thunder_array "
+      },
+      {
+        "skill": "multicore_canopy",
+        "setupStepIndex": 37,
+        "setupOperation": "gameem:setup:multicore_canopy",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 50,
+            "operation": "gameem:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMd.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=multicore_canopy "
+      }
+    ]
+  },
+  {
+    "name": "final21-main-em-md-magnetic-block",
+    "script": "gameplay-em-md-magnetic-block.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "mag_manip"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-em-md-magnetic-block",
+    "scriptSha256": "3024e90b93c3ab276d464a0169a95ae6bb1e88d729104e8f4a2d8580e8765455",
+    "nominalFixedTicks": 406,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "mag_manip",
+        "setupStepIndex": 10,
+        "setupOperation": "gameem:construction:setup:mag_manip",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 20,
+            "operation": "gameem:construction:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdConstruction.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=mag_manip "
+      }
+    ]
+  },
+  {
+    "name": "final21-main-em-md-circuit-crossing",
+    "script": "gameplay-em-md-circuit-crossing.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "conductive_circuit"
+    ],
+    "status": "planned_not_run",
+    "prerequisite": "Wait for current real-client diagnosis/fix closure and final production freeze; this plan is not acceptance.",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-em-md-circuit-crossing",
+    "scriptSha256": "eb6b7f4fd4ef25ded2df463e51648eda4c8331343f341262272e9a591f752fe1",
+    "nominalFixedTicks": 422,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "conductive_circuit",
+        "setupStepIndex": 10,
+        "setupOperation": "gameem:construction:setup:conductive_circuit",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 31,
+            "operation": "gameem:construction:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdConstruction.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=conductive_circuit "
+      }
+    ]
+  },
+  {
+    "name": "final21-main-em-md-pulse-interference",
+    "script": "gameplay-em-md-pulse-interference.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "pulse_shield"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-em-md-pulse-interference",
+    "scriptSha256": "c71f13eb0345ae65d7e3e425069d215c63b0c872ae78b5b4603fc3b1c63420f0",
+    "nominalFixedTicks": 363,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "pulse_shield",
+        "setupStepIndex": 10,
+        "setupOperation": "gameem:construction:setup:pulse_shield",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 19,
+            "operation": "gameem:construction:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdConstruction.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=pulse_shield "
+      }
+    ]
+  },
+  {
+    "name": "final21-main-em-md-rail-route",
+    "script": "gameplay-em-md-rail-route.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "rail_relay"
+    ],
+    "status": "planned_not_run",
+    "prerequisite": "Wait for current real-client diagnosis/fix closure and final production freeze; this plan is not acceptance.",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-em-md-rail-route",
+    "scriptSha256": "32c2997c1ff122b0e2fe541343614f9fa308875291777f17d783da4e2e4485c4",
+    "nominalFixedTicks": 416,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "rail_relay",
+        "setupStepIndex": 10,
+        "setupOperation": "gameem:construction:setup:rail_relay",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 30,
+            "operation": "gameem:construction:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdConstruction.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=rail_relay "
+      }
+    ]
+  },
+  {
+    "name": "final21-main-em-md-folded_mirror_array",
+    "script": "gameplay-em-md-folded_mirror_array.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "folded_mirror_array"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-em-md-folded_mirror_array",
+    "scriptSha256": "cc7c975ef0be7c3dc76736c531dce02fb5c48a87fc6caeae9a96db8dc3d115c5",
+    "nominalFixedTicks": 401,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "folded_mirror_array",
+        "setupStepIndex": 10,
+        "setupOperation": "gameem:construction:setup:folded_mirror_array",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 28,
+            "operation": "gameem:construction:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdConstruction.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=folded_mirror_array "
+      }
+    ]
+  },
+  {
+    "name": "final21-main-em-md-scatter_locator_plate",
+    "script": "gameplay-em-md-scatter_locator_plate.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "scatter_locator_plate"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-em-md-scatter_locator_plate",
+    "scriptSha256": "7d5d0c37632bf485341718f2e26746ea344b9c4125362f2c94a5ea7c732a2a68",
+    "nominalFixedTicks": 401,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "scatter_locator_plate",
+        "setupStepIndex": 10,
+        "setupOperation": "gameem:construction:setup:scatter_locator_plate",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 28,
+            "operation": "gameem:construction:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdConstruction.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=scatter_locator_plate "
+      }
+    ]
+  },
+  {
+    "name": "final21-main-em-md-remote_scatter_relay",
+    "script": "gameplay-em-md-remote_scatter_relay.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "remote_scatter_relay"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-em-md-remote_scatter_relay",
+    "scriptSha256": "55e9775c244e04a1165a85ad5fc3555f43ce8b52505001217daaf2bc0ba0fcdc",
+    "nominalFixedTicks": 409,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "remote_scatter_relay",
+        "setupStepIndex": 10,
+        "setupOperation": "gameem:construction:setup:remote_scatter_relay",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 32,
+            "operation": "gameem:construction:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdConstruction.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=remote_scatter_relay "
+      }
+    ]
+  },
+  {
+    "name": "final21-main-em-md-particle-corridor",
+    "script": "gameplay-em-md-particle-corridor.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "particle_laminate"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-em-md-particle-corridor",
+    "scriptSha256": "0d0843416ea1bfee3413f462883b13f82a394169df43ed07a49d2f037bde13e6",
+    "nominalFixedTicks": 436,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "particle_laminate",
+        "setupStepIndex": 10,
+        "setupOperation": "gameem:construction:setup:particle_laminate",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 23,
+            "operation": "gameem:construction:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdConstruction.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=particle_laminate "
+      }
+    ]
+  },
+  {
+    "name": "final21-main-em-md-owned-item-pull",
+    "script": "gameplay-em-md-owned-item-pull.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "magnetic_item_pull"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-em-md-owned-item-pull",
+    "scriptSha256": "ea9324ea35100c7e2174e3ec69acc081565526fc8f807d95f1f7669df2cd51ac",
+    "nominalFixedTicks": 411,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "magnetic_item_pull",
+        "setupStepIndex": 10,
+        "setupOperation": "gameem:construction:setup:magnetic_item_pull",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 25,
+            "operation": "gameem:construction:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceEmMdConstruction.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=magnetic_item_pull "
+      }
+    ]
+  },
+  {
+    "name": "final21-main-ground-release",
+    "script": "codex-ground-release.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "magnetic_ground_step"
+    ],
+    "status": "planned_not_run",
+    "fixture_note": "Default-enabled real LV3 machine learning; no opt-in property.",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-ground-release",
+    "scriptSha256": "8f71afbbf9716e0560fa46802f522b5aa1eb6a041c36504866fdae80a9582f40",
+    "nominalFixedTicks": 997,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "magnetic_ground_step",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 20,
+            "operation": "live:learned:magnetic_ground_step"
+          },
+          {
+            "stepIndex": 24,
+            "operation": "live:ground:prepare"
+          },
+          {
+            "stepIndex": 33,
+            "operation": "live:ground:travel"
+          },
+          {
+            "stepIndex": 40,
+            "operation": "live:ground:stopped"
+          },
+          {
+            "stepIndex": 51,
+            "operation": "live:ground:travel"
+          },
+          {
+            "stepIndex": 59,
+            "operation": "live:ground:stopped"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceGroundStep.java",
+        "requiredLogMarkers": [
+          "QA_LEARNING_PASS id=magnetic_ground_step ",
+          "QA_GROUND_ADMISSION_PASS ",
+          "QA_GROUND_TRAVEL_PASS ",
+          "QA_GROUND_STOP_PASS "
+        ],
+        "requiredRepeatedMarkers": {
+          "QA_GROUND_TRAVEL_PASS ": 2,
+          "QA_GROUND_STOP_PASS ": 2
+        },
+        "effect": "Real LV3 machine learning, default admission without opt-in, actual native grass/stone additions and real release/GUI stop."
+      }
+    ]
+  },
+  {
+    "name": "final21-main-tp-vm-damage",
+    "script": "gameplay-tp-vm-damage.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "dir_shock",
+      "ground_shock",
+      "dir_blast",
+      "blood_retro",
+      "plasma_cannon",
+      "threatening_teleport",
+      "flesh_ripping",
+      "shift_tp",
+      "deflection_strike",
+      "shear_windblade",
+      "yaw_palm",
+      "zenith_vector_dominion"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-tp-vm-damage",
+    "scriptSha256": "670603d0bf7690aff82a5b8783987c7f3e643eacc09410574061238002971892",
+    "nominalFixedTicks": 2621,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "dir_shock",
+        "setupStepIndex": 12,
+        "setupOperation": "gametp:setup:dir_shock",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 23,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=dir_shock "
+      },
+      {
+        "skill": "ground_shock",
+        "setupStepIndex": 29,
+        "setupOperation": "gametp:setup:ground_shock",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 40,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=ground_shock "
+      },
+      {
+        "skill": "dir_blast",
+        "setupStepIndex": 46,
+        "setupOperation": "gametp:setup:dir_blast",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 57,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=dir_blast "
+      },
+      {
+        "skill": "blood_retro",
+        "setupStepIndex": 63,
+        "setupOperation": "gametp:setup:blood_retro",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 74,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=blood_retro "
+      },
+      {
+        "skill": "plasma_cannon",
+        "setupStepIndex": 80,
+        "setupOperation": "gametp:setup:plasma_cannon",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 91,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=plasma_cannon "
+      },
+      {
+        "skill": "threatening_teleport",
+        "setupStepIndex": 97,
+        "setupOperation": "gametp:setup:threatening_teleport",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 108,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=threatening_teleport "
+      },
+      {
+        "skill": "flesh_ripping",
+        "setupStepIndex": 114,
+        "setupOperation": "gametp:setup:flesh_ripping",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 125,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=flesh_ripping "
+      },
+      {
+        "skill": "shift_tp",
+        "setupStepIndex": 131,
+        "setupOperation": "gametp:setup:shift_tp",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 142,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=shift_tp "
+      },
+      {
+        "skill": "deflection_strike",
+        "setupStepIndex": 148,
+        "setupOperation": "gametp:setup:deflection_strike",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 159,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=deflection_strike "
+      },
+      {
+        "skill": "shear_windblade",
+        "setupStepIndex": 165,
+        "setupOperation": "gametp:setup:shear_windblade",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 176,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=shear_windblade "
+      },
+      {
+        "skill": "yaw_palm",
+        "setupStepIndex": 182,
+        "setupOperation": "gametp:setup:yaw_palm",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 193,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=yaw_palm "
+      },
+      {
+        "skill": "zenith_vector_dominion",
+        "setupStepIndex": 199,
+        "setupOperation": "gametp:setup:zenith_vector_dominion",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 210,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=zenith_vector_dominion "
+      }
+    ]
+  },
+  {
+    "name": "final21-main-tp-basic",
+    "script": "gameplay-tp-basic.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "phase_sidestep",
+      "safe_landing_probe",
+      "return_mark",
+      "emergency_return",
+      "phase_corridor",
+      "mark_teleport",
+      "penetrate_teleport"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-tp-basic",
+    "scriptSha256": "aab7613465ce46c4142af15101fa9a9fa66406e2db2d30f659ccdb0b76ef961d",
+    "nominalFixedTicks": 1492,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "phase_sidestep",
+        "setupStepIndex": 14,
+        "setupOperation": "gametp:setup:phase_sidestep",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 23,
+            "operation": "gametp:check:receipt-PhaseSidestep"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=phase_sidestep "
+      },
+      {
+        "skill": "safe_landing_probe",
+        "setupStepIndex": 31,
+        "setupOperation": "gametp:setup:safe_landing_probe",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 45,
+            "operation": "gametp:check:receipt-SafeLandingProbe"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=safe_landing_probe "
+      },
+      {
+        "skill": "return_mark",
+        "setupStepIndex": 53,
+        "setupOperation": "gametp:setup:return_mark",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 72,
+            "operation": "gametp:check:receipt-ReturnMark"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=return_mark "
+      },
+      {
+        "skill": "emergency_return",
+        "setupStepIndex": 80,
+        "setupOperation": "gametp:setup:emergency_return",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 99,
+            "operation": "gametp:check:receipt-EmergencyReturn"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=emergency_return "
+      },
+      {
+        "skill": "phase_corridor",
+        "setupStepIndex": 107,
+        "setupOperation": "gametp:setup:phase_corridor",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 117,
+            "operation": "gametp:check:movement"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=phase_corridor "
+      },
+      {
+        "skill": "mark_teleport",
+        "setupStepIndex": 125,
+        "setupOperation": "gametp:setup:mark_teleport",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 135,
+            "operation": "gametp:check:movement"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=mark_teleport "
+      },
+      {
+        "skill": "penetrate_teleport",
+        "setupStepIndex": 143,
+        "setupOperation": "gametp:setup:penetrate_teleport",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 154,
+            "operation": "gametp:check:movement"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=penetrate_teleport "
+      }
+    ]
+  },
+  {
+    "name": "preflight21-tp-complex-original",
+    "script": "gameplay-tp-complex.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "corner_exchange",
+      "cross_substitution",
+      "spatial_pincer_corridor",
+      "multidimensional_landing_array",
+      "displaced_projection",
+      "short_interception",
+      "recovery_mark",
+      "spatial_relay",
+      "flashing",
+      "vec_accel"
+    ],
+    "status": "planned_not_run",
+    "prerequisite": "Wait for current real-client diagnosis/fix closure and final production freeze; this plan is not acceptance.",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-tp-complex",
+    "scriptSha256": "74b0520ca8d63d4f2671c421dfed594eb19aeea2e5a4ed290e9be1ffbc74c0f6",
+    "nominalFixedTicks": 2920,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 1,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "corner_exchange",
+        "setupStepIndex": 16,
+        "setupOperation": "gametp:setup:corner_exchange",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 36,
+            "operation": "gametp:check:receipt-CornerExchange"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=corner_exchange "
+      },
+      {
+        "skill": "cross_substitution",
+        "setupStepIndex": 50,
+        "setupOperation": "gametp:setup:cross_substitution",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 73,
+            "operation": "gametp:check:volley-CrossSubstitution"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=cross_substitution "
+      },
+      {
+        "skill": "spatial_pincer_corridor",
+        "setupStepIndex": 82,
+        "setupOperation": "gametp:setup:spatial_pincer_corridor",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 114,
+            "operation": "gametp:check:volley-SpatialPincerCorridor"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=spatial_pincer_corridor "
+      },
+      {
+        "skill": "multidimensional_landing_array",
+        "setupStepIndex": 123,
+        "setupOperation": "gametp:setup:multidimensional_landing_array",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 170,
+            "operation": "gametp:check:volley-MultidimensionalLandingArray"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=multidimensional_landing_array "
+      },
+      {
+        "skill": "displaced_projection",
+        "setupStepIndex": 179,
+        "setupOperation": "gametp:setup:displaced_projection",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 192,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=displaced_projection "
+      },
+      {
+        "skill": "short_interception",
+        "setupStepIndex": 201,
+        "setupOperation": "gametp:setup:short_interception",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 218,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=short_interception "
+      },
+      {
+        "skill": "recovery_mark",
+        "setupStepIndex": 227,
+        "setupOperation": "gametp:setup:recovery_mark",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 249,
+            "operation": "gametp:check:recovery"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=recovery_mark "
+      },
+      {
+        "skill": "spatial_relay",
+        "setupStepIndex": 258,
+        "setupOperation": "gametp:setup:spatial_relay",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 286,
+            "operation": "gametp:check:item-relay"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=spatial_relay "
+      },
+      {
+        "skill": "flashing",
+        "setupStepIndex": 295,
+        "setupOperation": "gametp:setup:flashing",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 309,
+            "operation": "gametp:check:movement"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=flashing "
+      },
+      {
+        "skill": "vec_accel",
+        "setupStepIndex": 322,
+        "setupOperation": "gametp:setup:vec_accel",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 332,
+            "operation": "gametp:check:movement"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=vec_accel "
+      }
+    ],
+    "evidenceReuseNote": "Use only after actual exit0/QA_DONE of this full original preflight21 script, with matching frozen production/QA/resources/mod snapshots. This is one actual run, not counted twice."
+  },
+  {
+    "name": "final21-main-tp-gui-full",
+    "script": "gameplay-tp-gui-full.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "location_teleport",
+      "tactical_coordinate_formation"
+    ],
+    "status": "planned_not_run",
+    "prerequisite": "Wait for current real-client diagnosis/fix closure and final production freeze; this plan is not acceptance.",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-tp-gui-full",
+    "scriptSha256": "8eedf055fe5a9d782a056841a7939de5189688b74185d42aedd6236ee973a108",
+    "nominalFixedTicks": 800,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 4,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 4
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "location_teleport",
+        "setupStepIndex": 9,
+        "setupOperation": "gametp:setup:location_teleport",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 30,
+            "operation": "gametp:check:movement"
+          },
+          {
+            "stepIndex": 31,
+            "operation": "gametp:check:carried"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=location_teleport "
+      },
+      {
+        "skill": "tactical_coordinate_formation",
+        "setupStepIndex": 36,
+        "setupOperation": "gametp:setup:tactical_coordinate_formation",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 59,
+            "operation": "gametp:check:movement"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=tactical_coordinate_formation "
+      }
+    ]
+  },
+  {
+    "name": "final21-main-incident-bypass",
+    "script": "gameplay-incident-bypass.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "incident_bypass"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-incident-bypass",
+    "scriptSha256": "6ccf67db50d98ff8623d871356431f25c54f388d33f1ad89a830e3272311f0c1",
+    "nominalFixedTicks": 440,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "incident_bypass",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 16,
+            "operation": "gamevm:utility:incident:assert"
+          },
+          {
+            "stepIndex": 27,
+            "operation": "gamevm:utility:incident:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceIncidentBypass.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=incident_bypass ",
+        "requiredModeFields": [
+          "mode=arrow",
+          "mode=snowball"
+        ],
+        "effect": "Real enemy arrow reduction and real enemy snowball redirection; finite payment; no synthetic collision."
+      }
+    ]
+  },
+  {
+    "name": "final21-main-gameplay-vm-utility",
+    "script": "codex-gameplay-vm-utility.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "vec_deviation",
+      "vec_reflection",
+      "vector_parry",
+      "inertial_anchor",
+      "circulation_relief",
+      "autonomous_vector_circle",
+      "multi_axis_reflection",
+      "circulation_listening",
+      "trajectory_return",
+      "braking_touch",
+      "impulse_split"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-gameplay-vm-utility",
+    "scriptSha256": "9a5fddc44f917596acaf671693f986c4db6019ba2eec00827dac4d583e91c933",
+    "nominalFixedTicks": 1433,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "vec_deviation",
+        "setupStepIndex": 14,
+        "setupOperation": "gamevm:utility:setup:vec_deviation",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 22,
+            "operation": "gamevm:utility:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceVmUtility.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=vec_deviation "
+      },
+      {
+        "skill": "vec_reflection",
+        "setupStepIndex": 32,
+        "setupOperation": "gamevm:utility:setup:vec_reflection",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 40,
+            "operation": "gamevm:utility:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceVmUtility.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=vec_reflection "
+      },
+      {
+        "skill": "vector_parry",
+        "setupStepIndex": 50,
+        "setupOperation": "gamevm:utility:setup:vector_parry",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 56,
+            "operation": "gamevm:utility:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceVmUtility.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=vector_parry "
+      },
+      {
+        "skill": "inertial_anchor",
+        "setupStepIndex": 62,
+        "setupOperation": "gamevm:utility:setup:inertial_anchor",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 68,
+            "operation": "gamevm:utility:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceVmUtility.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=inertial_anchor "
+      },
+      {
+        "skill": "circulation_relief",
+        "setupStepIndex": 78,
+        "setupOperation": "gamevm:utility:setup:circulation_relief",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 84,
+            "operation": "gamevm:utility:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceVmUtility.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=circulation_relief "
+      },
+      {
+        "skill": "autonomous_vector_circle",
+        "setupStepIndex": 94,
+        "setupOperation": "gamevm:utility:setup:autonomous_vector_circle",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 100,
+            "operation": "gamevm:utility:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceVmUtility.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=autonomous_vector_circle "
+      },
+      {
+        "skill": "multi_axis_reflection",
+        "setupStepIndex": 110,
+        "setupOperation": "gamevm:utility:setup:multi_axis_reflection",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 117,
+            "operation": "gamevm:utility:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceVmUtility.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=multi_axis_reflection "
+      },
+      {
+        "skill": "circulation_listening",
+        "setupStepIndex": 127,
+        "setupOperation": "gamevm:utility:setup:circulation_listening",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 134,
+            "operation": "gamevm:utility:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceVmUtility.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=circulation_listening "
+      },
+      {
+        "skill": "trajectory_return",
+        "setupStepIndex": 144,
+        "setupOperation": "gamevm:utility:setup:trajectory_return",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 151,
+            "operation": "gamevm:utility:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceVmUtility.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=trajectory_return "
+      },
+      {
+        "skill": "braking_touch",
+        "setupStepIndex": 157,
+        "setupOperation": "gamevm:utility:setup:braking_touch",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 166,
+            "operation": "gamevm:utility:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceVmUtility.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=braking_touch "
+      },
+      {
+        "skill": "impulse_split",
+        "setupStepIndex": 172,
+        "setupOperation": "gamevm:utility:setup:impulse_split",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 185,
+            "operation": "gamevm:utility:assert"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceVmUtility.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=impulse_split "
+      }
+    ]
+  },
+  {
+    "name": "preflight21-hand-cage-storm",
+    "script": "gameplay-vm-cage-storm.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "vector_cage",
+      "storm_wing"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-vm-cage-storm",
+    "scriptSha256": "93bd32bf85b9232486662d39bcbfb3bc8444a95fcab9ebf17c604a6c8aab128f",
+    "nominalFixedTicks": 848,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "vector_cage",
+        "setupStepIndex": 10,
+        "setupOperation": "gametp:setup:vector_cage",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 25,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=vector_cage "
+      },
+      {
+        "skill": "storm_wing",
+        "setupStepIndex": 29,
+        "setupOperation": "gametp:setup:storm_wing",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 45,
+            "operation": "gametp:check:movement"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=storm_wing "
+      }
+    ],
+    "evidenceReuseNote": "Use only after actual exit0/QA_DONE of this full original preflight21 script, with matching frozen production/QA/resources/mod snapshots. This is one actual run, not counted twice."
+  },
+  {
+    "name": "final21-main-wind-sable-proof",
+    "script": "codex-wind-sable-proof.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "wind_pressure_lift"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-wind-sable-proof",
+    "scriptSha256": "e8305b23e0e1cd376555f0fcd0b594ab7865a99f1f8384e39845ef94b515b63d",
+    "nominalFixedTicks": 359,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "wind_pressure_lift",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 9,
+            "operation": "live:wind-diagnostic"
+          },
+          {
+            "stepIndex": 13,
+            "operation": "live:moved"
+          },
+          {
+            "stepIndex": 19,
+            "operation": "live:wind-diagnostic"
+          },
+          {
+            "stepIndex": 20,
+            "operation": "live:camera-neutral"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/LiveInputQa.java",
+        "requiredLogMarkers": [
+          "QA_LIVE_MOVEMENT_PASS from=",
+          "QA_LIVE_WIND_PREFLIGHT ",
+          "QA_LIVE_CAMERA_NEUTRAL_PASS skill=wind_pressure_lift"
+        ],
+        "requiredFields": [
+          "nativeReady=true"
+        ],
+        "effect": "Actual server displacement with strict native admission, real Sable compatibility and input release cleanup."
+      }
+    ]
+  },
+  {
+    "name": "final21-main-construct-full",
+    "script": "gameplay-construct-full.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "vector_construct"
+    ],
+    "status": "planned_not_run",
+    "props": "academy.qa.finalVisual=true",
+    "suiteGroup": "main",
+    "sourcePlan": "gameplay-final-plan.json",
+    "sourceCaseName": "final96-construct-full",
+    "scriptSha256": "df10d71a70bd1b586d263ff4bd460b6966a8819c4dec54bd94c17fcac1e6c33e",
+    "nominalFixedTicks": 572,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "mechanicalRoutes": [
+      {
+        "skill": "vector_construct",
+        "setupStepIndex": 6,
+        "setupOperation": "gametp:setup:vector_construct",
+        "strictMechanicalOperations": [
+          {
+            "stepIndex": 31,
+            "operation": "gametp:check:construct-land"
+          },
+          {
+            "stepIndex": 54,
+            "operation": "gametp:check:damage"
+          }
+        ],
+        "sourceHandler": "source/src/showcaseQa/java/cn/academy/port/qa/GameplayAcceptanceTpVm.java",
+        "requiredLogMarker": "QA_GAMEPLAY_PASS skill=vector_construct "
+      }
+    ]
+  },
+  {
+    "name": "final21-modes-em-input-modes",
+    "script": "gameplay-final-modes-group-em-input-modes.script",
+    "directory": "run-showcase-sable",
+    "sourceScripts": [
+      "gameplay-em-md-magnetic-block-far.script",
+      "gameplay-em-md-mode-arrow-separation.script",
+      "gameplay-em-md-mode-canopy-held.script",
+      "gameplay-em-md-mode-coin-qte.script",
+      "gameplay-em-md-mode-dual-secondary.script",
+      "gameplay-em-md-mode-net-hold.script",
+      "gameplay-em-md-mode-pulse-detect.script",
+      "gameplay-em-md-mode-rail-hold.script",
+      "gameplay-em-md-mode-semiconductor-fan.script",
+      "gameplay-em-md-mode-lance-orbit.script"
+    ],
+    "sourceCount": 10,
+    "status": "planned_not_run",
+    "props": "",
+    "independentRequired": false,
+    "suiteGroup": "modes",
+    "sourcePlan": "gameplay-final-modes-merged-plan.json",
+    "sourceCaseName": "final96-modegroup-em-input-modes",
+    "scriptSha256": "0cfd19bdac558725dd9608d1e627f49f4402f2967fa4854fc8ab9ca300976245",
+    "nominalFixedTicks": 2998,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  },
+  {
+    "name": "final21-modes-em-environment-planning",
+    "script": "gameplay-final-modes-group-em-environment-planning.script",
+    "directory": "run-showcase-sable",
+    "sourceScripts": [
+      "gameplay-em-md-env-arc-creeper.script",
+      "gameplay-em-md-env-arc-fire.script",
+      "gameplay-em-md-env-charging-block.script",
+      "gameplay-em-md-env-etch-batch.script",
+      "gameplay-em-md-env-etch-hard-refusal.script",
+      "gameplay-em-md-env-fork-single.script",
+      "gameplay-em-md-env-jet-collision.script",
+      "gameplay-em-md-env-laminate-low.script",
+      "gameplay-em-md-env-light-touch.script",
+      "gameplay-em-md-env-mag-entity.script",
+      "gameplay-em-md-env-melt-terrain.script",
+      "gameplay-em-md-env-point-hard-refusal.script",
+      "gameplay-em-md-env-point-no-tool.script",
+      "gameplay-em-md-env-melt-overcharge.script",
+      "gameplay-em-md-planning-folded_mirror_array.script",
+      "gameplay-em-md-planning-remote_scatter_relay.script",
+      "gameplay-em-md-planning-scatter_locator_plate.script"
+    ],
+    "sourceCount": 17,
+    "status": "planned_not_run",
+    "props": "",
+    "independentRequired": false,
+    "suiteGroup": "modes",
+    "sourcePlan": "gameplay-final-modes-merged-plan.json",
+    "sourceCaseName": "final96-modegroup-em-environment-planning",
+    "scriptSha256": "8dc7c8358c2d1308349abf575fabbca8fbf9b17213974ed2f875ea884f17f619",
+    "nominalFixedTicks": 5561,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  },
+  {
+    "name": "final21-modes-tp-alternatives",
+    "script": "gameplay-final-modes-group-tp-alternatives.script",
+    "directory": "run-showcase-sable",
+    "sourceScripts": [
+      "gameplay-tp-alt-corner_exchange.script",
+      "gameplay-tp-alt-cross_substitution.script",
+      "gameplay-tp-alt-multidimensional_landing_array.script",
+      "gameplay-tp-alt-phase_sidestep.script",
+      "gameplay-tp-alt-short_interception.script",
+      "gameplay-tp-alt-spatial_relay.script",
+      "gameplay-tp-emergency-auto.script"
+    ],
+    "sourceCount": 7,
+    "status": "planned_not_run",
+    "props": "",
+    "independentRequired": false,
+    "suiteGroup": "modes",
+    "sourcePlan": "gameplay-final-modes-merged-plan.json",
+    "sourceCaseName": "final96-modegroup-tp-alternatives",
+    "scriptSha256": "b73cc6edbfdc495860e3ce3c80abf2cee69354950782ea3b7bfa2578086e23a3",
+    "nominalFixedTicks": 2423,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 3,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  },
+  {
+    "name": "final21-modes-vm-alternatives-efficiency",
+    "script": "gameplay-final-modes-group-vm-alternatives-efficiency.script",
+    "directory": "run-showcase-sable",
+    "sourceScripts": [
+      "gameplay-vm-efficiency-circulation_relief.script",
+      "gameplay-vm-efficiency-inertial_anchor.script",
+      "gameplay-vm-efficiency-vector_parry.script",
+      "gameplay-vm-alt-anchor-fall.script",
+      "gameplay-vm-alt-braking-fall.script",
+      "gameplay-vm-alt-braking-snowball.script",
+      "gameplay-vm-alt-listening-runner.script",
+      "gameplay-vm-alt-parry-full.script",
+      "gameplay-vm-alt-parry-left.script",
+      "gameplay-vm-alt-parry-right.script",
+      "gameplay-vm-alt-trajectory-hammer.script",
+      "gameplay-vm-direction-modes.script",
+      "gameplay-vm-cage-low.script"
+    ],
+    "sourceCount": 13,
+    "status": "planned_not_run",
+    "props": "",
+    "independentRequired": false,
+    "suiteGroup": "modes",
+    "sourcePlan": "gameplay-final-modes-merged-plan.json",
+    "sourceCaseName": "final96-modegroup-vm-alternatives-efficiency",
+    "scriptSha256": "1e02503959dc0461a3d042be0eee86b0b7e3eebd8d32b42c386c794aeb7febcd",
+    "nominalFixedTicks": 3921,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  },
+  {
+    "name": "final21-modes-vm-native-late-window",
+    "script": "gameplay-final-modes-group-vm-native-late-window.script",
+    "directory": "run-showcase-sable",
+    "sourceScripts": [
+      "gameplay-vm-primary-impulse_split-late.script",
+      "gameplay-wind-sideways.script"
+    ],
+    "sourceCount": 2,
+    "status": "planned_not_run",
+    "props": "",
+    "independentRequired": false,
+    "suiteGroup": "modes",
+    "sourcePlan": "gameplay-final-modes-merged-plan.json",
+    "sourceCaseName": "final96-modegroup-vm-native-late-window",
+    "scriptSha256": "cd653f8a1f57dcfbbbcf9ff0e1a94b44f64ff29d166c71670e2a2ad26c87320b",
+    "nominalFixedTicks": 855,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  },
+  {
+    "name": "final21-modes-cross-dimension",
+    "script": "gameplay-final-modes-group-cross-dimension.script",
+    "directory": "run-showcase-sable",
+    "sourceScripts": [
+      "gameplay-location-cross-dimension.script"
+    ],
+    "sourceCount": 1,
+    "status": "planned_not_run",
+    "props": "",
+    "independentRequired": true,
+    "suiteGroup": "modes",
+    "sourcePlan": "gameplay-final-modes-merged-plan.json",
+    "sourceCaseName": "final96-modegroup-cross-dimension",
+    "scriptSha256": "75b56f6e12ad65fb846dd8917b39419acb08494e5415e97f4b0a1e077dccae00",
+    "nominalFixedTicks": 700,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 2
+    }
+  },
+  {
+    "name": "final21-modes-respawn",
+    "script": "gameplay-final-modes-group-respawn.script",
+    "directory": "run-showcase-sable",
+    "sourceScripts": [
+      "gameplay-vm-impulse-window-respawn-native-damage.script"
+    ],
+    "sourceCount": 1,
+    "status": "planned_not_run",
+    "props": "",
+    "independentRequired": true,
+    "suiteGroup": "modes",
+    "sourcePlan": "gameplay-final-modes-merged-plan.json",
+    "sourceCaseName": "final96-modegroup-respawn",
+    "scriptSha256": "ce2dcfd263b0366ab7ff7f93a19cb5e450a384e11775246759f5df500dd0600d",
+    "nominalFixedTicks": 493,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  },
+  {
+    "name": "final21-passives-training-electromaster",
+    "script": "gameplay-passives-training-electromaster.script",
+    "directory": "run-showcase-sable",
+    "category": "electromaster",
+    "records": [
+      "brain_course",
+      "brain_course_advanced",
+      "mind_course"
+    ],
+    "status": "planned_not_run",
+    "props": "",
+    "suiteGroup": "passives",
+    "sourcePlan": "gameplay-passives-plan.json",
+    "sourceCaseName": "final96-passives-training-electromaster",
+    "scriptSha256": "475af63586ec246aa50eef64ac48ce791c4f0c9007276d2a77f8babc6d5f798a",
+    "nominalFixedTicks": 1797,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  },
+  {
+    "name": "final21-passives-training-meltdowner",
+    "script": "gameplay-passives-training-meltdowner.script",
+    "directory": "run-showcase-sable",
+    "category": "meltdowner",
+    "records": [
+      "brain_course",
+      "brain_course_advanced",
+      "mind_course"
+    ],
+    "status": "planned_not_run",
+    "props": "",
+    "suiteGroup": "passives",
+    "sourcePlan": "gameplay-passives-plan.json",
+    "sourceCaseName": "final96-passives-training-meltdowner",
+    "scriptSha256": "6d9d5528a0fee3aedf145828c1e59c347aa50e96df95471ca9ebb02fe03e4b14",
+    "nominalFixedTicks": 1797,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  },
+  {
+    "name": "final21-passives-training-teleporter",
+    "script": "gameplay-passives-training-teleporter.script",
+    "directory": "run-showcase-sable",
+    "category": "teleporter",
+    "records": [
+      "brain_course",
+      "brain_course_advanced",
+      "mind_course"
+    ],
+    "status": "planned_not_run",
+    "props": "",
+    "suiteGroup": "passives",
+    "sourcePlan": "gameplay-passives-plan.json",
+    "sourceCaseName": "final96-passives-training-teleporter",
+    "scriptSha256": "28697d198b540399680b9ac6cbd53c8e6aaf712cdf0229d24b23a57424d34af3",
+    "nominalFixedTicks": 1797,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  },
+  {
+    "name": "final21-passives-training-vecmanip",
+    "script": "gameplay-passives-training-vecmanip.script",
+    "directory": "run-showcase-sable",
+    "category": "vecmanip",
+    "records": [
+      "brain_course",
+      "brain_course_advanced",
+      "mind_course"
+    ],
+    "status": "planned_not_run",
+    "props": "",
+    "suiteGroup": "passives",
+    "sourcePlan": "gameplay-passives-plan.json",
+    "sourceCaseName": "final96-passives-training-vecmanip",
+    "scriptSha256": "cd13de314e3b77a983312e48da330b4e73a733fba636cd71fe1155b5a1378f63",
+    "nominalFixedTicks": 1797,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  },
+  {
+    "name": "final21-passives-rad_intensify",
+    "script": "gameplay-passives-rad_intensify.script",
+    "directory": "run-showcase-sable",
+    "category": "meltdowner",
+    "records": [
+      "rad_intensify"
+    ],
+    "status": "planned_not_run",
+    "props": "",
+    "suiteGroup": "passives",
+    "sourcePlan": "gameplay-passives-plan.json",
+    "sourceCaseName": "final96-passives-rad_intensify",
+    "scriptSha256": "1ba30d2d447aa6e4b1ced3aa2502fdcc9799a42af434b87b42453744849af5be",
+    "nominalFixedTicks": 950,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  },
+  {
+    "name": "final21-passives-dim_folding_theorem",
+    "script": "gameplay-passives-dim_folding_theorem.script",
+    "directory": "run-showcase-sable",
+    "category": "teleporter",
+    "records": [
+      "dim_folding_theorem"
+    ],
+    "random_boundary": "96 finite real casts; no random seed override; absence of required observed critical remains failure",
+    "status": "planned_not_run",
+    "props": "",
+    "suiteGroup": "passives",
+    "sourcePlan": "gameplay-passives-plan.json",
+    "sourceCaseName": "final96-passives-dim_folding_theorem",
+    "scriptSha256": "dac9e4ea6829a5338699a12c4ef0063136c512fc2b1f9e4f03a1f48ca6ede0d4",
+    "nominalFixedTicks": 6054,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  },
+  {
+    "name": "final21-passives-space_fluct",
+    "script": "gameplay-passives-space_fluct.script",
+    "directory": "run-showcase-sable",
+    "category": "teleporter",
+    "records": [
+      "space_fluct"
+    ],
+    "random_boundary": "96 finite real casts; no random seed override; absence of required observed critical remains failure",
+    "status": "planned_not_run",
+    "props": "",
+    "suiteGroup": "passives",
+    "sourcePlan": "gameplay-passives-plan.json",
+    "sourceCaseName": "final96-passives-space_fluct",
+    "scriptSha256": "5bb43af657f8ac73ea3ba4604f75235ad6414b1cbed35bd71794d597ed0662e3",
+    "nominalFixedTicks": 6054,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  },
+  {
+    "name": "final21-tpvm-tp-cancel-register",
+    "script": "gameplay-tp-play-group-cancel-register.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "sourceScripts": [
+      "gameplay-tp-play-cancel-return_mark.script",
+      "gameplay-tp-play-cancel-short_interception.script",
+      "gameplay-tp-play-cancel-spatial_relay.script",
+      "gameplay-tp-play-cancel-emergency_return.script",
+      "gameplay-tp-play-cancel-spatial_pincer_corridor.script",
+      "gameplay-tp-play-cancel-multidimensional_landing_array.script",
+      "gameplay-tp-play-probe-move.script",
+      "gameplay-tp-play-probe-pose.script"
+    ],
+    "props": "",
+    "suiteGroup": "tpvm",
+    "sourcePlan": "gameplay-tp-vm-extension-plan.json",
+    "sourceCaseName": "final-extension-tp-cancel-register",
+    "scriptSha256": "737b76e081eeb115321258cfc9e1c0c8e1ce0b59c5a16d11246fd963d56b613a",
+    "nominalFixedTicks": 2378,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 1,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "sourceBoundaryStyle": "filename",
+    "requiredLogMarkers": [
+      "QA_TP_PLAY_CANCEL_PASS mode=cancel-return_mark ",
+      "QA_TP_PLAY_FRESH_PASS mode=cancel-return_mark ",
+      "QA_TP_PLAY_CANCEL_PASS mode=cancel-short_interception ",
+      "QA_TP_PLAY_FRESH_PASS mode=cancel-short_interception ",
+      "QA_TP_PLAY_CANCEL_PASS mode=cancel-spatial_relay ",
+      "QA_TP_PLAY_FRESH_PASS mode=cancel-spatial_relay ",
+      "QA_TP_PLAY_CANCEL_PASS mode=cancel-emergency_return ",
+      "QA_TP_PLAY_FRESH_PASS mode=cancel-emergency_return ",
+      "QA_TP_PLAY_CANCEL_PASS mode=cancel-spatial_pincer_corridor ",
+      "QA_TP_PLAY_FRESH_PASS mode=cancel-spatial_pincer_corridor ",
+      "QA_TP_PLAY_CANCEL_PASS mode=cancel-multidimensional_landing_array ",
+      "QA_TP_PLAY_FRESH_PASS mode=cancel-multidimensional_landing_array ",
+      "QA_TP_PLAY_CANCEL_PASS mode=cancel-safe_landing_probe ",
+      "QA_TP_PLAY_FRESH_PASS mode=cancel-safe_landing_probe "
+    ],
+    "sourceRequiredLogMarkers": {
+      "gameplay-tp-play-cancel-return_mark.script": [
+        "QA_TP_PLAY_CANCEL_PASS mode=cancel-return_mark ",
+        "QA_TP_PLAY_FRESH_PASS mode=cancel-return_mark "
+      ],
+      "gameplay-tp-play-cancel-short_interception.script": [
+        "QA_TP_PLAY_CANCEL_PASS mode=cancel-short_interception ",
+        "QA_TP_PLAY_FRESH_PASS mode=cancel-short_interception "
+      ],
+      "gameplay-tp-play-cancel-spatial_relay.script": [
+        "QA_TP_PLAY_CANCEL_PASS mode=cancel-spatial_relay ",
+        "QA_TP_PLAY_FRESH_PASS mode=cancel-spatial_relay "
+      ],
+      "gameplay-tp-play-cancel-emergency_return.script": [
+        "QA_TP_PLAY_CANCEL_PASS mode=cancel-emergency_return ",
+        "QA_TP_PLAY_FRESH_PASS mode=cancel-emergency_return "
+      ],
+      "gameplay-tp-play-cancel-spatial_pincer_corridor.script": [
+        "QA_TP_PLAY_CANCEL_PASS mode=cancel-spatial_pincer_corridor ",
+        "QA_TP_PLAY_FRESH_PASS mode=cancel-spatial_pincer_corridor "
+      ],
+      "gameplay-tp-play-cancel-multidimensional_landing_array.script": [
+        "QA_TP_PLAY_CANCEL_PASS mode=cancel-multidimensional_landing_array ",
+        "QA_TP_PLAY_FRESH_PASS mode=cancel-multidimensional_landing_array "
+      ],
+      "gameplay-tp-play-probe-move.script": [
+        "QA_TP_PLAY_CANCEL_PASS mode=cancel-safe_landing_probe ",
+        "QA_TP_PLAY_FRESH_PASS mode=cancel-safe_landing_probe "
+      ],
+      "gameplay-tp-play-probe-pose.script": [
+        "QA_TP_PLAY_CANCEL_PASS mode=cancel-safe_landing_probe ",
+        "QA_TP_PLAY_FRESH_PASS mode=cancel-safe_landing_probe "
+      ]
+    }
+  },
+  {
+    "name": "final21-tpvm-tp-ordinary-stock",
+    "script": "gameplay-tp-play-group-ordinary-stock.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "sourceScripts": [
+      "gameplay-tp-play-item-transport.script",
+      "gameplay-tp-play-block-placement.script"
+    ],
+    "props": "",
+    "suiteGroup": "tpvm",
+    "sourcePlan": "gameplay-tp-vm-extension-plan.json",
+    "sourceCaseName": "final-extension-tp-ordinary-stock",
+    "scriptSha256": "28dcfc483685b9df8376d180c3de81ee56ae55d62fa3f5f09ab345c68b8de398",
+    "nominalFixedTicks": 641,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "requiredReconfirmation": "Earlier ordinary-item failure lacked coordinates; batch15 independent strict pass does not establish its cause. This final16 merged case must again satisfy unchanged distance>5, stationary actor, one-item spend and no-duplication assertions; failure blocks completion of both grouped scenarios.",
+    "sourceBoundaryStyle": "filename",
+    "requiredLogMarkers": [
+      "QA_TP_PLAY_MODE_PASS mode=item-transport ",
+      "QA_TP_PLAY_MODE_PASS mode=block-placement "
+    ],
+    "sourceRequiredLogMarkers": {
+      "gameplay-tp-play-item-transport.script": [
+        "QA_TP_PLAY_MODE_PASS mode=item-transport "
+      ],
+      "gameplay-tp-play-block-placement.script": [
+        "QA_TP_PLAY_MODE_PASS mode=block-placement "
+      ]
+    }
+  },
+  {
+    "name": "final21-tpvm-tp-target-air-movement",
+    "script": "gameplay-tp-play-group-target-air-movement.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "sourceScripts": [
+      "gameplay-tp-play-mark-entity.script",
+      "gameplay-tp-play-mark-air.script",
+      "gameplay-tp-play-accel-air.script",
+      "gameplay-tp-play-flash-air.script"
+    ],
+    "props": "",
+    "suiteGroup": "tpvm",
+    "sourcePlan": "gameplay-tp-vm-extension-plan.json",
+    "sourceCaseName": "final-extension-tp-target-air-movement",
+    "scriptSha256": "6ec153549d94c7afa9da7b8bf4e0964b9cdd0f1ff39e1c7a0737f1b9f0855971",
+    "nominalFixedTicks": 1180,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "sourceBoundaryStyle": "filename",
+    "requiredLogMarkers": [
+      "QA_TP_PLAY_MODE_PASS mode=mark-entity ",
+      "QA_TP_PLAY_MODE_PASS mode=mark-air ",
+      "QA_TP_PLAY_MODE_PASS mode=accel-air ",
+      "QA_TP_PLAY_MODE_PASS mode=flash-air "
+    ],
+    "sourceRequiredLogMarkers": {
+      "gameplay-tp-play-mark-entity.script": [
+        "QA_TP_PLAY_MODE_PASS mode=mark-entity "
+      ],
+      "gameplay-tp-play-mark-air.script": [
+        "QA_TP_PLAY_MODE_PASS mode=mark-air "
+      ],
+      "gameplay-tp-play-accel-air.script": [
+        "QA_TP_PLAY_MODE_PASS mode=accel-air "
+      ],
+      "gameplay-tp-play-flash-air.script": [
+        "QA_TP_PLAY_MODE_PASS mode=flash-air "
+      ]
+    }
+  },
+  {
+    "name": "final21-tpvm-tp-two-needles",
+    "script": "gameplay-tp-play-group-two-needles.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "sourceScripts": [
+      "gameplay-tp-play-two-needles.script"
+    ],
+    "props": "",
+    "suiteGroup": "tpvm",
+    "sourcePlan": "gameplay-tp-vm-extension-plan.json",
+    "sourceCaseName": "final-extension-tp-two-needles",
+    "scriptSha256": "ebbd628966becb3a682b52120c030e7d93a93a718feb2b4cffcf1bab0d10e0e2",
+    "nominalFixedTicks": 645,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 1,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "sourceBoundaryStyle": "filename",
+    "requiredLogMarkerCounts": {
+      "QA_TP_PLAY_TARGETED_RECOVERY_PASS ": 2
+    },
+    "requiredRecoveredRemaining": [
+      1,
+      0
+    ],
+    "requiredLogMarkers": [
+      "QA_TP_PLAY_TWO_NEEDLES_CLEAR_PASS ",
+      "QA_TP_PLAY_TARGETED_RECOVERY_PASS "
+    ],
+    "sourceRequiredLogMarkers": {
+      "gameplay-tp-play-two-needles.script": [
+        "QA_TP_PLAY_TWO_NEEDLES_CLEAR_PASS ",
+        "QA_TP_PLAY_TARGETED_RECOVERY_PASS "
+      ]
+    }
+  },
+  {
+    "name": "final21-tpvm-native-arrow-vector_parry",
+    "script": "gameplay-native-arrow-vector_parry.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "purpose": "Same real native arrow must commit dedicated source capture/quota/exact resource debit; no base reflection substitution",
+    "props": "",
+    "suiteGroup": "tpvm",
+    "sourcePlan": "gameplay-tp-vm-extension-plan.json",
+    "sourceCaseName": "final-extension-native-arrow-vector_parry",
+    "scriptSha256": "fdd72dd5f3894a731ffc5d241411b2b31c67683ce0b563a5fa2cf183ea3c4401",
+    "nominalFixedTicks": 361,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "skills": [
+      "vector_parry"
+    ],
+    "requiredLogMarkers": [
+      "QA_SPECIALIST_NATIVE_ARROW_COMMIT_PASS mode=vector_parry ",
+      "QA_NATIVE_ARROW_MODE_PASS mode=vector_parry "
+    ]
+  },
+  {
+    "name": "final21-tpvm-native-arrow-autonomous_vector_circle",
+    "script": "gameplay-native-arrow-autonomous_vector_circle.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "purpose": "Same real native arrow must commit dedicated source capture/quota/exact resource debit; no base reflection substitution",
+    "props": "",
+    "suiteGroup": "tpvm",
+    "sourcePlan": "gameplay-tp-vm-extension-plan.json",
+    "sourceCaseName": "final-extension-native-arrow-autonomous_vector_circle",
+    "scriptSha256": "1004ec5898b4a9591f678a72e16679336db634c612232c2cba2e1697ca8d36f9",
+    "nominalFixedTicks": 398,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "skills": [
+      "autonomous_vector_circle"
+    ],
+    "requiredLogMarkers": [
+      "QA_SPECIALIST_NATIVE_ARROW_COMMIT_PASS mode=autonomous_vector_circle ",
+      "QA_NATIVE_ARROW_MODE_PASS mode=autonomous_vector_circle ",
+      "QA_CIRCLE_TOGGLE_OFF_BALANCE_PASS ",
+      "QA_CIRCLE_TOGGLE_REOPEN_BALANCE_PASS "
+    ]
+  },
+  {
+    "name": "final21-tpvm-native-arrow-phase-corridor",
+    "script": "gameplay-native-arrow-phase_corridor.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "purpose": "Two real enemy arrows from actual shooter: first reaches native incoming in2tick phase and pays no S/HP; second reaches3tick exposure and truly damages S/HP",
+    "props": "",
+    "suiteGroup": "tpvm",
+    "sourcePlan": "gameplay-tp-vm-extension-plan.json",
+    "sourceCaseName": "final-extension-native-arrow-phase-corridor",
+    "scriptSha256": "f903935b24229973670905367b6224db6fd10b4a0b9e5fe67840195217c53cc4",
+    "nominalFixedTicks": 350,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "skills": [
+      "phase_corridor"
+    ],
+    "requiredLogMarkers": [
+      "QA_PHASE_EARLY_INCOMING ",
+      "QA_PHASE_EARLY_LEDGER_PASS ",
+      "QA_PHASE_EXPOSED_LEDGER_PASS ",
+      "QA_NATIVE_ARROW_MODE_PASS mode=phase_corridor "
+    ]
+  },
+  {
+    "name": "final21-vmenv-vm-environment-legacy-three",
+    "script": "gameplay-vm-environment-legacy-three.script",
+    "sourceScripts": [
+      "gameplay-vm-environment-blast-block.script",
+      "gameplay-vm-environment-ground-wave.script",
+      "gameplay-vm-environment-ground-soft.script"
+    ],
+    "sourceSha256": {
+      "gameplay-vm-environment-blast-block.script": "48171034ea1b32ee7230c40a106327f366c87ad1cb0621c7516cfb02b6d9ae7a",
+      "gameplay-vm-environment-ground-wave.script": "21a59f6a85cf908dd810b0b779cf790cf888a2b123e1a4620ded1cdea8c08014",
+      "gameplay-vm-environment-ground-soft.script": "b7a23e64f75c8bababe1a2af876f4decf5bfa159153315813e1e099deced608a"
+    },
+    "directory": "run-showcase-sable",
+    "props": "",
+    "status": "planned_not_run",
+    "suiteGroup": "vmenv",
+    "sourcePlan": "gameplay-vm-environment-grouped-plan.json",
+    "sourceCaseName": "vm-environment-legacy-three",
+    "scriptSha256": "79f29d9d56fac06d473827e4a732c2f565eeb5b0391e724601344f121d456728",
+    "nominalFixedTicks": 863,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "sourceBoundaryStyle": "stem",
+    "skills": [
+      "dir_blast",
+      "ground_shock"
+    ],
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_VM_TERRAIN_PASS mode=blast-block skill=dir_blast ",
+      "QA_GAMEPLAY_VM_TERRAIN_PASS mode=ground-wave skill=ground_shock ",
+      "QA_GAMEPLAY_VM_TERRAIN_PASS mode=ground-soft skill=ground_shock "
+    ],
+    "sourceRequiredLogMarkers": {
+      "gameplay-vm-environment-blast-block.script": [
+        "QA_GAMEPLAY_VM_TERRAIN_PASS mode=blast-block skill=dir_blast "
+      ],
+      "gameplay-vm-environment-ground-wave.script": [
+        "QA_GAMEPLAY_VM_TERRAIN_PASS mode=ground-wave skill=ground_shock "
+      ],
+      "gameplay-vm-environment-ground-soft.script": [
+        "QA_GAMEPLAY_VM_TERRAIN_PASS mode=ground-soft skill=ground_shock "
+      ]
+    }
+  },
+  {
+    "name": "final21-vmenv-vm-environment-storm-fragile",
+    "script": "gameplay-vm-environment-storm-fragile.script",
+    "sourceScripts": [
+      "gameplay-vm-environment-storm-fragile.script"
+    ],
+    "sourceSha256": {
+      "gameplay-vm-environment-storm-fragile.script": "07e0025ccf6a87ecf9fa91b384241b559f9e2aefa2bedd6285b59c9a516df697"
+    },
+    "directory": "run-showcase-sable",
+    "props": "",
+    "status": "planned_not_run",
+    "suiteGroup": "vmenv",
+    "sourcePlan": "gameplay-vm-environment-grouped-plan.json",
+    "sourceCaseName": "vm-environment-storm-fragile",
+    "scriptSha256": "07e0025ccf6a87ecf9fa91b384241b559f9e2aefa2bedd6285b59c9a516df697",
+    "nominalFixedTicks": 525,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "sourceBoundaryStyle": "stem",
+    "skills": [
+      "storm_wing"
+    ],
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_VM_TERRAIN_PASS mode=storm-fragile skill=storm_wing "
+    ]
+  },
+  {
+    "name": "final21-vmenv-vm-environment-plasma-terrain",
+    "script": "gameplay-vm-environment-plasma-terrain.script",
+    "sourceScripts": [
+      "gameplay-vm-environment-plasma-terrain.script"
+    ],
+    "sourceSha256": {
+      "gameplay-vm-environment-plasma-terrain.script": "1caef2e9d2793497779ce6df1706b4a97388f1491969105cbf45f230077c5689"
+    },
+    "directory": "run-showcase-sable",
+    "props": "",
+    "status": "planned_not_run",
+    "suiteGroup": "vmenv",
+    "sourcePlan": "gameplay-vm-environment-grouped-plan.json",
+    "sourceCaseName": "vm-environment-plasma-terrain",
+    "scriptSha256": "1caef2e9d2793497779ce6df1706b4a97388f1491969105cbf45f230077c5689",
+    "nominalFixedTicks": 476,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "sourceBoundaryStyle": "stem",
+    "skills": [
+      "plasma_cannon"
+    ],
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_VM_TERRAIN_PASS mode=plasma-terrain skill=plasma_cannon "
+    ]
+  },
+  {
+    "name": "final21-itemsplit-vm-extra-yaw-q-items",
+    "script": "gameplay-vm-extra-yaw-q-items.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "yaw_palm"
+    ],
+    "modes": [
+      "actual owner Q item left push",
+      "actual owner Q item crouching right push"
+    ],
+    "status": "planned_not_run",
+    "props": "",
+    "suiteGroup": "itemSplit",
+    "sourcePlan": "gameplay-vm-extra-plan.json",
+    "sourceCaseName": "candidate-vm-extra-yaw-q-items",
+    "scriptSha256": "b56280564e776895270e418949bf6f623e6bdb0363b39191a9b82eec9ccdba5b",
+    "nominalFixedTicks": 812,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_MODE_PASS mode=yaw-left skill=yaw_palm ",
+      "QA_GAMEPLAY_MODE_PASS mode=yaw-right skill=yaw_palm "
+    ]
+  },
+  {
+    "name": "final21-itemsplit-vm-extra-split-narrow",
+    "script": "gameplay-vm-extra-split-narrow.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "impulse_split"
+    ],
+    "modes": [
+      "actual approximately20 degree pair slows naturally",
+      "native integer budget partition",
+      "two real native arrow impacts and bounded combined actual target damage"
+    ],
+    "status": "planned_not_run",
+    "props": "",
+    "suiteGroup": "itemSplit",
+    "sourcePlan": "gameplay-vm-extra-plan.json",
+    "sourceCaseName": "candidate-vm-extra-split-narrow",
+    "scriptSha256": "f208a6cb59c5f0497768e176e41624ed693dea580ccefd639c2dc3dab645e486",
+    "nominalFixedTicks": 420,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_MODE_PASS mode=split-narrow skill=impulse_split "
+    ]
+  },
+  {
+    "name": "final21-stormcycle-storm-cycle-costs",
+    "script": "gameplay-storm-cycle-costs.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "fixture": "Finite initial CP and 84-percent initial heat before baseline only; natural native cooling and CP depletion after actual R start, never refilled.",
+    "props": "",
+    "suiteGroup": "stormcycle",
+    "sourcePlan": "gameplay-storm-cycle-plan.json",
+    "sourceCaseName": "diagnostic-storm-cycle-costs",
+    "scriptSha256": "20aefe57a381ec681402fe466fbe41af324fa5ee923136fedd515a151433f7e2",
+    "nominalFixedTicks": 1467,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 2,
+      "conditionalEscape": 0
+    },
+    "skills": [
+      "storm_wing"
+    ],
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_STORM_COSTS_PASS skill=storm_wing ",
+      "QA_GAMEPLAY_STORM_COOLING_ENTRY ",
+      "QA_GAMEPLAY_STORM_COOLING_RECOVERED ",
+      "QA_GAMEPLAY_STORM_CYCLE_PASS skill=storm_wing ",
+      "QA_LIVE_CAMERA_NEUTRAL_PASS skill=storm_wing"
+    ]
+  },
+  {
+    "name": "final21-visual-vfx-iron-nearplane",
+    "script": "gameplay-visual-iron-nearplane.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "iron_sand_lance"
+    ],
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Normal key input, original mechanical assertions, native framebuffer tick sequence plus representative action/release images; inspect actual frames after run, not generated visual injection.",
+    "suiteGroup": "visual",
+    "sourcePlan": "gameplay-visual-followup-plan.json",
+    "sourceCaseName": "candidate-vfx-iron-nearplane",
+    "scriptSha256": "a61ea2de6d21687223c65d86b57128e25a2a15f9eb491788df978c3c2a242891",
+    "nominalFixedTicks": 664,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_PASS skill=iron_sand_lance ",
+      "QA_FINAL_VISUAL_PASS skill=iron_sand_lance ",
+      "QA_REC_START ",
+      "QA_REC_END "
+    ]
+  },
+  {
+    "name": "final21-visual-vfx-railgun-charge",
+    "script": "gameplay-visual-railgun-charge.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "railgun"
+    ],
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Normal key input, original mechanical assertions, native framebuffer tick sequence plus representative action/release images; inspect actual frames after run, not generated visual injection.",
+    "suiteGroup": "visual",
+    "sourcePlan": "gameplay-visual-followup-plan.json",
+    "sourceCaseName": "candidate-vfx-railgun-charge",
+    "scriptSha256": "d2f0d247385cc3b3a70942b266308aedd075b366845eadecc2b3820097d78eb8",
+    "nominalFixedTicks": 460,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_PASS skill=railgun ",
+      "QA_FINAL_VISUAL_PASS skill=railgun ",
+      "QA_REC_START ",
+      "QA_REC_END "
+    ]
+  },
+  {
+    "name": "final21-visual-vfx-thunderclap-peak",
+    "script": "gameplay-visual-thunderclap-peak.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "thunder_clap"
+    ],
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Normal key input, original mechanical assertions, native framebuffer tick sequence plus representative action/release images; inspect actual frames after run, not generated visual injection.",
+    "suiteGroup": "visual",
+    "sourcePlan": "gameplay-visual-followup-plan.json",
+    "sourceCaseName": "candidate-vfx-thunderclap-peak",
+    "scriptSha256": "68089d9c26d81585629a686271a9ec6c02e63c9fc08acecf601f75ca5523224b",
+    "nominalFixedTicks": 475,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_PASS skill=thunder_clap ",
+      "QA_FINAL_VISUAL_PASS skill=thunder_clap ",
+      "QA_REC_START ",
+      "QA_REC_END "
+    ]
+  },
+  {
+    "name": "final21-visual-vfx-mine-tiers-mid",
+    "script": "gameplay-visual-mine-ray-tiers.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "mine_ray_basic",
+      "mine_ray_expert",
+      "mine_ray_luck"
+    ],
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Normal real sustained mining with all existing finite-resource/native-drop assertions, native full-frame tick sequence and middle-of-hold pictures; no new production decoration before actual frame comparison.",
+    "suiteGroup": "visual",
+    "sourcePlan": "gameplay-visual-followup-plan.json",
+    "sourceCaseName": "candidate-vfx-mine-tiers-mid",
+    "scriptSha256": "45e7540726391033df0d889d171723366209789514ed112cf5cc9b6a02caceef",
+    "nominalFixedTicks": 879,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_PASS skill=mine_ray_basic ",
+      "QA_GAMEPLAY_PASS skill=mine_ray_expert ",
+      "QA_GAMEPLAY_PASS skill=mine_ray_luck ",
+      "QA_FINAL_VISUAL_PASS skill=mine_ray_basic ",
+      "QA_FINAL_VISUAL_PASS skill=mine_ray_expert ",
+      "QA_FINAL_VISUAL_PASS skill=mine_ray_luck ",
+      "QA_REC_START ",
+      "QA_REC_END "
+    ]
+  },
+  {
+    "name": "final21-supplemental-storm-sustain-40s",
+    "script": "codex-storm-sustain.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "required": true,
+    "purpose": "Real finite LV5 survival CP, at least800 ACTIVE ticks/850 elapsed ticks, actual R stop and airborne slow falling.",
+    "scriptSha256": "f0fa746b26e7e026b8455e5bce3411426e05235a5be53a39da61446abd68b85e",
+    "props": "",
+    "suiteGroup": "supplemental",
+    "sourcePlan": "gameplay-final-supplemental-plan.json",
+    "sourceCaseName": "final-supplement-storm-sustain-40s",
+    "nominalFixedTicks": 1347,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "skills": [
+      "storm_wing"
+    ],
+    "requiredLogMarkers": [
+      "QA_LIVE_STORM_ACTIVE_PASS ",
+      "QA_LIVE_STORM_SUSTAIN_PASS ",
+      "QA_LIVE_STORM_STOP_PASS ",
+      "QA_LIVE_CAMERA_NEUTRAL_PASS skill=storm_wing"
+    ]
+  },
+  {
+    "name": "final21-supplemental-four-category-shield-hud",
+    "script": "codex-shield-hud-final.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "required": true,
+    "purpose": "All four categories: actual ordinary damage debits positive S without HP loss, then genuine overflow damages HP and holding ends; compact native/skill CP HUD.",
+    "scriptSha256": "e6dc00b2eb96b809e8d30c00aa1692f126f863ef8f49f74b6bea2c97eff17394",
+    "props": "",
+    "suiteGroup": "supplemental",
+    "sourcePlan": "gameplay-final-supplemental-plan.json",
+    "sourceCaseName": "final-supplement-four-category-shield-hud",
+    "nominalFixedTicks": 1120,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "skills": [
+      "forked_arc",
+      "scatter_bomb",
+      "phase_sidestep",
+      "deflection_strike",
+      "grounding_return",
+      "storm_wing"
+    ],
+    "requiredLogMarkers": [
+      "QA_LIVE_SHIELD_PAID_PASS category=electromaster ",
+      "QA_LIVE_SHIELD_BROKEN_PASS category=electromaster ",
+      "QA_LIVE_SHIELD_PAID_PASS category=meltdowner ",
+      "QA_LIVE_SHIELD_BROKEN_PASS category=meltdowner ",
+      "QA_LIVE_SHIELD_PAID_PASS category=teleporter ",
+      "QA_LIVE_SHIELD_BROKEN_PASS category=teleporter ",
+      "QA_LIVE_SHIELD_PAID_PASS category=vecmanip ",
+      "QA_LIVE_SHIELD_BROKEN_PASS category=vecmanip ",
+      "QA_LIVE_HUD_BUDGET_PASS expectation=classic category=electromaster ",
+      "QA_LIVE_HUD_BUDGET_PASS expectation=classic category=vecmanip ",
+      "QA_LIVE_HUD_BUDGET_PASS expectation=expansion category=vecmanip "
+    ]
+  }
+]

@@ -1,0 +1,3 @@
+/* Test-only platform host; numeric algorithms remain in unchanged source. */
+package cn.academy.ability.api;
+public class CategoryManager { public static final CategoryManager INSTANCE=new CategoryManager();public Category category=new Category();public Category getCategory(int id){return category;} }

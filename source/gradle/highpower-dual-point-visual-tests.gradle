@@ -1,0 +1,11 @@
+// NEW211 native-origin geometry, receipt lifecycle and category-aware exact HUD presentation.
+['dualPointVisualTest': 'cn.academy.port.client.DualPointVisualRegressionTest',
+ 'dualPointHudTest': 'cn.academy.port.highpower.DualPointHudRegressionTest'].each { taskName, className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+    }
+    tasks.named('check') { dependsOn taskName }
+}

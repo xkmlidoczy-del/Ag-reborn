@@ -1,0 +1,7 @@
+tasks.register('highPowerChargingTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.HighPowerChargingRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerChargingTest' }

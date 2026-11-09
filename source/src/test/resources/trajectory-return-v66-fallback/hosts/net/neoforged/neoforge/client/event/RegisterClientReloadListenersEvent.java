@@ -1,0 +1,1 @@
+package net.neoforged.neoforge.client.event;import net.minecraft.server.packs.resources.*;public class RegisterClientReloadListenersEvent{public ResourceManagerReloadListener listener;public void registerReloadListener(ResourceManagerReloadListener l){listener=l;}public void fire(ResourceManager m){listener.onResourceManagerReload(m);}}

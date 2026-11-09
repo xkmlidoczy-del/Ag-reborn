@@ -1,0 +1,8 @@
+// NEW151 immutable whole-cast allocations, exact dyadic CP shares and bounded server timing/geometry.
+tasks.register('highPowerRailThunderArrayTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.RailThunderArrayRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerRailThunderArrayTest' }

@@ -1,0 +1,2 @@
+package cn.academy.terminal.registry;
+public class AppRegistration { public @interface RegApp {} }

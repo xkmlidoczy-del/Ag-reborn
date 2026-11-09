@@ -1,0 +1,8 @@
+// Execute the compiled decoy client lifecycle with headless Minecraft boundary substitutes.
+tasks.register('highPowerDecoyVisualTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.HighPowerDecoyVisualRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerDecoyVisualTest' }

@@ -1,0 +1,60 @@
+{
+  "academyCommit": "00d19ec0cf538f61c1095c9292f5ee6863db4521",
+  "files": [
+    {
+      "source": "src/main/java/cn/academy/ability/api/Skill.java",
+      "resource": "classic-configuration-source/academy/src/main/java/cn/academy/ability/api/Skill.java.txt",
+      "sha256": "afc9c70de37bfb393f62ee3c9fe1d4e02cedf1c73c75f935bf9d8d5e638f698c"
+    },
+    {
+      "source": "src/main/java/cn/academy/ability/api/Category.java",
+      "resource": "classic-configuration-source/academy/src/main/java/cn/academy/ability/api/Category.java.txt",
+      "sha256": "c85163a52d7711896d9dcd458ef80c50b587f749c8e01e882869c08974ccf563"
+    },
+    {
+      "source": "src/main/java/cn/academy/ability/api/AbilityContext.java",
+      "resource": "classic-configuration-source/academy/src/main/java/cn/academy/ability/api/AbilityContext.java.txt",
+      "sha256": "9830d2efcfec0e86539a8cf49f5984e1a5cf1e48e5d9b50ad6c167fd454db00a"
+    },
+    {
+      "source": "src/main/java/cn/academy/ability/api/AbilityPipeline.java",
+      "resource": "classic-configuration-source/academy/src/main/java/cn/academy/ability/api/AbilityPipeline.java.txt",
+      "sha256": "177f03df90d2de410f0dbddffd866b4d8b42f2d10ae2f1b2234ab3b3d5971b83"
+    },
+    {
+      "source": "src/main/java/cn/academy/ability/api/data/AbilityData.java",
+      "resource": "classic-configuration-source/academy/src/main/java/cn/academy/ability/api/data/AbilityData.java.txt",
+      "sha256": "a2be759d022d4992bbbba1cfc6e1fa3874015a8f615445864f65f62c250f126e"
+    },
+    {
+      "source": "src/main/java/cn/academy/ability/api/data/PresetData.java",
+      "resource": "classic-configuration-source/academy/src/main/java/cn/academy/ability/api/data/PresetData.java.txt",
+      "sha256": "f375a767a7d19b6d02c3f2de8c7cf3fc472a80b75d646c85df1fe7c7e8d9a6bd"
+    },
+    {
+      "source": "src/main/java/cn/academy/core/network/NetworkManager.java",
+      "resource": "classic-configuration-source/academy/src/main/java/cn/academy/core/network/NetworkManager.java.txt",
+      "sha256": "9637dbc7e3e4211ac2d1682166632cf2531f4386f518cd2559eacdfd90654811"
+    },
+    {
+      "source": "src/main/java/cn/academy/core/network/MessageConfig.java",
+      "resource": "classic-configuration-source/academy/src/main/java/cn/academy/core/network/MessageConfig.java.txt",
+      "sha256": "a7851ab11e8971f0af415a0abdfca1d4dcb51bcc75c911a5929354afcd4810ee"
+    },
+    {
+      "source": "src/main/java/cn/academy/core/config/ACConfig.java",
+      "resource": "classic-configuration-source/academy/src/main/java/cn/academy/core/config/ACConfig.java.txt",
+      "sha256": "919f1c2984d8a5978cf2df558373353f62a89e83310ea3c7e5869038c1f8f83e"
+    },
+    {
+      "source": "src/main/scala/cn/academy/vanilla/vecmanip/skill/EntityAffection.scala",
+      "resource": "classic-configuration-source/academy/src/main/scala/cn/academy/vanilla/vecmanip/skill/EntityAffection.scala.txt",
+      "sha256": "cb725ee2b4b5b4c824462e365945ee89bdfa8a70aa62d918ea6c1443f8e62a1c"
+    },
+    {
+      "source": "src/main/resources/assets/academy/config/default.conf",
+      "resource": "classic-configuration-source/academy/src/main/resources/assets/academy/config/default.conf.txt",
+      "sha256": "700f42a545d761872daae8dfb6e65e5e4571f947d7dcd50eb60933b0542ef824"
+    }
+  ]
+}

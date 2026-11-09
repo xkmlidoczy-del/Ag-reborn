@@ -1,0 +1,1 @@
+package cn.lambdalib.cgui.gui.component; public class ProgressBar {public double progress;public DrawTexture.Color color=new DrawTexture.Color(200/255d);public static ProgressBar get(cn.lambdalib.cgui.gui.Widget w){return w.bar;}}

@@ -1,0 +1,133 @@
+[
+  {
+    "resource": "academy/VecAccel.scala",
+    "sha256": "ab1e0ec582818fd9d91c0e96d1830f147f849c2257e6003a6ec34b91ab5f2df3",
+    "source": "AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/vecmanip/skill/VecAccel.scala",
+    "license": "GPL-3.0"
+  },
+  {
+    "resource": "academy/VecDeviation.scala",
+    "sha256": "19c3468244ecbb22de48fd09ab0b34f0aea10b00d4839f78539fd54cb648a193",
+    "source": "AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/vecmanip/skill/VecDeviation.scala",
+    "license": "GPL-3.0"
+  },
+  {
+    "resource": "academy/EntityAffection.scala",
+    "sha256": "cb725ee2b4b5b4c824462e365945ee89bdfa8a70aa62d918ea6c1443f8e62a1c",
+    "source": "AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/vecmanip/skill/EntityAffection.scala",
+    "license": "GPL-3.0"
+  },
+  {
+    "resource": "academy/CatVecManip.scala",
+    "sha256": "2bf1907f5971692395a5556a927e08660f74dea45609459a42d13afab04daf45",
+    "source": "AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/vecmanip/CatVecManip.scala",
+    "license": "GPL-3.0"
+  },
+  {
+    "resource": "academy/ParabolaEffect.scala",
+    "sha256": "de29316c37fe79077f3d6c78bd7543f98a3999cbf6e56d1be77dd8cf46bffd0e",
+    "source": "AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/vecmanip/client/effect/ParabolaEffect.scala",
+    "license": "GPL-3.0"
+  },
+  {
+    "resource": "academy/WaveEffect.scala",
+    "sha256": "875ab902fa3f69aa69f6dd82e579a32eb14fc22ae648e7f8cf45b6d656dc135a",
+    "source": "AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/vecmanip/client/effect/WaveEffect.scala",
+    "license": "GPL-3.0"
+  },
+  {
+    "resource": "academy/WaveEffectUI.scala",
+    "sha256": "18cf9922464536272590eb394320b4f3ba975246a67e5388f82f5749f1171b1c",
+    "source": "AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/vecmanip/client/effect/WaveEffectUI.scala",
+    "license": "GPL-3.0"
+  },
+  {
+    "resource": "academy/default.conf",
+    "sha256": "700f42a545d761872daae8dfb6e65e5e4571f947d7dcd50eb60933b0542ef824",
+    "source": "AcademyCraft-1.0.7/src/main/resources/assets/academy/config/default.conf",
+    "license": "GPL-3.0"
+  },
+  {
+    "resource": "academy/CPData.java",
+    "sha256": "6ef3a87f06fa86e422b183d379c07093366bf60b89057adc94c01cb9088324c3",
+    "source": "AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/data/CPData.java",
+    "license": "GPL-3.0"
+  },
+  {
+    "resource": "academy/KeyDelegates.scala",
+    "sha256": "33ef594c57d687914c36994f192bb5c0110c2058d563d841208dadd6d31e6532",
+    "source": "AcademyCraft-1.0.7/src/main/scala/cn/academy/ability/api/ctrl/KeyDelegates.scala",
+    "license": "GPL-3.0"
+  },
+  {
+    "resource": "academy/vm_wave_ui.vert",
+    "sha256": "53a4e0c53629704f17363b97b55698b96782f2a9420f09206a421babafa1b6ce",
+    "source": "AcademyCraft-1.0.7/src/main/resources/assets/academy/shaders/vm_wave_ui.vert",
+    "license": "GPL-3.0"
+  },
+  {
+    "resource": "academy/vm_wave_ui.frag",
+    "sha256": "ee9f306f9d63fdcf07aeaae9dce9733ff56bedbf5b296b2e532a95dc198b08cd",
+    "source": "AcademyCraft-1.0.7/src/main/resources/assets/academy/shaders/vm_wave_ui.frag",
+    "license": "GPL-3.0"
+  },
+  {
+    "resource": "lambdalib/WorldUtils.java",
+    "sha256": "22dc9e2c1594f8b97e31cf4075e953f5a7a95edb0db6cffe9fb9dcc0678a0f2e",
+    "source": "LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/mc/WorldUtils.java",
+    "license": "MIT"
+  },
+  {
+    "resource": "lambdalib/MathUtils.java",
+    "sha256": "e80c87ca15cbae89584bd9e1111e22d2f55866bf91b434c8813c20bb98176075",
+    "source": "LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/generic/MathUtils.java",
+    "license": "MIT"
+  },
+  {
+    "resource": "lambdalib/CubicCurve.java",
+    "sha256": "6f381af595f9ab0b0d279c202743c59577e27ecbf01414b7259cf1844a64e218",
+    "source": "LambdaLib-1.2.3/src/main/java/cn/lambdalib/vis/curve/CubicCurve.java",
+    "license": "MIT"
+  },
+  {
+    "resource": "lambdalib/IFittedCurve.java",
+    "sha256": "859826124ada463e491c59d1bb52310b291bec79eb60873a2095a099f2eec8ad",
+    "source": "LambdaLib-1.2.3/src/main/java/cn/lambdalib/vis/curve/IFittedCurve.java",
+    "license": "MIT"
+  },
+  {
+    "resource": "lambdalib/RichVec3.scala",
+    "sha256": "f0d2e66f5e7ab23335da2d742959a840f816e7f3567aa41c55da4c9bd916fcc2",
+    "source": "LambdaLib-1.2.3/src/main/scala/cn/lambdalib/util/mc/RichVec3.scala",
+    "license": "MIT"
+  },
+  {
+    "resource": "lambdalib/RichEntity.scala",
+    "sha256": "775411d7469203db813f6bdbf482c205708c93014f46014c0967f594a252601a",
+    "source": "LambdaLib-1.2.3/src/main/scala/cn/lambdalib/util/mc/RichEntity.scala",
+    "license": "MIT"
+  },
+  {
+    "resource": "lambdalib/VecUtils.java",
+    "sha256": "d5950587fe04e53cfc53985cdbdf7a100e12648816e94eb3b660fd4f0418a59b",
+    "source": "LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/generic/VecUtils.java",
+    "license": "MIT"
+  },
+  {
+    "resource": "lambdalib/NetworkS11n.java",
+    "sha256": "e9c9fa0f59ad34dab164f9afd4cc913fca3dffdbd2627d32b2877b310f0b0a5e",
+    "source": "LambdaLib-1.2.3/src/main/java/cn/lambdalib/s11n/network/NetworkS11n.java",
+    "license": "MIT"
+  },
+  {
+    "resource": "lambdalib/LICENSE",
+    "sha256": "852bcc033a46c62f99fb5ffd43b3241ba2c0c440c6034aa2114505f2c4f03c4a",
+    "source": "LambdaLib-1.2.3/LICENSE",
+    "license": "MIT"
+  },
+  {
+    "resource": "LICENSE-AcademyCraft-GPL3.txt",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+    "license": "GPL-3.0"
+  }
+]

@@ -1,0 +1,3 @@
+/* Test-only platform host; numeric algorithms remain in unchanged source. */
+package cn.lambdalib.s11n.nbt;
+public class NBTS11n { public static void write(Object... args){} public static void read(Object... args){} }

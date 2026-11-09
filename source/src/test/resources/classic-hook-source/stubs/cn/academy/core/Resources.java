@@ -1,0 +1,1 @@
+package cn.academy.core;public class Resources{public static net.minecraftforge.client.model.IModelCustom getModel(String name){return ()->oracle.SourceOracle.recordModel(name);}public static net.minecraft.util.ResourceLocation getTexture(String s){return new net.minecraft.util.ResourceLocation(s);}}

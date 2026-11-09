@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "result": {
+    "id": "academy:brain_component",
+    "count": 1
+  },
+  "pattern": [
+    " B ",
+    "DEF",
+    " H "
+  ],
+  "key": {
+    "B": {
+      "tag": "c:nuggets/gold"
+    },
+    "D": {
+      "tag": "c:dusts/redstone"
+    },
+    "E": {
+      "item": "academy:calc_chip"
+    },
+    "F": {
+      "tag": "c:dusts/redstone"
+    },
+    "H": {
+      "tag": "c:nuggets/gold"
+    }
+  }
+}

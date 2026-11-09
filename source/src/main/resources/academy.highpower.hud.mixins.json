@@ -1,0 +1,9 @@
+{
+  "required": true,
+  "minVersion": "0.8.5",
+  "package": "cn.academy.port.client.highpower.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "plugin": "cn.academy.port.highpower.client.RecoveryHudMixinPlugin",
+  "client": ["RecoveryHudHeartMixin"],
+  "injectors": {"defaultRequire": 1}
+}

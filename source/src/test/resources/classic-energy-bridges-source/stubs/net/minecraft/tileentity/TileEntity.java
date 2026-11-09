@@ -1,0 +1,1 @@
+package net.minecraft.tileentity;import net.minecraft.world.World;import net.minecraft.nbt.NBTTagCompound;public class TileEntity{public int xCoord,yCoord,zCoord;private final World world=new World();public World getWorldObj(){return world;}public void updateEntity(){}public void readFromNBT(NBTTagCompound tag){}public void writeToNBT(NBTTagCompound tag){}}

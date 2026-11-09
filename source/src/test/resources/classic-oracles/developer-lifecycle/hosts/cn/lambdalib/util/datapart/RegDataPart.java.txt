@@ -1,0 +1,3 @@
+/* Test-only platform host; numeric algorithms remain in unchanged source. */
+package cn.lambdalib.util.datapart;
+public @interface RegDataPart { Class<?> value(); }

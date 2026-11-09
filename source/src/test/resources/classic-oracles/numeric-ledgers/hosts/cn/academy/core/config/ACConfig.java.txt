@@ -1,0 +1,8 @@
+/* Test-only platform host; numeric algorithms remain in unchanged source. */
+package cn.academy.core.config;
+public class ACConfig {
+ private static final com.typesafe.config.Config CONFIG=new com.typesafe.config.Config();
+ static {CONFIG.values.put("cp_recover_cooldown",15);CONFIG.values.put("overload_recover_cooldown",32);CONFIG.values.put("maxcp_incr_rate",.0025);CONFIG.values.put("maxo_incr_rate",.0058);CONFIG.values.put("cp_recover_speed",1.0);CONFIG.values.put("overload_recover_speed",1.0);CONFIG.values.put("ac.ability.data.prog_incr_rate",1.0);
+ CONFIG.values.put("init_cp",java.util.List.of(1800.,1800.,2800.,4000.,5800.,8000.));CONFIG.values.put("init_overload",java.util.List.of(100.,100.,150.,240.,350.,500.));CONFIG.values.put("add_cp",java.util.List.of(0.,900.,1000.,1500.,1700.,12000.));CONFIG.values.put("add_overload",java.util.List.of(0.,40.,70.,80.,100.,500.));}
+ public static com.typesafe.config.Config instance(){return CONFIG;}
+}

@@ -1,0 +1,12 @@
+// Portable original-source, state, binding and client-layout checks. No game startup.
+['tutorialMetadataSourceTest':'cn.academy.port.tutorial.TutorialMetadataSourceOracleTest',
+ 'tutorialRuntimeSourceTest':'cn.academy.port.tutorial.TutorialStateSourceOracleTest',
+ 'tutorialPersistenceSourceTest':'cn.academy.port.tutorial.TutorialPersistenceSourceOracleTest',
+ 'tutorialStorageTest':'cn.academy.port.tutorial.TutorialStorageRegressionTest',
+ 'tutorialIntegrationTest':'cn.academy.port.tutorial.TutorialIntegrationRegressionTest',
+ 'tutorialServerLinkTest':'cn.academy.port.tutorial.TutorialServerLinkTest',
+ 'tutorialClientTest':'cn.academy.port.client.tutorial.TutorialClientRegressionTest'].each {taskName,className ->
+    tasks.register(taskName,JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass=className; enableAssertions=true }
+    tasks.named('test') { dependsOn taskName }
+    tasks.named('check') { dependsOn taskName }
+}

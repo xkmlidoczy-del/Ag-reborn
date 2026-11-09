@@ -1,0 +1,10 @@
+Classic AcademyCraft 1.0.7 source oracle fixtures
+Copyright (c) Lambda Innovation, 2013-2016.
+Official source: https://github.com/LambdaInnovation/AcademyCraft/tree/1.0.7
+Expected commit: 00d19ec0cf538f61c1095c9292f5ee6863db4521.
+AcademyCraft source headers and all bytes are retained unchanged in *.java.txt / *.scala.txt.
+GPLv3 and upstream additional copyright/no-sale notices are preserved in GPLv3-LICENSE.txt and ACADEMYCRAFT-README.md.txt. Their compatibility/enforceability is not resolved by this test or local port; no sale or redistribution is authorized.
+Selected LambdaLib 1.2.3 original sources retain MIT notices; full licence is in LAMBDALIB-MIT-LICENSE.txt.
+Official source: https://github.com/LambdaInnovation/LambdaLib/tree/1.2.3
+*.relocated.txt and the compiled test oracle change package/imports only. All complete Java bodies, including renderer overrides, are unchanged. See upstream-source-sha256.json.
+Stubbed Minecraft/GL/particle boundaries are for deterministic headless tests only. No additional Minecraft implementation is extracted. The unchanged upstream Raytrace source itself labels its legacy block-ray routine as Mojang-derived; underlying rights are not resolved here. No song or media assets are copied into this fixture package.

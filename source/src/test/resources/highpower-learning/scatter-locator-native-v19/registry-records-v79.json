@@ -1,0 +1,414 @@
+{
+  "baseline_revision": "27ecc8d869ae6389253c2e5c8fe4df68b6291424",
+  "registry_sha256": "7b7c560aec52fba4884d07c48d89346667847131075d9cd183934592d4b9d104",
+  "records": [
+    {
+      "ordinal": 0,
+      "constant": "FORKED_ARC",
+      "saved_id": "forked_arc",
+      "proposal": 111,
+      "record_source": "new SkillCatalog.Skill(CATEGORY, FORKED_ARC, 1, true, List.of(), 0)",
+      "sha256": "c99819e3899f534f07666fbe129b82b525627cf7830589e5fadc226f278782f0"
+    },
+    {
+      "ordinal": 1,
+      "constant": "MAGNETIC_BRACER",
+      "saved_id": "magnetic_bracer",
+      "proposal": 112,
+      "record_source": "new SkillCatalog.Skill(CATEGORY, MAGNETIC_BRACER, 1, true,\n                    List.of(new SkillCatalog.Requirement(FORKED_ARC, 0)), 0)",
+      "sha256": "1f409f9552e8b71389fe8dac41a9721d87dc6fd67331de71f9eacf0f6c1e3bf8"
+    },
+    {
+      "ordinal": 2,
+      "constant": "CHARGE_DECOY",
+      "saved_id": "charge_decoy",
+      "proposal": null,
+      "record_source": "new SkillCatalog.Skill(CATEGORY, CHARGE_DECOY, 2, true,\n                    List.of(new SkillCatalog.Requirement(MAGNETIC_BRACER, 0)), 0)",
+      "sha256": "7eafdba670e181450c385a4471f44b35dcb882d6c6c09f2fb1d8838db4aec521"
+    },
+    {
+      "ordinal": 3,
+      "constant": "POLARITY_TETHER",
+      "saved_id": "polarity_tether",
+      "proposal": 113,
+      "record_source": "new SkillCatalog.Skill(CATEGORY, POLARITY_TETHER, 1, true,\n                    List.of(new SkillCatalog.Requirement(FORKED_ARC, 0)), 0)",
+      "sha256": "5facb7ed1802cb2b5a45ae58947d95a6d84d8f233c138d21ed3f016a50f2145d"
+    },
+    {
+      "ordinal": 4,
+      "constant": "CONDUCTIVE_CIRCUIT",
+      "saved_id": "conductive_circuit",
+      "proposal": 121,
+      "record_source": "new SkillCatalog.Skill(CATEGORY, CONDUCTIVE_CIRCUIT, 2, true,\n                    List.of(new SkillCatalog.Requirement(FORKED_ARC, 0)), 0)",
+      "sha256": "dcbc3eea48c2547ec4c61b31756f15866262685d03150aa63c0de74684ba85e3"
+    },
+    {
+      "ordinal": 5,
+      "constant": "GROUNDING_RETURN",
+      "saved_id": "grounding_return",
+      "proposal": 122,
+      "record_source": "new SkillCatalog.Skill(CATEGORY, GROUNDING_RETURN, 2, true,\n                    List.of(new SkillCatalog.Requirement(MAGNETIC_BRACER, 0)), 0)",
+      "sha256": "701264a617b824e55b06050a8942e30327f8714b6da385c1dd4e8b35cc1e7f01"
+    },
+    {
+      "ordinal": 6,
+      "constant": "MAGNETIC_GROUND_STEP",
+      "saved_id": "magnetic_ground_step",
+      "proposal": 132,
+      "record_source": "new SkillCatalog.Skill(CATEGORY, MAGNETIC_GROUND_STEP, 3, true,\n                    List.of(new SkillCatalog.Requirement(POLARITY_TETHER, 0)), 0)",
+      "sha256": "78150b20848172f19a1c2ace391cac63079a92b49d46b97ca79da1e5a52bfc8c"
+    },
+    {
+      "ordinal": 7,
+      "constant": "MAGNETIC_ITEM_PULL",
+      "saved_id": "magnetic_item_pull",
+      "proposal": 133,
+      "record_source": "new SkillCatalog.Skill(CATEGORY, MAGNETIC_ITEM_PULL, 3, true,\n                    List.of(new SkillCatalog.Requirement(POLARITY_TETHER, 0)), 0)",
+      "sha256": "c27b556c132736163067a51f3c86f2e146893c08deee08f8742205ac2eaf502d"
+    },
+    {
+      "ordinal": 8,
+      "constant": "IRON_SAND_LANCE",
+      "saved_id": "iron_sand_lance",
+      "proposal": 131,
+      "record_source": "new SkillCatalog.Skill(CATEGORY, IRON_SAND_LANCE, 3, true,\n                    List.of(new SkillCatalog.Requirement(POLARITY_TETHER, 0)), 0)",
+      "sha256": "2aa8d5266eb7c494977eed5d87af9d60074a3f35545dcb8ba140ccc5f9f7daff"
+    },
+    {
+      "ordinal": 9,
+      "constant": "THUNDER_NET",
+      "saved_id": "thunder_net",
+      "proposal": 141,
+      "record_source": "new SkillCatalog.Skill(CATEGORY, THUNDER_NET, 4, true,\n                    List.of(new SkillCatalog.Requirement(CONDUCTIVE_CIRCUIT, 0)), 0)",
+      "sha256": "fcd8044f2b2a1b5db07b215071369a80dd8ec96eb57c266ccbce8d0f2ae370ea"
+    },
+    {
+      "ordinal": 10,
+      "constant": "POTENTIAL_BUFFER",
+      "saved_id": "potential_buffer",
+      "proposal": 142,
+      "record_source": "new SkillCatalog.Skill(CATEGORY, POTENTIAL_BUFFER, 4, true,\n                    List.of(new SkillCatalog.Requirement(GROUNDING_RETURN, 0)), 0)",
+      "sha256": "69c82256ec26a6e35878e400d343ee57fdb6280cd762ed5af1ce3eecc326e9e4"
+    },
+    {
+      "ordinal": 11,
+      "constant": "RAIL_THUNDER_ARRAY",
+      "saved_id": "rail_thunder_array",
+      "proposal": 151,
+      "record_source": "new SkillCatalog.Skill(CATEGORY, RAIL_THUNDER_ARRAY, 5, true,\n                    List.of(new SkillCatalog.Requirement(THUNDER_NET, 0)), 0)",
+      "sha256": "533ebd57bbf3b2e7ec69807b66120a35ffff8b5ba1c8b39e6d9a5e04d590016b"
+    },
+    {
+      "ordinal": 12,
+      "constant": "MAGNETIC_DOMAIN",
+      "saved_id": "magnetic_domain",
+      "proposal": 152,
+      "record_source": "new SkillCatalog.Skill(CATEGORY, MAGNETIC_DOMAIN, 5, true,\n                    List.of(new SkillCatalog.Requirement(POTENTIAL_BUFFER, 0)), 0)",
+      "sha256": "307f2f78294d6e97cbd214d1fffeff593db00a6588e034439361d171a8b1c0b2"
+    },
+    {
+      "ordinal": 13,
+      "constant": "DUAL_POINT",
+      "saved_id": "dual_point",
+      "proposal": 211,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.MELTDOWNER, DUAL_POINT, 1, true, List.of(), 0)",
+      "sha256": "841305e47fcfaa3bf9ff9df6dc98240f6bf60555fcfb2687c0869c9d315aa40b"
+    },
+    {
+      "ordinal": 14,
+      "constant": "SCATTER_PLATES",
+      "saved_id": "scatter_plates",
+      "proposal": 212,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.MELTDOWNER, SCATTER_PLATES, 1, true,\n                    List.of(new SkillCatalog.Requirement(DUAL_POINT, 0)), 0)",
+      "sha256": "ef437079f6470e6913e166dde58187c7a3ef7fc7ad7500257cc8eecc8f35c335"
+    },
+    {
+      "ordinal": 15,
+      "constant": "BEAM_ETCHING",
+      "saved_id": "beam_etching",
+      "proposal": 213,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.MELTDOWNER, BEAM_ETCHING, 1, true,\n                    List.of(new SkillCatalog.Requirement(DUAL_POINT, 0)), 0)",
+      "sha256": "1b80fbecfb80234ee24646f02f57e015738f75176d727d6c850b05fa12dfc0c8"
+    },
+    {
+      "ordinal": 16,
+      "constant": "THERMAL_SHELL",
+      "saved_id": "thermal_shell",
+      "proposal": 222,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.MELTDOWNER, THERMAL_SHELL, 2, true,\n                    List.of(new SkillCatalog.Requirement(SCATTER_PLATES, 0)), 0)",
+      "sha256": "fbf63c20ded7f0b77355c7beeb579d9180995b79fcdf3e334a0b474215d2454e"
+    },
+    {
+      "ordinal": 17,
+      "constant": "FOLDED_MIRROR_ARRAY",
+      "saved_id": "folded_mirror_array",
+      "proposal": 221,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.MELTDOWNER, FOLDED_MIRROR_ARRAY, 2, true,\n                    List.of(new SkillCatalog.Requirement(DUAL_POINT, 0)), 0)",
+      "sha256": "58d4ca88eb1774ef31957845584c1558c235ca875c225e955c8450de9bad89dc"
+    },
+    {
+      "ordinal": 18,
+      "constant": "DISINTEGRATION_SWEEP",
+      "saved_id": "disintegration_sweep",
+      "proposal": 231,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.MELTDOWNER, DISINTEGRATION_SWEEP, 3, true,\n                    List.of(new SkillCatalog.Requirement(FOLDED_MIRROR_ARRAY, 0)), 0)",
+      "sha256": "d07e0b5588ad2376c8009d40a15b7eb64186b0d02676ce8a92a73e4a24f7b46a"
+    },
+    {
+      "ordinal": 19,
+      "constant": "BEAM_STEP",
+      "saved_id": "beam_step",
+      "proposal": 232,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.MELTDOWNER, BEAM_STEP, 3, true,\n                    List.of(new SkillCatalog.Requirement(THERMAL_SHELL, 0)), 0)",
+      "sha256": "bb1c0ea59ba21f1351d415c0bc61a176a980d51ab002980368710a5f1b55d13a"
+    },
+    {
+      "ordinal": 20,
+      "constant": "PARTICLE_LAMINATE",
+      "saved_id": "particle_laminate",
+      "proposal": 241,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.MELTDOWNER, PARTICLE_LAMINATE, 4, true,\n                    List.of(new SkillCatalog.Requirement(DISINTEGRATION_SWEEP, 0)), 0)",
+      "sha256": "c31cc87e68745f803e251d26d2ca8274e0f87a8fe4939bdc6fdd28f6a8ad8917"
+    },
+    {
+      "ordinal": 21,
+      "constant": "DISSIPATION_CURTAIN",
+      "saved_id": "directional_dissipation_curtain",
+      "proposal": 242,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.MELTDOWNER, DISSIPATION_CURTAIN, 4, true,\n                    List.of(new SkillCatalog.Requirement(SCATTER_PLATES, 0)), 0)",
+      "sha256": "889c4705cf20db9b5edd65472abf13050fc9ded369a0cf4706ffc508af98d069"
+    },
+    {
+      "ordinal": 22,
+      "constant": "MULTICORE_CANOPY",
+      "saved_id": "multicore_canopy",
+      "proposal": 251,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.MELTDOWNER, MULTICORE_CANOPY, 5, true,\n                    List.of(new SkillCatalog.Requirement(PARTICLE_LAMINATE, 0)), 0)",
+      "sha256": "8005f84d3fc1ec49a38225829f0f2d7caad90f5912269ada57a345b7c3e69bb7"
+    },
+    {
+      "ordinal": 23,
+      "constant": "ZERO_GAP_ARMOR",
+      "saved_id": "zero_gap_armor",
+      "proposal": 252,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.MELTDOWNER, ZERO_GAP_ARMOR, 5, true,\n                    List.of(new SkillCatalog.Requirement(DISSIPATION_CURTAIN, 0)), 0)",
+      "sha256": "b8ab19faa89727c24a125b44786a89a0f75edbe8d506c19ccc595810a6f11700"
+    },
+    {
+      "ordinal": 24,
+      "constant": "SAFE_LANDING_PROBE",
+      "saved_id": "safe_landing_probe",
+      "proposal": 313,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.TELEPORTER, SAFE_LANDING_PROBE, 1, true, List.of(), 0)",
+      "sha256": "4dfdfb0d5da1756fa4f8c75b1f162c515a73ca243a427968c4b32bdf85fe2abe"
+    },
+    {
+      "ordinal": 25,
+      "constant": "PHASE_SIDESTEP",
+      "saved_id": "phase_sidestep",
+      "proposal": 312,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.TELEPORTER, PHASE_SIDESTEP, 1, true,\n                    List.of(new SkillCatalog.Requirement(SAFE_LANDING_PROBE, 0)), 0)",
+      "sha256": "46e2af2a5607583195f653b4c6e2010c396691265bf7f3da7eefe7d1f2a39130"
+    },
+    {
+      "ordinal": 26,
+      "constant": "DISPLACED_PROJECTION",
+      "saved_id": "displaced_projection",
+      "proposal": 311,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.TELEPORTER, DISPLACED_PROJECTION, 1, true,\n                    List.of(new SkillCatalog.Requirement(SAFE_LANDING_PROBE, 0)), 0)",
+      "sha256": "104f0584caae64aaed856d65ae5f7159e6b076e56b3604968d45540aa3c2255f"
+    },
+    {
+      "ordinal": 27,
+      "constant": "RETURN_MARK",
+      "saved_id": "return_mark",
+      "proposal": 322,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.TELEPORTER, RETURN_MARK, 2, true,\n                    List.of(new SkillCatalog.Requirement(SAFE_LANDING_PROBE, 0)), 0)",
+      "sha256": "3074d8ca6e24983bda5c60216ca4db7a8b68f51e05ade86c7c72812c01b147d1"
+    },
+    {
+      "ordinal": 28,
+      "constant": "RECOVERY_MARK",
+      "saved_id": "recovery_mark",
+      "proposal": 323,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.TELEPORTER, RECOVERY_MARK, 2, true,\n                    List.of(new SkillCatalog.Requirement(DISPLACED_PROJECTION, 0)), 0)",
+      "sha256": "3cbf83d560a861ac5e9f12b275007eaf5c89f5dd49073457e57802a1737ee5de"
+    },
+    {
+      "ordinal": 29,
+      "constant": "CROSS_SUBSTITUTION",
+      "saved_id": "cross_substitution",
+      "proposal": 321,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.TELEPORTER, CROSS_SUBSTITUTION, 2, true,\n                    List.of(new SkillCatalog.Requirement(DISPLACED_PROJECTION, 0)), 0)",
+      "sha256": "f1e998a7761b481b8d44490a7407baa2ef926894587f88466568086ccd679ce5"
+    },
+    {
+      "ordinal": 30,
+      "constant": "CORNER_EXCHANGE",
+      "saved_id": "corner_exchange",
+      "proposal": 333,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.TELEPORTER, CORNER_EXCHANGE, 3, true,\n                    List.of(new SkillCatalog.Requirement(RETURN_MARK, 0)), 0)",
+      "sha256": "6ccd78b586bc7f3ffb9abeabb62fb5267d8e0ad8302fa404e240d55c467db14e"
+    },
+    {
+      "ordinal": 31,
+      "constant": "SHORT_INTERCEPTION",
+      "saved_id": "short_interception",
+      "proposal": 331,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.TELEPORTER, SHORT_INTERCEPTION, 3, true,\n                    List.of(new SkillCatalog.Requirement(CROSS_SUBSTITUTION, 0)), 0)",
+      "sha256": "e8a90e27f6dff39f640f95bb089e9021459088361b5073682ac1e196a48b6a41"
+    },
+    {
+      "ordinal": 32,
+      "constant": "SPATIAL_RELAY",
+      "saved_id": "spatial_relay",
+      "proposal": 343,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.TELEPORTER, SPATIAL_RELAY, 4, true,\n                    List.of(new SkillCatalog.Requirement(RECOVERY_MARK, 0)), 0)",
+      "sha256": "2f19ea0b92ad78f64b361eca6918812d8e76a3645f36295e14ccbcb9f3ced59b"
+    },
+    {
+      "ordinal": 33,
+      "constant": "EMERGENCY_RETURN",
+      "saved_id": "emergency_return",
+      "proposal": 342,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.TELEPORTER, EMERGENCY_RETURN, 4, true,\n                    List.of(new SkillCatalog.Requirement(RETURN_MARK, 0)), 0)",
+      "sha256": "219fb947d5574332b773dee205eee359f7741b46224ebc8b36e0b03af8028892"
+    },
+    {
+      "ordinal": 34,
+      "constant": "TACTICAL_COORDINATE_FORMATION",
+      "saved_id": "tactical_coordinate_formation",
+      "proposal": 353,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.TELEPORTER, TACTICAL_COORDINATE_FORMATION, 5, true,\n                    List.of(new SkillCatalog.Requirement(SPATIAL_RELAY, 0)), 0)",
+      "sha256": "9ac8fd3aae0c95f48c3b197b90b82306a276c4d3bb2a8e10f5821795a0546550"
+    },
+    {
+      "ordinal": 35,
+      "constant": "SPATIAL_PINCER_CORRIDOR",
+      "saved_id": "spatial_pincer_corridor",
+      "proposal": 341,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.TELEPORTER, SPATIAL_PINCER_CORRIDOR, 4, true,\n                    List.of(new SkillCatalog.Requirement(CROSS_SUBSTITUTION, 0)), 0)",
+      "sha256": "a70c561da6d88d9c080b34d64bc62be7f4473ff857119d327c079b530c9d884d"
+    },
+    {
+      "ordinal": 36,
+      "constant": "MULTIDIMENSIONAL_LANDING_ARRAY",
+      "saved_id": "multidimensional_landing_array",
+      "proposal": 351,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.TELEPORTER, MULTIDIMENSIONAL_LANDING_ARRAY, 5, true,\n                    List.of(new SkillCatalog.Requirement(SPATIAL_PINCER_CORRIDOR, 0)), 0)",
+      "sha256": "0f4622e14841fe333c464d64a8cb0a43e85a4604f8a4c4edc6a33cd59659ed96"
+    },
+    {
+      "ordinal": 37,
+      "constant": "DEFLECTION_STRIKE",
+      "saved_id": "deflection_strike",
+      "proposal": 411,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.VECMANIP, DEFLECTION_STRIKE, 1, true, List.of(), 0)",
+      "sha256": "07a73a70a3850847e57084290fef8a191ead6771c546425c960ecda183fe34f2"
+    },
+    {
+      "ordinal": 38,
+      "constant": "VECTOR_PARRY",
+      "saved_id": "vector_parry",
+      "proposal": 412,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.VECMANIP, VECTOR_PARRY, 1, true,\n                    List.of(new SkillCatalog.Requirement(DEFLECTION_STRIKE, 0)), 0)",
+      "sha256": "85cf98e41686a4b490303cf383f0f0094cf2c50cd2c3528e06fe5aee706b1135"
+    },
+    {
+      "ordinal": 39,
+      "constant": "BRAKING_TOUCH",
+      "saved_id": "braking_touch",
+      "proposal": 413,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.VECMANIP, BRAKING_TOUCH, 1, true,\n                    List.of(new SkillCatalog.Requirement(DEFLECTION_STRIKE, 0)), 0)",
+      "sha256": "61ce6091190f3cb37f62ac35d9608e4f8f2671a6c1b4041b146911ffbeca103e"
+    },
+    {
+      "ordinal": 40,
+      "constant": "SHEAR_WINDBLADE",
+      "saved_id": "shear_windblade",
+      "proposal": 421,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.VECMANIP, SHEAR_WINDBLADE, 2, true,\n                    List.of(new SkillCatalog.Requirement(DEFLECTION_STRIKE, 0)), 0)",
+      "sha256": "a6290cc9d41d4baabadfee5257b55a3ac0842125d0d6594622452418982aaca4"
+    },
+    {
+      "ordinal": 41,
+      "constant": "INERTIAL_ANCHOR",
+      "saved_id": "inertial_anchor",
+      "proposal": 422,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.VECMANIP, INERTIAL_ANCHOR, 2, true,\n                    List.of(new SkillCatalog.Requirement(VECTOR_PARRY, 0)), 0)",
+      "sha256": "df375901757b8fc62b6a5df9ade6389ac972f8a5f90b6307354ac0cb941e08ee"
+    },
+    {
+      "ordinal": 42,
+      "constant": "YAW_PALM",
+      "saved_id": "yaw_palm",
+      "proposal": 423,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.VECMANIP, YAW_PALM, 2, true,\n                    List.of(new SkillCatalog.Requirement(BRAKING_TOUCH, 0)), 0)",
+      "sha256": "69a829f86b02cd18fdc3f9765e6028d5b2f912b3ca4813f0a73219c3a6cd6d3d"
+    },
+    {
+      "ordinal": 43,
+      "constant": "TRAJECTORY_RETURN",
+      "saved_id": "trajectory_return",
+      "proposal": 431,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.VECMANIP, TRAJECTORY_RETURN, 3, true,\n                    List.of(new SkillCatalog.Requirement(YAW_PALM, 0)), 0)",
+      "sha256": "194dfd7aeff8e4027d53c3b7bbb3784bee02e0d2920e925a59e5247aee63ea98"
+    },
+    {
+      "ordinal": 44,
+      "constant": "CIRCULATION_RELIEF",
+      "saved_id": "circulation_relief",
+      "proposal": 432,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.VECMANIP, CIRCULATION_RELIEF, 3, true,\n                    List.of(new SkillCatalog.Requirement(INERTIAL_ANCHOR, 0)), 0)",
+      "sha256": "beaeab01a5fc538929b5fc2d1fc4ed7b2bbfcedd411bd774daf8c339b8564a4c"
+    },
+    {
+      "ordinal": 45,
+      "constant": "CIRCULATION_LISTENING",
+      "saved_id": "circulation_listening",
+      "proposal": 433,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.VECMANIP, CIRCULATION_LISTENING, 3, true,\n                    List.of(new SkillCatalog.Requirement(CIRCULATION_RELIEF, 0)), 0)",
+      "sha256": "20b35a271a5ed505f1a20e82b794567f6b86904421f5ca6599440a5e204f8b37"
+    },
+    {
+      "ordinal": 46,
+      "constant": "VECTOR_CAGE",
+      "saved_id": "vector_cage",
+      "proposal": 441,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.VECMANIP, VECTOR_CAGE, 4, true,\n                    List.of(new SkillCatalog.Requirement(TRAJECTORY_RETURN, 0)), 0)",
+      "sha256": "70c8bab5f97354ed1cac7c1cf6047de692f765f8a6259ef36275cd69ea6e75ec"
+    },
+    {
+      "ordinal": 47,
+      "constant": "MULTI_AXIS_REFLECTION",
+      "saved_id": "multi_axis_reflection",
+      "proposal": 442,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.VECMANIP, MULTI_AXIS_REFLECTION, 4, true,\n                    List.of(new SkillCatalog.Requirement(VECTOR_CAGE, 0)), 0)",
+      "sha256": "fc766d3aa7855c7587b867014a3659c99948a8f55180f5cd3770d763ae69442c"
+    },
+    {
+      "ordinal": 48,
+      "constant": "WIND_PRESSURE_LIFT",
+      "saved_id": "wind_pressure_lift",
+      "proposal": 443,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.VECMANIP, WIND_PRESSURE_LIFT, 4, true,\n                    List.of(new SkillCatalog.Requirement(MULTI_AXIS_REFLECTION, 0)), 0)",
+      "sha256": "86f1184c465d32d15460be529cd3e186bcfb4986799d16d74776152b49ce2e21"
+    },
+    {
+      "ordinal": 49,
+      "constant": "POINT_MELTDOWN",
+      "saved_id": "point_meltdown",
+      "proposal": 233,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.MELTDOWNER, POINT_MELTDOWN, 3, true,\n                    List.of(new SkillCatalog.Requirement(BEAM_ETCHING, 0)), 0)",
+      "sha256": "9c70f4480a6d332083bda37690d88d95ee945369ad2a489b6da6e23a54df1d42"
+    },
+    {
+      "ordinal": 50,
+      "constant": "REMOTE_SCATTER_RELAY",
+      "saved_id": "remote_scatter_relay",
+      "proposal": 253,
+      "record_source": "new SkillCatalog.Skill(HighPowerCategories.MELTDOWNER, REMOTE_SCATTER_RELAY, 5, true,\n                    List.of(new SkillCatalog.Requirement(FOLDED_MIRROR_ARRAY, 0)), 0)",
+      "sha256": "541e68552b4c548f84c5c4501c21b2008ed3e34561c1e0dfe7b9b5e01ff51861"
+    }
+  ]
+}

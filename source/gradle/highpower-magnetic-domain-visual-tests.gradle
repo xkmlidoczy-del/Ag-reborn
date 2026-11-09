@@ -1,0 +1,8 @@
+// NEW152 actual input, receipt lifecycle, geometry and exact reserve HUD contracts.
+tasks.register('magneticDomainVisualTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.MagneticDomainVisualRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'magneticDomainVisualTest' }

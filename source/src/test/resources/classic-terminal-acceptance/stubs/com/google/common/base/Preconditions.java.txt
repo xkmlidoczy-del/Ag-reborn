@@ -1,0 +1,1 @@
+package com.google.common.base; public class Preconditions {public static <T> T checkNotNull(T a){if(a==null)throw new NullPointerException();return a;}}

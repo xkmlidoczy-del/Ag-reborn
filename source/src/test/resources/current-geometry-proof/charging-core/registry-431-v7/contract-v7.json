@@ -1,0 +1,63 @@
+{
+  "version": 7,
+  "scope": "NEW431-only append to immutable v6/.65 HighPowerSkills companion; old M41 differential and historical guards remain separate",
+  "base_contract": "../contract-v1.json",
+  "base_contract_sha256": "18764bbfd49693e9875928905caafc02016d9d6e499e19a875a8344216d32b3c",
+  "predecessor_contract": "../registry-423-v6/contract-v6.json",
+  "predecessor_proof_revision": "744acf03501c6f79b7c62ec2d056046d02334917",
+  "baseline_revision": "744acf03501c6f79b7c62ec2d056046d02334917",
+  "baseline_source": "HighPowerSkills.v65.java",
+  "baseline_source_sha256": "2015d442417b24bb774574839ad903d2f6c5e5d75d9f39202752ac0f6fc76968",
+  "immutable_predecessor_inputs": {
+    "src/test/resources/current-geometry-proof/charging-core/ChargingCoreLoader.java": "b020c3c870005506dbbee394d493937880e213e26e4e7d35f0d99899b5aac8dc",
+    "src/test/resources/current-geometry-proof/charging-core/ChargingCoreTrace.java": "92ab15453e8fbeabe8a1e69ad861b6a80209eef016ae89d6c6eb6536b35db1b6",
+    "src/test/resources/current-geometry-proof/charging-core/README.md": "8431c1d919b9bf89af8d16bc646840c61dcef7991f5f39e539e55b1652dcc11d",
+    "src/test/resources/current-geometry-proof/charging-core/contract-v1.json": "18764bbfd49693e9875928905caafc02016d9d6e499e19a875a8344216d32b3c",
+    "src/test/resources/current-geometry-proof/charging-core/registry-412-v2/HighPowerSkills.v58.java": "ae786dbafd230eec42c45390cc33bb5778b9c7535a456451d0e00247fdbd2445",
+    "src/test/resources/current-geometry-proof/charging-core/registry-412-v2/contract-v2.json": "8c27b2cd7f5251379235d64d45ff4716f7d9e4683f0a6bc0fb7049a5e939936a",
+    "src/test/resources/current-geometry-proof/charging-core/registry-412-v2/verify-charging-m41-core-v1.py": "2e54fb91fdc704bd7456cfa6c07768ccbeee89cd51f24f42192aee790a815c6d",
+    "scripts/verify-charging-m41-core.py": "f7efad59197bd24c0cf0f911dae503370eadc3490bb5dc0edbbfff9f27793eca",
+    "docs/charging-core-registry-412-companion-v2.md": "8ebfc6cf16be9eda080a303dd12865573779cff2c49a4c54332ea0d14a7a0b00",
+    "scripts/verify-charging-m41-core-v3.py": "e714e97ea1e055dbc56eef32dc9fe4a4859431810c6fd6547f7cb2e4bbbc8f2d",
+    "docs/charging-core-registry-413-companion-v3.md": "0cb068d3c6d296ab1ca14dc27445ee6dcd6b1289bb84ba829ff79293df5d5f6d",
+    "src/test/resources/current-geometry-proof/charging-core/registry-413-v3/contract-v3.json": "2fe2996405e524c7c57c10f5936068ae9eed104d5308725ae75ee522403a4a02",
+    "src/test/resources/current-geometry-proof/charging-core/registry-413-v3/HighPowerSkills.v59.java": "a602710107b954afda265d08392c399c17e53931b76e0a71c91d4e0713997411",
+    "scripts/verify-charging-m41-core-v4.py": "70a76e62c8f8f469a7180283fdedbf89220f493225b9a7f32e7f1d93d8cff6b9",
+    "docs/charging-core-registry-421-companion-v4.md": "4e9da305eced506b0a808fd56a680b20644c7e2ecefb10f28f194fe73ef8bab6",
+    "src/test/resources/current-geometry-proof/charging-core/registry-421-v4/contract-v4.json": "5864314d211186bb93dce10a7bd9bda6ec73e971807e90a7afa184c6213652a8",
+    "src/test/resources/current-geometry-proof/charging-core/registry-421-v4/HighPowerSkills.v60.java": "e2154b17131f24939448295ff4dcbce62a1d4b050315044b4148aa7b7e083bdb",
+    "scripts/verify-charging-m41-core-v5.py": "fa547647cab4539b9ec2ee432f4681f6fa3d60bd777d3161c7ebc950dc9de521",
+    "docs/charging-core-registry-422-companion-v5.md": "058bf1429aa8067eba8702f861bcbf49ef779cd6d3000dc695b1ef6242cb0b0f",
+    "src/test/resources/current-geometry-proof/charging-core/registry-422-v5/contract-v5.json": "96c52f6ad9b4101af9054c3981cbf2d27879de48116613f3e876776db4a52a82",
+    "src/test/resources/current-geometry-proof/charging-core/registry-422-v5/HighPowerSkills.v61.java": "418c8603673cf25a00cfc441955d7dda9df57364fc7374fe6626f01f298f9068",
+    "scripts/verify-charging-m41-core-v6.py": "26d6755133d7419746572283f89e31679856a2dc1dde7cae8dcf071b6176cb59",
+    "docs/charging-core-registry-423-companion-v6.md": "807c957f43618b1fea898cc71a8d9124f2944576ac3df0b1dd77c0311d6ea2e5",
+    "src/test/resources/current-geometry-proof/charging-core/registry-423-v6/contract-v6.json": "4af2bdfdc3ee5142d5b68e6be0527f3232fc5937aa8b4eb70b6122cb407d5091",
+    "src/test/resources/current-geometry-proof/charging-core/registry-423-v6/HighPowerSkills.v64.java": "b8b9ba3ed70b97ad036d158e54417d6810dc8e36aaddced608bf9bbd06954f21"
+  },
+  "source_path": "src/main/java/cn/academy/port/highpower/HighPowerSkills.java",
+  "class_name": "cn.academy.port.highpower.HighPowerSkills",
+  "old_class_sha256": "f4101cd82bc638a01a6701f9cdc1a80219b685cc2a5f787cc459089e891c44d6",
+  "reconstructed_source_sha256": "b4e2fb4463f114594fe8db395f92dcc981d144b8eed0712ed5dfd59ea94b0f93",
+  "reconstructed_class_sha256": "089b46759f042699d8dd66fa4d4305ecdd1c0b04afe1da73b881212902323177",
+  "registered_highpower_before": 43,
+  "registered_highpower_after": 44,
+  "approved_edits": [
+    {
+      "name": "new-431-constants",
+      "before": "    public static final String CATEGORY = \"electromaster\";\n",
+      "after": "    public static final String CATEGORY = \"electromaster\";\n    public static final String TRAJECTORY_RETURN = \"trajectory_return\";\n    public static final int TRAJECTORY_RETURN_PROPOSAL = 431;\n"
+    },
+    {
+      "name": "append-431-id",
+      "before": "MULTIDIMENSIONAL_LANDING_ARRAY, DEFLECTION_STRIKE, VECTOR_PARRY, BRAKING_TOUCH, SHEAR_WINDBLADE, INERTIAL_ANCHOR, YAW_PALM);\n",
+      "after": "MULTIDIMENSIONAL_LANDING_ARRAY, DEFLECTION_STRIKE, VECTOR_PARRY, BRAKING_TOUCH, SHEAR_WINDBLADE, INERTIAL_ANCHOR, YAW_PALM, TRAJECTORY_RETURN);\n"
+    },
+    {
+      "name": "append-431-record",
+      "before": "            new SkillCatalog.Skill(HighPowerCategories.VECMANIP, YAW_PALM, 2, true,\n                    List.of(new SkillCatalog.Requirement(BRAKING_TOUCH, 0)), 0));\n",
+      "after": "            new SkillCatalog.Skill(HighPowerCategories.VECMANIP, YAW_PALM, 2, true,\n                    List.of(new SkillCatalog.Requirement(BRAKING_TOUCH, 0)), 0),\n            new SkillCatalog.Skill(HighPowerCategories.VECMANIP, TRAJECTORY_RETURN, 3, true,\n                    List.of(new SkillCatalog.Requirement(YAW_PALM, 0)), 0));\n"
+    }
+  ],
+  "historic_guard_status": "UNCHANGED_SEPARATE_FAILURES_NOT_REPAIRED"
+}

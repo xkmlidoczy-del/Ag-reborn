@@ -1,0 +1,152 @@
+[
+  {
+    "resource": "assets/academy/models/terminal_installer.obj",
+    "sha256": "20fa447f729d2fa0ea52be90b1f98d30058b9d0a9b7ad9704c8ee2186c337149",
+    "source": "src/main/resources/assets/academy/models/terminal_installer.obj"
+  },
+  {
+    "resource": "assets/academy/textures/models/terminal_installer.png",
+    "sha256": "fdfd0873529f88922722f098023c05211b1676cee5c742f383cd223d425e8bde",
+    "source": "src/main/resources/assets/academy/textures/models/terminal_installer.png"
+  },
+  {
+    "resource": "assets/academy/guis/terminal.xml",
+    "sha256": "c63d1fc77c55f60da5e459bfc20df4dadd1df18156de97713077e3342fb5de7b",
+    "source": "src/main/resources/assets/academy/guis/terminal.xml"
+  },
+  {
+    "resource": "assets/academy/guis/terminal_installing.xml",
+    "sha256": "97b31d61ae579ef5c2c41672b51a16f7452d70371cb82f9008015f7db58716a2",
+    "source": "src/main/resources/assets/academy/guis/terminal_installing.xml"
+  },
+  {
+    "resource": "assets/academy/guis/settings.xml",
+    "sha256": "78617bc2edf2308c4d7c15a7a6e608c298c1c7a7747d4abe994ca0802b8e3e52",
+    "source": "src/main/resources/assets/academy/guis/settings.xml"
+  },
+  {
+    "resource": "assets/academy/guis/ui_edit.xml",
+    "sha256": "8d16f224d5cf17ca2a6bf0336a1095e1c82e9abc457e1cde06577888a2ba158c",
+    "source": "src/main/resources/assets/academy/guis/ui_edit.xml"
+  },
+  {
+    "resource": "assets/academy/textures/guis/data_terminal/back.png",
+    "sha256": "8712d0875e7e2dc58f3259594c84bdef5e030f95b09f8bcb02ac2aff1d8b56be",
+    "source": "src/main/resources/assets/academy/textures/guis/data_terminal/back.png"
+  },
+  {
+    "resource": "assets/academy/textures/guis/data_terminal/logo.png",
+    "sha256": "5fc0022454846e973daa8fc765f6b23ab47609f7253507f0872de081f57b7a94",
+    "source": "src/main/resources/assets/academy/textures/guis/data_terminal/logo.png"
+  },
+  {
+    "resource": "assets/academy/textures/guis/data_terminal/arrow_up.png",
+    "sha256": "0149f0d429a096aeacfde42889757f2c884f8be1d0d06528487a9ad432849183",
+    "source": "src/main/resources/assets/academy/textures/guis/data_terminal/arrow_up.png"
+  },
+  {
+    "resource": "assets/academy/textures/guis/data_terminal/arrow_down.png",
+    "sha256": "b607fbb548ffeccb24c592948a0c0e9905c43f263917a42e88bd2aee467e2054",
+    "source": "src/main/resources/assets/academy/textures/guis/data_terminal/arrow_down.png"
+  },
+  {
+    "resource": "assets/academy/textures/guis/data_terminal/cursor.png",
+    "sha256": "200fbb7302cafb4cc22aeb57bd727c383fefe8ac7db378782eb6c5475a118bb4",
+    "source": "src/main/resources/assets/academy/textures/guis/data_terminal/cursor.png"
+  },
+  {
+    "resource": "assets/academy/textures/guis/data_terminal/app_back.png",
+    "sha256": "419ef4ac79b285e7fea1881e6a793595c9c0582aacf426ceec18a2fff1f0ba97",
+    "source": "src/main/resources/assets/academy/textures/guis/data_terminal/app_back.png"
+  },
+  {
+    "resource": "assets/academy/textures/guis/data_terminal/app_back_highlight.png",
+    "sha256": "d5e7a39e8ba55bc59ff370320d9fa3c1abe1ffde4311f33fc003a0985c2d4f53",
+    "source": "src/main/resources/assets/academy/textures/guis/data_terminal/app_back_highlight.png"
+  },
+  {
+    "resource": "assets/academy/textures/guis/apps/settings/icon.png",
+    "sha256": "925cc1b37de2a5d00eb7af288d5bf07341319ba8dda9b5a1bbbacc587513bcc7",
+    "source": "src/main/resources/assets/academy/textures/guis/apps/settings/icon.png"
+  },
+  {
+    "resource": "assets/academy/textures/guis/apps/skill_tree/icon.png",
+    "sha256": "0336f5328caed65d02a175a1cfd7b134aeab9e9b80c9ec6a757e99a714113961",
+    "source": "src/main/resources/assets/academy/textures/guis/apps/skill_tree/icon.png"
+  },
+  {
+    "resource": "assets/academy/textures/guis/apps/freq_transmitter/icon.png",
+    "sha256": "ec1cd39ffd382bd27f28725e9aa95596831d6b02adc3f00dac744e555ee09716",
+    "source": "src/main/resources/assets/academy/textures/guis/apps/freq_transmitter/icon.png"
+  },
+  {
+    "resource": "assets/academy/textures/guis/apps/tutorial/icon_0.png",
+    "sha256": "44ad0858f630a90b6049de608900f9e4019e1b68532f3b61f107fc6b7bbc19d1",
+    "source": "src/main/resources/assets/academy/textures/guis/apps/tutorial/icon_0.png"
+  },
+  {
+    "resource": "assets/academy/textures/guis/apps/tutorial/icon_1.png",
+    "sha256": "5ff0fa02d181cd09426c526780018f203a359d03d80426654059f36a38d0cbe4",
+    "source": "src/main/resources/assets/academy/textures/guis/apps/tutorial/icon_1.png"
+  },
+  {
+    "resource": "assets/academy/textures/guis/apps/tutorial/icon_2.png",
+    "sha256": "cac820e3dc3f042fc4b0cef97ffe1a63b9ea0059c20bc5e5d3e662c7ad9ea666",
+    "source": "src/main/resources/assets/academy/textures/guis/apps/tutorial/icon_2.png"
+  },
+  {
+    "resource": "assets/academy/textures/guis/settings.png",
+    "sha256": "eb993eec0f222cb6d17cc0171e744068ad16da030fd0da9d45efd742498e0897",
+    "source": "src/main/resources/assets/academy/textures/guis/settings.png"
+  },
+  {
+    "resource": "assets/academy/textures/guis/check_true.png",
+    "sha256": "94eda637635fd1173fa75bc62630a3515949657636f8ea7d9facb554c75894d0",
+    "source": "src/main/resources/assets/academy/textures/guis/check_true.png"
+  },
+  {
+    "resource": "assets/academy/textures/guis/check_false.png",
+    "sha256": "4baebcf47d4bfae933181af556e7d44bc31a6254018f3be06f4b05009fd259eb",
+    "source": "src/main/resources/assets/academy/textures/guis/check_false.png"
+  },
+  {
+    "resource": "assets/academy/textures/guis/window_ui_resize.png",
+    "sha256": "1d533cf3390bcf8882b4617fa95be46b0e5cf3004480861192bf0e79f16b1330",
+    "source": "src/main/resources/assets/academy/textures/guis/window_ui_resize.png"
+  },
+  {
+    "resource": "assets/academy/textures/guis/life_record/rollbar.png",
+    "sha256": "6deeb025601cd5b984acd0d04b2c0a099cb1ee204a4b3ccebb53444dc36ac301",
+    "source": "src/main/resources/assets/academy/textures/guis/life_record/rollbar.png"
+  },
+  {
+    "resource": "assets/academy/textures/guis/ui/ui_developerleft_skilltree.png",
+    "sha256": "6a36cf360a40cd9c1b367c75f0486df0697779b4791607d1dcd74265423d016d",
+    "source": "src/main/resources/assets/academy/textures/guis/ui/ui_developerleft_skilltree.png"
+  },
+  {
+    "resource": "assets/academy/sounds/terminal/select.ogg",
+    "sha256": "3396c80283d076452403b18d9ae56d4af2ac07699bbaa8fac5895831a44a250f",
+    "source": "src/main/resources/assets/academy/sounds/terminal/select.ogg"
+  },
+  {
+    "resource": "assets/academy/sounds/terminal/confirm.ogg",
+    "sha256": "ba7eb99cb5823dd71f8d09d2fe6d03796a0b1c092ac974515c3fcde6735acabc",
+    "source": "src/main/resources/assets/academy/sounds/terminal/confirm.ogg"
+  },
+  {
+    "resource": "assets/academy/textures/guis/edit_preview/cpbar.png",
+    "sha256": "0cf02330c975d3b1f2b683b84b1d50e4e048965ee3c30d67f13f87a888ee4b74",
+    "source": "src/main/resources/assets/academy/textures/guis/edit_preview/cpbar.png"
+  },
+  {
+    "resource": "assets/academy/textures/guis/edit_preview/key_hint.png",
+    "sha256": "02b4633f95b2fcc50090aaefaa9ec80f558b3c5e208dec64e4ce23438d8ce5fc",
+    "source": "src/main/resources/assets/academy/textures/guis/edit_preview/key_hint.png"
+  },
+  {
+    "resource": "assets/academy/textures/guis/edit_preview/notify_logo.png",
+    "sha256": "925dd1b7591138d493dec04dd76edb2a267757cba16bd266f36660cf2264527c",
+    "source": "src/main/resources/assets/academy/textures/guis/edit_preview/notify_logo.png"
+  }
+]

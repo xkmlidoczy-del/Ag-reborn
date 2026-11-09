@@ -1,0 +1,9 @@
+// Pure esper incoming-damage policy: non-direct and erasure damage refused, direct hits and exact skill damage pass.
+tasks.register('esperDamageRulesTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.core.EsperDamageRulesRegressionTest'
+    enableAssertions = true
+    maxHeapSize = '128m'
+}
+tasks.named('check') { dependsOn 'esperDamageRulesTest' }

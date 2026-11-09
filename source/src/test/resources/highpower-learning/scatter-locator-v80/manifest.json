@@ -1,0 +1,18 @@
+{
+  "baseline_revision": "27ecc8d869ae6389253c2e5c8fe4df68b6291424",
+  "scope": "Byte-exact existing HEAD before the NEW223 append; no historical runner, fixture, expected hash or total is refreshed. Current proof is an independent companion.",
+  "files": {
+    "src/main/java/cn/academy/port/highpower/HighPowerSkills.java": {
+      "snapshot": "HighPowerSkills.v79.java",
+      "sha256": "7b7c560aec52fba4884d07c48d89346667847131075d9cd183934592d4b9d104"
+    },
+    "src/main/java/cn/academy/port/client/HighPowerDeveloperLayout.java": {
+      "snapshot": "HighPowerDeveloperLayout.v79.java",
+      "sha256": "afc690720856b9198e83e102d332a26f99ed3716a7d2b622893fa2e49844541a"
+    },
+    "src/test/java/cn/academy/port/highpower/RemoteScatterRelayLearningRegressionTest.java": {
+      "snapshot": "RemoteScatterRelayLearningRegressionTest.v79.java",
+      "sha256": "03e3f049de81463d9b2c3a2a74c0e8d027dcb8b73a1916f81791d0601507b7cf"
+    }
+  }
+}

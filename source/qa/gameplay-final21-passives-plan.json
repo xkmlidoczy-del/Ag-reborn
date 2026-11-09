@@ -1,0 +1,166 @@
+[
+  {
+    "name": "final21-passives-training-electromaster",
+    "script": "gameplay-passives-training-electromaster.script",
+    "directory": "run-showcase-sable",
+    "category": "electromaster",
+    "records": [
+      "brain_course",
+      "brain_course_advanced",
+      "mind_course"
+    ],
+    "status": "planned_not_run",
+    "props": "",
+    "suiteGroup": "passives",
+    "sourcePlan": "gameplay-passives-plan.json",
+    "sourceCaseName": "final96-passives-training-electromaster",
+    "scriptSha256": "475af63586ec246aa50eef64ac48ce791c4f0c9007276d2a77f8babc6d5f798a",
+    "nominalFixedTicks": 1797,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  },
+  {
+    "name": "final21-passives-training-meltdowner",
+    "script": "gameplay-passives-training-meltdowner.script",
+    "directory": "run-showcase-sable",
+    "category": "meltdowner",
+    "records": [
+      "brain_course",
+      "brain_course_advanced",
+      "mind_course"
+    ],
+    "status": "planned_not_run",
+    "props": "",
+    "suiteGroup": "passives",
+    "sourcePlan": "gameplay-passives-plan.json",
+    "sourceCaseName": "final96-passives-training-meltdowner",
+    "scriptSha256": "6d9d5528a0fee3aedf145828c1e59c347aa50e96df95471ca9ebb02fe03e4b14",
+    "nominalFixedTicks": 1797,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  },
+  {
+    "name": "final21-passives-training-teleporter",
+    "script": "gameplay-passives-training-teleporter.script",
+    "directory": "run-showcase-sable",
+    "category": "teleporter",
+    "records": [
+      "brain_course",
+      "brain_course_advanced",
+      "mind_course"
+    ],
+    "status": "planned_not_run",
+    "props": "",
+    "suiteGroup": "passives",
+    "sourcePlan": "gameplay-passives-plan.json",
+    "sourceCaseName": "final96-passives-training-teleporter",
+    "scriptSha256": "28697d198b540399680b9ac6cbd53c8e6aaf712cdf0229d24b23a57424d34af3",
+    "nominalFixedTicks": 1797,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  },
+  {
+    "name": "final21-passives-training-vecmanip",
+    "script": "gameplay-passives-training-vecmanip.script",
+    "directory": "run-showcase-sable",
+    "category": "vecmanip",
+    "records": [
+      "brain_course",
+      "brain_course_advanced",
+      "mind_course"
+    ],
+    "status": "planned_not_run",
+    "props": "",
+    "suiteGroup": "passives",
+    "sourcePlan": "gameplay-passives-plan.json",
+    "sourceCaseName": "final96-passives-training-vecmanip",
+    "scriptSha256": "cd13de314e3b77a983312e48da330b4e73a733fba636cd71fe1155b5a1378f63",
+    "nominalFixedTicks": 1797,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  },
+  {
+    "name": "final21-passives-rad_intensify",
+    "script": "gameplay-passives-rad_intensify.script",
+    "directory": "run-showcase-sable",
+    "category": "meltdowner",
+    "records": [
+      "rad_intensify"
+    ],
+    "status": "planned_not_run",
+    "props": "",
+    "suiteGroup": "passives",
+    "sourcePlan": "gameplay-passives-plan.json",
+    "sourceCaseName": "final96-passives-rad_intensify",
+    "scriptSha256": "1ba30d2d447aa6e4b1ced3aa2502fdcc9799a42af434b87b42453744849af5be",
+    "nominalFixedTicks": 950,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  },
+  {
+    "name": "final21-passives-dim_folding_theorem",
+    "script": "gameplay-passives-dim_folding_theorem.script",
+    "directory": "run-showcase-sable",
+    "category": "teleporter",
+    "records": [
+      "dim_folding_theorem"
+    ],
+    "random_boundary": "96 finite real casts; no random seed override; absence of required observed critical remains failure",
+    "status": "planned_not_run",
+    "props": "",
+    "suiteGroup": "passives",
+    "sourcePlan": "gameplay-passives-plan.json",
+    "sourceCaseName": "final96-passives-dim_folding_theorem",
+    "scriptSha256": "dac9e4ea6829a5338699a12c4ef0063136c512fc2b1f9e4f03a1f48ca6ede0d4",
+    "nominalFixedTicks": 6054,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  },
+  {
+    "name": "final21-passives-space_fluct",
+    "script": "gameplay-passives-space_fluct.script",
+    "directory": "run-showcase-sable",
+    "category": "teleporter",
+    "records": [
+      "space_fluct"
+    ],
+    "random_boundary": "96 finite real casts; no random seed override; absence of required observed critical remains failure",
+    "status": "planned_not_run",
+    "props": "",
+    "suiteGroup": "passives",
+    "sourcePlan": "gameplay-passives-plan.json",
+    "sourceCaseName": "final96-passives-space_fluct",
+    "scriptSha256": "5bb43af657f8ac73ea3ba4604f75235ad6414b1cbed35bd71794d597ed0662e3",
+    "nominalFixedTicks": 6054,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  }
+]

@@ -1,0 +1,9 @@
+package cn.academy.terminal.client;
+public class AcceptanceProbe {
+ private static TerminalUI ui;
+ public static void initialize()throws Exception {var init=TerminalUI.class.getDeclaredMethod("__init");init.setAccessible(true);init.invoke(null);TerminalUI.keyHandler.onKeyUp();ui=(TerminalUI)cn.lambdalib.util.client.auxgui.AuxGuiHandler.active().getFirst();}
+ public static double[][] sample(int width,int height,long time,double x,double y){var mc=net.minecraft.client.Minecraft.getMinecraft();mc.displayWidth=width;mc.displayHeight=height;cn.lambdalib.util.helper.GameTimer.time=time;ui.mouseX=ui.buffX=x;ui.mouseY=ui.buffY=y;ui.draw(new net.minecraft.client.gui.ScaledResolution());return new double[][]{cn.lambdalib.cgui.gui.CGui.model,cn.lambdalib.cgui.gui.CGui.projection};}
+ public static boolean settingsKeepsTerminal(){var mc=net.minecraft.client.Minecraft.getMinecraft();ui.selection=0;cn.academy.core.ModuleCoreClient.dynKeyManager.click.onKeyUp();return mc.currentScreen instanceof cn.academy.terminal.app.settings.SettingsUI&&!ui.isDisposed();}
+ public static int backgroundDraws(boolean paused){var mc=net.minecraft.client.Minecraft.getMinecraft();mc.paused=paused;int before=cn.lambdalib.cgui.gui.CGui.draws;cn.lambdalib.util.client.auxgui.AuxGuiHandler.instance.drawHudEvent(new net.minecraftforge.client.event.RenderGameOverlayEvent());return cn.lambdalib.cgui.gui.CGui.draws-before;}
+ public static boolean disposeStopsBackground(){ui.dispose();return backgroundDraws(false)==0;}
+}

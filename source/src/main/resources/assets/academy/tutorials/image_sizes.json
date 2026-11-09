@@ -1,0 +1,30 @@
+{
+  "academy:textures/tutorial/update_notify.png": [
+    32,
+    32
+  ],
+  "academy:textures/tutorial/preset_selection_ui.png": [
+    500,
+    576
+  ],
+  "academy:textures/tutorial/skill_tree_ui.png": [
+    486,
+    250
+  ],
+  "academy:textures/tutorial/wind_gen_ui.png": [
+    500,
+    519
+  ],
+  "academy:textures/tutorial/ability_ui.png": [
+    200,
+    256
+  ],
+  "academy:textures/tutorial/wind_gen.png": [
+    345,
+    500
+  ],
+  "academy:textures/tutorial/overload.png": [
+    450,
+    72
+  ]
+}

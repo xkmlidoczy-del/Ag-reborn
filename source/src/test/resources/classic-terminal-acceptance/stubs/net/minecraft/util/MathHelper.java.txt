@@ -1,0 +1,1 @@
+package net.minecraft.util; public class MathHelper {public static float sin(float f){return (float)Math.sin(f);}}

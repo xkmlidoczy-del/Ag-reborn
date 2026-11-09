@@ -1,0 +1,10 @@
+package org.lwjgl.opengl;
+import java.util.*;
+public class GL11 {public static final int GL_CULL_FACE=1,GL_BLEND=2,GL_SRC_ALPHA=3,GL_ONE_MINUS_SRC_ALPHA=4,GL_MODELVIEW=5;private static double[] matrix=identity();private static Deque<double[]> stack=new ArrayDeque<>();public static double[] captured;
+private static double[] identity(){double[] m=new double[16];for(int i=0;i<4;i++)m[i*5]=1;return m;}
+private static void multiply(double[] right){double[] result=new double[16];for(int col=0;col<4;col++)for(int row=0;row<4;row++)for(int k=0;k<4;k++)result[col*4+row]+=matrix[k*4+row]*right[col*4+k];matrix=result;}
+public static void reset(){matrix=identity();stack.clear();captured=null;}public static void capture(){captured=matrix.clone();}
+public static void glPushMatrix(){stack.push(matrix.clone());}public static void glPopMatrix(){matrix=stack.pop();}public static void glEnable(int n){}public static void glDisable(int n){}public static void glBlendFunc(int a,int b){}public static void glMatrixMode(int n){}
+public static void glTranslated(double x,double y,double z){double[] m=identity();m[12]=x;m[13]=y;m[14]=z;multiply(m);}public static void glScaled(double x,double y,double z){double[] m=identity();m[0]=x;m[5]=y;m[10]=z;multiply(m);}public static void glScalef(float x,float y,float z){glScaled(x,y,z);}
+public static void glRotatef(float angle,float x,float y,float z){glRotated(angle,x,y,z);}public static void glRotated(double angle,double x,double y,double z){double norm=Math.sqrt(x*x+y*y+z*z);x/=norm;y/=norm;z/=norm;double c=Math.cos(Math.toRadians(angle)),s=Math.sin(Math.toRadians(angle)),t=1-c;double[] m=identity();m[0]=t*x*x+c;m[4]=t*x*y-s*z;m[8]=t*x*z+s*y;m[1]=t*x*y+s*z;m[5]=t*y*y+c;m[9]=t*y*z-s*x;m[2]=t*x*z-s*y;m[6]=t*y*z+s*x;m[10]=t*z*z+c;multiply(m);}}
+

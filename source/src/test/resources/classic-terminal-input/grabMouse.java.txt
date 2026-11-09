@@ -1,0 +1,17 @@
+public void grabMouse() {
+        if (this.minecraft.isWindowActive()) {
+            if (!this.mouseGrabbed) {
+                if (!Minecraft.ON_OSX) {
+                    KeyMapping.setAll();
+                }
+
+                this.mouseGrabbed = true;
+                this.xpos = (double)(this.minecraft.getWindow().getScreenWidth() / 2);
+                this.ypos = (double)(this.minecraft.getWindow().getScreenHeight() / 2);
+                InputConstants.grabOrReleaseMouse(this.minecraft.getWindow().getWindow(), 212995, this.xpos, this.ypos);
+                this.minecraft.setScreen(null);
+                this.minecraft.missTime = 10000;
+                this.ignoreFirstMove = true;
+            }
+        }
+    }

@@ -1,0 +1,1 @@
+package cn.lambdalib.cgui.gui; public class Widget {public final Transform transform=new Transform();public boolean dirty,needCopy=true;public static class Transform{public double x,y,width,height;public boolean doesDraw=true;}public void addWidget(Widget child){}public <T> T getComponent(String name){return null;}public void dispose(){}}

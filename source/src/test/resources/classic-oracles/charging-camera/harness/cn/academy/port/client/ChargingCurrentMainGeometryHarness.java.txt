@@ -1,0 +1,162 @@
+package cn.academy.port.client;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.world.phys.Vec3;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import java.io.DataOutputStream;
+import java.lang.reflect.*;
+import java.nio.file.*;
+import java.util.*;
+
+/** Wrapper-bound private renderPaths ClassResources with official cached Vec3/PoseStack/VertexConsumer/JOML.
+ * No replacement game classes, client/world bootstrap, or original/GPU/audio parity claim.
+ * A zero-camera execution of the same port is solely a relocation invariant reference.
+ */
+public final class ChargingCurrentMainGeometryHarness {
+    private static final boolean BASELINE;
+    private static final Method DRAW;
+    private static final Random ROTATION;
+    private static int checks, coordinates, mismatches, cases, nearVertices;
+    private static double largestError;
+    static {
+        try {
+            // Static template construction is intentionally outside the measured draw interval.
+            Class.forName("cn.academy.port.client.ClassicChargingEffects");
+            Method draw;
+            boolean baseline;
+            try {
+                draw = ClassicChargingEffects.class.getDeclaredMethod("renderPaths", VertexConsumer.class,
+                    Matrix4f.class, Vec3.class, Vec3.class, Vec3.class, Vec3.class, Vec3.class, double.class, double.class, List.class);
+                baseline = false;
+            } catch (NoSuchMethodException expectedPriorSignature) {
+                draw = ClassicChargingEffects.class.getDeclaredMethod("renderPaths", VertexConsumer.class,
+                    Matrix4f.class, Vec3.class, Vec3.class, Vec3.class, Vec3.class, double.class, double.class, List.class);
+                baseline = true;
+            }
+            DRAW = draw; BASELINE = baseline;
+            DRAW.setAccessible(true);
+            Field rotation = ClassicArcGeometry.class.getDeclaredField("ROTATION_RANDOM");
+            rotation.setAccessible(true); ROTATION = (Random) rotation.get(null);
+        } catch (ReflectiveOperationException failure) { throw new ExceptionInInitializerError(failure); }
+    }
+    private static void require(boolean condition, String message) {
+        checks++; if (!condition) throw new AssertionError(message);
+    }
+    private static Vec3[] basis(Vec3 direction) {
+        direction = direction.normalize();
+        Vec3 v = direction.cross(new Vec3(0, 1, 0));
+        v = v.lengthSqr() < 1.0E-12 ? new Vec3(-1, 0, 0) : v.normalize();
+        return new Vec3[]{direction, v.cross(direction).normalize(), v};
+    }
+    private static List<float[]> draw(Vec3 camera, Vec3 worldOrigin, Vec3[] basis, double scale,
+            double length, List<List<ClassicArcGeometry.Segment>> paths, boolean rotated) throws Exception {
+        List<float[]> rows = new ArrayList<>();
+        VertexConsumer consumer = (VertexConsumer) Proxy.newProxyInstance(VertexConsumer.class.getClassLoader(),
+            new Class<?>[]{VertexConsumer.class}, (proxy, method, args) -> {
+                if (method.isDefault()) return InvocationHandler.invokeDefault(proxy, method, args);
+                if (method.getName().equals("addVertex")) {
+                    rows.add(new float[]{((Number) args[0]).floatValue(), ((Number) args[1]).floatValue(),
+                        ((Number) args[2]).floatValue(), 0, 0, 0, 0, 0, 0});
+                } else if (method.getName().equals("setUv")) {
+                    float[] row = rows.getLast(); row[3] = ((Number) args[0]).floatValue(); row[4] = ((Number) args[1]).floatValue();
+                } else if (method.getName().equals("setColor") && args.length == 4) {
+                    float[] row = rows.getLast(); for (int axis = 0; axis < 4; axis++) row[5 + axis] = ((Number) args[axis]).floatValue();
+                }
+                return proxy;
+            });
+        PoseStack poses = new PoseStack();
+        if (rotated) poses.mulPose(new Quaternionf().rotationXYZ(.27F, -.73F, .11F));
+        if (BASELINE) poses.translate(-camera.x, -camera.y, -camera.z);
+        ROTATION.setSeed(8513);
+        if (BASELINE) DRAW.invoke(null, consumer, poses.last().pose(), worldOrigin, basis[0], basis[1], basis[2], scale, length, paths);
+        else DRAW.invoke(null, consumer, poses.last().pose(), worldOrigin, camera, basis[0], basis[1], basis[2], scale, length, paths);
+        require(ROTATION.nextLong() == new Random(8513).nextLong(), "draw consumed original geometry rotation RNG");
+        return rows;
+    }
+    private static long geometryHash(List<List<ClassicArcGeometry.Segment>> paths) {
+        long hash = 13;
+        for (var path : paths) for (var segment : path) {
+            for (var point : List.of(segment.start(), segment.end())) {
+                for (double value : new double[]{point.position().x, point.position().y, point.position().z, point.width()})
+                    hash = 31 * hash + Double.doubleToRawLongBits(value);
+            }
+            hash = 31 * hash + Double.doubleToRawLongBits(segment.alpha());
+        }
+        return hash;
+    }
+    private static void compare(List<float[]> expected, List<float[]> actual) {
+        require(actual.size() == expected.size(), "camera changed topology/clipping");
+        for (int vertex = 0; vertex < actual.size(); vertex++) for (int axis = 0; axis < 9; axis++) {
+            float got = actual.get(vertex)[axis], want = expected.get(vertex)[axis];
+            require(Float.isFinite(got), "non-finite vertex/attribute");
+            if (axis < 3) {
+                double error = Math.abs(got - want);
+                coordinates++; largestError = Math.max(largestError, error);
+                if (error > 1.0E-5) mismatches++;
+            } else require(Float.floatToRawIntBits(got) == Float.floatToRawIntBits(want), "camera changed UV/color/alpha");
+        }
+    }
+    private static void cameraMotion() throws Exception {
+        var a = new ClassicArcGeometry.Point(Vec3.ZERO, .01);
+        var b = new ClassicArcGeometry.Point(new Vec3(1, 0, 0), .01);
+        List<List<ClassicArcGeometry.Segment>> paths = List.of(List.of(new ClassicArcGeometry.Segment(a, b, 1)));
+        Vec3 world = new Vec3(14502578.37, 72.25, 4277859.2);
+        Vec3[] basis = basis(new Vec3(1, 0, 0));
+        float prior = Float.NaN; int frozenFrames = 0; double maxStepError = 0;
+        for (int frame = 0; frame <= 16; frame++) {
+            Vec3 camera = new Vec3(14502577.5 + frame * .125, 72.25, 4277858.5);
+            float x = draw(camera, world, basis, 1, 20, paths, false).getFirst()[0];
+            if (frame > 0) {
+                if (x == prior) frozenFrames++;
+                maxStepError = Math.max(maxStepError, Math.abs((x - prior) + .125));
+            }
+            prior = x;
+        }
+        require(BASELINE ? frozenFrames > 0 : frozenFrames == 0 && maxStepError < 1E-6, "camera motion boundary was not detected/restored");
+        System.out.println("cameraMotion: frames=16 frozenFrames=" + frozenFrames + " maxStepError=" + maxStepError);
+    }
+    public static void main(String[] args) throws Exception {
+        List<Vec3> cameras = List.of(new Vec3(64.5, 72.25, -32.75), new Vec3(14502577.5, -59, 4277858.5),
+            new Vec3(29999999.75, 319.875, -29999999.125), new Vec3(-29999999.5, -63.75, 29999999.5));
+        List<Vec3> directions = List.of(new Vec3(.3, -.2, .8), new Vec3(-.7, .21, -.13), new Vec3(1, 0, 0),
+            new Vec3(0, 1, 0), new Vec3(0, -1, 0), new Vec3(0, 0, -1));
+        try (DataOutputStream near = new DataOutputStream(Files.newOutputStream(Path.of(args[0])))) {
+            for (int family = 0; family < 3; family++) {
+                boolean beam = family == 0, thin = family == 1;
+                double templateLength = beam ? ClassicChargingTimeline.BEAM_LENGTH : thin ? 1.75 : 3.5;
+                double scale = beam ? 1 : ClassicChargingTimeline.SURROUND_SCALE;
+                var paths = ClassicArcGeometry.generate(new Random(7345 + family), new Random(4218 + family),
+                    templateLength, beam ? ClassicChargingTimeline.BEAM_PASSES : ClassicChargingTimeline.SURROUND_PASSES,
+                    beam ? ClassicChargingTimeline.BEAM_WIDTH : thin ? .2 : .3,
+                    beam ? ClassicChargingTimeline.BEAM_MAX_OFFSET : ClassicChargingTimeline.SURROUND_OFFSET,
+                    beam ? ClassicChargingTimeline.BEAM_BRANCH : ClassicChargingTimeline.SURROUND_BRANCH,
+                    beam ? ClassicChargingTimeline.BEAM_WIDTH_SHRINK : ClassicChargingTimeline.SURROUND_WIDTH_SHRINK);
+                long protectedHash = geometryHash(paths);
+                for (Vec3 direction : directions) for (boolean rotated : List.of(false, true))
+                        for (double clip : beam ? List.of(-1.0, 0.0, 7.25, 15.0, 20.0) : List.of(Double.POSITIVE_INFINITY)) {
+                    Vec3[] axes = basis(direction);
+                    if (!beam) {
+                        float yaw = (float) .71;
+                        axes = new Vec3[]{axes[0].yRot(yaw), axes[1].yRot(yaw), axes[2].yRot(yaw)};
+                    }
+                    Vec3 origin = new Vec3(.37, -.12, .7);
+                    List<float[]> expected = draw(Vec3.ZERO, origin, axes, scale, clip, paths, rotated);
+                    require(clip < 0 ? expected.isEmpty() : !expected.isEmpty() && expected.size() % 4 == 0, "clip/quad control changed");
+                    near.writeInt(expected.size());
+                    for (float[] row : expected) for (float value : row) near.writeInt(Float.floatToRawIntBits(value));
+                    cases++; nearVertices += expected.size();
+                    for (Vec3 camera : cameras) compare(expected, draw(camera, camera.add(origin), axes, scale, clip, paths, rotated));
+                    require(geometryHash(paths) == protectedHash, "draw mutated local geometry");
+                }
+            }
+        }
+        cameraMotion();
+        System.out.println("ChargingCurrentMainGeometryHarness: cases=" + cases + " nearVertices=" + nearVertices
+            + " coordinateComparisons=" + coordinates + " mismatches=" + mismatches + " largestError=" + largestError
+            + " stateAndAttributeChecks=" + checks + " baseline=" + BASELINE);
+        System.out.println("Actual private port renderer; zero-camera self-relocation control only; no game hosts/bootstrap/GPU/audio/original renderer equality");
+        require(mismatches == 0, "CHARGING_FAR_ORIGIN_FAILURE mismatches=" + mismatches + " largestError=" + largestError);
+    }
+}

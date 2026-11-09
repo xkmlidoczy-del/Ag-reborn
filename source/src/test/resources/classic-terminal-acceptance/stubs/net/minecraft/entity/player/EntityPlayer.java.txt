@@ -1,0 +1,1 @@
+package net.minecraft.entity.player; public class EntityPlayer {public World worldObj=new World();public static class World{public long getWorldTime(){return 0;}}public String getCommandSenderName(){return "Fixture";}public void addChatComponentMessage(Object p){}}

@@ -1,0 +1,17 @@
+{
+  "authority": "Already cached official Mojang1.7.10 client; private offline javap inspection only, no game launched",
+  "officialJarSha1": "e80d9b3bf5085002218d4be59e668bac718abbc6",
+  "registrationSource": "java/cn/academy/support/rf/RFSupport.java",
+  "directItemIngredientMetadata": 0,
+  "wildcardMetadata": 32767,
+  "originalFreshUnitStoredIF": 0,
+  "originalFreshUnitDefaultDamage": 0,
+  "currentNativeEmptyUnitDefaultDamage": 13,
+  "modernPrimaryIngredient": "Registered non-simple predicate: genuine zero IF plus source-equivalent gauge0; intermediate nonzero charge/gauge states rejected",
+  "adaptation": "Preserve established genuinely empty DAMAGE13 units and exact source metadata0 charged-state admission without changing unit lifecycle",
+  "bytecodeFacts": {
+    "ItemBranch": "afe.a(add,Object[]) offsets183..202 invokes add(adb)",
+    "ItemDefaultMetadata": "add(adb,int) offset3 iconst_0 invokes add(adb,int,int)",
+    "MatchBoundary": "afh.a(aae,int,int,boolean) offsets170..195 compares ingredient metadata to32767, then input metadata"
+  }
+}

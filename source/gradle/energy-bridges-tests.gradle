@@ -1,0 +1,7 @@
+// Portable finite checks only. Owner exclusively controls actual native/client acceptance.
+['classicEnergyBridgeSourceTest':'cn.academy.port.bridge.ClassicEnergyBridgeSourceOracleTest',
+ 'classicEnergyBridgeConservationTest':'cn.academy.port.bridge.ClassicEnergyBridgeConservationTest',
+ 'classicEnergyBridgeDataTest':'cn.academy.port.bridge.ClassicEnergyBridgeDataTest'].each { taskName,className ->
+ tasks.register(taskName,JavaExec) { dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true;systemProperty 'java.awt.headless','true' }
+ tasks.named('check') { dependsOn taskName }
+}

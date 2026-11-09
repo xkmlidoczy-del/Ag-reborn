@@ -1,0 +1,2 @@
+package net.minecraft.network.codec;
+import java.util.function.*;public class StreamCodec<B,T>{public final BiConsumer<B,T> encoder;public final Function<B,T> decoder;private StreamCodec(BiConsumer<B,T> e,Function<B,T> d){encoder=e;decoder=d;}public static <B,T> StreamCodec<B,T> of(BiConsumer<B,T> e,Function<B,T> d){return new StreamCodec<>(e,d);}public void encode(B b,T t){encoder.accept(b,t);}public T decode(B b){return decoder.apply(b);}}

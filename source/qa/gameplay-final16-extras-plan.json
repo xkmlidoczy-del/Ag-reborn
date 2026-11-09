@@ -1,0 +1,669 @@
+[
+  {
+    "name": "final16-tpvm-tp-cancel-register",
+    "script": "gameplay-tp-play-group-cancel-register.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "sourceScripts": [
+      "gameplay-tp-play-cancel-return_mark.script",
+      "gameplay-tp-play-cancel-short_interception.script",
+      "gameplay-tp-play-cancel-spatial_relay.script",
+      "gameplay-tp-play-cancel-emergency_return.script",
+      "gameplay-tp-play-cancel-spatial_pincer_corridor.script",
+      "gameplay-tp-play-cancel-multidimensional_landing_array.script",
+      "gameplay-tp-play-probe-move.script",
+      "gameplay-tp-play-probe-pose.script"
+    ],
+    "props": "",
+    "suiteGroup": "tpvm",
+    "sourcePlan": "gameplay-tp-vm-extension-plan.json",
+    "sourceCaseName": "final-extension-tp-cancel-register",
+    "scriptSha256": "737b76e081eeb115321258cfc9e1c0c8e1ce0b59c5a16d11246fd963d56b613a",
+    "nominalFixedTicks": 2378,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 1,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "sourceBoundaryStyle": "filename",
+    "requiredLogMarkers": [
+      "QA_TP_PLAY_CANCEL_PASS mode=cancel-return_mark ",
+      "QA_TP_PLAY_FRESH_PASS mode=cancel-return_mark ",
+      "QA_TP_PLAY_CANCEL_PASS mode=cancel-short_interception ",
+      "QA_TP_PLAY_FRESH_PASS mode=cancel-short_interception ",
+      "QA_TP_PLAY_CANCEL_PASS mode=cancel-spatial_relay ",
+      "QA_TP_PLAY_FRESH_PASS mode=cancel-spatial_relay ",
+      "QA_TP_PLAY_CANCEL_PASS mode=cancel-emergency_return ",
+      "QA_TP_PLAY_FRESH_PASS mode=cancel-emergency_return ",
+      "QA_TP_PLAY_CANCEL_PASS mode=cancel-spatial_pincer_corridor ",
+      "QA_TP_PLAY_FRESH_PASS mode=cancel-spatial_pincer_corridor ",
+      "QA_TP_PLAY_CANCEL_PASS mode=cancel-multidimensional_landing_array ",
+      "QA_TP_PLAY_FRESH_PASS mode=cancel-multidimensional_landing_array ",
+      "QA_TP_PLAY_CANCEL_PASS mode=cancel-safe_landing_probe ",
+      "QA_TP_PLAY_FRESH_PASS mode=cancel-safe_landing_probe "
+    ],
+    "sourceRequiredLogMarkers": {
+      "gameplay-tp-play-cancel-return_mark.script": [
+        "QA_TP_PLAY_CANCEL_PASS mode=cancel-return_mark ",
+        "QA_TP_PLAY_FRESH_PASS mode=cancel-return_mark "
+      ],
+      "gameplay-tp-play-cancel-short_interception.script": [
+        "QA_TP_PLAY_CANCEL_PASS mode=cancel-short_interception ",
+        "QA_TP_PLAY_FRESH_PASS mode=cancel-short_interception "
+      ],
+      "gameplay-tp-play-cancel-spatial_relay.script": [
+        "QA_TP_PLAY_CANCEL_PASS mode=cancel-spatial_relay ",
+        "QA_TP_PLAY_FRESH_PASS mode=cancel-spatial_relay "
+      ],
+      "gameplay-tp-play-cancel-emergency_return.script": [
+        "QA_TP_PLAY_CANCEL_PASS mode=cancel-emergency_return ",
+        "QA_TP_PLAY_FRESH_PASS mode=cancel-emergency_return "
+      ],
+      "gameplay-tp-play-cancel-spatial_pincer_corridor.script": [
+        "QA_TP_PLAY_CANCEL_PASS mode=cancel-spatial_pincer_corridor ",
+        "QA_TP_PLAY_FRESH_PASS mode=cancel-spatial_pincer_corridor "
+      ],
+      "gameplay-tp-play-cancel-multidimensional_landing_array.script": [
+        "QA_TP_PLAY_CANCEL_PASS mode=cancel-multidimensional_landing_array ",
+        "QA_TP_PLAY_FRESH_PASS mode=cancel-multidimensional_landing_array "
+      ],
+      "gameplay-tp-play-probe-move.script": [
+        "QA_TP_PLAY_CANCEL_PASS mode=cancel-safe_landing_probe ",
+        "QA_TP_PLAY_FRESH_PASS mode=cancel-safe_landing_probe "
+      ],
+      "gameplay-tp-play-probe-pose.script": [
+        "QA_TP_PLAY_CANCEL_PASS mode=cancel-safe_landing_probe ",
+        "QA_TP_PLAY_FRESH_PASS mode=cancel-safe_landing_probe "
+      ]
+    }
+  },
+  {
+    "name": "final16-tpvm-tp-ordinary-stock",
+    "script": "gameplay-tp-play-group-ordinary-stock.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "sourceScripts": [
+      "gameplay-tp-play-item-transport.script",
+      "gameplay-tp-play-block-placement.script"
+    ],
+    "props": "",
+    "suiteGroup": "tpvm",
+    "sourcePlan": "gameplay-tp-vm-extension-plan.json",
+    "sourceCaseName": "final-extension-tp-ordinary-stock",
+    "scriptSha256": "28dcfc483685b9df8376d180c3de81ee56ae55d62fa3f5f09ab345c68b8de398",
+    "nominalFixedTicks": 641,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "requiredReconfirmation": "Earlier ordinary-item failure lacked coordinates; batch15 independent strict pass does not establish its cause. This final16 merged case must again satisfy unchanged distance>5, stationary actor, one-item spend and no-duplication assertions; failure blocks completion of both grouped scenarios.",
+    "sourceBoundaryStyle": "filename",
+    "requiredLogMarkers": [
+      "QA_TP_PLAY_MODE_PASS mode=item-transport ",
+      "QA_TP_PLAY_MODE_PASS mode=block-placement "
+    ],
+    "sourceRequiredLogMarkers": {
+      "gameplay-tp-play-item-transport.script": [
+        "QA_TP_PLAY_MODE_PASS mode=item-transport "
+      ],
+      "gameplay-tp-play-block-placement.script": [
+        "QA_TP_PLAY_MODE_PASS mode=block-placement "
+      ]
+    }
+  },
+  {
+    "name": "final16-tpvm-tp-target-air-movement",
+    "script": "gameplay-tp-play-group-target-air-movement.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "sourceScripts": [
+      "gameplay-tp-play-mark-entity.script",
+      "gameplay-tp-play-mark-air.script",
+      "gameplay-tp-play-accel-air.script",
+      "gameplay-tp-play-flash-air.script"
+    ],
+    "props": "",
+    "suiteGroup": "tpvm",
+    "sourcePlan": "gameplay-tp-vm-extension-plan.json",
+    "sourceCaseName": "final-extension-tp-target-air-movement",
+    "scriptSha256": "6ec153549d94c7afa9da7b8bf4e0964b9cdd0f1ff39e1c7a0737f1b9f0855971",
+    "nominalFixedTicks": 1180,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "sourceBoundaryStyle": "filename",
+    "requiredLogMarkers": [
+      "QA_TP_PLAY_MODE_PASS mode=mark-entity ",
+      "QA_TP_PLAY_MODE_PASS mode=mark-air ",
+      "QA_TP_PLAY_MODE_PASS mode=accel-air ",
+      "QA_TP_PLAY_MODE_PASS mode=flash-air "
+    ],
+    "sourceRequiredLogMarkers": {
+      "gameplay-tp-play-mark-entity.script": [
+        "QA_TP_PLAY_MODE_PASS mode=mark-entity "
+      ],
+      "gameplay-tp-play-mark-air.script": [
+        "QA_TP_PLAY_MODE_PASS mode=mark-air "
+      ],
+      "gameplay-tp-play-accel-air.script": [
+        "QA_TP_PLAY_MODE_PASS mode=accel-air "
+      ],
+      "gameplay-tp-play-flash-air.script": [
+        "QA_TP_PLAY_MODE_PASS mode=flash-air "
+      ]
+    }
+  },
+  {
+    "name": "final16-tpvm-tp-two-needles",
+    "script": "gameplay-tp-play-group-two-needles.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "sourceScripts": [
+      "gameplay-tp-play-two-needles.script"
+    ],
+    "props": "",
+    "suiteGroup": "tpvm",
+    "sourcePlan": "gameplay-tp-vm-extension-plan.json",
+    "sourceCaseName": "final-extension-tp-two-needles",
+    "scriptSha256": "ebbd628966becb3a682b52120c030e7d93a93a718feb2b4cffcf1bab0d10e0e2",
+    "nominalFixedTicks": 645,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 1,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "sourceBoundaryStyle": "filename",
+    "requiredLogMarkerCounts": {
+      "QA_TP_PLAY_TARGETED_RECOVERY_PASS ": 2
+    },
+    "requiredRecoveredRemaining": [
+      1,
+      0
+    ],
+    "requiredLogMarkers": [
+      "QA_TP_PLAY_TWO_NEEDLES_CLEAR_PASS ",
+      "QA_TP_PLAY_TARGETED_RECOVERY_PASS "
+    ],
+    "sourceRequiredLogMarkers": {
+      "gameplay-tp-play-two-needles.script": [
+        "QA_TP_PLAY_TWO_NEEDLES_CLEAR_PASS ",
+        "QA_TP_PLAY_TARGETED_RECOVERY_PASS "
+      ]
+    }
+  },
+  {
+    "name": "final16-tpvm-native-arrow-vector_parry",
+    "script": "gameplay-native-arrow-vector_parry.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "purpose": "Same real native arrow must commit dedicated source capture/quota/exact resource debit; no base reflection substitution",
+    "props": "",
+    "suiteGroup": "tpvm",
+    "sourcePlan": "gameplay-tp-vm-extension-plan.json",
+    "sourceCaseName": "final-extension-native-arrow-vector_parry",
+    "scriptSha256": "fdd72dd5f3894a731ffc5d241411b2b31c67683ce0b563a5fa2cf183ea3c4401",
+    "nominalFixedTicks": 361,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "skills": [
+      "vector_parry"
+    ],
+    "requiredLogMarkers": [
+      "QA_SPECIALIST_NATIVE_ARROW_COMMIT_PASS mode=vector_parry ",
+      "QA_NATIVE_ARROW_MODE_PASS mode=vector_parry "
+    ]
+  },
+  {
+    "name": "final16-tpvm-native-arrow-autonomous_vector_circle",
+    "script": "gameplay-native-arrow-autonomous_vector_circle.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "purpose": "Same real native arrow must commit dedicated source capture/quota/exact resource debit; no base reflection substitution",
+    "props": "",
+    "suiteGroup": "tpvm",
+    "sourcePlan": "gameplay-tp-vm-extension-plan.json",
+    "sourceCaseName": "final-extension-native-arrow-autonomous_vector_circle",
+    "scriptSha256": "1004ec5898b4a9591f678a72e16679336db634c612232c2cba2e1697ca8d36f9",
+    "nominalFixedTicks": 398,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "skills": [
+      "autonomous_vector_circle"
+    ],
+    "requiredLogMarkers": [
+      "QA_SPECIALIST_NATIVE_ARROW_COMMIT_PASS mode=autonomous_vector_circle ",
+      "QA_NATIVE_ARROW_MODE_PASS mode=autonomous_vector_circle ",
+      "QA_CIRCLE_TOGGLE_OFF_BALANCE_PASS ",
+      "QA_CIRCLE_TOGGLE_REOPEN_BALANCE_PASS "
+    ]
+  },
+  {
+    "name": "final16-tpvm-native-arrow-phase-corridor",
+    "script": "gameplay-native-arrow-phase_corridor.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "purpose": "Two real enemy arrows from actual shooter: first reaches native incoming in2tick phase and pays no S/HP; second reaches3tick exposure and truly damages S/HP",
+    "props": "",
+    "suiteGroup": "tpvm",
+    "sourcePlan": "gameplay-tp-vm-extension-plan.json",
+    "sourceCaseName": "final-extension-native-arrow-phase-corridor",
+    "scriptSha256": "f903935b24229973670905367b6224db6fd10b4a0b9e5fe67840195217c53cc4",
+    "nominalFixedTicks": 350,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "skills": [
+      "phase_corridor"
+    ],
+    "requiredLogMarkers": [
+      "QA_PHASE_EARLY_INCOMING ",
+      "QA_PHASE_EARLY_LEDGER_PASS ",
+      "QA_PHASE_EXPOSED_LEDGER_PASS ",
+      "QA_NATIVE_ARROW_MODE_PASS mode=phase_corridor "
+    ]
+  },
+  {
+    "name": "final16-vmenv-vm-environment-legacy-three",
+    "script": "gameplay-vm-environment-legacy-three.script",
+    "sourceScripts": [
+      "gameplay-vm-environment-blast-block.script",
+      "gameplay-vm-environment-ground-wave.script",
+      "gameplay-vm-environment-ground-soft.script"
+    ],
+    "sourceSha256": {
+      "gameplay-vm-environment-blast-block.script": "48171034ea1b32ee7230c40a106327f366c87ad1cb0621c7516cfb02b6d9ae7a",
+      "gameplay-vm-environment-ground-wave.script": "21a59f6a85cf908dd810b0b779cf790cf888a2b123e1a4620ded1cdea8c08014",
+      "gameplay-vm-environment-ground-soft.script": "b7a23e64f75c8bababe1a2af876f4decf5bfa159153315813e1e099deced608a"
+    },
+    "directory": "run-showcase-sable",
+    "props": "",
+    "status": "planned_not_run",
+    "suiteGroup": "vmenv",
+    "sourcePlan": "gameplay-vm-environment-grouped-plan.json",
+    "sourceCaseName": "vm-environment-legacy-three",
+    "scriptSha256": "79f29d9d56fac06d473827e4a732c2f565eeb5b0391e724601344f121d456728",
+    "nominalFixedTicks": 863,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "sourceBoundaryStyle": "stem",
+    "skills": [
+      "dir_blast",
+      "ground_shock"
+    ],
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_VM_TERRAIN_PASS mode=blast-block skill=dir_blast ",
+      "QA_GAMEPLAY_VM_TERRAIN_PASS mode=ground-wave skill=ground_shock ",
+      "QA_GAMEPLAY_VM_TERRAIN_PASS mode=ground-soft skill=ground_shock "
+    ],
+    "sourceRequiredLogMarkers": {
+      "gameplay-vm-environment-blast-block.script": [
+        "QA_GAMEPLAY_VM_TERRAIN_PASS mode=blast-block skill=dir_blast "
+      ],
+      "gameplay-vm-environment-ground-wave.script": [
+        "QA_GAMEPLAY_VM_TERRAIN_PASS mode=ground-wave skill=ground_shock "
+      ],
+      "gameplay-vm-environment-ground-soft.script": [
+        "QA_GAMEPLAY_VM_TERRAIN_PASS mode=ground-soft skill=ground_shock "
+      ]
+    }
+  },
+  {
+    "name": "final16-vmenv-vm-environment-storm-fragile",
+    "script": "gameplay-vm-environment-storm-fragile.script",
+    "sourceScripts": [
+      "gameplay-vm-environment-storm-fragile.script"
+    ],
+    "sourceSha256": {
+      "gameplay-vm-environment-storm-fragile.script": "07e0025ccf6a87ecf9fa91b384241b559f9e2aefa2bedd6285b59c9a516df697"
+    },
+    "directory": "run-showcase-sable",
+    "props": "",
+    "status": "planned_not_run",
+    "suiteGroup": "vmenv",
+    "sourcePlan": "gameplay-vm-environment-grouped-plan.json",
+    "sourceCaseName": "vm-environment-storm-fragile",
+    "scriptSha256": "07e0025ccf6a87ecf9fa91b384241b559f9e2aefa2bedd6285b59c9a516df697",
+    "nominalFixedTicks": 525,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "sourceBoundaryStyle": "stem",
+    "skills": [
+      "storm_wing"
+    ],
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_VM_TERRAIN_PASS mode=storm-fragile skill=storm_wing "
+    ]
+  },
+  {
+    "name": "final16-vmenv-vm-environment-plasma-terrain",
+    "script": "gameplay-vm-environment-plasma-terrain.script",
+    "sourceScripts": [
+      "gameplay-vm-environment-plasma-terrain.script"
+    ],
+    "sourceSha256": {
+      "gameplay-vm-environment-plasma-terrain.script": "1caef2e9d2793497779ce6df1706b4a97388f1491969105cbf45f230077c5689"
+    },
+    "directory": "run-showcase-sable",
+    "props": "",
+    "status": "planned_not_run",
+    "suiteGroup": "vmenv",
+    "sourcePlan": "gameplay-vm-environment-grouped-plan.json",
+    "sourceCaseName": "vm-environment-plasma-terrain",
+    "scriptSha256": "1caef2e9d2793497779ce6df1706b4a97388f1491969105cbf45f230077c5689",
+    "nominalFixedTicks": 476,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "sourceBoundaryStyle": "stem",
+    "skills": [
+      "plasma_cannon"
+    ],
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_VM_TERRAIN_PASS mode=plasma-terrain skill=plasma_cannon "
+    ]
+  },
+  {
+    "name": "final16-itemsplit-vm-extra-yaw-q-items",
+    "script": "gameplay-vm-extra-yaw-q-items.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "yaw_palm"
+    ],
+    "modes": [
+      "actual owner Q item left push",
+      "actual owner Q item crouching right push"
+    ],
+    "status": "planned_not_run",
+    "props": "",
+    "suiteGroup": "itemSplit",
+    "sourcePlan": "gameplay-vm-extra-plan.json",
+    "sourceCaseName": "candidate-vm-extra-yaw-q-items",
+    "scriptSha256": "b56280564e776895270e418949bf6f623e6bdb0363b39191a9b82eec9ccdba5b",
+    "nominalFixedTicks": 812,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_MODE_PASS mode=yaw-left skill=yaw_palm ",
+      "QA_GAMEPLAY_MODE_PASS mode=yaw-right skill=yaw_palm "
+    ]
+  },
+  {
+    "name": "final16-itemsplit-vm-extra-split-narrow",
+    "script": "gameplay-vm-extra-split-narrow.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "impulse_split"
+    ],
+    "modes": [
+      "actual approximately20 degree pair slows naturally",
+      "native integer budget partition",
+      "two real native arrow impacts and bounded combined actual target damage"
+    ],
+    "status": "planned_not_run",
+    "props": "",
+    "suiteGroup": "itemSplit",
+    "sourcePlan": "gameplay-vm-extra-plan.json",
+    "sourceCaseName": "candidate-vm-extra-split-narrow",
+    "scriptSha256": "f208a6cb59c5f0497768e176e41624ed693dea580ccefd639c2dc3dab645e486",
+    "nominalFixedTicks": 420,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_MODE_PASS mode=split-narrow skill=impulse_split "
+    ]
+  },
+  {
+    "name": "final16-stormcycle-storm-cycle-costs",
+    "script": "gameplay-storm-cycle-costs.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "fixture": "Finite initial CP and 84-percent initial heat before baseline only; natural native cooling and CP depletion after actual R start, never refilled.",
+    "props": "",
+    "suiteGroup": "stormcycle",
+    "sourcePlan": "gameplay-storm-cycle-plan.json",
+    "sourceCaseName": "diagnostic-storm-cycle-costs",
+    "scriptSha256": "20aefe57a381ec681402fe466fbe41af324fa5ee923136fedd515a151433f7e2",
+    "nominalFixedTicks": 1467,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 2,
+      "conditionalEscape": 0
+    },
+    "skills": [
+      "storm_wing"
+    ],
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_STORM_COSTS_PASS skill=storm_wing ",
+      "QA_GAMEPLAY_STORM_COOLING_ENTRY ",
+      "QA_GAMEPLAY_STORM_COOLING_RECOVERED ",
+      "QA_GAMEPLAY_STORM_CYCLE_PASS skill=storm_wing ",
+      "QA_LIVE_CAMERA_NEUTRAL_PASS skill=storm_wing"
+    ]
+  },
+  {
+    "name": "final16-visual-vfx-iron-nearplane",
+    "script": "gameplay-visual-iron-nearplane.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "iron_sand_lance"
+    ],
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Normal key input, original mechanical assertions, native framebuffer tick sequence plus representative action/release images; inspect actual frames after run, not generated visual injection.",
+    "suiteGroup": "visual",
+    "sourcePlan": "gameplay-visual-followup-plan.json",
+    "sourceCaseName": "candidate-vfx-iron-nearplane",
+    "scriptSha256": "a61ea2de6d21687223c65d86b57128e25a2a15f9eb491788df978c3c2a242891",
+    "nominalFixedTicks": 664,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_PASS skill=iron_sand_lance ",
+      "QA_FINAL_VISUAL_PASS skill=iron_sand_lance ",
+      "QA_REC_START ",
+      "QA_REC_END "
+    ]
+  },
+  {
+    "name": "final16-visual-vfx-railgun-charge",
+    "script": "gameplay-visual-railgun-charge.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "railgun"
+    ],
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Normal key input, original mechanical assertions, native framebuffer tick sequence plus representative action/release images; inspect actual frames after run, not generated visual injection.",
+    "suiteGroup": "visual",
+    "sourcePlan": "gameplay-visual-followup-plan.json",
+    "sourceCaseName": "candidate-vfx-railgun-charge",
+    "scriptSha256": "d2f0d247385cc3b3a70942b266308aedd075b366845eadecc2b3820097d78eb8",
+    "nominalFixedTicks": 460,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_PASS skill=railgun ",
+      "QA_FINAL_VISUAL_PASS skill=railgun ",
+      "QA_REC_START ",
+      "QA_REC_END "
+    ]
+  },
+  {
+    "name": "final16-visual-vfx-thunderclap-peak",
+    "script": "gameplay-visual-thunderclap-peak.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "thunder_clap"
+    ],
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Normal key input, original mechanical assertions, native framebuffer tick sequence plus representative action/release images; inspect actual frames after run, not generated visual injection.",
+    "suiteGroup": "visual",
+    "sourcePlan": "gameplay-visual-followup-plan.json",
+    "sourceCaseName": "candidate-vfx-thunderclap-peak",
+    "scriptSha256": "68089d9c26d81585629a686271a9ec6c02e63c9fc08acecf601f75ca5523224b",
+    "nominalFixedTicks": 475,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_PASS skill=thunder_clap ",
+      "QA_FINAL_VISUAL_PASS skill=thunder_clap ",
+      "QA_REC_START ",
+      "QA_REC_END "
+    ]
+  },
+  {
+    "name": "final16-visual-vfx-mine-tiers-mid",
+    "script": "gameplay-visual-mine-ray-tiers.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "mine_ray_basic",
+      "mine_ray_expert",
+      "mine_ray_luck"
+    ],
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Normal real sustained mining with all existing finite-resource/native-drop assertions, native full-frame tick sequence and middle-of-hold pictures; no new production decoration before actual frame comparison.",
+    "suiteGroup": "visual",
+    "sourcePlan": "gameplay-visual-followup-plan.json",
+    "sourceCaseName": "candidate-vfx-mine-tiers-mid",
+    "scriptSha256": "45e7540726391033df0d889d171723366209789514ed112cf5cc9b6a02caceef",
+    "nominalFixedTicks": 879,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "requiredLogMarkers": [
+      "QA_GAMEPLAY_PASS skill=mine_ray_basic ",
+      "QA_GAMEPLAY_PASS skill=mine_ray_expert ",
+      "QA_GAMEPLAY_PASS skill=mine_ray_luck ",
+      "QA_FINAL_VISUAL_PASS skill=mine_ray_basic ",
+      "QA_FINAL_VISUAL_PASS skill=mine_ray_expert ",
+      "QA_FINAL_VISUAL_PASS skill=mine_ray_luck ",
+      "QA_REC_START ",
+      "QA_REC_END "
+    ]
+  },
+  {
+    "name": "final16-supplemental-storm-sustain-40s",
+    "script": "codex-storm-sustain.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "required": true,
+    "purpose": "Real finite LV5 survival CP, at least800 ACTIVE ticks/850 elapsed ticks, actual R stop and airborne slow falling.",
+    "scriptSha256": "f0fa746b26e7e026b8455e5bce3411426e05235a5be53a39da61446abd68b85e",
+    "props": "",
+    "suiteGroup": "supplemental",
+    "sourcePlan": "gameplay-final-supplemental-plan.json",
+    "sourceCaseName": "final-supplement-storm-sustain-40s",
+    "nominalFixedTicks": 1347,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "skills": [
+      "storm_wing"
+    ],
+    "requiredLogMarkers": [
+      "QA_LIVE_STORM_ACTIVE_PASS ",
+      "QA_LIVE_STORM_SUSTAIN_PASS ",
+      "QA_LIVE_STORM_STOP_PASS ",
+      "QA_LIVE_CAMERA_NEUTRAL_PASS skill=storm_wing"
+    ]
+  },
+  {
+    "name": "final16-supplemental-four-category-shield-hud",
+    "script": "codex-shield-hud-final.script",
+    "directory": "run-showcase-sable",
+    "status": "planned_not_run",
+    "required": true,
+    "purpose": "All four categories: actual ordinary damage debits positive S without HP loss, then genuine overflow damages HP and holding ends; compact native/skill CP HUD.",
+    "scriptSha256": "e6dc00b2eb96b809e8d30c00aa1692f126f863ef8f49f74b6bea2c97eff17394",
+    "props": "",
+    "suiteGroup": "supplemental",
+    "sourcePlan": "gameplay-final-supplemental-plan.json",
+    "sourceCaseName": "final-supplement-four-category-shield-hud",
+    "nominalFixedTicks": 1120,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    },
+    "skills": [
+      "forked_arc",
+      "scatter_bomb",
+      "phase_sidestep",
+      "deflection_strike",
+      "grounding_return",
+      "storm_wing"
+    ],
+    "requiredLogMarkers": [
+      "QA_LIVE_SHIELD_PAID_PASS category=electromaster ",
+      "QA_LIVE_SHIELD_BROKEN_PASS category=electromaster ",
+      "QA_LIVE_SHIELD_PAID_PASS category=meltdowner ",
+      "QA_LIVE_SHIELD_BROKEN_PASS category=meltdowner ",
+      "QA_LIVE_SHIELD_PAID_PASS category=teleporter ",
+      "QA_LIVE_SHIELD_BROKEN_PASS category=teleporter ",
+      "QA_LIVE_SHIELD_PAID_PASS category=vecmanip ",
+      "QA_LIVE_SHIELD_BROKEN_PASS category=vecmanip ",
+      "QA_LIVE_HUD_BUDGET_PASS expectation=classic category=electromaster ",
+      "QA_LIVE_HUD_BUDGET_PASS expectation=classic category=vecmanip ",
+      "QA_LIVE_HUD_BUDGET_PASS expectation=expansion category=vecmanip "
+    ]
+  }
+]

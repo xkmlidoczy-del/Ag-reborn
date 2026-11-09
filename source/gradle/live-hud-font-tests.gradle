@@ -1,0 +1,13 @@
+// Copy both staged Java tests and src/test/resources into the production project first.
+['classicFontCoverageTest':'cn.academy.port.client.ClassicFontCoverageRegressionTest',
+ 'classicFontBindingTest':'cn.academy.port.client.ClassicFontBindingRegressionTest'].each { taskName,className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+        systemProperty 'java.awt.headless', 'true'
+        systemProperty 'academy.sourceRoot', rootDir.absolutePath
+    }
+    tasks.named('check') { dependsOn taskName }
+}

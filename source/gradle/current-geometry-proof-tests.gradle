@@ -1,0 +1,68 @@
+// Independent current-version evidence. Historical tasks and their failures remain required.
+[
+    currentThunderBoltGeometryProof: 'scripts/verify-current-thunderbolt-geometry.py',
+    currentChargingGeometryProof: 'scripts/verify-current-charging-geometry.py',
+    currentMeltdownerGeometryProof: 'scripts/verify-current-meltdowner-geometry.py',
+    chargingM41CoreProof: 'scripts/verify-charging-m41-core-v13.py'
+].each { taskName, script ->
+    tasks.register(taskName, Exec) {
+        dependsOn compileJava, processResources, 'writeVfx2NativeClasspath'
+        doFirst {
+            // Keep run-local proof artifacts off the small checkout disk.
+            // Each run still receives a fresh path and its exact location is logged for archiving.
+            def report = new File(System.getProperty('java.io.tmpdir'),
+                    'aca-current-geometry/' + taskName + '/' + java.util.UUID.randomUUID())
+            if (taskName == 'currentThunderBoltGeometryProof') {
+                // Its frozen logging closure does not admit startup rollover. Isolate run-local logs;
+                // retain every old log and all original script/closure/hash expectations unchanged.
+                def cleanWork = new File(report.parentFile, report.name + '-fresh-process-workdir')
+                cleanWork.mkdirs()
+                workingDir cleanWork
+                commandLine 'python3', project.file(script).absolutePath,
+                        '--project', project.projectDir.absolutePath, '--report', report.absolutePath
+            } else {
+                commandLine 'python3', script, '--report', report.absolutePath
+            }
+            logger.lifecycle('Current geometry evidence: ' + report.absolutePath)
+        }
+    }
+    tasks.named('check') { dependsOn taskName }
+}
+tasks.named('currentChargingGeometryProof') { dependsOn 'chargingM41CoreProof' }
+
+def chargingEntryBaseline = layout.buildDirectory.dir('current-geometry-proof/charging-entry')
+tasks.register('prepareChargingM41Entry', Exec) {
+    dependsOn compileJava, 'writeVfx2NativeClasspath'
+    commandLine 'python3', 'scripts/prepare-charging-m41-entry.py',
+            '--original-zip', file('../../aca-original-m41/academycraft-m41-meltdowner-camera-source.zip').absolutePath,
+            '--classpath-file', layout.buildDirectory.file('vfx2/native-classpath.txt').get().asFile.absolutePath,
+            '--main-classes', tasks.named('compileJava').get().destinationDirectory.get().asFile.absolutePath,
+            '--output', chargingEntryBaseline.get().asFile.absolutePath,
+            '--javac', javaToolchains.compilerFor(java.toolchain).get().executablePath.asFile.absolutePath
+}
+neoForge.runs {
+    chargingCompanionGameTest {
+        type = 'gameTestServer'
+        gameDirectory = layout.projectDirectory.dir('run-charging-companion/' + java.util.UUID.randomUUID())
+        systemProperty 'neoforge.enabledGameTestNamespaces', 'academy_charging_companion'
+        systemProperty 'academy.charging.companion.baseline', chargingEntryBaseline.get().asFile.absolutePath
+        jvmArgument '-Xms256m'
+        jvmArgument '-Xmx2048m'
+    }
+}
+tasks.named('runChargingCompanionGameTest') { dependsOn 'prepareChargingM41Entry' }
+tasks.register('currentChargingCompleteProof') {
+    dependsOn 'currentChargingGeometryProof', 'chargingM41CoreProof', 'runChargingCompanionGameTest'
+}
+
+// NEW253 has its own strictly additive companion; the v13 task and frozen runner stay unchanged.
+tasks.register('chargingM41CoreProofV14', Exec) {
+    dependsOn compileJava, processResources, 'writeVfx2NativeClasspath'
+    doFirst {
+        def report = new File(System.getProperty('java.io.tmpdir'),
+                'aca-current-geometry/chargingM41CoreProofV14/' + java.util.UUID.randomUUID())
+        commandLine 'python3', 'scripts/verify-charging-m41-core-v14.py', '--report', report.absolutePath
+        logger.lifecycle('NEW253 Charging companion evidence: ' + report.absolutePath)
+    }
+}
+tasks.named('check') { dependsOn 'chargingM41CoreProofV14' }

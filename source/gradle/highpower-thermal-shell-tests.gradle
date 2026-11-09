@@ -1,0 +1,11 @@
+// NEW222 exact conserved pulse and bounded client input/geometry contracts.
+['highPowerThermalShellRulesTest':'cn.academy.port.highpower.ThermalShellRegressionTest',
+ 'thermalShellVisualTest':'cn.academy.port.client.ThermalShellVisualRegressionTest'].each { taskName, className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+    }
+    tasks.named('check') { dependsOn taskName }
+}

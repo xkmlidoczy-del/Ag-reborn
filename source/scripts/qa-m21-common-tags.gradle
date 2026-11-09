@@ -1,0 +1,11 @@
+// Explicit isolated loaded-tag acceptance; never modifies a client world or production item tags.
+allprojects {
+ afterEvaluate { testedProject ->
+  if (testedProject.findProperty('gameTestDirectory') != 'run-common-tags-m21')
+   throw new GradleException('Owned isolated common-tag test directory required')
+  def testedRun = testedProject.extensions.getByName('neoForge').runs.getByName('gameTestServer')
+  testedRun.systemProperty('neoforge.enabledGameTestNamespaces','academy_common_tags')
+  testedRun.systemProperty('academy.common.tags.qa','true')
+  testedRun.programArgument('--world'); testedRun.programArgument('m21-common-tag-fixture-world')
+ }
+}

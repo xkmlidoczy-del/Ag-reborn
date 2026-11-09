@@ -1,0 +1,10 @@
+{
+  "MathUtils.java": {
+    "sha256": "68868f04c418fd3243b81c6af8f71792739bdcbb5cc103bd45c70e86f227680b",
+    "changes": [
+      "package declaration",
+      "Vec3 type import/name to compile-only OracleVec"
+    ],
+    "arithmetic_body": "unchanged"
+  }
+}

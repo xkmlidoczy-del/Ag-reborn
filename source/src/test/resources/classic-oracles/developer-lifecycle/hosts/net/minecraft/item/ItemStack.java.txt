@@ -1,0 +1,2 @@
+/* Test-only lifecycle platform plumbing; business methods run unchanged originals. */
+package net.minecraft.item;public class ItemStack {private final Item item;public int stackSize;public ItemStack(Item item,int size){this.item=item;this.stackSize=size;}public Item getItem(){return item;}}

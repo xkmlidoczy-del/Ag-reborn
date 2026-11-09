@@ -1,0 +1,2 @@
+package net.minecraft.entity.player;
+import java.util.*; import net.minecraft.util.ChatComponentTranslation; public class EntityPlayer { public final Capabilities capabilities=new Capabilities(); public final List<ChatComponentTranslation> chat=new ArrayList<>(); public static class Capabilities {public boolean isCreativeMode;} public void addChatMessage(ChatComponentTranslation c){chat.add(c);} }

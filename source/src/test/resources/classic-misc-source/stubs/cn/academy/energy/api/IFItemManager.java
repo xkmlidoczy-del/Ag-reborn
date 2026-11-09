@@ -1,0 +1,1 @@
+package cn.academy.energy.api;public class IFItemManager {public static IFItemManager instance=new IFItemManager();public boolean isSupported(net.minecraft.item.ItemStack s){return false;}public double charge(net.minecraft.item.ItemStack s,double r){return r;}}

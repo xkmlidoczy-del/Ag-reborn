@@ -1,0 +1,1 @@
+package cn.lambdalib.cgui.gui.component; public class DrawTexture {public static class Color{public double a;public Color(double a){this.a=a;}} public Color color;public DrawTexture(double alpha){color=new Color(alpha);}public static DrawTexture get(cn.lambdalib.cgui.gui.Widget w){return w.texture;}}

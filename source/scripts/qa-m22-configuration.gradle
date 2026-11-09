@@ -1,0 +1,9 @@
+allprojects {
+ afterEvaluate { p ->
+  if(p.findProperty('gameTestDirectory')!='run-configuration-m22')throw new GradleException('Owned isolated configuration fixture directory required')
+  def r=p.extensions.getByName('neoForge').runs.getByName('gameTestServer')
+  r.systemProperty('neoforge.enabledGameTestNamespaces','academy_configuration')
+  r.systemProperty('academy.configuration.qa','true')
+  r.programArgument('--world');r.programArgument('m22-configuration-fixture-world')
+ }
+}

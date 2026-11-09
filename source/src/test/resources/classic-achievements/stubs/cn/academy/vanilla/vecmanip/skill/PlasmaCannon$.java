@@ -1,0 +1,1 @@
+package cn.academy.vanilla.vecmanip.skill;public class PlasmaCannon$ extends cn.academy.ability.api.Skill {public static final PlasmaCannon$ MODULE$=new PlasmaCannon$();private PlasmaCannon$(){super(cn.academy.vanilla.vecmanip.CatVecManip$.INSTANCE,"plasma_cannon");}}

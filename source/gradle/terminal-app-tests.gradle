@@ -1,0 +1,24 @@
+// Complete classic terminal/apps: portable source/ingress oracles and official common/client tests.
+['terminalStorageTest':'cn.academy.port.terminal.TerminalStorageRegressionTest',
+ 'terminalServerLinkTest':'cn.academy.port.terminal.TerminalServerLinkTest',
+ 'terminalClientSourceTest':'cn.academy.port.client.terminal.TerminalClientSourceOracleTest',
+ 'terminalInstallerTest':'cn.academy.port.client.terminal.TerminalInstallerRegressionTest',
+ 'terminalClientIntegrationTest':'cn.academy.port.client.terminal.TerminalClientIntegrationTest',
+ 'terminalAcceptanceProjectionTest':'cn.academy.port.client.terminal.TerminalAcceptanceProjectionTest',
+ 'terminalInputRegressionTest':'cn.academy.port.client.terminal.TerminalInputRegressionTest',
+ 'terminalMediaTest':'cn.academy.port.client.terminal.media.MediaRegressionTest',
+ 'terminalMediaApiShapeTest':'cn.academy.port.client.terminal.media.MediaNativeApiShapeTest'].each {taskName,className ->
+    tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+    tasks.named('test') {dependsOn taskName}
+    tasks.named('check') {dependsOn taskName}
+}
+['terminalSourceOracleTest':'verify-classic-terminal-oracles.py',
+ 'terminalIngressOracleTest':'verify-classic-terminal-ingress.py'].each {taskName,script ->
+    tasks.register(taskName,Exec) {
+        workingDir rootDir
+        commandLine 'python3',file("scripts/${script}").absolutePath
+        doFirst {environment 'JAVA_HOME',javaToolchains.launcherFor {languageVersion=JavaLanguageVersion.of(21)}.get().metadata.installationPath.asFile.absolutePath}
+    }
+    tasks.named('test') {dependsOn taskName}
+    tasks.named('check') {dependsOn taskName}
+}

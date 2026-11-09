@@ -1,0 +1,8 @@
+// NEW142 toggle input, transport lifecycle and bounded frontal surface / 6m pulse geometry.
+tasks.register('potentialBufferVisualTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.PotentialBufferVisualRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'potentialBufferVisualTest' }

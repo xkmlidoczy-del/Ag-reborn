@@ -1,0 +1,7 @@
+{
+  "required": false,
+  "minVersion": "0.8.5",
+  "package": "cn.academy.port.client.canon.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": ["CanonPoseMixin"]
+}

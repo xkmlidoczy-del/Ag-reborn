@@ -1,0 +1,27 @@
+[
+  {
+    "name": "preflight22-course-zero-requirements",
+    "script": "gameplay-final22-course-zero-requirements.script",
+    "props": "",
+    "scope": "Actual native NORMAL/ADVANCED learning and original prerequisite course labels without redundant zero; positive railgun30%/100% must remain.",
+    "scriptSha256": "0ef999b0201aba6dab161e8ad8516ecde9185d2ca5a3ff2bc5c202c12e87e931"
+  },
+  {
+    "name": "preflight22-potential-original",
+    "script": "gameplay-final-em-defense-rest.script",
+    "props": "academy.qa.finalVisual=true",
+    "scope": "Full unchanged original canonical main script; one actual execution reused once in final66."
+  },
+  {
+    "name": "preflight22-tp-complex-original",
+    "script": "gameplay-tp-complex.script",
+    "props": "academy.qa.finalVisual=true",
+    "scope": "Full unchanged original canonical main script; one actual execution reused once in final66."
+  },
+  {
+    "name": "preflight22-hand-cage-storm",
+    "script": "gameplay-vm-cage-storm.script",
+    "props": "academy.qa.finalVisual=true",
+    "scope": "Full unchanged original canonical main script; one actual execution reused once in final66."
+  }
+]

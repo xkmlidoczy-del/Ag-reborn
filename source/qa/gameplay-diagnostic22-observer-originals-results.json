@@ -1,0 +1,17 @@
+[
+  {
+    "name": "diagnostic22-observer-item-original",
+    "script": "gameplay-tp-play-item-transport.script",
+    "exit": 0
+  },
+  {
+    "name": "diagnostic22-observer-yaw-original",
+    "script": "gameplay-vm-extra-yaw-q-items.script",
+    "exit": 0
+  },
+  {
+    "name": "diagnostic22-observer-em-group-original",
+    "script": "gameplay-final-modes-group-em-input-modes.script",
+    "exit": 0
+  }
+]

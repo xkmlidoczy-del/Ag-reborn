@@ -1,0 +1,1 @@
+{"variants":{"facing=north":{"model":"academy:block/paper_ladder"},"facing=east":{"model":"academy:block/paper_ladder","y":90},"facing=south":{"model":"academy:block/paper_ladder","y":180},"facing=west":{"model":"academy:block/paper_ladder","y":270}}}

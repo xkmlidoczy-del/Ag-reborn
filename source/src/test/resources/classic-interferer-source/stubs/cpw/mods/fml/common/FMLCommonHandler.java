@@ -1,0 +1,1 @@
+package cpw.mods.fml.common; import cpw.mods.fml.relauncher.Side; public final class FMLCommonHandler {private static final FMLCommonHandler INSTANCE=new FMLCommonHandler();public Side side=Side.SERVER;public static FMLCommonHandler instance(){return INSTANCE;}public Side getEffectiveSide(){return side;}}

@@ -1,0 +1,11 @@
+// NEW323 exact timing/economics and bounded needle-body recovery geometry.
+['highPowerRecoveryMarkRulesTest':'cn.academy.port.highpower.core.RecoveryMarkRulesRegressionTest',
+ 'highPowerRecoveryMarkGeometryTest':'cn.academy.port.highpower.core.RecoveryMarkGeometryRegressionTest'].each { taskName, className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+    }
+    tasks.named('check') { dependsOn taskName }
+}

@@ -1,0 +1,341 @@
+{
+  "academycraft_commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521",
+  "academycraft_tag": "1.0.7",
+  "lambdalib_dependency": "1.2.3",
+  "sources": [
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "build.properties",
+      "sha256": "ef62fbe7d49c3863f3f2ffecdaef6a4a1ad35a852a91bb39feba2cec0b72fcca"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/scala/cn/academy/vanilla/teleporter/skill/LocationTeleport.scala",
+      "sha256": "b5e24c842e4efe49a52ab29c16005363a8b99f260badfdd68bf36122e809e1d5"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/scala/cn/academy/vanilla/teleporter/skill/ShiftTeleport.scala",
+      "sha256": "42917e5e68bae8dad11fd7f644e9058a1bd5328393faadd6da872dc712e9bc6b"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/vanilla/teleporter/skill/Flashing.java",
+      "sha256": "77d5caf7dbf724e60e352706fef500f0cb388774020cef803160cfcaeff39450"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/vanilla/teleporter/CatTeleporter.java",
+      "sha256": "43b8839e0205a0a28aecaf7f02d037c754f04368b3b855a76a69f3061a132cb6"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/ability/api/AbilityContext.java",
+      "sha256": "9830d2efcfec0e86539a8cf49f5984e1a5cf1e48e5d9b50ad6c167fd454db00a"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/ability/api/data/AbilityData.java",
+      "sha256": "a2be759d022d4992bbbba1cfc6e1fa3874015a8f615445864f65f62c250f126e"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/ability/api/data/CPData.java",
+      "sha256": "6ef3a87f06fa86e422b183d379c07093366bf60b89057adc94c01cb9088324c3"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/ability/api/context/Context.java",
+      "sha256": "683a69621d92c6d9d7c731c816edee0bddd7680e8c3d3b5b70a078e3fc04d98a"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/ability/api/context/ContextManager.java",
+      "sha256": "9043b907759cb9349be438d4f75c26f790fd357280609b500010dc4ce33803e8"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/ability/api/context/ClientRuntime.java",
+      "sha256": "c5ad216e600569e2b4732d75244d79d57dbfeafe158ad358b63f74cf8db2a05d"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/vanilla/teleporter/util/TPSkillHelper.java",
+      "sha256": "eabc8ff27c3332b7f846eb24377ed5c50a2e32feb35d17cb25bbe6dbd008446c"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/vanilla/teleporter/util/GravityCancellor.java",
+      "sha256": "70a5ffc69be6104b00f3d25a402b82241be272ca595d62f7952ed2178e04c3a5"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/vanilla/teleporter/entity/EntityMarker.java",
+      "sha256": "a1025a1caf15c2d692c44e2101a03f68ee0391ad119c0ffd8732841da31377f9"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/vanilla/teleporter/entity/EntityTPMarking.java",
+      "sha256": "ada90dbc04d7c8a2871ec1beb6fb5600a81affdeb5e542c6d996ec7d975d58c9"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/vanilla/teleporter/client/RenderMarker.java",
+      "sha256": "d9d7ba10c3635db466d14bc9580ba0501267f2cfe1bd6f0105bb92ee2127d7d4"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/vanilla/teleporter/client/MarkRender.java",
+      "sha256": "1512c250e15ea9351a79990f2eb2bdebaf84c9f8a84746a8d404963448ac1332"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/vanilla/teleporter/client/SimpleModelBiped.java",
+      "sha256": "8921656301f70a4e5c10983d13b4e18da973ffbb301afee1e88ae7e813f0e68c"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/vanilla/teleporter/client/TPParticleFactory.java",
+      "sha256": "46d9c915ad4572675982904c1591f01e92a154d7c5f8893fc3d19c493cedef3f"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/core/Resources.java",
+      "sha256": "a837d1ac2f2ff943b544e312be3ac4c4e1d1283cd2184efa4897d9c119d75563"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/resources/assets/academy/guis/loctele_new.xml",
+      "sha256": "ecde1442fb18afbe0e097aaf8f0a1e8765b033fc6e1cf8a970c34c16bb2e51a6"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/resources/assets/academy/sounds.json",
+      "sha256": "c84f72ec250c2b46885565ac31123ac13184b6497be8bc1434cba6d083013a8f"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/resources/assets/academy/lang/en_US.lang",
+      "sha256": "1bebd37b61e7e3fd7ba4af617a0a2deba588deb10c5abcfec71ca8ba404c42b6"
+    },
+    {
+      "project": "LambdaLib-1.2.3",
+      "path": "build.properties",
+      "sha256": "c25334aa50a2ba7e252e74c3e1c0b50c9df70f392b78acdbbee7e285605b30e3"
+    },
+    {
+      "project": "LambdaLib-1.2.3",
+      "path": "LICENSE",
+      "sha256": "852bcc033a46c62f99fb5ffd43b3241ba2c0c440c6034aa2114505f2c4f03c4a"
+    },
+    {
+      "project": "LambdaLib-1.2.3",
+      "path": "src/main/java/cn/lambdalib/util/generic/MathUtils.java",
+      "sha256": "e80c87ca15cbae89584bd9e1111e22d2f55866bf91b434c8813c20bb98176075"
+    },
+    {
+      "project": "LambdaLib-1.2.3",
+      "path": "src/main/java/cn/lambdalib/util/generic/VecUtils.java",
+      "sha256": "d5950587fe04e53cfc53985cdbdf7a100e12648816e94eb3b660fd4f0418a59b"
+    },
+    {
+      "project": "LambdaLib-1.2.3",
+      "path": "src/main/java/cn/lambdalib/util/helper/Motion3D.java",
+      "sha256": "85d514c11b5130b994c2ceb7efa3bd93a7c0a832e65a9abb0f196cc6d2897a56"
+    },
+    {
+      "project": "LambdaLib-1.2.3",
+      "path": "src/main/java/cn/lambdalib/util/mc/EntitySelectors.java",
+      "sha256": "6cc57bea7aa410f3d93fab085a1f64ac6110ab510ba47a2d15048acf344713f2"
+    },
+    {
+      "project": "LambdaLib-1.2.3",
+      "path": "src/main/java/cn/lambdalib/util/mc/Raytrace.java",
+      "sha256": "c893f0a9434bf6e33564aa4aebe8eaecda3d502a79f7b9862402bff852e9ac0b"
+    },
+    {
+      "project": "LambdaLib-1.2.3",
+      "path": "src/main/java/cn/lambdalib/util/mc/WorldUtils.java",
+      "sha256": "22dc9e2c1594f8b97e31cf4075e953f5a7a95edb0db6cffe9fb9dcc0678a0f2e"
+    },
+    {
+      "project": "LambdaLib-1.2.3",
+      "path": "src/main/java/cn/lambdalib/particle/Particle.java",
+      "sha256": "dc43a1fd076185af971b19631773406259e46050bf065cc7653a3e00627a4b11"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/ability/api/Skill.java",
+      "sha256": "afc9c70de37bfb393f62ee3c9fe1d4e02cedf1c73c75f935bf9d8d5e638f698c"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/ability/develop/DevelopData.java",
+      "sha256": "c8dfbc8fbec9d3905d4362f75507c8b67a6afe354b6295773e04559aca307d68"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/ability/develop/DeveloperType.java",
+      "sha256": "767d3d6fc66b5bb67c657dca44ffc4cb25adb36c530a50f504c63ec7d364e85a"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/ability/develop/LearningHelper.java",
+      "sha256": "015173ee7abc49ad12e2f2ad42c1229d38b2baafd2e33f99421492ebacae87df"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/ability/develop/action/DevelopActionSkill.java",
+      "sha256": "01ec5df090826815e719d7a979c1680d6f2ef85b3ee87b4c2aad940492dadfe9"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/ability/develop/condition/DevConditionDep.java",
+      "sha256": "0dace28d10b1d397137aa554f33af9b662c84459306aefcc91ba6f60fab7046f"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/ability/develop/condition/DevConditionDeveloperType.java",
+      "sha256": "195dfc7fceb3927a86714a6451d07293afac36f4808f19d93e38c94f757296d8"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/ability/develop/condition/DevConditionLevel.java",
+      "sha256": "670eec9c2007f63a0718ec9964f27a56bf6655161998951c74e2b3f4189a9ea4"
+    },
+    {
+      "project": "LambdaLib-1.2.3",
+      "path": "src/main/java/cn/lambdalib/util/datapart/EntityData.java",
+      "sha256": "741e65bc51aa8cf218cac83988f6015c29c7e5425c91e6d0cf7ed51f002ce607"
+    },
+    {
+      "project": "LambdaLib-1.2.3",
+      "path": "src/main/java/cn/lambdalib/util/datapart/DataPart.java",
+      "sha256": "8fe3db3034b0a14ec9fb8cbaa441792aa00c8af9ddf5251c188e4e0de45aeb02"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/core/client/sound/ACSounds.java",
+      "sha256": "3d1f8d8207988ad8b57f4843ffc5f2204fc9028807c22ff279cb93e43eb03750"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/core/client/sound/FollowEntitySound.java",
+      "sha256": "ab4df4d6c5fa93917e8a66eab2123f0d19a2e0fbbb17115cdc01832e7bc420a9"
+    }
+  ],
+  "media": [
+    {
+      "path": "assets/academy/guis/loctele_new.xml",
+      "sha256": "ecde1442fb18afbe0e097aaf8f0a1e8765b033fc6e1cf8a970c34c16bb2e51a6"
+    },
+    {
+      "path": "assets/academy/textures/abilities/teleporter/skills/location_teleport.png",
+      "sha256": "b973fc700be0c0ec75bc12e3b0b9be9a3fa83c5fb29009ef46a5e04ee67548ec"
+    },
+    {
+      "path": "assets/academy/textures/abilities/teleporter/skills/shift_tp.png",
+      "sha256": "2907d7fa43a0b6135b1e7819e07c1f8eb4f251255c36838b1419b6b0e76059c9"
+    },
+    {
+      "path": "assets/academy/textures/abilities/teleporter/skills/flashing.png",
+      "sha256": "9fe82ede1a808ac1a4c5c46b079ac1c4c26d6dedb339ec5b2098555406ca1769"
+    },
+    {
+      "path": "assets/academy/textures/abilities/teleporter/icon.png",
+      "sha256": "0c7fb7cb9c2c94bad7f73bbf3d0a7ef2ead099ed90ac956f4665f955cddcce49"
+    },
+    {
+      "path": "assets/academy/textures/abilities/teleporter/icon_overlay.png",
+      "sha256": "94af1e7950fbd30ce461d43c2b24b4dce38ea1121c02d1a2a5848d4129f32369"
+    },
+    {
+      "path": "assets/academy/textures/guis/icons/icon_location_on.png",
+      "sha256": "beddcb4fce5a5d6d3d64d4f3c055014d66f5c2cf19ec67317ef7215fe0b58894"
+    },
+    {
+      "path": "assets/academy/textures/guis/icons/icon_clear.png",
+      "sha256": "3e76e988a627734821573394cff85b302cc5b8184e135f77cd8c84269244fd79"
+    },
+    {
+      "path": "assets/academy/textures/guis/check.png",
+      "sha256": "d699158bd8b79eb3f252e8ad690234dcbcca1e6caee2e145e8d40870d5a11e4b"
+    },
+    {
+      "path": "assets/academy/textures/guis/mark/mark_idle.png",
+      "sha256": "4a37d0c00875ad0fa80e79cef6418f247084d1fd1a622c32f8f48d2185a39150"
+    },
+    {
+      "path": "assets/academy/textures/guis/mark/mark_ball.png",
+      "sha256": "a44f2457ef4ff955adabd876b963848ce0c11566d32ff5a7398db33753b08154"
+    },
+    {
+      "path": "assets/academy/textures/guis/mark/mark_ball_highlighted.png",
+      "sha256": "7c71b597b10e4f243457bc1845670829f0dd9e1d0371146d595ef57ad772311d"
+    },
+    {
+      "path": "assets/academy/textures/effects/tp_particle.png",
+      "sha256": "891dee2e1a087dcd917f3e224e1c5723fd949b71f7d65a47fd31709924b3bd00"
+    },
+    {
+      "path": "assets/academy/sounds/tp/tp.ogg",
+      "sha256": "abd492c26232106683c59e5039418c0aeb2b41269eacb26dcdde8e0762cfa2fa"
+    },
+    {
+      "path": "assets/academy/sounds/tp/tp_shift.ogg",
+      "sha256": "ec3e4fd43368932b7f84a097bd9d96735346449a8a36bbfd79ab2e50abeff8d8"
+    },
+    {
+      "path": "assets/academy/sounds/tp/tp_flashing.ogg",
+      "sha256": "bdfc3eb52dffb2ec0e6ecae26eb615b4edfc1fd19c22e41e7b628b222f64e205"
+    },
+    {
+      "path": "assets/academy/textures/abilities/teleporter/flashing/a.png",
+      "sha256": "00fe7b49c4ee45e7a299deed18279f6a9808ca1d25bec148fbcc3db2666f0734"
+    },
+    {
+      "path": "assets/academy/textures/abilities/teleporter/flashing/d.png",
+      "sha256": "775c5c2b97535b54430ac8af51300c2018a0d17b96ade6b4e1770e75306b5b23"
+    },
+    {
+      "path": "assets/academy/textures/abilities/teleporter/flashing/w.png",
+      "sha256": "e054c18ddbcc652f3e749c64c31d55724b9f63c9aa9e592fc5951883d7c4c069"
+    },
+    {
+      "path": "assets/academy/textures/abilities/teleporter/flashing/s.png",
+      "sha256": "246ae21071f10ca98f4c881343b3234f48599e4baed91d921c99261102b85e7b"
+    },
+    {
+      "path": "assets/academy/textures/effects/tp_mark/0.png",
+      "sha256": "952cca68c146cdde4f69b86be92ef0c0b0d79857f93aedb1a2225dba52a4b3ff"
+    },
+    {
+      "path": "assets/academy/textures/effects/tp_mark/1.png",
+      "sha256": "edf556933b5a773699938386caa07c3cdb23cd9c7ca1ee7db4cdeb5aaa361b60"
+    },
+    {
+      "path": "assets/academy/textures/effects/tp_mark/2.png",
+      "sha256": "72c6836532204fe659b9e3951c2efa6b60c4584f6b875f7b78e89e455d24c68d"
+    },
+    {
+      "path": "assets/academy/textures/effects/tp_mark/3.png",
+      "sha256": "1e99c3a45293bf26b293fa9b465e770871cbcebf24b600e55f7695cbc999bd9b"
+    },
+    {
+      "path": "assets/academy/textures/effects/tp_mark/4.png",
+      "sha256": "9e29f5c1002e46c930fe69ba4455d7343f90a184f595917863fd9ea2225a0bde"
+    },
+    {
+      "path": "assets/academy/textures/effects/tp_mark/5.png",
+      "sha256": "72f1adc9482023aacbf7e522d56d28358332b28474082a9510f2084ca1bf9f75"
+    },
+    {
+      "path": "assets/academy/textures/effects/tp_mark/6.png",
+      "sha256": "561d2d25207ef04d3b4d802f29064067733ba4eda0d3c0ac0c28f520b43baaf4"
+    },
+    {
+      "path": "assets/academy/textures/effects/tp_mark/7.png",
+      "sha256": "c3ad174eb4eae501cf89d799ac98cdf794891442a52e39a434346dcfd1851d11"
+    }
+  ]
+}

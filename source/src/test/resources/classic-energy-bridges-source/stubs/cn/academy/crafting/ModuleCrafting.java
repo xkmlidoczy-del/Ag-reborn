@@ -1,0 +1,1 @@
+package cn.academy.crafting;import net.minecraft.item.Item;public class ModuleCrafting{public static final Item machineFrame=new Item("machine_frame"),constPlate=new Item("constraint_plate"),convComp=new Item("energy_convert_component"),resoCrystal=new Item("reso_crystal");}

@@ -1,0 +1,1 @@
+ground:await:prepared|wait:20|aim:0.5,-59,0.5|ground:await:fire-late|keydown:82|keyup:82|ground:signal:shot-late|ground:await:fire-precise|keydown:82|keyup:82|ground:signal:shot-precise|ground:await:checked|dual:await-disconnect

@@ -1,0 +1,1 @@
+package cn.lambdalib.util.key; public class KeyHandler {public void onKeyUp(){}public net.minecraft.entity.player.EntityPlayer getPlayer(){return net.minecraft.client.Minecraft.getMinecraft().thePlayer;}}

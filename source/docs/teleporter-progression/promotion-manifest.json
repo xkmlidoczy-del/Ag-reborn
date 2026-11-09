@@ -1,0 +1,218 @@
+{
+  "stage": "teleporter-progression",
+  "source": "AcademyCraft classic1.0.7 commit00d19ec0cf538f61c1095c9292f5ee6863db4521 + LambdaLib1.2.3",
+  "active_additions": [
+    "penetrate_teleport",
+    "mark_teleport",
+    "flesh_ripping"
+  ],
+  "common_registry": "SkillAvailability continues deriving from PresetSkills; original learning metadata and gates unchanged",
+  "native_game_tests_compiled_only": 9,
+  "isolated_checks_passed": 5,
+  "runtime_pixel_audio_fidelity": "pending main native server/client/DeveloperMenu/physics/GPU/audio/physical input QA",
+  "original_media_count": 23,
+  "additive": [
+    {
+      "path": "src/main/java/cn/academy/port/client/ClassicTeleporterProgressionEffects.java",
+      "sha256": "23e09bd5b9aa55f231c7827b5ab09fcd044f71e56cb7ee23a04ed91c67f13109"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/client/ClassicTeleporterTimeline.java",
+      "sha256": "24ba4e9a8a264a8d999a3145fddf75fbef2aa962ba3a0795d59b7c3d35300a6a"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/gametest/AcademyTeleporterProgressionRuntimeTests.java",
+      "sha256": "d94677517885d76b9fdc346eab9ee65c1aae1e361d5f538aea40273c2209ca33"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/skill/FleshRipping.java",
+      "sha256": "55cc3716b3adc652ac3b1173ff91bd47497b0f5f2558054392de423313c7667c"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/skill/MarkTeleport.java",
+      "sha256": "a3c1bf1759566880212c5465a9d88f02adc9dda75ba7f46ac6aa9dcf13be6472"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/skill/PenetrateTeleport.java",
+      "sha256": "ae8ff68a3743b79aafd252bd0e5aa7f849fe6a4dbf53b466678f596a670f9447"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/skill/TeleporterProgressionRules.java",
+      "sha256": "9900cb891915b05e96d6b050f1922e937f7a40a65757d03f661c06778e565775"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/skill/TeleporterProgressionSupport.java",
+      "sha256": "f314f6ce6e6c368ee6c517c4c2e6d626d81e86b509102156632a74b2ac6131f0"
+    },
+    {
+      "path": "src/test/java/cn/academy/port/client/TeleporterProgressionVisualRegressionTest.java",
+      "sha256": "da115103e956a5d15f42f4268ebba148feefe890d6773bf44b8e2ec6484c178e"
+    },
+    {
+      "path": "src/test/java/cn/academy/port/skill/TeleporterProgressionLearningRegressionTest.java",
+      "sha256": "1dcc1e02eea9e02c65bf83baa326b97429eb91d67d3220772180ad1c635b175b"
+    },
+    {
+      "path": "src/test/java/cn/academy/port/skill/TeleporterProgressionOracleTest.java",
+      "sha256": "b41c53ad99af5f43a387bce1da70a4f52874686e03c1527add28696fbae6af15"
+    },
+    {
+      "path": "src/test/java/cn/academy/port/skill/TeleporterProgressionRegressionTest.java",
+      "sha256": "ce7f6db728a8682ea87dfd1dc4c420c6bc9a10f621bf25a64bf8c9f67338f051"
+    },
+    {
+      "path": "src/test/java/cn/academy/port/skill/TeleporterProgressionServerLinkTest.java",
+      "sha256": "055787420863c1855bc31ac2b88b8a52181e564c362ac1b270c4cf83e4f02af6"
+    },
+    {
+      "path": "src/test/java/cn/academy/port/skill/TeleporterSourceFixtures.java",
+      "sha256": "a8f7df4655330b3cf2bde96390491ac69cd28bf39a16741cdfeafa0d0d70d766"
+    },
+    {
+      "path": "src/test/resources/classic-teleporter-source/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/AbilityContext.java",
+      "sha256": "9830d2efcfec0e86539a8cf49f5984e1a5cf1e48e5d9b50ad6c167fd454db00a"
+    },
+    {
+      "path": "src/test/resources/classic-teleporter-source/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/context/ContextManager.java",
+      "sha256": "9043b907759cb9349be438d4f75c26f790fd357280609b500010dc4ce33803e8"
+    },
+    {
+      "path": "src/test/resources/classic-teleporter-source/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/data/CPData.java",
+      "sha256": "6ef3a87f06fa86e422b183d379c07093366bf60b89057adc94c01cb9088324c3"
+    },
+    {
+      "path": "src/test/resources/classic-teleporter-source/AcademyCraft-1.0.7/src/main/java/cn/academy/misc/achievements/pages/PageCtTeleporter.java",
+      "sha256": "e1418a982262af592e06b51cf8f4a92ef85e33e908ff40dd85b1502915fde238"
+    },
+    {
+      "path": "src/test/resources/classic-teleporter-source/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/generic/entity/EntityBloodSplash.java",
+      "sha256": "c2a673b56d906e74aeb11eed4a39b51e92506e45d434bb4a651ba0fa5f808eae"
+    },
+    {
+      "path": "src/test/resources/classic-teleporter-source/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/teleporter/CatTeleporter.java",
+      "sha256": "43b8839e0205a0a28aecaf7f02d037c754f04368b3b855a76a69f3061a132cb6"
+    },
+    {
+      "path": "src/test/resources/classic-teleporter-source/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/teleporter/client/MarkRender.java",
+      "sha256": "1512c250e15ea9351a79990f2eb2bdebaf84c9f8a84746a8d404963448ac1332"
+    },
+    {
+      "path": "src/test/resources/classic-teleporter-source/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/teleporter/client/RenderMarker.java",
+      "sha256": "d9d7ba10c3635db466d14bc9580ba0501267f2cfe1bd6f0105bb92ee2127d7d4"
+    },
+    {
+      "path": "src/test/resources/classic-teleporter-source/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/teleporter/client/SimpleModelBiped.java",
+      "sha256": "8921656301f70a4e5c10983d13b4e18da973ffbb301afee1e88ae7e813f0e68c"
+    },
+    {
+      "path": "src/test/resources/classic-teleporter-source/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/teleporter/client/TPParticleFactory.java",
+      "sha256": "46d9c915ad4572675982904c1591f01e92a154d7c5f8893fc3d19c493cedef3f"
+    },
+    {
+      "path": "src/test/resources/classic-teleporter-source/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/teleporter/entity/EntityMarker.java",
+      "sha256": "a1025a1caf15c2d692c44e2101a03f68ee0391ad119c0ffd8732841da31377f9"
+    },
+    {
+      "path": "src/test/resources/classic-teleporter-source/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/teleporter/entity/EntityTPMarking.java",
+      "sha256": "ada90dbc04d7c8a2871ec1beb6fb5600a81affdeb5e542c6d996ec7d975d58c9"
+    },
+    {
+      "path": "src/test/resources/classic-teleporter-source/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/teleporter/util/TPSkillHelper.java",
+      "sha256": "eabc8ff27c3332b7f846eb24377ed5c50a2e32feb35d17cb25bbe6dbd008446c"
+    },
+    {
+      "path": "src/test/resources/classic-teleporter-source/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/teleporter/skill/FleshRipping.scala",
+      "sha256": "d2955c7d9d17cd846692e8ccfff5ef8c1da8f6c803cd4e723da49d5ff182cf83"
+    },
+    {
+      "path": "src/test/resources/classic-teleporter-source/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/teleporter/skill/MarkTeleport.scala",
+      "sha256": "6ccb8e8598971de41ee31680879d5f9d3a8e3df2d74f880451288c5105840f44"
+    },
+    {
+      "path": "src/test/resources/classic-teleporter-source/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/teleporter/skill/PenetrateTeleport.scala",
+      "sha256": "4bfed1f8e1bc9cb5eee5a52ea77ed0099502d009a0e307b627ec3020ce52fb12"
+    },
+    {
+      "path": "src/test/resources/classic-teleporter-source/LambdaLib-1.2.3/src/main/java/cn/lambdalib/particle/Particle.java",
+      "sha256": "dc43a1fd076185af971b19631773406259e46050bf065cc7653a3e00627a4b11"
+    },
+    {
+      "path": "src/test/resources/classic-teleporter-source/LambdaLib-1.2.3/src/main/java/cn/lambdalib/template/client/render/entity/RenderIcon.java",
+      "sha256": "5eca45d68425d11cbb3d6926aae0b7bb0d175656de1b2786bf718d99168b2618"
+    },
+    {
+      "path": "src/test/resources/classic-teleporter-source/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/entityx/handlers/Rigidbody.java",
+      "sha256": "affda19ba7deaa368402d8c0e7f5b5964f0ee386c3a15abf19dc9e9b1ec21455"
+    },
+    {
+      "path": "src/test/resources/classic-teleporter-source/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/generic/MathUtils.java",
+      "sha256": "e80c87ca15cbae89584bd9e1111e22d2f55866bf91b434c8813c20bb98176075"
+    },
+    {
+      "path": "src/test/resources/classic-teleporter-source/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/generic/RandUtils.java",
+      "sha256": "e06e74399c3fbb5de54672c1198135da76d16427e2ab75e943e847e1f05623eb"
+    },
+    {
+      "path": "src/test/resources/classic-teleporter-source/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/helper/Motion3D.java",
+      "sha256": "85d514c11b5130b994c2ceb7efa3bd93a7c0a832e65a9abb0f196cc6d2897a56"
+    },
+    {
+      "path": "src/test/resources/classic-teleporter-source/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/mc/EntitySelectors.java",
+      "sha256": "6cc57bea7aa410f3d93fab085a1f64ac6110ab510ba47a2d15048acf344713f2"
+    },
+    {
+      "path": "src/test/resources/classic-teleporter-source/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/mc/Raytrace.java",
+      "sha256": "c893f0a9434bf6e33564aa4aebe8eaecda3d502a79f7b9862402bff852e9ac0b"
+    },
+    {
+      "path": "src/test/resources/classic-teleporter-source/manifest.json",
+      "sha256": "49eb86c66cf2b59e8bdb0460a246e6d18b3d1800308eb4f0971d6f2b3b8d1722"
+    },
+    {
+      "path": "src/test/resources/classic-teleporter-source/media-hashes.json",
+      "sha256": "4a5cbe209a4e63cf4bc464474864e149f3b2fcc8931af43e4972c7364e41f746"
+    }
+  ],
+  "shared": [
+    {
+      "path": "build.gradle",
+      "baseline_sha256": "be2e3cd3c7a2253aef0a3944691d81af925fa976562dcfb257a42b29abfcd05f",
+      "after_sha256": "80c3bfc4d22457ebbba4634376f1d18f596dc1f09b0896cf67f914136e28fa47"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/AcademyGameplay.java",
+      "baseline_sha256": "5bbdd1e13c8e25c0575a51ce208a9d8389c4f3c118cf00b7fcd9b5e813cd2bef",
+      "after_sha256": "49184ce8c62bbcaa165cd5d0b98154226bbecd8132c1d7908df88c686c3cc06f"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/client/AcademyClient.java",
+      "baseline_sha256": "f8592c3d01e6343ab293aec0280487f34c27ae9d382a006d78fa5fce108ea7f5",
+      "after_sha256": "ebc231d045c03d3db71b19572a580da05a229c3dfa3822d9ff4634599ccc1b93"
+    },
+    {
+      "path": "src/main/java/cn/academy/port/preset/PresetSkills.java",
+      "baseline_sha256": "fe5c966e77b088baa42fe4955762c495d8b62cc10f30259da62e396d3a2cf3f0",
+      "after_sha256": "d99d9804dfe1d884cd4fa0bd15769fe14c836c8bbed99b5b11d4c2851e3b21a9"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "docs/FIDELITY.md",
+      "sha256": "22ba0b988ec90be4c83992ca01a0cc8fd6f134395fd7a52b9d6a58b3ac47aed4"
+    },
+    {
+      "path": "docs/MEDIA-HASHES.md",
+      "sha256": "5cb1169dcd65176bd95ffdbe27ee26542b705ef9e17b3dcb058430f3e4139798"
+    },
+    {
+      "path": "docs/QA.md",
+      "sha256": "46dc31eef8201af7b7d57f583e401d28c516dae83499a9ccfc0ec6754490c5a8"
+    },
+    {
+      "path": "docs/integration.patch",
+      "sha256": "d66b423cf013c9acad165d98a467cfd3b476c75e4af637c8740488c334894902"
+    }
+  ],
+  "patch_sha256": "d66b423cf013c9acad165d98a467cfd3b476c75e4af637c8740488c334894902",
+  "complete_sounds_json_baseline_sha256": "08d579f8966d9406f070a2552db0326405a2269c17c0abfe5208ea0761955420"
+}

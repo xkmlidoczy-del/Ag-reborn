@@ -1,0 +1,1 @@
+package cn.academy.vanilla.vecmanip.skill;public class VecAccel$ extends cn.academy.ability.api.Skill {public static final VecAccel$ MODULE$=new VecAccel$();private VecAccel$(){super(cn.academy.vanilla.vecmanip.CatVecManip$.INSTANCE,"vec_accel");}}

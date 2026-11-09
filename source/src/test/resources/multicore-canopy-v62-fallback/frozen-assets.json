@@ -1,0 +1,12 @@
+{
+  "src/main/resources/assets/academy/textures/port/white.png": "7ac2abfce2be8b46dd9826d597d94edeefc1570b4a992622721b90a1850e3ee9",
+  "src/main/resources/assets/academy/textures/effects/mdball/glow.png": "2dd6e193adfbf100cf00671aa40ada6c40acd01156c9c44ee231edf50e9208b5",
+  "src/main/resources/assets/academy/textures/effects/mdball/0.png": "01130bef3ab1d82cfaf41892cae654f8d77d40ed0c00d3642d4fffd31d09546b",
+  "src/main/resources/assets/academy/textures/effects/mdball/1.png": "e98893f6f46ba618a715cf214452c3d351669d3c72e6efa87c02ec370d9c4518",
+  "src/main/resources/assets/academy/textures/effects/mdball/2.png": "537f631eed7be706abf0000c4cb75358be117faf9738d88c922d2085de14c8c7",
+  "src/main/resources/assets/academy/textures/effects/mdball/3.png": "27e55f9292f346ff24cc25e9bebcf1a7d6e0046e21ac019755c5c6faf017b3db",
+  "src/main/resources/assets/academy/textures/effects/mdball/4.png": "d48f594e02b49f7dd5e59faddb538d249b7a9f0fb9ff697e5493226db50cf82a",
+  "src/main/resources/assets/academy/textures/effects/mdray_small/blend_in.png": "ac97e7a452ecdc5a41f6b2379c98225e443693337f3dd90e2ba54707f1b38104",
+  "src/main/resources/assets/academy/textures/effects/mdray_small/tile.png": "591ab5e780dc406a1d32e4dbf938fc584a56fe8898dcc9c596cf5e07b912e88f",
+  "src/main/resources/assets/academy/textures/effects/mdray_small/blend_out.png": "0c71ed58ed0c122517e09a3db39addf931934ed22b58f880c781f0c31d916620"
+}

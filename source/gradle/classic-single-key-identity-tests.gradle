@@ -1,0 +1,13 @@
+// Owner-reviewed six-skill identity/epoch regression mains; no engine bootstrap.
+['classicLegacySingleKeyProtocolTest':'cn.academy.port.core.LegacySingleKeyProtocolTest',
+ 'classicLegacySingleKeyOwnerEpochTest':'cn.academy.port.core.LegacySingleKeyOwnerEpochTest',
+ 'classicLegacySingleKeyBindingTest':'cn.academy.port.client.LegacySingleKeyBindingTest',
+ 'classicFirstSkillIdentityTimelineTest':'cn.academy.port.client.ClassicFirstSkillIdentityTimelineTest'].each { taskName, className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+    }
+    tasks.named('check') { dependsOn taskName }
+}

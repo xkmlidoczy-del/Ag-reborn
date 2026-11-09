@@ -1,0 +1,8 @@
+// NEW141 exact per-target damage, continuous costs, server clocks and bounded aim/anchor geometry.
+tasks.register('highPowerThunderNetTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.ThunderNetRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerThunderNetTest' }

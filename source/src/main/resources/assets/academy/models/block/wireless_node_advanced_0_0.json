@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "academy:blocks/node_advanced_side_0",
+    "down": "academy:blocks/node_top_0",
+    "up": "academy:blocks/node_top_0",
+    "north": "academy:blocks/node_advanced_side_0",
+    "south": "academy:blocks/node_advanced_side_0",
+    "east": "academy:blocks/node_advanced_side_0",
+    "west": "academy:blocks/node_advanced_side_0"
+  }
+}

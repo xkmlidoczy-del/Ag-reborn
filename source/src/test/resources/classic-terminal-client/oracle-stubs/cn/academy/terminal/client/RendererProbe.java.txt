@@ -1,0 +1,3 @@
+package cn.academy.terminal.client;
+public class RendererProbe {public static double[] matrix(String context){org.lwjgl.opengl.GL11.reset();var renderer=new TerminalInstallerRenderer();var type=net.minecraftforge.client.IItemRenderer.ItemRenderType.valueOf(context);var item=new net.minecraft.item.ItemStack();if(!renderer.handleRenderType(item,type))return null;renderer.renderItem(type,item,new net.minecraft.client.renderer.RenderBlocks(),type==net.minecraftforge.client.IItemRenderer.ItemRenderType.ENTITY?new net.minecraft.entity.item.EntityItem():new net.minecraft.entity.EntityLivingBase());return org.lwjgl.opengl.GL11.captured;}}
+

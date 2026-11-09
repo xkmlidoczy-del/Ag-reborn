@@ -1,0 +1,1 @@
+package cn.academy.ability.api.data;public class AbilityData {public cn.academy.ability.api.Category cat;public int level;public static AbilityData get(net.minecraft.entity.player.EntityPlayer p){return p.data;}public boolean hasCategory(){return cat!=null;}public int getLevel(){return level;}public cn.academy.ability.api.Category getCategory(){return cat;}}

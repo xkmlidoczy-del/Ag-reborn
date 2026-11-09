@@ -1,0 +1,9 @@
+// Pure CINEMATIC teleporter-skill decorations: inert below layer 3, determinism, bounds, budgets, hostile input, identity, power scaling.
+tasks.register('teleportDecorTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.TeleportDecorRegressionTest'
+    enableAssertions = true
+    maxHeapSize = '128m'
+}
+tasks.named('check') { dependsOn 'teleportDecorTest' }

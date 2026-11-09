@@ -1,0 +1,1 @@
+package cn.lambdalib.util.mc; public class PlayerUtils {public static int calls;public static void sendChat(Object p,String key,Object...args){if(!key.equals("ac.terminal.key_hint")||!args[0].equals("L ALT"))throw new AssertionError();calls++;}}

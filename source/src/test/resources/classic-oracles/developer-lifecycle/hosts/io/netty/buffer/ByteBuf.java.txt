@@ -1,0 +1,2 @@
+/* Test-only lifecycle platform plumbing; business methods run unchanged originals. */
+package io.netty.buffer;public class ByteBuf {public ByteBuf writeByte(int x){return this;}public byte readByte(){return 0;}public ByteBuf writeShort(int x){return this;}public short readShort(){return 0;}}

@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "academy:reso_crystal_ore",
+    "academy:constraint_metal_ore",
+    "academy:crystal_ore",
+    "academy:imag_silicon_ore"
+  ]
+}

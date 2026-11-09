@@ -1,0 +1,1 @@
+package cn.academy.vanilla.vecmanip.skill;public class VecReflection$ extends cn.academy.ability.api.Skill {public static final VecReflection$ MODULE$=new VecReflection$();private VecReflection$(){super(cn.academy.vanilla.vecmanip.CatVecManip$.INSTANCE,"vec_reflection");}}

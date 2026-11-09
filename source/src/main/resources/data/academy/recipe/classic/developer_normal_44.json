@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "BCD",
+    "EFG"
+  ],
+  "key": {
+    "A": {
+      "item": "academy:portable_developer"
+    },
+    "B": {
+      "item": "academy:matrix_core_0"
+    },
+    "C": {
+      "item": "minecraft:red_bed"
+    },
+    "D": {
+      "item": "minecraft:piston"
+    },
+    "E": {
+      "item": "academy:crystal_normal"
+    },
+    "F": {
+      "item": "academy:machine_frame"
+    },
+    "G": {
+      "tag": "c:dusts/redstone"
+    }
+  },
+  "result": {
+    "id": "academy:developer_normal",
+    "count": 1
+  }
+}

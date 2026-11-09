@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "result": {
+    "id": "academy:crystal_low",
+    "count": 1
+  },
+  "ingredient": {
+    "item": "academy:crystal_ore"
+  },
+  "experience": 0.8,
+  "cookingtime": 200
+}

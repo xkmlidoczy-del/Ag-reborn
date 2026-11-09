@@ -1,0 +1,2 @@
+/* Test-only lifecycle platform plumbing; business methods run unchanged originals. */
+package com.google.common.base;public class Preconditions {public static void checkState(boolean state,Object... message){if(!state)throw new IllegalStateException();}public static void checkArgument(boolean state,Object... message){if(!state)throw new IllegalArgumentException();}public static int checkElementIndex(int index,int size){if(index<0||index>=size)throw new IndexOutOfBoundsException();return index;}}

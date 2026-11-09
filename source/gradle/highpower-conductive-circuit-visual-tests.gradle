@@ -1,0 +1,16 @@
+// NEW-121 exact grounded geometry and compiled client lifecycle checks.
+tasks.register('highPowerConductiveCircuitGeometryTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.ConductiveCircuitGeometryRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerConductiveCircuitGeometryTest' }
+
+tasks.register('highPowerConductiveCircuitVisualTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.ConductiveCircuitVisualRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerConductiveCircuitVisualTest' }

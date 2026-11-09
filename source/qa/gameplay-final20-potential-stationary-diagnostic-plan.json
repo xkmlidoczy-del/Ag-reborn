@@ -1,0 +1,7 @@
+[
+  {
+    "name": "final20-diagnostic-potential-stationary",
+    "script": "gameplay-final20-potential-stationary-diagnostic.script",
+    "props": "academy.qa.finalVisual=true"
+  }
+]

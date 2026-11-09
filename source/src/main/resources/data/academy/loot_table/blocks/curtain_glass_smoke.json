@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:block",
+  "random_sequence": "academy:blocks/curtain_glass_smoke",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "academy:curtain_glass_smoke",
+          "functions": [
+            {
+              "function": "minecraft:explosion_decay"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

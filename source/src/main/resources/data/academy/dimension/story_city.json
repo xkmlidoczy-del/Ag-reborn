@@ -1,0 +1,30 @@
+{
+  "type": "academy:story_city",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "minecraft:plains",
+      "features": false,
+      "lakes": false,
+      "structure_overrides": [],
+      "layers": [
+        {
+          "block": "minecraft:bedrock",
+          "height": 1
+        },
+        {
+          "block": "minecraft:stone",
+          "height": 59
+        },
+        {
+          "block": "academy:reinforced_concrete",
+          "height": 3
+        },
+        {
+          "block": "academy:plaza_tile",
+          "height": 1
+        }
+      ]
+    }
+  }
+}

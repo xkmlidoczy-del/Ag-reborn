@@ -1,0 +1,3 @@
+package cn.lambdalib.util.generic;public class MathUtils {public static float lerpf(float a, float b, float lambda) {
+        return a + lambda * (b - a);
+    }}

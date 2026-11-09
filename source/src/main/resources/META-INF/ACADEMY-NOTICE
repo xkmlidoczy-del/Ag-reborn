@@ -1,0 +1,55 @@
+AcademyCraft Classic NeoForge Port
+================================
+
+Original work: Copyright (c) Lambda Innovation, 2013-2016.
+Official project: https://github.com/LambdaInnovation/AcademyCraft
+Behavior/asset baseline: tag 1.0.7, expected commit 00d19ec0cf538f61c1095c9292f5ee6863db4521.
+The upstream tag has build.properties mod_ver=1.0.6; the release/tag is the reference.
+
+Original licensing notice, preserved verbatim:
+
+All versions of AcademyCraft are licensed under [GPLv3](http://www.gnu.org/licenses/gpl.html).   
+And all versions of AcademyCraft are additionally licensed as following:  
+Prohibits any person, company, business, organization, etc. from selling AcademyCraft and its contents in any form, including but not limited to paid downloads (including but not limited to various legal currencies, virtual currency, game token, etc.) AcademyCraft's items, the sale of AcademyCraft ability within the game, etc.
+Lambda Innovation retains the copyright, the right of authorship, the ownership, etc. of AcademyCraft, regardless of all agreements, and any provision that requires these rights or a part of them is deemed invalid.  
+Lambda Innovation reserves the right of final interpretation and reserves the right to deny all agreements to revoke all authorizations.    
+所有版本的AcademyCraft使用[GPLv3](http://www.gnu.org/licenses/gpl.html)协议。  
+并且所有版本的AcademyCraft同时附加有以下版权限制：  
+禁止任何个人、公司、企业、组织等以任何形式出售AcademyCraft及其内容，包括但不限于付费下载(包括但不限于各种法定货币、虚拟货币、虚拟币、游戏代币等)，游戏内出售AcademyCraft物品，游戏内出售AcademyCraft能力等。  
+LambdaInnovation对于AcademyCraft的著作权、署名权、拥有权、版权等无视一切协议而保留，任何要求这些权利或其中一部分的条款均视为无效。  
+LambdaInnovation保留最终解释权，并保留否定一切协议撤销一切授权的权利。  
+
+
+This development port does not resolve the compatibility/enforceability of upstream additional terms. Review these terms before redistribution. No sale is authorized. The media directory and song-specific assets are excluded from the distributable. No rights to third-party songs are asserted.
+
+Official NeoForge MDK scaffold: copyright NeoForged contributors; see docs/NEOFORGE-MDK-LICENSE.txt. Minecraft/Mojang mappings retain their own notices and terms; they are build dependencies, not bundled in this project.
+
+Port adaptations and new code remain under the upstream terms described above. See LICENSE for the standard GPLv3 text; do not treat this file as removal of additional upstream notices.
+
+Selected mathematical/ray/physics algorithms are adapted from LambdaLib1.2.3, Copyright (c) Lambda Innovation, 2013-2016, MIT license. Full MIT license is included in docs/LAMBDALIB-LICENSE and the JAR metadata.
+
+Classic phase-liquid flow semantics/compatibility algorithms are adapted from MinecraftForge1.7.10 BlockFluidClassic, BlockFluidBase and RenderBlockFluid. Forge-derived portions retain the Minecraft Forge Public Licence1.0, rather than being relicensed by this port. Official source and licence: https://github.com/MinecraftForge/MinecraftForge/tree/1.7.10 and https://raw.githubusercontent.com/MinecraftForge/MinecraftForge/1.7.10/MinecraftForge-License.txt. No MCP data is included. This local development task does not authorize redistribution or resolve licence compatibility. See docs/LEGACY-FORGE-FLOW-NOTICE.md.
+
+NEW242 directional_dissipation_curtain skill icon is an unchanged copy of the original AcademyCraft meltdowner/light_shield.png asset. Original attribution and license remain applicable. Its scoped curtain renderer reuses the existing mdshield texture and reviewed NEW221 material; no newly drawn texture is claimed.
+
+NEW251 multicore_canopy icon is an unchanged copy of the original electron_missile.png. Its centered orb artwork uses original effects/mdball/0..4.png and glow.png; narrow beams reuse mdray_small artwork and scoped NEW221 material. Original authorship/license remain; no newly drawn texture is claimed.
+
+NEW313 safe_landing_probe icon is an unchanged copy of the original AcademyCraft teleporter/shift_tp.png asset. Its scoped renderer uses the existing effects/tp_mark/0..6.png blue-gray/cyan holographic biped atlas and tp_particle.png, not captured player skins. Original Lambda Innovation attribution and upstream license remain applicable. Collision-box corners are code geometry. No newly drawn raster artwork or original classic motion behavior is claimed.
+
+NEW312 phase_sidestep icon is an unchanged copy of the original AcademyCraft teleporter/flashing.png asset. Its scoped afterimages and coordinate marks reuse the original effects/tp_mark/0..6.png and tp_particle.png artwork with gray-white tinting. These are not captured player skins. Original Lambda Innovation attribution and upstream license remain applicable; no newly drawn raster artwork or original classic motion behavior is claimed.
+
+NEW311 displaced_projection skill icon is an unchanged copy of the original AcademyCraft teleporter/threatening_teleport.png asset. Original needle artwork and gray coordinate effects retain Lambda Innovation authorship and the upstream license; no newly drawn raster artwork or original classic combat behavior is claimed.
+
+NEW322 return_mark skill icon is an unchanged copy of the original AcademyCraft teleporter/mark_teleport.png asset. Its coordinate mark effects reuse original TP artwork with runtime gray-white tinting. Original Lambda Innovation attribution and the upstream license remain applicable; no newly drawn or modified raster artwork or original classic teleport behavior is claimed.
+
+NEW323 recovery_mark skill icon is an unchanged copy of the original AcademyCraft teleporter/location_teleport.png asset. Its coordinate marks reuse original TP artwork with runtime gray-white tinting. Original Lambda Innovation attribution and the upstream license remain applicable; no newly drawn or modified raster artwork or original classic teleport behavior is claimed.
+
+NEW321 cross_substitution skill icon is an unchanged copy of the original AcademyCraft teleporter/threatening_teleport.png asset. Its numbered gray-white coordinate marks reuse original TP artwork, and three real needle entities use original needle artwork. Original Lambda Innovation attribution and the upstream license remain applicable. No newly drawn raster artwork, original classic combat behavior, or implemented self-swap mode is claimed.
+
+NEW333 corner_exchange skill icon is an unchanged copy of the original AcademyCraft teleporter/mark_teleport.png asset. Its reusable coordinate marks and exchange preview reuse original TP artwork with runtime gray-white tinting. Original Lambda Innovation attribution and the upstream license remain applicable; no newly drawn raster artwork or original classic teleport behavior is claimed.
+
+NEW331 short_interception skill icon is an unchanged copy of the original AcademyCraft teleporter/threatening_teleport.png asset. Its gray-white coordinate and needle identity reuse original TP artwork with runtime tinting. Original Lambda Innovation attribution and the upstream license remain applicable; no newly drawn raster artwork or original classic combat behavior is claimed.
+
+NEW343 spatial_relay skill icon is an unchanged copy of the original AcademyCraft teleporter/location_teleport.png asset. Its coordinate relay identity reuses original TP artwork with runtime gray-white tinting. Original Lambda Innovation attribution and the upstream license remain applicable; no newly drawn raster artwork or original classic teleport behavior is claimed.
+
+NEW342 emergency_return skill icon is an unchanged copy of the original AcademyCraft teleporter/mark_teleport.png asset. Its emergency return coordinate identity reuses original TP artwork with runtime gray-white tinting. Original Lambda Innovation attribution and the upstream license remain applicable; no newly drawn raster artwork or original classic teleport behavior is claimed.

@@ -1,0 +1,62 @@
+[
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/block/TileSolarGen.java",
+    "sha256": "6c3c5680675ba551476b86d9b19cc75d2b6f8a3b2dde23fce17df0bf4610bdd7"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/block/BlockSolarGen.java",
+    "sha256": "8ef4240e690b07095cf29f036d48b0b009136cac2c21cc3a0cfcb8f085336600"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/block/ContainerSolarGen.java",
+    "sha256": "d2a492fd4c7a2abbaed5542709543ccc92d9724b1ffa5d9ffe377e25dafb7f40"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/block/SlotIFItem.java",
+    "sha256": "96d7f8aa055087c510ba13003a7a862e538417391134f0708d41ae53721fef13"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/core/block/TileGeneratorBase.java",
+    "sha256": "21669f5fdb7684452fec12cb8e0384731b543ff8bda27c6d22fbacc122c6207a"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/core/container/TechUIContainer.java",
+    "sha256": "03a0b43816ff2667583c6dca3f629c026ff100e37ab88c9b6df41827fef8289f"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/IFConstants.java",
+    "sha256": "55079b4e5dbefab7de2ac9c62386642211d5a281bc0cf450bd6fb90cbe860e24"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/ModuleEnergy.java",
+    "sha256": "fc38533a5d7f38114823471d53ac7f259501543585b8f7241a6b2753bb80598e"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/energy/client/render/block/RenderSolarGen.java",
+    "sha256": "b35a46f06a47cb1fb920eb1b29671bd545a72a68c2601fbbfcc5e114a75d5c84"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/energy/client/ui/GuiSolarGen.scala",
+    "sha256": "041f2613e4e48cd290addbccc28099a0be34a4867feb3676760a0586d76e31f6"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/recipes/default.recipe",
+    "sha256": "a9dc4aa3477ad246f7cb9bb6bea3c33e033aaa8431f3c8a03acaf0845374da1f"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/guis/rework/page_solar.xml",
+    "sha256": "463b08c6d46ec6164159cb3a90771b8ccbb679f714017f0a9a63a42b97ca30db"
+  },
+  {
+    "source": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/multiblock/BlockMulti.java",
+    "sha256": "00b4580b85cbec7673a178d7dfe7fb5f2e81a4d7bbba0e6ea60766bd20824f99"
+  },
+  {
+    "source": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/multiblock/RenderBlockMulti.java",
+    "sha256": "ff8c83a79cd36784ebf42b5b70ed7a8bd4f000271799f7ebaa94b60d0d44a2ad"
+  },
+  {
+    "source": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/multiblock/RenderBlockMultiModel.java",
+    "sha256": "1c76e0431cb4fe476f13637a4816eb5d86b9e6e0f2dc0ef6e7dcf6c78f334bc0"
+  }
+]

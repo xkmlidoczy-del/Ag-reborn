@@ -1,0 +1,74 @@
+[
+  {
+    "name": "original/TerminalUI.java.txt",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/terminal/client/TerminalUI.java",
+    "sha256": "f2e34701184d33058a0c616f07fb04904d5aeca3d89cf40764b0decbdb4a7249",
+    "bytes": 16096
+  },
+  {
+    "name": "original/AppSettings.java.txt",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/terminal/app/settings/AppSettings.java",
+    "sha256": "6c6e6a4dbcd4bd9f6ad1e0e85490741fca5bfc7665ab1526548c134b6a054f7a",
+    "bytes": 1105
+  },
+  {
+    "name": "original/App.java.txt",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/terminal/App.java",
+    "sha256": "00242d3ab2b0e96a1bf9f93b0c59850532faa112a5d45234b279808965224425",
+    "bytes": 1480
+  },
+  {
+    "name": "original/AppEnvironment.java.txt",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/terminal/AppEnvironment.java",
+    "sha256": "5c9cc6b8f5be90aed3480522b00fb643557a3e39be90319eb4233305b3088591",
+    "bytes": 1024
+  },
+  {
+    "name": "original/AuxGui.java.txt",
+    "source": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/client/auxgui/AuxGui.java",
+    "sha256": "45a03cdc692c48225014967cfb06496aa9540de6fe3e3f818eb971b2957e5d88",
+    "bytes": 2206
+  },
+  {
+    "name": "original/AuxGuiHandler.java.txt",
+    "source": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/client/auxgui/AuxGuiHandler.java",
+    "sha256": "7706b76935162c3d2969d140dfb9498f112f2aaaf4b01763acada7a8c5e2d878",
+    "bytes": 4652
+  },
+  {
+    "name": "original/CGui.java.txt",
+    "source": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/cgui/gui/CGui.java",
+    "sha256": "b38a09528f56a67f1281d74f435bc1024ed9b36c7476b1d5deeff548a90aa40a",
+    "bytes": 13506
+  },
+  {
+    "name": "original/TextBox.java.txt",
+    "source": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/cgui/gui/component/TextBox.java",
+    "sha256": "dbe9f792cf539a20e1f633577478c4100ce288522fac31004c89bc87a52cd913",
+    "bytes": 9913
+  },
+  {
+    "name": "original/TrueTypeFont.scala.txt",
+    "source": ".reference/LambdaLib-1.2.3/src/main/scala/cn/lambdalib/util/client/font/TrueTypeFont.scala",
+    "sha256": "fb03d54c64a0c1bb945ac0fe85ad502bcc1a7adcebbd20e59c22e92d4a1fbeb1",
+    "bytes": 8237
+  },
+  {
+    "name": "original/terminal.xml.txt",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/guis/terminal.xml",
+    "sha256": "c63d1fc77c55f60da5e459bfc20df4dadd1df18156de97713077e3342fb5de7b",
+    "bytes": 9741
+  },
+  {
+    "name": "original/LICENSE-AcademyCraft-GPL3.txt.txt",
+    "source": ".staging/terminal-apps/files/src/test/resources/classic-terminal-client/LICENSE-AcademyCraft-GPL3.txt",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+    "bytes": 35149
+  },
+  {
+    "name": "original/LICENSE-LambdaLib-MIT.txt.txt",
+    "source": ".staging/terminal-apps/files/src/test/resources/classic-terminal-client/LICENSE-LambdaLib-MIT.txt",
+    "sha256": "852bcc033a46c62f99fb5ffd43b3241ba2c0c440c6034aa2114505f2c4f03c4a",
+    "bytes": 1067
+  }
+]

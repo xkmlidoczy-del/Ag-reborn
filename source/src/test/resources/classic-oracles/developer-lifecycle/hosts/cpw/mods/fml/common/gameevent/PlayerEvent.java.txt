@@ -1,0 +1,2 @@
+/* Test-only lifecycle platform plumbing; business methods run unchanged originals. */
+package cpw.mods.fml.common.gameevent;public class PlayerEvent extends cpw.mods.fml.common.eventhandler.Event {public net.minecraft.entity.player.EntityPlayer player;public static class ItemCraftedEvent extends PlayerEvent {public net.minecraft.item.ItemStack crafting;}public static class ItemPickupEvent extends PlayerEvent {public PickedUp pickedUp;}public static class PickedUp {public net.minecraft.item.ItemStack getEntityItem(){return null;}}}

@@ -1,0 +1,1 @@
+package net.minecraft.client; public class Minecraft {static final Minecraft instance=new Minecraft(); public Object thePlayer=new Object();public static Minecraft getMinecraft(){return instance;}}

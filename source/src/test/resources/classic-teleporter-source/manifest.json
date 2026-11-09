@@ -1,0 +1,125 @@
+{
+  "academycraft_commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521",
+  "sources": [
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/scala/cn/academy/vanilla/teleporter/skill/PenetrateTeleport.scala",
+      "sha256": "4bfed1f8e1bc9cb5eee5a52ea77ed0099502d009a0e307b627ec3020ce52fb12"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/scala/cn/academy/vanilla/teleporter/skill/MarkTeleport.scala",
+      "sha256": "6ccb8e8598971de41ee31680879d5f9d3a8e3df2d74f880451288c5105840f44"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/scala/cn/academy/vanilla/teleporter/skill/FleshRipping.scala",
+      "sha256": "d2955c7d9d17cd846692e8ccfff5ef8c1da8f6c803cd4e723da49d5ff182cf83"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/vanilla/teleporter/CatTeleporter.java",
+      "sha256": "43b8839e0205a0a28aecaf7f02d037c754f04368b3b855a76a69f3061a132cb6"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/vanilla/teleporter/util/TPSkillHelper.java",
+      "sha256": "eabc8ff27c3332b7f846eb24377ed5c50a2e32feb35d17cb25bbe6dbd008446c"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/vanilla/teleporter/client/MarkRender.java",
+      "sha256": "1512c250e15ea9351a79990f2eb2bdebaf84c9f8a84746a8d404963448ac1332"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/vanilla/teleporter/client/RenderMarker.java",
+      "sha256": "d9d7ba10c3635db466d14bc9580ba0501267f2cfe1bd6f0105bb92ee2127d7d4"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/vanilla/teleporter/client/SimpleModelBiped.java",
+      "sha256": "8921656301f70a4e5c10983d13b4e18da973ffbb301afee1e88ae7e813f0e68c"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/vanilla/teleporter/client/TPParticleFactory.java",
+      "sha256": "46d9c915ad4572675982904c1591f01e92a154d7c5f8893fc3d19c493cedef3f"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/vanilla/teleporter/entity/EntityTPMarking.java",
+      "sha256": "ada90dbc04d7c8a2871ec1beb6fb5600a81affdeb5e542c6d996ec7d975d58c9"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/vanilla/generic/entity/EntityBloodSplash.java",
+      "sha256": "c2a673b56d906e74aeb11eed4a39b51e92506e45d434bb4a651ba0fa5f808eae"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/ability/api/context/ContextManager.java",
+      "sha256": "9043b907759cb9349be438d4f75c26f790fd357280609b500010dc4ce33803e8"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/ability/api/AbilityContext.java",
+      "sha256": "9830d2efcfec0e86539a8cf49f5984e1a5cf1e48e5d9b50ad6c167fd454db00a"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/ability/api/data/CPData.java",
+      "sha256": "6ef3a87f06fa86e422b183d379c07093366bf60b89057adc94c01cb9088324c3"
+    },
+    {
+      "project": "LambdaLib-1.2.3",
+      "path": "src/main/java/cn/lambdalib/util/helper/Motion3D.java",
+      "sha256": "85d514c11b5130b994c2ceb7efa3bd93a7c0a832e65a9abb0f196cc6d2897a56"
+    },
+    {
+      "project": "LambdaLib-1.2.3",
+      "path": "src/main/java/cn/lambdalib/util/mc/Raytrace.java",
+      "sha256": "c893f0a9434bf6e33564aa4aebe8eaecda3d502a79f7b9862402bff852e9ac0b"
+    },
+    {
+      "project": "LambdaLib-1.2.3",
+      "path": "src/main/java/cn/lambdalib/util/generic/RandUtils.java",
+      "sha256": "e06e74399c3fbb5de54672c1198135da76d16427e2ab75e943e847e1f05623eb"
+    },
+    {
+      "project": "LambdaLib-1.2.3",
+      "path": "src/main/java/cn/lambdalib/template/client/render/entity/RenderIcon.java",
+      "sha256": "5eca45d68425d11cbb3d6926aae0b7bb0d175656de1b2786bf718d99168b2618"
+    },
+    {
+      "project": "LambdaLib-1.2.3",
+      "path": "src/main/java/cn/lambdalib/particle/Particle.java",
+      "sha256": "dc43a1fd076185af971b19631773406259e46050bf065cc7653a3e00627a4b11"
+    },
+    {
+      "project": "LambdaLib-1.2.3",
+      "path": "src/main/java/cn/lambdalib/util/entityx/handlers/Rigidbody.java",
+      "sha256": "affda19ba7deaa368402d8c0e7f5b5964f0ee386c3a15abf19dc9e9b1ec21455"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/vanilla/teleporter/entity/EntityMarker.java",
+      "sha256": "a1025a1caf15c2d692c44e2101a03f68ee0391ad119c0ffd8732841da31377f9"
+    },
+    {
+      "project": "AcademyCraft-1.0.7",
+      "path": "src/main/java/cn/academy/misc/achievements/pages/PageCtTeleporter.java",
+      "sha256": "e1418a982262af592e06b51cf8f4a92ef85e33e908ff40dd85b1502915fde238"
+    },
+    {
+      "project": "LambdaLib-1.2.3",
+      "path": "src/main/java/cn/lambdalib/util/mc/EntitySelectors.java",
+      "sha256": "6cc57bea7aa410f3d93fab085a1f64ac6110ab510ba47a2d15048acf344713f2"
+    },
+    {
+      "project": "LambdaLib-1.2.3",
+      "path": "src/main/java/cn/lambdalib/util/generic/MathUtils.java",
+      "sha256": "e80c87ca15cbae89584bd9e1111e22d2f55866bf91b434c8813c20bb98176075"
+    }
+  ]
+}

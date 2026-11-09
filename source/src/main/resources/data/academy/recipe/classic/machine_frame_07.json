@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "result": {
+    "id": "academy:machine_frame",
+    "count": 1
+  },
+  "pattern": [
+    " B ",
+    "DEF",
+    " H "
+  ],
+  "key": {
+    "B": {
+      "tag": "c:plates/iron"
+    },
+    "D": {
+      "tag": "c:plates/iron"
+    },
+    "E": {
+      "tag": "c:dusts/redstone"
+    },
+    "F": {
+      "tag": "c:plates/iron"
+    },
+    "H": {
+      "tag": "c:plates/iron"
+    }
+  }
+}

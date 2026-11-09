@@ -1,0 +1,12 @@
+[
+  {
+    "name": "diagnostic22-observer-complete-em-stress",
+    "script": "gameplay-diagnostic22-observer-complete-em-stress.script",
+    "directory": "run-diagnostic22-observer",
+    "props": "academy.qa.observerClient=true",
+    "scriptSha256": "31b6ac1f79956234c90b0407a99e3f367382144bbbfd2c3aeb840c6f5e824bd9",
+    "sourceScript": "gameplay-final-modes-group-em-input-modes.script",
+    "sourceScriptSha256": "0cfd19bdac558725dd9608d1e627f49f4402f2967fa4854fc8ab9ca300976245",
+    "scope": "Three unchanged complete original ten-scenario groups with original assertions, only quit removed between groups and marks added. Independent observer diagnostic, no final acceptance."
+  }
+]

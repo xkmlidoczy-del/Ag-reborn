@@ -1,0 +1,15 @@
+// NEW252 real classic binding/coordinator plus bounded authenticated toggle ownership.
+tasks.register('zeroGapArmorInputTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.ZeroGapArmorInputRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'zeroGapArmorInputTest' }
+tasks.register('zeroGapArmorCleanupTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.ZeroGapArmorCleanupRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'zeroGapArmorCleanupTest' }

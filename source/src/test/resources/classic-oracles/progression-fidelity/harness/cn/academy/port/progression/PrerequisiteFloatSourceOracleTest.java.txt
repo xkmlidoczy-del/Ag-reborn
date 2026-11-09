@@ -1,0 +1,128 @@
+/* Differential learning boundaries against unchanged AcademyCraft1.0.7 sources. GPLv3; see NOTICE. */
+package cn.academy.port.progression;
+
+import cn.academy.ability.api.CategoryManager;
+import cn.academy.ability.api.Skill;
+import cn.academy.ability.api.data.AbilityData;
+import cn.academy.ability.api.data.CPData;
+import cn.academy.ability.develop.condition.DevConditionDep;
+import cn.academy.port.SkillCatalog;
+import cn.academy.port.core.AbilityProgress;
+import cn.academy.port.core.ClassicSkillConfiguration;
+import cn.academy.port.develop.DevelopmentActions;
+import cn.academy.port.develop.DeveloperType;
+import cn.lambdalib.util.datapart.EntityData;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.MinecraftForge;
+import java.util.List;
+import java.util.Map;
+
+/** The source host supplies platform plumbing only; real modern entry points are compiled in both modes. */
+public final class PrerequisiteFloatSourceOracleTest {
+    private static int checks, differences;
+    private static boolean baseline;
+    private static void check(boolean result,String reason){checks++;if(!result)throw new AssertionError(reason);}
+    private static void match(boolean actual,boolean expected,String reason){checks++;if(actual!=expected){differences++;System.out.println("DIFF "+reason+" source="+expected+" modern="+actual);if(!baseline)throw new AssertionError(reason);}}
+
+    private static boolean original(float value,float required,boolean learned) {
+        MinecraftForge.EVENT_BUS.callback=e->{};
+        var category=CategoryManager.INSTANCE.category;category.skills.clear();
+        var parent=new Skill(0,1,category);var target=new Skill(1,2,category);
+        var player=new EntityPlayer();var data=new AbilityData();var cp=new CPData();
+        EntityData.bind(player,cp,data);cp.wake();data.setCategory(category);
+        data.learnSkill(parent);data.setSkillExp(parent,value);
+        if(!learned)data.setSkillLearnState(parent,false);
+        check(data.isSkillLearned(parent)==learned,"unchanged source learned bit fixture");
+        check(Float.floatToRawIntBits(data.getSkillExp(parent))==Float.floatToRawIntBits(value),"source raw slot survives cleared learned bit");
+        return new DevConditionDep(parent,required).accepts(data,null,target);
+    }
+
+    private static AbilityProgress modern(double value,boolean learned) {
+        var state=new AbilityProgress();state.selectCategory("electromaster");state.setLevel(5);
+        state.learn("arc_gen");state.experience.put("arc_gen",value);
+        if(!learned)state.unlearn("arc_gen");
+        check(state.learned("arc_gen")==learned,"modern learned bit fixture");
+        check(Double.doubleToRawLongBits(state.exp("arc_gen"))==Double.doubleToRawLongBits(value),"modern raw slot survives cleared learned bit");
+        return state;
+    }
+
+    private static void compare(double value,double required,boolean learned,String label) {
+        boolean expected=original((float)value,(float)required,learned);
+        var state=modern(value,learned);
+        for(String target:List.of("charging","brain_course")) {
+            var skill=new SkillCatalog.Skill("electromaster",target,1,!target.equals("brain_course"),List.of(new SkillCatalog.Requirement("arc_gen",required)),0);
+            match(SkillCatalog.canLearn(state,skill),expected,label+" target="+target+" catalog");
+            match(DevelopmentActions.canLearn(state,DeveloperType.ADVANCED,skill),expected,label+" target="+target+" developer");
+        }
+    }
+
+    private static void adjacentFloats() {
+        for(double required:new double[]{.2,.3,.4,.5,.7,.8,1}) {
+            float threshold=(float)required;
+            for(float value:new float[]{Math.nextDown(threshold),threshold,Math.nextUp(threshold)}) {
+                boolean expected=value>=threshold;
+                check(original(value,threshold,true)==expected,"unchanged original adjacent float comparison");
+                System.out.println("VECTOR threshold="+required+" requiredFloat="+(double)threshold+" mastery="+(double)value+" learnedSource="+expected+" unlearnedSource=false");
+                compare(value,required,true,"float "+value+" >= "+required);
+                compare(value,required,false,"unlearned float "+value+" >= "+required);
+            }
+        }
+        // A populated raw slot at a zero threshold still cannot replace the learned bit.
+        compare(0,0,false,"unlearned zero threshold");compare(1,0,false,"unlearned saturated raw slot");
+    }
+
+    private static void doubleOnlyFixtures() {
+        for(double required:new double[]{.2,.3,.4,.5,.7,.8,1}) {
+            double value=Math.nextDown(required);float rounded=(float)value;
+            boolean expected=original(rounded,(float)required,true);
+            check(expected,"nextDown(double) rounds to original threshold and must ACCEPT after source float setter");
+            System.out.println("DOUBLE_ONLY threshold="+required+" nextDownDouble="+value+" roundedSourceFloat="+(double)rounded+" sourceExpected=true");
+            compare(value,required,true,"double-only nextDown "+required);
+        }
+    }
+
+    private static void realMetadataAndGates() {
+        var state=new AbilityProgress();state.selectCategory("electromaster");state.setLevel(5);
+        state.learn("arc_gen");state.learn("charging");state.addExperience("charging",.7f);
+        check(Double.doubleToRawLongBits(state.exp("charging"))==Double.doubleToRawLongBits((double).7f),"ordinary float award creates exact .7f ledger boundary");
+        for(String id:List.of("mag_movement","thunder_bolt")) {
+            var skill=SkillCatalog.find(state.category,id).orElseThrow();
+            check(skill.requirements().stream().anyMatch(r->r.id().equals("charging")&&r.exp()==.7),"real metadata has source .7 dependency");
+            match(SkillCatalog.canLearn(state,skill),true,"real "+id+" at exact .7f catalog");
+            match(DevelopmentActions.canLearn(state,DeveloperType.ADVANCED,skill),true,"real "+id+" at exact .7f developer");
+        }
+        var movement=SkillCatalog.find(state.category,"mag_movement").orElseThrow();
+        state.experience.put("charging",(double)Math.nextDown(.7f));
+        check(!SkillCatalog.canLearn(state,movement)&&!DevelopmentActions.canLearn(state,DeveloperType.ADVANCED,movement),"real .7f previous FLOAT rejects");
+        state.experience.put("charging",(double)Math.nextUp(.7f));
+        check(SkillCatalog.canLearn(state,movement)&&DevelopmentActions.canLearn(state,DeveloperType.ADVANCED,movement),"real .7f next FLOAT accepts");
+        state.unlearn("charging");
+        check(!SkillCatalog.canLearn(state,movement)&&!DevelopmentActions.canLearn(state,DeveloperType.ADVANCED,movement),"raw above threshold with cleared learned bit rejects");
+        state.learn("charging");state.setLevel(1);
+        check(!SkillCatalog.canLearn(state,movement)&&!DevelopmentActions.canLearn(state,DeveloperType.ADVANCED,movement),"level gate preserved");
+        state.setLevel(3);state.category="meltdowner";
+        check(!SkillCatalog.canLearn(state,movement)&&!DevelopmentActions.canLearn(state,DeveloperType.ADVANCED,movement),"category gate preserved");
+        state.category="electromaster";
+        var detection=SkillCatalog.find(state.category,"mine_detect").orElseThrow();
+        check(!DevelopmentActions.canLearn(state,DeveloperType.PORTABLE,detection),"normal machine minimum preserved");
+        state.learn("mag_movement");
+        check(!SkillCatalog.canLearn(state,movement)&&DevelopmentActions.canLearn(state,DeveloperType.ADVANCED,movement),"existing catalog duplicate exclusion and idempotent completion preserved");
+        state.unlearn("mag_movement");state.unlearn("charging");
+        var off=new ClassicSkillConfiguration.Flags(false,true);var charging=ClassicSkillConfiguration.key("electromaster","charging");
+        try {
+            SkillCatalog.initializeConfiguration(Map.of(charging,off));
+            check(SkillCatalog.canLearn(state,movement)&&DevelopmentActions.canLearn(state,DeveloperType.ADVANCED,movement),"startup disabled dependency removal preserved");
+            SkillCatalog.refreshConfiguration(Map.of());
+            check(SkillCatalog.canLearn(state,movement)&&DevelopmentActions.canLearn(state,DeveloperType.ADVANCED,movement),"live enable does not rebuild frozen dependency graph");
+            SkillCatalog.resetConfiguration();SkillCatalog.refreshConfiguration(Map.of(charging,off));
+            check(!SkillCatalog.canLearn(state,movement)&&!DevelopmentActions.canLearn(state,DeveloperType.ADVANCED,movement),"live disable does not remove captured dependency");
+        } finally {SkillCatalog.resetConfiguration();}
+    }
+
+    public static void main(String[] args) {
+        baseline=args.length>0&&args[0].equals("baseline");
+        adjacentFloats();doubleOnlyFixtures();realMetadataAndGates();
+        if(baseline)check(differences>=8,"baseline must expose concrete source disagreement");
+        System.out.println((baseline?"AUDIT":"PASS")+" "+checks+" unchanged-source float prerequisite/learned-bit and preserved-gate checks; differences="+differences);
+    }
+}

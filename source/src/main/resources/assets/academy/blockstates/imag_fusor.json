@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "facing=north,working=false": {
+      "model": "academy:block/imag_fusor_idle",
+      "y": 0
+    },
+    "facing=north,working=true": {
+      "model": "academy:block/imag_fusor_working",
+      "y": 0
+    },
+    "facing=east,working=false": {
+      "model": "academy:block/imag_fusor_idle",
+      "y": 90
+    },
+    "facing=east,working=true": {
+      "model": "academy:block/imag_fusor_working",
+      "y": 90
+    },
+    "facing=south,working=false": {
+      "model": "academy:block/imag_fusor_idle",
+      "y": 180
+    },
+    "facing=south,working=true": {
+      "model": "academy:block/imag_fusor_working",
+      "y": 180
+    },
+    "facing=west,working=false": {
+      "model": "academy:block/imag_fusor_idle",
+      "y": 270
+    },
+    "facing=west,working=true": {
+      "model": "academy:block/imag_fusor_working",
+      "y": 270
+    }
+  }
+}

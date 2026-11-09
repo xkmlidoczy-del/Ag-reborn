@@ -1,0 +1,362 @@
+{
+  "schema": 1,
+  "academycraft_release": "1.0.7",
+  "academycraft_expected_commit": "00d19ec0cf538f61c1095c9292f5ee6863db4521",
+  "lambdalib_release": "1.2.3",
+  "provenance": "Byte-identical supplied cached source witnesses; no fresh Git resolution",
+  "originals": 15,
+  "shims": 42,
+  "harness": "oracle.SourceOracle; reused unchanged",
+  "files": [
+    {
+      "path": "NOTICE.txt",
+      "sha256": "9dd3f81bd20f6e93e8697f65c7d0edb44d7fff9e2f517bcf20245f9db3b60cd5",
+      "category": "NOTICE.txt"
+    },
+    {
+      "path": "assets/academy/models/maghook.obj",
+      "sha256": "6dadebb067eceacefe1a10b7f029da0d9ff539fae528e65bc7cc0106d4a927c1",
+      "category": "assets"
+    },
+    {
+      "path": "assets/academy/models/maghook_open.obj",
+      "sha256": "bb97958ec41a9fab7cdb05ab2e606b6fb9c221d584cda781e40dad6fbd0bf7be",
+      "category": "assets"
+    },
+    {
+      "path": "assets/academy/recipes/default.recipe",
+      "sha256": "a9dc4aa3477ad246f7cb9bb6bea3c33e033aaa8431f3c8a03acaf0845374da1f",
+      "category": "assets"
+    },
+    {
+      "path": "assets/academy/textures/items/maghook.png",
+      "sha256": "4c77148ff72e89000a0a04561d72aae87795ce578f21f4130f9164c45acc424a",
+      "category": "assets"
+    },
+    {
+      "path": "assets/academy/textures/models/maghook.png",
+      "sha256": "a9c99d0ed6a08cbf49bc09317cd49062e62a361539e322ca49b21cac69b3f8d7",
+      "category": "assets"
+    },
+    {
+      "path": "harness/oracle/SourceOracle.java",
+      "sha256": "a8b04daedeb8db7d8b523b422b339ddf59d09b1f3476e9f88169c6c8705be737",
+      "category": "harness"
+    },
+    {
+      "path": "licenses/AcademyCraft-GPL3.txt",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "category": "licenses"
+    },
+    {
+      "path": "licenses/AcademyCraft-additional-notices.txt",
+      "sha256": "af636fd7bf303f0466bc54033e1e3c6d300f70414e947ca06048b24aa5702245",
+      "category": "licenses"
+    },
+    {
+      "path": "licenses/LambdaLib-MIT.txt",
+      "sha256": "852bcc033a46c62f99fb5ffd43b3241ba2c0c440c6034aa2114505f2c4f03c4a",
+      "category": "licenses"
+    },
+    {
+      "path": "originals/cn/academy/vanilla/electromaster/client/renderer/RendererMagHook.java",
+      "sha256": "302d2d3e52eb7549b2469804c9ae3c5d0b20d8396fb5583d74bc9d84eb4de724",
+      "category": "originals",
+      "upstream_path": "AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/electromaster/client/renderer/RendererMagHook.java"
+    },
+    {
+      "path": "originals/cn/academy/vanilla/electromaster/entity/EntityMagHook.java",
+      "sha256": "c1d7ba62f4b9c43c4654495cafff21e68ba2778218a81d648808e8e2e712b57a",
+      "category": "originals",
+      "upstream_path": "AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/electromaster/entity/EntityMagHook.java"
+    },
+    {
+      "path": "originals/cn/academy/vanilla/electromaster/item/ItemMagHook.java",
+      "sha256": "a3d604866c1270d4292bf0074cf443f97614b62a3d453063b149e80fa7726912",
+      "category": "originals",
+      "upstream_path": "AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/electromaster/item/ItemMagHook.java"
+    },
+    {
+      "path": "originals/cn/lambdalib/template/client/render/item/RenderModelItem.java",
+      "sha256": "90850c0d133cf8c42d7ee000ec62bd82884e16047f32b4fbdcc56020e3ad5afd",
+      "category": "originals",
+      "upstream_path": "LambdaLib-1.2.3/src/main/java/cn/lambdalib/template/client/render/item/RenderModelItem.java"
+    },
+    {
+      "path": "originals/cn/lambdalib/util/deprecated/IItemModel.java",
+      "sha256": "acc042eb5cee4cc070e97746b123a0abfdbbc8ca4294d7577d13b244d7e8893a",
+      "category": "originals",
+      "upstream_path": "LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/deprecated/IItemModel.java"
+    },
+    {
+      "path": "originals/cn/lambdalib/util/deprecated/ItemModelCustom.java",
+      "sha256": "c99ad0ce7f220c34e9d412243174fbad34f1c0e4876288e4e745dc8e8549c89a",
+      "category": "originals",
+      "upstream_path": "LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/deprecated/ItemModelCustom.java"
+    },
+    {
+      "path": "originals/cn/lambdalib/util/entityx/EntityAdvanced.java",
+      "sha256": "23ae4a6c3056b4fd2ed1758c43a0ec5176705919a1aaae44322e0b8f51492f27",
+      "category": "originals",
+      "upstream_path": "LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/entityx/EntityAdvanced.java"
+    },
+    {
+      "path": "originals/cn/lambdalib/util/entityx/EntityCallback.java",
+      "sha256": "7fc7b34a4e52e6d909b7a7d0c0e1372b31dae5af262d903c96638b43ffc6182a",
+      "category": "originals",
+      "upstream_path": "LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/entityx/EntityCallback.java"
+    },
+    {
+      "path": "originals/cn/lambdalib/util/entityx/EntityEvent.java",
+      "sha256": "f66d2ed48bc60deb0e7373c4b8760fd4a57ca6ca8af8715b8bda18802f3cb5da",
+      "category": "originals",
+      "upstream_path": "LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/entityx/EntityEvent.java"
+    },
+    {
+      "path": "originals/cn/lambdalib/util/entityx/EntityEventHandler.java",
+      "sha256": "4034c091994dd2a8c0fc46ebade1f8477463038b8eb1108bc7f70f973ddaf5e8",
+      "category": "originals",
+      "upstream_path": "LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/entityx/EntityEventHandler.java"
+    },
+    {
+      "path": "originals/cn/lambdalib/util/entityx/EntityX.java",
+      "sha256": "eefca4df3d67b5169a58a2f38c4abc6c16ce9b80f9f9440e26df2ca9bba77971",
+      "category": "originals",
+      "upstream_path": "LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/entityx/EntityX.java"
+    },
+    {
+      "path": "originals/cn/lambdalib/util/entityx/MotionHandler.java",
+      "sha256": "bdf8029713413f6cfcfa511856e6e40bdcc72d0077587fdf921d08ea9f7405f3",
+      "category": "originals",
+      "upstream_path": "LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/entityx/MotionHandler.java"
+    },
+    {
+      "path": "originals/cn/lambdalib/util/entityx/event/CollideEvent.java",
+      "sha256": "1eb725f6f80361e0b44d1ab09b40f6b1610fffe3ec1c936cc7f8d134009ba2a6",
+      "category": "originals",
+      "upstream_path": "LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/entityx/event/CollideEvent.java"
+    },
+    {
+      "path": "originals/cn/lambdalib/util/entityx/handlers/Rigidbody.java",
+      "sha256": "affda19ba7deaa368402d8c0e7f5b5964f0ee386c3a15abf19dc9e9b1ec21455",
+      "category": "originals",
+      "upstream_path": "LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/entityx/handlers/Rigidbody.java"
+    },
+    {
+      "path": "originals/cn/lambdalib/util/helper/Motion3D.java",
+      "sha256": "85d514c11b5130b994c2ceb7efa3bd93a7c0a832e65a9abb0f196cc6d2897a56",
+      "category": "originals",
+      "upstream_path": "LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/helper/Motion3D.java"
+    },
+    {
+      "path": "stubs/cn/academy/core/AcademyCraft.java",
+      "sha256": "d216930d4c2ea16e34cad92995a1e6ae3309c560fdfd00c4ed020a3b891695b2",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/cn/academy/core/Resources.java",
+      "sha256": "6a42f7da3430c4cd0846caea33372c2ae4faf2b1fc166906902c49358242f691",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/cn/academy/vanilla/ModuleVanilla.java",
+      "sha256": "3f4edb236f3f85089a2baabba0763232f8b556b2071408ac37abdbd92a9342eb",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/cn/lambdalib/annoreg/core/Registrant.java",
+      "sha256": "aa3e7aeac7ca22f73c13e4cb54e2163674e978ad840c1c9517c158b0fe041de5",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/cn/lambdalib/annoreg/mc/RegEntity.java",
+      "sha256": "c14e40e95b1abccd2b4a1eb3e169b240632af0f20948d93a4dc8b66a1b9c8fdd",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/cn/lambdalib/annoreg/mc/RegItem.java",
+      "sha256": "3b5f9dbbbbd27711029190cbcbd9066c2be2847bb92124adf5f2d04e77359e21",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/cn/lambdalib/core/LambdaLib.java",
+      "sha256": "fb76d98ed2c62a6312ce4c05b651065ea0e238034815fdeb97a6d578735d1616",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/cn/lambdalib/util/client/RenderUtils.java",
+      "sha256": "0220e62db8ea8350d8d832266edc2394919e9fddc006bedde94530843b8c645a",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/cn/lambdalib/util/generic/VecUtils.java",
+      "sha256": "4cb4d6ab300b29dbb3aceafc4f7405023eb98fea21b2880e5302c0e46bb05cc6",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/cn/lambdalib/util/helper/GameTimer.java",
+      "sha256": "41141e0eb6fa346bd54de83e725dcb397efc88b4994a0395c058052d1030cb54",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/cn/lambdalib/util/mc/BlockSelectors.java",
+      "sha256": "450d250b8113d16e484f1b54fbf3f722eafed49ed4d018b9c251a79a76567c49",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/cn/lambdalib/util/mc/EntitySelectors.java",
+      "sha256": "446fbfa552515dd304c5e3998032af3c6876bcde75f1e5f268fc95e00d034dc0",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/cn/lambdalib/util/mc/IBlockSelector.java",
+      "sha256": "4248e198aaa8dbf5e61ea82e7734796031341fe497ee21df9ea973987df95092",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/cn/lambdalib/util/mc/Raytrace.java",
+      "sha256": "5a47afb5851e1c62d7511fa6e6aba0df1ce263fb41664419a90a747146bb3083",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/com/google/common/base/Objects.java",
+      "sha256": "7ff3ab92da79b072e8500de376582a90ae36a6a95eb2cfeac04d0914cc711525",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/cpw/mods/fml/relauncher/Side.java",
+      "sha256": "769d9cb6514692c820e183e64f0f20b531b824b680685092e085718be781eeec",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/cpw/mods/fml/relauncher/SideOnly.java",
+      "sha256": "8a4d3b6ec08578b0a4facc029d78b090f4faa76ffe30cc156cbb4c9e3dd495b8",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/javax/vecmath/Vector2d.java",
+      "sha256": "7603b612cb81ead9a528ecb8c0a7d21ea4e9e8a758218134bb0cf7064525ac4d",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/net/minecraft/client/Minecraft.java",
+      "sha256": "eb15c9c44b5ca05705201772ea15ce20353bde8d19db3ea57275d67c01a32e33",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/net/minecraft/client/renderer/RenderBlocks.java",
+      "sha256": "754084d489f429d15747d555596617d9f4e9436303a47f73ebc8c46ad9902cd5",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/net/minecraft/client/renderer/Tessellator.java",
+      "sha256": "7af525ccb655b8f431426a7b73f008d73672c7e7345ae98ac53fb2598f38a5c3",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/net/minecraft/client/renderer/entity/Render.java",
+      "sha256": "f945009fe9e183503a10e1206d2dddf4f89d5b0576761486d47ab4ebfaa08a29",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/net/minecraft/client/renderer/entity/RenderManager.java",
+      "sha256": "4806ffb5f61787ff6f90695fea421e7782086d25ba078a38b48106a8a5625a27",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/net/minecraft/command/IEntitySelector.java",
+      "sha256": "130ba78faf24a4270d706cb8f801d45c012cd3de6fc778ffc5b4aad27a0c7544",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/net/minecraft/entity/DataWatcher.java",
+      "sha256": "74b5e19d3717435c598761131abc8eb4758bf73a019514669f2c4f32eb903b4a",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/net/minecraft/entity/Entity.java",
+      "sha256": "e1bedeaa4f470f4634deb9e632ab81585a7a6005570bb616629bdb72cb10467d",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/net/minecraft/entity/EntityLivingBase.java",
+      "sha256": "8ac3f469b8e877774246e9dc982e97178bba1909d0958ee96965ce6c08da5e16",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/net/minecraft/entity/item/EntityItem.java",
+      "sha256": "110ec9fc121710f4fef08138398659bb51b060dd8cdea743f54425cdfd4bf50c",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/net/minecraft/entity/player/EntityPlayer.java",
+      "sha256": "fd13b5d06b61a629cb96c1730aff775afaee97d80b18e0e561d18cec4cbcdff8",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/net/minecraft/item/Item.java",
+      "sha256": "74952b944b97c0b98c7e81b5f51fd211e451dc01e4970b43196d72587b4c6a21",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/net/minecraft/item/ItemStack.java",
+      "sha256": "5dee899398aa909469f078222d84edc2370094f63899afe353004c401bb6dd04",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/net/minecraft/nbt/NBTTagCompound.java",
+      "sha256": "2bd564e9fc24f4a55945dccc993292717956b980cd96707d7e8fd231d6a562d8",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/net/minecraft/util/DamageSource.java",
+      "sha256": "d13491fa6616a13ce68566afbe2bd8b5d9f9491f2557e85841708dc1356cc17f",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/net/minecraft/util/MathHelper.java",
+      "sha256": "a850d7489301068a7c355942f48cef10c68fadf617dd5546604eee54f1306b0a",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/net/minecraft/util/MovingObjectPosition.java",
+      "sha256": "37c54a838214c0224cb21e92c45b6d69db600e7ac7909765eaf5e6a9294c4b1d",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/net/minecraft/util/ResourceLocation.java",
+      "sha256": "dcb963f635a9417ba5b74a968736bc49eb20d9b8d8c00e2f39efd229f639926f",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/net/minecraft/util/Vec3.java",
+      "sha256": "82fbfb258e99d3fb2a7e20485cfe6ff6568516984364088d258a4af9e50f2dc9",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/net/minecraft/world/World.java",
+      "sha256": "98767f53a772812b890052b8173bbb608b40aadb11ff96faa0b7ab7fc784465d",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/net/minecraftforge/client/IItemRenderer.java",
+      "sha256": "d2f93a518efee299732b4dde4c910453a75289621067fbb645d88f0c793dcc8a",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/net/minecraftforge/client/model/IModelCustom.java",
+      "sha256": "9e6630a7d76baa364172ba9b5885884c55adf6173bbe5deea4a35c7d887b558c",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/net/minecraftforge/common/util/ForgeDirection.java",
+      "sha256": "3801d6b55afd8a779ce68ac458812f21c8c3dd410de26ba023b1cca2600b645f",
+      "category": "stubs"
+    },
+    {
+      "path": "stubs/org/lwjgl/opengl/GL11.java",
+      "sha256": "79b4d6e79135c84ab3b67da1378793d02cdb6def5fa9f32c0407fe1c038ecb1b",
+      "category": "stubs"
+    }
+  ]
+}

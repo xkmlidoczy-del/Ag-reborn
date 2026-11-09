@@ -1,0 +1,3 @@
+package cn.academy.ability.api;
+import net.minecraft.util.ResourceLocation;
+public class Skill { public ResourceLocation getHintIcon() { return new ResourceLocation("host:skill"); } }

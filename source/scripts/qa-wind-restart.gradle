@@ -1,0 +1,13 @@
+// Isolated, opt-in Wind family Anvil proof; ordinary academy tests stay unchanged.
+allprojects {
+    afterEvaluate { testedProject ->
+        def windProbeMode = testedProject.findProperty('windRestartMode')?.toString()
+        if (!(windProbeMode in ['seed', 'verify'])) throw new GradleException('Explicit wind seed or verify required')
+        if (testedProject.findProperty('gameTestDirectory') != 'run-restart-m20-wind-generator') throw new GradleException('Owned isolated wind restart directory required')
+        def windProbeRun = testedProject.extensions.getByName('neoForge').runs.getByName('gameTestServer')
+        windProbeRun.systemProperty('neoforge.enabledGameTestNamespaces', 'academy_wind_restart')
+        windProbeRun.systemProperty('academy.wind.restart', windProbeMode)
+        windProbeRun.programArgument('--world')
+        windProbeRun.programArgument('academy-wind-generator-restart-world')
+    }
+}

@@ -1,0 +1,20 @@
+// Independent NEW132 motion policy and actual compiled-client visual lifecycle checks.
+tasks.register('highPowerMagneticGroundStepTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.MagneticGroundStepRegressionTest'
+    enableAssertions = true
+}
+tasks.register('highPowerMagneticGroundStepVisualTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.HighPowerMagneticGroundStepVisualRegressionTest'
+    enableAssertions = true
+}
+tasks.register('highPowerMagneticGroundStepMotionTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.HighPowerMagneticGroundStepMotionRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerMagneticGroundStepTest', 'highPowerMagneticGroundStepVisualTest', 'highPowerMagneticGroundStepMotionTest' }

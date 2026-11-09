@@ -1,0 +1,972 @@
+[
+  {
+    "type": "shapeless",
+    "output": {
+      "item": "academy:imag_silicon_piece",
+      "count": 2
+    },
+    "width": 1,
+    "slots": [
+      {
+        "item": "academy:wafer",
+        "count": 1
+      }
+    ],
+    "witness": "default.recipe:3"
+  },
+  {
+    "type": "shaped",
+    "output": {
+      "item": "academy:phase_gen",
+      "count": 1
+    },
+    "width": 3,
+    "slots": [
+      {
+        "item": "academy:crystal_low",
+        "count": 1
+      },
+      {
+        "item": "academy:machine_frame",
+        "count": 1
+      },
+      {
+        "item": "academy:crystal_low",
+        "count": 1
+      },
+      {
+        "item": "academy:matter_unit",
+        "count": 1
+      },
+      {
+        "item": "",
+        "count": 1
+      },
+      {
+        "item": "academy:matter_unit",
+        "count": 1
+      }
+    ],
+    "witness": "default.recipe:38"
+  },
+  {
+    "type": "shaped",
+    "output": {
+      "item": "academy:solar_gen",
+      "count": 1
+    },
+    "width": 3,
+    "slots": [
+      {
+        "item": "minecraft:glass_pane",
+        "count": 1
+      },
+      {
+        "item": "minecraft:glass_pane",
+        "count": 1
+      },
+      {
+        "item": "minecraft:glass_pane",
+        "count": 1
+      },
+      {
+        "item": "",
+        "count": 1
+      },
+      {
+        "item": "academy:wafer",
+        "count": 1
+      },
+      {
+        "item": "",
+        "count": 1
+      },
+      {
+        "item": "academy:energy_convert_component",
+        "count": 1
+      },
+      {
+        "item": "academy:machine_frame",
+        "count": 1
+      },
+      {
+        "item": "academy:energy_convert_component",
+        "count": 1
+      }
+    ],
+    "witness": "default.recipe:43"
+  },
+  {
+    "type": "shaped",
+    "output": {
+      "item": "academy:windgen_base",
+      "count": 1
+    },
+    "width": 1,
+    "slots": [
+      {
+        "item": "minecraft:iron_ingot",
+        "count": 1
+      },
+      {
+        "item": "academy:machine_frame",
+        "count": 1
+      },
+      {
+        "item": "academy:energy_convert_component",
+        "count": 1
+      }
+    ],
+    "witness": "default.recipe:49"
+  },
+  {
+    "type": "shaped",
+    "output": {
+      "item": "academy:windgen_pillar",
+      "count": 1
+    },
+    "width": 1,
+    "slots": [
+      {
+        "item": "minecraft:iron_bars",
+        "count": 1
+      },
+      {
+        "item": "minecraft:redstone",
+        "count": 1
+      },
+      {
+        "item": "minecraft:iron_bars",
+        "count": 1
+      }
+    ],
+    "witness": "default.recipe:55"
+  },
+  {
+    "type": "shaped",
+    "output": {
+      "item": "academy:windgen_main",
+      "count": 1
+    },
+    "width": 3,
+    "slots": [
+      {
+        "item": "",
+        "count": 1
+      },
+      {
+        "item": "academy:machine_frame",
+        "count": 1
+      },
+      {
+        "item": "",
+        "count": 1
+      },
+      {
+        "item": "academy:constraint_plate",
+        "count": 1
+      },
+      {
+        "item": "academy:energy_convert_component",
+        "count": 1
+      },
+      {
+        "item": "academy:constraint_plate",
+        "count": 1
+      },
+      {
+        "item": "",
+        "count": 1
+      },
+      {
+        "item": "academy:machine_frame",
+        "count": 1
+      },
+      {
+        "item": "",
+        "count": 1
+      }
+    ],
+    "witness": "default.recipe:61"
+  },
+  {
+    "type": "shaped",
+    "output": {
+      "item": "academy:windgen_fan",
+      "count": 1
+    },
+    "width": 3,
+    "slots": [
+      {
+        "item": "",
+        "count": 1
+      },
+      {
+        "item": "academy:reinforced_iron_plate",
+        "count": 1
+      },
+      {
+        "item": "",
+        "count": 1
+      },
+      {
+        "item": "academy:reinforced_iron_plate",
+        "count": 1
+      },
+      {
+        "item": "minecraft:iron_bars",
+        "count": 1
+      },
+      {
+        "item": "academy:reinforced_iron_plate",
+        "count": 1
+      },
+      {
+        "item": "",
+        "count": 1
+      },
+      {
+        "item": "academy:reinforced_iron_plate",
+        "count": 1
+      },
+      {
+        "item": "",
+        "count": 1
+      }
+    ],
+    "witness": "default.recipe:67"
+  },
+  {
+    "type": "shaped",
+    "output": {
+      "item": "academy:constraint_plate",
+      "count": 2
+    },
+    "width": 3,
+    "slots": [
+      {
+        "item": "academy:constraint_ingot",
+        "count": 1
+      },
+      {
+        "item": "academy:constraint_ingot",
+        "count": 1
+      },
+      {
+        "item": "academy:constraint_ingot",
+        "count": 1
+      }
+    ],
+    "witness": "default.recipe:115"
+  },
+  {
+    "type": "shaped",
+    "output": {
+      "item": "academy:terminal_installer",
+      "count": 1
+    },
+    "width": 3,
+    "slots": [
+      {
+        "item": "academy:data_chip",
+        "count": 1
+      },
+      {
+        "item": "minecraft:glass_pane",
+        "count": 1
+      },
+      {
+        "item": "academy:data_chip",
+        "count": 1
+      },
+      {
+        "item": "academy:reinforced_iron_plate",
+        "count": 1
+      },
+      {
+        "item": "academy:brain_component",
+        "count": 1
+      },
+      {
+        "item": "academy:reinforced_iron_plate",
+        "count": 1
+      },
+      {
+        "item": "academy:info_component",
+        "count": 1
+      },
+      {
+        "item": "minecraft:redstone_block",
+        "count": 1
+      },
+      {
+        "item": "academy:info_component",
+        "count": 1
+      }
+    ],
+    "witness": "default.recipe:119"
+  },
+  {
+    "type": "shaped",
+    "output": {
+      "item": "academy:imag_fusor",
+      "count": 1
+    },
+    "width": 3,
+    "slots": [
+      {
+        "item": "academy:constraint_plate",
+        "count": 1
+      },
+      {
+        "item": "academy:crystal_low",
+        "count": 1
+      },
+      {
+        "item": "academy:constraint_plate",
+        "count": 1
+      },
+      {
+        "item": "academy:calc_chip",
+        "count": 1
+      },
+      {
+        "item": "academy:machine_frame",
+        "count": 1
+      },
+      {
+        "item": "academy:calc_chip",
+        "count": 1
+      },
+      {
+        "item": "academy:constraint_plate",
+        "count": 1
+      },
+      {
+        "item": "academy:matter_unit",
+        "count": 1
+      },
+      {
+        "item": "academy:constraint_plate",
+        "count": 1
+      }
+    ],
+    "witness": "default.recipe:125"
+  },
+  {
+    "type": "shaped",
+    "output": {
+      "item": "academy:imag_fusor",
+      "count": 1
+    },
+    "width": 3,
+    "slots": [
+      {
+        "item": "",
+        "count": 1
+      },
+      {
+        "item": "academy:crystal_low",
+        "count": 1
+      },
+      {
+        "item": "",
+        "count": 1
+      },
+      {
+        "item": "academy:calc_chip",
+        "count": 1
+      },
+      {
+        "item": "academy:machine_frame",
+        "count": 1
+      },
+      {
+        "item": "academy:energy_convert_component",
+        "count": 1
+      },
+      {
+        "item": "",
+        "count": 1
+      },
+      {
+        "item": "academy:matter_unit",
+        "count": 1
+      },
+      {
+        "item": "",
+        "count": 1
+      }
+    ],
+    "witness": "default.recipe:131"
+  },
+  {
+    "type": "shaped",
+    "output": {
+      "item": "academy:imag_fusor",
+      "count": 1
+    },
+    "width": 3,
+    "slots": [
+      {
+        "item": "",
+        "count": 1
+      },
+      {
+        "item": "academy:crystal_low",
+        "count": 1
+      },
+      {
+        "item": "",
+        "count": 1
+      },
+      {
+        "item": "academy:energy_convert_component",
+        "count": 1
+      },
+      {
+        "item": "academy:machine_frame",
+        "count": 1
+      },
+      {
+        "item": "academy:calc_chip",
+        "count": 1
+      },
+      {
+        "item": "",
+        "count": 1
+      },
+      {
+        "item": "academy:matter_unit",
+        "count": 1
+      },
+      {
+        "item": "",
+        "count": 1
+      }
+    ],
+    "witness": "default.recipe:137"
+  },
+  {
+    "type": "shaped",
+    "output": {
+      "item": "academy:metal_former",
+      "count": 1
+    },
+    "width": 3,
+    "slots": [
+      {
+        "item": "",
+        "count": 1
+      },
+      {
+        "item": "minecraft:shears",
+        "count": 1
+      },
+      {
+        "item": "",
+        "count": 1
+      },
+      {
+        "item": "academy:calc_chip",
+        "count": 1
+      },
+      {
+        "item": "academy:machine_frame",
+        "count": 1
+      },
+      {
+        "item": "academy:calc_chip",
+        "count": 1
+      },
+      {
+        "item": "academy:constraint_plate",
+        "count": 1
+      },
+      {
+        "item": "academy:matter_unit",
+        "count": 1
+      },
+      {
+        "item": "academy:constraint_plate",
+        "count": 1
+      }
+    ],
+    "witness": "default.recipe:143"
+  },
+  {
+    "type": "smelting",
+    "output": {
+      "item": "academy:imag_silicon_ingot",
+      "count": 1
+    },
+    "width": 1,
+    "slots": [
+      {
+        "item": "academy:imag_silicon_ore",
+        "count": 1
+      }
+    ],
+    "witness": "default.recipe:173"
+  },
+  {
+    "type": "shaped",
+    "output": {
+      "item": "academy:app_skill_tree",
+      "count": 1
+    },
+    "width": 1,
+    "slots": [
+      {
+        "item": "minecraft:compass",
+        "count": 1
+      },
+      {
+        "item": "academy:data_chip",
+        "count": 1
+      },
+      {
+        "item": "academy:info_component",
+        "count": 1
+      }
+    ],
+    "witness": "default.recipe:207"
+  },
+  {
+    "type": "shaped",
+    "output": {
+      "item": "academy:app_media_player",
+      "count": 1
+    },
+    "width": 3,
+    "slots": [
+      {
+        "item": "minecraft:note_block",
+        "count": 1
+      },
+      {
+        "item": "minecraft:note_block",
+        "count": 1
+      },
+      {
+        "item": "minecraft:note_block",
+        "count": 1
+      },
+      {
+        "item": "",
+        "count": 1
+      },
+      {
+        "item": "academy:data_chip",
+        "count": 1
+      },
+      {
+        "item": "",
+        "count": 1
+      },
+      {
+        "item": "",
+        "count": 1
+      },
+      {
+        "item": "academy:info_component",
+        "count": 1
+      },
+      {
+        "item": "",
+        "count": 1
+      }
+    ],
+    "witness": "default.recipe:213"
+  },
+  {
+    "type": "shaped",
+    "output": {
+      "item": "academy:app_freq_transmitter",
+      "count": 1
+    },
+    "width": 1,
+    "slots": [
+      {
+        "item": "academy:resonance_component",
+        "count": 1
+      },
+      {
+        "item": "academy:data_chip",
+        "count": 1
+      },
+      {
+        "item": "academy:info_component",
+        "count": 1
+      }
+    ],
+    "witness": "default.recipe:219"
+  },
+  {
+    "type": "shaped",
+    "output": {
+      "item": "academy:portable_developer",
+      "count": 1
+    },
+    "width": 3,
+    "slots": [
+      {
+        "item": "academy:data_chip",
+        "count": 1
+      },
+      {
+        "item": "minecraft:glass_pane",
+        "count": 1
+      },
+      {
+        "item": "academy:calc_chip",
+        "count": 1
+      },
+      {
+        "item": "academy:brain_component",
+        "count": 1
+      },
+      {
+        "item": "academy:info_component",
+        "count": 1
+      },
+      {
+        "item": "academy:energy_convert_component",
+        "count": 1
+      },
+      {
+        "item": "academy:constraint_plate",
+        "count": 1
+      },
+      {
+        "item": "academy:crystal_low",
+        "count": 1
+      },
+      {
+        "item": "academy:constraint_plate",
+        "count": 1
+      }
+    ],
+    "witness": "default.recipe:231"
+  },
+  {
+    "type": "shaped",
+    "output": {
+      "item": "academy:developer_normal",
+      "count": 1
+    },
+    "width": 3,
+    "slots": [
+      {
+        "item": "",
+        "count": 1
+      },
+      {
+        "item": "academy:portable_developer",
+        "count": 1
+      },
+      {
+        "item": "",
+        "count": 1
+      },
+      {
+        "item": "academy:matrix_core_0",
+        "count": 1
+      },
+      {
+        "item": "minecraft:red_bed",
+        "count": 1
+      },
+      {
+        "item": "minecraft:piston",
+        "count": 1
+      },
+      {
+        "item": "academy:crystal_normal",
+        "count": 1
+      },
+      {
+        "item": "academy:machine_frame",
+        "count": 1
+      },
+      {
+        "item": "minecraft:redstone",
+        "count": 1
+      }
+    ],
+    "witness": "default.recipe:241"
+  },
+  {
+    "type": "shaped",
+    "output": {
+      "item": "academy:developer_normal",
+      "count": 1
+    },
+    "width": 3,
+    "slots": [
+      {
+        "item": "academy:brain_component",
+        "count": 1
+      },
+      {
+        "item": "academy:info_component",
+        "count": 1
+      },
+      {
+        "item": "academy:energy_convert_component",
+        "count": 1
+      },
+      {
+        "item": "academy:matrix_core_0",
+        "count": 1
+      },
+      {
+        "item": "minecraft:red_bed",
+        "count": 1
+      },
+      {
+        "item": "minecraft:piston",
+        "count": 1
+      },
+      {
+        "item": "academy:crystal_normal",
+        "count": 1
+      },
+      {
+        "item": "academy:machine_frame",
+        "count": 1
+      },
+      {
+        "item": "minecraft:redstone",
+        "count": 1
+      }
+    ],
+    "witness": "default.recipe:247"
+  },
+  {
+    "type": "shaped",
+    "output": {
+      "item": "academy:developer_advanced",
+      "count": 1
+    },
+    "width": 3,
+    "slots": [
+      {
+        "item": "academy:constraint_plate",
+        "count": 1
+      },
+      {
+        "item": "academy:constraint_plate",
+        "count": 1
+      },
+      {
+        "item": "academy:constraint_plate",
+        "count": 1
+      },
+      {
+        "item": "minecraft:glowstone",
+        "count": 1
+      },
+      {
+        "item": "academy:developer_normal",
+        "count": 1
+      },
+      {
+        "item": "minecraft:glowstone",
+        "count": 1
+      },
+      {
+        "item": "academy:wireless_node_standard",
+        "count": 1
+      },
+      {
+        "item": "academy:crystal_pure",
+        "count": 1
+      },
+      {
+        "item": "academy:reso_crystal",
+        "count": 1
+      }
+    ],
+    "witness": "default.recipe:253"
+  },
+  {
+    "type": "shapeless",
+    "output": {
+      "item": "academy:wafer",
+      "count": 1
+    },
+    "width": 1,
+    "slots": [
+      {
+        "item": "academy:imag_silicon_ingot",
+        "count": 1
+      }
+    ],
+    "witness": "default.recipe:259"
+  },
+  {
+    "type": "shaped",
+    "output": {
+      "item": "academy:rf_input",
+      "count": 1
+    },
+    "width": 3,
+    "slots": [
+      {
+        "item": "academy:energy_unit",
+        "count": 1
+      },
+      {
+        "item": "academy:machine_frame",
+        "count": 1
+      },
+      {
+        "item": "academy:constraint_plate",
+        "count": 1
+      },
+      {
+        "item": "",
+        "count": 1
+      },
+      {
+        "item": "academy:energy_convert_component",
+        "count": 1
+      },
+      {
+        "item": "",
+        "count": 1
+      }
+    ],
+    "witness": "RFSupport.java:54-63"
+  },
+  {
+    "type": "shaped",
+    "output": {
+      "item": "academy:rf_input",
+      "count": 1
+    },
+    "width": 1,
+    "slots": [
+      {
+        "item": "academy:rf_output",
+        "count": 1
+      }
+    ],
+    "witness": "RFSupport.java:62-63"
+  },
+  {
+    "type": "shaped",
+    "output": {
+      "item": "academy:rf_output",
+      "count": 1
+    },
+    "width": 3,
+    "slots": [
+      {
+        "item": "academy:energy_unit",
+        "count": 1
+      },
+      {
+        "item": "academy:machine_frame",
+        "count": 1
+      },
+      {
+        "item": "academy:reso_crystal",
+        "count": 1
+      },
+      {
+        "item": "",
+        "count": 1
+      },
+      {
+        "item": "academy:energy_convert_component",
+        "count": 1
+      },
+      {
+        "item": "",
+        "count": 1
+      }
+    ],
+    "witness": "RFSupport.java:54-63"
+  },
+  {
+    "type": "shaped",
+    "output": {
+      "item": "academy:rf_output",
+      "count": 1
+    },
+    "width": 1,
+    "slots": [
+      {
+        "item": "academy:rf_input",
+        "count": 1
+      }
+    ],
+    "witness": "RFSupport.java:62-63"
+  },
+  {
+    "type": "metal_former",
+    "output": {
+      "item": "academy:constraint_plate",
+      "count": 1
+    },
+    "width": 1,
+    "slots": [
+      {
+        "item": "academy:constraint_ingot",
+        "count": 1
+      }
+    ],
+    "mode": "plate",
+    "witness": "ModuleCrafting.java:210-215"
+  },
+  {
+    "type": "metal_former",
+    "output": {
+      "item": "academy:imag_silicon_ingot",
+      "count": 4
+    },
+    "width": 1,
+    "slots": [
+      {
+        "item": "academy:imag_silicon_ore",
+        "count": 1
+      }
+    ],
+    "mode": "refine",
+    "witness": "ModuleCrafting.java:210-215"
+  },
+  {
+    "type": "metal_former",
+    "output": {
+      "item": "academy:wafer",
+      "count": 2
+    },
+    "width": 1,
+    "slots": [
+      {
+        "item": "academy:imag_silicon_ingot",
+        "count": 1
+      }
+    ],
+    "mode": "incise",
+    "witness": "ModuleCrafting.java:210-215"
+  },
+  {
+    "type": "metal_former",
+    "output": {
+      "item": "academy:imag_silicon_piece",
+      "count": 4
+    },
+    "width": 1,
+    "slots": [
+      {
+        "item": "academy:wafer",
+        "count": 1
+      }
+    ],
+    "mode": "incise",
+    "witness": "ModuleCrafting.java:210-215"
+  }
+]

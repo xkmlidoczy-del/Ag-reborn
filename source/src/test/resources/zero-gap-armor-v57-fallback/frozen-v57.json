@@ -1,0 +1,15 @@
+{
+  "commit": "f07214e561359f83ccdc8b66411b0884e6d10cbf",
+  "sources": {
+    "src/main/java/cn/academy/port/client/ZeroGapArmorEffects.java": "524af6ee0e559a6fa2d63c293fbfdd5c133e0f20f109aa8b96f0b40248f9699d",
+    "src/main/java/cn/academy/port/client/ZeroGapArmorMesh.java": "05f4058acf2ff358c63af03098249c1ce8873f9aabbeedc71b3ea6a98acca9bd",
+    "src/main/java/cn/academy/port/client/ZeroGapArmorState.java": "10392c1915449e643090612be4bba160a79f05a0ab327dd5378c2bc194690e1e",
+    "src/main/java/cn/academy/port/client/FoldedMirrorMesh.java": "87c90c1de8f40e76e7d34d73bd01b13487a1a9ec1646f29c3b7f57c203d8c695",
+    "src/main/java/cn/academy/port/client/FoldedMirrorRenderTypes.java": "2d4575c08745e498e5d90f9dc321d2fea2d43e7b09269e8cf41245a78a1e3198",
+    "src/main/java/cn/academy/port/client/FoldedMirrorMaterial.java": "0f29ff32f7b3095d7d0ce079d33644060b6fa4b474e5a912a5c0b5f16349d30c",
+    "src/main/java/cn/academy/port/highpower/core/ZeroGapArmorGeometry.java": "e7c2e3e742e355979107b90c06fb0f0b730b999a7182e805dbdce031b2cf9bc8",
+    "src/main/java/cn/academy/port/highpower/core/ZeroGapArmorTiming.java": "1c73e13b0338b901423acf0a68c9db289b33ccc13cc999a814bb55720caf3419",
+    "src/main/java/cn/academy/port/highpower/core/FoldedMirrorGeometry.java": "a5370ebeaff8845eaaecdb79ea3b909c9cd1d0b2ec9f2eeb14377ca8a966590c",
+    "src/main/java/cn/academy/port/client/FoldedMirrorState.java": "f3180af8ac1f4712afda2a9146a2f4197e3d1c192f2d4c7ecab40a4fbc54e0cb"
+  }
+}

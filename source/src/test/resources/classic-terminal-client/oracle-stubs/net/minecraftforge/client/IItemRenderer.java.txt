@@ -1,0 +1,3 @@
+package net.minecraftforge.client;
+public interface IItemRenderer{enum ItemRenderType{ENTITY,EQUIPPED,EQUIPPED_FIRST_PERSON,INVENTORY}enum ItemRendererHelper{ENTITY_ROTATION,ENTITY_BOBBING,EQUIPPED_BLOCK,BLOCK_3D}boolean handleRenderType(net.minecraft.item.ItemStack stack,ItemRenderType type);boolean shouldUseRenderHelper(ItemRenderType type,net.minecraft.item.ItemStack stack,ItemRendererHelper helper);void renderItem(ItemRenderType type,net.minecraft.item.ItemStack stack,Object...data);}
+

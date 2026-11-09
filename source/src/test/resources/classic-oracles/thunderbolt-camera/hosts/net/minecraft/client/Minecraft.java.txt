@@ -1,0 +1,9 @@
+package net.minecraft.client;
+
+/** Declared offline view host only. No client, world, options, or player is bootstrapped. */
+public final class Minecraft {
+    private static final Minecraft INSTANCE = new Minecraft();
+    public net.minecraft.client.player.LocalPlayer player;
+    public Options options;
+    public static Minecraft getInstance() { return INSTANCE; }
+}

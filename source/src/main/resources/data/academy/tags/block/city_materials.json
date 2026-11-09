@@ -1,0 +1,31 @@
+{
+  "replace": false,
+  "values": [
+    "academy:aluminum_panel",
+    "academy:white_panel_wall",
+    "academy:dark_panel_wall",
+    "academy:blue_panel_wall",
+    "academy:brushed_steel",
+    "academy:reinforced_concrete",
+    "academy:plaza_tile",
+    "academy:composite_floor",
+    "academy:asphalt",
+    "academy:road_marking",
+    "academy:curtain_glass_blue",
+    "academy:curtain_glass_teal",
+    "academy:curtain_glass_smoke",
+    "academy:curtain_glass_clear",
+    "academy:neon_cyan",
+    "academy:neon_magenta",
+    "academy:neon_amber",
+    "academy:lit_window",
+    "academy:led_screen",
+    "academy:pillar_white",
+    "academy:pillar_dark",
+    "academy:thin_glass_panel",
+    "academy:facade_fin",
+    "academy:white_panel_slab",
+    "academy:steel_slab",
+    "academy:ceiling_light"
+  ]
+}

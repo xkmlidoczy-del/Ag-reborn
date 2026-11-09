@@ -1,0 +1,16 @@
+// Additive NEW-113 policy; canonical movement/XP tests remain separate.
+tasks.register('highPowerPolarityTetherTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.PolarityTetherRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerPolarityTetherTest' }
+
+tasks.register('highPowerPolarityTetherGeometryTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.PolarityTetherGeometryRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerPolarityTetherGeometryTest' }

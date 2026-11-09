@@ -1,0 +1,36 @@
+[
+  {
+    "name": "vm-environment-legacy-three",
+    "script": "gameplay-vm-environment-legacy-three.script",
+    "sourceScripts": [
+      "gameplay-vm-environment-blast-block.script",
+      "gameplay-vm-environment-ground-wave.script",
+      "gameplay-vm-environment-ground-soft.script"
+    ],
+    "sourceSha256": {
+      "gameplay-vm-environment-blast-block.script": "48171034ea1b32ee7230c40a106327f366c87ad1cb0621c7516cfb02b6d9ae7a",
+      "gameplay-vm-environment-ground-wave.script": "21a59f6a85cf908dd810b0b779cf790cf888a2b123e1a4620ded1cdea8c08014",
+      "gameplay-vm-environment-ground-soft.script": "b7a23e64f75c8bababe1a2af876f4decf5bfa159153315813e1e099deced608a"
+    }
+  },
+  {
+    "name": "vm-environment-storm-fragile",
+    "script": "gameplay-vm-environment-storm-fragile.script",
+    "sourceScripts": [
+      "gameplay-vm-environment-storm-fragile.script"
+    ],
+    "sourceSha256": {
+      "gameplay-vm-environment-storm-fragile.script": "07e0025ccf6a87ecf9fa91b384241b559f9e2aefa2bedd6285b59c9a516df697"
+    }
+  },
+  {
+    "name": "vm-environment-plasma-terrain",
+    "script": "gameplay-vm-environment-plasma-terrain.script",
+    "sourceScripts": [
+      "gameplay-vm-environment-plasma-terrain.script"
+    ],
+    "sourceSha256": {
+      "gameplay-vm-environment-plasma-terrain.script": "1caef2e9d2793497779ce6df1706b4a97388f1491969105cbf45f230077c5689"
+    }
+  }
+]

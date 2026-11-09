@@ -1,0 +1,9 @@
+{
+  "commit": "87dbcc2aa8cad739db1662a52746445ec8726681",
+  "sources": {
+    "src/main/java/cn/academy/port/client/RailThunderArrayEffects.java": "b3369dd32e0c7d3f9ff451e9d3bad0cb789d6b1f2fcd5aac2a8d73994ce7eeb6",
+    "src/main/java/cn/academy/port/client/RailThunderArrayGeometry.java": "d1c07cf83bd10f1fcdecc545437382156667b86dae21aa6a5703993a4c6635b3",
+    "src/main/java/cn/academy/port/client/RailThunderArrayState.java": "b4c2fd9522d343027eded3c1bb7909ffcbfc086afc05192b658ef39e58e26d82",
+    "src/main/java/cn/academy/port/client/ClassicRenderTypes.java": "559349216e6ec0452aa2c63767a150bb358b8acce6722d8ab6a3c6b3d08e31d5"
+  }
+}

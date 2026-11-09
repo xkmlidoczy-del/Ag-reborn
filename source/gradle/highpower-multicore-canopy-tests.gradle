@@ -1,0 +1,12 @@
+// NEW251 finite deployed emitters, exact whole-cast budgets and original-material presentation.
+['multicoreCanopyRulesTest':'cn.academy.port.highpower.core.MulticoreCanopyRulesRegressionTest',
+ 'multicoreCanopyGeometryTest':'cn.academy.port.highpower.core.MulticoreCanopyGeometryRegressionTest',
+ 'multicoreCanopyVisualTest':'cn.academy.port.client.MulticoreCanopyVisualRegressionTest'].each { taskName, className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+    }
+    tasks.named('check') { dependsOn taskName }
+}

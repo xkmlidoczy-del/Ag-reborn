@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "academy:blocks/city/dark_panel_wall"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "#c:gems/imag_crystal_low",
+    "#c:gems/imag_crystal_normal",
+    "#c:gems/imag_crystal_pure",
+    "#c:gems/resonant_crystal"
+  ]
+}

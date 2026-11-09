@@ -1,0 +1,1 @@
+package net.minecraft.commands;public class Commands {public static Node literal(String s){return new Node();}public static class Node {public Node then(Node n){return this;}public Node executes(java.util.function.ToIntFunction<Object> command){return this;}}public static class Dispatcher {public void register(Node n){}}}

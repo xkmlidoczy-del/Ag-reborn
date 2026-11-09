@@ -1,0 +1,9 @@
+// Pure STANDARD/CINEMATIC magnetic-domain decoration: frozen LOW/OFF, sphere containment, determinism, budgets.
+tasks.register('magneticDomainDecorTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.MagneticDomainDecorRegressionTest'
+    enableAssertions = true
+    maxHeapSize = '128m'
+}
+tasks.named('check') { dependsOn 'magneticDomainDecorTest' }

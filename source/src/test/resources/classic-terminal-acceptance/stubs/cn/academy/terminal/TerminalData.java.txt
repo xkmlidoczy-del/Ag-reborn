@@ -1,0 +1,1 @@
+package cn.academy.terminal; public class TerminalData {private static final TerminalData INSTANCE=new TerminalData();public static TerminalData get(Object p){return INSTANCE;}public boolean isTerminalInstalled(){return true;}public java.util.List<App> getInstalledApps(){return java.util.List.of(cn.academy.terminal.app.settings.AppSettings.instance);}}

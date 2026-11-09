@@ -1,0 +1,47 @@
+{
+  "version": 3,
+  "scope": "NEW413-only append to the immutable .59/v2 HighPowerSkills companion; old M41 differential and historical guards remain separate",
+  "base_contract": "../contract-v1.json",
+  "base_contract_sha256": "18764bbfd49693e9875928905caafc02016d9d6e499e19a875a8344216d32b3c",
+  "predecessor_contract": "../registry-412-v2/contract-v2.json",
+  "predecessor_proof_revision": "7e432baf7d8cc8a2c05b1b3fc4607f215d78d685",
+  "baseline_revision": "77dfddfa902ae43754da3f3116a5319c619acc6d",
+  "baseline_source": "HighPowerSkills.v59.java",
+  "baseline_source_sha256": "a602710107b954afda265d08392c399c17e53931b76e0a71c91d4e0713997411",
+  "immutable_predecessor_inputs": {
+    "src/test/resources/current-geometry-proof/charging-core/ChargingCoreLoader.java": "b020c3c870005506dbbee394d493937880e213e26e4e7d35f0d99899b5aac8dc",
+    "src/test/resources/current-geometry-proof/charging-core/ChargingCoreTrace.java": "92ab15453e8fbeabe8a1e69ad861b6a80209eef016ae89d6c6eb6536b35db1b6",
+    "src/test/resources/current-geometry-proof/charging-core/README.md": "8431c1d919b9bf89af8d16bc646840c61dcef7991f5f39e539e55b1652dcc11d",
+    "src/test/resources/current-geometry-proof/charging-core/contract-v1.json": "18764bbfd49693e9875928905caafc02016d9d6e499e19a875a8344216d32b3c",
+    "src/test/resources/current-geometry-proof/charging-core/registry-412-v2/HighPowerSkills.v58.java": "ae786dbafd230eec42c45390cc33bb5778b9c7535a456451d0e00247fdbd2445",
+    "src/test/resources/current-geometry-proof/charging-core/registry-412-v2/contract-v2.json": "8c27b2cd7f5251379235d64d45ff4716f7d9e4683f0a6bc0fb7049a5e939936a",
+    "src/test/resources/current-geometry-proof/charging-core/registry-412-v2/verify-charging-m41-core-v1.py": "2e54fb91fdc704bd7456cfa6c07768ccbeee89cd51f24f42192aee790a815c6d",
+    "scripts/verify-charging-m41-core.py": "f7efad59197bd24c0cf0f911dae503370eadc3490bb5dc0edbbfff9f27793eca",
+    "docs/charging-core-registry-412-companion-v2.md": "8ebfc6cf16be9eda080a303dd12865573779cff2c49a4c54332ea0d14a7a0b00"
+  },
+  "source_path": "src/main/java/cn/academy/port/highpower/HighPowerSkills.java",
+  "class_name": "cn.academy.port.highpower.HighPowerSkills",
+  "old_class_sha256": "4e333d05a58e7a0ee09704e78c4290dda45b96e257dcd466df01cdb736e47362",
+  "reconstructed_source_sha256": "e2154b17131f24939448295ff4dcbce62a1d4b050315044b4148aa7b7e083bdb",
+  "reconstructed_class_sha256": "5e2cd57d0aa54db6a793bd6d87c3891ce2c2185e207f3fa69d50eaaf15a27d68",
+  "registered_highpower_before": 39,
+  "registered_highpower_after": 40,
+  "approved_edits": [
+    {
+      "name": "new-413-constants",
+      "before": "    public static final String CATEGORY = \"electromaster\";\n",
+      "after": "    public static final String CATEGORY = \"electromaster\";\n    public static final String BRAKING_TOUCH = \"braking_touch\";\n    public static final int BRAKING_TOUCH_PROPOSAL = 413;\n"
+    },
+    {
+      "name": "append-413-id",
+      "before": "MULTIDIMENSIONAL_LANDING_ARRAY, DEFLECTION_STRIKE, VECTOR_PARRY);\n",
+      "after": "MULTIDIMENSIONAL_LANDING_ARRAY, DEFLECTION_STRIKE, VECTOR_PARRY, BRAKING_TOUCH);\n"
+    },
+    {
+      "name": "append-413-record",
+      "before": "            new SkillCatalog.Skill(HighPowerCategories.VECMANIP, VECTOR_PARRY, 1, true,\n                    List.of(new SkillCatalog.Requirement(DEFLECTION_STRIKE, 0)), 0));\n",
+      "after": "            new SkillCatalog.Skill(HighPowerCategories.VECMANIP, VECTOR_PARRY, 1, true,\n                    List.of(new SkillCatalog.Requirement(DEFLECTION_STRIKE, 0)), 0),\n            new SkillCatalog.Skill(HighPowerCategories.VECMANIP, BRAKING_TOUCH, 1, true,\n                    List.of(new SkillCatalog.Requirement(DEFLECTION_STRIKE, 0)), 0));\n"
+    }
+  ],
+  "historic_guard_status": "UNCHANGED_SEPARATE_FAILURES_NOT_REPAIRED"
+}

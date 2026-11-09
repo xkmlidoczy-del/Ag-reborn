@@ -1,0 +1,6 @@
+; Original AcademyCraft1.0.7 default.recipe solar recipe, GPLv3
+shaped(solar_gen) {
+    [glass_pane, glass_pane, glass_pane]
+    [nil,        wafer,      nil]
+    [conv_comp,  frame,      conv_comp]
+}

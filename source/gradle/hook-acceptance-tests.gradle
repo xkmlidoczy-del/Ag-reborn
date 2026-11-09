@@ -1,0 +1,31 @@
+// Portable Hook evidence runs from packaged source/test files. Legacy API shims are
+// runtime-compiled by HookSourceOracleTest into an isolated temporary classloader;
+// they never join main/test compilation or a shipped mod JAR.
+def hookFixtures = layout.projectDirectory.dir('src/test/resources/classic-hook-source')
+def hookProject = layout.projectDirectory.asFile
+[
+ 'classicHookSourceTest': 'cn.academy.port.hook.HookSourceOracleTest',
+ 'classicHookDataTest': 'cn.academy.port.hook.HookPortableDataTest',
+ 'classicHookVisualTest': 'cn.academy.port.client.HookNativeEmissionTest',
+ 'classicHookServerLinkTest': 'cn.academy.port.hook.HookServerLinkTest'
+].each { taskName, className ->
+ tasks.register(taskName, JavaExec) {
+  group = 'verification'
+  dependsOn testClasses
+  classpath = sourceSets.test.runtimeClasspath
+  mainClass = className
+  enableAssertions = true
+  javaLauncher = javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(21) }
+  workingDir = hookProject
+  systemProperty 'java.awt.headless', 'true'
+  systemProperty 'academy.hook.fixtureRoot', hookFixtures.asFile.absolutePath
+  systemProperty 'academy.hook.projectRoot', hookProject.absolutePath
+  systemProperty 'hook.assets', hookFixtures.dir('assets/academy/models').asFile.absolutePath
+ }
+}
+tasks.register('classicHookAcceptance') {
+ group = 'verification'
+ description = 'Runs packaged unchanged-source, data, native-buffer and cold-link Hook evidence; starts no game'
+ dependsOn 'classicHookSourceTest', 'classicHookDataTest', 'classicHookVisualTest', 'classicHookServerLinkTest'
+}
+tasks.named('check') { dependsOn 'classicHookAcceptance' }

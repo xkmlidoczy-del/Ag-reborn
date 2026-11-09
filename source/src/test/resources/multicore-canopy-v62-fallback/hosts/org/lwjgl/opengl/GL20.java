@@ -1,0 +1,1 @@
+package org.lwjgl.opengl;public final class GL20{public static final int GL_LINK_STATUS=35714;public static int glGetProgrami(int p,int key){return 1;}public static String glGetProgramInfoLog(int p){return "";}}

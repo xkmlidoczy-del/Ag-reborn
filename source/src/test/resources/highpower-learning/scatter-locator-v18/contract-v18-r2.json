@@ -1,0 +1,930 @@
+{
+  "version": 18,
+  "baseline_revision": "27ecc8d869ae6389253c2e5c8fe4df68b6291424",
+  "scope": "Explicit append-sensitive amendments of 25 complete immutable .79 regression sources; original main call graphs and all remaining assertions execute against current compiled production classes. No old runner, fixture or hash is changed.",
+  "registration_gate": {
+    "path": "scripts/verify-scatter-locator-registration-v17.py",
+    "sha256": "8fead34c0bc54afda101e90d95584175d6f38134d69b1b7db4b7a7030024aeb4"
+  },
+  "files": {
+    "src/test/java/cn/academy/port/highpower/CirculationListeningLearningRegressionTest.java": {
+      "snapshot": "snapshots/CirculationListeningLearningRegressionTest.java",
+      "input_sha256": "e0ee07c171361a921f07a65bf69712985cb0352cef11612dd697cee530d1fdea",
+      "output_sha256": "296fdf1613a42240cc65f39ee2430a1a0e2151379458c5be521e7a9c13def833",
+      "main_class": "cn.academy.port.highpower.CirculationListeningLearningRegressionTest",
+      "assertion_call_tokens": 25,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/CirculationReliefLearningRegressionTest.java": {
+      "snapshot": "snapshots/CirculationReliefLearningRegressionTest.java",
+      "input_sha256": "3eff6059546dffd9b5773889a60f68ada624f418409019d391560f2c98fb98b6",
+      "output_sha256": "616acb7f8098843a8940107f2262e4284866cb0cd04762c55090f757f912c107",
+      "main_class": "cn.academy.port.highpower.CirculationReliefLearningRegressionTest",
+      "assertion_call_tokens": 31,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/CornerExchangeLearningRegressionTest.java": {
+      "snapshot": "snapshots/CornerExchangeLearningRegressionTest.java",
+      "input_sha256": "df538862d9caaa6509345d74c858af3aa8726a85ffb8a70be7000c72e89ec20d",
+      "output_sha256": "0f781ed0b3c51b933a6c51138269ead55a35aa47ac6dd493aa2092c8a925b263",
+      "main_class": "cn.academy.port.highpower.CornerExchangeLearningRegressionTest",
+      "assertion_call_tokens": 67,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-hp-ids",
+          "before": "HighPowerSkills.IDS.size() == 51",
+          "after": "HighPowerSkills.IDS.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/CrossSubstitutionLearningRegressionTest.java": {
+      "snapshot": "snapshots/CrossSubstitutionLearningRegressionTest.java",
+      "input_sha256": "55506d106213ffd9b57b5d273aecb224513b1c4ea1211eb5ef15e77c637e7381",
+      "output_sha256": "93ed33889757b7eda5da8f3fede2f2499470b63d72310f7bb5761d790815fc8e",
+      "main_class": "cn.academy.port.highpower.CrossSubstitutionLearningRegressionTest",
+      "assertion_call_tokens": 73,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-hp-ids",
+          "before": "HighPowerSkills.IDS.size() == 51",
+          "after": "HighPowerSkills.IDS.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/DisplacedProjectionLearningRegressionTest.java": {
+      "snapshot": "snapshots/DisplacedProjectionLearningRegressionTest.java",
+      "input_sha256": "55e79ad21fc5f2d18e7fa83a0f299655ce0613865012c8be0e51e390aa9b13c6",
+      "output_sha256": "2c8c2c13597cb05e4412fc7dcecfe4d3a57eba896cfecf9fbe3128284b061017",
+      "main_class": "cn.academy.port.highpower.DisplacedProjectionLearningRegressionTest",
+      "assertion_call_tokens": 57,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-hp-ids",
+          "before": "HighPowerSkills.IDS.size() == 51",
+          "after": "HighPowerSkills.IDS.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/EmergencyReturnLearningRegressionTest.java": {
+      "snapshot": "snapshots/EmergencyReturnLearningRegressionTest.java",
+      "input_sha256": "a3a3e3d7b690001201e74710f689d997fb77c72921eb4d488fe4d66d8e716cc2",
+      "output_sha256": "5f8f03bbe5cee0cd0084cc0fc8768f32123bb7ef4684a3ce6007b42984772816",
+      "main_class": "cn.academy.port.highpower.EmergencyReturnLearningRegressionTest",
+      "assertion_call_tokens": 72,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-hp-ids",
+          "before": "HighPowerSkills.IDS.size() == 51",
+          "after": "HighPowerSkills.IDS.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/HighPowerProgressionRegressionTest.java": {
+      "snapshot": "snapshots/HighPowerProgressionRegressionTest.java",
+      "input_sha256": "1d7f468c574ec43f4ee03a8f0c8eeba34e08a1a51fac1ca50f343f6e54ccd86e",
+      "output_sha256": "712b53ff06da80e276612f2da9b2e56e6d85af3f83814357c2e7734afb4b3a39",
+      "main_class": "cn.academy.port.highpower.HighPowerProgressionRegressionTest",
+      "assertion_call_tokens": 673,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 2
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "md-actual-page-current14",
+          "before": "page.size()==13&&shown.x()==110",
+          "after": "page.size()==14&&shown.x()==110",
+          "occurrences": 1
+        },
+        {
+          "name": "md-current-category14",
+          "before": "filter(entry->entry.category().equals(\"meltdowner\")).count()==13",
+          "after": "filter(entry->entry.category().equals(\"meltdowner\")).count()==14",
+          "occurrences": 1
+        },
+        {
+          "name": "md-old-source-and-page-prefix",
+          "before": "raw.size() == 13 && page.size() == 13",
+          "after": "raw.size() == 14 && page.size() == 14",
+          "occurrences": 1
+        },
+        {
+          "name": "md-current-source14-combined28",
+          "before": "additions.size()==13&&ClassicDeveloperLayout.category(\"meltdowner\").size()==27",
+          "after": "additions.size()==14&&ClassicDeveloperLayout.category(\"meltdowner\").size()==28",
+          "occurrences": 1
+        },
+        {
+          "name": "exact-original26-source-coordinate-domain",
+          "before": "ClassicDeveloperLayout.category(\"meltdowner\").stream().filter(n->!n.id().equals(HighPowerSkills.REMOTE_SCATTER_RELAY)).toList();",
+          "after": "ClassicDeveloperLayout.category(\"meltdowner\").stream().filter(n->java.util.Set.of(\"electron_bomb\", \"rad_intensify\", \"scatter_bomb\", \"light_shield\", \"meltdowner\", \"mine_ray_basic\", \"ray_barrage\", \"jet_engine\", \"mine_ray_expert\", \"mine_ray_luck\", \"electron_missile\", \"brain_course\", \"brain_course_advanced\", \"mind_course\", \"dual_point\", \"scatter_plates\", \"beam_etching\", \"thermal_shell\", \"folded_mirror_array\", \"disintegration_sweep\", \"beam_step\", \"point_meltdown\", \"particle_laminate\", \"directional_dissipation_curtain\", \"multicore_canopy\", \"zero_gap_armor\").contains(n.id())).toList();",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-md-page-id-list-append",
+          "before": "\"multicore_canopy\",\"zero_gap_armor\",\"remote_scatter_relay\"))",
+          "after": "\"multicore_canopy\",\"zero_gap_armor\",\"remote_scatter_relay\",\"scatter_locator_plate\"))",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/InertialAnchorLearningRegressionTest.java": {
+      "snapshot": "snapshots/InertialAnchorLearningRegressionTest.java",
+      "input_sha256": "98d3b77006efa6a8067d7be670f47a4e7ebd07391c2ca4b067ef97f579672c30",
+      "output_sha256": "25316cd83fdbee4f65edca715fef3c9ccaf5932f69f6f19ca4bc8fcee2041861",
+      "main_class": "cn.academy.port.highpower.InertialAnchorLearningRegressionTest",
+      "assertion_call_tokens": 43,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/MultiAxisReflectionLearningRegressionTest.java": {
+      "snapshot": "snapshots/MultiAxisReflectionLearningRegressionTest.java",
+      "input_sha256": "eb954e039d9d56be002791bb8769bf6d66b49cc708a2c4d5265346ad16eaba0d",
+      "output_sha256": "2c28d4622add6aa73eccaff12a38367ca5992c1e475d1272cf7fd6a9293b9eb4",
+      "main_class": "cn.academy.port.highpower.MultiAxisReflectionLearningRegressionTest",
+      "assertion_call_tokens": 18,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/MultidimensionalLandingArrayLearningRegressionTest.java": {
+      "snapshot": "snapshots/MultidimensionalLandingArrayLearningRegressionTest.java",
+      "input_sha256": "eb606b358612454eb49eee002f27d9d35045e885ecd475a9ef67069181196539",
+      "output_sha256": "72cdadc86863b9b5e93c8b651d38a6bb7c612352dc0eb61dde465256d0a37f97",
+      "main_class": "cn.academy.port.highpower.MultidimensionalLandingArrayLearningRegressionTest",
+      "assertion_call_tokens": 20,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/PhaseSidestepLearningRegressionTest.java": {
+      "snapshot": "snapshots/PhaseSidestepLearningRegressionTest.java",
+      "input_sha256": "6577560374501a5d5af41b86ed5cf98728aaf56ede6038977186f1b4894f1b76",
+      "output_sha256": "76c7ee2021fb97f9f90ef1551007e190858a88d39be7517c7d6d557d382a9860",
+      "main_class": "cn.academy.port.highpower.PhaseSidestepLearningRegressionTest",
+      "assertion_call_tokens": 51,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-hp-ids",
+          "before": "HighPowerSkills.IDS.size() == 51",
+          "after": "HighPowerSkills.IDS.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/RecoveryMarkLearningRegressionTest.java": {
+      "snapshot": "snapshots/RecoveryMarkLearningRegressionTest.java",
+      "input_sha256": "0d5c6ea32adb9de48cf64d7612a81d3c9452a06ecb8b5be82ba442beb82aa73c",
+      "output_sha256": "6da71f431ebef03a3dbd6ce2100fe8b1423ee0e834eeaa6e5804dd3df0a6bae4",
+      "main_class": "cn.academy.port.highpower.RecoveryMarkLearningRegressionTest",
+      "assertion_call_tokens": 65,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-hp-ids",
+          "before": "HighPowerSkills.IDS.size() == 51",
+          "after": "HighPowerSkills.IDS.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/RemoteScatterRelayLearningRegressionTest.java": {
+      "snapshot": "snapshots/RemoteScatterRelayLearningRegressionTest.java",
+      "input_sha256": "03e3f049de81463d9b2c3a2a74c0e8d027dcb8b73a1916f81791d0601507b7cf",
+      "output_sha256": "ed14e7d94f920b1533fdcbc6fb33645b8293d936a169906d5c02d12370a5ef8a",
+      "main_class": "cn.academy.port.highpower.RemoteScatterRelayLearningRegressionTest",
+      "assertion_call_tokens": 52,
+      "patches": [
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        },
+        {
+          "name": "retain-old50-plus253-and-exact223",
+          "before": "return candidate.size() == 51 && candidate.subList(0, 50).equals(previous) && candidate.get(50).id().equals(ID);",
+          "after": "return candidate.size() == 52 && candidate.subList(0, 50).equals(previous) && candidate.get(50).id().equals(ID)\n                && candidate.get(51).equals(new SkillCatalog.Skill(\"meltdowner\", \"scatter_locator_plate\", 2, true, List.of(new SkillCatalog.Requirement(\"folded_mirror_array\", 0)), 0));",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-canonical-id-set",
+          "before": "previous.forEach(skill -> expectedIds.add(skill.id())); expectedIds.add(ID);",
+          "after": "previous.forEach(skill -> expectedIds.add(skill.id())); expectedIds.add(ID); expectedIds.add(\"scatter_locator_plate\");",
+          "occurrences": 1
+        },
+        {
+          "name": "md-page-current14",
+          "before": "retained == 12 && page.size() == 13",
+          "after": "retained == 12 && page.size() == 14",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/ReturnMarkLearningRegressionTest.java": {
+      "snapshot": "snapshots/ReturnMarkLearningRegressionTest.java",
+      "input_sha256": "0848a17b3e5358bee78f411fed5a4406cbc6dccde9b1a583fc1fa65c8eeea105",
+      "output_sha256": "70e2ad73a4d0d826c82ef8adfd3cef0379b1849903fac1f47e6ae8fdeb118396",
+      "main_class": "cn.academy.port.highpower.ReturnMarkLearningRegressionTest",
+      "assertion_call_tokens": 62,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-hp-ids",
+          "before": "HighPowerSkills.IDS.size() == 51",
+          "after": "HighPowerSkills.IDS.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/ShortInterceptionLearningRegressionTest.java": {
+      "snapshot": "snapshots/ShortInterceptionLearningRegressionTest.java",
+      "input_sha256": "96ff1443504853a8b3631fa5acfb54d6efe7033e104a8f3dec0a6a8960cfcfcb",
+      "output_sha256": "f463aec26f9f14e219f97c75c7df413a2ef8947eda116bbfee9aa3a19283233d",
+      "main_class": "cn.academy.port.highpower.ShortInterceptionLearningRegressionTest",
+      "assertion_call_tokens": 72,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-hp-ids",
+          "before": "HighPowerSkills.IDS.size() == 51",
+          "after": "HighPowerSkills.IDS.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/SpatialPincerCorridorLearningRegressionTest.java": {
+      "snapshot": "snapshots/SpatialPincerCorridorLearningRegressionTest.java",
+      "input_sha256": "15fc9016616b5a01934329d2bf5447c89cdf1b363156f173ad6061ab40eafcfb",
+      "output_sha256": "6c1ed54f90471046a5eca3b6a05f349a1dd7fbe1d6d129a68672b33b2238b9be",
+      "main_class": "cn.academy.port.highpower.SpatialPincerCorridorLearningRegressionTest",
+      "assertion_call_tokens": 44,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-hp-ids",
+          "before": "HighPowerSkills.IDS.size() == 51",
+          "after": "HighPowerSkills.IDS.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/SpatialRelayLearningRegressionTest.java": {
+      "snapshot": "snapshots/SpatialRelayLearningRegressionTest.java",
+      "input_sha256": "d4482b2d62e479ae7b1168c20c167295275c7111eb7a6c76611efb880f4411c6",
+      "output_sha256": "5024dbd8201994532868dae0312d292ffa5e9d7df368cbf1f415d030512a4f78",
+      "main_class": "cn.academy.port.highpower.SpatialRelayLearningRegressionTest",
+      "assertion_call_tokens": 69,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-hp-ids",
+          "before": "HighPowerSkills.IDS.size() == 51",
+          "after": "HighPowerSkills.IDS.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/TacticalCoordinateLearningRegressionTest.java": {
+      "snapshot": "snapshots/TacticalCoordinateLearningRegressionTest.java",
+      "input_sha256": "c0d2c01e2ba6591c170a65c5436a7230c9b159ca03873f3e84dd71ab28a281fc",
+      "output_sha256": "f3d3b747bfe0eefdb3a683ccc085070f2c8f584905fed607d7b4bf261f0483d9",
+      "main_class": "cn.academy.port.highpower.TacticalCoordinateLearningRegressionTest",
+      "assertion_call_tokens": 46,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-hp-ids",
+          "before": "HighPowerSkills.IDS.size() == 51",
+          "after": "HighPowerSkills.IDS.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/TeleporterFoundationRegressionTest.java": {
+      "snapshot": "snapshots/TeleporterFoundationRegressionTest.java",
+      "input_sha256": "2a627f7d4ba7e8dbea62ab9c754098a0e42cfb2557edadb90ca3e4f67ad92905",
+      "output_sha256": "bf4c1d6241117589f9837b1217bfc9205c44f86c095d92c1d42b6295ac9568fb",
+      "main_class": "cn.academy.port.highpower.TeleporterFoundationRegressionTest",
+      "assertion_call_tokens": 52,
+      "patches": [
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/TrajectoryReturnLearningRegressionTest.java": {
+      "snapshot": "snapshots/TrajectoryReturnLearningRegressionTest.java",
+      "input_sha256": "98b8315867251f1efbe3a98ccea1cda88238f9f801c0f3312a9f6703aeb79947",
+      "output_sha256": "64dd83d76a32a220c805f49540a2e9f03fd6b8282002c780470641aa4c577cdc",
+      "main_class": "cn.academy.port.highpower.TrajectoryReturnLearningRegressionTest",
+      "assertion_call_tokens": 51,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/VectorCageLearningRegressionTest.java": {
+      "snapshot": "snapshots/VectorCageLearningRegressionTest.java",
+      "input_sha256": "84314e690953b5bf3774462dd76665b9de4dab6ba92e6f0fb0622b7a41e139f2",
+      "output_sha256": "dd7c64c346aa412f013606c23d47f3dabf9036b408da9916d420ffe950a567f7",
+      "main_class": "cn.academy.port.highpower.VectorCageLearningRegressionTest",
+      "assertion_call_tokens": 24,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/VectorFoundationRegressionTest.java": {
+      "snapshot": "snapshots/VectorFoundationRegressionTest.java",
+      "input_sha256": "6d5b591e27aed57f0f633999cb05ddc7a1b704e3ad1fbe01993ed37411b73ee6",
+      "output_sha256": "a4e92650dad835ebd6709dda035c73a7da968c9ff7e941826f474d07d7bbe9f8",
+      "main_class": "cn.academy.port.highpower.VectorFoundationRegressionTest",
+      "assertion_call_tokens": 44,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/WindPressureLiftLearningRegressionTest.java": {
+      "snapshot": "snapshots/WindPressureLiftLearningRegressionTest.java",
+      "input_sha256": "5295d3477865e29c4df4b0bf3c192e0e3692a9ebb6811e8c0bac24e8bc8deccd",
+      "output_sha256": "41afac33aba7ffde6d1881dbaed098c0e8796ea153a52b2d50ae3c3d0a8596fd",
+      "main_class": "cn.academy.port.highpower.WindPressureLiftLearningRegressionTest",
+      "assertion_call_tokens": 63,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-canonical-id-set",
+          "before": "expectedIds.add(\"remote_scatter_relay\");",
+          "after": "expectedIds.add(\"remote_scatter_relay\");\n        expectedIds.add(\"scatter_locator_plate\");",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-md-append-after-frozen71-prefix",
+          "before": "entry.getKey().equals(\"meltdowner\")?2:0",
+          "after": "entry.getKey().equals(\"meltdowner\")?3:0",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/highpower/YawPalmLearningRegressionTest.java": {
+      "snapshot": "snapshots/YawPalmLearningRegressionTest.java",
+      "input_sha256": "330a6db87622c01602b55ae681bdad294a337f73cf5e14c11ced7b9ba933e3a4",
+      "output_sha256": "a7a8ed970357fbfe72d5d178913cfe2a10e886d0de4c2654e4025455cdd1052b",
+      "main_class": "cn.academy.port.highpower.YawPalmLearningRegressionTest",
+      "assertion_call_tokens": 43,
+      "patches": [
+        {
+          "name": "new223-total-hp-all",
+          "before": "HighPowerSkills.ALL.size() == 51",
+          "after": "HighPowerSkills.ALL.size() == 52",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-registered",
+          "before": "SkillCatalog.REGISTERED.size() == 101",
+          "after": "SkillCatalog.REGISTERED.size() == 102",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-presets",
+          "before": "PresetSkills.REGISTERED.size() == 86",
+          "after": "PresetSkills.REGISTERED.size() == 87",
+          "occurrences": 1
+        },
+        {
+          "name": "new223-total-configuration",
+          "before": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 92",
+          "after": "SkillCatalog.REGISTERED_CONFIG_KEYS.size() == 93",
+          "occurrences": 1
+        }
+      ]
+    },
+    "src/test/java/cn/academy/port/client/SafeLandingProbeLayoutRegressionTest.java": {
+      "snapshot": "snapshots/SafeLandingProbeLayoutRegressionTest.java",
+      "input_sha256": "c15a59406b7b7aab3809761b7896cb9fc339150543dd538e979dea6ec445bb95",
+      "output_sha256": "9b3210e15f08ac019d235c8dbad0487eb8ac2f36c74eaaf2b4ea432163821a20",
+      "main_class": "cn.academy.port.client.SafeLandingProbeLayoutRegressionTest",
+      "assertion_call_tokens": 42,
+      "patches": [
+        {
+          "name": "md-old-source-and-page-prefix",
+          "before": "raw.size() == 13 && page.size() == 13",
+          "after": "raw.size() == 14 && page.size() == 14",
+          "occurrences": 1
+        }
+      ]
+    }
+  },
+  "retained_source_coordinate_domain": [
+    "electron_bomb",
+    "rad_intensify",
+    "scatter_bomb",
+    "light_shield",
+    "meltdowner",
+    "mine_ray_basic",
+    "ray_barrage",
+    "jet_engine",
+    "mine_ray_expert",
+    "mine_ray_luck",
+    "electron_missile",
+    "brain_course",
+    "brain_course_advanced",
+    "mind_course",
+    "dual_point",
+    "scatter_plates",
+    "beam_etching",
+    "thermal_shell",
+    "folded_mirror_array",
+    "disintegration_sweep",
+    "beam_step",
+    "point_meltdown",
+    "particle_laminate",
+    "directional_dissipation_curtain",
+    "multicore_canopy",
+    "zero_gap_armor"
+  ],
+  "revision": 2,
+  "previous_contract": {
+    "path": "src/test/resources/highpower-learning/scatter-locator-v18/contract-v18.json",
+    "sha256": "8db0c02e3106584fda341a0dce89cba1f6a5f7863695936a57d5f11fe2eda542",
+    "result": "Initial execution retained as current-learning-v18-r1; 23 of25 passed"
+  }
+}

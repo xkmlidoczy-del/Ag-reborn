@@ -1,0 +1,11 @@
+[
+  {
+    "name": "final21-ui-skill-tree-learning",
+    "script": "codex-skill-tree-learning-gated.script",
+    "directory": "run-showcase-sable",
+    "props": "",
+    "status": "planned_not_run",
+    "scope": "Actual Chinese unified four-category tree top/bottom, original/new advanced detail, unlearned long detail scrolling, finite machine learning and before/after screenshots; agent pixel review separately. Includes actual disabled click with insufficient developer grade, unchanged real IF/learning after native ticks, and valid 2340 IF confirmation.",
+    "scriptSha256": "f67c281ffe6cf2e9b513c64aead79d8c3ba9a161ade2d30f6cb7036508623f77"
+  }
+]

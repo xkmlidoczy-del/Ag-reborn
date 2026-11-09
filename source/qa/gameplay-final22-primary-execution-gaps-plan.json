@@ -1,0 +1,46 @@
+[
+  {
+    "name": "final22-primary-canopy-execution",
+    "script": "gameplay-final22-canopy-primary.script",
+    "directory": "run-showcase-sable",
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Additional real multicore canopy firing recording. Exact complete prior mechanical script preserved, only recording brackets added. Separate from core 66 and the existing 11 primary cases.",
+    "scriptSha256": "d68f5e4875dd099a2ac9a273b0b038958d0dcbb32b6d81a32a997de92663b879",
+    "originalMechanicalScript": "gameplay-final20-visual-rail-array.script",
+    "originalMechanicalScriptSha256": "37d211dd04a69f9fae2bea256e25a0107b1a2eaab3294e024d81e190ac4c704e"
+  },
+  {
+    "name": "final22-primary-plasma-execution",
+    "script": "gameplay-final22-plasma-primary.script",
+    "directory": "run-showcase-sable",
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Additional actual execution peak recording; full original successful mechanical inputs and assertions retained, only rec brackets added. Separate from strict66 and original11-primary plans.",
+    "scriptSha256": "86b442eb21c8ca3c9da316db2fe8564b3bd9a7a513826fe50bba419fd241dd77",
+    "originalMechanicalScript": "gameplay-vm-environment-plasma-terrain.script",
+    "originalMechanicalScriptSha256": "1caef2e9d2793497779ce6df1706b4a97388f1491969105cbf45f230077c5689"
+  },
+  {
+    "name": "final22-primary-mirror-execution",
+    "script": "gameplay-final22-mirror-primary.script",
+    "directory": "run-showcase-sable",
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Additional actual execution peak recording; full original successful mechanical inputs and assertions retained, only rec brackets added. Separate from strict66 and original11-primary plans.",
+    "scriptSha256": "791e182a1d3a39e44a2da5de1690d480f0fa30fffe7c5a8c3cf676d32a33a843",
+    "originalMechanicalScript": "gameplay-em-md-folded_mirror_array.script",
+    "originalMechanicalScriptSha256": "cc7c975ef0be7c3dc76736c531dce02fb5c48a87fc6caeae9a96db8dc3d115c5"
+  },
+  {
+    "name": "final22-primary-construct-execution",
+    "script": "gameplay-final22-construct-primary.script",
+    "directory": "run-showcase-sable",
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Full original real Sable 73-block preview/lift/turn/land/lift/throw and owner damage, only recording brackets added. Current archived core phases are previews and do not replace execution frames.",
+    "scriptSha256": "6032886b588ce9c897b11258ee7cb981496cb180529399e86f7eeca8a49fda89",
+    "originalMechanicalScript": "gameplay-construct-full.script",
+    "originalMechanicalScriptSha256": "df10d71a70bd1b586d263ff4bd460b6966a8819c4dec54bd94c17fcac1e6c33e"
+  }
+]

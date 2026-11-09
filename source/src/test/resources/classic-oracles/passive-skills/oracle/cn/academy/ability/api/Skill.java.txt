@@ -1,0 +1,1 @@
+package cn.academy.ability.api; public class Skill {protected boolean canControl=true,isGeneric;public final String id;public Skill(String id,int level){this.id=id;}}

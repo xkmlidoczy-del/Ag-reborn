@@ -1,0 +1,28 @@
+AcademyCraft m12 raw singleplayer scene index | captured 2026-10-01 UTC
+
+Private development: classic1.0.7 -> Minecraft1.21.1 / NeoForge21.1.252. Incomplete full port. These are raw game-window recordings, silent H264 MP4, 1046x720, nominal30fps; actual stream rates and complete decode proofs accompany the checkpoint. No narration, watermark, montage or timing edits. Times below are approximate clip seconds.
+
+Declared fixture boundaries: world retains genuinely crafted Normal/node/solar from m10/m11. New m12 setup supplied mature ElectronBomb mastery1 and Meltdowner level2 plus EMPTY portable output from the authentic native recipe. It did not grant Scatter/Shield or portable energy. Weather/daylight were controlled. Initial materials and mature prerequisite grinding are not claimed natural. The stationary 200HP NPC and camera teleports are explicit QA fixtures, not game obtainability.
+
+1. academycraft-m12-portable-real-solar-charging.mp4 | 60s
+   Physical empty portable was inserted just before FFmpeg completed initialization. Raw clip begins around1189IF and records real native charge rising beyond4183IF while actual Solar generates3IF/t with its buffer drained to0. Separate native screenshots showed initial100IF/903IF-buffer and later10000IF. It does not contain the whole charge cycle or initial empty-item insertion.
+2. academycraft-m12-charged-portable-retrieval.mp4 | 150s
+   Retained raw camera/setup/idle view of the legitimately solar-charged portable and earned machine scene. Full10000IF tooltip and physical retrieval were verified separately, but capture initialization completed after retrieval; do not use this clip as footage of that click. No later skill learning is shown.
+3. academycraft-m12-scatter-genuine-portable-learning.mp4 | 45s
+   The real Learn click occurred during FFmpeg initialization; raw clip starts around18% into the actual native stimulation cycle, progresses through96% to Develop Successful and portable power61%. It does not visually capture the button click itself. Reopened card separately proves learned0%EXP. Original card's initial red status remains cached through its success animation, as source does.
+4. academycraft-m12-lightshield-genuine-portable-learning.mp4 | 45s
+   The real Learn click occurred during FFmpeg initialization; raw clip begins around22% native stimulation, then shows actual success and power22%. It does not visually capture the initial click. Two authentic actual3900IF costs. Separate native inventory screenshot proves exactly2200/10000IF remaining.
+5. academycraft-m12-scatter-earned-release.mp4 | 45s
+   Approx0.5..5.0 physical R hold: increasing original glowing sprite orbs; about5.3..5.7 multiple thin green release rays and red native NPC damage/hit particles. This first wall-clock4.5s hold accumulated FIVE balls under a logged40-tick server lag, not an assumed seven. Current head aim governs source scatter jitter.
+6. academycraft-m12-lightshield-earned-contact.mp4 | 45s
+   Approx1..4 real F hold from within source contact radius: forward translucent green shield and particles; native contact/HP result. NPC read after Scatter+Shield is177/200. Earlier read used lower-case health and failed; corrected native Health query succeeded. Contact result is not proof of live incoming projectile absorption, which remains native-test-only.
+7. academycraft-m12-scatter-third-person-forced-stop.mp4 | 45s
+   Physical10.5s R hold in third-person: accumulated seven world-space orbs; around11..12 forced source200-tick release and exactlythree hearts self-damage(20->14); normal regeneration later. No health/CP grant between actions. Seven second activation plus five first activation matches saved Scatter EXP0.01200000057.
+8. academycraft-m12-source-hud-info-and-preset-cycle.mp4 | 45s
+   Approx1..2 long V hold visibly shows CP2803/2803 and OL0/152; C switch shows original1/2/3/4 indicators. Some subsequent switches/skill attempt are on empty presets; this clip is HUD/preset evidence, not Shield effect evidence. Empty editor rows and idle CP number hiding are original intent.
+9. academycraft-m12-lightshield-third-person-and-session-end.mp4 | 45s
+   Approx1..3.5 actual F hold on preset1, front-facing third-person disc and green particles; release clears effect, applies native SlownessII icon/particles and source cooldown. Later pause begins save flow. Actual clean world save and process exit0 are separately retained in the client log.
+
+All nine representative clips fully decode without errors and contain inspected nonblack gameplay frames. Two failed raw attempts are retained locally: pause-attempt(60s) and inactive-input-attempt(45s); neither is claimed successful skill evidence.
+
+Closed level.dat and playerdata both preserve categoryMeltdowner/Lv2, learned ScatterEXP0.01200000057, ShieldEXP0.00412100019, authentic2200IF item energy and preset1 R/F. A new-JVM actual reload is the next-client check, not yet claimed from NBT inspection alone. Audio is unavailable in the cloud(OpenAL); audible source fidelity and full pixel/action parity remain unfinished. Integrated15/35 controllable skill paths,20 remaining.

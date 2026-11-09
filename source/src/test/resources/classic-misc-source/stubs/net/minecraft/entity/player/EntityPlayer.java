@@ -1,0 +1,1 @@
+package net.minecraft.entity.player;public class EntityPlayer {public java.util.List<net.minecraft.util.ChatComponentTranslation> messages=new java.util.ArrayList<>();public void addChatMessage(net.minecraft.util.ChatComponentTranslation c){messages.add(c);}}

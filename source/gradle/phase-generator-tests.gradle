@@ -1,0 +1,14 @@
+// Finite portable checks. Native GameTests remain exclusively in the serial main-owned lane.
+['classicPhaseGeneratorDataTest':'cn.academy.port.phasegen.ClassicPhaseGeneratorDataRegressionTest',
+ 'classicPhaseGeneratorSourceTest':'cn.academy.port.phasegen.ClassicPhaseGeneratorSourceOracleTest',
+ 'classicPhaseGeneratorVisualTest':'cn.academy.port.client.ClassicPhaseGeneratorVisualRegressionTest',
+ 'classicPhaseGeneratorServerLinkTest':'cn.academy.port.phasegen.ClassicPhaseGeneratorServerLinkRegressionTest'].each { taskName,className ->
+ tasks.register(taskName,JavaExec) {
+  dependsOn testClasses
+  classpath=sourceSets.test.runtimeClasspath
+  mainClass=className
+  enableAssertions=true
+  systemProperty 'java.awt.headless','true'
+ }
+ tasks.named('check') { dependsOn taskName }
+}

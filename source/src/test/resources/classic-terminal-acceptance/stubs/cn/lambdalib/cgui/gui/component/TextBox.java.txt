@@ -1,0 +1,1 @@
+package cn.lambdalib.cgui.gui.component; public class TextBox {public String content;public double zLevel;public final Option option=new Option();public static class Option {public final DrawTexture.Color color=new DrawTexture.Color();}public static TextBox get(cn.lambdalib.cgui.gui.Widget w){return w.text;}}

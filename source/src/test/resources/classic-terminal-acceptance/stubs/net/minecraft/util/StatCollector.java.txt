@@ -1,0 +1,1 @@
+package net.minecraft.util; public class StatCollector {public static String translateToLocal(String s){return s;}public static String translateToLocalFormatted(String s,Object...p){return s;}}

@@ -1,0 +1,2110 @@
+[
+  {
+    "sourceBlock": 22,
+    "result": "academy:terminal_installer",
+    "count": 1,
+    "sourceRows": [
+      [
+        "data_chip",
+        "glass_pane",
+        "data_chip"
+      ],
+      [
+        "plateIron",
+        "brain_comp",
+        "plateIron"
+      ],
+      [
+        "info_comp",
+        "blockRedstone",
+        "info_comp"
+      ]
+    ],
+    "positive3x3": [
+      [
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          {
+            "item": "minecraft:glass_pane"
+          },
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          {
+            "tag": "c:plates/iron"
+          },
+          {
+            "item": "academy:brain_component"
+          },
+          {
+            "tag": "c:plates/iron"
+          }
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          {
+            "tag": "c:storage_blocks/redstone"
+          },
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ]
+    ],
+    "negative3x3": [
+      [
+        [
+          null,
+          {
+            "item": "minecraft:glass_pane"
+          },
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          {
+            "tag": "c:plates/iron"
+          },
+          {
+            "item": "academy:brain_component"
+          },
+          {
+            "tag": "c:plates/iron"
+          }
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          {
+            "tag": "c:storage_blocks/redstone"
+          },
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ],
+      [
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          null,
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          {
+            "tag": "c:plates/iron"
+          },
+          {
+            "item": "academy:brain_component"
+          },
+          {
+            "tag": "c:plates/iron"
+          }
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          {
+            "tag": "c:storage_blocks/redstone"
+          },
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ],
+      [
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          {
+            "item": "minecraft:glass_pane"
+          },
+          null
+        ],
+        [
+          {
+            "tag": "c:plates/iron"
+          },
+          {
+            "item": "academy:brain_component"
+          },
+          {
+            "tag": "c:plates/iron"
+          }
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          {
+            "tag": "c:storage_blocks/redstone"
+          },
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ],
+      [
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          {
+            "item": "minecraft:glass_pane"
+          },
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          null,
+          {
+            "item": "academy:brain_component"
+          },
+          {
+            "tag": "c:plates/iron"
+          }
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          {
+            "tag": "c:storage_blocks/redstone"
+          },
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ],
+      [
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          {
+            "item": "minecraft:glass_pane"
+          },
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          {
+            "tag": "c:plates/iron"
+          },
+          null,
+          {
+            "tag": "c:plates/iron"
+          }
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          {
+            "tag": "c:storage_blocks/redstone"
+          },
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ],
+      [
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          {
+            "item": "minecraft:glass_pane"
+          },
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          {
+            "tag": "c:plates/iron"
+          },
+          {
+            "item": "academy:brain_component"
+          },
+          null
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          {
+            "tag": "c:storage_blocks/redstone"
+          },
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ],
+      [
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          {
+            "item": "minecraft:glass_pane"
+          },
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          {
+            "tag": "c:plates/iron"
+          },
+          {
+            "item": "academy:brain_component"
+          },
+          {
+            "tag": "c:plates/iron"
+          }
+        ],
+        [
+          null,
+          {
+            "tag": "c:storage_blocks/redstone"
+          },
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ],
+      [
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          {
+            "item": "minecraft:glass_pane"
+          },
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          {
+            "tag": "c:plates/iron"
+          },
+          {
+            "item": "academy:brain_component"
+          },
+          {
+            "tag": "c:plates/iron"
+          }
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          null,
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ],
+      [
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          {
+            "item": "minecraft:glass_pane"
+          },
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          {
+            "tag": "c:plates/iron"
+          },
+          {
+            "item": "academy:brain_component"
+          },
+          {
+            "tag": "c:plates/iron"
+          }
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          {
+            "tag": "c:storage_blocks/redstone"
+          },
+          null
+        ]
+      ]
+    ]
+  },
+  {
+    "sourceBlock": 38,
+    "result": "academy:app_skill_tree",
+    "count": 1,
+    "sourceRows": [
+      [
+        "compass"
+      ],
+      [
+        "data_chip"
+      ],
+      [
+        "info_comp"
+      ]
+    ],
+    "positive3x3": [
+      [
+        [
+          null,
+          null,
+          {
+            "item": "minecraft:compass"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ],
+      [
+        [
+          null,
+          {
+            "item": "minecraft:compass"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:data_chip"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:info_component"
+          },
+          null
+        ]
+      ],
+      [
+        [
+          {
+            "item": "minecraft:compass"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          null,
+          null
+        ]
+      ]
+    ],
+    "negative3x3": [
+      [
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ],
+      [
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:data_chip"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:info_component"
+          },
+          null
+        ]
+      ],
+      [
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          null,
+          null
+        ]
+      ],
+      [
+        [
+          null,
+          null,
+          {
+            "item": "minecraft:compass"
+          }
+        ],
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ],
+      [
+        [
+          null,
+          null,
+          {
+            "item": "minecraft:compass"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          null,
+          null,
+          null
+        ]
+      ],
+      [
+        [
+          null,
+          null,
+          {
+            "item": "minecraft:compass"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          null,
+          {
+            "item": "minecraft:bedrock"
+          },
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ],
+      [
+        [
+          null,
+          null,
+          {
+            "item": "minecraft:compass"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          {
+            "item": "minecraft:bedrock"
+          },
+          null,
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ],
+      [
+        [
+          null,
+          null,
+          {
+            "item": "minecraft:compass"
+          }
+        ],
+        [
+          null,
+          {
+            "item": "minecraft:bedrock"
+          },
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ],
+      [
+        [
+          null,
+          null,
+          {
+            "item": "minecraft:compass"
+          }
+        ],
+        [
+          {
+            "item": "minecraft:bedrock"
+          },
+          null,
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ],
+      [
+        [
+          null,
+          {
+            "item": "minecraft:bedrock"
+          },
+          {
+            "item": "minecraft:compass"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ],
+      [
+        [
+          null,
+          {
+            "item": "minecraft:compass"
+          },
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:info_component"
+          },
+          null
+        ]
+      ],
+      [
+        [
+          null,
+          {
+            "item": "minecraft:compass"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:data_chip"
+          },
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ]
+      ],
+      [
+        [
+          null,
+          {
+            "item": "minecraft:compass"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:data_chip"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:info_component"
+          },
+          {
+            "item": "minecraft:bedrock"
+          }
+        ]
+      ],
+      [
+        [
+          null,
+          {
+            "item": "minecraft:compass"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:data_chip"
+          },
+          null
+        ],
+        [
+          {
+            "item": "minecraft:bedrock"
+          },
+          {
+            "item": "academy:info_component"
+          },
+          null
+        ]
+      ],
+      [
+        [
+          null,
+          {
+            "item": "minecraft:compass"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:data_chip"
+          },
+          {
+            "item": "minecraft:bedrock"
+          }
+        ],
+        [
+          null,
+          {
+            "item": "academy:info_component"
+          },
+          null
+        ]
+      ],
+      [
+        [
+          null,
+          {
+            "item": "minecraft:compass"
+          },
+          null
+        ],
+        [
+          {
+            "item": "minecraft:bedrock"
+          },
+          {
+            "item": "academy:data_chip"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:info_component"
+          },
+          null
+        ]
+      ],
+      [
+        [
+          null,
+          {
+            "item": "minecraft:compass"
+          },
+          {
+            "item": "minecraft:bedrock"
+          }
+        ],
+        [
+          null,
+          {
+            "item": "academy:data_chip"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:info_component"
+          },
+          null
+        ]
+      ],
+      [
+        [
+          {
+            "item": "minecraft:bedrock"
+          },
+          null,
+          {
+            "item": "minecraft:compass"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ],
+      [
+        [
+          {
+            "item": "minecraft:bedrock"
+          },
+          {
+            "item": "minecraft:compass"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:data_chip"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:info_component"
+          },
+          null
+        ]
+      ],
+      [
+        [
+          {
+            "item": "minecraft:compass"
+          },
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          null,
+          null
+        ]
+      ],
+      [
+        [
+          {
+            "item": "minecraft:compass"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ]
+      ],
+      [
+        [
+          {
+            "item": "minecraft:compass"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          null,
+          {
+            "item": "minecraft:bedrock"
+          }
+        ]
+      ],
+      [
+        [
+          {
+            "item": "minecraft:compass"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          {
+            "item": "minecraft:bedrock"
+          },
+          null
+        ]
+      ],
+      [
+        [
+          {
+            "item": "minecraft:compass"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          null,
+          {
+            "item": "minecraft:bedrock"
+          }
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          null,
+          null
+        ]
+      ],
+      [
+        [
+          {
+            "item": "minecraft:compass"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          {
+            "item": "minecraft:bedrock"
+          },
+          null
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          null,
+          null
+        ]
+      ],
+      [
+        [
+          {
+            "item": "minecraft:compass"
+          },
+          null,
+          {
+            "item": "minecraft:bedrock"
+          }
+        ],
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          null,
+          null
+        ]
+      ],
+      [
+        [
+          {
+            "item": "minecraft:compass"
+          },
+          {
+            "item": "minecraft:bedrock"
+          },
+          null
+        ],
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          null,
+          null
+        ]
+      ]
+    ]
+  },
+  {
+    "sourceBlock": 39,
+    "result": "academy:app_media_player",
+    "count": 1,
+    "sourceRows": [
+      [
+        "noteblock",
+        "noteblock",
+        "noteblock"
+      ],
+      [
+        "nil",
+        "data_chip",
+        "nil"
+      ],
+      [
+        "nil",
+        "info_comp",
+        "nil"
+      ]
+    ],
+    "positive3x3": [
+      [
+        [
+          {
+            "item": "minecraft:note_block"
+          },
+          {
+            "item": "minecraft:note_block"
+          },
+          {
+            "item": "minecraft:note_block"
+          }
+        ],
+        [
+          null,
+          {
+            "item": "academy:data_chip"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:info_component"
+          },
+          null
+        ]
+      ]
+    ],
+    "negative3x3": [
+      [
+        [
+          null,
+          {
+            "item": "minecraft:note_block"
+          },
+          {
+            "item": "minecraft:note_block"
+          }
+        ],
+        [
+          null,
+          {
+            "item": "academy:data_chip"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:info_component"
+          },
+          null
+        ]
+      ],
+      [
+        [
+          {
+            "item": "minecraft:note_block"
+          },
+          null,
+          {
+            "item": "minecraft:note_block"
+          }
+        ],
+        [
+          null,
+          {
+            "item": "academy:data_chip"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:info_component"
+          },
+          null
+        ]
+      ],
+      [
+        [
+          {
+            "item": "minecraft:note_block"
+          },
+          {
+            "item": "minecraft:note_block"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:data_chip"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:info_component"
+          },
+          null
+        ]
+      ],
+      [
+        [
+          {
+            "item": "minecraft:note_block"
+          },
+          {
+            "item": "minecraft:note_block"
+          },
+          {
+            "item": "minecraft:note_block"
+          }
+        ],
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:info_component"
+          },
+          null
+        ]
+      ],
+      [
+        [
+          {
+            "item": "minecraft:note_block"
+          },
+          {
+            "item": "minecraft:note_block"
+          },
+          {
+            "item": "minecraft:note_block"
+          }
+        ],
+        [
+          null,
+          {
+            "item": "academy:data_chip"
+          },
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ]
+      ],
+      [
+        [
+          {
+            "item": "minecraft:note_block"
+          },
+          {
+            "item": "minecraft:note_block"
+          },
+          {
+            "item": "minecraft:note_block"
+          }
+        ],
+        [
+          null,
+          {
+            "item": "academy:data_chip"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:info_component"
+          },
+          {
+            "item": "minecraft:bedrock"
+          }
+        ]
+      ],
+      [
+        [
+          {
+            "item": "minecraft:note_block"
+          },
+          {
+            "item": "minecraft:note_block"
+          },
+          {
+            "item": "minecraft:note_block"
+          }
+        ],
+        [
+          null,
+          {
+            "item": "academy:data_chip"
+          },
+          null
+        ],
+        [
+          {
+            "item": "minecraft:bedrock"
+          },
+          {
+            "item": "academy:info_component"
+          },
+          null
+        ]
+      ],
+      [
+        [
+          {
+            "item": "minecraft:note_block"
+          },
+          {
+            "item": "minecraft:note_block"
+          },
+          {
+            "item": "minecraft:note_block"
+          }
+        ],
+        [
+          null,
+          {
+            "item": "academy:data_chip"
+          },
+          {
+            "item": "minecraft:bedrock"
+          }
+        ],
+        [
+          null,
+          {
+            "item": "academy:info_component"
+          },
+          null
+        ]
+      ],
+      [
+        [
+          {
+            "item": "minecraft:note_block"
+          },
+          {
+            "item": "minecraft:note_block"
+          },
+          {
+            "item": "minecraft:note_block"
+          }
+        ],
+        [
+          {
+            "item": "minecraft:bedrock"
+          },
+          {
+            "item": "academy:data_chip"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:info_component"
+          },
+          null
+        ]
+      ]
+    ]
+  },
+  {
+    "sourceBlock": 40,
+    "result": "academy:app_freq_transmitter",
+    "count": 1,
+    "sourceRows": [
+      [
+        "reso_comp"
+      ],
+      [
+        "data_chip"
+      ],
+      [
+        "info_comp"
+      ]
+    ],
+    "positive3x3": [
+      [
+        [
+          null,
+          null,
+          {
+            "item": "academy:resonance_component"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ],
+      [
+        [
+          null,
+          {
+            "item": "academy:resonance_component"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:data_chip"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:info_component"
+          },
+          null
+        ]
+      ],
+      [
+        [
+          {
+            "item": "academy:resonance_component"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          null,
+          null
+        ]
+      ]
+    ],
+    "negative3x3": [
+      [
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ],
+      [
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:data_chip"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:info_component"
+          },
+          null
+        ]
+      ],
+      [
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          null,
+          null
+        ]
+      ],
+      [
+        [
+          null,
+          null,
+          {
+            "item": "academy:resonance_component"
+          }
+        ],
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ],
+      [
+        [
+          null,
+          null,
+          {
+            "item": "academy:resonance_component"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          null,
+          null,
+          null
+        ]
+      ],
+      [
+        [
+          null,
+          null,
+          {
+            "item": "academy:resonance_component"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          null,
+          {
+            "item": "minecraft:bedrock"
+          },
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ],
+      [
+        [
+          null,
+          null,
+          {
+            "item": "academy:resonance_component"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          {
+            "item": "minecraft:bedrock"
+          },
+          null,
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ],
+      [
+        [
+          null,
+          null,
+          {
+            "item": "academy:resonance_component"
+          }
+        ],
+        [
+          null,
+          {
+            "item": "minecraft:bedrock"
+          },
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ],
+      [
+        [
+          null,
+          null,
+          {
+            "item": "academy:resonance_component"
+          }
+        ],
+        [
+          {
+            "item": "minecraft:bedrock"
+          },
+          null,
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ],
+      [
+        [
+          null,
+          {
+            "item": "academy:resonance_component"
+          },
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:info_component"
+          },
+          null
+        ]
+      ],
+      [
+        [
+          null,
+          {
+            "item": "academy:resonance_component"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:data_chip"
+          },
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ]
+      ],
+      [
+        [
+          null,
+          {
+            "item": "academy:resonance_component"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:data_chip"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:info_component"
+          },
+          {
+            "item": "minecraft:bedrock"
+          }
+        ]
+      ],
+      [
+        [
+          null,
+          {
+            "item": "academy:resonance_component"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:data_chip"
+          },
+          null
+        ],
+        [
+          {
+            "item": "minecraft:bedrock"
+          },
+          {
+            "item": "academy:info_component"
+          },
+          null
+        ]
+      ],
+      [
+        [
+          null,
+          {
+            "item": "academy:resonance_component"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:data_chip"
+          },
+          {
+            "item": "minecraft:bedrock"
+          }
+        ],
+        [
+          null,
+          {
+            "item": "academy:info_component"
+          },
+          null
+        ]
+      ],
+      [
+        [
+          null,
+          {
+            "item": "academy:resonance_component"
+          },
+          null
+        ],
+        [
+          {
+            "item": "minecraft:bedrock"
+          },
+          {
+            "item": "academy:data_chip"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:info_component"
+          },
+          null
+        ]
+      ],
+      [
+        [
+          null,
+          {
+            "item": "academy:resonance_component"
+          },
+          {
+            "item": "minecraft:bedrock"
+          }
+        ],
+        [
+          null,
+          {
+            "item": "academy:data_chip"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:info_component"
+          },
+          null
+        ]
+      ],
+      [
+        [
+          null,
+          {
+            "item": "minecraft:bedrock"
+          },
+          {
+            "item": "academy:resonance_component"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ],
+      [
+        [
+          {
+            "item": "academy:resonance_component"
+          },
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          null,
+          null
+        ]
+      ],
+      [
+        [
+          {
+            "item": "academy:resonance_component"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ]
+      ],
+      [
+        [
+          {
+            "item": "academy:resonance_component"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          null,
+          {
+            "item": "minecraft:bedrock"
+          }
+        ]
+      ],
+      [
+        [
+          {
+            "item": "academy:resonance_component"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          {
+            "item": "minecraft:bedrock"
+          },
+          null
+        ]
+      ],
+      [
+        [
+          {
+            "item": "academy:resonance_component"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          null,
+          {
+            "item": "minecraft:bedrock"
+          }
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          null,
+          null
+        ]
+      ],
+      [
+        [
+          {
+            "item": "academy:resonance_component"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          {
+            "item": "minecraft:bedrock"
+          },
+          null
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          null,
+          null
+        ]
+      ],
+      [
+        [
+          {
+            "item": "academy:resonance_component"
+          },
+          null,
+          {
+            "item": "minecraft:bedrock"
+          }
+        ],
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          null,
+          null
+        ]
+      ],
+      [
+        [
+          {
+            "item": "academy:resonance_component"
+          },
+          {
+            "item": "minecraft:bedrock"
+          },
+          null
+        ],
+        [
+          {
+            "item": "academy:data_chip"
+          },
+          null,
+          null
+        ],
+        [
+          {
+            "item": "academy:info_component"
+          },
+          null,
+          null
+        ]
+      ],
+      [
+        [
+          {
+            "item": "minecraft:bedrock"
+          },
+          null,
+          {
+            "item": "academy:resonance_component"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:data_chip"
+          }
+        ],
+        [
+          null,
+          null,
+          {
+            "item": "academy:info_component"
+          }
+        ]
+      ],
+      [
+        [
+          {
+            "item": "minecraft:bedrock"
+          },
+          {
+            "item": "academy:resonance_component"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:data_chip"
+          },
+          null
+        ],
+        [
+          null,
+          {
+            "item": "academy:info_component"
+          },
+          null
+        ]
+      ]
+    ]
+  }
+]

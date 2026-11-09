@@ -1,0 +1,22 @@
+# Serial integration of the classic HUD bundle
+
+Production `AcademyClient.java`, `AcademyCraft.java`, existing resources, and `build.gradle` were not edited by this staged implementation. Copy the staged new classes/resources/tests into production when the presets and GroundShock branches have merged.
+
+1. Copy `.staging/classic-hud/src/main/java/` into `src/main/java/`, preserving paths. `ClassicHudConfig` is in common `cn.academy.port`, and references only `ModConfigSpec`. It can safely be loaded by the common constructor/cold-link test. All renderer/shader/AWT classes stay under `cn.academy.port.client` and are loaded only on the client.
+2. Copy `.staging/classic-hud/src/main/resources/` into `src/main/resources/`. This only adds three core shader JSON/F SH pairs. The original texture PNGs are already present and remain byte-identical to canonical AcademyCraft 1.0.7; do not recolor/replace them.
+3. Copy the staged regression test into `src/test/java/`. Add `apply from: '.staging/classic-hud/gradle/classic-hud-tests.gradle'` or append the equivalent task declarations to production `build.gradle`. The standalone staging test script needs no Gradle/network/display.
+4. Add `container.registerConfig(ModConfig.Type.CLIENT, ClassicHudConfig.SPEC);` alongside the existing SERVER config registration in the common `AcademyCraft` constructor. Defaults retain source cpbar(-12,12), keyhint(0,30), and system font preference Microsoft YaHei. This produces a modern client config, not a migration of the entire legacy Forge configuration.
+5. Replace only `AcademyClient.hud` with the supplied `integration/AcademyClient-hud.java.snippet`. It targets the presets implementation's final bridge: `SLOTS`, `delegatePresent(slot)`, `delegateActive(slot)`, `state.presets.current()/currentSkill(slot)`, `state.cooldownMaximum(skill)`, and `activationHeld()`. If the extra `activationHeld()` getter has not landed, `activationHeldMillis()>0` is an interim fallback with up to one input-sample delay.
+6. The snippet uses `ClassicGroundShockEffects.localPrepareTicks()` and `consumptionHint()` from the GroundShock branch. These retain source CHARGE for local ticks0–4, ACTIVE from tick5 onward, captured CP80→150 predicted consumption, and unlimited active hold. A bundle without GroundShock can omit its skill-specific visual block and supply consumption hint0.
+7. Delete the previous `ClassicCoinEffects.onRenderGui(RenderGuiEvent.Post)` method/annotation and its now-unused `RenderGuiEvent` import/icon constant if applicable. Keep `hasPendingAttempt()/ready()/progress()` and world coin rendering/packet handling. Railgun readiness now appears in the source-style key icon, rather than the old separate colored text panel.
+8. Ensure skill implementations use `state.setCooldown(...)` so the persisted maximum supplied by presets is captured at cast. Do not recompute max from decaying remaining ticks.
+9. `ClassicAbilityHud` registers its own client tick/reset clock. `ClassicHudShaders` registers its own client MOD-bus shaders and reload callbacks. No extra manually registered shader instance or RenderType is needed. A missing shader logs a warning and draws the source texture-only fallback.
+10. Run pure HUD test, asset validator, merged Gradle check, dedicated-server cold-link/runtime tests, and actual client visual checks before describing fidelity as runtime-verified.
+
+Commands used successfully in staging:
+
+- `.staging/classic-hud/scripts/test-classic-hud.sh`: PASS 8,173 deterministic timing/layout/source-equation assertions
+- `.staging/classic-hud/scripts/validate-assets.py`: PASS source asset byte equality and shader descriptor equations
+- Cached JDK21 javac against existing build/moddev artifacts and dependency jars: all new classes compile; only existing NeoForge Bus.MOD deprecation warnings
+
+Required visual observations: category-alpha hole, diagonal right-filled CP (including empty cap), warning front scrolling through mask, orange/red overload tint, fade and interference jitter, original smooth system-font numbers, four-preset fade strip, correct left/right key sprites, cooldown bottom-fill/max duration, Railgun coin CHARGE/ACTIVE, GroundShock local tick5 state transition and predicted CP hint, absence of both old rectangle panels, GUI-scale-sensitive placement at two scales, paused-clock behavior and session change. Runtime screenshots/GLSL compilation are the integration owner's responsibility; staging javac cannot establish them.

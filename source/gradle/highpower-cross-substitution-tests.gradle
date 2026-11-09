@@ -1,0 +1,30 @@
+// NEW321 learning/custody additions leave all historical test runners in place.
+tasks.register('highPowerCrossSubstitutionLearningTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.CrossSubstitutionLearningRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerCrossSubstitutionLearningTest' }
+
+['highPowerCrossSubstitutionRulesTest':'cn.academy.port.highpower.core.CrossSubstitutionRulesRegressionTest',
+ 'crossSubstitutionInputTest':'cn.academy.port.client.CrossSubstitutionInputRegressionTest',
+ 'crossSubstitutionVisualTest':'cn.academy.port.client.CrossSubstitutionVisualRegressionTest',
+ 'crossSubstitutionDispatchTest':'cn.academy.port.client.CrossSubstitutionDispatchRegressionTest'].each { taskName, className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+    }
+    tasks.named('check') { dependsOn taskName }
+}
+
+// Closed NEW321 32m self-swap math; old 12m/24m wrappers remain independently tested.
+tasks.register('highPowerCrossSwapGeometryTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.core.CrossSwapGeometryRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerCrossSwapGeometryTest' }

@@ -1,0 +1,31 @@
+Private m14 raw singleplayer QA scene index — 2026-10-01 UTC
+
+22/35 active paths integrated; full port unfinished. All16 local MP4s fully decode, have a nonblack frame, are1046x720 H264 nominal30fps and silent. Observed cloud game rendering is software llvmpipe around22–23fps. Original audio/pixel parity is unverified. Raw originals are unchanged.
+
+Scope: seeded Survival/Peaceful QA world, levels/parent mastery and finite initial200000IF Advanced provided in earlier fixtures. M14 never refills it. Five new target skills are genuinely earned by physical GUI; power ends159680IF, matching3x7040+2x9600. NPCs/ore cells/cameras/weather and four raw silicon pieces are declared QA. This is not complete natural acquisition. The separate pristine Survival/Normal commands-off world remains partial.
+
+Representative actual-use raw files:
+academycraft-m14-expert-diamond-mining.mp4 —45s; around20–24s real Expert F hold, three ores break and native drops; walking pickup. Exact3 diamonds shown in later native screenshot/save.
+academycraft-m14-luck-recorded-repeat.mp4 —120s; around18–21s authentic purple Luck ray, three ores/drop/pickup, then inventory. This repeat yielded4; first unrecorded use yielded6. Together with Expert3, final total13. Fortune is randomized. Source19s frame shows the purple ray and drops.
+academycraft-m14-jet-engine-native-flight.mp4 —60s; around18–21s marker/release, green flight effect and native movement; F3 landing coordinates afterward. Final Z99.136 from60.5 includes post-context vanilla momentum; exact tick16 extrapolation is native-tested.
+academycraft-m14-barrage-and-out-of-range-missile.mp4 —120s; around18–21s real plain Barrage, target200→175. Missile subsequently held six blocks away, beyond novice range5: effects/context but no additional damage, correctly retained as range-limit evidence.
+academycraft-m14-missile-in-range-native-use.mp4 —120s; around16–21s real X hold at declared camera distance3, orbs/rays/red target; read-only native health command reports175→85 from9x10 source attacks.
+academycraft-m14-silicon-barn-barrage-use.mp4 —180s; around15–45s actual two-piece recipe twice, no output granted; weather/camera setup is visible. Around83–86s physical K throw then R scatter with fragments/25–29 rays/red target. Read-only native health reports85→74.96, matching10.04; two crafted Barns become one.
+
+Learning/persistence raw files:
+academycraft-m14-core-cold-reload.mp4 —90s, genuine m13 saved2200IF portable,3cobble and R/F before any new fixture; actual core-node screenshots follow outside this clip.
+academycraft-m14-genuine-expert-learning.mp4 —90s, unlearned card→real button→native success; then original N editor.
+academycraft-m14-ray-barrage-learning.mp4 —60s, unlearned→physical button→native success.
+academycraft-m14-jet-genuine-learning-after-recovery.mp4 —60s, actual completed learning after recovering the surviving JVM.
+academycraft-m14-luck-mining-learning.mp4 —60s, complete real fifteen-cycle learning.
+academycraft-m14-electron-missile-learning.mp4 —60s, unlearned card/button and early cycle only; the clip ends before completion. Separate native success screenshot and final saved learned state are evidence of completion.
+academycraft-m14-pristine-world-creation.mp4 —90s; native Survival/Normal/commands-off/bonus-off creation, loading, empty taiga spawn near89s. Later collected3dirt was not recorded. No mod progression completed.
+
+Local-only attempt footage, not successful transitions:
+academycraft-m14-jet-unlearned-only-attempt.mp4
+academycraft-m14-jet-engine-learning.mp4 —still unlearned, interrupted before button
+academycraft-m14-luck-camera-only-attempt.mp4 —capture expired before cast
+
+Final closed level/player NBT agree: survival/no-instabuild, portable2200IF,3cobble,13diamonds,1Barn; Luck/Missile/Barrage/Jet preset. LuckEXP0.0018 for6blocks, Missile0.009 for9attacks, Barrage0.01 for2casts. Jet0.308 includes declared0.3 plus2actual0.004 releases. Expert genuinely earned/used at0.0009 before declared maturity1 for Luck; Basic0.8 and core/parent maturity are fixtures. New m14 target fresh-JVM reload remains pending.
+
+Only this QA profile remaps source mouse-slot defaults toZ/X, retaining R/F; vanilla destroy/use J/K and Raw Input off. Production source defaults stay left/right mouse,R/F. Profile settings and both final NBT records are retained with the closed world.

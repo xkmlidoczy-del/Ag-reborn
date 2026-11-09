@@ -1,0 +1,103 @@
+[
+  {
+    "name": "final22-primary-rail-array",
+    "script": "gameplay-final20-visual-rail-array.script",
+    "directory": "run-showcase-sable",
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Supplemental actual primary-effect frame recording with original native skill inputs and unchanged mechanical assertions; not counted as an extra canonical main case.",
+    "scriptSha256": "37d211dd04a69f9fae2bea256e25a0107b1a2eaab3294e024d81e190ac4c704e"
+  },
+  {
+    "name": "final22-primary-circuit",
+    "script": "gameplay-final20-visual-circuit.script",
+    "directory": "run-showcase-sable",
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Supplemental actual primary-effect frame recording with original native skill inputs and unchanged mechanical assertions; not counted as an extra canonical main case.",
+    "scriptSha256": "7d92da2f327858596d7bc4e5b94de3aa299442e5de9305dfe6348d5e2c940503"
+  },
+  {
+    "name": "final22-primary-rail-relay",
+    "script": "gameplay-final20-visual-rail-relay.script",
+    "directory": "run-showcase-sable",
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Supplemental actual primary-effect frame recording with original native skill inputs and unchanged mechanical assertions; not counted as an extra canonical main case.",
+    "scriptSha256": "5af1d854fe593396ecaeaa4f846b2e844bc07b522d30abd2a6117eafd3057252"
+  },
+  {
+    "name": "final22-primary-ground-third",
+    "script": "gameplay-final20-visual-ground-third.script",
+    "directory": "run-showcase-sable",
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Supplemental actual primary-effect frame recording with original native skill inputs and unchanged mechanical assertions; not counted as an extra canonical main case.",
+    "scriptSha256": "da464cf4b9c39816125dd9a8b3a714eae08d0b7f02fe357457fe37ba9799855b"
+  },
+  {
+    "name": "final22-primary-md-primary",
+    "script": "gameplay-final20-visual-md-primary.script",
+    "directory": "run-showcase-sable",
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Supplemental actual primary-effect frame recording with original native skill inputs and unchanged mechanical assertions; not counted as an extra canonical main case.",
+    "scriptSha256": "68e5849a3543ce67e1d56ce7b680cdddd4201fd6a143dfbcd3510f69f6df62f6"
+  },
+  {
+    "name": "final22-primary-md-scatter-beamstep",
+    "script": "gameplay-final20-visual-md-scatter-beamstep.script",
+    "directory": "run-showcase-sable",
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Supplemental actual primary-effect frame recording with original native skill inputs and unchanged mechanical assertions; not counted as an extra canonical main case.",
+    "scriptSha256": "6e326a4a3a21f2cfb5c5989a83cdbf54bad2a2a5c7511b920a6fa6fae5f1dd85"
+  },
+  {
+    "name": "final22-primary-md-point-focus",
+    "script": "gameplay-final20-visual-md-point-focus.script",
+    "directory": "run-showcase-sable",
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Supplemental actual primary-effect frame recording with original native skill inputs and unchanged mechanical assertions; not counted as an extra canonical main case.",
+    "scriptSha256": "c9562e2b7a9cc3206e83ecd148ec0c68b8cea3fb18c37eb42a8420c56cba615f"
+  },
+  {
+    "name": "final22-primary-md-relay-locator",
+    "script": "gameplay-final20-visual-md-relay-locator.script",
+    "directory": "run-showcase-sable",
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Supplemental actual primary-effect frame recording with original native skill inputs and unchanged mechanical assertions; not counted as an extra canonical main case.",
+    "scriptSha256": "86d3fdd6d751f9548cdac3a0d84c4be7d6f921579f60f1c837c333482984da91"
+  },
+  {
+    "name": "final22-primary-storm-wings-third",
+    "script": "gameplay-final21-storm-wings-third.script",
+    "directory": "run-showcase-sable",
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Supplemental actual primary-effect frame recording with original native skill inputs and unchanged mechanical assertions; not counted as an extra canonical main case. Includes actual cage confirmation/damage frames plus Storm Wing third-person back wings and natural stop.",
+    "scriptSha256": "8009cb633a857c0e8e5ce8f88ee13f944b7c3575c1d90113d02b64781c874c10"
+  },
+  {
+    "name": "final22-primary-tp-complex-primary",
+    "script": "gameplay-final21-tp-complex-primary.script",
+    "directory": "run-showcase-sable",
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Supplemental actual primary-effect frame recording with original native skill inputs and unchanged mechanical assertions; not counted as an extra canonical main case.",
+    "scriptSha256": "7446552d3678f266df9f85cb881c45ed6e5189b0caae34e3c50c63830686d0ce"
+  },
+  {
+    "name": "final22-primary-vm-guards",
+    "script": "gameplay-final20-visual-vm-guards.script",
+    "directory": "run-showcase-sable",
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Current-build actual anchor third-person, listening and impulse-split primary recording. All original nonvisual inputs/waits/assertions exactly preserved. Separate supplemental visual case, never counted as a canonical main case.",
+    "scriptSha256": "c203e00e46bad10e284a0ba50936238c04128340dcf97da80cdcbe36d8a0b7c5",
+    "originalMechanicalScript": "codex-gameplay-vm-utility.script",
+    "originalMechanicalScriptSha256": "9a5fddc44f917596acaf671693f986c4db6019ba2eec00827dac4d583e91c933"
+  }
+]

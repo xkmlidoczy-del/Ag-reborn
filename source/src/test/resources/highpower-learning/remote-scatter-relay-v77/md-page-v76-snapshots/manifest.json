@@ -1,0 +1,14 @@
+{
+  "baseline_revision": "80a1f7d95dda7404b6ce153a7ffd40841db67e7c",
+  "scope": "Exact .76 current runner source before NEW253-only MD page append maintenance, including the prior four-segment NEW221 display-only connector contract.",
+  "files": {
+    "src/test/java/cn/academy/port/highpower/HighPowerProgressionRegressionTest.java": {
+      "snapshot": "HighPowerProgressionRegressionTest.java",
+      "sha256": "981dff743d2a227115bd0f851815db47d07379f1a5c45703bb5b04a2cc9dd46a"
+    },
+    "src/test/java/cn/academy/port/client/SafeLandingProbeLayoutRegressionTest.java": {
+      "snapshot": "SafeLandingProbeLayoutRegressionTest.java",
+      "sha256": "5c5fa323877e2aaa9ff1aac55a1ac84bf2b8496e381024e6e0eee6db9aab7ff3"
+    }
+  }
+}

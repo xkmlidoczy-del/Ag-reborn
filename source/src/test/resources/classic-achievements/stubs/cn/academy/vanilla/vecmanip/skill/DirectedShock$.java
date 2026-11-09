@@ -1,0 +1,1 @@
+package cn.academy.vanilla.vecmanip.skill;public class DirectedShock$ extends cn.academy.ability.api.Skill {public static final DirectedShock$ MODULE$=new DirectedShock$();private DirectedShock$(){super(cn.academy.vanilla.vecmanip.CatVecManip$.INSTANCE,"dir_shock");}}

@@ -1,0 +1,1 @@
+package net.minecraft.item;public class ItemStack {public net.minecraft.item.Item item;public int count,damage;public ItemStack(Item i,int n,int d){item=i;count=n;damage=d;}public int getItemDamage(){return damage;}}

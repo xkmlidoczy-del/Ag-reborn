@@ -1,0 +1,52 @@
+[
+  {
+    "path": "java/cn/academy/crafting/block/TileMetalFormer.java",
+    "sha256": "32e41e5a1ada6c2069225bc4bd3b09258695003484e84cc789d53f2d1e42dc13",
+    "bytes": 7395
+  },
+  {
+    "path": "java/cn/academy/crafting/block/BlockMetalFormer.java",
+    "sha256": "44d1f26d2eaacdd6677109e086230d90d466557c5cb3c91f936b63f2a010bd1d",
+    "bytes": 3435
+  },
+  {
+    "path": "java/cn/academy/crafting/block/ContainerMetalFormer.java",
+    "sha256": "71e3b9a392ce946daa27399fa84fbb03ba1d0836bf6f9ec9b75100f226860e8d",
+    "bytes": 1287
+  },
+  {
+    "path": "java/cn/academy/crafting/block/SlotMFItem.java",
+    "sha256": "8860ee238edc32c6ce4e840602b11dd00699d06a0697c8bf63c167503b918649",
+    "bytes": 954
+  },
+  {
+    "path": "java/cn/academy/crafting/api/MetalFormerRecipes.java",
+    "sha256": "79385669e070ff7440fb6bc2731e6f9c3cfe92fc47ee187a1ba057f0373b08fe",
+    "bytes": 2527
+  },
+  {
+    "path": "java/cn/academy/crafting/ModuleCrafting.java",
+    "sha256": "f0ea3f22cc77815ecd0f4f6374d68ac0ca6334e720ee159d97aae0e3256a6b46",
+    "bytes": 10308
+  },
+  {
+    "path": "java/cn/academy/vanilla/ModuleVanilla.java",
+    "sha256": "5028171ed587fc4e54994133ae02e78b885c4d53e73e03218aea86ffb354960a",
+    "bytes": 3658
+  },
+  {
+    "path": "java/cn/academy/core/block/TileReceiverBase.java",
+    "sha256": "3579e9af020d787fe885e761bc990f12f0a729122fc45349db16958ac033f35d",
+    "bytes": 2621
+  },
+  {
+    "path": "java/cn/academy/core/tile/TileInventory.java",
+    "sha256": "748835f0402b366cc000bc64193245eeeb50b7047dea65d7430401c9e4df245e",
+    "bytes": 3861
+  },
+  {
+    "path": "resources/assets/academy/recipes/default.recipe",
+    "sha256": "a9dc4aa3477ad246f7cb9bb6bea3c33e033aaa8431f3c8a03acaf0845374da1f",
+    "bytes": 5119
+  }
+]

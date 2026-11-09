@@ -1,0 +1,11 @@
+// NEW313 pure policy/spatial regressions; actual native/client acceptance remains separate.
+['highPowerSafeLandingProbeRulesTest':'cn.academy.port.highpower.core.SafeLandingProbeRulesRegressionTest',
+ 'highPowerSafeLandingProbeGeometryTest':'cn.academy.port.highpower.core.SafeLandingProbeGeometryRegressionTest'].each { taskName, className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+    }
+    tasks.named('check') { dependsOn taskName }
+}

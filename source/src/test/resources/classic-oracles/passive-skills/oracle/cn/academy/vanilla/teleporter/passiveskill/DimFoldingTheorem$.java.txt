@@ -1,0 +1,1 @@
+package cn.academy.vanilla.teleporter.passiveskill;public class DimFoldingTheorem$ {public static final cn.academy.ability.api.Skill MODULE$=new cn.academy.ability.api.Skill("dim_folding_theorem",1);}

@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GGG",
+    " W ",
+    "CFC"
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "W": {
+      "item": "academy:wafer"
+    },
+    "C": {
+      "item": "academy:energy_convert_component"
+    },
+    "F": {
+      "item": "academy:machine_frame"
+    }
+  },
+  "result": {
+    "id": "academy:solar_gen",
+    "count": 1
+  }
+}

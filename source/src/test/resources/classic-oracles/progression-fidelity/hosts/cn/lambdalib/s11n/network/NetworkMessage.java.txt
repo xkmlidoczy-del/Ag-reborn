@@ -1,0 +1,6 @@
+/* Test-only platform host; numeric algorithms remain in unchanged source. */
+package cn.lambdalib.s11n.network;
+public class NetworkMessage {
+ public @interface Listener { String channel(); cpw.mods.fml.relauncher.Side[] side(); }
+ public static void sendToServer(Object... args){} public static void sendToSelf(Object... args){} public static void sendTo(Object... args){}
+}

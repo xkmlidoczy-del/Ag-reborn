@@ -1,0 +1,12 @@
+[
+  {
+    "name": "learning111-electromaster",
+    "script": "gameplay-learning111-electromaster.script",
+    "exit": 0
+  },
+  {
+    "name": "learning111-meltdowner",
+    "script": "gameplay-learning111-meltdowner.script",
+    "exit": 1
+  }
+]

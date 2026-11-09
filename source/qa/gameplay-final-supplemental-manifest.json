@@ -1,0 +1,185 @@
+{
+  "status": "planned_not_run",
+  "required": true,
+  "singleClientPlan": "gameplay-final-supplemental-plan.json",
+  "singleClientCommandFromProjectRoot": [
+    "python3",
+    "source/qa/run-gameplay-plan.py",
+    "source/qa/gameplay-final-supplemental-plan.json"
+  ],
+  "dualRuns": [
+    {
+      "name": "final-supplement-dual-consent-pincer",
+      "required": true,
+      "status": "planned_not_run",
+      "runner": "run-dual-consent.py",
+      "commandFromProjectRoot": [
+        "python3",
+        "source/qa/run-dual-consent.py",
+        "pincer"
+      ],
+      "environment": {},
+      "hostScript": "consent-pincer-host.script",
+      "observerScript": "consent-pincer-observer.script",
+      "requiresBothClientExitZero": true,
+      "requiredHostLog": [
+        "QA_DUAL_CONSENT stage=PASS",
+        "QA_DUAL_CONSENT stage=DONE",
+        "QA_DONE"
+      ],
+      "requiredObserverLog": [
+        "QA_DUAL_DONE"
+      ],
+      "requiredObserverStates": [
+        "disconnect-clean"
+      ],
+      "purpose": "Real recipient UI consent and movement",
+      "evidenceInputsSha256": {
+        "run-dual-consent.py": "d390b9d59f233f8649ef995df4cfd81537abc3bc3fd61b0c53fc873d24cc5ed6",
+        "consent-pincer-host.script": "9f718623f30dbea77511739fd4e1112bb0e2ffb8b1c035eaee9c6cdb6635b291",
+        "consent-pincer-observer.script": "2da30097b02c0aea3a22a15de6309ec21f82cc74329c45819f0735d33a40573c"
+      }
+    },
+    {
+      "name": "final-supplement-dual-consent-tactical",
+      "required": true,
+      "status": "planned_not_run",
+      "runner": "run-dual-consent.py",
+      "commandFromProjectRoot": [
+        "python3",
+        "source/qa/run-dual-consent.py",
+        "tactical"
+      ],
+      "environment": {},
+      "hostScript": "consent-tactical-host.script",
+      "observerScript": "consent-tactical-observer.script",
+      "requiresBothClientExitZero": true,
+      "requiredHostLog": [
+        "QA_DUAL_CONSENT stage=PASS",
+        "QA_DUAL_CONSENT stage=DONE",
+        "QA_DONE"
+      ],
+      "requiredObserverLog": [
+        "QA_DUAL_DONE"
+      ],
+      "requiredObserverStates": [
+        "disconnect-clean"
+      ],
+      "purpose": "Real recipient UI consent and movement",
+      "evidenceInputsSha256": {
+        "run-dual-consent.py": "d390b9d59f233f8649ef995df4cfd81537abc3bc3fd61b0c53fc873d24cc5ed6",
+        "consent-tactical-host.script": "0dc8748b925a86cf1776adc2da5dfb5461ad4e35140799b7cf1760affd16c5e8",
+        "consent-tactical-observer.script": "43a19bfe230da361ccbd5b420fb25865be3c5b7945a735b47c88bb86cdc92911"
+      }
+    },
+    {
+      "name": "final-supplement-dual-consent-domain",
+      "required": true,
+      "status": "planned_not_run",
+      "runner": "run-dual-consent.py",
+      "commandFromProjectRoot": [
+        "python3",
+        "source/qa/run-dual-consent.py",
+        "domain"
+      ],
+      "environment": {},
+      "hostScript": "consent-domain-host.script",
+      "observerScript": "consent-domain-observer.script",
+      "requiresBothClientExitZero": true,
+      "requiredHostLog": [
+        "QA_DUAL_CONSENT stage=PASS",
+        "QA_DUAL_CONSENT stage=DONE",
+        "QA_DONE",
+        "QA_DUAL_CONSENT stage=OFF_PASS"
+      ],
+      "requiredObserverLog": [
+        "QA_DUAL_DONE"
+      ],
+      "requiredObserverStates": [
+        "disconnect-clean"
+      ],
+      "purpose": "Real accepted shared slow falling and recipient withdrawal removes shared effect",
+      "evidenceInputsSha256": {
+        "run-dual-consent.py": "d390b9d59f233f8649ef995df4cfd81537abc3bc3fd61b0c53fc873d24cc5ed6",
+        "consent-domain-host.script": "08b7f7f6475caf1ae4a225766e28e1445b73feb7580fe380eec9bf909b695382",
+        "consent-domain-observer.script": "a88b03714fe0773b348df5b4c22ad140cd0c4349b8520dbc2dc30d89dce33c6c"
+      }
+    },
+    {
+      "name": "final-supplement-dual-pose-forward",
+      "required": true,
+      "status": "planned_not_run",
+      "runner": "run-dual-poses.py",
+      "commandFromProjectRoot": [
+        "python3",
+        "source/qa/run-dual-poses.py"
+      ],
+      "environment": {
+        "DUAL_REVERSE": "0"
+      },
+      "hostScript": "live-dual-tech.script",
+      "observerScript": null,
+      "requiresBothClientExitZero": true,
+      "requiredHostLog": [
+        "QA_DUAL_HOST_PASS"
+      ],
+      "requiredObserverLog": [
+        "QA_DUAL_DONE"
+      ],
+      "requiredObserverStates": [
+        "disconnect-clean"
+      ],
+      "purpose": "19 actual remote states, four protocol3 categories,13 protocol3 skill signatures, independent construct owner/token/phase channel and disconnect cleanup",
+      "assertionsOwnedByRunner": true,
+      "evidenceInputsSha256": {
+        "run-dual-poses.py": "ab2c4034e3682bc91c57e8d8682ad4294be91a20b60451eb287583f028f0e6f6",
+        "live-dual-tech.script": "de4e8f7ed264e5e5ff3e0e07120c6b75975a95aa494d10aa2380c7109bc7547d"
+      }
+    },
+    {
+      "name": "final-supplement-dual-pose-reverse",
+      "required": true,
+      "status": "planned_not_run",
+      "runner": "run-dual-poses.py",
+      "commandFromProjectRoot": [
+        "python3",
+        "source/qa/run-dual-poses.py"
+      ],
+      "environment": {
+        "DUAL_REVERSE": "1"
+      },
+      "hostScript": "live-dual-reverse-host.script",
+      "observerScript": "live-dual-reverse-observer.script",
+      "requiresBothClientExitZero": true,
+      "requiredHostLog": [
+        "QA_DUAL_HOST_REVERSE_PASS"
+      ],
+      "requiredObserverLog": [
+        "QA_DUAL_DONE"
+      ],
+      "requiredObserverStates": [
+        "disconnect-clean"
+      ],
+      "purpose": "Reverse real LANCE identity/category/protocol3 signature observed by host",
+      "assertionsOwnedByRunner": true,
+      "evidenceInputsSha256": {
+        "run-dual-poses.py": "ab2c4034e3682bc91c57e8d8682ad4294be91a20b60451eb287583f028f0e6f6",
+        "live-dual-reverse-host.script": "dcd278115373c49f7754ddb9d52b5b9ce9420e406003246e7e61e1a3e2ab0f7c",
+        "live-dual-reverse-observer.script": "7e5a2b2ec9ed7d59ae60a624ffa7b14b4afdf04b34204fa4ac7aa4389f71ebff"
+      }
+    }
+  ],
+  "sameSnapshotRequired": [
+    "production classes",
+    "main resources",
+    "showcase QA classes",
+    "mod combination"
+  ],
+  "limits": [
+    "Supplemental runs do not add skills to the96 denominator or modes to the51 denominator.",
+    "All entries require actual runner success and concrete markers; this manifest is not an execution result.",
+    "Storm40s script does not prove thermal85%/60% transitions or CP exhaustion.",
+    "ShieldHUD script reads holding state and true S/HP; physical knockback behavior is separately witnessed in VM full/breaking and native category cases.",
+    "pincer/tactical exercise real accepted invitations; domain additionally exercises recipient withdrawal. The scripts do not prove the unimplemented invitation refusal/expiry negative case."
+  ]
+}

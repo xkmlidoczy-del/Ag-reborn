@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "academy:items/city/lemon_grilled_fish_rice"
+  }
+}

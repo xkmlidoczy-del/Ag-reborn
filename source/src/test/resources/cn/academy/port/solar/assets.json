@@ -1,0 +1,42 @@
+[
+  {
+    "path": "assets/academy/models/solar.obj",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/models/solar.obj",
+    "sha256": "6cd775f7515eb970f500a3121d381600c1127052c93bf793895421a53cb49998"
+  },
+  {
+    "path": "assets/academy/textures/models/solar.png",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/models/solar.png",
+    "sha256": "16c9f6234efef4e21fecb5d3cfb70860fd2ead7927d16033c6dafe6f6e553e0d"
+  },
+  {
+    "path": "assets/academy/textures/blocks/solar_gen.png",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/blocks/solar_gen.png",
+    "sha256": "915d24bcbd0fd4d09e3b0530b6ca0c5976574a64ba1d022417e39045e6cb9633"
+  },
+  {
+    "path": "assets/academy/textures/guis/parent/parent_background.png",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/parent/parent_background.png",
+    "sha256": "bd0f8650f74c7eecd3b81aac8c3f1b359a4265517d860b7f45482faea583217d"
+  },
+  {
+    "path": "assets/academy/textures/guis/ui/ui_inventory.png",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/ui/ui_inventory.png",
+    "sha256": "3df45b3dcd70ccbcf6ab0334bf2ed36345113d7ae71c8c42187d7ab9a3cc6887"
+  },
+  {
+    "path": "assets/academy/textures/guis/ui/ui_windbase.png",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/ui/ui_windbase.png",
+    "sha256": "15e0b44df6bb1ad396bf1bf066e57bf3ffb9a577da768c536e6109cf7ec932c5"
+  },
+  {
+    "path": "assets/academy/textures/guis/effect/effect_solar.png",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/effect/effect_solar.png",
+    "sha256": "8d325705776a5b5e5c6185de480e3aab59680ba436459c99e96d947b79569daf"
+  },
+  {
+    "path": "assets/academy/textures/guis/histogram.png",
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/textures/guis/histogram.png",
+    "sha256": "13048f7541f94b21beb1f052ce51626d398cb6aa2656c5bc6798c166f8e09f4a"
+  }
+]

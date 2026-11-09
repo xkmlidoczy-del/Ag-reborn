@@ -1,0 +1,1642 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.148'
+}
+version = '0.1.0-m41-highpower.0.81.5-city-a3.61'
+group = 'cn.academy'
+base { archivesName = 'academy-generation-reborn' }
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+neoForge {
+    version = '21.1.252'
+    runs {
+        client { client(); if(providers.gradleProperty('canonExperimental').getOrElse('false').toBoolean())systemProperty 'academy.canon.experimental','true'; gameDirectory = layout.projectDirectory.dir(providers.gradleProperty('clientDirectory').getOrElse('run-client')); if(providers.gradleProperty('visualQA').getOrElse('false').toBoolean())systemProperty 'academy.visual.qa','true'; if(providers.gradleProperty('wirelessQA').getOrElse('false').toBoolean())systemProperty 'academy.wireless.qa','true' }
+        server { server(); gameDirectory = layout.projectDirectory.dir(providers.gradleProperty('serverDirectory').getOrElse('run-server')); if (providers.gradleProperty('urbanWorldgenProbe').isPresent()) systemProperty 'academy.urban.worldgenProbe', providers.gradleProperty('urbanWorldgenProbe').get(); if (providers.gradleProperty('canonExperimental').getOrElse('false').toBoolean()) systemProperty 'academy.canon.experimental','true'; programArgument '--nogui' }
+        highPowerGameTest {
+            type = 'gameTestServer'
+            if(providers.gradleProperty('canonExperimental').getOrElse('false').toBoolean())systemProperty 'academy.canon.experimental','true'
+            jvmArgument '-Xms256m'
+            jvmArgument '-Xmx2048m'
+            if (providers.gradleProperty('nativeSeamExport').getOrElse('false').toBoolean()) systemProperty 'mixin.debug.export', 'true'
+            // Read-only far-coordinate witness for the hold controller; off unless explicitly requested.
+            if (providers.gradleProperty('constructFarDiagnostic').getOrElse('false').toBoolean()) systemProperty 'academy.highpower.constructFarDiagnostic', 'true'
+            // Read-only NEW132 controller lifecycle witness (start/finish reason); off unless explicitly requested.
+            if (providers.gradleProperty('groundStepDiagnostic').getOrElse('false').toBoolean()) systemProperty 'academy.highpower.groundStepDiagnostics', 'true'
+            // Each independent suite needs fresh SavedData; reused worlds exhaust retained custody caps.
+            // An explicit directory remains available for intentional restart/persistence fixtures.
+            gameDirectory = layout.projectDirectory.dir(providers.gradleProperty('highPowerTestDirectory').getOrElse(
+                    'run-highpower-gametest-isolated/' + java.util.UUID.randomUUID().toString()))
+            systemProperty 'neoforge.enabledGameTestNamespaces', providers.gradleProperty('highPowerTestNamespaces').getOrElse('academy_highpower,academy_highpower_needle_capacity,academy_highpower_spatial_consent,academy_highpower_spatial_corridor,academy_highpower_borrowed,academy_highpower_array,academy_highpower_vector,academy_braking_touch_runtime,academy_windblade_runtime,academy_inertial_anchor_runtime,academy_yaw_palm_runtime,academy_trajectory_return_runtime,academy_circulation_relief_runtime,academy_circulation_listening_runtime,academy_vector_cage_runtime,academy_multi_axis_reflection,academy_wind_pressure_lift,academy_point_meltdown_runtime,academy_remote_scatter_relay_runtime,academy_scatter_locator_runtime,academy_control_hold_runtime,academy_autonomous_vector_circle,academy_magnetic_domain_team,academy_new_skills_runtime,academy_construct_runtime,academy_cast_pose,academy_esper_guard')
+            // Legacy native-accounting fixtures hit enrolled espers with magic/wither/kill damage; the esper guard and growth styles are off for them and forced on by academy_esper_guard.
+            systemProperty 'academy.esperLegacyBypass', 'true'
+            if (providers.gradleProperty('auditOnly').isPresent()) systemProperty 'academy.audit.only', providers.gradleProperty('auditOnly').get()
+            if (providers.gradleProperty('debugLease').isPresent()) systemProperty 'academy.debug.lease', 'true'
+            // GameTests assert the closed vanilla contract; open compatibility (the shipped default) is exercised by its own tests.
+            if (!providers.gradleProperty('openCompatTest').getOrElse('false').toBoolean()) systemProperty 'academy.compat.strict', 'true'
+        }
+        gameTestServer {
+            type = 'gameTestServer'
+            // Independent run directories prevent test fixtures from touching client/server saves.
+            gameDirectory = layout.projectDirectory.dir(providers.gradleProperty('gameTestDirectory').getOrElse('run-gametest'))
+            systemProperty 'neoforge.enabledGameTestNamespaces', 'academy'
+            systemProperty 'academy.compat.strict', 'true'
+        }
+        restartGameTest {
+            type = 'gameTestServer'
+            gameDirectory = layout.projectDirectory.dir(providers.gradleProperty('restartDirectory').getOrElse('run-restart'))
+            systemProperty 'neoforge.enabledGameTestNamespaces', 'academy_restart'
+            systemProperty 'academy.restart.phase', providers.gradleProperty('restartPhase').getOrElse('verify')
+            programArgument '--world'
+            programArgument 'academy-restart-world'
+        }
+    }
+    mods { academy { sourceSet(sourceSets.main) } }
+}
+repositories {
+    if (file('.gradle/local-maven').exists()) maven { url = uri('.gradle/local-maven'); content { includeGroup 'software.bernie.geckolib' } }
+    maven { url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'; content { includeGroup 'software.bernie.geckolib' } }
+    mavenCentral()
+    // Optional physics linkage (V-ADV-01): Sable is compile-only; ACA runs without it and enables the bridge only when it is installed.
+    exclusiveContent {
+        forRepository { maven { url = 'https://maven.ryanhcode.dev/releases' } }
+        filter { includeGroup 'dev.ryanhcode.sable'; includeGroup 'dev.ryanhcode.sable-companion' }
+    }
+    // Optional JEI recipe pages: API is compile-only; the plugin class loads only when JEI is installed.
+    exclusiveContent {
+        forRepository { maven { url = 'https://maven.blamejared.com' } }
+        filter { includeGroup 'mezz.jei' }
+    }
+}
+dependencies {
+    implementation 'software.bernie.geckolib:geckolib-neoforge-1.21.1:4.7'
+    jarJar('software.bernie.geckolib:geckolib-neoforge-1.21.1') {
+        version { strictly '[4.7,4.8)'; prefer '4.7' }
+    }
+    compileOnly('dev.ryanhcode.sable:sable-neoforge-1.21.1:2.0.6') { transitive = false }
+    compileOnly('dev.ryanhcode.sable-companion:sable-companion-common-1.21.1:1.6.0') { transitive = false }
+    // Compile against the oldest published 1.21.1 JEI API so newer-only methods cannot crash older JEI installs.
+    def jeiApi = providers.gradleProperty('jeiApiVersion').getOrElse('19.8.4.110')
+    compileOnly("mezz.jei:jei-1.21.1-common-api:${jeiApi}") { transitive = false }
+    compileOnly("mezz.jei:jei-1.21.1-neoforge-api:${jeiApi}") { transitive = false }
+}
+// Native wrapper tests execute the same pinned MixinExtras Operation interface used by NeoForge.
+dependencies { testRuntimeOnly "io.github.llamalad7:mixinextras-neoforge:0.5.3" }
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+tasks.register('vehicleDoorExteriorRegressionTest',JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.fleet.VehicleDoorExteriorRegressionTest'
+    enableAssertions = true
+}
+tasks.withType(AbstractArchiveTask).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+    // Match fresh Git checkouts and local working copies regardless of filesystem modes.
+    filePermissions { unix('0644') }
+    dirPermissions { unix('0755') }
+    exclude('**/._*', '**/.DS_Store')
+}
+tasks.register('coreTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.CoreRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'coreTest' }
+tasks.register('dataTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.PortDataRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'dataTest' }
+tasks.register('classicCommandStateTest',JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass='cn.academy.port.ClassicCommandStateRegressionTest';enableAssertions=true}
+tasks.named('check') {dependsOn 'classicCommandStateTest'}
+apply from: 'gradle/classic-numeric-ledgers-tests.gradle'
+// ModDevGradle wires game dependencies to main; these standalone data checks also use NBT.
+sourceSets.test.compileClasspath += sourceSets.main.compileClasspath
+sourceSets.test.runtimeClasspath += sourceSets.main.runtimeClasspath
+tasks.register('visualTimelineTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.VisualTimelineRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'visualTimelineTest' }
+['directedShockTest': 'cn.academy.port.skill.DirectedShockRegressionTest',
+ 'threateningTeleportTest': 'cn.academy.port.ThreateningTeleportRegressionTest',
+ 'electronBombTest': 'cn.academy.port.skill.ElectronBombRegressionTest'].each { taskName, className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+    }
+    tasks.named('check') { dependsOn taskName }
+}
+
+tasks.named("jar") {
+    exclude("cn/academy/port/gametest/**")
+    // QA sources can have been compiled by an earlier opt-in launch in this checkout.
+    exclude("cn/academy/port/qa/**")
+    // Isolated opt-in witnesses have no production callers and are never shipped.
+    exclude("cn/academy/port/client/MagneticDomainQaFixture*.class")
+    exclude("cn/academy/port/highpower/ZeroGapArmorQaFixture*.class")
+    exclude("cn/academy/port/highpower/VectorParryQaObserver*.class")
+}
+tasks.register('coinTossTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.CoinTossRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'coinTossTest' }
+tasks.register('firstSkillVisualTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.FirstSkillVisualRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'firstSkillVisualTest' }
+['developmentTest':'cn.academy.port.develop.DevelopmentRegressionTest',
+ 'developerEnergyTest':'cn.academy.port.develop.DeveloperEnergyRegressionTest'].each { taskName, className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+    }
+    tasks.named('check') { dependsOn taskName }
+}
+tasks.register('serverClassloadingTest', JavaExec) {
+    dependsOn testClasses
+    // NeoForge supplies MixinExtras at bootstrap; cold linkage must include its provided compile API too.
+    // Keep every common class and the test's client-namespace denial unchanged.
+    classpath = sourceSets.test.runtimeClasspath + sourceSets.main.compileClasspath
+    mainClass = 'cn.academy.port.ServerClassloadingRegressionTest'
+}
+tasks.named('check') { dependsOn 'serverClassloadingTest' }
+tasks.register('cityPlanTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.city.CityPlanRegressionTest'
+}
+tasks.named('check') { dependsOn 'cityPlanTest' }
+tasks.register('cityTransitTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.city.CityTransitRegressionTest'
+}
+tasks.named('check') { dependsOn 'cityTransitTest' }
+tasks.register('airportLineTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.train.AirportLineRegressionTest'
+}
+tasks.named('check') { dependsOn 'airportLineTest' }
+tasks.register('cityAirportTransitTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.city.CityAirportTransitRegressionTest'
+}
+
+tasks.register('cityNorthSouthTransitTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.city.CityNorthSouthTransitRegressionTest'
+    enableAssertions = true
+}
+
+tasks.register('cityMetroTransitTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.city.CityMetroTransitRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'cityMetroTransitTest' }
+
+tasks.register('cityMetroNorthTransitTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.city.CityMetroNorthTransitRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'cityMetroNorthTransitTest' }
+
+tasks.register('cityMetroAirportTransitTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.city.CityMetroAirportTransitRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'cityMetroAirportTransitTest' }
+
+tasks.register('cityMetroCrossingTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.city.CityMetroCrossingRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'cityMetroCrossingTest' }
+
+tasks.register('cityRooftopTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.city.CityRooftopRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'cityRooftopTest' }
+
+tasks.register('cityNeighborhoodPropsTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.city.CityNeighborhoodPropsRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'cityNeighborhoodPropsTest' }
+
+tasks.register('cityRingTransitTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.city.CityRingTransitRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'cityRingTransitTest' }
+
+tasks.register('cityD7CentralGardensTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.city.CityD7CentralGardensRegressionTest'
+    enableAssertions = true
+}
+
+tasks.register('cityD7PlazaLandscapeTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.city.CityD7PlazaLandscapeRegressionTest'
+    enableAssertions = true
+}
+
+tasks.register('cityTemplateFrontageTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.city.CityTemplateFrontageRegressionTest'
+    enableAssertions = true
+}
+
+tasks.register('cityDistrictBlocksTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.city.CityDistrictBlocksRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'cityAirportTransitTest' }
+tasks.register('cityAirportApronTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.city.CityAirportApronRegressionTest'
+}
+tasks.named('check') { dependsOn 'cityAirportApronTest' }
+tasks.register('cityDistrictLandmarksTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.city.CityDistrictLandmarksRegressionTest'
+}
+tasks.named('check') { dependsOn 'cityDistrictLandmarksTest' }
+tasks.register('cityCommercialStreetsTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.city.CityCommercialStreetsRegressionTest'
+}
+tasks.named('check') { dependsOn 'cityCommercialStreetsTest' }
+tasks.register('cityNeighborhoodSpacesTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.city.CityNeighborhoodSpacesRegressionTest'
+}
+tasks.named('check') { dependsOn 'cityNeighborhoodSpacesTest' }
+tasks.register('cityMountainTrailTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.city.CityMountainTrailRegressionTest'
+}
+tasks.named('check') { dependsOn 'cityMountainTrailTest' }
+tasks.register('cityMountainNatureTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.city.CityMountainNatureRegressionTest'
+}
+tasks.named('check') { dependsOn 'cityMountainNatureTest' }
+tasks.register('cityTemplateSitesTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.city.CityTemplateSitesRegressionTest'
+}
+tasks.named('check') { dependsOn 'cityTemplateSitesTest' }
+tasks.register('clientSessionTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.ClientSessionRegressionTest'
+}
+tasks.named('check') { dependsOn 'clientSessionTest' }
+tasks.register('corruptionTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.CorruptedSaveRegressionTest'
+}
+tasks.named('check') { dependsOn 'corruptionTest' }
+tasks.register('classicInputTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.ClassicInputRegressionTest'
+}
+tasks.named('check') { dependsOn 'classicInputTest' }
+tasks.register('resourceAtlasTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.ResourceAtlasRegressionTest'
+}
+tasks.named('check') { dependsOn 'resourceAtlasTest' }
+['chargingTest':'cn.academy.port.CurrentChargingRegressionTest',
+ 'chargingEnergyTest':'cn.academy.port.skill.ChargingEnergyRegressionTest',
+ 'chargingVisualTest':'cn.academy.port.ChargingVisualRegressionTest'].each { taskName, className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+    }
+    tasks.named('check') { dependsOn taskName }
+}
+
+['presetTest':'cn.academy.port.PresetRegressionTest',
+ 'classicHudTest':'cn.academy.port.ClassicHudRegressionTest',
+ 'classicVectorMaskTest':'cn.academy.port.client.ClassicVectorMaskRegressionTest',
+ 'classicPauseBlendTest':'cn.academy.port.client.ClassicPauseBlendRegressionTest',
+ 'groundShockTest':'cn.academy.port.GroundShockRegressionTest',
+ 'groundShockVisualTest':'cn.academy.port.GroundShockVisualRegressionTest'].each { taskName,className ->
+    tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+    tasks.named('check') {dependsOn taskName}
+}
+
+tasks.register('survivalDataTest',JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass='cn.academy.port.survival.ClassicSurvivalDataRegressionTest';enableAssertions=true}
+tasks.named('check') {dependsOn 'survivalDataTest'}
+
+// Opt-in disposable loopback QA; harness classes remain excluded from the mod JAR.
+apply from: 'gradle/socket-qa.gradle'
+// Opt-in visual showcase client (screenshot driver), excluded from the distributable JAR.
+apply from: 'gradle/showcase-qa.gradle'
+
+['machineDeveloperTest':'cn.academy.port.machine.MachineDeveloperRegressionTest',
+ 'developerModelTest':'cn.academy.port.DeveloperModelRegressionTest',
+ 'developerEmissionTest':'cn.academy.port.client.DeveloperModelEmissionRegressionTest'].each {taskName,className ->
+ tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+ tasks.named('check') {dependsOn taskName}
+}
+
+// Original AcademyCraft1.0.7 energy unit and source recipe regression checks.
+['classicEnergyTest':'cn.academy.port.energy.ClassicEnergyRegressionTest',
+ 'classicEnergyDataTest':'cn.academy.port.energy.ClassicEnergyDataRegressionTest',
+ 'classicEnergyServerLinkTest':'cn.academy.port.energy.ClassicEnergyServerLinkRegressionTest'].each { taskName,className ->
+    tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+    tasks.named('check') {dependsOn taskName}
+}
+
+// Source-faithful developer layout, terminal, and timing regression.
+tasks.register('classicDeveloperUiTest',JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass='cn.academy.port.client.ClassicDeveloperUiRegressionTest';enableAssertions=true}
+tasks.named('check') {dependsOn 'classicDeveloperUiTest'}
+// Font GPU texture IDs remain exclusive across simultaneous HUD/GUI owners and close/reopen.
+tasks.register('classicFontOwnershipTest',JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass='cn.academy.port.client.ClassicFontTextureOwnershipRegressionTest';enableAssertions=true}
+tasks.named('check') {dependsOn 'classicFontOwnershipTest'}
+
+['solarTest':'cn.academy.port.solar.ClassicSolarRegressionTest',
+ 'solarDataTest':'cn.academy.port.solar.ClassicSolarDataRegressionTest',
+ 'solarServerLinkTest':'cn.academy.port.solar.ClassicSolarServerLinkRegressionTest'].each { taskName,className ->
+ tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+ tasks.named('check') {dependsOn taskName}
+}
+
+['magneticClassloadingTest':'cn.academy.port.MagneticServerClassloadingRegressionTest',
+ 'magneticTest':'cn.academy.port.MagneticRegressionTest',
+ 'thunderBoltTest':'cn.academy.port.skill.ThunderBoltRegressionTest',
+ 'thunderBoltLearningTest':'cn.academy.port.skill.ThunderBoltLearningRegressionTest',
+ 'thunderBoltVisualTest':'cn.academy.port.client.ThunderBoltVisualRegressionTest'].each {taskName,className ->
+ tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+ tasks.named('check') {dependsOn taskName}
+}
+// Canonical portable OBJ transforms, context overrides and read-only IF gauge/tooltip.
+['portableVisualTest':'cn.academy.port.client.ClassicPortableVisualRegressionTest',
+ 'portableDisplayTest':'cn.academy.port.develop.ClassicPortableDisplayRegressionTest'].each {taskName,className ->
+ tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+ tasks.named('check') {dependsOn taskName}
+}
+// Restored official1.7.10 vanilla/Forge caller basis around the canonical portable-local matrix.
+tasks.register('portableBridgeTest',JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass='cn.academy.port.client.ClassicPortableContextBridgeRegressionTest';enableAssertions=true}
+tasks.named('check') {dependsOn 'portableBridgeTest'}
+
+// Source-complete crystal fusion / phase acquisition checks. Native runtime remains GameTestServer.
+['crystalFusionWorkTest':'cn.academy.port.fusion.ClassicFusorWorkRegressionTest',
+ 'crystalFusionDataTest':'cn.academy.port.fusion.ClassicFusionDataRegressionTest',
+ 'phaseLiquidWorldgenTest':'cn.academy.port.fusion.phase.PhaseLiquidWorldgenRegressionTest',
+ 'phaseLiquidWorldgenDataTest':'cn.academy.port.fusion.phase.PhaseLiquidWorldgenDataRegressionTest',
+ 'phaseFluidFlowTest':'cn.academy.port.fusion.flow.ClassicPhaseFlowRegressionTest'].each { taskName,className ->
+ tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+ tasks.named('check') {dependsOn taskName}
+}
+// Complete official third-person/dropped caller chain, including old EntityItem half-height origin.
+tasks.register('portableCallerChainTest',JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass='cn.academy.port.client.ClassicPortableCallerChainRegressionTest';enableAssertions=true}
+tasks.named('check') {dependsOn 'portableCallerChainTest'}
+
+// Source wireless graph/device/resources; every existing portable/fusion task stays wired.
+['wirelessDeviceDataTest':'cn.academy.port.wireless.ClassicWirelessDeviceDataRegressionTest',
+ 'wirelessAssetTest':'cn.academy.port.wireless.ClassicWirelessAssetRegressionTest',
+ 'wirelessGraphTest':'cn.academy.port.wireless.ClassicWirelessGraphRegressionTest',
+ 'wirelessNbtTest':'cn.academy.port.wireless.ClassicWirelessDataRegressionTest',
+ 'wirelessServerLinkTest':'cn.academy.port.wireless.ClassicWirelessAllServerLinkRegressionTest',
+ 'wirelessVisualTest':'cn.academy.port.client.ClassicWirelessVisualTest'].each {taskName,className ->
+ tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+ tasks.named('check') {dependsOn taskName}
+}
+
+// Source IF node/receiver block charging, single native representation and external FE fallback.
+['nativeBlockChargingTest':'cn.academy.port.energy.ClassicNativeBlockChargingRegressionTest',
+ 'nativeBlockChargingServerLinkTest':'cn.academy.port.energy.ClassicNativeBlockChargingServerLinkTest'].each {taskName,className ->
+ tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+ tasks.named('check') {dependsOn taskName}
+}
+
+// Original1.0.7 MineDetect stock math/scan, textures, current renderer contract and server-only linkage.
+['mineDetectTest':'cn.academy.port.skill.MineDetectRegressionTest',
+ 'mineDetectVisualTest':'cn.academy.port.client.MineDetectVisualRegressionTest',
+ 'mineDetectDataTest':'cn.academy.port.skill.MineDetectDataRegressionTest',
+ 'mineDetectServerLinkTest':'cn.academy.port.skill.MineDetectServerClassloadingRegressionTest'].each {taskName,className ->
+ tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+ tasks.named('check') {dependsOn taskName}
+}
+
+// Canonical final Electromaster active contexts, source quirks, visual parameters and cold linkage.
+['electromasterFinalSkillsTest':'cn.academy.port.skill.ElectromasterFinalSkillsRegressionTest',
+ 'electromasterFinalLearningTest':'cn.academy.port.skill.ElectromasterFinalLearningRegressionTest',
+ 'electromasterFinalServerLinkTest':'cn.academy.port.skill.ElectromasterFinalServerClassloadingRegressionTest',
+ 'electromasterFinalShaderTest':'cn.academy.port.client.ElectromasterFinalShaderRegressionTest',
+ 'bodyIntensifyVisualTest':'cn.academy.port.client.BodyIntensifyVisualRegressionTest',
+ 'thunderClapVisualTest':'cn.academy.port.ThunderClapVisualRegressionTest'].each {taskName,className ->
+ tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+ tasks.named('check') {dependsOn taskName}
+}
+
+// Original1.0.7 portable Meltdowner held contexts, literal quirks, visuals and cold linkage.
+['meltdownerStarterTest':'cn.academy.port.skill.MeltdownerStarterRegressionTest',
+ 'meltdownerStarterLearningTest':'cn.academy.port.skill.MeltdownerStarterLearningRegressionTest',
+ 'meltdownerStarterServerLinkTest':'cn.academy.port.skill.MeltdownerStarterServerLinkRegressionTest',
+ 'meltdownerStarterVisualTest':'cn.academy.port.client.MeltdownerStarterVisualRegressionTest'].each {taskName,className ->
+ tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+ tasks.named('check') {dependsOn taskName}
+}
+
+// Literal classic1.0.7 Meltdowner wide ray and Basic mining state, genuine Normal learning.
+['meltdownerBeamTest':'cn.academy.port.skill.MeltdownerBeamRegressionTest',
+ 'meltdownerBeamUpstreamOracleTest':'cn.academy.port.skill.MeltdownerBeamUpstreamOracleTest',
+ 'meltdownerBeamLearningTest':'cn.academy.port.skill.MeltdownerBeamLearningRegressionTest',
+ 'meltdownerBeamServerLinkTest':'cn.academy.port.skill.MeltdownerBeamServerLinkRegressionTest',
+ 'meltdownerBeamVisualTest':'cn.academy.port.client.MeltdownerBeamVisualRegressionTest'].each {taskName,className ->
+ tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+ tasks.named('check') {dependsOn taskName}
+}
+
+// Canonical no-alpha-test font fade and current-source/compiled/resource bindings.
+apply from: 'gradle/live-hud-font-tests.gradle'
+// Fail-closed canonical fixtures remain checked in every restored aggregate build.
+tasks.register('checkpointSourceIntegrityTest',JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass='cn.academy.port.testing.CheckpointSourceFixturesRegressionTest';enableAssertions=true}
+tasks.named('check') {dependsOn 'checkpointSourceIntegrityTest'}
+// Parent-owned integration: apply/append only after reviewing the staged capture adaptation.
+tasks.register('basicSentinelTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.skill.MineRayBasicSentinelRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'basicSentinelTest' }
+
+// Source-faithful Expert/Luck advanced mining; standalone checks use packaged canonical test fixtures.
+['advancedMineRayTest':'cn.academy.port.skill.AdvancedMineRayRegressionTest',
+ 'advancedMineRayLearningTest':'cn.academy.port.skill.AdvancedMineRayLearningRegressionTest',
+ 'advancedMineRayUpstreamOracleTest':'cn.academy.port.skill.AdvancedMineRayUpstreamOracleTest',
+ 'advancedMineRayServerLinkTest':'cn.academy.port.skill.AdvancedMineRayServerLinkRegressionTest',
+ 'advancedMineRayDataTest':'cn.academy.port.skill.AdvancedMineRayDataRegressionTest',
+ 'advancedMineRayVisualTest':'cn.academy.port.client.AdvancedMineRayVisualRegressionTest'].each {taskName,className ->
+ tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+ tasks.named('test') {dependsOn taskName}
+ tasks.named('check') {dependsOn taskName}
+}
+
+// Classic1.0.7 RayBarrage, JetEngine, ElectronMissile and their bounded Silicon Barn dependency.
+['meltdownerLateCombatTest':'cn.academy.port.skill.MeltdownerLateCombatRegressionTest',
+ 'meltdownerLateCombatOracleTest':'cn.academy.port.skill.MeltdownerLateCombatOracleTest',
+ 'meltdownerLateCombatLearningTest':'cn.academy.port.skill.MeltdownerLateCombatLearningRegressionTest',
+ 'meltdownerLateCombatServerLinkTest':'cn.academy.port.skill.MeltdownerLateCombatServerLinkTest',
+ 'meltdownerLateCombatVisualTest':'cn.academy.port.client.MeltdownerLateCombatVisualRegressionTest'].each {taskName,className ->
+ tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+ tasks.named('check') {dependsOn taskName}
+}
+
+// Classic 1.0.7 Teleporter progression, isolated deterministic/source-fixture checks.
+['teleporterProgressionTest':'cn.academy.port.skill.TeleporterProgressionRegressionTest',
+ 'teleporterProgressionOracleTest':'cn.academy.port.skill.TeleporterProgressionOracleTest',
+ 'teleporterProgressionLearningTest':'cn.academy.port.skill.TeleporterProgressionLearningRegressionTest',
+ 'teleporterProgressionVisualTest':'cn.academy.port.client.TeleporterProgressionVisualRegressionTest',
+ 'teleporterProgressionServerLinkTest':'cn.academy.port.skill.TeleporterProgressionServerLinkTest'].each {taskName,className ->
+ tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+ tasks.named('check') {dependsOn taskName}
+}
+
+// Classic VecManip Lv2 gameplay, pinned-source and cosmetic transport regressions.
+[vectorStarterTest:"cn.academy.port.skill.VectorStarterRegressionTest",vectorStarterSourceTest:"cn.academy.port.skill.VectorStarterSourceOracleTest",vectorStarterLearningTest:"cn.academy.port.skill.VectorStarterLearningRegressionTest",vectorStarterVisualTest:"cn.academy.port.client.VectorStarterVisualRegressionTest",vectorStarterServerLinkTest:"cn.academy.port.skill.VectorStarterServerLinkTest"].each { taskName,className ->
+ tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+ tasks.named("check") { dependsOn(taskName) }
+}
+
+// Remaining classic Teleporter active skills, isolated deterministic/source-fixture checks.
+['teleporterFinalTest':'cn.academy.port.skill.TeleporterFinalRegressionTest',
+ 'teleporterFinalOracleTest':'cn.academy.port.skill.TeleporterFinalOracleTest',
+ 'teleporterFinalLearningTest':'cn.academy.port.skill.TeleporterFinalLearningRegressionTest',
+ 'teleporterFinalServerLinkTest':'cn.academy.port.skill.TeleporterFinalServerLinkTest',
+ 'teleporterFinalVisualTest':'cn.academy.port.client.TeleporterFinalVisualRegressionTest'].each {taskName,className ->
+ tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+ tasks.named('check') {dependsOn taskName}
+}
+
+// Classic VecManip Lv3/Lv4 arithmetic, pinned-source, learning, visual and server link regressions.
+[categoryShieldTest:"cn.academy.port.highpower.CategoryShieldRegressionTest",vectorCombatTest:"cn.academy.port.skill.VectorCombatRegressionTest",vectorCombatSourceTest:"cn.academy.port.skill.VectorCombatSourceOracleTest",vectorCombatLearningTest:"cn.academy.port.skill.VectorCombatLearningRegressionTest",vectorCombatVisualTest:"cn.academy.port.client.VectorCombatVisualRegressionTest",vectorCombatServerLinkTest:"cn.academy.port.skill.VectorCombatServerLinkTest"].each { taskName,className ->
+ tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+ tasks.named("check") { dependsOn(taskName) }
+}
+
+// Classic final VecManip contexts, immutable source/media checks and source-gated learning.
+apply from: "gradle/vector-final-tests.gradle"
+
+// Classic tutorial guide headless source/state/layout tests.
+apply from: "gradle/tutorial-guide-tests.gradle"
+
+// Shared source SkillPerform consumption/configuration and modern callback fences.
+['classicSkillConfigurationTest':'cn.academy.port.core.ClassicSkillConfigurationRegressionTest',
+ 'classicSkillConfigurationIntegrationTest':'cn.academy.port.core.ClassicSkillConfigurationIntegrationTest'].each {taskName,className ->
+ tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+ tasks.named('check') {dependsOn taskName}
+}
+['sharedSkillConsumptionTest':'cn.academy.port.core.SharedSkillConsumptionRegressionTest',
+ 'sharedSkillConsumptionSourceTest':'cn.academy.port.core.SharedSkillConsumptionSourceOracleTest',
+ 'sharedSkillConsumptionEventBusTest':'cn.academy.port.core.SharedSkillConsumptionEventBusTest',
+ 'sharedSkillConsumptionServerLinkTest':'cn.academy.port.core.SharedSkillConsumptionServerLinkTest'].each {taskName,className ->
+ tasks.register(taskName,JavaExec) {dependsOn testClasses;classpath=sourceSets.test.runtimeClasspath;mainClass=className;enableAssertions=true}
+ tasks.named('check') {dependsOn taskName}
+}
+
+// Classic 1.0.7 Metal Former source, finite-work, resource and common linkage checks.
+apply from: "gradle/metal-former-tests.gradle"
+
+// Complete classic terminal installation and genuine application adapters.
+apply from: "gradle/terminal-app-tests.gradle"
+
+// Classic Phase Generator source differential, finite-fluid and client-resource checks.
+apply from: "gradle/phase-generator-tests.gradle"
+
+// Classic wind family unchanged-source, finite IF, native API and visual-resource checks.
+apply from: "gradle/wind-generator-tests.gradle"
+
+// Classic RF/IF pair, real modern FE boundary and unchanged-original conservation witnesses.
+apply from: "gradle/energy-bridges-tests.gradle"
+
+// Source creative Cat Engine, dedicated tab and hidden dynamic display items.
+apply from: "gradle/classic-misc-tests.gradle"
+
+// Classic unpowered Ability Interferer original timing/geometry and source fixtures.
+apply from: "gradle/interferer-tests.gradle"
+
+// Classic passive/generic paths and independent immutable source oracles.
+apply from: "gradle/passive-skills-tests.gradle"
+
+// Packaged portable Hook source, recipe/asset, native-buffer and common-link evidence.
+apply from: "gradle/hook-acceptance-tests.gradle"
+
+// Source-defined five-page achievements and common-only linkage.
+apply from: "gradle/achievement-tests.gradle"
+
+// Unchanged-original source float prerequisite and learned-bit boundaries.
+apply from: 'gradle/classic-prerequisite-float-tests.gradle'
+
+// Unchanged-original developer/category event and resource lifecycle.
+apply from: 'gradle/classic-developer-lifecycle-tests.gradle'
+
+// M34 owner-reviewed additions. Append after serial promotion; no Gradle was run by this stage.
+tasks.register('classicClientInputBindingTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.ClassicClientInputBindingTest'
+    enableAssertions = true
+}
+tasks.register('classicTargetedContextTerminationTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.core.TargetedContextTerminationTest'
+    enableAssertions = true
+}
+tasks.named('check') {
+    dependsOn tasks.named('classicClientInputBindingTest'), tasks.named('classicTargetedContextTerminationTest')
+}
+
+// Unchanged classic ClientRuntime source/host oracle against actual main compiler output.
+apply from: 'gradle/classic-client-runtime-oracle-tests.gradle'
+
+// Authenticated six-family input identity and bounded pending retirement.
+apply from: 'gradle/classic-single-key-identity-tests.gradle'
+// Actual current ThunderBolt compiler output and camera-relative geometry acceptance.
+apply from: 'gradle/classic-thunderbolt-geometry-tests.gradle'
+
+// Actual current Charging renderer and source-relative camera geometry acceptance.
+apply from: 'gradle/classic-charging-geometry-tests.gradle'
+
+// Actual compiled Meltdowner renderer camera-relative geometry regression.
+apply from: 'gradle/classic-meltdowner-geometry-tests.gradle'
+
+// Opt-in high-power prototype: exact arithmetic regressions are part of the ordinary check.
+tasks.register('highPowerCoreTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.core.HighPowerCoreRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerCoreTest' }
+
+
+
+apply from: 'gradle/high-power-progression-tests.gradle'
+
+apply from: 'gradle/highpower-native-cooldown-tests.gradle'
+
+apply from: 'gradle/highpower-natural-recovery-tests.gradle'
+
+apply from: 'gradle/highpower-recovery-hud-tests.gradle'
+apply from: 'gradle/highpower-decoy-visual-tests.gradle'
+
+apply from: 'gradle/highpower-charging-tests.gradle'
+
+apply from: 'gradle/highpower-polarity-tether-tests.gradle'
+
+apply from: 'gradle/highpower-grounding-return-tests.gradle'
+
+apply from: 'gradle/highpower-conductive-circuit-tests.gradle'
+
+apply from: 'gradle/highpower-conductive-circuit-visual-tests.gradle'
+
+apply from: 'gradle/highpower-continuous-growth-tests.gradle'
+
+apply from: 'gradle/highpower-magnetic-ground-step-tests.gradle'
+
+apply from: 'gradle/highpower-magnetic-item-pull-tests.gradle'
+
+apply from: 'gradle/highpower-magnetic-arrow-separation-tests.gradle'
+
+apply from: 'gradle/highpower-iron-sand-lance-tests.gradle'
+apply from: 'gradle/highpower-iron-sand-lance-visual-tests.gradle'
+
+apply from: 'gradle/highpower-thunder-net-tests.gradle'
+apply from: 'gradle/highpower-thunder-net-visual-tests.gradle'
+
+apply from: 'gradle/highpower-potential-buffer-tests.gradle'
+apply from: 'gradle/highpower-potential-buffer-visual-tests.gradle'
+
+apply from: 'gradle/highpower-rail-thunder-array-tests.gradle'
+apply from: 'gradle/highpower-rail-thunder-array-visual-tests.gradle'
+apply from: 'gradle/highpower-rail-thunder-array-grand-tests.gradle'
+apply from: 'gradle/highpower-rail-thunder-array-tier-tests.gradle'
+apply from: 'gradle/highpower-magnetic-domain-decor-tests.gradle'
+apply from: 'gradle/highpower-vector-decor-tests.gradle'
+apply from: 'gradle/highpower-electro-decor-tests.gradle'
+apply from: 'gradle/highpower-teleport-decor-tests.gradle'
+apply from: 'gradle/highpower-melt-decor-tests.gradle'
+apply from: 'gradle/highpower-construct-rules-tests.gradle'
+apply from: 'gradle/highpower-cast-pose-tests.gradle'
+
+tasks.register('castPoseArmContinuityTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.core.CastPoseArmContinuityRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'castPoseArmContinuityTest' }
+
+apply from: 'gradle/highpower-esper-damage-tests.gradle'
+apply from: 'gradle/highpower-esper-growth-tests.gradle'
+apply from: 'gradle/highpower-mobility-tests.gradle'
+apply from: 'gradle/highpower-fx-decor-tests.gradle'
+apply from: 'gradle/highpower-new-skill-rules-tests.gradle'
+apply from: 'gradle/highpower-new-skill-fx-tests.gradle'
+apply from: 'gradle/highpower-rail-thunder-array-fallback-tests.gradle'
+
+apply from: 'gradle/highpower-magnetic-domain-visual-tests.gradle'
+
+apply from: 'gradle/highpower-magnetic-domain-shield-tests.gradle'
+
+apply from: 'gradle/highpower-magnetic-domain-arrow-tests.gradle'
+
+// NEW211 bounded client state, original small-beam geometry and shared category HUD.
+apply from: 'gradle/highpower-dual-point-tests.gradle'
+apply from: 'gradle/highpower-dual-point-visual-tests.gradle'
+
+apply from: 'gradle/highpower-scatter-plate-shares-tests.gradle'
+
+apply from: 'gradle/highpower-scatter-plate-visual-tests.gradle'
+
+apply from: 'gradle/highpower-scatter-plate-runtime-tests.gradle'
+
+apply from: 'gradle/highpower-beam-etching-tests.gradle'
+
+apply from: 'gradle/highpower-thermal-shell-tests.gradle'
+
+apply from: 'gradle/highpower-folded-mirror-tests.gradle'
+
+apply from: 'gradle/highpower-disintegration-sweep-tests.gradle'
+
+apply from: 'gradle/highpower-beam-step-tests.gradle'
+
+// The explicit reviewed runtime must agree with the actual packaged identity.
+// Keep the contract lists deliberate; never infer approval from a runtime mod count or name.
+tasks.register('verifyHighPowerVersionContract') {
+    inputs.file('src/main/resources/META-INF/neoforge.mods.toml')
+    inputs.files('src/main/java/cn/academy/port/highpower/VanillaCombatContract.java',
+                 'src/main/java/cn/academy/port/highpower/VanillaMiningContract.java')
+    inputs.file('src/main/java/cn/academy/port/gametest/HighPowerCombatRuntimeTests.java')
+    inputs.property('artifactVersion', project.version.toString())
+    doLast {
+        def expected = project.version.toString()
+        if (!file('src/main/resources/META-INF/neoforge.mods.toml').text.contains('version="' + expected + '"'))
+            throw new GradleException('Packaged mod metadata does not match the reviewed artifact version')
+        if (!file('src/main/java/cn/academy/port/gametest/HighPowerCombatRuntimeTests.java').text.contains('"academy", "' + expected + '"'))
+            throw new GradleException('Native reviewed-version fixture requires an explicit version update')
+        ['VanillaCombatContract', 'VanillaMiningContract'].each { name ->
+            if (!file('src/main/java/cn/academy/port/highpower/' + name + '.java').text.contains('"academy", "' + expected + '"'))
+                throw new GradleException(name + ' requires an explicit reviewed version update')
+        }
+    }
+}
+tasks.named('processResources') { dependsOn 'verifyHighPowerVersionContract' }
+
+apply from: "gradle/highpower-particle-laminate-tests.gradle"
+
+apply from: 'gradle/highpower-dissipation-curtain-tests.gradle'
+
+apply from: 'gradle/highpower-multicore-canopy-tests.gradle'
+
+apply from: 'gradle/highpower-zero-gap-armor-tests.gradle'
+
+apply from: 'gradle/highpower-zero-gap-input-tests.gradle'
+
+apply from: 'gradle/highpower-safe-landing-client-tests.gradle'
+
+apply from: 'gradle/highpower-safe-landing-probe-tests.gradle'
+
+apply from: 'gradle/highpower-phase-sidestep-tests.gradle'
+
+apply from: 'gradle/highpower-phase-sidestep-client-tests.gradle'
+
+apply from: 'gradle/highpower-phase-sidestep-learning-tests.gradle'
+
+apply from: "gradle/highpower-displaced-projection-tests.gradle"
+
+// Visual-only reference upgrade: production emitters and pure geometry, separate from gameplay tests.
+def vfx2NativeClasspath = layout.buildDirectory.file('vfx2/native-classpath.txt')
+tasks.register('writeVfx2NativeClasspath') {
+    dependsOn 'createMinecraftArtifacts'
+    inputs.files(configurations.compileClasspath)
+    outputs.file(vfx2NativeClasspath)
+    doLast {
+        def destination = vfx2NativeClasspath.get().asFile
+        destination.parentFile.mkdirs()
+        destination.text = configurations.compileClasspath.asPath
+    }
+}
+['displacedProjectionPrecisionTest':'scripts/verify-displaced-projection-precision.py',
+ 'railgunVfx2GeometryTest':'scripts/verify-railgun-vfx2-geometry.py',
+ 'railgunVfx2CoreMaterialTest':'scripts/verify-railgun-vfx2-core-material.py',
+ 'lightShieldVfx2MaterialTest':'scripts/verify-light-shield-vfx2-material.py'].each { name, script ->
+    tasks.register(name, Exec) {
+        commandLine 'python3', script
+    }
+    tasks.named('check') { dependsOn name }
+}
+
+// Versioned render contract: one complete execution, with retained public task aliases.
+tasks.register('renderContractV2Test', Exec) {
+    dependsOn 'writeVfx2NativeClasspath'
+    commandLine 'python3', 'scripts/verify-render-contract-v2.py',
+            '--native-config-classpath', vfx2NativeClasspath.get().asFile.absolutePath,
+            '--report', layout.buildDirectory.file('vfx2/render-contract-v2.json').get().asFile.absolutePath
+}
+tasks.register('railgunVfx2IntegrationTest') { dependsOn 'renderContractV2Test' }
+tasks.register('lightShieldVfx2IntegrationTest') { dependsOn 'railgunVfx2IntegrationTest' }
+tasks.named('check') { dependsOn 'renderContractV2Test', 'railgunVfx2IntegrationTest', 'lightShieldVfx2IntegrationTest' }
+
+apply from: 'gradle/plasma-camera-space-tests.gradle'
+
+apply from: 'gradle/railgun-grand-geometry-tests.gradle'
+
+// Current Light Shield verification also requires the current Railgun OFF/failure differential.
+tasks.named('lightShieldVfx2IntegrationTest') { dependsOn 'railgunVfx2IntegrationTest' }
+
+apply from: 'gradle/railgun-launch-geometry-tests.gradle'
+// Optional first-person material policy; isolated from gameplay and historical renderer oracles.
+tasks.register('railgunNearEyeVisibilityTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.RailgunNearEyeVisibilityRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'railgunNearEyeVisibilityTest' }
+
+apply from: 'gradle/highpower-return-mark-tests.gradle'
+apply from: 'gradle/highpower-return-mark-learning-tests.gradle'
+apply from: 'gradle/highpower-return-mark-client-tests.gradle'
+
+apply from: 'gradle/highpower-recovery-mark-learning-tests.gradle'
+
+apply from: 'gradle/highpower-recovery-mark-client-tests.gradle'
+
+apply from: 'gradle/highpower-recovery-mark-tests.gradle'
+
+apply from: 'gradle/highpower-cross-substitution-tests.gradle'
+
+apply from: 'gradle/highpower-corner-exchange-tests.gradle'
+
+// NEW331 closed native interception and authenticated client contracts.
+tasks.register('highPowerShortInterceptionLearningTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.ShortInterceptionLearningRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerShortInterceptionLearningTest' }
+tasks.register('highPowerShortInterceptionNativeSeamTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.ShortInterceptionNativeSeamRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerShortInterceptionNativeSeamTest' }
+tasks.register('highPowerShortInterceptionInputTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.ShortInterceptionInputRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerShortInterceptionInputTest' }
+tasks.register('highPowerShortInterceptionVisualTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.ShortInterceptionVisualRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerShortInterceptionVisualTest' }
+tasks.register('highPowerShortInterceptionDispatchTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.ShortInterceptionDispatchRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerShortInterceptionDispatchTest' }
+
+tasks.register('highPowerShortInterceptionRulesTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.core.ShortInterceptionRulesRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerShortInterceptionRulesTest' }
+
+// Every physical mod entity must have exactly one subscribed client renderer factory.
+tasks.register('entityRendererRegistrationTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.EntityRendererRegistrationRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'entityRendererRegistrationTest' }
+
+// NEW343 native item relay retains separate admission and display contracts.
+tasks.register('highPowerSpatialRelayLearningTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.SpatialRelayLearningRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerSpatialRelayLearningTest' }
+
+tasks.register('highPowerSpatialRelayRulesTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.core.SpatialRelayRulesRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerSpatialRelayRulesTest' }
+
+tasks.register('highPowerSpatialRelayInputTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.SpatialRelayInputRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerSpatialRelayInputTest' }
+
+tasks.register('highPowerSpatialRelayVisualTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.SpatialRelayVisualRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerSpatialRelayVisualTest' }
+
+tasks.register('highPowerSpatialRelayDispatchTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.SpatialRelayDispatchRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerSpatialRelayDispatchTest' }
+
+// NEW342 scoped contract; previous acceptance tasks remain required.
+tasks.register('highPowerEmergencyReturnRulesTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.core.EmergencyReturnRulesRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerEmergencyReturnRulesTest' }
+
+// NEW342 scoped contract; previous acceptance tasks remain required.
+tasks.register('highPowerEmergencyReturnLearningTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.EmergencyReturnLearningRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerEmergencyReturnLearningTest' }
+
+// NEW342 scoped contract; previous acceptance tasks remain required.
+tasks.register('emergencyReturnGeometryTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.core.EmergencyReturnGeometryRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'emergencyReturnGeometryTest' }
+
+// Pin the observed native connection cycle without replacing ordinary physics.
+tasks.register('highPowerEmergencyReturnConnectionSeamTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.EmergencyReturnConnectionSeamRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerEmergencyReturnConnectionSeamTest' }
+
+tasks.register('highPowerEmergencyReturnInputTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.EmergencyReturnInputRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerEmergencyReturnInputTest' }
+
+tasks.register('highPowerEmergencyReturnVisualTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.EmergencyReturnVisualRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerEmergencyReturnVisualTest' }
+
+tasks.register('highPowerEmergencyReturnDispatchTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.EmergencyReturnDispatchRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerEmergencyReturnDispatchTest' }
+
+// NEW353 closed geometry and continuous utility economics.
+tasks.register('highPowerTacticalCoordinateRulesTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.core.TacticalCoordinateRulesRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerTacticalCoordinateRulesTest' }
+tasks.register('highPowerTacticalCoordinateGeometryTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.core.TacticalCoordinateGeometryRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerTacticalCoordinateGeometryTest' }
+
+tasks.register('tacticalCoordinateClientTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.TacticalCoordinateClientRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'tacticalCoordinateClientTest' }
+
+tasks.register('highPowerTacticalCoordinateLearningTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.TacticalCoordinateLearningRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerTacticalCoordinateLearningTest' }
+
+tasks.register('highPowerSpatialPincerCorridorRulesTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.core.SpatialPincerCorridorRulesRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerSpatialPincerCorridorRulesTest' }
+
+tasks.register('highPowerSpatialPincerCorridorGeometryTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.core.SpatialPincerCorridorGeometryRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerSpatialPincerCorridorGeometryTest' }
+
+tasks.register('highPowerSpatialPincerCorridorLearningTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.SpatialPincerCorridorLearningRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerSpatialPincerCorridorLearningTest' }
+
+tasks.register('spatialPincerClientTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.SpatialPincerClientRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'spatialPincerClientTest' }
+
+// NEW351 phase-one custody only; not a playable skill registration.
+tasks.register('highPowerBorrowedNeedleDeathSeamTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.BorrowedNeedleDeathSeamRegressionTest'; enableAssertions=true; if(project.hasProperty('borrowedNeedleTransformedPlayer')) args project.property('borrowedNeedleTransformedPlayer') }
+tasks.named('check') { dependsOn 'highPowerBorrowedNeedleDeathSeamTest' }
+
+// NEW351: append-only bounded array contracts; native custody is included in the borrowed namespace.
+tasks.register('highPowerMultidimensionalArrayRulesTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.core.MultidimensionalLandingArrayRulesRegressionTest'; enableAssertions=true }
+tasks.register('highPowerMultidimensionalArrayGeometryTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.core.MultidimensionalLandingArrayGeometryRegressionTest'; enableAssertions=true }
+tasks.register('highPowerMultidimensionalArrayLearningTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.MultidimensionalLandingArrayLearningRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerMultidimensionalArrayRulesTest', 'highPowerMultidimensionalArrayGeometryTest', 'highPowerMultidimensionalArrayLearningTest' }
+
+tasks.register('highPowerMultidimensionalArrayClientTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.MultidimensionalLandingArrayClientRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerMultidimensionalArrayClientTest' }
+
+// Actual Java AST audit of finite client request IDs; dynamic forwarding limits are reported explicitly.
+tasks.register('clientRequestActionSchemaTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.ClientRequestActionSchemaRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'clientRequestActionSchemaTest' }
+
+// NEW411 vector admission retains the classic catalog and shared ledger invariants.
+tasks.register('highPowerVectorFoundationTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.VectorFoundationRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerVectorFoundationTest' }
+
+tasks.register('highPowerDeflectionStrikeRulesTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.core.DeflectionStrikeRulesRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerDeflectionStrikeRulesTest' }
+
+tasks.register('highPowerDeflectionStrikeInputTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.DeflectionStrikeInputRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerDeflectionStrikeInputTest' }
+
+tasks.register('highPowerDeflectionStrikeVisualTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.DeflectionStrikeVisualRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerDeflectionStrikeVisualTest' }
+
+tasks.register('highPowerDeflectionStrikeDispatchTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.DeflectionStrikeDispatchRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerDeflectionStrikeDispatchTest' }
+
+tasks.register('highPowerDeflectionStrikeCleanupTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.DeflectionStrikeCleanupRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerDeflectionStrikeCleanupTest' }
+
+apply from: "gradle/plasma-vfx2-tests.gradle"
+
+apply from: "gradle/md-near-eye-tests.gradle"
+
+apply from: "gradle/current-geometry-proof-tests.gradle"
+
+apply from: "gradle/highpower-magnetic-domain-material-flow-tests.gradle"
+
+// NEW351 optional receipt-local geometry; source guards and historical oracles remain mandatory.
+tasks.register('landingArrayCueGeometryTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.MultidimensionalLandingCueGeometryRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'landingArrayCueGeometryTest' }
+
+tasks.register('landingArrayV56FallbackProof', Exec) {
+    doFirst {
+        commandLine 'python3', layout.projectDirectory.file('scripts/verify-landing-array-v56-fallback.py').asFile,
+                '--java-home', System.getProperty('java.home'), '--report',
+                layout.buildDirectory.dir('reports/landing-array-v56-fallback/' + java.util.UUID.randomUUID()).get().asFile
+    }
+}
+tasks.named('check') { dependsOn 'landingArrayV56FallbackProof' }
+
+tasks.register('highPowerVectorParryRulesTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.core.VectorParryRulesRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerVectorParryRulesTest' }
+
+tasks.register('highPowerVectorParryNativeSeamTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.VectorParryNativeSeamRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerVectorParryNativeSeamTest' }
+
+tasks.register('highPowerVectorParryLearningTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.VectorParryLearningRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerVectorParryLearningTest' }
+
+tasks.register('highPowerVectorParryInputTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.VectorParryInputRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerVectorParryInputTest' }
+
+tasks.register('highPowerVectorParryVisualTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.VectorParryVisualRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerVectorParryVisualTest' }
+
+tasks.register('highPowerBrakingTouchRulesTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.core.BrakingTouchRulesRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerBrakingTouchRulesTest' }
+
+tasks.register('highPowerBrakingTouchLearningTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.BrakingTouchLearningRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerBrakingTouchLearningTest' }
+
+tasks.register('highPowerBrakingTouchInputTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.BrakingTouchInputRegressionTest'; enableAssertions=true }
+tasks.register('highPowerBrakingTouchVisualTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.BrakingTouchVisualRegressionTest'; enableAssertions=true }
+tasks.register('highPowerBrakingTouchDispatchTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.BrakingTouchDispatchRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerBrakingTouchInputTest','highPowerBrakingTouchVisualTest','highPowerBrakingTouchDispatchTest' }
+
+tasks.register('highPowerBrakingTouchNativeSeamTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.BrakingTouchNativeSeamRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerBrakingTouchNativeSeamTest' }
+
+// NEW421: append-only learning contract; all classic oracle guards remain in check.
+tasks.register('highPowerShearWindbladeLearningTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.ShearWindbladeLearningRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerShearWindbladeLearningTest' }
+
+tasks.register('highPowerShearWindbladeGeometryTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.core.ShearWindbladeGeometryRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerShearWindbladeGeometryTest' }
+
+tasks.register('highPowerShearWindbladeRulesTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.core.ShearWindbladeRulesRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerShearWindbladeRulesTest' }
+
+tasks.register('highPowerShearWindbladeInputTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.ShearWindbladeInputRegressionTest'; enableAssertions=true }
+tasks.register('highPowerShearWindbladeVisualTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.ShearWindbladeVisualRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerShearWindbladeInputTest', 'highPowerShearWindbladeVisualTest' }
+
+tasks.register('highPowerShearWindbladeDispatchTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.ShearWindbladeDispatchRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerShearWindbladeDispatchTest' }
+
+// Optional .62 pressure volume: baseline guards remain unchanged.
+tasks.register('highPowerShearWindbladeVolumeTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.ShearWindbladeVolumeRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerShearWindbladeVolumeTest' }
+
+tasks.register('shearWindbladeV61FallbackProof', Exec) {
+    doFirst {
+        commandLine 'python3', layout.projectDirectory.file('scripts/verify-shear-windblade-v61-fallback.py').asFile,
+                '--java-home', System.getProperty('java.home'), '--report',
+                layout.buildDirectory.dir('reports/shear-windblade-v61-fallback/' + java.util.UUID.randomUUID()).get().asFile
+    }
+}
+tasks.named('check') { dependsOn 'shearWindbladeV61FallbackProof' }
+
+tasks.register('shearWindbladeMaterialPreviewTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.ShearWindbladeMaterialPreviewRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'shearWindbladeMaterialPreviewTest' }
+
+// .63 optional crown: original geometry and historical guards remain mandatory.
+tasks.register('multicoreCanopyCrownGeometryTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.MulticoreCanopyCrownGeometryRegressionTest'; enableAssertions=true }
+tasks.register('multicoreCanopyEmissionGeometryTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.MulticoreCanopyEmissionGeometryRegressionTest'; enableAssertions=true }
+tasks.register('multicoreCanopyCrownBudgetTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.MulticoreCanopyCrownBudgetRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'multicoreCanopyCrownGeometryTest', 'multicoreCanopyEmissionGeometryTest', 'multicoreCanopyCrownBudgetTest' }
+
+tasks.register('multicoreCanopyV62FallbackProof', Exec) {
+    doFirst {
+        commandLine 'python3', layout.projectDirectory.file('scripts/verify-multicore-canopy-v62-fallback.py').asFile,
+                '--java-home', System.getProperty('java.home'), '--report',
+                layout.buildDirectory.dir('reports/multicore-canopy-v62-fallback/' + java.util.UUID.randomUUID()).get().asFile
+    }
+}
+tasks.named('check') { dependsOn 'multicoreCanopyV62FallbackProof' }
+
+// NEW422 exact transactions and client lifecycle. Historical geometry guards remain unchanged.
+tasks.register('highPowerInertialAnchorRulesTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.core.InertialAnchorRulesRegressionTest'; enableAssertions=true }
+tasks.register('inertialAnchorInputTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.InertialAnchorInputRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerInertialAnchorRulesTest', 'inertialAnchorInputTest' }
+tasks.register('inertialAnchorVisualTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.InertialAnchorVisualRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'inertialAnchorVisualTest' }
+tasks.register('inertialAnchorLandingReceiptTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.InertialAnchorLandingReceiptRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'inertialAnchorLandingReceiptTest' }
+tasks.register('inertialAnchorFinishTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.InertialAnchorFinishRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'inertialAnchorFinishTest' }
+tasks.register('highPowerAnchorPostNativeSeamTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.AnchorPostNativeSeamRegressionTest'; enableAssertions=true }
+tasks.register('anchorPostProofTest', Exec) {
+    doFirst { commandLine 'python3', 'scripts/verify-anchor-post-proof.py', '--java-home', System.getProperty('java.home') }
+}
+tasks.register('inertialAnchorLearningTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.InertialAnchorLearningRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerAnchorPostNativeSeamTest', 'anchorPostProofTest', 'inertialAnchorLearningTest' }
+
+// NEW423 additive catalog and authenticated sideways native impulse; prior guards retained.
+tasks.register('highPowerYawPalmRulesTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.core.YawPalmRulesRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerYawPalmRulesTest' }
+tasks.register('highPowerYawPalmInputTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.YawPalmInputRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerYawPalmInputTest' }
+tasks.register('highPowerYawPalmVisualTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.YawPalmVisualRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerYawPalmVisualTest' }
+tasks.register('highPowerYawPalmDispatchTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.YawPalmDispatchRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerYawPalmDispatchTest' }
+tasks.register('yawPalmLearningTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.YawPalmLearningRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'yawPalmLearningTest' }
+
+// NEW431 exact existing-arrow return and empty-corridor air hammer.
+['trajectoryReturnRulesTest':'cn.academy.port.highpower.core.TrajectoryReturnRulesRegressionTest',
+ 'trajectoryReturnInputTest':'cn.academy.port.client.TrajectoryReturnInputRegressionTest',
+ 'trajectoryReturnVisualTest':'cn.academy.port.client.TrajectoryReturnVisualRegressionTest',
+ 'trajectoryReturnLearningTest':'cn.academy.port.highpower.TrajectoryReturnLearningRegressionTest'].each { taskName, className ->
+ tasks.register(taskName, JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass=className; enableAssertions=true }
+ tasks.named('check') { dependsOn taskName }
+}
+tasks.register('trajectoryReturnDispatchTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.TrajectoryReturnDispatchRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'trajectoryReturnDispatchTest' }
+tasks.register('trajectoryReturnMaterialPreviewTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.TrajectoryReturnMaterialPreviewRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'trajectoryReturnMaterialPreviewTest' }
+
+// Optional NEW431 receipt-only pressure presentation; .66 classic path stays frozen.
+tasks.register('trajectoryReturnEnhancedMeshTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.TrajectoryReturnEnhancedMeshRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'trajectoryReturnEnhancedMeshTest' }
+tasks.register('trajectoryReturnPresentationTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.TrajectoryReturnPresentationRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'trajectoryReturnPresentationTest' }
+tasks.register('trajectoryReturnClassicFallbackTest', Exec) {
+    doFirst {
+        commandLine 'python3', 'scripts/verify-trajectory-return-v66-fallback.py', '--report',
+                'build/reports/trajectory-return-v66-fallback-' + java.util.UUID.randomUUID().toString()
+    }
+}
+tasks.named('check') { dependsOn 'trajectoryReturnClassicFallbackTest' }
+
+// NEW432 isolated contracts; historical runners remain unchanged.
+tasks.register('circulationReliefRulesTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.core.CirculationReliefRulesRegressionTest'; enableAssertions=true }
+tasks.register('circulationReliefVisualTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.CirculationReliefVisualRegressionTest'; enableAssertions=true }
+tasks.register('circulationReliefInputTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.CirculationReliefInputRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'circulationReliefRulesTest', 'circulationReliefVisualTest', 'circulationReliefInputTest' }
+
+tasks.register('circulationReliefLearningTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.CirculationReliefLearningRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'circulationReliefLearningTest' }
+tasks.register('circulationReliefCompletionTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.gametest.CirculationReliefCompletionRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'circulationReliefCompletionTest' }
+
+// NEW433: closed near-field motion sensing, no gameplay changes to other categories.
+['circulationListeningRulesTest':'cn.academy.port.highpower.core.CirculationListeningRulesRegressionTest',
+ 'circulationListeningVisualTest':'cn.academy.port.client.CirculationListeningVisualRegressionTest',
+ 'circulationListeningInputTest':'cn.academy.port.client.CirculationListeningInputRegressionTest',
+ 'circulationListeningLearningTest':'cn.academy.port.highpower.CirculationListeningLearningRegressionTest'].each { taskName, className ->
+ tasks.register(taskName, JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass=className; enableAssertions=true }
+ tasks.named('check') { dependsOn taskName }
+}
+tasks.register('circulationListeningNativeSeamTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.CirculationListeningNativeSeamRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'circulationListeningNativeSeamTest' }
+tasks.register('highPowerMenuMouseInputTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.HighPowerMenuMouseInputRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerMenuMouseInputTest' }
+
+// NEW441 finite pressure walls; immutable previous geometry guards remain separate.
+['vectorCageRulesTest':'cn.academy.port.highpower.core.VectorCageRulesRegressionTest',
+ 'vectorCageGeometryTest':'cn.academy.port.highpower.core.VectorCageGeometryRegressionTest',
+ 'vectorCageVisualTest':'cn.academy.port.client.VectorCageVisualRegressionTest',
+ 'vectorCageInputTest':'cn.academy.port.client.VectorCageInputRegressionTest',
+ 'vectorCageAdapterTest':'cn.academy.port.client.VectorCageAdapterRegressionTest',
+ 'vectorCageLearningTest':'cn.academy.port.highpower.VectorCageLearningRegressionTest'].each { taskName,className ->
+ tasks.register(taskName,JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass=className; enableAssertions=true }
+ tasks.named('check') { dependsOn taskName }
+}
+
+// NEW442 bounded native-body-qualified reflection, with immutable historical guards retained.
+['multiAxisReflectionRulesTest':'cn.academy.port.highpower.core.MultiAxisReflectionRulesRegressionTest',
+ 'multiAxisReflectionGeometryTest':'cn.academy.port.highpower.core.MultiAxisReflectionGeometryRegressionTest',
+ 'multiAxisReflectionVisualTest':'cn.academy.port.client.MultiAxisReflectionVisualRegressionTest',
+ 'multiAxisReflectionInputTest':'cn.academy.port.client.MultiAxisReflectionInputRegressionTest',
+ 'multiAxisReflectionLearningTest':'cn.academy.port.highpower.MultiAxisReflectionLearningRegressionTest'].each { taskName,className ->
+ tasks.register(taskName,JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass=className; enableAssertions=true }
+ tasks.named('check') { dependsOn taskName }
+}
+
+// NEW443 self-only finite native-motion assistance.
+['windPressureLiftRulesTest':'cn.academy.port.highpower.core.WindPressureLiftRulesRegressionTest',
+ 'windPressureLiftBudgetTest':'cn.academy.port.highpower.WindPressureLiftBudgetRegressionTest',
+ 'windPressureLiftGeometryTest':'cn.academy.port.highpower.core.WindPressureLiftGeometryRegressionTest',
+ 'windPressureLiftAutoJumpAccessorTest':'cn.academy.port.client.WindPressureLiftAutoJumpAccessorRegressionTest',
+ 'windPressureLiftNativeSweepTest':'cn.academy.port.client.WindPressureLiftNativeSweepRegressionTest',
+ 'windPressureLiftReceiptTest':'cn.academy.port.client.WindPressureLiftReceiptRegressionTest',
+ 'windPressureLiftTravelStateTest':'cn.academy.port.client.WindPressureLiftTravelStateRegressionTest',
+ 'windPressureLiftTravelAdmissionTest':'cn.academy.port.client.WindPressureLiftTravelAdmissionRegressionTest',
+ 'windPressureLiftTravelMixinTest':'cn.academy.port.client.WindPressureLiftTravelMixinRegressionTest',
+ 'windPressureLiftVisualTest':'cn.academy.port.client.WindPressureLiftVisualRegressionTest',
+ 'windPressureLiftInputTest':'cn.academy.port.client.WindPressureLiftInputRegressionTest',
+ 'windPressureLiftLearningTest':'cn.academy.port.highpower.WindPressureLiftLearningRegressionTest'].each { taskName,className ->
+ tasks.register(taskName,JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass=className; enableAssertions=true }
+ tasks.named('check') { dependsOn taskName }
+}
+
+// Explicit transformed-runtime evidence tasks; require an actual exported class, never a synthetic pass.
+tasks.register('windPressureLiftTeleportNativeSeamTest',JavaExec) {
+ dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath
+ mainClass='cn.academy.port.highpower.WindPressureLiftTeleportNativeSeamRegressionTest'; enableAssertions=true
+ doFirst { args providers.gradleProperty('windLiftTeleportExport').get() }
+}
+tasks.register('windPressureLiftAutoJumpLiveWitness',JavaExec) {
+ dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath
+ mainClass='cn.academy.port.client.WindPressureLiftAutoJumpAccessorRegressionTest'; enableAssertions=true
+ doFirst { args providers.gradleProperty('windLiftClientExport').get() }
+}
+tasks.register('windPressureLiftTravelLiveWitness',JavaExec) {
+ dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath
+ mainClass='cn.academy.port.client.WindPressureLiftTravelMixinRegressionTest'; enableAssertions=true
+ doFirst { args 'build/moddev/artifacts/neoforge-21.1.252-merged.jar',
+         providers.gradleProperty('windLiftTravelExports').get(),
+         providers.gradleProperty('windLiftTravelTargets').get() }
+}
+['windPressureLiftTraceOffTest':false,'windPressureLiftTraceOnTest':true].each { taskName,enabled ->
+ tasks.register(taskName,JavaExec) {
+  dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath
+  mainClass='cn.academy.port.client.WindPressureLiftTraceRegressionTest'; enableAssertions=true
+  if(enabled) systemProperty 'academy.qa.windLiftTrace','true'
+ }
+ tasks.named('check') { dependsOn taskName }
+}
+
+// Optional NEW443 .73 presentation, independent of movement authority.
+tasks.register('windPressureLiftFlowMeshTest',JavaExec) {
+ dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath
+ mainClass='cn.academy.port.client.WindPressureLiftFlowMeshRegressionTest'; enableAssertions=true
+}
+tasks.named('check') { dependsOn 'windPressureLiftFlowMeshTest' }
+tasks.register('windPressureLiftFlowV72Proof',Exec) {
+ dependsOn jar
+ commandLine 'python3','scripts/verify-wind-lift-flow-v72.py'
+}
+tasks.named('check') { dependsOn 'windPressureLiftFlowV72Proof' }
+
+tasks.register('windPressureLiftFlowRibbonTest',JavaExec) {
+ dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath
+ mainClass='cn.academy.port.client.WindPressureLiftFlowRibbonRegressionTest'; enableAssertions=true
+}
+tasks.named('check') { dependsOn 'windPressureLiftFlowRibbonTest' }
+
+tasks.register('windPressureLiftFlowRenderStateProof',Exec) {
+ commandLine 'python3','scripts/verify-wind-lift-flow-render-state.py'
+}
+tasks.named('check') { dependsOn 'windPressureLiftFlowRenderStateProof' }
+
+// Appended fixture-isolation proof; the frozen v1 and all historical guards remain unchanged.
+tasks.register('windPressureLiftFlowV72FixtureProof', Exec) {
+    dependsOn 'jar', 'compileJava', 'writeVfx2NativeClasspath'
+    commandLine 'python3', 'scripts/verify-wind-lift-flow-v72-v2.py'
+}
+tasks.named('check') { dependsOn 'windPressureLiftFlowV72FixtureProof' }
+
+// NEW233 obstacle-only rules, independent of the unchanged NEW213/231 range contracts.
+tasks.register('highPowerPointMeltdownRulesTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.core.PointMeltdownRulesRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'highPowerPointMeltdownRulesTest' }
+tasks.register('pointMeltdownVisualTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.PointMeltdownVisualRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'pointMeltdownVisualTest' }
+tasks.register('pointMeltdownRegistrationTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.PointMeltdownRegistrationRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'pointMeltdownRegistrationTest' }
+
+tasks.register('pointMeltdownFocusMeshTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.PointMeltdownFocusMeshRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'pointMeltdownFocusMeshTest' }
+
+// NEW253 add-only registry, finite Advanced learning and unchanged bounded native learning wire.
+tasks.register('remoteScatterRelayLearningTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.RemoteScatterRelayLearningRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'remoteScatterRelayLearningTest' }
+
+['remoteScatterRelayRulesTest':'cn.academy.port.highpower.core.RemoteScatterRelayRulesRegressionTest',
+ 'remoteScatterRelayGeometryTest':'cn.academy.port.highpower.core.RemoteScatterRelayGeometryRegressionTest'].each { taskName,className ->
+    tasks.register(taskName,JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass=className; enableAssertions=true }
+    tasks.named('check') { dependsOn taskName }
+}
+
+tasks.register('remoteScatterRelayVisualTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.RemoteScatterRelayVisualRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'remoteScatterRelayVisualTest' }
+
+// NEW253 client-only readable layout; original geometry/resource regressions remain mandatory.
+tasks.register('remoteScatterRelayHudLayoutTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.RemoteScatterRelayHudLayoutRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'remoteScatterRelayHudLayoutTest' }
+
+// NEW223 standalone client contract.
+tasks.register('scatterLocatorVisualTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.ScatterLocatorVisualRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'scatterLocatorVisualTest' }
+
+tasks.register('scatterLocatorPlateLearningTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.ScatterLocatorPlateLearningRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'scatterLocatorPlateLearningTest' }
+
+tasks.register('scatterLocatorRulesTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.core.ScatterLocatorRulesRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'scatterLocatorRulesTest' }
+
+tasks.register('scatterLocatorRegistrationProofV17', Exec) {
+    commandLine 'python3', 'scripts/verify-scatter-locator-registration-v17.py', '--report',
+        layout.buildDirectory.file('reports/scatter-locator-v17/' + java.util.UUID.randomUUID() + '.json').get().asFile.absolutePath
+}
+tasks.named('check') { dependsOn 'scatterLocatorRegistrationProofV17' }
+
+// Explicit current companions; all historical runners remain independently wired.
+tasks.register('scatterLocatorLearningProofV18', Exec) {
+    dependsOn 'testClasses', 'writeVfx2NativeClasspath'
+    commandLine 'python3', '-B', 'scripts/verify-scatter-locator-learning-v18.py',
+        '--main-classes', layout.buildDirectory.dir('classes/java/main').get().asFile.absolutePath,
+        '--test-classes', layout.buildDirectory.dir('classes/java/test').get().asFile.absolutePath,
+        '--resources', layout.buildDirectory.dir('resources/main').get().asFile.absolutePath,
+        '--test-resources', layout.buildDirectory.dir('resources/test').get().asFile.absolutePath,
+        '--classpath-file', vfx2NativeClasspath.get().asFile.absolutePath,
+        '--report', layout.buildDirectory.file('reports/scatter-locator-v18/' + java.util.UUID.randomUUID() + '.json').get().asFile.absolutePath
+}
+tasks.register('scatterLocatorNativeRegistrationProofV19', Exec) {
+    commandLine 'python3', '-B', 'scripts/verify-scatter-locator-native-v19.py', '--report',
+        layout.buildDirectory.file('reports/scatter-locator-v19/' + java.util.UUID.randomUUID() + '.json').get().asFile.absolutePath
+}
+tasks.named('check') { dependsOn 'scatterLocatorLearningProofV18', 'scatterLocatorNativeRegistrationProofV19' }
+
+// NEW452: appended companion tests; immutable historic guards remain in check.
+tasks.register('autonomousVectorCircleRulesTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.core.AutonomousVectorCircleRulesRegressionTest'; enableAssertions=true }
+tasks.register('autonomousVectorArrowNativeSeamTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.AutonomousVectorArrowNativeSeamRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'autonomousVectorCircleRulesTest', 'autonomousVectorArrowNativeSeamTest' }
+
+tasks.register('autonomousVectorCircleInputTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.AutonomousVectorCircleInputRegressionTest'; enableAssertions=true }
+tasks.register('autonomousVectorCircleVisualTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.AutonomousVectorCircleVisualRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'autonomousVectorCircleInputTest', 'autonomousVectorCircleVisualTest' }
+
+tasks.register('autonomousVectorCircleLearningTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.AutonomousVectorCircleLearningRegressionTest'; enableAssertions=true }
+tasks.register('autonomousVectorCircleCurrentLearningV20', Exec) {
+    dependsOn 'testClasses', 'writeVfx2NativeClasspath'
+    commandLine 'python3', '-B', 'scripts/verify-autonomous-vector-circle-learning-v20.py',
+        '--main-classes', layout.buildDirectory.dir('classes/java/main').get().asFile.absolutePath,
+        '--test-classes', layout.buildDirectory.dir('classes/java/test').get().asFile.absolutePath,
+        '--resources', layout.buildDirectory.dir('resources/main').get().asFile.absolutePath,
+        '--test-resources', layout.buildDirectory.dir('resources/test').get().asFile.absolutePath,
+        '--classpath-file', vfx2NativeClasspath.get().asFile.absolutePath,
+        '--report', layout.buildDirectory.file('reports/autonomous-vector-circle-v20/' + java.util.UUID.randomUUID() + '.json').get().asFile.absolutePath
+}
+tasks.register('autonomousVectorCircleNativeRegistrationV21', Exec) {
+    commandLine 'python3', '-B', 'scripts/verify-autonomous-vector-circle-native-v21.py', '--report',
+        layout.buildDirectory.file('reports/autonomous-vector-circle-v21/' + java.util.UUID.randomUUID() + '.json').get().asFile.absolutePath
+}
+tasks.named('check') { dependsOn 'autonomousVectorCircleLearningTest', 'autonomousVectorCircleCurrentLearningV20', 'autonomousVectorCircleNativeRegistrationV21' }
+
+tasks.register('autonomousVectorCircleHudTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.AutonomousVectorCircleHudRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'autonomousVectorCircleHudTest' }
+
+// Independent exact-center edit regression; do not mutate historical .80 runner.
+tasks.register('scatterLocatorEditBoundaryTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.core.ScatterLocatorEditBoundaryRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'scatterLocatorEditBoundaryTest' }
+
+// Live merged tree: geometry, scroll reachability, prerequisites and click/navigation parity.
+tasks.register('unifiedSkillTreeLayoutTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.UnifiedSkillTreeLayoutRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'unifiedSkillTreeLayoutTest' }
+
+// Skill-owned camera cancellation and category/action geometry; appearance still requires client review.
+tasks.register('castCameraTimelineTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.core.CastCameraTimelineRegressionTest'; enableAssertions=true }
+tasks.register('castSignatureDecorTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.CastSignatureDecorRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'castCameraTimelineTest', 'castSignatureDecorTest' }
+
+// ExFAT metadata companions are not JVM classes, packs, or mods. ModDev run tasks are not JavaExec.
+def removeAppleDouble = { File root ->
+    if (root.exists()) root.eachFileRecurse(groovy.io.FileType.FILES) { if (it.name.startsWith('._')) it.delete() }
+}
+def generatedMetadataCleaned = false
+tasks.withType(JavaExec).configureEach {
+    doFirst {
+        if (!generatedMetadataCleaned) {
+            removeAppleDouble(layout.buildDirectory.dir('classes').get().asFile)
+            removeAppleDouble(layout.buildDirectory.dir('resources').get().asFile)
+            removeAppleDouble(file('src'))
+            generatedMetadataCleaned = true
+        }
+    }
+}
+tasks.matching { it.name.startsWith('run') }.configureEach {
+    doFirst {
+        removeAppleDouble(layout.buildDirectory.get().asFile)
+        removeAppleDouble(file('src'))
+        ['run-showcase/mods', 'run-showcase-sable/mods', 'run-compat-gametest/mods'].each { removeAppleDouble(file(it)) }
+    }
+}
+tasks.withType(Jar).configureEach { exclude '**/._*' }
+
+// Original category-scoped skill icon resources, including passive and training nodes.
+tasks.register('iconAtlasTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.IconAtlasRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'iconAtlasTest' }
+
+// Scrollable, learned/unlearned skill details share one bounded, clickable layout.
+tasks.register('developerSkillDetailsLayoutTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.client.DeveloperSkillDetailsLayoutRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'developerSkillDetailsLayoutTest' }
+
+// Separate optional S2C view of actual spendable skill CP; existing v6 health wire remains unchanged.
+tasks.register('skillBudgetHudTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.SkillBudgetHudRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'skillBudgetHudTest' }
+
+// Exactly-once server-confirmed GUI/legacy release presentation.
+tasks.register('castVisualReceiptsTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.core.CastVisualReceiptsRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'castVisualReceiptsTest' }
+
+tasks.register('castSuccessWiringTest', Exec) { commandLine 'python3', '-B', 'scripts/verify-cast-success-wiring.py' }
+tasks.named('check') { dependsOn 'castSuccessWiringTest' }
+
+tasks.register('impulseSplitNativeSeamTest', JavaExec) { dependsOn testClasses; classpath=sourceSets.test.runtimeClasspath; mainClass='cn.academy.port.highpower.ImpulseSplitNativeSeamRegressionTest'; enableAssertions=true }
+tasks.named('check') { dependsOn 'impulseSplitNativeSeamTest' }
+
+// Finite multi-target shares remain usable through native ordinary armor.
+tasks.register('fractionalArmorMitigationTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.core.FractionalArmorMitigationRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'fractionalArmorMitigationTest' }
+
+// Optional actual Sable snapshots. Missing local exports are explicitly skipped, never fixture passes.
+def windSableFinalExport = providers.gradleProperty('windSableFinalExport').orElse('../qa/evidence/2026-10-22-full-gameplay/wind-sable-final-export2-mixin-export')
+def windSableLiveAst = providers.gradleProperty('windSableLiveAst').orElse('../qa/evidence/2026-10-22-full-gameplay/wind-sable-live-ast')
+tasks.register('windPressureSableProjectionTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath + configurations.compileClasspath
+    mainClass = 'cn.academy.port.client.WindPressureLiftSableProjectionRegressionTest'
+    enableAssertions = true
+    args layout.buildDirectory.file('moddev/artifacts/neoforge-21.1.252-merged.jar').get().asFile.absolutePath, file(windSableFinalExport.get()).absolutePath
+    onlyIf { def present = file(windSableFinalExport.get()).isDirectory(); if (!present) logger.lifecycle('SKIP windPressureSableProjectionTest: actual Sable export unavailable; use -PwindSableFinalExport=...'); present }
+}
+tasks.register('windPressureSableLiveProjectionTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.WindPressureLiftSableLiveProjectionRegressionTest'
+    enableAssertions = true
+    args layout.buildDirectory.file('moddev/artifacts/neoforge-21.1.252-merged.jar').get().asFile.absolutePath, file(windSableFinalExport.get()).absolutePath, file(windSableLiveAst.get()).absolutePath
+    onlyIf { def present = file(windSableFinalExport.get()).isDirectory() && file(windSableLiveAst.get()).isDirectory(); if (!present) logger.lifecycle('SKIP windPressureSableLiveProjectionTest: actual final/live snapshots unavailable; use -PwindSableFinalExport=... -PwindSableLiveAst=...'); present }
+}
+tasks.named('check') { dependsOn 'windPressureSableProjectionTest', 'windPressureSableLiveProjectionTest' }
+
+tasks.register('specialistShieldEfficiencyTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.core.SpecialistShieldEfficiencyRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'specialistShieldEfficiencyTest' }
+
+// Authenticated armed-window visual ownership survives the ordinary 60-tick input ack timeout.
+tasks.register('newSkillWindowVisualTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.NewSkillWindowVisualRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'newSkillWindowVisualTest' }
+
+// Only actual source-catalogued classic skills receive the original-number-to-D conversion.
+tasks.register('classicDamageIdentityTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.ClassicDamageIdentityRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'classicDamageIdentityTest' }
+
+// Expert mining decor is bounded and exists only for an accepted live expert ray.
+tasks.register('expertMiningDecorTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.ExpertMiningDecorRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'expertMiningDecorTest' }
+
+tasks.register('developerLearningReadinessTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.DeveloperLearningReadinessRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'developerLearningReadinessTest' }
+
+// Urban story state is server-authoritative; world and client adapters are added separately.
+tasks.register('urbanStoryTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath + sourceSets.main.compileClasspath
+    mainClass = 'cn.academy.port.story.UrbanStoryProgressTest'
+}
+tasks.register('urbanStoryStorageTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath + sourceSets.main.compileClasspath
+    mainClass = 'cn.academy.port.story.UrbanStoryStorageTest'
+}
+tasks.named('check') { dependsOn 'urbanStoryTest', 'urbanStoryStorageTest' }
+
+// Released canon categories are enabled by default; explicit disable preserves saved identities.
+['canonIntegrationDisabledTest': false, 'canonIntegrationExperimentalTest': true].each { taskName, enabled ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath + sourceSets.main.compileClasspath
+        mainClass = 'cn.academy.port.canon.CanonIntegrationRegressionTest'
+        systemProperty 'academy.canon.experimental', enabled.toString()
+        args enabled.toString()
+    }
+}
+tasks.named('check') { dependsOn 'canonIntegrationDisabledTest', 'canonIntegrationExperimentalTest' }
+
+// Camera ownership decisions are pure and do not require a running client.
+tasks.register('canonLiquidViewRulesTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.CanonLiquidViewRulesTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'canonLiquidViewRulesTest' }
+
+// Strict admission for the requested formal canon release; not an intermediate-development waiver.
+tasks.register('canonFormalReleaseGate', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath + sourceSets.main.compileClasspath
+    mainClass = 'cn.academy.port.canon.CanonFormalReleaseGate'
+    systemProperty 'academy.canon.experimental', 'true'
+    enableAssertions = true
+}
+
+tasks.register('canonIntegrationDefaultTest', JavaExec) {
+    dependsOn testClasses
+    classpath=sourceSets.test.runtimeClasspath + sourceSets.main.compileClasspath
+    mainClass='cn.academy.port.canon.CanonIntegrationRegressionTest'
+    args 'true'
+    enableAssertions=true
+}
+tasks.named('check') { dependsOn 'canonIntegrationDefaultTest', 'canonFormalReleaseGate' }
+
+tasks.register('canonPoseMathTest', JavaExec) {
+    dependsOn testClasses
+    classpath=sourceSets.test.runtimeClasspath + sourceSets.main.compileClasspath
+    mainClass='cn.academy.port.client.canon.CanonPoseMathTest'
+    enableAssertions=true
+}
+tasks.named('check') { dependsOn 'canonPoseMathTest' }

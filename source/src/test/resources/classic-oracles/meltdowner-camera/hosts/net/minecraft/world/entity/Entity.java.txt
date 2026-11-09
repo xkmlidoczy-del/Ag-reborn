@@ -1,0 +1,9 @@
+package net.minecraft.world.entity;
+public class Entity {
+ public net.minecraft.world.phys.Vec3 at=net.minecraft.world.phys.Vec3.ZERO;
+ public float yaw=23.5F,pitch=-17.25F;public final java.util.UUID uuid=new java.util.UUID(1,2);
+ public net.minecraft.world.phys.Vec3 position(){return at;}
+ public float getYHeadRot(){return yaw;}public float getXRot(){return pitch;}
+ public float getEyeHeight(){return 1.62F;}
+ public int getId(){return 7;}public java.util.UUID getUUID(){return uuid;}
+}

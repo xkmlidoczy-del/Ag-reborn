@@ -1,0 +1,1 @@
+lang:zh_cn|cmd:time set day|keyup:82|tree:close|cmd:tp @s 0.5 -60 0.5 0 0|live:prepare-advanced-machine-learning:electromaster/thunder_net|wait:30|tree:select:thunder_net|shot:preflight_advanced_learning_before|tree:detail-confirm|wait:215|live:learned:electromaster/thunder_net|shot:preflight_advanced_learning_after|tree:close|quit

@@ -1,0 +1,164 @@
+{
+  "version": 1,
+  "sample_rate": 48000,
+  "guns": [
+    {
+      "id": "g01",
+      "name": "pulse_sidearm",
+      "mass": 0.62,
+      "body": 143,
+      "metal": 1760,
+      "coil": 2570,
+      "tail": 0.32,
+      "rough": 0.24
+    },
+    {
+      "id": "g02",
+      "name": "compact_pdw",
+      "mass": 0.84,
+      "body": 121,
+      "metal": 2180,
+      "coil": 3120,
+      "tail": 0.29,
+      "rough": 0.47
+    },
+    {
+      "id": "g03",
+      "name": "coil_rifle",
+      "mass": 1.1,
+      "body": 91,
+      "metal": 1450,
+      "coil": 2340,
+      "tail": 0.52,
+      "rough": 0.34
+    },
+    {
+      "id": "g04",
+      "name": "precision_rifle",
+      "mass": 1.38,
+      "body": 72,
+      "metal": 1260,
+      "coil": 1870,
+      "tail": 0.76,
+      "rough": 0.2
+    },
+    {
+      "id": "g05",
+      "name": "scatter_emitter",
+      "mass": 1.55,
+      "body": 82,
+      "metal": 910,
+      "coil": 1630,
+      "tail": 0.62,
+      "rough": 0.76
+    },
+    {
+      "id": "g06",
+      "name": "heavy_emitter",
+      "mass": 1.88,
+      "body": 61,
+      "metal": 760,
+      "coil": 1450,
+      "tail": 0.69,
+      "rough": 0.55
+    }
+  ],
+  "vehicles": [
+    {
+      "id": "v01",
+      "name": "cyan_sedan",
+      "mass": 0.84,
+      "motor": 174,
+      "gear": 436,
+      "hum": 57,
+      "tyre": 0.72,
+      "door": 0.8
+    },
+    {
+      "id": "v02",
+      "name": "city_shuttle",
+      "mass": 2.3,
+      "motor": 106,
+      "gear": 292,
+      "hum": 43,
+      "tyre": 1.4,
+      "door": 1.7
+    },
+    {
+      "id": "v03",
+      "name": "campus_scooter",
+      "mass": 0.32,
+      "motor": 289,
+      "gear": 842,
+      "hum": 109,
+      "tyre": 0.52,
+      "door": 0.22
+    },
+    {
+      "id": "v04",
+      "name": "patrol_suv",
+      "mass": 1.3,
+      "motor": 142,
+      "gear": 372,
+      "hum": 61,
+      "tyre": 1.05,
+      "door": 1.2
+    },
+    {
+      "id": "v05",
+      "name": "rescue_van",
+      "mass": 1.7,
+      "motor": 128,
+      "gear": 326,
+      "hum": 53,
+      "tyre": 1.15,
+      "door": 1.5
+    },
+    {
+      "id": "v06",
+      "name": "utility_truck",
+      "mass": 1.95,
+      "motor": 117,
+      "gear": 268,
+      "hum": 47,
+      "tyre": 1.3,
+      "door": 1.35
+    }
+  ],
+  "gun_events": [
+    "fire_near",
+    "fire_far",
+    "latch",
+    "mag_out",
+    "guide",
+    "mag_in",
+    "charge",
+    "activate",
+    "settle",
+    "cancel",
+    "dry",
+    "equip",
+    "ads_in",
+    "ads_out"
+  ],
+  "vehicle_events": [
+    "start",
+    "stop",
+    "idle",
+    "idle_cabin",
+    "drive",
+    "drive_cabin",
+    "roll",
+    "roll_cabin",
+    "wind",
+    "reverse",
+    "brake",
+    "door_open",
+    "door_close",
+    "door_open_end",
+    "door_close_end",
+    "horn",
+    "bump",
+    "siren"
+  ]
+}

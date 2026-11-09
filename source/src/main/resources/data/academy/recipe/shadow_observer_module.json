@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": ["IGI", "RSR", "ILI"],
+  "key": {
+    "I": {"item": "minecraft:iron_ingot"},
+    "G": {"item": "minecraft:glass"},
+    "R": {"item": "minecraft:redstone"},
+    "S": {"item": "minecraft:spyglass"},
+    "L": {"item": "minecraft:lapis_lazuli"}
+  },
+  "result": {"id": "academy:shadow_observer_module", "count": 1}
+}

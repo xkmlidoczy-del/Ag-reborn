@@ -1,0 +1,48 @@
+[
+  {
+    "name": "candidate-vfx-iron-nearplane",
+    "script": "gameplay-visual-iron-nearplane.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "iron_sand_lance"
+    ],
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Normal key input, original mechanical assertions, native framebuffer tick sequence plus representative action/release images; inspect actual frames after run, not generated visual injection."
+  },
+  {
+    "name": "candidate-vfx-railgun-charge",
+    "script": "gameplay-visual-railgun-charge.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "railgun"
+    ],
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Normal key input, original mechanical assertions, native framebuffer tick sequence plus representative action/release images; inspect actual frames after run, not generated visual injection."
+  },
+  {
+    "name": "candidate-vfx-thunderclap-peak",
+    "script": "gameplay-visual-thunderclap-peak.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "thunder_clap"
+    ],
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Normal key input, original mechanical assertions, native framebuffer tick sequence plus representative action/release images; inspect actual frames after run, not generated visual injection."
+  },
+  {
+    "name": "candidate-vfx-mine-tiers-mid",
+    "script": "gameplay-visual-mine-ray-tiers.script",
+    "directory": "run-showcase-sable",
+    "skills": [
+      "mine_ray_basic",
+      "mine_ray_expert",
+      "mine_ray_luck"
+    ],
+    "props": "academy.qa.finalVisual=true",
+    "status": "planned_not_run",
+    "scope": "Normal real sustained mining with all existing finite-resource/native-drop assertions, native full-frame tick sequence and middle-of-hold pictures; no new production decoration before actual frame comparison."
+  }
+]

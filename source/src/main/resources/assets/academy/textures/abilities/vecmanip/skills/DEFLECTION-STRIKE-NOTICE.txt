@@ -1,0 +1,3 @@
+NEW411 Deflection Strike learning icon
+
+The file deflection_strike.png is an unchanged, byte-identical copy of dir_shock.png from the AcademyCraft 1.0.7 vector skill assets already included in this port. Original work: Lambda Innovation, 2013-2016. The icon is reused for this provisional high-power addition; it is not newly drawn artwork or evidence of original-engine visual parity. GPLv3 and all additional upstream restrictions remain in force. See the project LICENSE and NOTICE.

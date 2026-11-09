@@ -1,0 +1,29 @@
+{
+  "parent": "academy:item/water_flask_body",
+  "overrides": [
+    {
+      "predicate": {
+        "minecraft:damage": 0.25
+      },
+      "model": "academy:item/water_flask_3"
+    },
+    {
+      "predicate": {
+        "minecraft:damage": 0.5
+      },
+      "model": "academy:item/water_flask_2"
+    },
+    {
+      "predicate": {
+        "minecraft:damage": 0.75
+      },
+      "model": "academy:item/water_flask_1"
+    },
+    {
+      "predicate": {
+        "minecraft:damage": 1.0
+      },
+      "model": "academy:item/water_flask_0"
+    }
+  ]
+}

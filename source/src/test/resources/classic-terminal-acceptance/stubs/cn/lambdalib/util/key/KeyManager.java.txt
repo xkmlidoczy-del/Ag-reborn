@@ -1,0 +1,1 @@
+package cn.lambdalib.util.key; public class KeyManager {public static final int MOUSE_LEFT=0;public KeyHandler click;public void addKeyHandler(String s,int key,KeyHandler handler){click=handler;}public void removeKeyHandler(String s){click=null;}}

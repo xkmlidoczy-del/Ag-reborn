@@ -1,0 +1,7 @@
+tasks.register('highPowerScatterPlateSharesTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.ScatterPlateSharesRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'highPowerScatterPlateSharesTest' }

@@ -1,0 +1,2 @@
+package cn.lambdalib.util.client;
+public class ClientUtils { public static boolean playerInGame=true; public static boolean isPlayerInGame() { return playerInGame; } }

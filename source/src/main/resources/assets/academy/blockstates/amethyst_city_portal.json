@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "quadrant=0": {
+      "model": "academy:block/amethyst_city_portal_0"
+    },
+    "quadrant=1": {
+      "model": "academy:block/amethyst_city_portal_1"
+    },
+    "quadrant=2": {
+      "model": "academy:block/amethyst_city_portal_2"
+    },
+    "quadrant=3": {
+      "model": "academy:block/amethyst_city_portal_3"
+    }
+  }
+}

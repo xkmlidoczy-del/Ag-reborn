@@ -1,0 +1,4 @@
+package cn.lambdalib.cgui.xml;
+import cn.lambdalib.cgui.gui.*;import cn.lambdalib.cgui.gui.component.*;
+public class CGUIDocument {public static WidgetContainer panicRead(net.minecraft.util.ResourceLocation id){WidgetContainer c=new WidgetContainer();c.main=new Widget();c.main.texture=new DrawTexture(120/255d);Widget outline=new Widget();outline.texture=new DrawTexture(150/255d);Widget cover=new Widget();cover.texture=new DrawTexture(200/255d);Widget tag=new Widget();tag.texture=new DrawTexture(120/255d);tag.text=new TextBox();Widget progress=new Widget();progress.bar=new ProgressBar();c.main.children.put("outline",outline);c.main.children.put("cover",cover);c.main.children.put("tag",tag);c.main.children.put("progbar",progress);return c;}}
+

@@ -1,0 +1,7 @@
+tasks.register('magneticDomainArrowTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.MagneticDomainArrowRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'magneticDomainArrowTest' }

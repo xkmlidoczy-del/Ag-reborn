@@ -1,0 +1,9 @@
+// Pure mobility reach scaling.
+tasks.register('mobilityScaleTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.core.MobilityScaleRegressionTest'
+    enableAssertions = true
+    maxHeapSize = '128m'
+}
+tasks.named('check') { dependsOn 'mobilityScaleTest' }

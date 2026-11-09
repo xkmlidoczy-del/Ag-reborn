@@ -1,0 +1,8 @@
+// NEW152 material profile, clipping and bounded circulation geometry, without a client or GL context.
+tasks.register('magneticDomainMaterialFlowTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.MagneticDomainMaterialFlowRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'magneticDomainMaterialFlowTest' }

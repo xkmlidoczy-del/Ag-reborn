@@ -1,0 +1,2 @@
+package cn.academy.misc.tutorial;
+public final class ViewGroups {public static ViewGroup drawsBlock(net.minecraft.block.Block block){return new ViewGroup("block:"+block.item.id);}public static ViewGroup recipes(Object item){return new ViewGroup("recipe:"+(item instanceof net.minecraft.block.Block b?b.item.id:((net.minecraft.item.Item)item).id));}public static ViewGroup displayIcon(String path,double x,double y,double size,cn.lambdalib.util.helper.Color color){return new ViewGroup("icon:"+path);} }

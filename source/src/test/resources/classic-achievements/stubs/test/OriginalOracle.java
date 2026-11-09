@@ -1,0 +1,23 @@
+package test;
+import cn.academy.misc.achievements.*;import cn.academy.misc.achievements.pages.*;import cn.academy.misc.achievements.aches.*;import net.minecraft.stats.*;import net.minecraft.item.*;import net.minecraft.entity.player.*;
+public class OriginalOracle {
+ public static void main(String[] args)throws Exception{new ItemAchievement();var pages=java.util.List.of(new PageDefault(),new PageCtElectromaster(),new PageCtMeltdowner(),new PageCtTeleporter(),new PageCtVecmanip());String[] ids={"default","electromaster","meltdowner","teleporter","vecmanip"};int n=0;
+ for(int page=0;page<pages.size();page++)for(var a:pages.get(page).getAchievements()){String icon=a.theItemStack.getItem() instanceof ItemAchievement?"texture:"+ItemAchievement.getTexture(a.theItemStack.getItemDamage()).toString().substring("academy:textures/".length()):"item:"+a.theItemStack.getItem().name;System.out.println(a.statId.substring("achievement.ac_".length())+"\t"+ids[page]+"\t"+a.displayColumn+"\t"+a.displayRow+"\t"+icon+"\t"+(a.parentAchievement==null?"null":a.parentAchievement.statId.substring("achievement.ac_".length()))+condition(a));n++;}if(n!=56)throw new AssertionError(n);
+ var p=new EntityPlayer();var dispatcher=DispatcherAch.INSTANCE;
+ dispatcher.onItemCrafted(new cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent(p,new ItemStack(cn.academy.energy.ModuleEnergy.matrix)));if(!p.earned.isEmpty())throw new AssertionError("source parent gate fixture");
+ dispatcher.onMatterUnitHarvest(new cn.academy.crafting.api.event.MatterUnitHarvestEvent(p,cn.academy.crafting.ModuleCrafting.imagPhase));dispatcher.onItemCrafted(new cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent(p,new ItemStack(cn.academy.energy.ModuleEnergy.matrix)));for(int meta=0;meta<3;meta++)dispatcher.onItemCrafted(new cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent(p,new ItemStack(cn.academy.energy.ModuleEnergy.matrixCore,1,meta)));if(p.earned.size()!=3)throw new AssertionError(p.earned);
+ var crystal=new EntityPlayer();dispatcher.onPlayerPickup(new cpw.mods.fml.common.gameevent.PlayerEvent.ItemPickupEvent(crystal,new ItemStack(cn.academy.crafting.ModuleCrafting.crystalLow,4,1)));if(!crystal.earned.isEmpty())throw new AssertionError("pickup metadata");dispatcher.onPlayerPickup(new cpw.mods.fml.common.gameevent.PlayerEvent.ItemPickupEvent(crystal,new ItemStack(cn.academy.crafting.ModuleCrafting.crystalLow,4,0)));if(crystal.earned.size()!=1)throw new AssertionError("pickup");
+ var learner=new EntityPlayer();dispatcher.onSkillLearn(new cn.academy.ability.api.event.SkillLearnEvent(learner,cn.academy.vanilla.meltdowner.CatMeltdowner.lightShield));if(!learner.earned.isEmpty())throw new AssertionError("no pending learn");dispatcher.onSkillLearn(new cn.academy.ability.api.event.SkillLearnEvent(learner,cn.academy.vanilla.meltdowner.CatMeltdowner.radIntensify));if(learner.earned.size()!=1)throw new AssertionError("root learn");
+ learner.data.cat=cn.academy.vanilla.ModuleVanilla.meltdowner;for(int level=1;level<=5;level++){learner.data.level=level;dispatcher.onLevelChange(new cn.academy.ability.api.event.LevelChangeEvent(learner));}if(learner.earned.size()!=6)throw new AssertionError("exact level dispatch");System.err.println("Unchanged-original registry/layout and event-condition oracle passed");
+ }
+ private static String condition(Achievement a)throws Exception{
+  String kind="MANUAL",key=a.statId.substring("achievement.ac_".length());if(key.contains("."))key=key.substring(key.indexOf('.')+1);int level=0,meta=-2,amount=0;
+  if(a instanceof AchEvLevelChange){kind="LEVEL";var f=AchEvLevelChange.class.getDeclaredField("level");f.setAccessible(true);level=f.getInt(a);key=a.statId.substring("achievement.ac_".length()).split("\\.")[0];}
+  else if(a instanceof AchEvSkillLearn){kind="LEARN";var f=AchEvSkillLearn.class.getDeclaredField("cSkill");f.setAccessible(true);key=((cn.academy.ability.api.Skill)f.get(a)).getName();}
+  else if(a instanceof AchCrSingle){kind="CRAFT";var f=AchCrSingle.class.getDeclaredField("cIT");f.setAccessible(true);var c=(cn.academy.misc.achievements.conds.CondItemCrafted)f.get(a);key=c.item.name;meta=c.meta;amount=c.amount;}
+  else if(a instanceof AchEvItemPickup){kind="PICKUP";var f=AchEvItemPickup.class.getDeclaredField("stack");f.setAccessible(true);var stack=(ItemStack)f.get(a);key=stack.getItem().name;meta=stack.getItemDamage();}
+  else if(a instanceof AchEvMatterUnitHarvest){kind="MATTER";var f=AchEvMatterUnitHarvest.class.getDeclaredField("block");f.setAccessible(true);key=((net.minecraft.block.Block)f.get(a)).item.name;}
+  return "\t"+kind+"\t"+key+"\t"+level+"\t"+meta+"\t"+amount;
+ }
+
+}

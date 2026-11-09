@@ -1,0 +1,2 @@
+package net.neoforged.neoforge.network;
+import java.util.*;import net.minecraft.server.level.ServerPlayer;public class PacketDistributor {public record Delivery(ServerPlayer player,Object payload){}public static final List<Delivery> client=new ArrayList<>();public static final List<Object> server=new ArrayList<>();public static void sendToPlayer(ServerPlayer player,Object payload){client.add(new Delivery(player,payload));}public static void sendToServer(Object payload){server.add(payload);}}

@@ -1,0 +1,3 @@
+public void cursorEntered() {
+        this.ignoreFirstMove = true;
+    }

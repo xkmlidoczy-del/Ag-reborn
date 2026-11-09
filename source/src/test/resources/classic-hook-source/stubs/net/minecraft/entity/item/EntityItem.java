@@ -1,0 +1,1 @@
+package net.minecraft.entity.item;public class EntityItem extends net.minecraft.entity.Entity{public net.minecraft.item.ItemStack stack;public EntityItem(net.minecraft.world.World w,double x,double y,double z,net.minecraft.item.ItemStack s){super(w);setPosition(x,y,z);stack=s;}}

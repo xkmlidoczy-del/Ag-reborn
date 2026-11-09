@@ -1,0 +1,2 @@
+package cn.academy.port.terminal;
+import java.util.*;import net.minecraft.server.level.ServerPlayer;public class TerminalNetwork {public static final List<String> calls=new ArrayList<>();public static List<String> order;public static boolean valid(ServerPlayer p){return p.valid;}public static void sync(ServerPlayer p){p.syncs++;}public static void installed(ServerPlayer p,String app){calls.add(app==null?"terminal_inst[]":"app_inst["+order.indexOf(app)+"]");}public static void installEffect(ServerPlayer p){calls.add("install[]");}}

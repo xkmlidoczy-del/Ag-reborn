@@ -1,0 +1,42 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "result": {
+    "id": "academy:magnetic_coil",
+    "count": 1
+  },
+  "pattern": [
+    "ABC",
+    "DEF",
+    "GHI"
+  ],
+  "key": {
+    "A": {
+      "item": "academy:constraint_plate"
+    },
+    "B": {
+      "item": "academy:reso_crystal"
+    },
+    "C": {
+      "item": "academy:constraint_plate"
+    },
+    "D": {
+      "item": "academy:constraint_plate"
+    },
+    "E": {
+      "item": "academy:reso_crystal"
+    },
+    "F": {
+      "item": "academy:constraint_plate"
+    },
+    "G": {
+      "tag": "c:plates/iron"
+    },
+    "H": {
+      "item": "minecraft:diamond"
+    },
+    "I": {
+      "tag": "c:plates/iron"
+    }
+  }
+}

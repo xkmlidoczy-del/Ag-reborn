@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "BCD",
+    " E "
+  ],
+  "key": {
+    "A": {
+      "item": "academy:crystal_low"
+    },
+    "B": {
+      "item": "academy:energy_convert_component"
+    },
+    "C": {
+      "item": "academy:machine_frame"
+    },
+    "D": {
+      "item": "academy:calc_chip"
+    },
+    "E": {
+      "item": "academy:matter_unit"
+    }
+  },
+  "result": {
+    "id": "academy:imag_fusor",
+    "count": 1
+  }
+}

@@ -1,0 +1,125 @@
+# Original ACA procedural surface materials.
+newmtl buoy_wrap
+Ka 0 0 0
+Kd 1 1 1
+map_Kd academy:items/refined/buoy_wrap
+
+newmtl canister_wrap
+Ka 0 0 0
+Kd 1 1 1
+map_Kd academy:items/refined/canister_wrap
+
+newmtl chip_panel
+Ka 0 0 0
+Kd 1 1 1
+map_Kd academy:items/refined/chip_panel
+
+newmtl cyan
+Ka 0 0 0
+Kd 1 1 1
+map_Kd academy:items/refined/cyan
+
+newmtl flask_ruler
+Ka 0 0 0
+Kd 1 1 1
+map_Kd academy:items/refined/flask_ruler
+
+newmtl gauge
+Ka 0 0 0
+Kd 1 1 1
+map_Kd academy:items/refined/gauge
+
+newmtl glass
+Ka 0 0 0
+Kd 1 1 1
+map_Kd academy:items/refined/glass
+
+newmtl gold
+Ka 0 0 0
+Kd 1 1 1
+map_Kd academy:items/refined/gold
+
+newmtl ink
+Ka 0 0 0
+Kd 1 1 1
+map_Kd academy:items/refined/ink
+
+newmtl lilac
+Ka 0 0 0
+Kd 1 1 1
+map_Kd academy:items/refined/lilac
+
+newmtl metal
+Ka 0 0 0
+Kd 1 1 1
+map_Kd academy:items/refined/metal
+
+newmtl paper
+Ka 0 0 0
+Kd 1 1 1
+map_Kd academy:items/refined/paper
+
+newmtl paper_shadow
+Ka 0 0 0
+Kd 1 1 1
+map_Kd academy:items/refined/paper_shadow
+
+newmtl pcb
+Ka 0 0 0
+Kd 1 1 1
+map_Kd academy:items/refined/pcb
+
+newmtl pearl
+Ka 0 0 0
+Kd 1 1 1
+map_Kd academy:items/refined/pearl
+
+newmtl red
+Ka 0 0 0
+Kd 1 1 1
+map_Kd academy:items/refined/red
+
+newmtl remote_panel
+Ka 0 0 0
+Kd 1 1 1
+map_Kd academy:items/refined/remote_panel
+
+newmtl remote_screen
+Ka 0 0 0
+Kd 1 1 1
+map_Kd academy:items/refined/remote_screen
+
+newmtl rubber
+Ka 0 0 0
+Kd 1 1 1
+map_Kd academy:items/refined/rubber
+
+newmtl silver
+Ka 0 0 0
+Kd 1 1 1
+map_Kd academy:items/refined/silver
+
+newmtl steel
+Ka 0 0 0
+Kd 1 1 1
+map_Kd academy:items/refined/steel
+
+newmtl teal
+Ka 0 0 0
+Kd 1 1 1
+map_Kd academy:items/refined/teal
+
+newmtl water
+Ka 0 0 0
+Kd 1 1 1
+map_Kd academy:items/refined/water
+
+newmtl water_top
+Ka 0 0 0
+Kd 1 1 1
+map_Kd academy:items/refined/water_top
+
+newmtl white
+Ka 0 0 0
+Kd 1 1 1
+map_Kd academy:items/refined/white

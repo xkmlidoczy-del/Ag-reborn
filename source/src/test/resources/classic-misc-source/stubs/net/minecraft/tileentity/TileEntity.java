@@ -1,0 +1,1 @@
+package net.minecraft.tileentity;public class TileEntity {public net.minecraft.world.World worldObj=new net.minecraft.world.World();public net.minecraft.world.World getWorldObj(){return worldObj;}public void updateEntity(){}}

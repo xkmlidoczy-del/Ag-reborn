@@ -1,0 +1,1 @@
+package net.minecraft.client.gui; public class ScaledResolution {public double getScaledWidth_double(){return 480;}public double getScaledHeight_double(){return 320;}}

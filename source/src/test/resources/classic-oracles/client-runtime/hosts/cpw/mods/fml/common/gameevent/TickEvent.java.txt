@@ -1,0 +1,2 @@
+package cpw.mods.fml.common.gameevent;
+public class TickEvent { public enum Phase { START, END } public static class ClientTickEvent { public final Phase phase; public ClientTickEvent(Phase p) { phase=p; } } }

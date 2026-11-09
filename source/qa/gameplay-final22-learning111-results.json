@@ -1,0 +1,22 @@
+[
+  {
+    "name": "final22-learning111-electromaster",
+    "script": "gameplay-learning111-electromaster.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-learning111-meltdowner",
+    "script": "gameplay-learning111-meltdowner.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-learning111-teleporter",
+    "script": "gameplay-learning111-teleporter.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-learning111-vecmanip",
+    "script": "gameplay-learning111-vecmanip.script",
+    "exit": 0
+  }
+]

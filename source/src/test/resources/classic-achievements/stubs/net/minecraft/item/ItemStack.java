@@ -1,0 +1,1 @@
+package net.minecraft.item; import net.minecraft.block.Block; public class ItemStack {public int stackSize;private Item item;private int damage;public ItemStack(Item i){this(i,1,0);}public ItemStack(Block b){this(b.item);}public ItemStack(Item i,int n,int d){item=i;stackSize=n;damage=d;}public Item getItem(){return item;}public int getItemDamage(){return damage;}}

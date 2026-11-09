@@ -1,0 +1,9 @@
+[
+  {
+    "name": "diagnostic22-em-input-record",
+    "script": "gameplay-diagnostic22-em-input-record.script",
+    "directory": "run-showcase-sable",
+    "props": "",
+    "scope": "Complete original merged input modes with only recording brackets around dual-secondary, original Shift/R adjacency and every assertion retained."
+  }
+]

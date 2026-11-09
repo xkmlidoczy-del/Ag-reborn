@@ -1,0 +1,152 @@
+/* Differential against unchanged pinned CPData/AbilityData/CalcEvent/MathUtils. See NOTICE. */
+package cn.academy.port.core;
+
+import cn.academy.ability.api.CategoryManager;
+import cn.academy.ability.api.Skill;
+import cn.academy.ability.api.data.AbilityData;
+import cn.academy.ability.api.data.CPData;
+import cn.academy.ability.api.event.CalcEvent;
+import cn.academy.ability.api.event.OverloadEvent;
+import cn.academy.core.config.ACConfig;
+import cn.lambdalib.util.datapart.EntityData;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.MinecraftForge;
+import java.lang.reflect.Field;
+import java.util.*;
+
+public final class NumericLedgersSourceOracleHarness {
+    static long checks,differences;
+    static boolean baseline;
+    static final Map<String,Long> kinds=new TreeMap<>();
+    static final class Pair {
+        final EntityPlayer player=new EntityPlayer();
+        final CPData original=new CPData();
+        final AbilityData ability=new AbilityData();
+        final AbilityProgress modern=new AbilityProgress();
+        final Skill skill;
+        Pair(int level,int count,SkillConsumption.Config config)throws Exception {
+            MinecraftForge.EVENT_BUS.callback=e->{};
+            var category=CategoryManager.INSTANCE.category;category.skills.clear();category.progressRate=(float)config.categoryProgress("teleporter");
+            skill=new Skill(0,level,category);for(int i=1;i<count;i++)new Skill(i,level,category);
+            EntityData.bind(player,original,ability);original.wake();ability.setCategory(category);ability.setLevel(level);ability.learnSkill(skill);
+            modern.bindConsumption(()->config,SkillConsumption.UNMODIFIED,SkillConsumption.NO_OVERLOAD_EVENT,()->true);
+            modern.selectCategory("teleporter");modern.setLevel(level);modern.learn("mark_teleport");modern.activated=true;
+        }
+        void resources(float cp,float overload,float extraCp,float extraOverload)throws Exception {
+            set(original,"curCP",cp);set(original,"curOverload",overload);set(original,"addMaxCP",extraCp);set(original,"addMaxOverload",extraOverload);
+            modern.cp=cp;modern.overload=overload;modern.extraCp=extraCp;modern.extraOverload=extraOverload;
+        }
+        void experience(float exp,float progress)throws Exception {
+            field(AbilityData.class,"skillExps").get(ability);((float[])field(AbilityData.class,"skillExps").get(ability))[0]=exp;set(ability,"expAddedThisLevel",progress);
+            modern.experience.put("mark_teleport",(double)exp);modern.levelExperience=progress;
+        }
+        void compare(String operation)throws Exception {
+            bits(modern.cp,original.getCP(),operation+".cp");bits(modern.overload,original.getOverload(),operation+".overload");
+            bits(modern.extraCp,original.getAddMaxCP(),operation+".cp-training");bits(modern.extraOverload,original.getAddMaxOverload(),operation+".overload-training");
+            bits(modern.maxCp(),original.getMaxCP(),operation+".cp-cap");bits(modern.maxOverload(),original.getMaxOverload(),operation+".overload-cap");
+            same(modern.cpDelay==getInt(original,"untilRecover"),operation+".cp-delay");same(modern.overloadDelay==getInt(original,"untilOverloadRecover"),operation+".overload-delay");
+            same(modern.overloadFine==getBoolean(original,"overloadFine"),operation+".overload-lock");
+        }
+    }
+    static Field field(Class<?> type,String name)throws Exception {var f=type.getDeclaredField(name);f.setAccessible(true);return f;}
+    static void set(Object object,String name,Object value)throws Exception {field(object.getClass(),name).set(object,value);}
+    static int getInt(Object object,String name)throws Exception{return field(object.getClass(),name).getInt(object);}
+    static boolean getBoolean(Object object,String name)throws Exception{return field(object.getClass(),name).getBoolean(object);}
+    static float getFloat(Object object,String name)throws Exception{return field(object.getClass(),name).getFloat(object);}
+    static void same(boolean value,String reason){checks++;if(!value){differences++;kinds.merge(reason.split(" modern=")[0],1L,Long::sum);if(!baseline)throw new AssertionError(reason);}}
+    static void bits(double modern,float original,String reason){same(Double.doubleToRawLongBits(modern)==Double.doubleToRawLongBits((double)original),reason+" modern="+modern+" source="+original);}
+    static void vector(String name,Object source,Object modern){System.out.println("VECTOR "+name+" source="+source+" modern="+modern);}
+    static SkillConsumption.Config configure(int level,double speed,double overloadSpeed,double cpRate,double overloadRate,double progress,double category)throws Exception {
+        var cfg=ACConfig.instance();cfg.values.put("cp_recover_speed",speed);cfg.values.put("overload_recover_speed",overloadSpeed);cfg.values.put("maxcp_incr_rate",cpRate);cfg.values.put("maxo_incr_rate",overloadRate);cfg.values.put("ac.ability.data.prog_incr_rate",progress);
+        return new SkillConsumption.Config(15,32,cpRate,overloadRate,speed,overloadSpeed,progress,ClassicRules.BASE_CP,ClassicRules.BASE_OVERLOAD,ClassicRules.EXTRA_CP_CAP,ClassicRules.EXTRA_OVERLOAD_CAP,Map.of(),Map.of("teleporter",category));
+    }
+    public static void main(String[] args)throws Exception {
+        baseline=args.length>0&&args[0].equals("baseline");
+        boundaryVectors();consumptionDifferential();recoveryDifferential();experienceDifferential();customizedMasteryLedger();recoveryCallbackOrdering();eventAndProtectionContracts();lifecycleContracts();
+        System.out.println((baseline?"AUDIT":"PASS")+" "+checks+" unchanged-original numeric/event/lifecycle checks; differences="+differences);
+        if(baseline){var summary=new TreeMap<String,Long>();for(var e:kinds.entrySet()){String key=e.getKey().split(" modern=")[0];summary.merge(key,e.getValue(),Long::sum);}System.out.println("BASELINE_DIFF_COUNTS "+summary);}
+    }
+    static void boundaryVectors()throws Exception {
+        var config=configure(1,1,1,.0025,.0058,1,1);var p=new Pair(1,1,config);
+        p.resources(30,0,0,0);double requested=30d+Math.ulp(30f)*.25;
+        boolean expected=p.original.canPerform((float)requested),actual=p.modern.canPerform(requested,false);vector("float-affordability",expected,actual);same(actual==expected,"boundary.affordability");
+        expected=p.original.perform(0,(float)requested);actual=p.modern.consume(requested,0,false);vector("float-affordability-perform",expected,actual);same(actual==expected,"boundary.affordability-perform");p.compare("boundary-affordability-perform");
+        p.resources(30,Math.nextDown(100f),0,0);float strain=Math.ulp(100f)*.51f;boolean original=p.original.perform(strain,0);boolean modern=p.modern.consume(0,strain,false);
+        vector("rounding-overload-lock",!getBoolean(p.original,"overloadFine"),!p.modern.overloadFine);same(original==modern,"boundary.overload-success");p.compare("boundary-overload");
+        p=new Pair(1,1,config);p.experience(0,0);p.ability.addSkillExp(p.skill,.0001f);p.modern.addExperienceRaw("mark_teleport",.0001);vector("single-mastery-float",p.ability.getSkillExp(p.skill),p.modern.exp("mark_teleport"));bits(p.modern.exp("mark_teleport"),p.ability.getSkillExp(p.skill),"boundary.mastery");
+        // This exact classic threshold rounds the progress ratio to 1 while the old double threshold does not.
+        p=new Pair(4,1,config);p.experience(0,1.333f);vector("level-up-at-classic-threshold",p.ability.canLevelUp(),p.modern.canLevelUp(1));same(p.ability.canLevelUp()==p.modern.canLevelUp(1),"boundary.level-up");
+        p=new Pair(5,1,config);p.resources(3777.314f,321.456f,100.123f,33.456f);p.original.tick();p.modern.tick();vector("recovery-without-course",p.original.getCP(),p.modern.cp);p.compare("boundary-recovery");
+        p=new Pair(1,1,config);p.resources(1800,0,899.99994f,39.999996f);p.original.perform(.0001f,.0001f);p.modern.consume(.0001,.0001,false);vector("trained-cap-sum",p.original.getMaxCP(),p.modern.maxCp());p.compare("boundary-training");
+    }
+    static void consumptionDifferential()throws Exception {
+        var random=new Random(0x107F10A7L);
+        for(int i=0;i<18000;i++) {
+            int level=1+random.nextInt(5);double rate=random.nextBoolean()?.0025:random.nextFloat()*.03,overloadRate=random.nextBoolean()?.0058:random.nextFloat()*.02;
+            var config=configure(level,1,1,rate,overloadRate,1,1);var p=new Pair(level,1,config);
+            float extraCp=random.nextFloat()*(float)config.extraCpCap(level),extraOverload=random.nextFloat()*(float)config.extraOverloadCap(level);
+            p.resources(random.nextFloat()*((float)config.baseCp(level)+extraCp),random.nextFloat()*((float)config.baseOverload(level)+extraOverload),extraCp,extraOverload);
+            double cost=random.nextDouble()*10000,strain=random.nextDouble()*800;boolean force=random.nextBoolean(),creative=random.nextInt(7)==0,mutate=random.nextBoolean();float changedCp=random.nextFloat()*10000,changedOverload=random.nextFloat()*800;
+            var modernEvents=new int[2];var sourceEvents=new int[2];
+            MinecraftForge.EVENT_BUS.callback=e->{if(e instanceof CalcEvent.SkillPerform r){sourceEvents[0]++;if(mutate){r.cp=changedCp;r.overload=changedOverload;}}else if(e instanceof OverloadEvent)sourceEvents[1]++;};
+            p.modern.bindConsumption(()->config,e->{modernEvents[0]++;if(mutate){e.cp=changedCp;e.overload=changedOverload;}},()->modernEvents[1]++,()->true);
+            p.player.capabilities.isCreativeMode=creative;boolean expected;
+            if(force){p.original.performWithForce((float)strain,(float)cost);expected=true;}else expected=p.original.perform((float)strain,(float)cost);
+            boolean actual=force?p.modern.consumeWithForceSkill("mark_teleport",cost,strain,creative):p.modern.consumeSkill("mark_teleport",cost,strain,creative);
+            same(actual==expected,"consume.success");same(Arrays.equals(sourceEvents,modernEvents),"consume.event-count");p.compare("consume");
+        }
+    }
+    static void recoveryDifferential()throws Exception {
+        var random=new Random(0x107FDEC0L);
+        for(int i=0;i<12000;i++) {
+            int level=1+random.nextInt(5);double speed=.05+random.nextDouble()*3,overloadSpeed=.05+random.nextDouble()*3;var config=configure(level,speed,overloadSpeed,.0025,.0058,1,1);var p=new Pair(level,1,config);
+            float extraCp=random.nextFloat()*(float)config.extraCpCap(level),extraOverload=random.nextFloat()*(float)config.extraOverloadCap(level);
+            p.resources(random.nextFloat()*((float)config.baseCp(level)+extraCp),random.nextFloat()*((float)config.baseOverload(level)+extraOverload),extraCp,extraOverload);
+            float cpMultiplier=.1f+random.nextFloat()*2,overloadMultiplier=.1f+random.nextFloat()*2;
+            MinecraftForge.EVENT_BUS.callback=e->{if(e instanceof CalcEvent.CPRecoverSpeed r)r.value=cpMultiplier;if(e instanceof CalcEvent.OverloadRecoverSpeed r)r.value=overloadMultiplier;};
+            p.modern.bindCalculations(r->{if(r.kind==AbilityCalculation.Kind.CP_RECOVERY)r.value=cpMultiplier;if(r.kind==AbilityCalculation.Kind.OVERLOAD_RECOVERY)r.value=overloadMultiplier;});
+            p.modern.cpDelay=i%4;p.modern.overloadDelay=i%6;set(p.original,"untilRecover",i%4);set(p.original,"untilOverloadRecover",i%6);
+            for(int step=0;step<8;step++){p.original.tick();p.modern.tick();p.compare("recovery");}
+        }
+    }
+    static void experienceDifferential()throws Exception {
+        var random=new Random(0x107FEA7L);
+        for(int i=0;i<2500;i++) {
+            int level=1+random.nextInt(5),count=1+random.nextInt(10);double global=i%2==0?1:.1+random.nextDouble()*4,category=i%3==0?1:.1+random.nextDouble()*4;
+            var config=configure(level,1,1,.0025,.0058,global,category);var p=new Pair(level,count,config);p.experience(random.nextFloat(),random.nextFloat()*10);
+            for(int step=0;step<80;step++) {
+                double award=random.nextDouble()*.03;p.ability.addSkillExp(p.skill,(float)award);p.modern.addExperienceRaw("mark_teleport",award);
+                bits(p.modern.exp("mark_teleport"),p.ability.getSkillExp(p.skill),"experience.mastery");bits(p.modern.levelExperience,getFloat(p.ability,"expAddedThisLevel"),"experience.level-ledger");bits(p.modern.levelProgress(count),p.ability.getLevelProgress(),"experience.progress");same(p.modern.canLevelUp(count)==p.ability.canLevelUp(),"experience.level-up");
+            }
+        }
+        var config=configure(4,1,1,.0025,.0058,1,1);var p=new Pair(4,3,config);p.experience(1,0);p.ability.addSkillExp(p.skill,.02f);p.modern.addExperienceRaw("mark_teleport",.02f);bits(p.modern.exp("mark_teleport"),1,"saturated.mastery");bits(p.modern.levelExperience,.02f,"saturated.full-level-award");
+    }
+    static void eventAndProtectionContracts()throws Exception {
+        var config=configure(5,1,1,.0025,.0058,1,1);var p=new Pair(5,1,config);p.resources(8000,500,0,0);var order=new ArrayList<String>();var state=p.modern;
+        p.modern.bindConsumption(()->config,r->order.add("cost"),()->{order.add("overload");same(state.overloadFine&&state.cpDelay==15&&state.overloadDelay==32&&state.extraCp==0&&state.extraOverload==0,"events.overload-before-lock-training");},()->true);
+        same(p.modern.consumeSkill("mark_teleport",12,0,false)&&order.equals(List.of("cost","overload")),"events.cost-debit-overload-order");same(!p.modern.overloadFine,"events.overload-lock-after-handler");
+        for(double invalid:new double[]{-1,Double.NaN,Double.POSITIVE_INFINITY,Double.MAX_VALUE}) {var s=new AbilityProgress();s.cp=10;long before=Double.doubleToRawLongBits(s.cp);same(!s.consume(invalid,0,false)&&Double.doubleToRawLongBits(s.cp)==before,"protection.invalid-original-input");}
+        for(float invalid:new float[]{-1,Float.NaN,Float.POSITIVE_INFINITY}){var s=new AbilityProgress();s.cp=10;s.bindConsumption(()->config,r->r.cp=invalid,()->{},()->true);same(!s.consume(1,0,false)&&s.cp==10,"protection.invalid-event-input");}
+        var s=new AbilityProgress();s.selectCategory("teleporter");s.setLevel(1);s.learn("mark_teleport");s.addExperienceRaw("mark_teleport",Double.MAX_VALUE);same(s.levelExperience==0&&s.exp("mark_teleport")==0,"protection.unrepresentable-award");
+        s.restoreCalculatedMaxima(Float.MAX_VALUE,Float.MAX_VALUE);s.extraCp=Float.MAX_VALUE;s.extraOverload=Float.MAX_VALUE;same(Double.isFinite(s.maxCp())&&Double.isFinite(s.maxOverload()),"protection.maxima-addition-overflow");
+        // Keep the public request adapters' documented unchanged-event precision contract.
+        var cost=new SkillConsumption.Request("skill",.1,.2,false,false);same(cost.finalCp()==.1&&cost.finalOverload()==.2,"contract.request-no-mutation-precision");
+        var calculation=new AbilityCalculation.Request(AbilityCalculation.Kind.MAX_CP,.1);same(calculation.result()==.1,"contract.calculation-no-mutation-precision");
+    }
+    static void customizedMasteryLedger()throws Exception {
+        var config=configure(1,1,1,.0025,.0058,1,1);var p=new Pair(1,1,config);p.skill.expCustomized=true;p.experience(.8f,0);
+        // AbilityData.addSkillExp always caps its raw slot, even for skills with customized displayed mastery.
+        p.ability.addSkillExp(p.skill,.01f);float expected=((float[])field(AbilityData.class,"skillExps").get(p.ability))[0];
+        var s=new AbilityProgress();s.selectCategory("meltdowner");s.setLevel(1);s.learn("rad_intensify");s.experience.put("rad_intensify",(double).8f);s.addExperienceRaw("rad_intensify",.01f);
+        vector("customized-display-independent-raw-award",expected,s.experience.get("rad_intensify"));bits(s.experience.get("rad_intensify"),expected,"experience.customized-raw-slot");
+    }
+    static void recoveryCallbackOrdering()throws Exception {
+        var config=configure(5,1,1,.0025,.0058,1,1);var p=new Pair(5,1,config);p.resources(3777.314f,321.456f,0,0);
+        MinecraftForge.EVENT_BUS.callback=e->{if(e instanceof CalcEvent.CPRecoverSpeed r){p.original.setCP(100);r.value=1.2f;}if(e instanceof CalcEvent.OverloadRecoverSpeed r){p.original.setOverload(40);r.value=.7f;}};
+        p.modern.bindCalculations(r->{if(r.kind==AbilityCalculation.Kind.CP_RECOVERY){p.modern.cp=100;r.value=1.2f;}if(r.kind==AbilityCalculation.Kind.OVERLOAD_RECOVERY){p.modern.overload=40;r.value=.7f;}});
+        p.original.tick();p.modern.tick();vector("recovery-raw-before-mutating-event",p.original.getCP(),p.modern.cp);p.compare("recovery-mutating-event");
+    }
+    static void lifecycleContracts()throws Exception {
+        var config=configure(5,1,1,.0025,.0058,1,1);var s=new AbilityProgress();s.bindConsumption(()->config,SkillConsumption.UNMODIFIED,SkillConsumption.NO_OVERLOAD_EVENT,()->true);s.selectCategory("electromaster");s.setLevel(5);s.learn("brain_course");s.learn("brain_course_advanced");s.experience.put("brain_course",.4);double cp=s.baseCp(),overload=s.baseOverload();s.unlearn("brain_course");same(s.baseCp()==cp&&s.baseOverload()==overload&&s.exp("brain_course")==.4&&!s.learned("brain_course"),"lifecycle.unlearned-experience-cached-maxima");s.learnAllClassic(List.of("brain_course","mind_course"));same(s.baseCp()==cp&&s.baseOverload()==overload&&s.exp("brain_course")==.4,"lifecycle.learn-all-cached-maxima");s.extraCp=12000;s.extraOverload=500;s.levelExperience=7;s.changeCategoryClassic("");s.sanitize();same(s.level==0&&s.extraCp==12000&&s.extraOverload==500&&s.levelExperience==7,"lifecycle.direct-category-greatest-growth-bounds");
+    }
+}

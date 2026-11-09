@@ -1,0 +1,1 @@
+package cn.lambdalib.cgui.gui; public class CGui {public Widget main;public void addWidget(String name,Widget w){main=w;}public Widget getWidget(String path){return path.equals("main")?main:main.children.get(path.substring(5));}public void resize(double x,double y){}public void draw(){main.fire();}}

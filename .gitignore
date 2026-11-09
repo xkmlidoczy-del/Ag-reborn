@@ -1,0 +1,26 @@
+# Local environments, caches, build products and game data
+**/.gradle/
+**/.gradle-user/
+**/.venv/
+**/.tools/
+**/build/
+**/build-*/
+**/run/
+**/run-*/
+**/logs/
+**/saves/
+**/screenshots/
+**/crash-reports/
+**/local.properties
+**/.env
+**/.env.*
+**/*.pem
+**/*.p12
+**/*.pfx
+**/*.key
+**/*.log
+**/.DS_Store
+**/._*
+**/__pycache__/
+**/*.pyc
+*.blend1

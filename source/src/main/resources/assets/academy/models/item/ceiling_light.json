@@ -1,0 +1,22 @@
+{
+  "parent": "academy:block/ceiling_light",
+  "display": {
+    "gui": {
+      "rotation": [
+        -25,
+        225,
+        0
+      ],
+      "translation": [
+        0,
+        -3.5,
+        0
+      ],
+      "scale": [
+        0.75,
+        0.75,
+        0.75
+      ]
+    }
+  }
+}

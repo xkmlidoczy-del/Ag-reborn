@@ -1,0 +1,24 @@
+package cn.academy.port;
+
+import cn.academy.port.core.AbilityProgress;
+import cn.academy.port.preset.PresetSkills;
+import java.io.*;
+import java.util.List;
+import net.minecraft.nbt.*;
+
+/** Command lifecycle/cold-storage contracts; no client or world launch. */
+public final class ClassicCommandStateRegressionTest {
+ private static int checks;
+ private static void check(boolean v,String s){checks++;if(!v)throw new AssertionError(s);}
+ private static void close(double a,double b,String s){check(Math.abs(a-b)<1E-6,s);}
+ private static AbilityProgress cold(AbilityProgress s)throws IOException{var bytes=new ByteArrayOutputStream();NbtIo.writeCompressed(AbilityStorage.encodeSaved(s),bytes);return AbilityStorage.decodeSaved(NbtIo.readCompressed(new ByteArrayInputStream(bytes.toByteArray()),NbtAccounter.unlimitedHeap()),cn.academy.port.core.SkillConsumption.Config.DEFAULT);}
+ public static void main(String[] ignored)throws IOException{
+  var s=new AbilityProgress();int[] skillEvents={0},levelEvents={0};s.bindProgress(id->skillEvents[0]++,lv->levelEvents[0]++);s.changeCategoryClassic("electromaster");check(s.level==1&&s.experience.isEmpty()&&levelEvents[0]==0,"direct original first category does not emit LevelChangeEvent");
+  s.setLevel(5);s.extraCp=11000;s.extraOverload=400;s.levelExperience=.73;s.activated=true;s.learn("arc_gen");s.experience.put("arc_gen",(double).7F);s.presets.edit(0,0,"arc_gen",id->true);s.setCooldown("arc_gen",81);s.cp=71;s.overload=15;var exact=AbilityStorage.encode(s);s.changeCategoryClassic("electromaster");check(AbilityStorage.encode(s).equals(exact),"same category is exact NBT no-op");
+  s.unlearn("arc_gen");check(!s.learned("arc_gen")&&skillEvents[0]==1,"unlearn does not emit learn event");close(s.cp,71,"unlearn never refills CP");close(s.overload,15,"unlearn never clears overload");var restored=cold(s);check(!restored.learned("arc_gen")&&restored.presets.currentSkill(0).equals("arc_gen")&&restored.cooldowns.isEmpty(),"actual compressed persistence keeps unlearned raw mapping and omits transient source cooldown");check(AbilityStorage.decode(AbilityStorage.encode(s)).cooldowns.get("arc_gen")==81,"live sync snapshot retains unlearned registered cooldown identity");var oldPort=AbilityStorage.encode(s);check(AbilityStorage.decodeSaved(oldPort,cn.academy.port.core.SkillConsumption.Config.DEFAULT).cooldowns.isEmpty(),"old port persisted cooldown fields are ignored on disk load");close(restored.exp("arc_gen"),(double).7F,"compressed reload retains source float mastery");check(!PresetSkills.mappedUsable(restored,"arc_gen"),"raw mapping cannot authorize unlearned skill");restored.learn("arc_gen");close(restored.exp("arc_gen"),(double).7F,"relearning restores previous mastery");
+  double raw=s.baseCp();int events=skillEvents[0];s.learnAllClassic(List.of("arc_gen","brain_course","brain_course_advanced"));check(skillEvents[0]==events&&s.learned("brain_course")&&s.learned("brain_course_advanced"),"bulk source bitset emits no learning events");close(s.baseCp(),raw,"bulk source bitset retains cached max without recalculation");close(s.cp,71,"bulk grant keeps current CP");close(cold(s).baseCp(),raw,"persisted raw max survives bulk learned passive without invented event");
+  s.changeCategoryClassic("");check(s.level==0&&!s.activated&&s.experience.isEmpty()&&s.unlearnedExperience.isEmpty()&&s.presets.currentSkill(0).isEmpty()&&s.cooldowns.isEmpty(),"classic reset clears category/skill/preset/cooldown identities");close(s.extraCp,11000,"reset retains trained CP");close(s.extraOverload,400,"reset retains trained overload");close(s.levelExperience,.73,"reset retains raw progress");restored=cold(s);close(restored.extraCp,11000,"level0 cold storage preserves source prior-level CP growth");close(restored.extraOverload,400,"level0 cold storage preserves source prior-level overload growth");close(restored.levelExperience,.73,"level0 cold storage preserves raw progress");restored.changeCategoryClassic("meltdowner");check(restored.level==1,"category acquisition after direct reset raises0 to1");close(cold(restored).extraCp,11000,"new category cold storage preserves prior high-level growth");restored.setLevel(2);check(restored.extraCp==0&&restored.extraOverload==0&&restored.levelExperience==0,"real level change resets growth/progress");
+  var corrupt=AbilityStorage.encode(restored);corrupt.getCompound("unlearned_skill_exp").putDouble("electron_bomb",Double.NaN);corrupt.getCompound("unlearned_skill_exp").putDouble("foreign",.9);var repaired=AbilityStorage.decode(corrupt);check(repaired.unlearnedExperience.containsKey("electron_bomb")&&repaired.exp("electron_bomb")==0&&!repaired.unlearnedExperience.containsKey("foreign"),"retained mastery sanitizes nonfinite and unknown category identity");
+  System.out.println("PASS "+checks+" classic command state, cached-capacity, raw-presets, retained-mastery and compressed cold-storage contracts");
+ }
+}

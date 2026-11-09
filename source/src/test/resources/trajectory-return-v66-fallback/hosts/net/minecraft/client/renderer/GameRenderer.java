@@ -1,0 +1,1 @@
+package net.minecraft.client.renderer;public final class GameRenderer {private static final ShaderInstance PTC=new ShaderInstance();public static ShaderInstance getPositionTexColorShader(){return PTC;}}

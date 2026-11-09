@@ -1,0 +1,9 @@
+// Pure optional NEW151 geometry; lifecycle, status authority and classic fallback belong to the caller.
+tasks.register('railThunderArrayGrandGeometryTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.client.RailThunderArrayGrandGeometryRegressionTest'
+    enableAssertions = true
+    maxHeapSize = '128m'
+}
+tasks.named('check') { dependsOn 'railThunderArrayGrandGeometryTest' }

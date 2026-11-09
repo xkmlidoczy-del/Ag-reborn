@@ -1,0 +1,17 @@
+# M28 source progression event checkpoint
+
+Private development checkpoint for Minecraft1.21.1/NeoForge21.1.252/Java21. Full faithful port acceptance remains open.
+
+Generic scaled/raw/passive XP now auto-learns registered same-category skills before award arithmetic, preserving raw mastery and source bypass of development prerequisites. Learned bit mutation precedes SkillLearnEvent; real level/progress mutation precedes LevelChangeEvent. Source CPData common effects run once at NORMAL: skill learning retains training; level changes reset training, calculate MAX_CP then MAX_OVERLOAD, refill CP and clear current overload. Same-level calls are full no-ops. Validity checks precede mutation. Changed then Added events carry fixed request identity and original float request, including capped mastery; retained raw slots and listener reentry follow the original algorithm.
+
+M26 category phases/context-only cleanup/completing controller/session and M27 cached maxima/wake-data configuration remain intact. Existing modern finite/session/save/network guards remain. Original unsafe values and unregistered extension slots are separately bounded, rather than described as byte-compatible legacy platform behavior.
+
+The unchanged-original differential executes AbilityData/CPData/DispatcherAch business code with declared platform hosts:19666 raw-bit/state/event checks across50 identities, zero differences. Numeric1862070, category/cache1566 and existing invalid/consumption/prerequisite/event-bus/link checks pass. Original source witnesses are unchanged. Native362required tests passed, including four new actual-storage/player/event-bus progression fixtures; additional6commands/3configuration and two distinct native disk JVM phases passed.
+
+The first broad native run exposed an old negative-preset fixture attempting legal learning of a Meltdowner skill in Electromaster state. Production correctly rejected it. Only fixture setup changed: assert atomic wrong-category learning rejection, then deliberately preseed malformed state for the existing ingress-denial checks. All322failed-run files remain unchanged. No production validation was relaxed.
+
+Source registration audit: CPData EventHandler and DispatcherAch constructor registration belong to separate INIT dependency registries stored in a HashSet; annotated-field sorting does not establish a universal CP-before-achievement NORMAL tie. Native automatic subscriber iteration also has no sort guarantee. Definite primitive/event and priority boundaries are preserved. CP-first and achievement-first declared original platform variants both pass1566 comparisons. M26 Cooldown→CP→Preset annotated-field category order remains separately proven.
+
+M27 real singleplayer authentic-input GUI/randomElectromaster/root/binding and one held block Arc are accepted separately. Saved .0018f XP and exact30CP/18O float training agree; raw04 has actual blue-white Arc at10.000–10.333333s. Supplied tools/poses/residency/instant breaking/accelerated clocks/separateNether fixtures prevent calling this complete unassisted survival. Audio recordings remain silent. Actual M28 client continuation is pending this checkpoint.
+
+Remaining activation/deactivation events, administrative raw-XP Changed event and client event/sync transport are separate increments. Broader natural-world acquisition and audiovisual comparisons remain required; integrated counts do not establish a completed full port.

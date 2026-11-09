@@ -1,0 +1,23 @@
+// Apply from build.gradle only when the parent is ready to integrate the isolated harness.
+// The distributable JAR exclusion is enforced independently of the opt-in source wiring.
+tasks.named('jar') { exclude('cn/academy/port/gametest/**') }
+if (providers.gradleProperty('socketQA').getOrElse('false').toBoolean()) {
+    sourceSets.main.java.srcDir(layout.projectDirectory.dir('src/socketQa/java'))
+    neoForge {
+        runs {
+            socketQaServer {
+                type = 'gameTestServer'
+                gameDirectory = layout.projectDirectory.dir(providers.gradleProperty('socketServerDirectory').getOrElse('run-socket-server-qa'))
+                systemProperty 'neoforge.enabledGameTestNamespaces', 'academy_socket'
+                systemProperty 'academy.socket.qa', 'true'
+                programArgument '--world'
+                programArgument 'academy-socket-world'
+            }
+            socketQaClient {
+                client()
+                gameDirectory = layout.projectDirectory.dir(providers.gradleProperty('socketClientDirectory').getOrElse('run-socket-client-qa'))
+                systemProperty 'academy.socket.clientqa', 'true'
+            }
+        }
+    }
+}

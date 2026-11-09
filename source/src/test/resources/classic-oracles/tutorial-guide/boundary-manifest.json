@@ -1,0 +1,222 @@
+[
+  {
+    "resource": "bridge/cn/academy/misc/tutorial/ClassicHarness.java",
+    "sha256": "d2aa85e791b422116d2b20e6ad624a5a76e8ae97bd3cb8f2a9438a90cdb29a58"
+  },
+  {
+    "resource": "stubs/cn/academy/ability/ModuleAbility.java",
+    "sha256": "b7a5a2e5eb5f32ebae1420bbf59b2c4d72f10b348e8fda72a660ff1885321f78"
+  },
+  {
+    "resource": "stubs/cn/academy/core/AcademyCraft.java",
+    "sha256": "2bc15a8324dc4358cb8c90c677ee4792712458654143d5cea86d09680e7d8617"
+  },
+  {
+    "resource": "stubs/cn/academy/core/Resources.java",
+    "sha256": "2264303109f2c1d9729998f34f5c96a8ccc96bb0aaec6d8d8965a663941c6c1c"
+  },
+  {
+    "resource": "stubs/cn/academy/core/item/ACItem.java",
+    "sha256": "c705a81ab31f50edf6bf59079fc65c061267779524dab19b02ca9fa8e9b4ad40"
+  },
+  {
+    "resource": "stubs/cn/academy/core/registry/ACRecipeNamesRegistration.java",
+    "sha256": "c4b030a1e19bd78059011b131e9446be51a2d2b93a3ecad1f179560c6aff353d"
+  },
+  {
+    "resource": "stubs/cn/academy/crafting/ModuleCrafting.java",
+    "sha256": "c542d45160c659c4527cb2d0c8397f6f8a40660506341bbe1e0235a390f9adc2"
+  },
+  {
+    "resource": "stubs/cn/academy/energy/ModuleEnergy.java",
+    "sha256": "8e815ddbb2e21f24e2e4d5ea9c64a9da9d96c92a9695a39e4617a56cbe36bbae"
+  },
+  {
+    "resource": "stubs/cn/academy/misc/tutorial/OracleSupport.java",
+    "sha256": "1d62439112cc43d1a64c0b30d6388febad0c8b932afbc79e849210dcb84750fd"
+  },
+  {
+    "resource": "stubs/cn/academy/misc/tutorial/ViewGroup.java",
+    "sha256": "f9f0c10e6de5ddc1190dfb970ce45db04ba52ede46d071cf7a3fa7af0b6dc35b"
+  },
+  {
+    "resource": "stubs/cn/academy/misc/tutorial/ViewGroups.java",
+    "sha256": "2096185899d56c6ee09961482489f17182474359e6336145e57ca4f657681e5f"
+  },
+  {
+    "resource": "stubs/cn/academy/misc/tutorial/client/GuiTutorial.java",
+    "sha256": "77b626316f463a30e5b101090ec6b51bdc21508060087d9cc1199f13c1ec978d"
+  },
+  {
+    "resource": "stubs/cn/academy/support/rf/RFSupport.java",
+    "sha256": "3ac298e5400199bc3230b3e936e953a491c1cba4c5dc2bf637bb2724be10aa6d"
+  },
+  {
+    "resource": "stubs/cn/academy/terminal/AppEnvironment.java",
+    "sha256": "70ce2216631bddf349736a477833fa0c26f6784006a21dab6bc7687db9553078"
+  },
+  {
+    "resource": "stubs/cn/academy/terminal/ModuleTerminal.java",
+    "sha256": "45770a6c55c0cd830606fc97f8a1566794a245ce47497d3306333b0c0f49ab7e"
+  },
+  {
+    "resource": "stubs/cn/academy/terminal/item/ItemApp.java",
+    "sha256": "a15f5e3310435b5ea8358c7416fbcfd270290b356cbc026420b42111e91f8b93"
+  },
+  {
+    "resource": "stubs/cn/lambdalib/annoreg/core/Registrant.java",
+    "sha256": "d7ed900e94b7d5f585c02d0d89466bd72d3a737be48cffd060763e3efc62e2fc"
+  },
+  {
+    "resource": "stubs/cn/lambdalib/annoreg/mc/RegInitCallback.java",
+    "sha256": "23082fa18bb41626dcfc03554c11fdd60bd368e7c40ec92552dca16a2047eba8"
+  },
+  {
+    "resource": "stubs/cn/lambdalib/annoreg/mc/RegItem.java",
+    "sha256": "cc4af87949c818e932aa7d2220044b7489ca5d8ef1ee6ea97db68ad6aa567fe0"
+  },
+  {
+    "resource": "stubs/cn/lambdalib/annoreg/mc/RegPostInitCallback.java",
+    "sha256": "e8ec5a50c11aef11ca88aea945e587c51febdea473962ab5223e5f8cd8a155f2"
+  },
+  {
+    "resource": "stubs/cn/lambdalib/annoreg/mc/RegPreInitCallback.java",
+    "sha256": "978a499374f5ebe87d292b97c3b370eeb3b974de930e7fa65c019d5ccbf96ed2"
+  },
+  {
+    "resource": "stubs/cn/lambdalib/crafting/CustomMappingHelper.java",
+    "sha256": "01749b96ea700337dbf29cffe6ce7d1efe7bbc119717238948a447b5b771c472"
+  },
+  {
+    "resource": "stubs/cn/lambdalib/s11n/SerializeIncluded.java",
+    "sha256": "34be22d984a57c8251b9a80a4b4e198c8e6620fcdbf192875b7fb62a7eed070c"
+  },
+  {
+    "resource": "stubs/cn/lambdalib/s11n/nbt/NBTS11n.java",
+    "sha256": "037594c000a91d36da8a169078f0b29a2dbf610774de28f6c07bdcb7ff2ea37e"
+  },
+  {
+    "resource": "stubs/cn/lambdalib/s11n/network/NetworkMessage.java",
+    "sha256": "32605be274b28e03a87dc6f1771b0ae3c5b54208c67a07137ae42f8081bf55d1"
+  },
+  {
+    "resource": "stubs/cn/lambdalib/util/datapart/DataPart.java",
+    "sha256": "cc0c64ed7ca3460c4b94f572d018c8afde95e9ea9f4ec719a71d5e0e594c9637"
+  },
+  {
+    "resource": "stubs/cn/lambdalib/util/datapart/EntityData.java",
+    "sha256": "9b471bddc9bee3ca732ad5598059e5b2d43fcabcaa4bcd3f5cd31d4b534b7267"
+  },
+  {
+    "resource": "stubs/cn/lambdalib/util/datapart/RegDataPart.java",
+    "sha256": "61d50f7da0db06afb9a00587db1e8c1b23eb557dece78efe2574d00c277b719a"
+  },
+  {
+    "resource": "stubs/cn/lambdalib/util/generic/RegistryUtils.java",
+    "sha256": "7abebfaa8f0d52651afa685f38d9fe0cb2424af64b926f97af6dc311fa38ffc9"
+  },
+  {
+    "resource": "stubs/cn/lambdalib/util/helper/Color.java",
+    "sha256": "a9f59e7af1194ed709565ae49bd0199e14880a684185be98cbc6feefa818f42d"
+  },
+  {
+    "resource": "stubs/com/google/common/base/Preconditions.java",
+    "sha256": "db832f9f509be1cc3980b0aeda049d8537a46749776a50d2c0269689ea1f3d7f"
+  },
+  {
+    "resource": "stubs/com/google/common/collect/ArrayListMultimap.java",
+    "sha256": "164545385a3e0dd19ca64999efe8ccca44e3973633e211a3a3f132025b2c22ca"
+  },
+  {
+    "resource": "stubs/com/google/common/collect/ImmutableList.java",
+    "sha256": "af39093dd3cd45c541dc1634e2b6ba142c1e27b5c80b82f15e494db5d7085fe3"
+  },
+  {
+    "resource": "stubs/com/google/common/collect/Multimap.java",
+    "sha256": "75a8548e4df2dd50f85238dbddcc76d3b5e73144fee3b4d27c03d423229fe790"
+  },
+  {
+    "resource": "stubs/cpw/mods/fml/common/FMLCommonHandler.java",
+    "sha256": "db40be03817076bb9e497ff57d291a4c85e8b8a1fbf557821bff83f11da98ea1"
+  },
+  {
+    "resource": "stubs/cpw/mods/fml/common/eventhandler/SubscribeEvent.java",
+    "sha256": "099f67ae21b2b2722bc201680146f6d14ff694852726dfc37f1331473c8f3ee0"
+  },
+  {
+    "resource": "stubs/cpw/mods/fml/common/gameevent/PlayerEvent.java",
+    "sha256": "e54c244477d83e461aae474819dc1d8cd291923793910cbcf59827883cdfa7b7"
+  },
+  {
+    "resource": "stubs/cpw/mods/fml/relauncher/Side.java",
+    "sha256": "e626295382c4d3b361daa405e5bbf659d0499b0c81ae4b3de478c66b65a3f92f"
+  },
+  {
+    "resource": "stubs/cpw/mods/fml/relauncher/SideOnly.java",
+    "sha256": "145be884d8003db992eee426f3f5e842f5cb0641e0e9b30e36d927e95799ac2a"
+  },
+  {
+    "resource": "stubs/net/minecraft/block/Block.java",
+    "sha256": "a2b93cd0235c842c94bf54a1d3a993d6af106fa5274ed540ada95ceeb963e623"
+  },
+  {
+    "resource": "stubs/net/minecraft/client/Minecraft.java",
+    "sha256": "059279fcd2128085ba66ae20cc8fa9f1dff321ef223ea7810b30b0e84f7005cc"
+  },
+  {
+    "resource": "stubs/net/minecraft/entity/item/EntityItem.java",
+    "sha256": "ec5f9db5841e6095ad5134dcceaf52e71ad6456c1223e418760c920921ec54b1"
+  },
+  {
+    "resource": "stubs/net/minecraft/entity/player/EntityPlayer.java",
+    "sha256": "2dc931baa217c05bdad55e497dad53c07e212ecea5c6c42dca61f02a5f5d25e7"
+  },
+  {
+    "resource": "stubs/net/minecraft/item/Item.java",
+    "sha256": "19b075024709b6f7b08860c6d479e22da7711e4fe225f3da2a86684b202443dc"
+  },
+  {
+    "resource": "stubs/net/minecraft/item/ItemStack.java",
+    "sha256": "7b08fa860b84cf58afcec7a95a6ac586a69a4bf354d0d616404a1ab32f3087c3"
+  },
+  {
+    "resource": "stubs/net/minecraft/nbt/NBTTagCompound.java",
+    "sha256": "9225a94d417e4e544fd183bd42c5fa32b8cc5ceff22d24590755933b3c56a055"
+  },
+  {
+    "resource": "stubs/net/minecraft/util/ResourceLocation.java",
+    "sha256": "9b92960536a8819e8b2b92e9b46a4a097ea706c3c5c23fe104e56b8f0342bef9"
+  },
+  {
+    "resource": "stubs/net/minecraft/util/StatCollector.java",
+    "sha256": "8b5c3190de60bedb0c82aa4146595b623d679a73d3c8fbf96f7bd81b0ffa7430"
+  },
+  {
+    "resource": "stubs/net/minecraft/world/World.java",
+    "sha256": "af50f30612f314099775b8753370991a3d406ce88a95dda19d97f6db4461e406"
+  },
+  {
+    "resource": "stubs/net/minecraftforge/common/MinecraftForge.java",
+    "sha256": "7a6756e77ca70162db856ae54e33d7678c63fa23d4d0b864c03c5def64ac67d3"
+  },
+  {
+    "resource": "stubs/net/minecraftforge/event/entity/player/PlayerEvent.java",
+    "sha256": "89a6615b184ff108a41912f77e10db28d213cb430305ee1e58b17fe5eee7013c"
+  },
+  {
+    "resource": "stubs/org/apache/commons/io/IOUtils.java",
+    "sha256": "1f83a5fb8143ebbe3b3d1ccc7cbc47dbe968248f16b3dfa33ef6fcb965ae089b"
+  },
+  {
+    "resource": "stubs/org/apache/commons/lang3/tuple/Pair.java",
+    "sha256": "7ea71b6fd0dc287fe71d9e3334396209bee299b4ee1948eb62f57a48182aa56c"
+  },
+  {
+    "resource": "stubs/scala/Function0.java",
+    "sha256": "cd04578fd68152da424f5305b5dd0d2ebb7271ed08b78acffdebb749354806e6"
+  },
+  {
+    "resource": "stubs/stub-list.txt",
+    "sha256": "971bd72cdbb46000a45c9b5ddab013cdd1cc29b79f7a96c14ea15c210d29fac4"
+  }
+]

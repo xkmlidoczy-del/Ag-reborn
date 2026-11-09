@@ -1,0 +1,11 @@
+// NEW232 finite one-shot airborne assists and native context receipts.
+['highPowerBeamStepRulesTest':'cn.academy.port.highpower.core.BeamStepRulesRegressionTest',
+ 'beamStepClientTest':'cn.academy.port.client.BeamStepClientRegressionTest'].each { taskName, className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+    }
+    tasks.named('check') { dependsOn taskName }
+}

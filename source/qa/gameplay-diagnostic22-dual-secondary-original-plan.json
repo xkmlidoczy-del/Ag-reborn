@@ -1,0 +1,9 @@
+[
+  {
+    "name": "diagnostic22-dual-secondary-original",
+    "script": "gameplay-em-md-mode-dual-secondary.script",
+    "directory": "run-showcase-sable",
+    "props": "",
+    "scope": "Exact original standalone script replay after failed merged mode; no input or assertion changed."
+  }
+]

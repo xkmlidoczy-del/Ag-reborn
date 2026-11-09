@@ -1,0 +1,7 @@
+[
+  {"name":"vm-environment-blast-block","script":"gameplay-vm-environment-blast-block.script"},
+  {"name":"vm-environment-ground-wave","script":"gameplay-vm-environment-ground-wave.script"},
+  {"name":"vm-environment-ground-soft","script":"gameplay-vm-environment-ground-soft.script"},
+  {"name":"vm-environment-storm-fragile","script":"gameplay-vm-environment-storm-fragile.script"},
+  {"name":"vm-environment-plasma-terrain","script":"gameplay-vm-environment-plasma-terrain.script"}
+]

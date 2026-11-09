@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "academy:blocks/reso_crystal_ore"
+  }
+}

@@ -1,0 +1,8 @@
+// Original platform hosts stay in test resources and an isolated dynamic compiler/classloader.
+tasks.register('classicPrerequisiteFloatSourceTest',JavaExec) {
+ dependsOn testClasses
+ classpath=sourceSets.test.runtimeClasspath
+ mainClass='cn.academy.port.core.ClassicPrerequisiteFloatSourceOracleTest'
+ enableAssertions=true
+}
+tasks.named('check') { dependsOn 'classicPrerequisiteFloatSourceTest' }

@@ -1,0 +1,42 @@
+[
+  {
+    "name": "preflight21-advanced-learning",
+    "script": "gameplay-learning111-advanced-smoke.script",
+    "props": ""
+  },
+  {
+    "name": "preflight21-potential-original",
+    "script": "gameplay-final-em-defense-rest.script",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "preflight21-tp-complex-original",
+    "script": "gameplay-tp-complex.script",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "preflight21-hand-net",
+    "script": "gameplay-final20-visual-net.script",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "preflight21-hand-guards",
+    "script": "gameplay-final20-visual-vm-guards.script",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "preflight21-hand-plasma",
+    "script": "gameplay-final20-visual-plasma.script",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "preflight21-hand-cage-storm",
+    "script": "gameplay-vm-cage-storm.script",
+    "props": "academy.qa.finalVisual=true"
+  },
+  {
+    "name": "preflight21-hand-fast-look",
+    "script": "gameplay-arm-continuity-fast-look.script",
+    "props": "academy.qa.finalVisual=true"
+  }
+]

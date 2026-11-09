@@ -1,0 +1,18 @@
+{
+  "src/main/java/cn/academy/port/client/ClassicHudFont.java": {
+    "baseline_sha256": "1187f4786033c1199abf1d8402db7cd02aae5793b52d0f4b28e2bb548e90d474",
+    "staged_sha256": "51911f0fc07e8cba9332325e712866b4fb02d3da0fed0f1c638c78f888cbd066"
+  },
+  "src/main/java/cn/academy/port/client/ClassicHudShaders.java": {
+    "baseline_sha256": "ee7565f39d340ac3f6c632d37372c1ecbae21844aa3b7561b17729a93f8e662d",
+    "staged_sha256": "ac391a58f496acdef998f77590f72422d2e3a44c2d2d2f93e9e485ae34ea4b8a"
+  },
+  "src/main/resources/assets/academy/shaders/core/classic_font.json": {
+    "baseline_sha256": null,
+    "staged_sha256": "5f4f34c583b9030290e5364289ddc2423eb25514db99eccbeb9d9372b77b8015"
+  },
+  "src/main/resources/assets/academy/shaders/core/classic_font.fsh": {
+    "baseline_sha256": null,
+    "staged_sha256": "e0e5b4c2ab1ddad05d3eb5c0505f69f51f1400efba28d6691382e1d7fb8d4b9a"
+  }
+}

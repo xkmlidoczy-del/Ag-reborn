@@ -1,0 +1,162 @@
+[
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/meltdowner/skill/RayBarrage.scala",
+    "resource": "academycraft/RayBarrage.scala.txt",
+    "sha256": "3b33f6dec68cd471cb574bd1cb768c448b411521a700d293a21a0a6ce3ca66a4"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/meltdowner/skill/JetEngine.scala",
+    "resource": "academycraft/JetEngine.scala.txt",
+    "sha256": "1d02e6d3fe43cbf125c32a674919fb760807c67070fab4a97648d27f2c1b86ef"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/meltdowner/skill/ElectronMissile.scala",
+    "resource": "academycraft/ElectronMissile.scala.txt",
+    "sha256": "417238d254ebbc37778fe30b33cac23eee3f75707faef5c32db3131430d7e786"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/meltdowner/skill/ScatterBomb.scala",
+    "resource": "academycraft/ScatterBomb.scala.txt",
+    "sha256": "2516cd187fab43de8336a2e64b39a8f94f70367f51bb230c0b0690f547618b87"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/vanilla/meltdowner/skill/ElectronBomb.scala",
+    "resource": "academycraft/ElectronBomb.scala.txt",
+    "sha256": "13025f5d06f5ed7ffa416268cf332994dd0a118dd8ea84f8d2b3b36e02ed9c61"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/meltdowner/CatMeltdowner.java",
+    "resource": "academycraft/CatMeltdowner.java.txt",
+    "sha256": "fd9ccdbc902682b65f41f11fa583fed526ee1ed80a69efc72f6b6ab670be28be"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/meltdowner/entity/EntitySilbarn.java",
+    "resource": "academycraft/EntitySilbarn.java.txt",
+    "sha256": "9dd9981b7bdf2d993d4d5ee7f78af845159aa00598f22d55b7845c4f49e3771c"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/meltdowner/item/ItemSilbarn.java",
+    "resource": "academycraft/ItemSilbarn.java.txt",
+    "sha256": "7a6736ad795590b036fbaeceb0e1051739985be5ac394b5124f55112474800fd"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/meltdowner/entity/EntityBarrageRayPre.java",
+    "resource": "academycraft/EntityBarrageRayPre.java.txt",
+    "sha256": "fc3a99881fd1d820030c0bab92e405451d9313ef697d8a502b5c953a0e25420f"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/meltdowner/entity/EntityMdRayBarrage.java",
+    "resource": "academycraft/EntityMdRayBarrage.java.txt",
+    "sha256": "c65fb16ab9176d3c9b20f902caf1508f11555f3b6d0a61da81ed2105d552ce0e"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/meltdowner/entity/EntityMdBall.java",
+    "resource": "academycraft/EntityMdBall.java.txt",
+    "sha256": "173e3ee7af867e3c20ada46dc719b7ff2d7020828a01fc42d403b28830cc8e65"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/meltdowner/entity/EntityMdRaySmall.java",
+    "resource": "academycraft/EntityMdRaySmall.java.txt",
+    "sha256": "cc3a6cce9e045ba3f41c544efb711d991c7a3924fe8c7f5471c391a5300bf040"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/meltdowner/entity/EntityDiamondShield.java",
+    "resource": "academycraft/EntityDiamondShield.java.txt",
+    "sha256": "5b16b5b51cd2b3386e1bc03697f2c3a23b7272237bb321e53d0c7f474380692e"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/meltdowner/client/render/RenderDiamondShield.java",
+    "resource": "academycraft/RenderDiamondShield.java.txt",
+    "sha256": "15d90f1bededacd97219355ee2e792be8327403ba27515000970b2477d3d3e56"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/meltdowner/client/render/MdParticleFactory.java",
+    "resource": "academycraft/MdParticleFactory.java.txt",
+    "sha256": "9e0f1e2c80235184e886d76e51d375e8ec312505d39b331da52f66d5af551cdd"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/vanilla/generic/client/render/RippleMarkRender.java",
+    "resource": "academycraft/RippleMarkRender.java.txt",
+    "sha256": "62dad63cc5bc61670f7c7da7fa52d797f884b88d704241e6e5c35c8ae79a162a"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/core/entity/EntityRayBase.java",
+    "resource": "academycraft/EntityRayBase.java.txt",
+    "sha256": "c92031238e72442a0a484907336867eef1197013c5013588ede6a614173cdbd8"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/context/ContextManager.java",
+    "resource": "academycraft/ContextManager.java.txt",
+    "sha256": "9043b907759cb9349be438d4f75c26f790fd357280609b500010dc4ce33803e8"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/ability/api/AbilityContext.java",
+    "resource": "academycraft/AbilityContext.java.txt",
+    "sha256": "9830d2efcfec0e86539a8cf49f5984e1a5cf1e48e5d9b50ad6c167fd454db00a"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/core/client/render/ray/RendererRayBaseGlow.java",
+    "resource": "academycraft/RendererRayBaseGlow.java.txt",
+    "sha256": "f1cc35cb06dba90a5a67d2c7d3464cbc4283742b4ffc8dc5ad22dfbf2572cb1a"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/core/client/render/ray/RendererRayBaseSimple.java",
+    "resource": "academycraft/RendererRayBaseSimple.java.txt",
+    "sha256": "7e9165978ea2608f166b2726ffe03c0eea95a162b3ec68bc99d41a872331a32f"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/core/client/render/ray/RendererRayGlow.java",
+    "resource": "academycraft/RendererRayGlow.java.txt",
+    "sha256": "d4168311b956a4258f0eae6ff71c9dd67ce9f1f98abd4eeb2dd0f4f6f2621cd7"
+  },
+  {
+    "source": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/generic/MathUtils.java",
+    "resource": "lambdalib/MathUtils.java.txt",
+    "sha256": "e80c87ca15cbae89584bd9e1111e22d2f55866bf91b434c8813c20bb98176075"
+  },
+  {
+    "source": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/helper/Motion3D.java",
+    "resource": "lambdalib/Motion3D.java.txt",
+    "sha256": "85d514c11b5130b994c2ceb7efa3bd93a7c0a832e65a9abb0f196cc6d2897a56"
+  },
+  {
+    "source": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/deprecated/ViewOptimize.java",
+    "resource": "lambdalib/ViewOptimize.java.txt",
+    "sha256": "4fbd82ec5ea86dde328d8c089280ab3a3a0ec4c12912edc14faa2fc472803364"
+  },
+  {
+    "source": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/entityx/handlers/Rigidbody.java",
+    "resource": "lambdalib/Rigidbody.java.txt",
+    "sha256": "affda19ba7deaa368402d8c0e7f5b5964f0ee386c3a15abf19dc9e9b1ec21455"
+  },
+  {
+    "source": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/entityx/EntityX.java",
+    "resource": "lambdalib/EntityX.java.txt",
+    "sha256": "eefca4df3d67b5169a58a2f38c4abc6c16ce9b80f9f9440e26df2ca9bba77971"
+  },
+  {
+    "source": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/particle/Particle.java",
+    "resource": "lambdalib/Particle.java.txt",
+    "sha256": "dc43a1fd076185af971b19631773406259e46050bf065cc7653a3e00627a4b11"
+  },
+  {
+    "source": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/particle/RenderParticle.java",
+    "resource": "lambdalib/RenderParticle.java.txt",
+    "sha256": "65c3c626eda89f241e9eccaa6e305ae06e9a5dcd25b2b74be15b33a69271c687"
+  },
+  {
+    "source": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/template/client/render/item/RenderModelItem.java",
+    "resource": "lambdalib/RenderModelItem.java.txt",
+    "sha256": "90850c0d133cf8c42d7ee000ec62bd82884e16047f32b4fbdcc56020e3ad5afd"
+  },
+  {
+    "source": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/deprecated/ItemModelCustom.java",
+    "resource": "lambdalib/ItemModelCustom.java.txt",
+    "sha256": "c99ad0ce7f220c34e9d412243174fbad34f1c0e4876288e4e745dc8e8549c89a"
+  },
+  {
+    "source": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/recipes/default.recipe",
+    "resource": "academycraft/default.recipe",
+    "sha256": "a9dc4aa3477ad246f7cb9bb6bea3c33e033aaa8431f3c8a03acaf0845374da1f"
+  }
+]

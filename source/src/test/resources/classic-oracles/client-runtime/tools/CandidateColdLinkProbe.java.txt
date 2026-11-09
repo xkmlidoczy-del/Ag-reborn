@@ -1,0 +1,81 @@
+import java.lang.reflect.*;
+import java.net.*;
+import java.nio.file.*;
+import java.util.*;
+import java.util.function.*;
+
+/** Candidate-only loader test: no original-source platform hosts on this classpath. */
+public final class CandidateColdLinkProbe {
+    static final String NAME="cn.academy.port.client.ClassicClientRuntimeCoordinator";
+    static final List<String> DENIED=List.of("net.minecraft.","net.neoforged.","net.minecraftforge.",
+        "com.mojang.","org.lwjgl.","cpw.mods.","cn.lambdalib.");
+    static final class GuardedLoader extends URLClassLoader {
+        int attempts;
+        GuardedLoader(URL[] urls) { super(urls,ClassLoader.getPlatformClassLoader()); }
+        @Override protected Class<?> loadClass(String name,boolean resolve) throws ClassNotFoundException {
+            for(String prefix:DENIED) if(name.startsWith(prefix)) { ++attempts; throw new ClassNotFoundException("Denied engine namespace: "+name); }
+            return super.loadClass(name,resolve);
+        }
+    }
+    static Object invoke(Class<?> type,Object receiver,String name,Class<?>[] parameters,Object... args) throws Exception {
+        return type.getMethod(name,parameters).invoke(receiver,args);
+    }
+    static void call(Class<?> type,Object receiver,String name) throws Exception { invoke(type,receiver,name,new Class<?>[0]); }
+    static void assertTrue(boolean value,String message) { if(!value) throw new AssertionError(message); }
+    public static void main(String[] args) throws Exception {
+        Path candidate=Path.of(args[0]).toRealPath(), guava=Path.of(args[1]).toRealPath();
+        try(GuardedLoader loader=new GuardedLoader(new URL[]{candidate.toUri().toURL(),guava.toUri().toURL()})) {
+            List<Path> files;
+            try(var stream=Files.walk(candidate)) { files=stream.filter(p->p.toString().endsWith(".class")).sorted().toList(); }
+            for(Path file:files) {
+                String className=candidate.relativize(file).toString().replace('/', '.').replaceAll("\\.class$","");
+                Class<?> loaded=Class.forName(className,true,loader);
+                assertTrue(Path.of(loaded.getProtectionDomain().getCodeSource().getLocation().toURI()).toRealPath().equals(candidate),"Unexpected candidate class location: "+loaded);
+                loaded.getDeclaredMethods(); loaded.getDeclaredFields(); loaded.getDeclaredConstructors();
+            }
+            Class<?> type=loader.loadClass(NAME), inputsType=loader.loadClass(NAME+"$Inputs"), delegateType=loader.loadClass(NAME+"$Delegate"), handlerType=loader.loadClass(NAME+"$ActivateHandler");
+            boolean[] down={false},raw={true},alive={true}; int[] callbacks={0},terminations={0},overrides={0};
+            Object inputs=java.lang.reflect.Proxy.newProxyInstance(loader,new Class<?>[]{inputsType},(proxy,method,arguments)->switch(method.getName()) {
+                case "runtimeAvailable", "playerInGame" -> true;
+                case "categoryActivated", "canUseAbility" -> raw[0];
+                case "terminalOpen", "inCooldown" -> false;
+                case "keyDown" -> down[0];
+                case "requestRawActivation" -> { raw[0]=(Boolean)arguments[0]; yield null; }
+                case "replaceOverrides" -> { ++overrides[0]; yield null; }
+                case "hashCode" -> System.identityHashCode(proxy);
+                case "equals" -> proxy==arguments[0];
+                case "toString" -> "cold-inputs";
+                default -> throw new AssertionError(method);
+            });
+            Object delegate=java.lang.reflect.Proxy.newProxyInstance(loader,new Class<?>[]{delegateType},(proxy,method,arguments)->switch(method.getName()) {
+                case "onKeyDown", "onKeyTick", "onKeyUp", "onKeyAbort" -> { ++callbacks[0]; yield null; }
+                case "hashCode" -> System.identityHashCode(proxy);
+                case "equals" -> proxy==arguments[0];
+                case "toString" -> "cold-delegate";
+                default -> throw new AssertionError(method);
+            });
+            Object runtime=type.getConstructor(inputsType).newInstance(inputs);
+            invoke(type,runtime,"addKey",new Class<?>[]{String.class,int.class,delegateType},"special",-100,delegate);
+            invoke(type,runtime,"setDefaultGroupRebuilder",new Class<?>[]{Runnable.class},(Runnable)()->{});
+            down[0]=true; call(type,runtime,"clientTickStart"); call(type,runtime,"clientTickStart");
+            assertTrue((Boolean)invoke(type,runtime,"hasActiveDelegate",new Class<?>[0]),"cold active delegate absent");
+            assertTrue("endskill".equals(invoke(type,runtime,"activationHint",new Class<?>[0])),"cold active fallback hint");
+            Object handler=invoke(type,null,"terminatesContext",new Class<?>[]{BooleanSupplier.class,Runnable.class},
+                (BooleanSupplier)()->alive[0],(Runnable)()->{alive[0]=false; ++terminations[0];});
+            invoke(type,runtime,"addActivateHandler",new Class<?>[]{handlerType},handler);
+            assertTrue("endspecial".equals(invoke(type,runtime,"activationHint",new Class<?>[0])),"cold special hint");
+            invoke(type,runtime,"activationHintTranslated",new Class<?>[]{String.class,Function.class},"key",(Function<String,String>)(key->key));
+            call(type,runtime,"activateKeyDown"); invoke(type,runtime,"removeActiveHandler",new Class<?>[]{handlerType},handler);
+            call(type,runtime,"abortDelegates"); down[0]=false; call(type,runtime,"clientTickStart");
+            for(String method:List.of("presetSwitch","presetEdit","observerActivate","observerDeactivate","updateDefaultGroup","requestFlush","clientTickStart","clearAllKeys")) call(type,runtime,method);
+            invoke(type,runtime,"getDelegates",new Class<?>[]{String.class},"missing");
+            invoke(type,runtime,"clearKeys",new Class<?>[]{String.class},"missing");
+            for(String method:List.of("getDelegateRawData","keyStateSnapshot","keyRegistrationSnapshot","groupSnapshot","overrideSnapshot","controlDirty","flushPending")) call(type,runtime,method);
+            call(type,runtime,"activateKeyDown"); assertTrue(!raw[0],"cold raw activation toggle");
+            assertTrue(callbacks[0]>=3 && terminations[0]==1 && overrides[0]>0,"cold business operations not exercised");
+            assertTrue(loader.attempts==0,"candidate attempted denied engine linkage");
+            System.out.println("PASS candidate cold link: "+files.size()+" classes, JDK+Guava-only loader, "+callbacks[0]+" callbacks, "+overrides[0]+" override calls, zero denied engine namespace loads");
+            System.out.println("BOUNDARY: local JVM linkage proof only; no real engine, network or original-source hosts loaded");
+        }
+    }
+}

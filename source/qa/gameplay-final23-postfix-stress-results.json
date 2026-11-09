@@ -1,0 +1,12 @@
+[
+  {
+    "name": "final23-yaw-stress",
+    "script": "gameplay-diagnostic22-observer-yaw-stress.script",
+    "exit": 0
+  },
+  {
+    "name": "final23-complete-em-stress",
+    "script": "gameplay-diagnostic22-observer-complete-em-stress.script",
+    "exit": 0
+  }
+]

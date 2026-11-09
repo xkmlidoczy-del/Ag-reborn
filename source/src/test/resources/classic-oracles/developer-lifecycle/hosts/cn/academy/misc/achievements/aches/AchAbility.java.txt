@@ -1,0 +1,6 @@
+/* Test-only lifecycle platform plumbing; business methods run unchanged originals. */
+package cn.academy.misc.achievements.aches;
+public abstract class AchAbility<Cat extends cn.academy.ability.api.Category> extends net.minecraft.stats.Achievement {protected final Cat category;
+ public AchAbility(Cat cat,String id,int x,int y,Object display,net.minecraft.stats.Achievement parent){super(id);category=cat;}
+ @SuppressWarnings("unchecked")public AchAbility(cn.academy.ability.api.Skill skill,String id,int x,int y,net.minecraft.stats.Achievement parent){super(id);category=(Cat)skill.getCategory();}
+ public abstract void registerAll();public abstract void unregisterAll();}

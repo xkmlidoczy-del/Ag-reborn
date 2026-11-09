@@ -1,0 +1,101 @@
+{
+  "source_version": "AcademyCraft-1.0.7",
+  "source_license": "GPL-3.0",
+  "source_root": ".reference/AcademyCraft-1.0.7",
+  "source_files": [
+    {
+      "path": "src/main/resources/assets/academy/recipes/default.recipe",
+      "sha256": "a9dc4aa3477ad246f7cb9bb6bea3c33e033aaa8431f3c8a03acaf0845374da1f"
+    },
+    {
+      "path": "src/main/java/cn/academy/energy/ModuleEnergy.java",
+      "sha256": "fc38533a5d7f38114823471d53ac7f259501543585b8f7241a6b2753bb80598e"
+    },
+    {
+      "path": "src/main/java/cn/academy/energy/template/ItemEnergyBase.java",
+      "sha256": "7b18d3d242284d1af401eb09c98529eff01265ce00aa4c1ff19dad2a6ee5e610"
+    },
+    {
+      "path": "src/main/java/cn/academy/energy/api/IFItemManager.java",
+      "sha256": "3d5ebf467392ba53c8741c03a44c7f18feebb679e0011866a4768d84171dfed7"
+    },
+    {
+      "path": "src/main/java/cn/academy/support/EnergyItemHelper.java",
+      "sha256": "5abeb9c7642f56e57f3b736c0959a6c958b34c684bf3e069563a35240d920496"
+    },
+    {
+      "path": "src/main/java/cn/academy/core/item/ACItem.java",
+      "sha256": "36032026180dc8e48f6da18f725c40cb9e029baea7ed818f2712688b7c7535ff"
+    },
+    {
+      "path": "src/main/java/cn/academy/crafting/ModuleCrafting.java",
+      "sha256": "f0ea3f22cc77815ecd0f4f6374d68ac0ca6334e720ee159d97aae0e3256a6b46"
+    }
+  ],
+  "textures": [
+    {
+      "source": "src/main/resources/assets/academy/textures/items/energy_unit_empty.png",
+      "target": "assets/academy/textures/items/energy_unit_empty.png",
+      "sha256": "df554068d8f2e57d7f87d3f7bf3cc33160726844c303917707f1c006c26a39e3"
+    },
+    {
+      "source": "src/main/resources/assets/academy/textures/items/energy_unit_half.png",
+      "target": "assets/academy/textures/items/energy_unit_half.png",
+      "sha256": "0b8e44204cb862f17dfdae21e78347267a20ac7d0cb04efe61d3262236688005"
+    },
+    {
+      "source": "src/main/resources/assets/academy/textures/items/energy_unit_full.png",
+      "target": "assets/academy/textures/items/energy_unit_full.png",
+      "sha256": "94f4d70db45475058ca9c769a135331becc0cfa3e8d742ca6c791431d416aaaa"
+    }
+  ],
+  "recipe_source": "src/main/resources/assets/academy/recipes/default.recipe",
+  "recipes": [
+    {
+      "id": "energy_unit_18",
+      "source_start_line": 97,
+      "source_end_line": 101,
+      "output": "academy:energy_unit",
+      "count": 1
+    },
+    {
+      "id": "energy_unit_19",
+      "source_start_line": 103,
+      "source_end_line": 107,
+      "output": "academy:energy_unit",
+      "count": 2
+    },
+    {
+      "id": "energy_unit_20",
+      "source_start_line": 109,
+      "source_end_line": 113,
+      "output": "academy:energy_unit",
+      "count": 4
+    },
+    {
+      "id": "energy_convert_component_37",
+      "source_start_line": 201,
+      "source_end_line": 205,
+      "output": "academy:energy_convert_component",
+      "count": 1
+    }
+  ],
+  "fixture_sha256": "fdaa706df9dab94a95418d14f4a0b6fba73d59d7b164334ab40afa704652516a",
+  "model_property": "academy:energy_unit_level",
+  "model_levels": {
+    "empty": 0,
+    "half": 1,
+    "full": 2
+  },
+  "legacy_max_damage": 13,
+  "legacy_capacity_if": 10000,
+  "legacy_bandwidth_if": 20,
+  "fluid_dependency": {
+    "id": "imagProj",
+    "amount_mb": 1000,
+    "source": "ModuleEnergy.init",
+    "filled": "EnergyItemHelper.createFullItem(energyUnit)",
+    "empty": "EnergyItemHelper.createEmptyItem(energyUnit)",
+    "requires": "ModuleCrafting.fluidImagProj + Forge FluidContainerRegistry + phase-liquid machines"
+  }
+}

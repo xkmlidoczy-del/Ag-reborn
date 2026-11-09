@@ -1,0 +1,10 @@
+['highPowerScatterPlateGeometryTest':'cn.academy.port.highpower.core.ScatterPlateGeometryRegressionTest',
+ 'highPowerScatterPlateNativeSeamTest':'cn.academy.port.highpower.ScatterPlateNativeSeamRegressionTest'].each { taskName, className ->
+    tasks.register(taskName, JavaExec) {
+        dependsOn testClasses
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = className
+        enableAssertions = true
+    }
+    tasks.named('check') { dependsOn taskName }
+}

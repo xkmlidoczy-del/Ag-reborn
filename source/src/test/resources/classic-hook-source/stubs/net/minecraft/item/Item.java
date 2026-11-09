@@ -1,0 +1,1 @@
+package net.minecraft.item;public class Item{public static final java.util.Random itemRand=new java.util.Random(7);public void setCreativeTab(Object o){}public void setUnlocalizedName(String s){}public void setTextureName(String s){}public ItemStack onItemRightClick(ItemStack s,net.minecraft.world.World w,net.minecraft.entity.player.EntityPlayer p){return s;}}

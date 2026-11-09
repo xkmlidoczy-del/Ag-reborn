@@ -1,0 +1,2 @@
+package cpw.mods.fml.common;
+public final class FMLCommonHandler { private static final FMLCommonHandler INSTANCE=new FMLCommonHandler(); public static FMLCommonHandler instance(){return INSTANCE;} public cpw.mods.fml.relauncher.Side getEffectiveSide(){return cn.academy.misc.tutorial.OracleSupport.side;} public cn.academy.misc.tutorial.OracleSupport.Bus bus(){return cn.academy.misc.tutorial.OracleSupport.BUS;} }

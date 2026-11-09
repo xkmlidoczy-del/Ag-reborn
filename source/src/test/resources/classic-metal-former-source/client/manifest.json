@@ -1,0 +1,588 @@
+{
+  "provenance": "AcademyCraft 1.0.7 / LambdaLib 1.2.3 checked-in immutable original source witnesses. Do not regenerate during verification. Source GPLv3 and Lambda MIT notices remain in repository NOTICE.",
+  "source_fixtures": [
+    {
+      "fixture": "academy/BlockMetalFormer.java",
+      "canonical_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/block/BlockMetalFormer.java",
+      "sha256": "44d1f26d2eaacdd6677109e086230d90d466557c5cb3c91f936b63f2a010bd1d"
+    },
+    {
+      "fixture": "academy/TileMetalFormer.java",
+      "canonical_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/block/TileMetalFormer.java",
+      "sha256": "32e41e5a1ada6c2069225bc4bd3b09258695003484e84cc789d53f2d1e42dc13"
+    },
+    {
+      "fixture": "academy/ContainerMetalFormer.java",
+      "canonical_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/crafting/block/ContainerMetalFormer.java",
+      "sha256": "71e3b9a392ce946daa27399fa84fbb03ba1d0836bf6f9ec9b75100f226860e8d"
+    },
+    {
+      "fixture": "academy/TechUIContainer.java",
+      "canonical_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/core/container/TechUIContainer.java",
+      "sha256": "03a0b43816ff2667583c6dca3f629c026ff100e37ab88c9b6df41827fef8289f"
+    },
+    {
+      "fixture": "academy/TileEntitySound.java",
+      "canonical_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/core/client/sound/TileEntitySound.java",
+      "sha256": "ae67b0c145d9820e41099f7cb857c02c1b06e950db84125c303c2462e92fa88a"
+    },
+    {
+      "fixture": "academy/PositionedSound.java",
+      "canonical_path": ".reference/AcademyCraft-1.0.7/src/main/java/cn/academy/core/client/sound/PositionedSound.java",
+      "sha256": "c11cd90e190aa44d2022342e983b3617cdd36128f4ca6cbebe5b579b9779e734"
+    },
+    {
+      "fixture": "academy/GuiMetalFormer.scala",
+      "canonical_path": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/crafting/client/ui/GuiMetalFormer.scala",
+      "sha256": "f9aa71d3363554b305f5f93a7cbae71d16895a7e307d0d45380099ea3179d319"
+    },
+    {
+      "fixture": "academy/TechUI.scala",
+      "canonical_path": ".reference/AcademyCraft-1.0.7/src/main/scala/cn/academy/core/client/ui/TechUI.scala",
+      "sha256": "5a10ef61d2068e7677a47953f4e044db2200abde8e74727666b4315f5511ffc1"
+    },
+    {
+      "fixture": "academy/page_metalformer.xml",
+      "canonical_path": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/guis/rework/page_metalformer.xml",
+      "sha256": "e50fdcdff2b105164f8a363d938e03d02c101a2d447923b4a5ee23428dd37625"
+    },
+    {
+      "fixture": "academy/pageselect.xml",
+      "canonical_path": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/guis/rework/pageselect.xml",
+      "sha256": "ac6ca7a304f9dbc38d634fe2c42dfb2aac4ce32da80e7c4db6a64901151e7053"
+    },
+    {
+      "fixture": "academy/sounds.json",
+      "canonical_path": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/sounds.json",
+      "sha256": "c84f72ec250c2b46885565ac31123ac13184b6497be8bc1434cba6d083013a8f"
+    },
+    {
+      "fixture": "lambda/CGui.java",
+      "canonical_path": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/cgui/gui/CGui.java",
+      "sha256": "b38a09528f56a67f1281d74f435bc1024ed9b36c7476b1d5deeff548a90aa40a"
+    },
+    {
+      "fixture": "lambda/CGuiScreenContainer.java",
+      "canonical_path": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/cgui/gui/CGuiScreenContainer.java",
+      "sha256": "d25071f358a8b0ff6da7b570881466330b7e73a047d6eddf1f3a7d7d5c3ab815"
+    },
+    {
+      "fixture": "lambda/Transform.java",
+      "canonical_path": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/cgui/gui/component/Transform.java",
+      "sha256": "4546f5a06c1380864d0c0a27dc0a04accbd627fc610462e7db1e9a31e89af902"
+    },
+    {
+      "fixture": "lambda/DrawTexture.java",
+      "canonical_path": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/cgui/gui/component/DrawTexture.java",
+      "sha256": "3cc7ab4458a9c39f973fffac1c4bfcddd2484e7ad4e6fe95c5b762a46a380ce6"
+    },
+    {
+      "fixture": "lambda/ProgressBar.java",
+      "canonical_path": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/cgui/gui/component/ProgressBar.java",
+      "sha256": "c56e0b2e96de79ff77871646c2679bcd2f80e84b695ca50672779878f2dde6c9"
+    },
+    {
+      "fixture": "lambda/IFont.java",
+      "canonical_path": ".reference/LambdaLib-1.2.3/src/main/java/cn/lambdalib/util/client/font/IFont.java",
+      "sha256": "cef5fd1c96b811c3e2a472ed5d8fedd9cb67e334a0d470115efd9956e7b5c1a4"
+    },
+    {
+      "fixture": "academy/lang/en_US.lang",
+      "canonical_path": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/lang/en_US.lang",
+      "sha256": "1bebd37b61e7e3fd7ba4af617a0a2deba588deb10c5abcfec71ca8ba404c42b6"
+    },
+    {
+      "fixture": "academy/lang/zh_CN.lang",
+      "canonical_path": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/lang/zh_CN.lang",
+      "sha256": "40c35cd739abe858bb77b4b3df4b3a47b8ad117f0c1bb58dca938e9bb0fa700f"
+    },
+    {
+      "fixture": "academy/lang/zh_TW.lang",
+      "canonical_path": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/lang/zh_TW.lang",
+      "sha256": "4a2444fb6bfe5221fbc65d392aa68d7e291ec11338e837a6d67ead7dccfcbf54"
+    },
+    {
+      "fixture": "academy/lang/ja_JP.lang",
+      "canonical_path": ".reference/AcademyCraft-1.0.7/src/main/resources/assets/academy/lang/ja_JP.lang",
+      "sha256": "3ba5ff10c042aeed4773b4f30cfa3dce0cdd59a3d3a7a504dd3a630a0b679316"
+    },
+    {
+      "fixture": "native-cube.json",
+      "canonical_path": "Minecraft 1.21.1 assets/minecraft/models/block/cube.json",
+      "sha256": "3e4aacd02e816aeba38f83076596e18ded4cf49c01e17c62d1fce79850ffb84e"
+    }
+  ],
+  "original_media": [
+    {
+      "asset": "textures/blocks/metal_former_front.png",
+      "bytes": 4177,
+      "sha256": "4e1be0b843673894d1a361a80e4dd7b1f88acf7819c17b709a603f1517284432",
+      "original_equal": true,
+      "width": 32,
+      "height": 32,
+      "rgba_pixel_sha256": "3b91047d6596319d83b85c4d88ed7e746ec96a601441282e97f32134e514662c",
+      "alpha_bounds": [
+        0,
+        0,
+        32,
+        32
+      ],
+      "alpha_extrema": [
+        255,
+        255
+      ]
+    },
+    {
+      "asset": "textures/blocks/metal_former_right.png",
+      "bytes": 3446,
+      "sha256": "d54a6292a9a3a701e040e062624100d20cac83328458e13eb985dfe0820975cb",
+      "original_equal": true,
+      "width": 32,
+      "height": 32,
+      "rgba_pixel_sha256": "618c91e2f243d9b8ddf00bf24d15b38b040c1962b9aa3c8524717491d2b265d8",
+      "alpha_bounds": [
+        0,
+        0,
+        32,
+        32
+      ],
+      "alpha_extrema": [
+        255,
+        255
+      ]
+    },
+    {
+      "asset": "textures/blocks/metal_former_back.png",
+      "bytes": 3477,
+      "sha256": "118eb6feb162bd8678249bd51b292dd6c6b5544bf3eb877c7b612e70faffa772",
+      "original_equal": true,
+      "width": 32,
+      "height": 32,
+      "rgba_pixel_sha256": "53a81ea6f14c74093cb6d819295db389787ad5d2b79e9391a22ae241321594f8",
+      "alpha_bounds": [
+        0,
+        0,
+        32,
+        32
+      ],
+      "alpha_extrema": [
+        255,
+        255
+      ]
+    },
+    {
+      "asset": "textures/blocks/metal_former_left.png",
+      "bytes": 3912,
+      "sha256": "5ab57a7573759b2acbcbdd78130cf7b4091c28793375deefd3fe3ebf87bf19b1",
+      "original_equal": true,
+      "width": 32,
+      "height": 32,
+      "rgba_pixel_sha256": "710964ef07e8e9954fcfd0c32a02ce459e9544908e0a38afc8ede421f5f8cf71",
+      "alpha_bounds": [
+        0,
+        0,
+        32,
+        32
+      ],
+      "alpha_extrema": [
+        255,
+        255
+      ]
+    },
+    {
+      "asset": "textures/blocks/metal_former_top.png",
+      "bytes": 4076,
+      "sha256": "a7447854c8c802a91270dda7179865770f03b8ead20e965113a5cffca4fb1880",
+      "original_equal": true,
+      "width": 32,
+      "height": 32,
+      "rgba_pixel_sha256": "f9b09b35c7f4a76d833fe45572f239fe3a2fada02c8670c1ebf37cf27503981b",
+      "alpha_bounds": [
+        0,
+        0,
+        32,
+        32
+      ],
+      "alpha_extrema": [
+        255,
+        255
+      ]
+    },
+    {
+      "asset": "textures/blocks/metal_former_bottom.png",
+      "bytes": 3635,
+      "sha256": "9b8a87a24d8e12ed5b116488c7508d3eb1a175042ab60f90cadc1cc8e0133f13",
+      "original_equal": true,
+      "width": 32,
+      "height": 32,
+      "rgba_pixel_sha256": "3857cc8241e0846cc6225afef2e18bedc6250a531997fe831abf5c6feb041984",
+      "alpha_bounds": [
+        0,
+        0,
+        32,
+        32
+      ],
+      "alpha_extrema": [
+        255,
+        255
+      ]
+    },
+    {
+      "asset": "textures/guis/icons/icon_former_plate.png",
+      "bytes": 3724,
+      "sha256": "a35f55791d5a922facd6cb5b38c3047d02f9ef814435e26682018a89df5703ff",
+      "original_equal": true,
+      "width": 48,
+      "height": 48,
+      "rgba_pixel_sha256": "1216b6333a546bed99210a9ed03a12f14a902196215ed3bceb7db58d10c418c6",
+      "alpha_bounds": [
+        6,
+        7,
+        42,
+        38
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "asset": "textures/guis/icons/icon_former_incise.png",
+      "bytes": 3662,
+      "sha256": "d2513040a30a9dde5f96fb704efccbc7bd03bface44c699f37d49ecc315d9128",
+      "original_equal": true,
+      "width": 48,
+      "height": 48,
+      "rgba_pixel_sha256": "a3da76afed3ce18bf1f0d591a1bc4793656947da063dc05d49e07ab4b944a701",
+      "alpha_bounds": [
+        6,
+        9,
+        42,
+        39
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "asset": "textures/guis/icons/icon_former_etch.png",
+      "bytes": 3682,
+      "sha256": "c08982634b28400fcaa68c1045063e74fcaec4512a097ba273ff715f050782ca",
+      "original_equal": true,
+      "width": 48,
+      "height": 48,
+      "rgba_pixel_sha256": "334d6977ea2db27abdcd8d40b401d610a97c1a37914f288f2d3ab83dbcab06e1",
+      "alpha_bounds": [
+        6,
+        6,
+        42,
+        38
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "asset": "textures/guis/icons/icon_former_refine.png",
+      "bytes": 3756,
+      "sha256": "3b8f872385901abd3d64a1599418f8f9b958c1dacb904acf5a2d4349b2fe643c",
+      "original_equal": true,
+      "width": 48,
+      "height": 48,
+      "rgba_pixel_sha256": "6872faf4b57443db4a449df7b0b9a21413286360273fd1f442b65e9feadd4cfa",
+      "alpha_bounds": [
+        10,
+        8,
+        39,
+        41
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "asset": "textures/guis/parent/parent_background.png",
+      "bytes": 4759,
+      "sha256": "bd0f8650f74c7eecd3b81aac8c3f1b359a4265517d860b7f45482faea583217d",
+      "original_equal": true,
+      "width": 352,
+      "height": 374,
+      "rgba_pixel_sha256": "5070d431cc0de8b4e5c03995360f812f789126d8d7249c7f31d56666b29b1bf1",
+      "alpha_bounds": [
+        2,
+        0,
+        349,
+        374
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "asset": "textures/guis/ui/ui_inventory.png",
+      "bytes": 9803,
+      "sha256": "3df45b3dcd70ccbcf6ab0334bf2ed36345113d7ae71c8c42187d7ab9a3cc6887",
+      "original_equal": true,
+      "width": 352,
+      "height": 374,
+      "rgba_pixel_sha256": "658ae5bd2eb255eb64e58e401fa02d7f11c0fd7f34dc3a9dd9e5e83f75b538e4",
+      "alpha_bounds": [
+        13,
+        166,
+        341,
+        362
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "asset": "textures/guis/ui/ui_metalformer.png",
+      "bytes": 9629,
+      "sha256": "0236ebeeb6059d1f545a91a6efb04a36914a705a406592235645116e189173cf",
+      "original_equal": true,
+      "width": 352,
+      "height": 374,
+      "rgba_pixel_sha256": "a7cc2c91e6e60326abe35a3259fc2f448d0b383f278c5cc64de0623edcbafec7",
+      "alpha_bounds": [
+        13,
+        9,
+        339,
+        202
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "asset": "textures/guis/progress/progress_metalformer.png",
+      "bytes": 3240,
+      "sha256": "d6cdf51f1b3648ebd9631e97158eb2c8aa265a00b7635c6479c5e6da95b7fbce",
+      "original_equal": true,
+      "width": 114,
+      "height": 30,
+      "rgba_pixel_sha256": "c67c8ae2749733a4bfe3708f1936e274de21eaffa758fdb3d0f3c5ce9de5043f",
+      "alpha_bounds": [
+        3,
+        3,
+        111,
+        27
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "asset": "textures/guis/button/button_arrowlefta.png",
+      "bytes": 3110,
+      "sha256": "ebc6512b7b3e7cd9c85bfc7965008fcca582a2031ee3ec248b1e92e99716048e",
+      "original_equal": true,
+      "width": 32,
+      "height": 32,
+      "rgba_pixel_sha256": "272c1b6ead5537c67346247f5fec32034725d6e561b4f2a3df4a6e3c7071fc13",
+      "alpha_bounds": [
+        8,
+        3,
+        24,
+        29
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "asset": "textures/guis/button/button_arrowrighta.png",
+      "bytes": 3131,
+      "sha256": "9af9f01eada40d158a807ca2d33614cf6e6988695a3f0cb3e5aa9c5f8e5dcd57",
+      "original_equal": true,
+      "width": 32,
+      "height": 32,
+      "rgba_pixel_sha256": "5222be14e2f8ebfb13bc660fee95831a90cf9b48501b1f3db55bb5db8defe0bc",
+      "alpha_bounds": [
+        9,
+        3,
+        25,
+        29
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "asset": "textures/guis/icons/icon_inv.png",
+      "bytes": 3824,
+      "sha256": "01bf54ad90bb6c0dd4a5d67fc4bff4443afb7389a7cf4f81621da8c5e760c201",
+      "original_equal": true,
+      "width": 48,
+      "height": 48,
+      "rgba_pixel_sha256": "8a6eaaf692dc60d60baf02bc6cd77c33e15557e5ecbb79fd9235a46e0dfb157e",
+      "alpha_bounds": [
+        1,
+        1,
+        47,
+        47
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "asset": "textures/guis/icons/icon_wireless.png",
+      "bytes": 3892,
+      "sha256": "628058163c6d7f59a43067c292f85b834297ebe0a4470c000915a1e193e02602",
+      "original_equal": true,
+      "width": 48,
+      "height": 48,
+      "rgba_pixel_sha256": "9ac699544f0f15102c0e186ff2a43de12982f135a2ad8e6054126bcb980549ac",
+      "alpha_bounds": [
+        1,
+        1,
+        47,
+        47
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "asset": "textures/guis/blend_quad.png",
+      "bytes": 18033,
+      "sha256": "79a3e404e11d7e8ff702710cc8889709e96bb3e93804972b8a0f6c92847a689b",
+      "original_equal": true,
+      "width": 48,
+      "height": 48,
+      "rgba_pixel_sha256": "24c593a7dc17bdfa30bce0b49b07bb7d969d5203417f2127d0094e36084e1a5b",
+      "alpha_bounds": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "alpha_extrema": [
+        7,
+        255
+      ]
+    },
+    {
+      "asset": "textures/guis/line.png",
+      "bytes": 17810,
+      "sha256": "7798a3503bebcd5c25cb13259964ce367641b458d2b3bc5e6b45c77023ea939f",
+      "original_equal": true,
+      "width": 338,
+      "height": 15,
+      "rgba_pixel_sha256": "bc43e9ce49d8913c4ed2c559ad491dd4a4da2923e5966abddea658bf1163cdb8",
+      "alpha_bounds": [
+        0,
+        4,
+        338,
+        11
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "asset": "textures/guis/histogram.png",
+      "bytes": 20314,
+      "sha256": "13048f7541f94b21beb1f052ce51626d398cb6aa2656c5bc6798c166f8e09f4a",
+      "original_equal": true,
+      "width": 210,
+      "height": 210,
+      "rgba_pixel_sha256": "ac5a7e4f8575e424f71caa7f45ca949e936be7fe28602d6ad244a948f4f3c1e2",
+      "alpha_bounds": [
+        1,
+        55,
+        209,
+        203
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "asset": "sounds/machine/machine_work.ogg",
+      "bytes": 198917,
+      "sha256": "ba2dfaf80eb3bc751038434233119da2c9d461d926d1e9e071abdc92b7af21f4",
+      "original_equal": true
+    }
+  ],
+  "source_layout": {
+    "progress": {
+      "x": 59.5,
+      "y": 46.5,
+      "width": 57.0,
+      "height": 15.0
+    },
+    "icon_mode": {
+      "x": 76.0,
+      "y": 4.5,
+      "width": 24.0,
+      "height": 24.0
+    },
+    "btn_left": {
+      "x": 60.0,
+      "y": 8.5,
+      "width": 16.0,
+      "height": 16.0
+    },
+    "btn_right": {
+      "x": 100.0,
+      "y": 8.5,
+      "width": 16.0,
+      "height": 16.0
+    }
+  },
+  "source_faces": {
+    "0": {
+      "north": "front",
+      "south": "right",
+      "west": "back",
+      "east": "left",
+      "up": "top",
+      "down": "bottom"
+    },
+    "1": {
+      "north": "right",
+      "south": "back",
+      "west": "left",
+      "east": "front",
+      "up": "top",
+      "down": "bottom"
+    },
+    "2": {
+      "north": "left",
+      "south": "front",
+      "west": "right",
+      "east": "back",
+      "up": "top",
+      "down": "bottom"
+    },
+    "3": {
+      "north": "back",
+      "south": "left",
+      "west": "front",
+      "east": "right",
+      "up": "top",
+      "down": "bottom"
+    }
+  },
+  "work_audio": {
+    "codec": "vorbis",
+    "sample_rate": 44100,
+    "channels": 2,
+    "duration_seconds": 8.365374
+  }
+}

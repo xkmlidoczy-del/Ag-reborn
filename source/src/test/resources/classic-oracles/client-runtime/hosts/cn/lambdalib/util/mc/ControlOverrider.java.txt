@@ -1,0 +1,10 @@
+package cn.lambdalib.util.mc;
+import java.util.*;
+public class ControlOverrider {
+ public static final List<int[]> CALLS = new ArrayList<>();
+ public static int[] latest = {};
+ public static void override(String group, int[] keys) {
+  if (!group.equals("AC_ClientRuntime")) throw new AssertionError(group);
+  latest=keys.clone(); CALLS.add(latest);
+ }
+}

@@ -1,0 +1,207 @@
+[
+  {
+    "name": "final16-modes-em-input-modes",
+    "script": "gameplay-final-modes-group-em-input-modes.script",
+    "directory": "run-showcase-sable",
+    "sourceScripts": [
+      "gameplay-em-md-magnetic-block-far.script",
+      "gameplay-em-md-mode-arrow-separation.script",
+      "gameplay-em-md-mode-canopy-held.script",
+      "gameplay-em-md-mode-coin-qte.script",
+      "gameplay-em-md-mode-dual-secondary.script",
+      "gameplay-em-md-mode-net-hold.script",
+      "gameplay-em-md-mode-pulse-detect.script",
+      "gameplay-em-md-mode-rail-hold.script",
+      "gameplay-em-md-mode-semiconductor-fan.script",
+      "gameplay-em-md-mode-lance-orbit.script"
+    ],
+    "sourceCount": 10,
+    "status": "planned_not_run",
+    "props": "",
+    "independentRequired": false,
+    "suiteGroup": "modes",
+    "sourcePlan": "gameplay-final-modes-merged-plan.json",
+    "sourceCaseName": "final96-modegroup-em-input-modes",
+    "scriptSha256": "0cfd19bdac558725dd9608d1e627f49f4402f2967fa4854fc8ab9ca300976245",
+    "nominalFixedTicks": 2998,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  },
+  {
+    "name": "final16-modes-em-environment-planning",
+    "script": "gameplay-final-modes-group-em-environment-planning.script",
+    "directory": "run-showcase-sable",
+    "sourceScripts": [
+      "gameplay-em-md-env-arc-creeper.script",
+      "gameplay-em-md-env-arc-fire.script",
+      "gameplay-em-md-env-charging-block.script",
+      "gameplay-em-md-env-etch-batch.script",
+      "gameplay-em-md-env-etch-hard-refusal.script",
+      "gameplay-em-md-env-fork-single.script",
+      "gameplay-em-md-env-jet-collision.script",
+      "gameplay-em-md-env-laminate-low.script",
+      "gameplay-em-md-env-light-touch.script",
+      "gameplay-em-md-env-mag-entity.script",
+      "gameplay-em-md-env-melt-terrain.script",
+      "gameplay-em-md-env-point-hard-refusal.script",
+      "gameplay-em-md-env-point-no-tool.script",
+      "gameplay-em-md-env-melt-overcharge.script",
+      "gameplay-em-md-planning-folded_mirror_array.script",
+      "gameplay-em-md-planning-remote_scatter_relay.script",
+      "gameplay-em-md-planning-scatter_locator_plate.script"
+    ],
+    "sourceCount": 17,
+    "status": "planned_not_run",
+    "props": "",
+    "independentRequired": false,
+    "suiteGroup": "modes",
+    "sourcePlan": "gameplay-final-modes-merged-plan.json",
+    "sourceCaseName": "final96-modegroup-em-environment-planning",
+    "scriptSha256": "8dc7c8358c2d1308349abf575fabbca8fbf9b17213974ed2f875ea884f17f619",
+    "nominalFixedTicks": 5561,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  },
+  {
+    "name": "final16-modes-tp-alternatives",
+    "script": "gameplay-final-modes-group-tp-alternatives.script",
+    "directory": "run-showcase-sable",
+    "sourceScripts": [
+      "gameplay-tp-alt-corner_exchange.script",
+      "gameplay-tp-alt-cross_substitution.script",
+      "gameplay-tp-alt-multidimensional_landing_array.script",
+      "gameplay-tp-alt-phase_sidestep.script",
+      "gameplay-tp-alt-short_interception.script",
+      "gameplay-tp-alt-spatial_relay.script",
+      "gameplay-tp-emergency-auto.script"
+    ],
+    "sourceCount": 7,
+    "status": "planned_not_run",
+    "props": "",
+    "independentRequired": false,
+    "suiteGroup": "modes",
+    "sourcePlan": "gameplay-final-modes-merged-plan.json",
+    "sourceCaseName": "final96-modegroup-tp-alternatives",
+    "scriptSha256": "b73cc6edbfdc495860e3ce3c80abf2cee69354950782ea3b7bfa2578086e23a3",
+    "nominalFixedTicks": 2423,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 3,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  },
+  {
+    "name": "final16-modes-vm-alternatives-efficiency",
+    "script": "gameplay-final-modes-group-vm-alternatives-efficiency.script",
+    "directory": "run-showcase-sable",
+    "sourceScripts": [
+      "gameplay-vm-efficiency-circulation_relief.script",
+      "gameplay-vm-efficiency-inertial_anchor.script",
+      "gameplay-vm-efficiency-vector_parry.script",
+      "gameplay-vm-alt-anchor-fall.script",
+      "gameplay-vm-alt-braking-fall.script",
+      "gameplay-vm-alt-braking-snowball.script",
+      "gameplay-vm-alt-listening-runner.script",
+      "gameplay-vm-alt-parry-full.script",
+      "gameplay-vm-alt-parry-left.script",
+      "gameplay-vm-alt-parry-right.script",
+      "gameplay-vm-alt-trajectory-hammer.script",
+      "gameplay-vm-direction-modes.script",
+      "gameplay-vm-cage-low.script"
+    ],
+    "sourceCount": 13,
+    "status": "planned_not_run",
+    "props": "",
+    "independentRequired": false,
+    "suiteGroup": "modes",
+    "sourcePlan": "gameplay-final-modes-merged-plan.json",
+    "sourceCaseName": "final96-modegroup-vm-alternatives-efficiency",
+    "scriptSha256": "1e02503959dc0461a3d042be0eee86b0b7e3eebd8d32b42c386c794aeb7febcd",
+    "nominalFixedTicks": 3921,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  },
+  {
+    "name": "final16-modes-vm-native-late-window",
+    "script": "gameplay-final-modes-group-vm-native-late-window.script",
+    "directory": "run-showcase-sable",
+    "sourceScripts": [
+      "gameplay-vm-primary-impulse_split-late.script",
+      "gameplay-wind-sideways.script"
+    ],
+    "sourceCount": 2,
+    "status": "planned_not_run",
+    "props": "",
+    "independentRequired": false,
+    "suiteGroup": "modes",
+    "sourcePlan": "gameplay-final-modes-merged-plan.json",
+    "sourceCaseName": "final96-modegroup-vm-native-late-window",
+    "scriptSha256": "cd653f8a1f57dcfbbbcf9ff0e1a94b44f64ff29d166c71670e2a2ad26c87320b",
+    "nominalFixedTicks": 855,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  },
+  {
+    "name": "final16-modes-cross-dimension",
+    "script": "gameplay-final-modes-group-cross-dimension.script",
+    "directory": "run-showcase-sable",
+    "sourceScripts": [
+      "gameplay-location-cross-dimension.script"
+    ],
+    "sourceCount": 1,
+    "status": "planned_not_run",
+    "props": "",
+    "independentRequired": true,
+    "suiteGroup": "modes",
+    "sourcePlan": "gameplay-final-modes-merged-plan.json",
+    "sourceCaseName": "final96-modegroup-cross-dimension",
+    "scriptSha256": "75b56f6e12ad65fb846dd8917b39419acb08494e5415e97f4b0a1e077dccae00",
+    "nominalFixedTicks": 700,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 2
+    }
+  },
+  {
+    "name": "final16-modes-respawn",
+    "script": "gameplay-final-modes-group-respawn.script",
+    "directory": "run-showcase-sable",
+    "sourceScripts": [
+      "gameplay-vm-impulse-window-respawn-native-damage.script"
+    ],
+    "sourceCount": 1,
+    "status": "planned_not_run",
+    "props": "",
+    "independentRequired": true,
+    "suiteGroup": "modes",
+    "sourcePlan": "gameplay-final-modes-merged-plan.json",
+    "sourceCaseName": "final96-modegroup-respawn",
+    "scriptSha256": "ce2dcfd263b0366ab7ff7f93a19cb5e450a384e11775246759f5df500dd0600d",
+    "nominalFixedTicks": 493,
+    "timingIncludesWorldWarmupTicks": 120,
+    "timingDynamicPolls": {
+      "walk": 0,
+      "stormAwaitActive": 0,
+      "conditionalEscape": 0
+    }
+  }
+]

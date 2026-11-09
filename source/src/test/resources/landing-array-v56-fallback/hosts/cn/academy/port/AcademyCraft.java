@@ -1,0 +1,1 @@
+package cn.academy.port;import net.minecraft.world.item.Item;public final class AcademyCraft {public static final Holder NEEDLE=new Holder();public static class Holder{final Item item=new Item();public Item get(){return item;}}}

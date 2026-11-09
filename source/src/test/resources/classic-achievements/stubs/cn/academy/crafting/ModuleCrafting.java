@@ -1,0 +1,1 @@
+package cn.academy.crafting;public class ModuleCrafting {public static final net.minecraft.block.Block imagPhase=new net.minecraft.block.Block("phase_liquid");public static final net.minecraft.item.Item crystalLow=new net.minecraft.item.Item("crystal_low");}

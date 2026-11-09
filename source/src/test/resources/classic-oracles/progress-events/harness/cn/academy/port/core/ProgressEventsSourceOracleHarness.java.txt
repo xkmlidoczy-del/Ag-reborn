@@ -1,0 +1,113 @@
+/* Unchanged AbilityData/CPData run against actual compiled modern progress classes. GPLv3. */
+package cn.academy.port.core;
+import cn.academy.ability.api.*;
+import cn.academy.ability.api.data.*;
+import cn.academy.ability.api.event.*;
+import cn.academy.port.SkillCatalog;
+import cn.lambdalib.util.datapart.EntityData;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.MinecraftForge;
+import java.lang.reflect.*;
+import java.util.*;
+public final class ProgressEventsSourceOracleHarness {
+ static int checks,differences;static boolean baseline;static final Map<String,Integer> reasons=new TreeMap<>();
+ static Field field(Class<?> c,String n)throws Exception{var f=c.getDeclaredField(n);f.setAccessible(true);return f;}
+ static void set(Object o,String n,Object v)throws Exception{field(o.getClass(),n).set(o,v);}
+ static float f(Object o,String n)throws Exception{return field(o.getClass(),n).getFloat(o);}
+ static boolean b(Object o,String n)throws Exception{return field(o.getClass(),n).getBoolean(o);}
+ static int i(Object o,String n)throws Exception{return field(o.getClass(),n).getInt(o);}
+ static void same(boolean ok,String why){checks++;if(!ok){differences++;reasons.merge(why,1,Integer::sum);if(!baseline)throw new AssertionError(why);}}
+ static void bits(double m,float o,String why){same(Double.doubleToRawLongBits(m)==Double.doubleToRawLongBits((double)o),why);}
+ static Category cat(String name){return CategoryManager.INSTANCE.categories.stream().filter(c->c.name.equals(name)).findFirst().orElseThrow();}
+ static Skill skill(String category,String id){int index=SkillCatalog.ALL.stream().filter(s->s.category().equals(category)).map(SkillCatalog.Skill::id).toList().indexOf(id);return cat(category).skills.get(index);}
+ static String id(Skill s){return SkillCatalog.ALL.stream().filter(x->x.category().equals(s.category.name)).toList().get(s.id).id();}
+ static final class Pair {
+  final EntityPlayer player=new EntityPlayer();final AbilityData ability=new AbilityData();final CPData cp=new CPData();final AbilityProgress modern=new AbilityProgress();
+  final List<String> originalEvents=new ArrayList<>(),modernEvents=new ArrayList<>();boolean recording;String watched;Runnable originalLearnAction=()->{},modernLearnAction=()->{},originalChangedAction=()->{},modernChangedAction=()->{};
+  final SkillConsumption.Config[] live={SkillConsumption.Config.DEFAULT};
+  Pair(String category,int level)throws Exception{
+   EntityData.bind(player,ability,cp,new PresetData(),new cn.academy.ability.api.cooldown.CooldownData());cp.wake();
+   modern.bindConsumption(()->live[0],SkillConsumption.UNMODIFIED,SkillConsumption.NO_OVERLOAD_EVENT,()->true);
+   MinecraftForge.EVENT_BUS.high=e->{try{sourcePhase(e,"high");}catch(Exception x){throw new AssertionError(x);}};
+   MinecraftForge.EVENT_BUS.low=e->{try{sourcePhase(e,"low");}catch(Exception x){throw new AssertionError(x);}};
+   modern.bindCalculations(r->{if(r.kind==AbilityCalculation.Kind.MAX_CP||r.kind==AbilityCalculation.Kind.MAX_OVERLOAD){if(recording)modernEvents.add("calc:"+r.kind+":"+modernState());r.value=(float)r.value+17.25f;}});
+   if(baseline)modern.bindProgress(id->{if(recording){modernEvents.add("learn-high:"+id+":"+modernState());modernEvents.add("learn-low:"+id+":"+modernState());}},lv->{if(recording){modernEvents.add("level-high:"+modernState());modernEvents.add("level-low:"+modernState());}});
+   else modern.bindProgressEvents((id,effects)->{if(recording){modernEvents.add("learn-high:"+id+":"+modernState());modernLearnAction.run();}effects.run();if(recording)modernEvents.add("learn-low:"+id+":"+modernState());},
+    (lv,effects)->{if(recording)modernEvents.add("level-high:"+modernState());effects.run();if(recording)modernEvents.add("level-low:"+modernState());},
+    award->{String id=award.skill();if(recording){modernEvents.add("changed-high:"+id+":"+modernState());modernChangedAction.run();modernEvents.add("changed-low:"+id+":"+modernState());}},
+    award->{String id=award.skill();float amount=award.amount();if(recording){modernEvents.add("added-high:"+id+":"+amount+":"+modernState());modernEvents.add("added-low:"+id+":"+amount+":"+modernState());}});
+   if(!category.isEmpty()){ability.setCategory(cat(category));ability.setLevel(level);modern.changeCategoryClassic(category);modern.setLevel(level);}
+  }
+  void sourcePhase(Object e,String phase)throws Exception{
+   if(phase.equals("high")&&e instanceof CalcEvent.MaxCP x){if(recording)originalEvents.add("calc:MAX_CP:"+originalState());x.value+=17.25f;}
+   if(phase.equals("high")&&e instanceof CalcEvent.MaxOverload x){if(recording)originalEvents.add("calc:MAX_OVERLOAD:"+originalState());x.value+=17.25f;}
+   if(!recording)return;
+   if(e instanceof SkillLearnEvent x){originalEvents.add("learn-"+phase+":"+id(x.skill)+":"+originalState());if(phase.equals("high"))originalLearnAction.run();}
+   if(e instanceof LevelChangeEvent)originalEvents.add("level-"+phase+":"+originalState());
+   if(e instanceof SkillExpChangedEvent x){originalEvents.add("changed-"+phase+":"+id(x.skill)+":"+originalState());if(phase.equals("high"))originalChangedAction.run();}
+   if(e instanceof SkillExpAddedEvent x)originalEvents.add("added-"+phase+":"+id(x.skill)+":"+x.amount+":"+originalState());
+  }
+  String originalState()throws Exception{
+   String category=ability.hasCategory()?ability.getCategory().name:"";String slots=category.isEmpty()?"":slotState(category,true);
+   return state(category,ability.getLevel(),b(cp,"activated"),cp.getCP(),cp.getOverload(),cp.getRawMaxCP(),cp.getRawMaxOverload(),cp.getAddMaxCP(),cp.getAddMaxOverload(),f(ability,"expAddedThisLevel"),b(cp,"overloadFine"),b(cp,"interfering"),i(cp,"untilRecover"),i(cp,"untilOverloadRecover"))+slots;
+  }
+  String modernState(){return state(modern.category,modern.level,modern.activated,(float)modern.cp,(float)modern.overload,(float)modern.baseCp(),(float)modern.baseOverload(),(float)modern.extraCp,(float)modern.extraOverload,(float)modern.levelExperience,modern.overloadFine,modern.interfering,modern.cpDelay,modern.overloadDelay)+(modern.category.isEmpty()?"":slotState(modern.category,false));}
+  String slotState(String category,boolean original){var result=new StringBuilder();for(var s:SkillCatalog.ALL)if(s.category().equals(category)){Skill old=skill(category,s.id());result.append(':').append(s.id()).append('=').append(original?ability.isSkillLearned(old):modern.learned(s.id())).append('/').append(original?ability.getSkillExp(old):modern.experience.getOrDefault(s.id(),modern.unlearnedExperience.getOrDefault(s.id(),0.0)).floatValue());}return result.toString();}
+  void prepare(String id,float raw,boolean learned)throws Exception{
+   watched=id;Skill old=skill(modern.category,id);ability.setSkillLearnState(old,learned);if(learned)modern.learn(id);
+   ((float[])field(AbilityData.class,"skillExps").get(ability))[old.id]=raw;if(learned)modern.experience.put(id,(double)raw);else modern.unlearnedExperience.put(id,(double)raw);
+   set(cp,"maxCP",9999f);set(cp,"maxOverload",444f);modern.restoreCalculatedMaxima(9999,444);
+   set(cp,"curCP",713.125f);modern.cp=713.125f;set(cp,"curOverload",17.75f);modern.overload=17.75f;
+   set(cp,"addMaxCP",100.125f);modern.extraCp=100.125f;set(cp,"addMaxOverload",33.25f);modern.extraOverload=33.25f;
+   set(ability,"expAddedThisLevel",7.7f);modern.levelExperience=7.7f;set(cp,"activated",true);modern.activated=true;
+   set(cp,"overloadFine",false);modern.overloadFine=false;set(cp,"interfering",true);modern.interfering=true;
+   set(cp,"untilRecover",13);modern.cpDelay=13;set(cp,"untilOverloadRecover",21);modern.overloadDelay=21;
+  }
+  void start(){recording=true;originalEvents.clear();modernEvents.clear();}
+  void compare(String label)throws Exception{
+   same(originalState().equals(modernState()),label+".state");same(originalEvents.equals(modernEvents),label+".phases");
+   bits(modern.cp,cp.getCP(),label+".cp-bits");bits(modern.overload,cp.getOverload(),label+".overload-bits");bits(modern.baseCp(),cp.getRawMaxCP(),label+".raw-max-cp-bits");bits(modern.baseOverload(),cp.getRawMaxOverload(),label+".raw-max-overload-bits");bits(modern.extraCp,cp.getAddMaxCP(),label+".growth-cp-bits");bits(modern.extraOverload,cp.getAddMaxOverload(),label+".growth-overload-bits");bits(modern.levelExperience,f(ability,"expAddedThisLevel"),label+".level-progress-bits");
+   if(ability.hasCategory())for(var s:SkillCatalog.ALL)if(s.category().equals(ability.getCategory().name)){bits(modern.experience.getOrDefault(s.id(),modern.unlearnedExperience.getOrDefault(s.id(),0.0)),ability.getSkillExp(skill(s.category(),s.id())),label+".raw-skill-bits-"+s.id());same(modern.learned(s.id())==ability.isSkillLearned(skill(s.category(),s.id())),label+".learned-bit-"+s.id());}
+  }
+  void award(String id,float amount,int mode)throws Exception{start();ability.addSkillExp(skill(modern.category,id),amount);if(mode==0)modern.addExperienceRaw(id,amount);else if(mode==1)modern.addPassiveExperienceRaw(id,amount);else modern.addExperience(id,amount);compare("award-"+modern.category+"-"+id+"-"+amount+"-"+mode);}
+ }
+ static String state(String cat,int level,boolean active,float cp,float overload,float rawCp,float rawOver,float growthCp,float growthOver,float progress,boolean fine,boolean interfering,int cpDelay,int overDelay){return cat+":"+level+":"+active+":"+cp+":"+overload+":"+rawCp+":"+rawOver+":"+growthCp+":"+growthOver+":"+progress+":"+fine+":"+interfering+":"+cpDelay+":"+overDelay;}
+ static String failure(Runnable run){try{run.run();return "none";}catch(IllegalStateException e){return e.getClass().getSimpleName();}}
+ static void awards()throws Exception{
+  for(var skill:SkillCatalog.ALL){for(int mode=0;mode<3;mode++){var p=new Pair(skill.category(),1);p.prepare(skill.id(),.73f,false);p.award(skill.id(),.35f,mode);same(p.modern.learned(skill.id()),"generic-unlearned-auto-learns");same(p.modern.level==1,"award-never-enforces-tree-level");p.award(skill.id(),0,mode);p.award(skill.id(),.1f,mode);same(p.originalEvents.stream().noneMatch(x->x.startsWith("learn-")),"duplicate-award-no-learn-refill");bits(p.modern.levelExperience,7.7f+.35f+.1f,"full-request-level-progress");}}
+  System.out.println("VECTOR generic-auto-learn includes all "+SkillCatalog.ALL.size()+" category/skill identities and raw/passive/scaled entry points at level1");
+ }
+ static void setters()throws Exception{
+  for(String category:List.of("electromaster","meltdowner","teleporter","vecmanip"))for(int level=1;level<=5;level++){
+   String id=SkillCatalog.ALL.stream().filter(s->s.category().equals(category)).findFirst().orElseThrow().id();var p=new Pair(category,level);p.prepare(id,.62f,false);p.start();p.ability.learnSkill(skill(category,id));p.modern.learn(id);p.compare("direct-learn-"+category+"-"+level);String before=p.originalState();p.start();p.ability.learnSkill(skill(category,id));p.modern.learn(id);p.compare("duplicate-learn");same(p.originalEvents.isEmpty()&&before.equals(p.originalState()),"duplicate-learn-full-ledger-no-op");
+   p.start();p.ability.setSkillLearnState(skill(category,id),false);p.modern.unlearn(id);p.compare("unlearn-retained-raw");same(p.originalEvents.isEmpty(),"unlearn-no-events");
+   p.prepare(id,.62f,true);p.start();before=p.originalState();p.ability.setLevel(level);p.modern.setLevel(level);p.compare("same-level");same(p.originalEvents.isEmpty()&&before.equals(p.originalState()),"same-level-full-no-op");
+   p.start();p.ability.setLevel(level==5?2:5);p.modern.setLevel(level==5?2:5);p.compare("real-level-change");same(p.originalEvents.getFirst().startsWith("level-high:"),"level-event-before-calculation");same(p.modern.extraCp==0&&p.modern.extraOverload==0&&p.modern.levelExperience==0,"level-common-resets-growth");
+  }
+  for(String category:List.of("","electromaster")){
+   var p=new Pair(category,category.isEmpty()?0:3);p.start();String before=p.originalState();String mBefore=p.modernState();
+   same(failure(()->p.ability.addSkillExp(skill("teleporter","space_fluct"),.1f)).equals(failure(()->p.modern.addExperienceRaw("space_fluct",.1f))),"wrong-category-award-rejection");same(before.equals(p.originalState())&&mBefore.equals(p.modernState())&&p.originalEvents.isEmpty()&&p.modernEvents.isEmpty(),"wrong-category-award-no-partial-mutation");
+   same(failure(()->p.ability.learnSkill(skill("teleporter","space_fluct"))).equals(failure(()->p.modern.learn("space_fluct"))),"wrong-category-learn-rejection");
+   if(category.isEmpty())same(failure(()->p.ability.setLevel(0)).equals(failure(()->p.modern.setLevel(0))),"no-category-same-level-rejection");
+  }
+ }
+ static void configAndReentry()throws Exception{
+  var old=cn.academy.core.config.ACConfig.instance();var next=new com.typesafe.config.Config();next.values.putAll(old.values);next.values.put("ac.ability.data.prog_incr_rate",3.25);cat("teleporter").progressRate=1.75f;
+  var configured=new SkillConsumption.Config(2,3,.05,.15,3,4,3.25,new double[]{9100,9100,9200,9300,9400,9500},new double[]{210,210,220,230,240,250},ClassicRules.EXTRA_CP_CAP,ClassicRules.EXTRA_OVERLOAD_CAP,Map.of("teleporter.space_fluct.damage_scale",2.5,"teleporter.space_fluct.overload_incr_speed",99.),Map.of("teleporter",1.75));
+  try{
+   var p=new Pair("teleporter",1);p.prepare("space_fluct",.93f,false);p.originalLearnAction=()->cn.academy.core.config.ACConfig.replace(next);p.modernLearnAction=()->p.live[0]=configured;p.start();
+   // Skill scaling occurs before learn; live global/category progress occurs after the learn listeners.
+   p.ability.addSkillExp(skill("teleporter","space_fluct"),.2f);p.modern.addExperience("space_fluct",.2f);p.compare("config-swapped-during-learn");bits(p.modern.levelExperience,7.7f+.2f*1.75f*3.25f,"live-post-learn-progress");same(p.modern.cp==1917.375f&&p.modern.baseCp()==1817.25f,"learn-retains-captured-cp-data-subtree");
+   p.originalEvents.clear();p.modernEvents.clear();p.ability.addSkillExp(skill("teleporter","space_fluct"),2.5f*.2f);p.modern.addExperience("space_fluct",.2f);p.compare("configured-scaled-request-at-cap");same(p.originalEvents.stream().anyMatch(x->x.startsWith("added-high:space_fluct:0.5:")),"event-payload-scaled-request-not-clamped-delta");
+  }finally{cn.academy.core.config.ACConfig.replace(old);cat("teleporter").progressRate=1;}
+  var unlearn=new Pair("teleporter",1);unlearn.prepare("space_fluct",.4f,false);unlearn.originalLearnAction=()->unlearn.ability.setSkillLearnState(skill("teleporter","space_fluct"),false);unlearn.modernLearnAction=()->unlearn.modern.unlearn("space_fluct");unlearn.award("space_fluct",.2f,0);same(!unlearn.modern.learned("space_fluct")&&unlearn.modern.unlearnedExperience.get("space_fluct")==((double)(.4f+.2f)),"reentrant-unlearn-retains-independent-raw-slot");
+  var changed=new Pair("teleporter",3);changed.prepare("space_fluct",.4f,true);changed.originalChangedAction=()->changed.ability.setLevel(4);changed.modernChangedAction=()->changed.modern.setLevel(4);changed.award("space_fluct",.2f,0);same(changed.originalEvents.stream().anyMatch(x->x.startsWith("added-high:space_fluct:0.2:teleporter:4:")),"changed-listener-precedes-added-with-live-state");
+  var remap=new Pair("teleporter",3);remap.prepare("space_fluct",.4f,false);remap.originalLearnAction=()->remap.ability.setCategory(cat("electromaster"));remap.modernLearnAction=()->remap.modern.changeCategoryClassic("electromaster");remap.award("space_fluct",.2f,0);same(remap.modern.experience.isEmpty()&&remap.modern.unlearnedExperience.size()==1,"learn-category-listener-writes-independent-current-category-ordinal");
+  var identity=new Pair("teleporter",3);identity.prepare("space_fluct",.4f,true);identity.originalChangedAction=()->identity.ability.setCategory(cat("electromaster"));identity.modernChangedAction=()->identity.modern.changeCategoryClassic("electromaster");identity.award("space_fluct",.2f,0);same(identity.originalEvents.stream().anyMatch(x->x.startsWith("added-high:space_fluct:0.2:electromaster:")),"changed-category-listener-retains-original-skill-event-identity");
+
+ }
+ public static void main(String[] args)throws Exception{
+  baseline=args.length>0&&args[0].equals("baseline");CategoryManager.INSTANCE.categories.clear();for(String name:List.of("electromaster","meltdowner","teleporter","vecmanip")){var c=new Category(CategoryManager.INSTANCE.categories.size(),name);for(var s:SkillCatalog.ALL)if(s.category().equals(name)){var skill=new Skill(c.skills.size(),s.level(),c);skill.controllable=s.controllable();}CategoryManager.INSTANCE.categories.add(c);}
+  awards();setters();if(!baseline)configAndReentry();if(baseline)same(differences>0,"baseline-exposes-progress-regression");System.out.println((baseline?"AUDIT":"PASS")+" "+checks+" unchanged-source generic progress/event checks; differences="+differences);if(baseline)System.out.println("BASELINE_DIFFERENCES "+reasons);
+ }
+}

@@ -1,0 +1,7 @@
+tasks.register('nativeCooldownGuardTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.highpower.NativeCooldownGuardRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'nativeCooldownGuardTest' }

@@ -1,0 +1,57 @@
+[
+  {
+    "name": "final22-primary-rail-array",
+    "script": "gameplay-final20-visual-rail-array.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-primary-circuit",
+    "script": "gameplay-final20-visual-circuit.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-primary-rail-relay",
+    "script": "gameplay-final20-visual-rail-relay.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-primary-ground-third",
+    "script": "gameplay-final20-visual-ground-third.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-primary-md-primary",
+    "script": "gameplay-final20-visual-md-primary.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-primary-md-scatter-beamstep",
+    "script": "gameplay-final20-visual-md-scatter-beamstep.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-primary-md-point-focus",
+    "script": "gameplay-final20-visual-md-point-focus.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-primary-md-relay-locator",
+    "script": "gameplay-final20-visual-md-relay-locator.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-primary-storm-wings-third",
+    "script": "gameplay-final21-storm-wings-third.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-primary-tp-complex-primary",
+    "script": "gameplay-final21-tp-complex-primary.script",
+    "exit": 0
+  },
+  {
+    "name": "final22-primary-vm-guards",
+    "script": "gameplay-final20-visual-vm-guards.script",
+    "exit": 0
+  }
+]

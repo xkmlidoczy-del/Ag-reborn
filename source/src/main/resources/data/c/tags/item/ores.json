@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "#c:ores/resonant_crystal",
+    "#c:ores/constraint_metal",
+    "#c:ores/imag_crystal",
+    "#c:ores/imag_silicon"
+  ]
+}
