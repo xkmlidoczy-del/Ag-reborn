@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "academy:block/city_study_desk",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "academy:block/city_study_desk",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "academy:block/city_study_desk",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "academy:block/city_study_desk",
+      "y": 270
+    }
+  }
+}

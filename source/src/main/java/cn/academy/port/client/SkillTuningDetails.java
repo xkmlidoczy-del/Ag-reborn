@@ -2,6 +2,7 @@ package cn.academy.port.client;
 
 import cn.academy.port.core.RangedSkillRanges;
 import cn.academy.port.core.SkillTuning;
+import cn.academy.port.core.SkillEffectParameters;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -26,6 +27,12 @@ final class SkillTuningDetails {
         }
         for (String key : SkillTuning.displayFields(skill)) {
             if (key.equals("reach") && aiming != null) continue;
+            if ((key.equals("radius") || key.equals("reach")) && SkillEffectParameters.growsWithMastery(skill, key)) {
+                double current = SkillEffectParameters.current(skill, key, mastery);
+                String label = skill.equals("electron_missile") && key.equals("reach") ? "current_seek_reach" : "current_" + key;
+                lines.add(Component.translatable("ac.skill.tuning." + label,
+                        decimal(BigDecimal.valueOf(current).setScale(2, RoundingMode.HALF_UP))).getString());
+            }
             if (description.contains("{{" + key + "}}") || description.contains("{{" + key + ":s}}")) continue;
             var value = fields.get(key);
             if (value != null) {

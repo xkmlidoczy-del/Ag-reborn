@@ -761,6 +761,8 @@ public final class AutonomousVectorCircle {
                 phase, position, facing, source, contact, remaining, ready, balance.available, balance.capacity);
         Visual observerPacket = new Visual(p.getId(), p.getUUID(), c.input.input(), c.identity.token(), c.identity.epoch(), sequence,
                 phase, position, facing, source, contact, remaining, ready, "", "");
+        if(c.lastPhase!=phase||phase==ABSORBED||p.serverLevel().getGameTime()%10==0)
+            cn.academy.port.macro.MacroVfx.emit(p,HighPowerSkills.AUTONOMOUS_VECTOR_CIRCLE,phase==ENDED?cn.academy.port.macro.MacroVfx.Phase.END:phase==ABSORBED?cn.academy.port.macro.MacroVfx.Phase.HIT:cn.academy.port.macro.MacroVfx.Phase.ACTIVE,position,contact,32,0);
         c.lastPhase = phase;
         for (ServerPlayer viewer : c.audience) if (viewer.connection != null && !viewer.hasDisconnected() && viewer.serverLevel() == c.identity.level())
             PacketDistributor.sendToPlayer(viewer, viewer == p ? ownerPacket : observerPacket);

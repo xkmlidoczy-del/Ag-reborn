@@ -184,7 +184,7 @@ public final class CanonSkillsCombatA {
 
     private static boolean crowd(ServerPlayer player) {
         int duration = integer(CROWD, "duration_ticks");
-        double radius = number(CROWD, "radius");
+        double radius = cn.academy.port.macro.MacroSkillRules.area(CROWD,AbilityStorage.get(player).exp(CROWD),number(CROWD,"radius"));
         LivingEntity hit = aimed(player, number(CROWD, "reach"));
         if (!(hit instanceof Mob victim) || !eligible(player, victim, CROWD) || LEASES.containsKey(victim) || CanonExpansionCombatA.mentalLeased(victim)) return false;
         var nearby = new ArrayList<Mob>(player.serverLevel().getEntitiesOfClass(Mob.class,
@@ -198,18 +198,17 @@ public final class CanonSkillsCombatA {
         long now = player.serverLevel().getGameTime();
         if (now < 0 || now > Long.MAX_VALUE - duration || !spend(player, CROWD, 5, 200)) return false;
         if (!validOwner(player) || !eligible(player, victim, CROWD) || CanonExpansionCombatA.mentalLeased(victim)) return false;
-        int applied = 0;
-        for (Mob mob : selected) {
-            if (!eligible(player, mob, CROWD) || player.distanceToSqr(mob) > radius * radius || LEASES.containsKey(mob) || CanonExpansionCombatA.mentalLeased(mob) || !mob.hasLineOfSight(victim)) continue;
+        int[] applied = {0};
+        var world=player.serverLevel();var state=AbilityStorage.get(player);
+        cn.academy.port.macro.MacroSettlement.submit(world,selected,()->validOwner(player)&&player.serverLevel()==world&&AbilityStorage.get(player)==state,mob->{
+            if (!eligible(player, mob, CROWD) || player.distanceToSqr(mob) > radius * radius || LEASES.containsKey(mob) || CanonExpansionCombatA.mentalLeased(mob) || !mob.hasLineOfSight(victim)) return;
             LEASES.put(mob, new Lease(player, player.serverLevel(), mob, victim, now + duration));
             mob.setTarget(victim);
-            if (mob.getTarget() != victim) { LEASES.remove(mob); continue; }
+            if (mob.getTarget() != victim) { LEASES.remove(mob); return; }
             cue(player.serverLevel(), mob.position().add(0, mob.getBbHeight() * .7, 0), true);
-            CanonVfx.emit(player,CROWD,player.getEyePosition(),mob.position(),CanonVfx.Phase.ACTIVE,duration,applied==0?radius:0);
-            applied++;
-        }
-        if (applied == 0) return false;
-        experience(player, CROWD, .03);
+            CanonVfx.emit(player,CROWD,player.getEyePosition(),mob.position(),CanonVfx.Phase.ACTIVE,duration,applied[0]==0?radius:0);
+            applied[0]++;
+        },()->{if(applied[0]>0&&validOwner(player))experience(player,CROWD,.03);});
         return true;
     }
 
@@ -306,10 +305,10 @@ public final class CanonSkillsCombatA {
         var emission = emission(player, BARRAGE, 5, 160, selected,
                 target -> barrageCandidate(player, target, level, eye, direction));
         if (emission == null) return false;
-        int hit = 0;
-        for (LivingEntity target : selected) {
+        int[] hit = {0};
+        emission.forEach(target -> {
             if (barrageCandidate(player, target, level, eye, direction) && emission.attack(target)) {
-                hit++;
+                hit[0]++;
                 if (target.isAlive()) {
                     Vec3 impulse = target.position().subtract(player.position()).multiply(1, 0, 1).normalize().scale(number(BARRAGE, "horizontal_speed")).add(0, number(BARRAGE, "vertical_speed"), 0);
                     if (finite(impulse)) { target.push(impulse.x, impulse.y, impulse.z); target.hurtMarked = true; }
@@ -317,8 +316,7 @@ public final class CanonSkillsCombatA {
                 airLine(player, target.position().add(0, target.getBbHeight() * .5, 0), false);
                 visual(player,BARRAGE,eye,target.position(),CanonVfx.Phase.HIT,10);
             }
-        }
-        if (hit > 0) experience(player, BARRAGE, .03);
+        },()->{if (hit[0] > 0 && validOwner(player)) experience(player, BARRAGE, .03);});
         return true;
     }
 
@@ -515,7 +513,7 @@ public final class CanonSkillsCombatA {
                 || !HighPowerResources.ready(player) || CONSTRUCTS.containsKey(player)
                 || HighPowerCombat.shield(player).signum() <= 0) { c.permit.cancel(); return false; }
         CONSTRUCTS.put(player, c);
-        visual(player,CONSTRUCT,player.position(),player.position(),CanonVfx.Phase.START,duration);
+        CanonVfx.emit(player,CONSTRUCT,player.position(),player.position(),CanonVfx.Phase.START,duration,number(CONSTRUCT,"radius"));
         experience(player, CONSTRUCT, .02);
         return true;
     }
@@ -705,8 +703,10 @@ public final class CanonSkillsCombatA {
     }
 
     private static LivingEntity aimed(ServerPlayer p, double range) {
-        if (!loadedAlong(p, range)) return null;
-        var hit = ClassicRaytrace.living(p, range, ClipContext.Fluid.NONE);
+        double available=range;
+        if(range>64)available=p.getEyePosition().distanceTo(cn.academy.port.macro.MacroGeometry.loadedEnd(p.serverLevel(),p.getEyePosition(),p.getEyePosition().add(ClassicRaytrace.direction(p).scale(range))));
+        else if(!loadedAlong(p,range))return null;
+        var hit = ClassicRaytrace.living(p, available, ClipContext.Fluid.NONE);
         return hit instanceof EntityHitResult entity && entity.getEntity() instanceof LivingEntity living ? living : null;
     }
 

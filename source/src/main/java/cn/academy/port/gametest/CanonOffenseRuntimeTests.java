@@ -79,7 +79,7 @@ public final class CanonOffenseRuntimeTests {
         }
         void close(){for(var t:targets)t.discard();p.server.getPlayerList().remove(p);p.discard();channel.finishAndReleaseAll();}
     }
-    @GameTest(template=TEMPLATE,batch=BATCH,timeoutTicks=220)
+    @GameTest(template=TEMPLATE,batch=BATCH,timeoutTicks=700)
     public static void all_sixteen_attacks_resolve_once_with_player_tiers_and_real_materials(GameTestHelper h){
         var fixtures=new ArrayList<Fixture>();var counts=new HashMap<UUID,Integer>();var failures=new ArrayList<String>();
         for(int i=0;i<CanonOffenseSkills.ALL.size();i++)fixtures.add(new Fixture(h,CanonOffenseSkills.ALL.get(i),i));
@@ -92,21 +92,24 @@ public final class CanonOffenseRuntimeTests {
             double cost=.1*f.spec.cp();if(Math.abs(r.cp()-cost)>1e-6||Math.abs(r.cpBefore()-r.cpAfter()-cost)>1e-5)failures.add(r.skill()+" CP debit");
             if(AbilityStorage.get(f.p).cooldowns.getOrDefault(r.skill(),0)!=f.spec.cooldown())failures.add(r.skill()+" cooldown");
         };
-        h.runAfterDelay(65,()->{
-            for(var f:fixtures){f.place();if(f.spec.body())f.body();
+        // Expanded areas must not share targets with adjacent fixtures. Trigger and retire one fixture at a time.
+        for(int index=0;index<fixtures.size();index++){
+            var f=fixtures.get(index);int start=65+index*36;
+            h.runAfterDelay(start,()->{f.place();if(f.spec.body())f.body();
                 f.target(0,f.spec.shape()==CanonOffenseSkills.Shape.AIR_POINT?1:0,f.spec.body()?3.2:5);
-                h.assertTrue(CanonOffense.cast(f.p,f.spec.id()),"cast accepted: "+f.spec.id());
-            }
-        });
-        h.runAfterDelay(98,()->{try{
+                h.assertTrue(CanonOffense.cast(f.p,f.spec.id()),"cast accepted: "+f.spec.id());});
+            h.runAfterDelay(start+32,()->{
+                try{if(f.spec.category().equals("paper_psychokinesis")){
+                    int sheets=f.spec.id().equals("paper_fold_fan")?3:f.spec.id().equals("paper_piercing_lance")?2:4;
+                    h.assertTrue(f.p.getMainHandItem().getCount()==32-sheets,"real paper debit "+f.spec.id());
+                }}finally{f.close();}
+            });
+        }
+        h.runAfterDelay(65+fixtures.size()*36,()->{try{
             h.assertTrue(failures.isEmpty(),"settlement issues: "+failures);
-            h.assertTrue(counts.size()==16&&counts.values().stream().allMatch(n->n==1),"all 16 actual attacks settle exactly once: "+counts.size());
-            for(var f:fixtures)if(f.spec.category().equals("paper_psychokinesis")){
-                int sheets=f.spec.id().equals("paper_fold_fan")?3:f.spec.id().equals("paper_piercing_lance")?2:4;
-                h.assertTrue(f.p.getMainHandItem().getCount()==32-sheets,"real paper debit "+f.spec.id());
-            }
-            h.succeed();
-        }finally{CanonOffense.observer=old;fixtures.forEach(Fixture::close);}});
+            h.assertTrue(counts.size()==16&&counts.values().stream().allMatch(n->n==1),"all 16 actual attacks settle exactly once: "+counts.size());h.succeed();
+        }finally{CanonOffense.observer=old;}});
+
     }
     @GameTest(template=TEMPLATE,batch=BATCH,timeoutTicks=180)
     public static void changing_paper_during_warmup_cancels_without_damage_or_debit(GameTestHelper h){

@@ -25,7 +25,7 @@ import net.neoforged.fml.ModList;
 public final class VanillaMiningContract {
     public static final String ID = "academy:vanilla_beam_etching_harvest_1_21_1_21_1_252_v1";
     private static final Map<String, String> MODS = Map.of("minecraft", "1.21.1", "neoforge", "21.1.252",
-            "academy", "0.1.0-m41-highpower.0.81.5-city-a3.61");
+            "academy", "0.1.0-m41-highpower.0.81.5-city-a3.63");
     private static final Set<String> PACKS = Set.of("vanilla", "mod_data", "mod/neoforge", "mod/academy", "bundle", "trade_rebalance");
     private record BlockContract(Class<?> type, Item drop, String sha256) {}
     private static final Map<Block, BlockContract> BLOCKS = Map.of(

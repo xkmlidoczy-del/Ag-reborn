@@ -56,6 +56,7 @@ public final class CityBlocks {
         ITEMS.register(bus);
         GENERATORS.register(bus);
         CityWindContent.register(bus);
+        CityInteriorContent.register(bus);
         CityPlatformGate.register(bus);
         bus.addListener(CityBlocks::creative);
     }

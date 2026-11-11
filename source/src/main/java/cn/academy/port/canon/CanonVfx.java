@@ -37,16 +37,16 @@ public final class CanonVfx {
         emit(player,skill,origin,endpoint,phase,durationTicks,0);
     }
     /**
-     * Area skills also report the radius their controller actually checks, centred on {@code origin}, so the client can
+     * Area skills also report the radius their controller actually checks; {@link #effectCentre} resolves its anchor, so the client can
      * draw the real reach instead of a motif-sized guess. Zero means no area.
      */
     public static void emit(ServerPlayer player,String skill,Vec3 origin,Vec3 endpoint,Phase phase,int durationTicks,double radius) {
-        if(!Double.isFinite(radius) || radius<0 || radius>cn.academy.port.core.RangedSkillRanges.MAX_CANON_AREA_RADIUS) return;
+        if(!Double.isFinite(radius) || radius<0 || radius>maximumRadius(skill)) return;
         if(player==null || skill==null || skill.length()>64 || phase==null || durationTicks<1 || durationTicks>maximumDuration(skill)
                 || !finite(origin) || !finite(endpoint) || !player.server.isSameThread() || player.connection==null
                 || player.hasDisconnected() || player.isRemoved() || !player.isAlive()
                 || player.server.getPlayerList().getPlayer(player.getUUID())!=player
-                || origin.distanceToSqr(player.position())>64*64 || endpoint.distanceToSqr(origin)>cn.academy.port.core.RangedSkillRanges.MAX_CANON_VISUAL_SPAN*cn.academy.port.core.RangedSkillRanges.MAX_CANON_VISUAL_SPAN) return;
+                || origin.distanceToSqr(player.position())>maximumSpan(skill)*maximumSpan(skill) || endpoint.distanceToSqr(origin)>maximumSpan(skill)*maximumSpan(skill)) return;
         var state=AbilityStorage.get(player); var design=CanonVfxDesign.find(skill);
         // END only retires this owner's existing mark/pose. Category changes clear learned skills before leases unwind.
         if(design==null || SkillCatalog.find(design.category(),skill).isEmpty()
@@ -57,9 +57,26 @@ public final class CanonVfx {
         if(pc>=8||sc>=128)return;
         PLAYERS.put(player,new Quota(tick,pc+1));SERVERS.put(player.server,new Quota(tick,sc+1));
         Vec3 axis=player.getLookAngle().normalize();if(!finite(axis)||axis.lengthSqr()<.99)return;
-        var visual=new Visual(player.getId(),player.getUUID(),player.serverLevel().dimension().location(),skill,origin,endpoint,phase,durationTicks,(float)radius,axis);
+        var centre=effectCentre(skill,origin,endpoint,player.position(),player.getEyePosition());
+        var visual=new Visual(player.getId(),player.getUUID(),player.serverLevel().dimension().location(),skill,origin,endpoint,phase,durationTicks,(float)radius,axis,centre);
         serverObserver.accept(visual);
-        PacketDistributor.sendToPlayersNear(player.serverLevel(),null,origin.x,origin.y,origin.z,64,visual);
+        cn.academy.port.macro.MacroVfx.emit(player,skill,cn.academy.port.macro.MacroVfx.Phase.values()[phase.ordinal()],origin,radius>0?centre:endpoint,durationTicks,radius);
+        broadcast(player.serverLevel(),visual);
+    }
+    /** Target/body/eye/feet anchors are distinct. The accepted centre travels on the wire, rather than being guessed later. */
+    public static Vec3 effectCentre(String skill,Vec3 origin,Vec3 endpoint,Vec3 casterFeet,Vec3 casterEye){
+        if(CanonOffenseSkills.find(skill)!=null||CanonExpansionCombatA.physicalBarrier(skill))return endpoint;
+        var strike=CanonExpansionCombatA.shape(skill);
+        if(strike!=null&&strike.cone()<0&&!strike.direct()&&!strike.line()&&!skill.equals("dark_spear_fan"))return casterEye;
+        return skill.startsWith("liquid_")?origin:casterFeet;
+    }
+    public static double maximumRadius(String skill){return cn.academy.port.macro.MacroSkillRules.ultimate(skill)?64:cn.academy.port.core.RangedSkillRanges.MAX_CANON_AREA_RADIUS;}
+    public static double maximumSpan(String skill){return cn.academy.port.macro.MacroSkillRules.ultimate(skill)?192:cn.academy.port.core.RangedSkillRanges.MAX_CANON_VISUAL_SPAN;}
+    private static void broadcast(net.minecraft.server.level.ServerLevel world,Visual visual){
+        double distance=64+visual.radius();
+        for(var viewer:world.players())if(!viewer.hasDisconnected()&&(cn.academy.port.macro.MacroVfx.distanceSquared(viewer.getEyePosition(),visual.origin(),visual.endpoint())<=distance*distance
+                ||visual.radius()>0&&viewer.getEyePosition().distanceToSqr(visual.areaCentre())<=distance*distance))
+            PacketDistributor.sendToPlayer(viewer,visual);
     }
     /** Long mental control marks follow their real leases; other effects keep the original bound. */
     public static int maximumDuration(String skill){var d=CanonVfxDesign.find(skill);return d!=null&&d.category().equals("mental_out")?2400:200;}
@@ -75,9 +92,13 @@ public final class CanonVfx {
         var axis=endpoint.subtract(origin);if(axis.lengthSqr()<1e-6)axis=caster.getLookAngle();
         var visual=new Visual(caster.getId(),caster.getUUID(),world.dimension().location(),skill,origin,endpoint,phase,Math.max(1,Math.min(200,ticks)),0,axis.normalize());
         serverObserver.accept(visual);
-        PacketDistributor.sendToPlayersNear(world,null,origin.x,origin.y,origin.z,64,visual);
+        cn.academy.port.macro.MacroVfx.emit(caster,skill,cn.academy.port.macro.MacroVfx.Phase.values()[phase.ordinal()],origin,endpoint,ticks,0);
+        broadcast(world,visual);
     }
-    public record Visual(int entity,UUID owner,ResourceLocation dimension,String skill,Vec3 origin,Vec3 endpoint,Phase phase,int duration,float radius,Vec3 axis) implements CustomPacketPayload {
+    public record Visual(int entity,UUID owner,ResourceLocation dimension,String skill,Vec3 origin,Vec3 endpoint,Phase phase,int duration,float radius,Vec3 axis,Vec3 areaCentre) implements CustomPacketPayload {
+        public Visual(int entity,UUID owner,ResourceLocation dimension,String skill,Vec3 origin,Vec3 endpoint,Phase phase,int duration,float radius,Vec3 axis){
+            this(entity,owner,dimension,skill,origin,endpoint,phase,duration,radius,axis,origin);
+        }
         public Visual(int entity,UUID owner,ResourceLocation dimension,String skill,Vec3 origin,Vec3 endpoint,Phase phase,int duration,float radius){
             this(entity,owner,dimension,skill,origin,endpoint,phase,duration,radius,endpoint.distanceToSqr(origin)>1e-8?endpoint.subtract(origin).normalize():new Vec3(0,0,1));
         }
@@ -87,8 +108,8 @@ public final class CanonVfx {
         public static final Type<Visual> TYPE=new Type<>(ResourceLocation.fromNamespaceAndPath("academy","canon_visual"));
         public static final StreamCodec<RegistryFriendlyByteBuf,Visual> CODEC=StreamCodec.of((b,v)->{
             b.writeVarInt(v.entity);b.writeUUID(v.owner);b.writeResourceLocation(v.dimension);b.writeUtf(v.skill,64);
-            vec(b,v.origin);vec(b,v.endpoint);b.writeEnum(v.phase);b.writeVarInt(v.duration);b.writeFloat(v.radius);vec(b,v.axis);
-        },b->new Visual(b.readVarInt(),b.readUUID(),b.readResourceLocation(),b.readUtf(64),vec(b),vec(b),b.readEnum(Phase.class),b.readVarInt(),b.readFloat(),vec(b)));
+            vec(b,v.origin);vec(b,v.endpoint);b.writeEnum(v.phase);b.writeVarInt(v.duration);b.writeFloat(v.radius);vec(b,v.axis);vec(b,v.areaCentre);
+        },b->new Visual(b.readVarInt(),b.readUUID(),b.readResourceLocation(),b.readUtf(64),vec(b),vec(b),b.readEnum(Phase.class),b.readVarInt(),b.readFloat(),vec(b),vec(b)));
         public Type<? extends CustomPacketPayload> type(){return TYPE;}
     }
     private static void vec(RegistryFriendlyByteBuf b,Vec3 v){b.writeDouble(v.x);b.writeDouble(v.y);b.writeDouble(v.z);}
@@ -96,7 +117,7 @@ public final class CanonVfx {
     @EventBusSubscriber(modid="academy",bus=EventBusSubscriber.Bus.MOD)
     public static final class Network {
         @SubscribeEvent public static void register(RegisterPayloadHandlersEvent event){
-            event.registrar("3").playToClient(Visual.TYPE,Visual.CODEC,(packet,context)->context.enqueueWork(()->clientReceiver.accept(packet)));
+            event.registrar("4").playToClient(Visual.TYPE,Visual.CODEC,(packet,context)->context.enqueueWork(()->clientReceiver.accept(packet)));
         }
     }
     @SubscribeEvent public static void stop(ServerStoppedEvent e){SERVERS.remove(e.getServer()); PLAYERS.keySet().removeIf(p->p.server==e.getServer());}

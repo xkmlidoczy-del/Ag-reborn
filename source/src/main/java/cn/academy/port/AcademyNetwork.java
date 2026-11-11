@@ -17,6 +17,7 @@ public final class AcademyNetwork {
         public Type<? extends CustomPacketPayload> type() {return TYPE;}
     }
     public record ClientData(CompoundTag data) implements CustomPacketPayload {
+        public ClientData { cn.academy.port.macro.MacroVfx.legacy(data); }
         public static final Type<ClientData> TYPE=new Type<>(ResourceLocation.fromNamespaceAndPath("academy","client_data"));
         public static final StreamCodec<RegistryFriendlyByteBuf,ClientData> CODEC=StreamCodec.of((buf,p)->buf.writeNbt(p.data),buf->new ClientData(buf.readNbt()));
         public Type<? extends CustomPacketPayload> type() {return TYPE;}

@@ -1,0 +1,420 @@
+{
+  "variants": {
+    "facing=north,right=false,slide=0": {
+      "model": "academy:block/city_elevator_gate_0_0",
+      "y": 0
+    },
+    "facing=north,right=false,slide=1": {
+      "model": "academy:block/city_elevator_gate_0_1",
+      "y": 0
+    },
+    "facing=north,right=false,slide=2": {
+      "model": "academy:block/city_elevator_gate_0_2",
+      "y": 0
+    },
+    "facing=north,right=false,slide=3": {
+      "model": "academy:block/city_elevator_gate_0_3",
+      "y": 0
+    },
+    "facing=north,right=false,slide=4": {
+      "model": "academy:block/city_elevator_gate_0_4",
+      "y": 0
+    },
+    "facing=north,right=false,slide=5": {
+      "model": "academy:block/city_elevator_gate_0_5",
+      "y": 0
+    },
+    "facing=north,right=false,slide=6": {
+      "model": "academy:block/city_elevator_gate_0_6",
+      "y": 0
+    },
+    "facing=north,right=false,slide=7": {
+      "model": "academy:block/city_elevator_gate_0_7",
+      "y": 0
+    },
+    "facing=north,right=false,slide=8": {
+      "model": "academy:block/city_elevator_gate_0_8",
+      "y": 0
+    },
+    "facing=north,right=false,slide=9": {
+      "model": "academy:block/city_elevator_gate_0_9",
+      "y": 0
+    },
+    "facing=north,right=false,slide=10": {
+      "model": "academy:block/city_elevator_gate_0_10",
+      "y": 0
+    },
+    "facing=north,right=false,slide=11": {
+      "model": "academy:block/city_elevator_gate_0_11",
+      "y": 0
+    },
+    "facing=north,right=false,slide=12": {
+      "model": "academy:block/city_elevator_gate_0_12",
+      "y": 0
+    },
+    "facing=north,right=true,slide=0": {
+      "model": "academy:block/city_elevator_gate_1_0",
+      "y": 0
+    },
+    "facing=north,right=true,slide=1": {
+      "model": "academy:block/city_elevator_gate_1_1",
+      "y": 0
+    },
+    "facing=north,right=true,slide=2": {
+      "model": "academy:block/city_elevator_gate_1_2",
+      "y": 0
+    },
+    "facing=north,right=true,slide=3": {
+      "model": "academy:block/city_elevator_gate_1_3",
+      "y": 0
+    },
+    "facing=north,right=true,slide=4": {
+      "model": "academy:block/city_elevator_gate_1_4",
+      "y": 0
+    },
+    "facing=north,right=true,slide=5": {
+      "model": "academy:block/city_elevator_gate_1_5",
+      "y": 0
+    },
+    "facing=north,right=true,slide=6": {
+      "model": "academy:block/city_elevator_gate_1_6",
+      "y": 0
+    },
+    "facing=north,right=true,slide=7": {
+      "model": "academy:block/city_elevator_gate_1_7",
+      "y": 0
+    },
+    "facing=north,right=true,slide=8": {
+      "model": "academy:block/city_elevator_gate_1_8",
+      "y": 0
+    },
+    "facing=north,right=true,slide=9": {
+      "model": "academy:block/city_elevator_gate_1_9",
+      "y": 0
+    },
+    "facing=north,right=true,slide=10": {
+      "model": "academy:block/city_elevator_gate_1_10",
+      "y": 0
+    },
+    "facing=north,right=true,slide=11": {
+      "model": "academy:block/city_elevator_gate_1_11",
+      "y": 0
+    },
+    "facing=north,right=true,slide=12": {
+      "model": "academy:block/city_elevator_gate_1_12",
+      "y": 0
+    },
+    "facing=east,right=false,slide=0": {
+      "model": "academy:block/city_elevator_gate_0_0",
+      "y": 90
+    },
+    "facing=east,right=false,slide=1": {
+      "model": "academy:block/city_elevator_gate_0_1",
+      "y": 90
+    },
+    "facing=east,right=false,slide=2": {
+      "model": "academy:block/city_elevator_gate_0_2",
+      "y": 90
+    },
+    "facing=east,right=false,slide=3": {
+      "model": "academy:block/city_elevator_gate_0_3",
+      "y": 90
+    },
+    "facing=east,right=false,slide=4": {
+      "model": "academy:block/city_elevator_gate_0_4",
+      "y": 90
+    },
+    "facing=east,right=false,slide=5": {
+      "model": "academy:block/city_elevator_gate_0_5",
+      "y": 90
+    },
+    "facing=east,right=false,slide=6": {
+      "model": "academy:block/city_elevator_gate_0_6",
+      "y": 90
+    },
+    "facing=east,right=false,slide=7": {
+      "model": "academy:block/city_elevator_gate_0_7",
+      "y": 90
+    },
+    "facing=east,right=false,slide=8": {
+      "model": "academy:block/city_elevator_gate_0_8",
+      "y": 90
+    },
+    "facing=east,right=false,slide=9": {
+      "model": "academy:block/city_elevator_gate_0_9",
+      "y": 90
+    },
+    "facing=east,right=false,slide=10": {
+      "model": "academy:block/city_elevator_gate_0_10",
+      "y": 90
+    },
+    "facing=east,right=false,slide=11": {
+      "model": "academy:block/city_elevator_gate_0_11",
+      "y": 90
+    },
+    "facing=east,right=false,slide=12": {
+      "model": "academy:block/city_elevator_gate_0_12",
+      "y": 90
+    },
+    "facing=east,right=true,slide=0": {
+      "model": "academy:block/city_elevator_gate_1_0",
+      "y": 90
+    },
+    "facing=east,right=true,slide=1": {
+      "model": "academy:block/city_elevator_gate_1_1",
+      "y": 90
+    },
+    "facing=east,right=true,slide=2": {
+      "model": "academy:block/city_elevator_gate_1_2",
+      "y": 90
+    },
+    "facing=east,right=true,slide=3": {
+      "model": "academy:block/city_elevator_gate_1_3",
+      "y": 90
+    },
+    "facing=east,right=true,slide=4": {
+      "model": "academy:block/city_elevator_gate_1_4",
+      "y": 90
+    },
+    "facing=east,right=true,slide=5": {
+      "model": "academy:block/city_elevator_gate_1_5",
+      "y": 90
+    },
+    "facing=east,right=true,slide=6": {
+      "model": "academy:block/city_elevator_gate_1_6",
+      "y": 90
+    },
+    "facing=east,right=true,slide=7": {
+      "model": "academy:block/city_elevator_gate_1_7",
+      "y": 90
+    },
+    "facing=east,right=true,slide=8": {
+      "model": "academy:block/city_elevator_gate_1_8",
+      "y": 90
+    },
+    "facing=east,right=true,slide=9": {
+      "model": "academy:block/city_elevator_gate_1_9",
+      "y": 90
+    },
+    "facing=east,right=true,slide=10": {
+      "model": "academy:block/city_elevator_gate_1_10",
+      "y": 90
+    },
+    "facing=east,right=true,slide=11": {
+      "model": "academy:block/city_elevator_gate_1_11",
+      "y": 90
+    },
+    "facing=east,right=true,slide=12": {
+      "model": "academy:block/city_elevator_gate_1_12",
+      "y": 90
+    },
+    "facing=south,right=false,slide=0": {
+      "model": "academy:block/city_elevator_gate_0_0",
+      "y": 180
+    },
+    "facing=south,right=false,slide=1": {
+      "model": "academy:block/city_elevator_gate_0_1",
+      "y": 180
+    },
+    "facing=south,right=false,slide=2": {
+      "model": "academy:block/city_elevator_gate_0_2",
+      "y": 180
+    },
+    "facing=south,right=false,slide=3": {
+      "model": "academy:block/city_elevator_gate_0_3",
+      "y": 180
+    },
+    "facing=south,right=false,slide=4": {
+      "model": "academy:block/city_elevator_gate_0_4",
+      "y": 180
+    },
+    "facing=south,right=false,slide=5": {
+      "model": "academy:block/city_elevator_gate_0_5",
+      "y": 180
+    },
+    "facing=south,right=false,slide=6": {
+      "model": "academy:block/city_elevator_gate_0_6",
+      "y": 180
+    },
+    "facing=south,right=false,slide=7": {
+      "model": "academy:block/city_elevator_gate_0_7",
+      "y": 180
+    },
+    "facing=south,right=false,slide=8": {
+      "model": "academy:block/city_elevator_gate_0_8",
+      "y": 180
+    },
+    "facing=south,right=false,slide=9": {
+      "model": "academy:block/city_elevator_gate_0_9",
+      "y": 180
+    },
+    "facing=south,right=false,slide=10": {
+      "model": "academy:block/city_elevator_gate_0_10",
+      "y": 180
+    },
+    "facing=south,right=false,slide=11": {
+      "model": "academy:block/city_elevator_gate_0_11",
+      "y": 180
+    },
+    "facing=south,right=false,slide=12": {
+      "model": "academy:block/city_elevator_gate_0_12",
+      "y": 180
+    },
+    "facing=south,right=true,slide=0": {
+      "model": "academy:block/city_elevator_gate_1_0",
+      "y": 180
+    },
+    "facing=south,right=true,slide=1": {
+      "model": "academy:block/city_elevator_gate_1_1",
+      "y": 180
+    },
+    "facing=south,right=true,slide=2": {
+      "model": "academy:block/city_elevator_gate_1_2",
+      "y": 180
+    },
+    "facing=south,right=true,slide=3": {
+      "model": "academy:block/city_elevator_gate_1_3",
+      "y": 180
+    },
+    "facing=south,right=true,slide=4": {
+      "model": "academy:block/city_elevator_gate_1_4",
+      "y": 180
+    },
+    "facing=south,right=true,slide=5": {
+      "model": "academy:block/city_elevator_gate_1_5",
+      "y": 180
+    },
+    "facing=south,right=true,slide=6": {
+      "model": "academy:block/city_elevator_gate_1_6",
+      "y": 180
+    },
+    "facing=south,right=true,slide=7": {
+      "model": "academy:block/city_elevator_gate_1_7",
+      "y": 180
+    },
+    "facing=south,right=true,slide=8": {
+      "model": "academy:block/city_elevator_gate_1_8",
+      "y": 180
+    },
+    "facing=south,right=true,slide=9": {
+      "model": "academy:block/city_elevator_gate_1_9",
+      "y": 180
+    },
+    "facing=south,right=true,slide=10": {
+      "model": "academy:block/city_elevator_gate_1_10",
+      "y": 180
+    },
+    "facing=south,right=true,slide=11": {
+      "model": "academy:block/city_elevator_gate_1_11",
+      "y": 180
+    },
+    "facing=south,right=true,slide=12": {
+      "model": "academy:block/city_elevator_gate_1_12",
+      "y": 180
+    },
+    "facing=west,right=false,slide=0": {
+      "model": "academy:block/city_elevator_gate_0_0",
+      "y": 270
+    },
+    "facing=west,right=false,slide=1": {
+      "model": "academy:block/city_elevator_gate_0_1",
+      "y": 270
+    },
+    "facing=west,right=false,slide=2": {
+      "model": "academy:block/city_elevator_gate_0_2",
+      "y": 270
+    },
+    "facing=west,right=false,slide=3": {
+      "model": "academy:block/city_elevator_gate_0_3",
+      "y": 270
+    },
+    "facing=west,right=false,slide=4": {
+      "model": "academy:block/city_elevator_gate_0_4",
+      "y": 270
+    },
+    "facing=west,right=false,slide=5": {
+      "model": "academy:block/city_elevator_gate_0_5",
+      "y": 270
+    },
+    "facing=west,right=false,slide=6": {
+      "model": "academy:block/city_elevator_gate_0_6",
+      "y": 270
+    },
+    "facing=west,right=false,slide=7": {
+      "model": "academy:block/city_elevator_gate_0_7",
+      "y": 270
+    },
+    "facing=west,right=false,slide=8": {
+      "model": "academy:block/city_elevator_gate_0_8",
+      "y": 270
+    },
+    "facing=west,right=false,slide=9": {
+      "model": "academy:block/city_elevator_gate_0_9",
+      "y": 270
+    },
+    "facing=west,right=false,slide=10": {
+      "model": "academy:block/city_elevator_gate_0_10",
+      "y": 270
+    },
+    "facing=west,right=false,slide=11": {
+      "model": "academy:block/city_elevator_gate_0_11",
+      "y": 270
+    },
+    "facing=west,right=false,slide=12": {
+      "model": "academy:block/city_elevator_gate_0_12",
+      "y": 270
+    },
+    "facing=west,right=true,slide=0": {
+      "model": "academy:block/city_elevator_gate_1_0",
+      "y": 270
+    },
+    "facing=west,right=true,slide=1": {
+      "model": "academy:block/city_elevator_gate_1_1",
+      "y": 270
+    },
+    "facing=west,right=true,slide=2": {
+      "model": "academy:block/city_elevator_gate_1_2",
+      "y": 270
+    },
+    "facing=west,right=true,slide=3": {
+      "model": "academy:block/city_elevator_gate_1_3",
+      "y": 270
+    },
+    "facing=west,right=true,slide=4": {
+      "model": "academy:block/city_elevator_gate_1_4",
+      "y": 270
+    },
+    "facing=west,right=true,slide=5": {
+      "model": "academy:block/city_elevator_gate_1_5",
+      "y": 270
+    },
+    "facing=west,right=true,slide=6": {
+      "model": "academy:block/city_elevator_gate_1_6",
+      "y": 270
+    },
+    "facing=west,right=true,slide=7": {
+      "model": "academy:block/city_elevator_gate_1_7",
+      "y": 270
+    },
+    "facing=west,right=true,slide=8": {
+      "model": "academy:block/city_elevator_gate_1_8",
+      "y": 270
+    },
+    "facing=west,right=true,slide=9": {
+      "model": "academy:block/city_elevator_gate_1_9",
+      "y": 270
+    },
+    "facing=west,right=true,slide=10": {
+      "model": "academy:block/city_elevator_gate_1_10",
+      "y": 270
+    },
+    "facing=west,right=true,slide=11": {
+      "model": "academy:block/city_elevator_gate_1_11",
+      "y": 270
+    },
+    "facing=west,right=true,slide=12": {
+      "model": "academy:block/city_elevator_gate_1_12",
+      "y": 270
+    }
+  }
+}

@@ -47,6 +47,8 @@ public final class CanonFloatItems {
     public static final Set<String> IMPLEMENTED=Set.of("float_item_lift","float_item_lower","float_item_release","float_item_pull","float_item_push","float_item_field","float_release_field");
     private static final String CATEGORY="float_dial";
     private static final int MAX=64;
+    private static final Map<ServerPlayer,Long> FIELD_GENERATION=new java.util.IdentityHashMap<>();
+    private static final Set<ServerPlayer> PENDING_FIELDS=java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<>());
     /** A lifted item rises this far and then floats in place, so lower/pull/release can still be chosen and aimed at it. */
     private static final Map<UUID,Lease> ACTIVE=new HashMap<>();
     private enum Mode { UP, DOWN, PULL }
@@ -100,32 +102,41 @@ public final class CanonFloatItems {
                 &&state.presets.currentContains(id)&&SkillCatalog.enabled(CATEGORY,id);
     }
     private static boolean field(ServerPlayer p,String id) {
-        double radius=number(id, "radius");
+        double radius=cn.academy.port.macro.MacroSkillRules.area(id,AbilityStorage.get(p).exp(id),number(id,"radius"));
         int ticks=integer(id, "duration_ticks");
-        Vec3 center=p.position();if(!loaded(p.serverLevel(),center.add(-radius,0,-radius),center.add(radius,0,radius)))return false;
+        Vec3 center=p.position();
         var found=p.serverLevel().getEntitiesOfClass(ItemEntity.class,p.getBoundingBox().inflate(radius),
                 item->eligible(p,item,radius)&&!ACTIVE.containsKey(item.getUUID())&&!CanonFloatExpansion.leased(item));
-        if(found.isEmpty()||found.size()>64)return false;
+        if(found.isEmpty())return false;
         // Buoyancy Float: items nearest the marker are taken first; the caster's own range and checks are unchanged.
         Vec3 marker=CanonAuxItems.floatMarker(p);
         found.sort(marker==null?Comparator.comparing(ItemEntity::getUUID)
                 :Comparator.comparingDouble((ItemEntity i)->i.position().distanceToSqr(marker)).thenComparing(ItemEntity::getUUID));
         var selected=List.copyOf(found.subList(0,Math.min(integer(id, "target_cap"),found.size())));
-        long now=p.serverLevel().getGameTime();if(ACTIVE.size()+selected.size()>MAX||now>Long.MAX_VALUE-ticks)return false;
+        long now=p.serverLevel().getGameTime();if(now>Long.MAX_VALUE-ticks)return false;
         var snapshots=new ArrayList<ItemStack>();for(var item:selected)snapshots.add(item.getItem().copy());
         if(!HighPowerResources.trySpend(p,id,HighPowerGrowth.values(p).arcCost()*2,60))return false;
         for(int i=0;i<selected.size();i++)if(!eligible(p,selected.get(i),radius)
                 ||ACTIVE.containsKey(selected.get(i).getUUID())||CanonFloatExpansion.leased(selected.get(i))||!ItemStack.matches(selected.get(i).getItem(),snapshots.get(i)))return false;
-        if(ACTIVE.size()+selected.size()>MAX)return false;
-        for(var item:selected)ACTIVE.put(item.getUUID(),new Lease(p,item,now+ticks,id));
+
+        long generation=FIELD_GENERATION.merge(p,1L,Long::sum);PENDING_FIELDS.add(p);
+        var world=p.serverLevel();var ownerState=AbilityStorage.get(p);
+        cn.academy.port.macro.MacroSettlement.submit(world,selected,
+                ()->p.isAlive()&&!p.hasDisconnected()&&p.serverLevel()==world&&AbilityStorage.get(p)==ownerState&&CATEGORY.equals(ownerState.category)&&ownerState.learned(id)&&FIELD_GENERATION.getOrDefault(p,0L)==generation,
+                item->{if(eligible(p,item,radius)&&!ACTIVE.containsKey(item.getUUID())&&!CanonFloatExpansion.leased(item))ACTIVE.put(item.getUUID(),new Lease(p,item,now+ticks,id));},
+                ()->{if(FIELD_GENERATION.getOrDefault(p,0L)==generation)PENDING_FIELDS.remove(p);});
         CanonVfx.emit(p,id,p.position(),selected.getFirst().position(),CanonVfx.Phase.START,18,radius);return true;
     }
     private static boolean releaseField(ServerPlayer p,String id) {
-        var owned=ACTIVE.values().stream().filter(l->l.owner==p&&valid(l)).toList();if(owned.isEmpty())return false;
+        var owned=ACTIVE.values().stream().filter(l->l.owner==p&&valid(l)).toList();if(owned.isEmpty()&&!PENDING_FIELDS.contains(p))return false;
+        // A field may still be waiting behind this tick's shared settlement budget.
+        // Releasing it has no installed first item; its real center is the owner.
+        Vec3 endpoint=owned.isEmpty()?p.position():owned.getFirst().item.position();
         if(!HighPowerResources.trySpend(p,id,HighPowerGrowth.values(p).arcCost()*.5,20))return false;
         if(owned.stream().anyMatch(l->!valid(l)))return false;
+        FIELD_GENERATION.merge(p,1L,Long::sum);PENDING_FIELDS.remove(p);
         for(Lease l:owned)ACTIVE.remove(l.item.getUUID(),l);
-        CanonVfx.emit(p,id,p.position(),owned.getFirst().item.position(),CanonVfx.Phase.END,12);return true;
+        CanonVfx.emit(p,id,p.position(),endpoint,CanonVfx.Phase.END,12);return true;
     }
     private static boolean movementPermitted(ServerPlayer p,ItemEntity item,Vec3 next){
         Vec3 end=item.position().add(next);var world=p.serverLevel();
@@ -199,9 +210,9 @@ public final class CanonFloatItems {
         for(int x=x0;x<=x1;x++)for(int z=z0;z<=z1;z++)if(!w.hasChunk(x,z))return false;return true;
     }
     private static boolean finite(Vec3 v){return v!=null&&Double.isFinite(v.x)&&Double.isFinite(v.y)&&Double.isFinite(v.z);}
-    private static void remove(ServerPlayer p){ACTIVE.values().removeIf(l->l.owner==p);}
+    private static void remove(ServerPlayer p){ACTIVE.values().removeIf(l->l.owner==p);FIELD_GENERATION.remove(p);PENDING_FIELDS.remove(p);}
     @SubscribeEvent public static void logout(PlayerEvent.PlayerLoggedOutEvent e){if(e.getEntity() instanceof ServerPlayer p)remove(p);}
     @SubscribeEvent public static void dimension(PlayerEvent.PlayerChangedDimensionEvent e){if(e.getEntity() instanceof ServerPlayer p)remove(p);}
     @SubscribeEvent public static void clone(PlayerEvent.Clone e){if(e.getOriginal() instanceof ServerPlayer p)remove(p);}
-    @SubscribeEvent public static void stop(ServerStoppedEvent e){ACTIVE.values().removeIf(l->l.owner.server==e.getServer());}
+    @SubscribeEvent public static void stop(ServerStoppedEvent e){ACTIVE.values().removeIf(l->l.owner.server==e.getServer());FIELD_GENERATION.keySet().removeIf(p->p.server==e.getServer());PENDING_FIELDS.removeIf(p->p.server==e.getServer());}
 }

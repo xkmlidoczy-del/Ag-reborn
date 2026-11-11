@@ -478,6 +478,13 @@ public final class RemoteScatterRelay {
     private static List<PlateVisual> plateVisuals(List<Node> plates){return plates.stream().map(plate->new PlateVisual(vec(plate.center()),vec(plate.normal()))).toList();}
     private static void send(Context c,int phase,int status,Node ghost,List<SegmentVisual> path){
         ServerPlayer p=c.identity.owner();c.lastVisual=now(p);
+        // The native visual below owns the complete ordered, reflected path.
+        // Its extra macro layer may reinforce a real leg, never shortcut from
+        // the caster through cover directly to the final endpoint.
+        if(phase==FIRE&&!path.isEmpty())
+            cn.academy.port.macro.MacroVfx.emit(p,ID,status==DAMAGED||status==ABSORBED?
+                    cn.academy.port.macro.MacroVfx.Phase.HIT:cn.academy.port.macro.MacroVfx.Phase.ACTIVE,
+                    path.getLast().start(),path.getLast().end(),32,0);
         Vec3 ghostCenter=ghost!=null?vec(ghost.center()):c.hold!=null&&c.hold.editing&&c.hold.center!=null?c.hold.center:c.terminal!=null?c.terminal:Vec3.ZERO;
         Visual visual=new Visual(p.getId(),p.getUUID(),c.input.epoch(),c.input.input(),c.identity.token(),++c.sequence,phase,status,
                 phase==ENDED?0:remainingTicks(p),p.position(),phase==ENDED?List.of():plateVisuals(c.plates),ghostCenter,ghost==null?Vec3.ZERO:vec(ghost.normal()),path);

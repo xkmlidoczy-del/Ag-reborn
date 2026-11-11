@@ -92,9 +92,15 @@ public final class HighPowerRemoteScatterRelayRuntimeTests {
             Villager target=f.mob(1.5,0,4,true);List<Vec3> centers=new ArrayList<>();
             for(int i=0;i<count;i++)centers.add(f.p.position().add(i%2==0?0:3,1.2,7+i*3));
             f.route(centers,target.getBoundingBox().getCenter());Observation hit=f.observe(target);BigDecimal before=hp(target);double cp=f.cp();
-            h.assertTrue(f.fire(),"genuine authenticated route with "+count+" nodes commits");
+            var macro=new ArrayList<cn.academy.port.macro.MacroVfx.Event>();var previousMacro=cn.academy.port.macro.MacroVfx.observer;
+            cn.academy.port.macro.MacroVfx.observer=v->{previousMacro.accept(v);if(v.owner().equals(f.p.getUUID())&&v.skill().equals(ID))macro.add(v);};
+            try{h.assertTrue(f.fire(),"genuine authenticated route with "+count+" nodes commits");}
+            finally{cn.academy.port.macro.MacroVfx.observer=previousMacro;}
             exact(h,before.subtract(hp(target)),RemoteScatterRelayRules.damage(HighPowerGrowth.values(f.p).damage()),"node count cannot multiply the total 2.4D");near(h,cp-f.cp(),.2,"one total shot payment");
             var receipt=f.receipt(count);h.assertTrue(hit.posts==1,"only terminal body invokes one native damage completion");assertSource(h,hit.source,f.p,receipt.path().getLast().start());
+            var terminal=receipt.path().getLast();
+            h.assertTrue(!macro.isEmpty()&&macro.stream().allMatch(v->v.from().equals(terminal.start())&&v.to().equals(terminal.end())),
+                    "macro overlay follows a real terminal leg; the original renderer owns every reflected segment without a straight shortcut");
             h.assertFalse(HighPowerCombat.attack(f.p,SKILL,target,BigDecimal.ONE),"generic skill string cannot forge private relay source");
             h.assertFalse(HighPowerCombat.attackRemoteScatterRelay(null),"null permit never authorizes a beam");
             for(var constructor:RemoteScatterRelay.EmissionPermit.class.getDeclaredConstructors())h.assertTrue(Modifier.isPrivate(constructor.getModifiers()),"permit construction stays private");

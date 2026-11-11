@@ -51,10 +51,13 @@ public final class CityGreyboxGenerator extends ChunkGenerator {
     private final long seed;
     private final CityMountainTrail mountainTrail;
     private final CityMountainNature mountainNature;
+    private final CityInteriors.Planner interiors;
+    private volatile java.util.function.Consumer<CityInteriors.Group> interiorRecorder=g->{};
 
     public CityGreyboxGenerator(BiomeSource biomeSource, long seed) {
         super(biomeSource, CityGreyboxGenerator::cityGenerationSettings);
         this.seed = seed;
+        this.interiors = new CityInteriors.Planner(seed);
         this.mountainTrail = new CityMountainTrail(seed);
         this.mountainNature = new CityMountainNature(seed, this.mountainTrail);
     }
@@ -168,8 +171,12 @@ public final class CityGreyboxGenerator extends ChunkGenerator {
                           CityMountainTrail.Column trail, CityDistrictBlocks.Column districtBlock, CityTemplateLibrary.Column template, CityTemplateFrontage.Column frontage, CityAirportCorridor.Column corridor,
                           CityCampusPark.Column campusPark, CityD7CentralGardens.Column centralGardens, CityD7PlazaLandscape.Column plazaLandscape, CityCommercialStreets.Column commercialStreets,
                           CityMountainNature.Column mountainNature, CityAirportApron.Column airportApron,
-                          CityNeighborhoodSpaces.Column neighborhoodSpaces, CityServicePlan.Column service,CityLifeRooms.Column life) {
+                          CityNeighborhoodSpaces.Column neighborhoodSpaces, CityServicePlan.Column service,CityLifeRooms.Column life, int x,int z,CityInteriors.Group interior) {
         BlockState block(int y, int minY) {
+            if (interior != null && landmark != null && landmark.type() == 32) {
+                BlockState lab = CityLabPlan.blockAt(landmark.x(), y, landmark.z());if(lab!=null)return lab;
+            }
+            if(interior!=null){BlockState revised=interior.block(x,y,z);if(revised!=null)return revised;}
             if(life!=null){var furnished=life.block(y);if(furnished!=null)return furnished;}
             if (service != null) {
                 BlockState furnishing = service.block(y);
@@ -301,6 +308,7 @@ public final class CityGreyboxGenerator extends ChunkGenerator {
             if (landmark != null) top = Math.max(top, landmark.top());
             if (trail != null) top = Math.max(top, trail.top());
             if (template != null) top = Math.max(top, template.top());
+            if (interior != null) top = Math.max(top, interior.top());
             if (districtBlock != null) top = Math.max(top, districtBlock.top());
             if (frontage != null) top = Math.max(top, frontage.top());
             if (corridor != null) top = Math.max(top, corridor.top());
@@ -324,20 +332,28 @@ public final class CityGreyboxGenerator extends ChunkGenerator {
     }
 
     long planSeed() { return seed; }
+    public void interiorPolicy(CityInteriorVersions.Policy policy){interiors.policy(policy);}
+    public CityInteriors.Group interiorAt(int x,int z){return interiors.at(x,z);}
+    public java.util.Collection<CityInteriors.Group> cachedInteriors(){return interiors.cached();}
+    public void onInteriorGenerated(java.util.function.Consumer<CityInteriors.Group> recorder){interiorRecorder=java.util.Objects.requireNonNull(recorder);}
 
     private Column column(int x, int z) {
         var sample = CityPlan.sample(seed, x, z);
         var zone = sample.kind() == CityPlan.Kind.BUILDING ? CityDistrictZoning.at(sample.district(), x, z) : null;
         var site = CityTemplateSites.at(seed, x, z);
         var districtBlock = CityDistrictBlocks.at(seed, x, z, site);
-        var template = districtBlock == null ? CityTemplateLibrary.at(x, z, site) : null;
+        var interior = interiors.at(x,z);
+        // R5's last procedural storey had a two-block roof clearance. New buildings gain
+        // one roof block of height so every four-block storey can remain usable.
+        if(interior!=null&&interior.id().startsWith("procedural:"))sample=new CityPlan.Sample(sample.kind(),sample.district(),sample.height()+1,sample.a(),sample.b(),sample.bw(),sample.bd(),sample.hash());
+        var template = districtBlock == null ? CityTemplateLibrary.at(x, z, site,interior!=null) : null;
         return new Column(sample, zone, CityTransit.overlay(x, z), CityAirportTransit.overlay(seed, x, z), CityNorthSouthTransit.overlay(seed, x, z), CityRingTransit.overlay(seed, x, z), CityMetroAirportTransit.overlay(x, z), CityMetroNorthTransit.overlay(x, z), CityMetroTransit.overlay(x, z),
                 CitySampleRoute.at(x, z), CityStreetProps.at(seed, x, z),
                 CityNeighborhoodProps.at(seed, x, z), CityDistrictLandmarks.at(seed, x, z), mountainTrail.at(x, z),
                 districtBlock, template, CityTemplateFrontage.at(seed, x, z, sample, template), CityAirportCorridor.at(seed, x, z, sample),
                 CityCampusPark.at(seed, x, z, sample), CityD7CentralGardens.at(seed, x, z, sample), CityD7PlazaLandscape.at(seed, x, z, sample), CityCommercialStreets.at(seed, x, z, sample),
                 mountainNature.at(x, z), CityAirportApron.at(x, z),
-                CityNeighborhoodSpaces.at(seed, x, z, sample), CityServicePlan.at(x, z),CityLifeRooms.at(x,z));
+                CityNeighborhoodSpaces.at(seed, x, z, sample), CityServicePlan.at(x, z),CityLifeRooms.at(x,z),x,z,interior);
     }
 
     // ------------------------------------------------------------------ generation
@@ -347,9 +363,11 @@ public final class CityGreyboxGenerator extends ChunkGenerator {
         Heightmap ocean = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
         Heightmap surface = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.WORLD_SURFACE_WG);
         int cx = chunk.getPos().getMinBlockX(), cz = chunk.getPos().getMinBlockZ();
+        var generatedInteriors=new java.util.LinkedHashMap<String,CityInteriors.Group>();
         for (int lx = 0; lx < 16; lx++) {
             for (int lz = 0; lz < 16; lz++) {
                 Column column = column(cx + lx, cz + lz);
+                if(column.interior()!=null)generatedInteriors.putIfAbsent(column.interior().id(),column.interior());
                 int top = Math.min(maxY - 1, column.top());
                 int highest = minY - 1;
                 for (int y = minY; y <= top; y++) {
@@ -364,6 +382,7 @@ public final class CityGreyboxGenerator extends ChunkGenerator {
                                 CityLabPlan.initialize(entity.getBlockPos(), entity);
                             if (column.service() != null) CityServicePlan.initialize(entity.getBlockPos(), entity);
                             if (column.life() != null) CityLifeRooms.initialize(entity.getBlockPos(), entity);
+                            if(column.interior()!=null)CityInteriors.initialize(column.interior(),entity.getBlockPos(),entity);
                             chunk.setBlockEntity(entity);
                         }
                     }
@@ -376,6 +395,7 @@ public final class CityGreyboxGenerator extends ChunkGenerator {
                 }
             }
         }
+        generatedInteriors.values().forEach(interiorRecorder);
         return CompletableFuture.completedFuture(chunk);
     }
 

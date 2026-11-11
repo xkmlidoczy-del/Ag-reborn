@@ -47,8 +47,9 @@ public final class CanonVfxClient {
         if(level!=world){EFFECTS.clear();PENDING_FLOAT_BINDINGS.clear();PENDING.clear();CanonMeshRenderer.clear();CanonFx.clear();CanonUltimates.clear();world=level;}
         if(level==null||mc.player==null||v==null||v.owner()==null||v.dimension()==null||v.phase()==null
                 ||!level.dimension().location().equals(v.dimension())||v.duration()<1||v.duration()>CanonVfx.maximumDuration(v.skill())
-                ||!finite(v.origin())||!finite(v.endpoint())||!finite(v.axis())||Math.abs(v.axis().lengthSqr()-1)>.01||!Float.isFinite(v.radius())||v.radius()<0||v.radius()>cn.academy.port.core.RangedSkillRanges.MAX_CANON_AREA_RADIUS||v.origin().distanceToSqr(v.endpoint())>cn.academy.port.core.RangedSkillRanges.MAX_CANON_VISUAL_SPAN*cn.academy.port.core.RangedSkillRanges.MAX_CANON_VISUAL_SPAN
-                ||mc.player.distanceToSqr(v.origin())>72*72)return;
+                ||!finite(v.origin())||!finite(v.endpoint())||!finite(v.axis())||!finite(v.areaCentre())||Math.abs(v.axis().lengthSqr()-1)>.01||!Float.isFinite(v.radius())||v.radius()<0||v.radius()>CanonVfx.maximumRadius(v.skill())||v.origin().distanceToSqr(v.endpoint())>CanonVfx.maximumSpan(v.skill())*CanonVfx.maximumSpan(v.skill())
+                ||v.origin().distanceToSqr(v.areaCentre())>CanonVfx.maximumSpan(v.skill())*CanonVfx.maximumSpan(v.skill())
+                ||Math.min(cn.academy.port.macro.MacroVfx.distanceSquared(mc.player.getEyePosition(),v.origin(),v.endpoint()),v.radius()>0?mc.player.getEyePosition().distanceToSqr(v.areaCentre()):Double.POSITIVE_INFINITY)>Math.pow(72+v.radius(),2))return;
         var design=CanonVfxDesign.find(v.skill());if(design==null)return;
         Vec3 direction=v.axis();
         var entity=level.getEntity(v.entity());
@@ -80,11 +81,11 @@ public final class CanonVfxClient {
                     .55f,.94f+(v.skill().hashCode()&7)*.025f,false);
     }
     private record Pending(CanonVfx.Visual visual,long at) {}
-    /** Areas are centred on the caster, except the liquid body's, which the server reports as the visual origin. */
+    /** The server supplies the frozen centre. Only explicitly maintained personal fields follow the caster. */
     private static Vec3 rangeCentre(CanonVfx.Visual v,Vec3 feet){
         if(v.radius()<=0)return null;
-        if(cn.academy.port.canon.CanonOffenseSkills.find(v.skill())!=null)return v.endpoint();
-        return v.skill().startsWith("liquid_")?v.origin():feet;
+        if(java.util.Set.of("nitrogen_dome","dark_construct").contains(v.skill()))return feet;
+        return v.areaCentre();
     }
     /** Only bind an unambiguous living target at the confirmed point; fields keep their frozen centre. */
     private static LivingEntity offenseTarget(ClientLevel level,CanonVfx.Visual v,CanonVfxDesign.Design design){

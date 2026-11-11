@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "academy:block/city_locker",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "academy:block/city_locker",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "academy:block/city_locker",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "academy:block/city_locker",
+      "y": 270
+    }
+  }
+}

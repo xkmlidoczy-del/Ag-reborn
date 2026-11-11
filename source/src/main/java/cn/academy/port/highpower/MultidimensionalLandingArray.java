@@ -588,6 +588,12 @@ public final class MultidimensionalLandingArray {
         Vec3 source = flight == null ? c.source : flight.origin, impact = c.impact;
         RECEIPTS.put(p, new Receipt(input.input(), c.identity.token(), c.shotsTotal, c.nextShot, c.published, c.paid,
                 c.contacts, c.hurts, retained, pending, c.freeOrigin, phase, reason, flight == null ? null : flight.medium.getUUID(), source, impact));
+        if(c.paid>0&&(phase==PROJECTED||phase==IMPACT||phase==ENDED)) {
+            Vec3 endpoint=phase==IMPACT||flight==null?impact:flight.plan.endpoint();
+            cn.academy.port.macro.MacroVfx.emit(p,ID,phase==ENDED?cn.academy.port.macro.MacroVfx.Phase.END:
+                    phase==IMPACT&&accepted?cn.academy.port.macro.MacroVfx.Phase.HIT:cn.academy.port.macro.MacroVfx.Phase.ACTIVE,
+                    source,endpoint,32,0);
+        }
         Visual packet = new Visual(p.getUUID(), input.epoch(), input.input(), c.identity.token(), ++c.sequence, phase,
                 points, c.terminal || phase == REFUSED ? 0 : remaining(c), targetVisuals(c), c.shotsTotal, c.nextShot, c.published,
                 retained, pending, c.freeOrigin, source, impact, flight == null ? NONE : flight.medium.getUUID(),

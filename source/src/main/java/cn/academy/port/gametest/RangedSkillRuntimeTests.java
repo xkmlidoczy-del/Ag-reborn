@@ -116,17 +116,25 @@ public final class RangedSkillRuntimeTests {
     private static void exercise(GameTestHelper h,Skill skill,String mode){
         var w=h.getLevel();w.setDayTime(18000);UUID id=UUID.randomUUID();var cookie=CommonListenerCookie.createInitial(new GameProfile(id,"RG"+id.toString().substring(0,8)),false);
         var p=new ServerPlayer(w.getServer(),w,cookie.gameProfile(),cookie.clientInformation());var connection=new Connection(PacketFlow.SERVERBOUND);var channel=new EmbeddedChannel(connection);Zombie mob=null;
+        var saved=new java.util.LinkedHashMap<BlockPos,net.minecraft.world.level.block.state.BlockState>();
         try{
             NetworkRegistry.configureMockConnection(connection);p.server.getPlayerList().placeNewPlayer(connection,p,cookie);p.setGameMode(GameType.SURVIVAL);
-            Vec3 feet=h.absoluteVec(new Vec3(4.5,2,3.5));p.moveTo(feet,0,0);p.setYHeadRot(0);p.setOnGround(true);
-            for(int x=-1;x<=1;x++)for(int z=0;z<84;z++)w.setBlock(BlockPos.containing(feet.add(x,-1,z)),Blocks.STONE.defaultBlockState(),3);
-            for(int x=(p.blockPosition().getX()-16)>>4;x<=(p.blockPosition().getX()+16)>>4;x++)for(int z=(p.blockPosition().getZ()-16)>>4;z<=(p.blockPosition().getZ()+88)>>4;z++)w.getChunk(x,z);
+            // Like the terrain test, use a restored lane outside the structure's capped
+            // bounds. A 96-block trace otherwise intersects another test's barrier wall.
+            double reach=RangedSkillRanges.at(skill.id,1,0);
+            int span=(int)Math.ceil(reach)+4;
+            Vec3 feet=h.absoluteVec(new Vec3(4.5,2,3.5)).add(-2048,0,-2048);p.moveTo(feet,0,0);p.setYHeadRot(0);p.setOnGround(true);
+            for(int x=(p.blockPosition().getX()-16)>>4;x<=(p.blockPosition().getX()+16)>>4;x++)for(int z=(p.blockPosition().getZ()-16)>>4;z<=(p.blockPosition().getZ()+span)>>4;z++)w.getChunk(x,z);
+            for(int x=-1;x<=1;x++)for(int z=0;z<=span;z++)for(int y=-1;y<=3;y++){
+                BlockPos cell=BlockPos.containing(feet.add(x,y,z));saved.putIfAbsent(cell,w.getBlockState(cell));
+                w.setBlock(cell,(y==-1?Blocks.STONE:Blocks.AIR).defaultBlockState(),2);
+            }
             var state=AbilityStorage.get(p);state.changeCategoryClassic(skill.category);state.setLevel(5);
             for(var definition:cn.academy.port.SkillCatalog.REGISTERED)if(definition.category().equals(skill.category)){state.learn(definition.id());state.setSkillExp(definition.id(),1);}
             state.setActivateState(true);state.presets.edit(0,0,skill.id,state::learned);h.assertTrue(HighPowerCombat.enroll(p,5),"finite exact caster ledger fixture");HighPowerResources.initializeBudget(p);
             if(skill.id.equals("paper_blade"))p.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,new ItemStack(Items.PAPER,64));
             if(skill.id.equals("hydro_whip"))w.setBlock(BlockPos.containing(feet.add(-2,0,0)),Blocks.WATER.defaultBlockState(),3);
-            double reach=RangedSkillRanges.at(skill.id,1,0),distance=mode.equals("near")?1:mode.equals("outside")?reach+1.25:reach-1;
+            double distance=mode.equals("near")?1:mode.equals("outside")?reach+1.25:reach-1;
             mob=EntityType.ZOMBIE.create(w);h.assertTrue(mob!=null,"real hostile entity");mob.moveTo(feet.add(0,0,distance),0,0);mob.setNoAi(!skill.category.equals("mental_out"));w.addFreshEntity(mob);
             h.assertTrue(HighPowerCombat.enroll(mob,5),"finite exact target ledger fixture");
             Vec3 delta=mob.getBoundingBox().getCenter().subtract(p.getEyePosition());float yaw=(float)-Math.toDegrees(Math.atan2(delta.x,delta.z)),pitch=(float)-Math.toDegrees(Math.atan2(delta.y,Math.hypot(delta.x,delta.z)));
@@ -155,7 +163,7 @@ public final class RangedSkillRuntimeTests {
             }
             com.mojang.logging.LogUtils.getLogger().info("RANGED_BOUNDARY_PASS skill={} mode={} distance={} reach={} accepted={} damaged={} visuals={}",skill.id,mode,distance,reach,accepted,hit,visuals.stream().map(v->v.skill()+":"+v.origin().distanceTo(v.endpoint())).toList());
             h.succeed();
-        }finally{if(mob!=null)mob.discard();try{p.server.getPlayerList().remove(p);}finally{channel.finishAndReleaseAll();}}
+        }finally{if(mob!=null)mob.discard();for(var entry:saved.entrySet())w.setBlock(entry.getKey(),entry.getValue(),2);try{p.server.getPlayerList().remove(p);}finally{channel.finishAndReleaseAll();}}
     }
     private static Vec3 mobPoint(CanonVfx.Visual v,Zombie mob){return v.skill().equals("float_lift")||v.skill().equals("aero_barrage")?mob.position():mob.getBoundingBox().getCenter();}
     private static BigDecimal total(Zombie mob){return new BigDecimal(HighPowerCombat.healthText(mob)).add(HighPowerCombat.shield(mob));}

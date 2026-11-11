@@ -51,7 +51,7 @@ public final class CanonSkillsCombatB {
     private static final double RESCUE_REACH = cn.academy.port.core.RangedSkillRanges.fixed("float_rescue");
     private static final double FIELD_RANGE = number("float_field", "radius");
     private static final Map<UUID, Lease> LEASES = new HashMap<>();
-    private record Lease(ServerPlayer owner, ServerLevel world, LivingEntity target, String skill, long expires, double startY) {}
+    private record Lease(ServerPlayer owner, ServerLevel world, LivingEntity target, String skill, long expires, double startY, double reach) {}
 
     private CanonSkillsCombatB() {}
     static boolean leased(Entity target) { return target != null && LEASES.containsKey(target.getUUID()); }
@@ -76,7 +76,7 @@ public final class CanonSkillsCombatB {
                 || !state.presets.currentContains(skill) || !SkillCatalog.enabled(CATEGORY, skill)) return false;
         var world = player.serverLevel();
         var position = player.position(); var eye = player.getEyePosition(); var look = ClassicRaytrace.direction(player);
-        if (!finite(position) || !finite(eye) || !finite(look) || !chunksLoaded(world, eye, eye.add(look.scale(skill.equals("float_lift") ? LIFT_REACH : skill.equals("float_rescue") ? RESCUE_REACH : FIELD_RANGE)))) return false;
+        if (!finite(position) || !finite(eye) || !finite(look) || !chunksLoaded(world, eye, eye.add(look.scale(skill.equals("float_lift") ? LIFT_REACH : skill.equals("float_rescue") ? RESCUE_REACH : fieldRadius(player))))) return false;
 
         List<LivingEntity> targets = switch (skill) {
             case "float_lift" -> targetedHostile(player);
@@ -84,7 +84,7 @@ public final class CanonSkillsCombatB {
             case "float_field" -> fieldTargets(player);
             default -> List.of();
         };
-        if (targets.isEmpty() || LEASES.size() + targets.size() > MAX_LEASES
+        if (targets.isEmpty() || LEASES.size() + targets.size() > MAX_LEASES && !skill.equals("float_field")
                 || targets.stream().anyMatch(target -> LEASES.containsKey(target.getUUID()) || CanonFloatExpansion.leased(target))) return false;
         var growth = HighPowerGrowth.values(player);
         double multiplier = skill.equals("float_field") ? 4 : skill.equals("float_rescue") ? 2 : 1;
@@ -99,7 +99,7 @@ public final class CanonSkillsCombatB {
                 || HighPowerCombat.unsupportedReason(player).isPresent() || !CATEGORY.equals(state.category)
                 || !state.activated || !state.overloadFine || state.interfering || !state.learned(skill)
                 || !state.presets.currentContains(skill) || !SkillCatalog.enabled(CATEGORY, skill)
-                || LEASES.size() + targets.size() > MAX_LEASES
+                || LEASES.size() + targets.size() > MAX_LEASES && !skill.equals("float_field")
                 || targets.stream().anyMatch(target -> LEASES.containsKey(target.getUUID()) || CanonFloatExpansion.leased(target))) return false;
         List<LivingEntity> confirmed = switch (skill) {
             case "float_lift" -> targetedHostile(player);
@@ -108,8 +108,12 @@ public final class CanonSkillsCombatB {
             default -> List.of();
         };
         if (!confirmed.containsAll(targets)) return false;
-        for (LivingEntity target : targets) LEASES.put(target.getUUID(), new Lease(player, world, target, skill, now + ticks, target.getY()));
-        CanonVfx.emit(player,skill,player.position(),targets.getFirst().position(),CanonVfx.Phase.START,ticks,skill.equals("float_field")?FIELD_RANGE:0);
+        double leaseReach=skill.equals("float_field")?fieldRadius(player):32;
+        if(skill.equals("float_field"))cn.academy.port.macro.MacroSettlement.submit(world,targets,
+                ()->player.isAlive()&&!player.hasDisconnected()&&player.serverLevel()==world&&AbilityStorage.get(player)==state,
+                target->{if(eligibleHostile(player,target)&&target.distanceToSqr(player)<=leaseReach*leaseReach&&!LEASES.containsKey(target.getUUID()))LEASES.put(target.getUUID(),new Lease(player,world,target,skill,now+ticks,target.getY(),leaseReach));},()->{});
+        else for (LivingEntity target : targets) LEASES.put(target.getUUID(), new Lease(player, world, target, skill, now + ticks, target.getY(),leaseReach));
+        CanonVfx.emit(player,skill,player.position(),targets.getFirst().position(),CanonVfx.Phase.START,ticks,skill.equals("float_field")?fieldRadius(player):0);
         if (AbilityStorage.get(player) == state && CATEGORY.equals(state.category) && state.learned(skill)) {
             state.addExperience(skill, .01);
             AbilityStorage.save(player);
@@ -153,21 +157,22 @@ public final class CanonSkillsCombatB {
                 && owner.hasLineOfSight(target) && chunksLoaded(owner.serverLevel(), owner.getEyePosition(),target.getEyePosition());
     }
 
+    private static double fieldRadius(ServerPlayer p){return cn.academy.port.macro.MacroSkillRules.area("float_field",AbilityStorage.get(p).exp("float_field"),FIELD_RANGE);}
     private static List<LivingEntity> fieldTargets(ServerPlayer player) {
         var p = player.position(); var world = player.serverLevel();
-        if (!chunksLoaded(world, p.add(-FIELD_RANGE, 0, -FIELD_RANGE), p.add(FIELD_RANGE, 0, FIELD_RANGE))) return List.of();
+
         // Buoyancy Float: with a marker in reach, the field picks the enemies nearest the marker instead of the caster.
         // Reach and every per-target check still come from the caster, so the marker never extends range.
         Vec3 marker = CanonAuxItems.floatMarker(player);
-        var found = world.getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(FIELD_RANGE),
+        var found = world.getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(fieldRadius(player)),
                 candidate -> eligibleHostile(player, candidate));
-        if (found.size() > MAX_FIELD_CANDIDATES) return List.of();
+
         found.sort(marker == null ? Comparator.comparing(Mob::getUUID)
                 : Comparator.comparingDouble((Mob m) -> m.position().distanceToSqr(marker)).thenComparing(Mob::getUUID));
         var result = new ArrayList<LivingEntity>();
         for (Mob target : found) {
             if (result.size() == MAX_FIELD_TARGETS) break;
-            if (target.distanceToSqr(player) <= FIELD_RANGE * FIELD_RANGE && player.hasLineOfSight(target)
+            if (target.distanceToSqr(player) <= fieldRadius(player)*fieldRadius(player) && player.hasLineOfSight(target)
                     && !LEASES.containsKey(target.getUUID())) result.add(target);
         }
         return List.copyOf(result);
@@ -216,7 +221,7 @@ public final class CanonSkillsCombatB {
                 || owner.server.getPlayerList().getPlayer(owner.getUUID()) != owner || owner.serverLevel() != world
                 || world.getGameTime() >= lease.expires || target.isRemoved() || !target.isAlive()
                 || target.level() != world || !world.hasChunkAt(target.blockPosition()) || !finite(target.getDeltaMovement())
-                || owner.distanceToSqr(target) > 32 * 32) return false;
+                || owner.distanceToSqr(target) > lease.reach * lease.reach) return false;
         var state = AbilityStorage.get(owner);
         if (!CATEGORY.equals(state.category) || !state.activated || !state.overloadFine || state.interfering
                 || !state.learned(lease.skill) || !SkillCatalog.enabled(CATEGORY, lease.skill)

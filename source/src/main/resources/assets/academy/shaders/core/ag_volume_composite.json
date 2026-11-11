@@ -1,0 +1,34 @@
+{
+  "vertex": "academy:ag_volume",
+  "fragment": "academy:ag_volume_composite",
+  "samplers": [
+    {
+      "name": "Medium"
+    },
+    {
+      "name": "MediumDepth"
+    },
+    {
+      "name": "SceneDepth"
+    }
+  ],
+  "uniforms": [
+    {
+      "name": "Texel",
+      "type": "float",
+      "count": 2,
+      "values": [
+        0.001,
+        0.001
+      ]
+    },
+    {
+      "name": "Glow",
+      "type": "float",
+      "count": 1,
+      "values": [
+        0.46
+      ]
+    }
+  ]
+}

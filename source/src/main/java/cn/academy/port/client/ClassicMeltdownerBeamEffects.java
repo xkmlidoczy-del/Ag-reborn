@@ -56,6 +56,7 @@ public final class ClassicMeltdownerBeamEffects {
     private static final ResourceLocation MD_PARTICLE = texture("effects/md_particle"), WHITE = texture("port/white");
     private static final ResourceLocation[] MD_TEXTURES = rayTextures("mdray"), MINE_TEXTURES = rayTextures("mdray_small");
     private static final ResourceLocation[] EXPERT_TEXTURES = rayTextures("mdray_expert"), LUCK_TEXTURES = rayTextures("mdray_luck");
+    private static final ResourceLocation[] UPGRADED_MD_TEXTURES = {texture("canon_fx/macro/md_blend_in"),texture("canon_fx/macro/md_tile"),texture("canon_fx/macro/md_blend_out")};
     private static final Map<Integer, Context> EXPERT_MINERS = new HashMap<>(), LUCK_MINERS = new HashMap<>();
     private static final Tokens EXPERT_TOKENS = new Tokens(), LUCK_TOKENS = new Tokens();
     private static final ClassicMeltdownerStarterTimeline.Input EXPERT_INPUT = new ClassicMeltdownerStarterTimeline.Input(), LUCK_INPUT = new ClassicMeltdownerStarterTimeline.Input();
@@ -79,6 +80,7 @@ public final class ClassicMeltdownerBeamEffects {
         var mc=Minecraft.getInstance();if(mc.level==null||caster.level()!=mc.level||length<=0||length>64)return;
         synchronizeSession(mc);updateClock(mc);
         if(RAYS.size()<128)RAYS.add(new Ray(caster,mc.level,mc.getConnection(),MD,origin,direction,length,CLOCK.elapsed(),true,true));
+        cn.academy.port.client.canon.AgEnergyBeam.entity(caster,origin,origin.add(direction.scale(length)));
     }
     /** A follow-up shot replaces the same caster's previous main beam afterimage. */
     public static void endMainRay(net.minecraft.world.entity.LivingEntity caster) {
@@ -317,6 +319,7 @@ public final class ClassicMeltdownerBeamEffects {
         renderRay(ray, mc, camera, matrix, false); // Historical classic-only recording entry.
     }
     private static void renderRay(Ray ray, Minecraft mc, Vec3 camera, Matrix4f matrix, boolean currentCamera) {
+        if(ray.spec==MD&&cn.academy.port.client.canon.AgEnergyBeam.replacesClassic())return;
         long age = CLOCK.elapsed() - ray.created; ray.wiggle.frame(CLOCK.elapsed() + 1, RANDOM);
         double width = width(ray.spec, age, ray.wiggle.width), length = ray.length * lengthScale(ray.spec, age);
         double alpha = alpha(ray.spec, age), glowAlpha = glowAlpha(ray.spec, age, ray.wiggle.glow);
@@ -331,16 +334,41 @@ public final class ClassicMeltdownerBeamEffects {
         if(playerMain) {
             if(ray.handOrigin==null)ray.handOrigin=CastPoseClient.worldHandAnchor((Player)ray.caster,mc.level.getGameTime(),0);
             Vec3 end=ray.origin.add(ray.direction.scale(ray.length));
-            visualOrigin=firstPerson?ray.origin.add(vec(viewFix(point(ray.direction),true))):ray.handOrigin;
+            Vec3 viewOffset=vec(viewFix(point(ray.direction),true));
+            if(firstPerson&&ray.caster.getMainArm()==net.minecraft.world.entity.HumanoidArm.LEFT){
+                Vec3 right=ray.direction.cross(new Vec3(0,1,0));
+                if(right.lengthSqr()<1e-10){double yaw=Math.toRadians(ray.caster.getYRot());right=new Vec3(-Math.cos(yaw),0,-Math.sin(yaw));}
+                else right=right.normalize();
+                viewOffset=viewOffset.subtract(right.scale(2*viewOffset.dot(right)));
+            }
+            visualOrigin=firstPerson?ray.origin.add(viewOffset):ray.handOrigin;
             Vec3 delta=end.subtract(visualOrigin);visualDirection=delta.normalize();length=delta.length()*lengthScale(ray.spec,age);
         }
         Point origin = point(visualOrigin.subtract(camera));
+        if(ray.spec!=MD&&cn.academy.port.client.canon.AgEnergyBeam.replacesClassic()){
+            Vec3 start=visualOrigin,end=ray.origin.add(ray.direction.scale(length));
+            if(ray.caster instanceof Player player){
+                if(firstPerson&&currentCamera){
+                    Vec3 offset=vec(viewFix(point(ray.direction),true));
+                    if(player.getMainArm()==net.minecraft.world.entity.HumanoidArm.LEFT){
+                        Vec3 right=ray.direction.cross(new Vec3(0,1,0));
+                        if(right.lengthSqr()<1e-10){double yaw=Math.toRadians(player.getYHeadRot());right=new Vec3(-Math.cos(yaw),0,-Math.sin(yaw));}else right=right.normalize();
+                        offset=offset.subtract(right.scale(2*offset.dot(right)));
+                    }
+                    start=ray.origin.add(offset);
+                }else start=CastPoseClient.worldHandAnchor(player,mc.level.getGameTime(),0);
+            }
+            float[] tint=ray.spec==ClassicAdvancedMineRayTimeline.LUCK?new float[]{1,.78f,.25f}:new float[]{.32f,1,.23f};
+            if(cn.academy.port.client.canon.AgNativeBeams.draw(buffers,matrix,Vec3.ZERO,start.subtract(camera),end.subtract(camera),ray.spec.outer()*width,alpha,tint))return;
+        }
         boolean applyViewFix=!ray.entityAligned && !playerMain;
         Glow geometry = glow(origin, point(visualDirection), length, point(Vec3.ZERO), firstPerson, ray.spec.glowWidth(), applyViewFix);
-        ResourceLocation[] textures = ray.spec == MD ? MD_TEXTURES : ray.spec == ClassicAdvancedMineRayTimeline.EXPERT ? EXPERT_TEXTURES : ray.spec == ClassicAdvancedMineRayTimeline.LUCK ? LUCK_TEXTURES : MINE_TEXTURES;
-        board(nearEye ? MdNearEyeMaterial.choose(textures[0], false, Material.type(textures[0], false)) : Material.type(textures[0], false), matrix, geometry.from(), geometry.mid1(), geometry.up(), ray.spec.glowWidth() * width, glowAlpha);
-        board(nearEye ? MdNearEyeMaterial.choose(textures[1], false, Material.type(textures[1], false)) : Material.type(textures[1], false), matrix, geometry.mid1(), geometry.mid2(), geometry.up(), ray.spec.glowWidth() * width, glowAlpha);
-        board(nearEye ? MdNearEyeMaterial.choose(textures[2], false, Material.type(textures[2], false)) : Material.type(textures[2], false), matrix, geometry.mid2(), geometry.to(), geometry.up(), ray.spec.glowWidth() * width, glowAlpha);
+        ResourceLocation[] textures = ray.spec == MD ? (cn.academy.port.VisualTierConfig.tier()!=cn.academy.port.VisualTier.OFF?UPGRADED_MD_TEXTURES:MD_TEXTURES) : ray.spec == ClassicAdvancedMineRayTimeline.EXPERT ? EXPERT_TEXTURES : ray.spec == ClassicAdvancedMineRayTimeline.LUCK ? LUCK_TEXTURES : MINE_TEXTURES;
+        boolean upgraded=ray.spec==MD&&cn.academy.port.client.canon.AgEnergyBeam.replacesClassic();
+        double boardWidth=ray.spec.glowWidth()*width*(upgraded?2.2:1);
+        board(nearEye ? MdNearEyeMaterial.choose(textures[0], false, Material.type(textures[0], false)) : Material.type(textures[0], false), matrix, geometry.from(), geometry.mid1(), geometry.up(), boardWidth, glowAlpha);
+        board(nearEye ? MdNearEyeMaterial.choose(textures[1], false, Material.type(textures[1], false)) : Material.type(textures[1], false), matrix, geometry.mid1(), geometry.mid2(), geometry.up(), boardWidth, glowAlpha);
+        board(nearEye ? MdNearEyeMaterial.choose(textures[2], false, Material.type(textures[2], false)) : Material.type(textures[2], false), matrix, geometry.mid2(), geometry.to(), geometry.up(), boardWidth, glowAlpha);
         CylinderFrame frame = cylinderFrame(origin, point(visualDirection), length, firstPerson, applyViewFix);
         if (ray.spec == ClassicAdvancedMineRayTimeline.LUCK) {
             var inner = ClassicAdvancedMineRayTimeline.LUCK_INNER; var outer = ClassicAdvancedMineRayTimeline.LUCK_OUTER;
@@ -350,8 +378,10 @@ public final class ClassicMeltdownerBeamEffects {
             // Expert.doRender overrides constructor alpha230 to180 each rendered frame.
             if (ray.spec == ClassicAdvancedMineRayTimeline.EXPERT)
                 cylinder(frame, matrix, length, ray.spec.inner() * width, .98, 216, 248, 216, 180 / 255.0 * alpha, nearEye);
+            else if(upgraded)cylinder(frame, matrix, length, ray.spec.inner() * width*.42, .98, 216, 248, 216, .38 * alpha, nearEye);
             else cylinder(frame, matrix, length, ray.spec.inner() * width, .98, 216, 248, 216, 230 / 255.0 * alpha, nearEye);
-            cylinder(frame, matrix, length, ray.spec.outer() * width, 1, 106, 242, 106, 50 / 255.0 * alpha, nearEye);
+            if(upgraded)cylinder(frame, matrix, length, ray.spec.outer() * width, 1, 106, 242, 106, .07 * alpha, nearEye);
+            else cylinder(frame, matrix, length, ray.spec.outer() * width, 1, 106, 242, 106, 50 / 255.0 * alpha, nearEye);
         }
     }
     private static void cylinder(CylinderFrame frame, Matrix4f matrix, double length, double radius, double headFix, int r, int g, int b, double alpha, boolean nearEye) {

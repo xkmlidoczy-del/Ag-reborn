@@ -473,6 +473,7 @@ public final class ClassicFirstSkillEffects {
         double width = ClassicFirstSkillTimeline.rayWidthScale(age);
         double length = ray.length * ClassicFirstSkillTimeline.rayLengthScale(age);
         if (length <= 0 || width <= 0 || alpha <= 0) return;
+        if(cn.academy.port.client.canon.AgNativeBeams.draw(buffers,matrix,camera,ray.origin,ray.origin.add(ray.direction.scale(length)),.045*width,alpha,new float[]{.32f,1,.23f}))return;
         Vec3 u = perpendicular(ray.direction), v = ray.direction.cross(u).normalize();
         Vec3 up = ray.origin.subtract(camera).cross(ray.direction);
         up = up.lengthSqr() < 1.0E-12 ? u : up.normalize();

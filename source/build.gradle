@@ -2,7 +2,11 @@ plugins {
     id 'java-library'
     id 'net.neoforged.moddev' version '2.0.148'
 }
-version = '0.1.0-m41-highpower.0.81.5-city-a3.61'
+// Optional isolated QA output lets a frozen graphical verification build coexist
+// with the default pure/server check outputs without rewriting their classpath.
+if (providers.gradleProperty('qaBuildDirectory').isPresent())
+    layout.buildDirectory.set(layout.projectDirectory.dir(providers.gradleProperty('qaBuildDirectory').get()))
+version = '0.1.0-m41-highpower.0.81.5-city-a3.63'
 group = 'cn.academy'
 base { archivesName = 'academy-generation-reborn' }
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
@@ -15,7 +19,13 @@ neoForge {
             type = 'gameTestServer'
             if(providers.gradleProperty('canonExperimental').getOrElse('false').toBoolean())systemProperty 'academy.canon.experimental','true'
             jvmArgument '-Xms256m'
-            jvmArgument '-Xmx2048m'
+            // Large suites retain GameTest structures until the JVM exits. Keep the heap
+            // configurable and run namespace shards in fresh processes (qa/run-native-shards.py).
+            def testHeapMb = providers.gradleProperty('highPowerTestHeapMb').getOrElse('4096')
+            if (!(testHeapMb ==~ /[0-9]+/) || testHeapMb.toInteger() < 1024 || testHeapMb.toInteger() > 16384)
+                throw new GradleException('highPowerTestHeapMb must be an integer from 1024 to 16384')
+            jvmArgument '-Xmx' + testHeapMb + 'm'
+            jvmArgument '-XX:+ExitOnOutOfMemoryError'
             if (providers.gradleProperty('nativeSeamExport').getOrElse('false').toBoolean()) systemProperty 'mixin.debug.export', 'true'
             // Read-only far-coordinate witness for the hold controller; off unless explicitly requested.
             if (providers.gradleProperty('constructFarDiagnostic').getOrElse('false').toBoolean()) systemProperty 'academy.highpower.constructFarDiagnostic', 'true'
@@ -51,6 +61,14 @@ neoForge {
     }
     mods { academy { sourceSet(sourceSets.main) } }
 }
+
+tasks.register('macroRulesTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'cn.academy.port.macro.MacroRulesRegressionTest'
+    enableAssertions = true
+}
+tasks.named('check') { dependsOn 'macroRulesTest' }
 repositories {
     if (file('.gradle/local-maven').exists()) maven { url = uri('.gradle/local-maven'); content { includeGroup 'software.bernie.geckolib' } }
     maven { url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'; content { includeGroup 'software.bernie.geckolib' } }

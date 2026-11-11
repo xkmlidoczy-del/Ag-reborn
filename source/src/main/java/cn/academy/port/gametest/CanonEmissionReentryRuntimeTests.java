@@ -144,8 +144,8 @@ public final class CanonEmissionReentryRuntimeTests {
             h.assertTrue(CanonSkillsCombatA.cast(player, "aero_barrage"), "paid attack started");
             h.assertTrue(hook.calls == 1, "real SkillAttackEvent moved the selected target");
             double distance = player.distanceToSqr(target);
-            h.assertTrue(distance > reach * reach && distance < 96 * 96 && player.hasLineOfSight(target),
-                    "target remains visible and within the shared 96-block limit but exceeds the skill range");
+            h.assertTrue(distance > reach * reach && distance < 192 * 192 && player.hasLineOfSight(target),
+                    "target remains visible and within the shared LV5 192-block safety limit but exceeds the skill range");
             Vec3 delta = target.getBoundingBox().getCenter().subtract(player.getEyePosition());
             h.assertTrue(delta.normalize().dot(player.getLookAngle().normalize()) >= .7,
                     "target stays in the skill cone, isolating its range guard");

@@ -23,7 +23,7 @@ final class AdvancedMineRay {
         if(!MeltdownerStarterSupport.serverThread(p)||!mayAct(p,tier)||input<0||input>0&&input<=INPUTS.get(tier).getOrDefault(p.getUUID(),0L))return false;
         var old=HOLDS.get(tier).get(p.getUUID());if(old!=null){if(valid(p,old))return false;remove(p,tier);}
         var session=AdvancedMineRaySession.begin(AbilityStorage.get(p),tier,p.getAbilities().instabuild);if(session==null)return false;
-        var hold=new Hold(p.serverLevel(),session,++nextToken,input,MeltdownerStarterSupport.audience(p));HOLDS.get(tier).put(p.getUUID(),hold);
+        var hold=new Hold(p.serverLevel(),session,++nextToken,input,MeltdownerStarterSupport.audience(p));hold.terrain=tier.level==5?cn.academy.port.highpower.environment.SkillEnvironment.begin(p,"meltdowner."+tier.id,5):null;HOLDS.get(tier).put(p.getUUID(),hold);
         if(input>0)INPUTS.get(tier).put(p.getUUID(),input);send(p,hold,"_start");if(session.ending())finish(p,hold,false);return true;
     }
     static void tick(ServerPlayer p,AdvancedMineRaySession.Tier tier) {
@@ -33,14 +33,14 @@ final class AdvancedMineRay {
         long now=p.serverLevel().getGameTime();if(now<=hold.lastTick)return;hold.lastTick=now;
         boolean end=hold.session.tick(p.getAbilities().instabuild,new AdvancedMineRaySession.World() {
             public AdvancedMineRaySession.Cell trace() {
-                Vec3 eye=p.getEyePosition();var hit=p.serverLevel().clip(new ClipContext(eye,eye.add(MeltdownerBeamSupport.direction(p).scale(AdvancedMineRaySession.range(tier))),ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,p));
+                Vec3 eye=p.getEyePosition();Vec3 end=eye.add(MeltdownerBeamSupport.direction(p).scale(AdvancedMineRaySession.range(tier)));if(tier.level==5)end=cn.academy.port.macro.MacroGeometry.loadedEnd(p.serverLevel(),eye,end);var hit=p.serverLevel().clip(new ClipContext(eye,end,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,p));
                 if(hit.getType()!=HitResult.Type.BLOCK)return null;var at=hit.getBlockPos();return new AdvancedMineRaySession.Cell(at.getX(),at.getY(),at.getZ());
             }
             private BlockPos pos(AdvancedMineRaySession.Cell c){return new BlockPos(c.x(),c.y(),c.z());}
-            public boolean denied(AdvancedMineRaySession.Cell c){return MeltdownerBeamSupport.sourceDenied(p,tier.id,pos(c));}
+            public boolean denied(AdvancedMineRaySession.Cell c){return hold.terrain!=null&&hold.terrain.changedBlocks()>=512||MeltdownerBeamSupport.sourceDenied(p,tier.id,pos(c));}
             public int harvestLevel(AdvancedMineRaySession.Cell c,AdvancedMineRaySession.Cell previous){return MeltdownerBeamSupport.harvestLevel(p,pos(c));}
             public float hardness(AdvancedMineRaySession.Cell c){return p.serverLevel().getBlockState(pos(c)).getDestroySpeed(p.serverLevel(),pos(c));}
-            public void breakBlock(AdvancedMineRaySession.Cell c,int fortune){MeltdownerBeamSupport.advancedMineBreak(p,pos(c),fortune);}
+            public void breakBlock(AdvancedMineRaySession.Cell c,int fortune){if(hold.terrain==null||hold.terrain.reserveClassicBreak(pos(c)))MeltdownerBeamSupport.advancedMineBreak(p,pos(c),fortune);}
             public void particles(AdvancedMineRaySession.Cell c) {
                 var tag=MeltdownerBeamSupport.packet(p,tier.id+"_particles",hold.token,hold.input);tag.putInt("index",hold.session.ticks());
                 tag.putInt("x",c.x());tag.putInt("y",c.y());tag.putInt("z",c.z());MeltdownerStarterSupport.send(hold.audience,tag);
@@ -69,7 +69,7 @@ final class AdvancedMineRay {
     }
     private static void send(ServerPlayer p,Hold hold,String suffix){MeltdownerStarterSupport.send(hold.audience,MeltdownerBeamSupport.packet(p,hold.session.tier().id+suffix,hold.token,hold.input));}
     private static final class Hold {
-        final ServerLevel world;final AdvancedMineRaySession session;final long token,input;final Set<ServerPlayer> audience;long lastTick;
+        cn.academy.port.highpower.environment.SkillEnvironment.Cast terrain;final ServerLevel world;final AdvancedMineRaySession session;final long token,input;final Set<ServerPlayer> audience;long lastTick;
         Hold(ServerLevel world,AdvancedMineRaySession session,long token,long input,Set<ServerPlayer> audience){this.world=world;this.session=session;this.token=token;this.input=input;this.audience=audience;lastTick=world.getGameTime()-1;}
     }
 }

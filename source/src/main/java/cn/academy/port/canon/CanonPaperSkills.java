@@ -353,12 +353,12 @@ public final class CanonPaperSkills {
     /** Six physical sheets, one bounded whole-cast damage allocation over at most six visible hostiles. */
     private static boolean array(ServerPlayer player, ItemStack held, cn.academy.port.core.AbilityProgress state) {
         Vec3 origin=player.getEyePosition(), center=player.position();
-        if(!finite(origin)||!finite(center)||!chunksLoaded(player.serverLevel(),center.add(-ARRAY_RADIUS,0,-ARRAY_RADIUS),center.add(ARRAY_RADIUS,0,ARRAY_RADIUS)))return false;
-        var candidates=player.serverLevel().getEntitiesOfClass(Mob.class,player.getBoundingBox().inflate(ARRAY_RADIUS),target ->
+        if(!finite(origin)||!finite(center))return false;
+        var candidates=player.serverLevel().getEntitiesOfClass(Mob.class,player.getBoundingBox().inflate(arrayRadius(player)),target ->
                 CanonTargetPolicy.hostile(target) && target.isAlive() && !target.isRemoved() && !target.isAlliedTo(player)
-                        && !player.isAlliedTo(target) && target.distanceToSqr(player)<=ARRAY_RADIUS*ARRAY_RADIUS && player.hasLineOfSight(target)
+                        && !player.isAlliedTo(target) && target.distanceToSqr(player)<=arrayRadius(player)*arrayRadius(player) && player.hasLineOfSight(target)
                         && HighPowerCombat.unsupportedReason(target).isEmpty());
-        if(candidates.isEmpty()||candidates.size()>64)return false;
+        if(candidates.isEmpty())return false;
         candidates.sort(Comparator.comparingDouble(target->target.distanceToSqr(player)));
         var targets=new ArrayList<LivingEntity>();for(Mob target:candidates){if(targets.size()==ARRAY_TARGETS)break;targets.add(target);}
         var expected=held.copy();
@@ -369,29 +369,31 @@ public final class CanonPaperSkills {
         if((player.getMainHandItem()!=held&&player.getOffhandItem()!=held)||!ItemStack.matches(held,expected))return false;
         if(!player.getAbilities().instabuild){held.shrink(6);player.getInventory().setChanged();}
         fence[0]=held.copy();
-        boolean hit=false;
-        int ringed=0;
-        for(LivingEntity target:targets){
+        boolean[] hit={false};
+        int[] ringed={0};
+        emission.forEach(target->{
             // A previous target's damage hook can move/reclassify later victims or move the caster.
-            if(!materialMatches(player,held,fence[0]) || !arrayTarget(player,target))continue;
-            boolean accepted=emission.attack(target);hit |= accepted;Vec3 end=target.getBoundingBox().getCenter(),delta=end.subtract(origin);
-            if(accepted)CanonVfx.emit(player,"paper_array",origin,end,CanonVfx.Phase.HIT,12,ringed++==0?ARRAY_RADIUS:0);
+            if(!materialMatches(player,held,fence[0]) || !arrayTarget(player,target))return;
+            boolean accepted=emission.attack(target);hit[0] |= accepted;Vec3 end=target.getBoundingBox().getCenter(),delta=end.subtract(origin);
+            if(accepted)CanonVfx.emit(player,"paper_array",origin,end,CanonVfx.Phase.HIT,12,ringed[0]++==0?arrayRadius(player):0);
             int count=Math.max(1,Math.min(24,(int)Math.ceil(delta.length()*2)));
             for(int i=0;i<=count;i++){Vec3 point=origin.add(delta.scale((double)i/count));
                 player.serverLevel().sendParticles(PaperParticles.INSTANCE,point.x,point.y,point.z,1,.02,.02,.02,0);}
-        }
-        if(hit&&AbilityStorage.get(player)==state&&CATEGORY.equals(state.category)&&state.learned("paper_array")){
+        },()->{
+        if(hit[0]&&AbilityStorage.get(player)==state&&CATEGORY.equals(state.category)&&state.learned("paper_array")){
             state.addExperience("paper_array",.01);AbilityStorage.save(player);
         }
+        });
         return true;
     }
 
     private static boolean materialMatches(ServerPlayer p, ItemStack held, ItemStack expected) {
         return (p.getMainHandItem()==held || p.getOffhandItem()==held) && ItemStack.matches(held,expected);
     }
+    private static double arrayRadius(ServerPlayer p){return cn.academy.port.macro.MacroSkillRules.area("paper_array",AbilityStorage.get(p).exp("paper_array"),ARRAY_RADIUS);}
     private static boolean arrayTarget(ServerPlayer p, LivingEntity target) {
         return target instanceof Mob && CanonTargetPolicy.hostile(target) && target.isAlive() && !target.isRemoved()
-                && target.level()==p.level() && target.distanceToSqr(p)<=ARRAY_RADIUS*ARRAY_RADIUS && !target.isAlliedTo(p) && !p.isAlliedTo(target)
+                && target.level()==p.level() && target.distanceToSqr(p)<=arrayRadius(p)*arrayRadius(p) && !target.isAlliedTo(p) && !p.isAlliedTo(target)
                 && p.hasLineOfSight(target) && HighPowerCombat.unsupportedReason(target).isEmpty();
     }
     private static boolean bladeTarget(ServerPlayer p, LivingEntity target) {

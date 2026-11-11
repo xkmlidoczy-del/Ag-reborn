@@ -34,6 +34,18 @@ public final class HighPowerChargeDecoyRuntimeTests {
     private HighPowerChargeDecoyRuntimeTests() {}
 
     @GameTest(template = TEMPLATE, batch = BATCH, timeoutTicks = 15)
+    public static void decoy_ground_near_world_floor_allows_partially_outside_influence_box(GameTestHelper h) {
+        Fixture f = new Fixture(h, true, -1); ServerPlayer p = f.player(); double cp = f.cp(p);
+        h.assertTrue(f.point.y - ElectromasterChargeDecoy.INFLUENCE_RADIUS < h.getLevel().getMinBuildHeight(),
+                "valid support has an influence box that crosses the world floor");
+        h.assertTrue(ElectromasterChargeDecoy.start(p), "partial vertical overflow cannot reject loaded visible support");
+        h.runAfterDelay(1, () -> {
+            h.assertTrue(ElectromasterChargeDecoy.release(p), "normal placement commits near the world floor");
+            near(h, f.cp(p), cp - 5, "same finite LV2 cost"); h.succeed();
+        });
+    }
+
+    @GameTest(template = TEMPLATE, batch = BATCH, timeoutTicks = 15)
     public static void decoy_visible_bottom_ground_precedes_out_of_world_ray_suffix(GameTestHelper h) {
         Fixture f = new Fixture(h,true);ServerPlayer p=f.player();Vec3 from=p.getEyePosition();
         h.assertTrue(from.add(p.getLookAngle().scale(ElectromasterChargeDecoy.PLACEMENT_RANGE)).y<h.getLevel().getMinBuildHeight(),"full placement ray really ends below world minimum");
@@ -43,7 +55,11 @@ public final class HighPowerChargeDecoyRuntimeTests {
     @GameTest(template = TEMPLATE, batch = BATCH, timeoutTicks = 15)
     public static void decoy_bottom_void_without_native_support_stays_free_refusal(GameTestHelper h) {
         Fixture f = new Fixture(h,true);ServerPlayer p=f.player();double cp=f.cp(p);
-        for(int x=3;x<=8;x++)for(int z=7;z<=13;z++)h.getLevel().setBlock(new BlockPos(h.absolutePos(new BlockPos(x,0,z)).getX(),h.getLevel().getMinBuildHeight()+(int)Math.ceil(ElectromasterChargeDecoy.INFLUENCE_RADIUS)-1,h.absolutePos(new BlockPos(x,0,z)).getZ()),Blocks.AIR.defaultBlockState(),3);
+        // Remove the generated superflat layers as well as the fixture's raised
+        // support. Otherwise this "void" still has a valid lower UP surface.
+        for(int x=3;x<=8;x++)for(int z=7;z<=13;z++)
+            for(int y=h.getLevel().getMinBuildHeight();y<=(int)Math.floor(f.point.y)-1;y++)
+                h.getLevel().setBlock(new BlockPos(h.absolutePos(new BlockPos(x,0,z)).getX(),y,h.absolutePos(new BlockPos(x,0,z)).getZ()),Blocks.AIR.defaultBlockState(),3);
         h.assertFalse(ElectromasterChargeDecoy.start(p),"boundary clipping cannot invent an UP support in void");near(h,f.cp(p),cp,"no ground cannot debit resources");h.succeed();
     }
 
@@ -219,8 +235,9 @@ public final class HighPowerChargeDecoyRuntimeTests {
     private static final class Fixture {
         final GameTestHelper h; final Vec3 point; final List<ServerPlayer> players = new ArrayList<>(); final List<Entity> entities = new ArrayList<>(); final List<EmbeddedChannel> channels = new ArrayList<>(); boolean closed;
         Fixture(GameTestHelper h) { this(h,false); }
-        Fixture(GameTestHelper h,boolean bottom) {
-            this.h = h;var base=h.absoluteVec(new Vec3(5.5,2.05,10.5));point=bottom?new Vec3(base.x,h.getLevel().getMinBuildHeight()+Math.ceil(ElectromasterChargeDecoy.INFLUENCE_RADIUS)+.05,base.z):base;
+        Fixture(GameTestHelper h,boolean bottom) { this(h, bottom, 0); }
+        Fixture(GameTestHelper h,boolean bottom,double floorOffset) {
+            this.h = h;var base=h.absoluteVec(new Vec3(5.5,2.05,10.5));point=bottom?new Vec3(base.x,h.getLevel().getMinBuildHeight()+Math.ceil(ElectromasterChargeDecoy.INFLUENCE_RADIUS)+.05+floorOffset,base.z):base;
             for (int x = 3; x <= 8; x++) for (int z = 7; z <= 13; z++) {
                 if(bottom){var at=h.absolutePos(new BlockPos(x,0,z));h.getLevel().setBlock(new BlockPos(at.getX(),(int)Math.floor(point.y)-1,at.getZ()),Blocks.STONE.defaultBlockState(),3);}
                 else h.setBlock(new BlockPos(x, 1, z), Blocks.STONE);

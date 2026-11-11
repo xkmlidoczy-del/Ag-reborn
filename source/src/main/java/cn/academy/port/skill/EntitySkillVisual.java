@@ -20,6 +20,7 @@ public final class EntitySkillVisual {
     private EntitySkillVisual() {}
     public static void emit(LivingEntity caster,String skill,String phase,Vec3 from,Vec3 to,int ticks) {
         if(!(caster.level() instanceof ServerLevel world)) return;
+        cn.academy.port.macro.MacroVfx.emit(caster,skill,phase.equals("end")?cn.academy.port.macro.MacroVfx.Phase.END:cn.academy.port.macro.MacroVfx.Phase.ACTIVE,from,to,ticks,0);
         PacketDistributor.sendToPlayersNear(world,null,from.x,from.y,from.z,64,
                 new Visual(caster.getId(),caster.getUUID(),world.dimension().location(),skill,phase,from,to,ticks));
     }

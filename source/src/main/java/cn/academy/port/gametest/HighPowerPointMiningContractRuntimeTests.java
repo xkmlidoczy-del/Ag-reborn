@@ -74,7 +74,8 @@ public final class HighPowerPointMiningContractRuntimeTests {
             h.assertTrue(VanillaMiningContract.reviewedPointHarvestTool(block.defaultBlockState(), ItemStack.EMPTY), "soil retains empty-hand native harvest");
         h.assertTrue(VanillaMiningContract.reviewedPointHarvestTool(Blocks.OAK_PLANKS.defaultBlockState(), ItemStack.EMPTY), "oak planks retain empty-hand native harvest");
         h.assertTrue(VanillaMiningContract.reviewedPointHarvestTool(Blocks.OAK_PLANKS.defaultBlockState(), new ItemStack(Items.IRON_SHOVEL)), "oak planks do not invent an axe requirement");
-        for (Item item : List.of(Items.STICK, Items.DIAMOND_SWORD))
+        h.assertTrue(VanillaMiningContract.reviewedPointHarvestTool(Blocks.OAK_PLANKS.defaultBlockState(), new ItemStack(Items.STICK)), "ordinary nondamageable held items keep native bare-hand harvesting");
+        for (Item item : List.of(Items.FISHING_ROD, Items.DIAMOND_SWORD))
             h.assertFalse(VanillaMiningContract.reviewedPointHarvestTool(Blocks.OAK_PLANKS.defaultBlockState(), new ItemStack(item)), "unreviewed item remains refused");
         ItemStack named = new ItemStack(Items.IRON_PICKAXE);
         named.set(DataComponents.CUSTOM_NAME, Component.literal("unreviewed"));

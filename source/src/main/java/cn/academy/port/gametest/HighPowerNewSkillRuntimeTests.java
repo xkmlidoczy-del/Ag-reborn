@@ -75,7 +75,7 @@ public final class HighPowerNewSkillRuntimeTests {
                 {HighPowerSkills.REVERSE_JET, HighPowerCategories.MELTDOWNER, 4, 243}, {HighPowerSkills.INCIDENT_BYPASS, HighPowerCategories.TELEPORTER, 3, 332},
                 {HighPowerSkills.PHASE_CORRIDOR, HighPowerCategories.TELEPORTER, 5, 352}, {HighPowerSkills.ZENITH_DOMINION, HighPowerCategories.VECMANIP, 5, 451},
                 {HighPowerSkills.IMPULSE_SPLIT, HighPowerCategories.VECMANIP, 5, 453}};
-        h.assertTrue(HighPowerSkills.ALL.size() == 61 && HighPowerSkills.IDS.size() == 61, "the seven are appended to the frozen 53");
+        h.assertTrue(HighPowerSkills.ALL.size() == 61 && HighPowerSkills.IDS.size() == 271, "61 native records and210 canon IDs retain the reviewed appended native rows");
         for (Object[] row : expected) {
             String id = (String) row[0];
             var skill = HighPowerSkills.find(id).orElse(null);
@@ -287,7 +287,7 @@ public final class HighPowerNewSkillRuntimeTests {
 
     // ---- 451 zenith vector dominion --------------------------------------------------------------------------------
     @GameTest(template = TEMPLATE, batch = BATCH, timeoutTicks = 160)
-    public static void zenith_dominion_lifts_marked_enemies_and_marks_at_most_sixteen(GameTestHelper h) {
+    public static void zenith_dominion_lifts_and_releases_all_eighteen_eligible_marks(GameTestHelper h) {
         Fixture f = new Fixture(h, NewSkillRuntime.Kind.ZENITH_DOMINION); ServerPlayer p = f.player(10, 6);
         f.ready(() -> {
             List<LivingEntity> targets = new ArrayList<>();
@@ -319,12 +319,12 @@ public final class HighPowerNewSkillRuntimeTests {
             h.runAfterDelay(4, () -> {
                 int lifted = 0;
                 for (LivingEntity z : targets) if (z.getDeltaMovement().y > .1) lifted++;
-                h.assertTrue(lifted > 0 && lifted <= 16, "between one and sixteen enemies are lifted: " + lifted);
+                h.assertTrue(lifted == 18, "all eighteen eligible enemies are lifted: " + lifted);
                 // GameTest actions run before the server post tick that applies the release.
                 h.runAfterDelay(ZenithDominionRules.LIFT_TICKS - 4 + 1, () -> {
                     int damaged=0;
                     for(int i=0;i<targets.size();i++) if(new BigDecimal(HighPowerCombat.healthText(targets.get(i))).compareTo(beforeHp.get(i))<0) damaged++;
-                    h.assertTrue(damaged>0 && damaged<=16,"the release must actually damage marked ledger targets, not merely lift them: "+damaged);
+                    h.assertTrue(damaged==18,"the release damages all eighteen frozen ledger targets: "+damaged);
                     h.succeed();
                 });
             });

@@ -9,7 +9,7 @@ import java.util.List;
 
 /** NEW151 bounded, deterministic geometry, clocks and a single immutable whole-cast budget. */
 public final class RailThunderArrayRules {
-    public static final int AXES=3, ROUNDS=3, RAYS=9, SCAN_LIMIT=64, MAX_TARGETS = SkillTuning.integer("rail_thunder_array", "max_targets");
+    public static final int AXES=3, ROUNDS=3, RAYS=9, SCAN_LIMIT=Integer.MAX_VALUE, MAX_TARGETS = SkillTuning.integer("rail_thunder_array", "max_targets");
     public static final int MARK_INTERVAL=4, PREPARATION_TICKS=200, HOLD_THRESHOLD=8, HOLD_TICKS = SkillTuning.integer("rail_thunder_array", "duration_ticks"),
             PULSE_INTERVAL=20, ROUND_INTERVAL=22, ENTITY_INTERVAL=20, POSTCAST_TICKS=4;
     public static final double RANGE = SkillTuning.number("rail_thunder_array", "reach"), CORRIDOR_RADIUS=2, MOVEMENT_LIMIT=1;

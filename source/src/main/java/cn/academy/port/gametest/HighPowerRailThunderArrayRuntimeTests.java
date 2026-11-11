@@ -108,14 +108,14 @@ public final class HighPowerRailThunderArrayRuntimeTests {
             exact(h,hp(target),before,"nonenemy front body stops physical ray");same(h,blocker.getHealth(),passive,"passive blocker untouched");same(h,f.cp(),cp,"refused blocker free");RailThunderArray.abort(f.p);h.succeed();});});
     }
     @GameTest(template=TEMPLATE,batch=BATCH+"_rail_hold_query_cap_and_target_limit_are_fail_closed",timeoutTicks=35)
-    public static void rail_hold_query_cap_and_target_limit_are_fail_closed(GameTestHelper h){
+    public static void rail_hold_retains_all_sixty_four_loaded_eligible_candidates(GameTestHelper h){
         Fixture f=new Fixture(h);for(int i=0;i<64;i++)f.targetAt(new Vec3((i%8)*.15,0,6+(i/8)*.15));double cp=f.cp();
-        f.prepare(new float[]{0,-1,1},()->{h.runAfterDelay(8,()->{RailThunderArray.tick(f.p);h.assertFalse(RailThunderArray.active(f.p),"capped64 candidate scan cannot freeze ambiguous set");same(h,f.cp(),cp,"capped set is free");h.succeed();});});
+        f.prepare(new float[]{0,-1,1},()->{h.runAfterDelay(8,()->{RailThunderArray.tick(f.p);h.assertTrue(RailThunderArray.active(f.p)&&RailThunderArray.lockedCount(f.p)==64,"all64 loaded eligible targets frozen without query truncation");h.assertTrue(f.cp()<cp,"unchanged pulse is paid once");RailThunderArray.abort(f.p);h.succeed();});});
     }
     @GameTest(template=TEMPLATE,batch=BATCH+"_rail_hold_freezes_at_most_sixteen_targets",timeoutTicks=40)
-    public static void rail_hold_freezes_at_most_sixteen_targets(GameTestHelper h){
+    public static void rail_hold_freezes_and_emits_to_all_twenty_eligible_targets(GameTestHelper h){
         Fixture f=new Fixture(h);List<Zombie> targets=new ArrayList<>();for(int i=0;i<20;i++)targets.add(f.targetAt(new Vec3((i%4)*.3,0,5+(i/4)*.7)));Observe observer=new Observe(f.p);f.hook(observer);
-        f.prepare(new float[]{0,-1,1},()->{h.runAfterDelay(8,()->{RailThunderArray.tick(f.p);h.assertTrue(RailThunderArray.lockedCount(f.p)==16&&observer.electrical==16,"only16 original slots and16 actual native hits");RailThunderArray.abort(f.p);h.succeed();});});
+        f.prepare(new float[]{0,-1,1},()->{h.runAfterDelay(8,()->{RailThunderArray.tick(f.p);h.assertTrue(RailThunderArray.lockedCount(f.p)==20&&observer.electrical==20,"all20 frozen slots and20 actual native attempts");RailThunderArray.abort(f.p);h.succeed();});});
     }
     @GameTest(template=TEMPLATE,batch=BATCH+"_rail_marker_rate_duplicate_direction_and_crouch_clear_are_free",timeoutTicks=30)
     public static void rail_marker_rate_duplicate_direction_and_crouch_clear_are_free(GameTestHelper h){

@@ -69,6 +69,7 @@ public final class RailThunderArray {
         int phase=PREPARING,nextSlot,pulses,examined;boolean down,processing,paid,awarded;
         BigDecimal budget;List<BigDecimal> shares=List.of();List<List<BigDecimal>> pulseShares=List.of();
         List<Segment> lastSegments=List.of();
+        List<Integer> pendingTargets;int pendingCursor,pendingPulse;List<Segment> pendingSegments;
         Context(ServerPlayer p,HighPowerInput.Input input,long token){
             identity=new LegacySingleKeyServerIdentity(p,input.input(),token,AbilityStorage.get(p));this.input=input;
             preset=identity.state().presets.current();revision=identity.state().presets.revision();started=now(p);
@@ -143,7 +144,7 @@ public final class RailThunderArray {
             if(c.phase==TAP)emitTap(c);
             else if(c.phase==HOLD){
                 prune(c);if(c.locks.stream().allMatch(l->l.retired)){finish(c,EXPIRED);return;}
-                if(tick-c.committed>=RailThunderArrayRules.HOLD_TICKS){finish(c,EXPIRED);return;}
+                if(tick-c.committed>=RailThunderArrayRules.HOLD_TICKS&&c.pendingTargets==null){finish(c,EXPIRED);return;}
                 emitHold(c);
             }
             if(CONTEXTS.get(p.getUUID())==c&&tick-c.lastSend>=6)send(c,c.phase<TAP?previews(c):List.of(),NORMAL);
@@ -186,23 +187,26 @@ public final class RailThunderArray {
     }
     private static void emitHold(Context c){
         long age=now(c.identity.owner())-c.committed;
-        while(c.nextSlot<3&&c.nextSlot*RailThunderArrayRules.PULSE_INTERVAL<=age){
-            int pulse=c.nextSlot++;
-            if(pulse*RailThunderArrayRules.PULSE_INTERVAL!=age)continue;
-            prune(c);List<Integer> targets=new ArrayList<>(16);
-            for(int i=0;i<c.locks.size();i++){Lock l=c.locks.get(i);if(!l.retired&&l.target.invulnerableTime<=10&&admittedAmount(c.pulseShares.get(pulse).get(i)))targets.add(i);}
-            if(targets.isEmpty())continue;
-            if(!pay(c,RailThunderArrayRules.pulseCost(pulse))){finish(c,REFUSAL);return;}
-            c.pulses++;List<Segment> segments=new ArrayList<>(16);
-            for(int slot:targets){
-                if(!valid(c)){finish(c,INVALIDATED);return;}
-                Lock lock=c.locks.get(slot);if(!validLock(c,lock)){lock.retired=true;continue;}
-                Vec3 to=lock.target.getBoundingBox().getCenter();
-                boolean accepted=attack(c,lock.target,c.pulseShares.get(pulse).get(slot),false,lock.axis,to);
-                if(CONTEXTS.get(c.identity.owner().getUUID())!=c)return;
-                segments.add(new Segment(lock.axis,lock.id,lock.uuid,c.origin,to,accepted?HIT:REFUSED));
+        while(c.pendingTargets!=null||c.nextSlot<3&&c.nextSlot*RailThunderArrayRules.PULSE_INTERVAL<=age){
+            if(c.pendingTargets==null){
+                int pulse=c.nextSlot++;prune(c);List<Integer> targets=new ArrayList<>();
+                for(int i=0;i<c.locks.size();i++){Lock l=c.locks.get(i);if(!l.retired&&l.target.invulnerableTime<=10&&admittedAmount(c.pulseShares.get(pulse).get(i)))targets.add(i);}
+                if(targets.isEmpty())continue;
+                if(!pay(c,RailThunderArrayRules.pulseCost(pulse))){finish(c,REFUSAL);return;}
+                c.pulses++;c.pendingTargets=List.copyOf(targets);c.pendingCursor=0;c.pendingPulse=pulse;c.pendingSegments=new ArrayList<>();
             }
-            send(c,segments,NORMAL);prune(c);
+            while(c.pendingCursor<c.pendingTargets.size()){
+                if(!valid(c)){finish(c,INVALIDATED);return;}
+                if(!cn.academy.port.macro.MacroSettlement.reserve(c.identity.owner().server))return;
+                int slot=c.pendingTargets.get(c.pendingCursor++);Lock lock=c.locks.get(slot);
+                if(!validLock(c,lock)){lock.retired=true;continue;}
+                Vec3 to=lock.target.getBoundingBox().getCenter();
+                boolean accepted=attack(c,lock.target,c.pulseShares.get(c.pendingPulse).get(slot),false,lock.axis,to);
+                if(CONTEXTS.get(c.identity.owner().getUUID())!=c)return;
+                c.pendingSegments.add(new Segment(lock.axis,lock.id,lock.uuid,c.origin,to,accepted?HIT:REFUSED));
+                if(c.pendingSegments.size()==16){send(c,c.pendingSegments,NORMAL);c.pendingSegments.clear();}
+            }
+            send(c,c.pendingSegments,NORMAL);c.pendingTargets=null;c.pendingSegments=null;prune(c);
             if(c.locks.stream().allMatch(l->l.retired)){finish(c,EXPIRED);return;}
         }
     }
@@ -232,12 +236,10 @@ public final class RailThunderArray {
     private static BigDecimal health(LivingEntity e){if(HighPowerCombat.enabled(e))try{return new BigDecimal(HighPowerCombat.healthText(e));}catch(NumberFormatException ignored){}return BigDecimal.valueOf(e.getHealth());}
     private static void select(Context c){
         ServerPlayer p=c.identity.owner();List<LivingEntity> scanned=new ArrayList<>(64);
-        p.serverLevel().getEntities(EntityTypeTest.forClass(LivingEntity.class),new AABB(c.origin,c.origin).inflate(96),e->e!=p&&e.isAlive()&&!e.isRemoved(),scanned,64);c.examined=scanned.size();
-        // A capped query does not establish a complete deterministic candidate set: fail closed, without payment.
-        if(scanned.size()>=64)return;
+        scanned.addAll(p.serverLevel().getEntitiesOfClass(LivingEntity.class,new AABB(c.origin,c.origin).inflate(96),e->e!=p&&e.isAlive()&&!e.isRemoved()));c.examined=scanned.size();
         scanned.removeIf(e->!eligible(p,e)||!clearLine(p,c.origin,e.getBoundingBox().getCenter())||firstAxis(c,e.getBoundingBox())<0);
         scanned.sort(Comparator.<LivingEntity>comparingDouble(e->e.getBoundingBox().getCenter().distanceToSqr(c.origin)).thenComparing(e->e.getUUID().toString()).thenComparingInt(Entity::getId));
-        for(LivingEntity e:scanned){if(c.locks.size()==16)break;c.locks.add(new Lock(e,firstAxis(c,e.getBoundingBox())));}
+        for(LivingEntity e:scanned){c.locks.add(new Lock(e,firstAxis(c,e.getBoundingBox())));}
     }
     private static boolean validLock(Context c,Lock l){return !l.retired&&l.target.getId()==l.id&&l.target.getUUID().equals(l.uuid)&&eligible(c.identity.owner(),l.target)
             &&intersects(c,l.target.getBoundingBox(),l.axis)&&clearLine(c.identity.owner(),c.origin,l.target.getBoundingBox().getCenter());}
@@ -341,6 +343,7 @@ public final class RailThunderArray {
         ServerPlayer owner=c.identity.owner();c.lastSegments=List.copyOf(segments);c.lastSend=now(owner);
         c.audience.removeIf(viewer->viewer!=owner&&(viewer.connection==null||viewer.hasDisconnected()||viewer.isRemoved()||viewer.serverLevel()!=c.identity.level()||viewer.position().distanceToSqr(c.origin)>128*128));
         for(ServerPlayer viewer:c.identity.level().players())if(viewer.connection!=null&&!viewer.hasDisconnected()&&!viewer.isRemoved()&&viewer.position().distanceToSqr(c.origin)<=128*128)c.audience.add(viewer);c.audience.add(owner);
+        if(c.paid)cn.academy.port.macro.MacroVfx.emit(owner,ID,c.phase==ENDED?cn.academy.port.macro.MacroVfx.Phase.END:segments.stream().anyMatch(s->s.status==HIT)?cn.academy.port.macro.MacroVfx.Phase.HIT:cn.academy.port.macro.MacroVfx.Phase.ACTIVE,c.origin,segments.isEmpty()?c.origin:segments.getFirst().to,32,0);
         Visual packet=new Visual(owner.getId(),owner.getUUID(),c.input.input(),c.identity.token(),c.identity.epoch(),++c.sequence,c.phase,(int)Math.clamp(now(owner)-c.started,0,268),c.origin,c.axes,segments,reason);
         for(ServerPlayer viewer:c.audience)if(viewer.connection!=null&&!viewer.hasDisconnected()&&viewer.serverLevel()==c.identity.level())PacketDistributor.sendToPlayer(viewer,packet);
     }

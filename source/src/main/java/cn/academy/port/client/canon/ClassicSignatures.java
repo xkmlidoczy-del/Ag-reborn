@@ -105,6 +105,7 @@ public final class ClassicSignatures {
         }
     }
     private static void beam(Canvas c, Vec3 a, Vec3 b, double w, float[] rgb, double al) {
+        if(AgEffectMaterials.beams()){c.energyStream(a,b,w,rgb,al);return;}
         strip(c, "md_beam_halo", a, b, w * 2.4, 0, rgb, al * .7);
         strip(c, "md_beam_core", a, b, w, 0, MD_W, al);
     }

@@ -52,6 +52,21 @@ public final class GameplayAcceptanceEmMdDefense {
                 LOG.info("QA_GAMEPLAY_DECOY_PLACEMENT context={} placed={} ground={} actualBlockHit={} actualHitSide={} actualLook={} actualAt={} budgetClock={}",c!=null,c==null?null:field(c,"placed"),c==null?null:field(c,"ground"),hit.getBlockPos(),hit.getDirection(),p.getLookAngle(),p.position(),clock(p,fixture.id));
                 require(c!=null&&(long)field(c,"placed")>=0,"normal release placed an actual paid decoy before incoming arrow");
             }else if(action.equals("arrow"))arrow(p);
+            else if(action.equals("electric-threat")) {
+                // Environmental lightning is intentionally drunk by the base EM
+                // shield before this stance. Use a real reviewed incoming arc,
+                // while the tested defense still starts solely through R input.
+                var attacker=new net.neoforged.neoforge.common.util.FakePlayer(p.serverLevel(),
+                        new com.mojang.authlib.GameProfile(UUID.randomUUID(),"[R4-Electric]"));
+                attacker.setPos(p.position().add(0,0,3));attacker.getAbilities().instabuild=false;
+                var state=AbilityStorage.get(attacker);state.selectCategory("electromaster");state.setLevel(5);
+                require(HighPowerCombat.enroll(attacker,5),"finite incoming arc source enrollment");
+                try {
+                    require(HighPowerCombat.attack(attacker,"electromaster.forked_arc",p,BigDecimal.valueOf(100)),
+                            "real incoming arc traverses the normal damage pipeline");
+                    LOG.info("QA_GAMEPLAY_INCOMING_ARC fixtureSource=true amount=100 testedSkillStillPhysicalInput=true");
+                }finally{AbilityStorage.remove(attacker);attacker.discard();}
+            }
             else if(action.equals("assert"))verify(p);
             else if(action.equals("verify"))require(fixture.passed,"real specialist effect passed");
             else throw new IllegalArgumentException(action);return true;

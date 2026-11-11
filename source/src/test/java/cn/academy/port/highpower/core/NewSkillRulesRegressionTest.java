@@ -173,20 +173,20 @@ public final class NewSkillRulesRegressionTest {
         BigDecimal total = ZenithDominionRules.totalDamage(d);
         check(total.compareTo(new BigDecimal("2E19")) == 0, "total is 4D");
         check(ZenithDominionRules.totalDamage(CombatAmounts.CAP).compareTo(CombatAmounts.CAP) == 0, "total never exceeds 1e20");
-        for (int n = 1; n <= ZenithDominionRules.MAX_TARGETS; n++) {
+        for (int n : new int[]{1,2,3,8,16,17,64,65,130,256}) {
             var shares = ZenithDominionRules.shares(total, n);
             check(shares.size() == n, "one share per target");
             BigDecimal sum = BigDecimal.ZERO;
             for (var s : shares) { check(s.signum() >= 0, "no negative share"); sum = sum.add(s); }
             check(sum.compareTo(total) == 0, "the shares add up to exactly the total, nothing duplicated or lost: " + n);
         }
-        rejects(() -> ZenithDominionRules.shares(total, ZenithDominionRules.MAX_TARGETS + 1), "17 targets refused");
+        rejects(() -> ZenithDominionRules.shares(total, -1), "negative target count refused");
         check(ZenithDominionRules.shares(total, 0).isEmpty(), "no targets, no shares");
         rejects(() -> ZenithDominionRules.shares(total.negate(), 3), "negative total refused");
         var ids = new ArrayList<UUID>();
         for (int i = 0; i < 40; i++) ids.add(new UUID(0, i % 20));
-        check(ZenithDominionRules.freeze(ids).size() == ZenithDominionRules.MAX_TARGETS, "at most sixteen distinct marks");
-        check(new java.util.HashSet<>(ZenithDominionRules.freeze(ids)).size() == ZenithDominionRules.MAX_TARGETS, "duplicate marks collapse to one");
+        check(ZenithDominionRules.freeze(ids).size() == 20, "all twenty distinct marks retained");
+        check(new java.util.HashSet<>(ZenithDominionRules.freeze(ids)).size() == 20, "duplicate marks collapse to one");
         check(ZenithDominionRules.freeze(List.of()).isEmpty() && ZenithDominionRules.freeze(null).isEmpty(), "no marks, nothing frozen");
         check(ZenithDominionRules.RANGE == 96 && ZenithDominionRules.LIFT_TICKS > 0 && ZenithDominionRules.RELEASE_TICKS > 0, "96 m, lift then release");
         check(ZenithDominionRules.liftVelocity(0) > 0 && ZenithDominionRules.liftVelocity(ZenithDominionRules.LIFT_TICKS) == 0, "a lift that eases to rest");

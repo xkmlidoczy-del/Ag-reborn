@@ -121,6 +121,7 @@ public final class MagneticDomainTeamSlowFallRuntimeTests {
     public static void horizontal_radius_boundary_admits_but_next_representable_position_refuses(GameTestHelper h) {
         TeamFixture f = new TeamFixture(h); f.ready(() -> {
             f.start(); Vec3 at = f.caster.p.position().add(0, 0, MagneticDomain.RADIUS);
+            f.loadBoundary(at);
             f.recipient.place(at); f.falling(); f.optIn(); f.tick(); f.requireEffect();
             f.offAndExpire();
             Vec3 outside = new Vec3(at.x, at.y, Math.nextUp(at.z));
@@ -136,9 +137,15 @@ public final class MagneticDomainTeamSlowFallRuntimeTests {
     public static void vertical_distance_uses_the_same_spherical_sample_boundary(GameTestHelper h) {
         TeamFixture f = new TeamFixture(h); f.ready(() -> {
             f.start(); Vec3 at = f.caster.p.position().add(0, MagneticDomain.RADIUS, 0);
+            f.loadBoundary(at);
             f.recipient.place(at); f.falling(); f.optIn(); f.tick(); f.requireEffect();
             f.offAndExpire();
             Vec3 outside = new Vec3(at.x, Math.nextUp(at.y), at.z);
+            // At negative Y, the one-metre centre offset and subtraction can round
+            // the first nextUp foot position back to exactly48. Select the first
+            // representable position whose actual native centre sample is outside.
+            while(outside.add(0,1,0).distanceToSqr(f.caster.p.position().add(0,1,0))<=MagneticDomain.RADIUS*MagneticDomain.RADIUS)
+                outside=new Vec3(outside.x,Math.nextUp(outside.y),outside.z);
             h.assertTrue(outside.add(0, 1, 0).distanceToSqr(f.caster.p.position().add(0, 1, 0)) > MagneticDomain.RADIUS * MagneticDomain.RADIUS,
                     "both sample points remain strictly outside after adding the existing one-metre offset");
             f.recipient.place(outside); f.falling(); f.optIn(); f.tick();
@@ -531,6 +538,20 @@ public final class MagneticDomainTeamSlowFallRuntimeTests {
                 action.run();
             });
         }
+        void loadBoundary(Vec3 at) {
+            // Test environment only: expanded48m range must already be loaded; the ability never loads it.
+            Vec3 from=caster.p.position();
+            for(int x=((int)Math.floor(Math.min(from.x,at.x)))>>4;x<=((int)Math.floor(Math.max(from.x,at.x)))>>4;x++)
+                for(int z=((int)Math.floor(Math.min(from.z,at.z)))>>4;z<=((int)Math.floor(Math.max(from.z,at.z)))>>4;z++)h.getLevel().getChunk(x,z);
+            // The old12m fixture's air volume does not cover the expanded48m line.
+            // Neighboring test structures/roof blocks must not turn a radius test into an occlusion test.
+            Vec3 delta=at.subtract(from);int steps=(int)Math.ceil(delta.length());
+            for(int i=0;i<=steps;i++) {
+                BlockPos center=BlockPos.containing(from.add(delta.scale(steps==0?0:(double)i/steps)).add(0,1,0));
+                for(BlockPos cell:BlockPos.betweenClosed(center.offset(-1,-1,-1),center.offset(1,1,1)))
+                    block(cell.immutable(),Blocks.AIR.defaultBlockState());
+            }
+        }
         void start() { h.assertTrue(caster.toggle(1) && MagneticDomain.active(caster.p), "genuine authenticated paid domain starts"); }
         void optIn() { h.assertTrue(MagneticDomainTeamSlowFall.consent(recipient.p, true), "recipient explicitly opts in for their session and team"); }
         void falling() { MagneticDomainTeamSlowFallRuntimeTests.falling(recipient.p); }
@@ -538,6 +559,17 @@ public final class MagneticDomainTeamSlowFallRuntimeTests {
         boolean effect() { return recipient.p.hasEffect(MobEffects.SLOW_FALLING); }
         MobEffectInstance requireEffect() {
             MobEffectInstance value = recipient.p.getEffect(MobEffects.SLOW_FALLING);
+            if(value==null)try {
+                var consentField=MagneticDomainTeamSlowFall.class.getDeclaredField("CONSENTS");consentField.setAccessible(true);
+                Object consent=((Map<?,?>)consentField.get(null)).get(recipient.p);
+                var keyMethod=MagneticDomain.class.getDeclaredMethod("teamLeaseKey",ServerPlayer.class);keyMethod.setAccessible(true);
+                Object key=keyMethod.invoke(null,caster.p);
+                var sourceMethod=java.util.Arrays.stream(MagneticDomainTeamSlowFall.class.getDeclaredMethods()).filter(m->m.getName().equals("validSource")).findFirst().orElseThrow();sourceMethod.setAccessible(true);
+                var eligible=MagneticDomainTeamSlowFall.class.getDeclaredMethod("eligible",ServerPlayer.class);eligible.setAccessible(true);
+                Vec3 from=caster.p.position().add(0,1,0),to=recipient.p.position().add(0,1,0);
+                var hit=h.getLevel().clip(new net.minecraft.world.level.ClipContext(from,to,net.minecraft.world.level.ClipContext.Block.COLLIDER,net.minecraft.world.level.ClipContext.Fluid.NONE,caster.p));
+                System.out.println("QA_DOMAIN_BOUNDARY caster="+caster.p.position()+" recipient="+recipient.p.position()+" radius="+MagneticDomain.RADIUS+" square="+from.distanceToSqr(to)+" eligible="+eligible.invoke(null,caster.p)+"/"+eligible.invoke(null,recipient.p)+" consent="+(consent!=null)+" sourceKey="+(key!=null)+" validSource="+(consent==null?false:sourceMethod.invoke(null,consent,caster.p,key))+" clip="+hit.getType()+" block="+hit.getBlockPos()+" candidates="+h.getLevel().getEntitiesOfClass(ServerPlayer.class,new net.minecraft.world.phys.AABB(recipient.p.position(),recipient.p.position()).inflate(MagneticDomain.RADIUS)).size());
+            }catch(ReflectiveOperationException error){throw new IllegalStateException(error);}
             h.assertTrue(value != null, "eligible consenting teammate receives the native effect"); return value;
         }
         void expire() {

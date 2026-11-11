@@ -56,7 +56,7 @@ final class CanonFx {
         if(storage!=null)storage.close();if(lateStorage!=null)lateStorage.close();storage=lateStorage=null;buffers=late=null;}
 
     static void render(RenderLevelStageEvent event,List<View> views){
-        if(views.isEmpty()&&!CanonParticles.any()&&!CanonDecals.any()&&!CanonWarps.any()&&!CanonUltimates.any()&&!ClassicSignatures.any())return;
+        if(views.isEmpty()&&!CanonParticles.any()&&!CanonDecals.any()&&!CanonWarps.any()&&!CanonUltimates.any()&&!ClassicSignatures.any()&&!MacroVfxClient.any())return;
         if(buffers==null){storage=new ByteBufferBuilder(1<<18);buffers=MultiBufferSource.immediate(storage);
             lateStorage=new ByteBufferBuilder(1<<15);late=MultiBufferSource.immediate(lateStorage);}
         double partial=net.minecraft.client.Minecraft.getInstance().isPaused()?0:event.getPartialTick().getGameTimeDeltaPartialTick(false);lateUsed=false;
@@ -66,9 +66,11 @@ final class CanonFx {
             RenderSystem.setShaderColor(1,1,1,1);modelView.set(event.getModelViewMatrix());RenderSystem.applyModelViewMatrix();
             var left=camera.getLeftVector();var up=camera.getUpVector();
             Canvas c=new Canvas(event.getPoseStack().last().pose(),camera.getPosition(),new Vec3(-left.x(),-left.y(),-left.z()),new Vec3(up.x(),up.y(),up.z()));
-            var visible=views.stream().filter(v->v.anchor.distanceToSqr(c.cam)<=56*56||v.origin.distanceToSqr(c.cam)<=56*56||v.endpoint.distanceToSqr(c.cam)<=56*56).toList();
+            var visible=views.stream().filter(v->v.anchor.distanceToSqr(c.cam)<=56*56||v.origin.distanceToSqr(c.cam)<=56*56||v.endpoint.distanceToSqr(c.cam)<=56*56||cn.academy.port.macro.MacroVfx.distanceSquared(c.cam,v.origin,v.endpoint)<=Math.pow(56+v.radius,2)).toList();
+            int macros=MacroVfxClient.count();
+            int macroBudget=Math.min(1800,macros*640);
             int groups=visible.size()+ClassicSignatures.count()+CanonUltimates.count();
-            int allowance=Math.max(1,(QUAD_BUDGET-320)/Math.max(1,groups));
+            int allowance=Math.max(1,(QUAD_BUDGET-320-macroBudget)/Math.max(1,groups));
             for(View v:visible){
                 int before=c.left,scope=c.limit(allowance);
                 try{
@@ -80,7 +82,7 @@ final class CanonFx {
                 }finally{c.restore(scope);c.record("view:"+v.skill,before);}
             }
             var level=net.minecraft.client.Minecraft.getInstance().level;
-            if(level!=null){CanonUltimates.draw(c,level.getGameTime()+partial,allowance);ClassicSignatures.draw(c,level.getGameTime()+partial,allowance);} // game time: hit freezes must not stretch a finale
+            if(level!=null){MacroVfxClient.draw(c,level.getGameTime()+partial,macros==0?0:macroBudget/macros);CanonUltimates.draw(c,level.getGameTime()+partial,allowance);ClassicSignatures.draw(c,level.getGameTime()+partial,allowance);} // game time: hit freezes must not stretch a finale
             int residue=c.limit(320);
             try{CanonDecals.draw(c,partial);CanonParticles.draw(c,partial);CanonWarps.draw(c,partial);}finally{c.restore(residue);}
             if(QA_BUDGET)lastStats=new FrameStats(QUAD_BUDGET-c.left,c.dropped,Map.copyOf(c.groups));
@@ -149,10 +151,47 @@ final class CanonFx {
             }
             for(int i=0;i<n-1;i++){
                 double t0=i/(double)(n-1),t1=(i+1)/(double)(n-1),w0=width.applyAsDouble(t0)*.5,w1=width.applyAsDouble(t1)*.5;
+                if(cn.academy.port.VisualTierConfig.tier()!=cn.academy.port.VisualTier.OFF&&tex.startsWith("streak")){
+                    // A world-sized stroke must not vanish below one pixel in distant views.
+                    double projection=Math.max(.1,Math.abs(RenderSystem.getProjectionMatrix().m11()));
+                    int height=Math.max(1,net.minecraft.client.Minecraft.getInstance().getWindow().getHeight());
+                    double pixels=tex.equals("streak_ink")?20:15;
+                    w0=Math.max(w0,cam.distanceTo(pts.get(i))*pixels/(height*projection));
+                    w1=Math.max(w1,cam.distanceTo(pts.get(i+1))*pixels/(height*projection));
+                }
                 float a=(float)(alpha.applyAsDouble((t0+t1)*.5));if(a<=.003f||(w0<=0&&w1<=0))continue;
                 float u0=(float)(t0*repeat+scroll),u1=(float)(t1*repeat+scroll);
                 quad(tex,additive,pts.get(i).subtract(side[i].scale(w0)),pts.get(i+1).subtract(side[i+1].scale(w1)),
                         pts.get(i+1).add(side[i+1].scale(w1)),pts.get(i).add(side[i].scale(w0)),u0,0,u1,1,rgb[0],rgb[1],rgb[2],a);
+            }
+        }
+        /** Pixel-antialiased neural reticle; one quad replaces coarse polygonal rings. */
+        void neuralNode(Vec3 p,double size,float[] rgb,float alpha){
+            if(!AgEffectMaterials.glyphs()){sprite("macro/mental_out",true,p,size,0,rgb,alpha);return;}
+            if(!room()||alpha<=.003f)return;left--;var out=buffers.getBuffer(AgEffectMaterials.type(5));Vec3 x=right.scale(size),y=up.scale(size);
+            v(out,p.subtract(x).subtract(y),0,0,rgb[0],rgb[1],rgb[2],alpha);v(out,p.add(x).subtract(y),1,0,rgb[0],rgb[1],rgb[2],alpha);
+            v(out,p.add(x).add(y),1,1,rgb[0],rgb[1],rgb[2],alpha);v(out,p.subtract(x).add(y),0,1,rgb[0],rgb[1],rgb[2],alpha);
+        }
+        /** Analytic three-dimensional energy stream. All faces share this canvas's existing fair quad budget. */
+        void energyStream(Vec3 from,Vec3 to,double width,float[] rgb,double alpha){
+            Vec3 axis=to.subtract(from);double length=axis.length();if(length<.05||alpha<.003)return;axis=axis.scale(1/length);
+            Vec3 r=axis.cross(new Vec3(0,1,0));r=r.lengthSqr()<1e-8?new Vec3(1,0,0):r.normalize();Vec3 up=r.cross(axis).normalize();
+            int sides=cn.academy.port.VisualTierConfig.tier()==cn.academy.port.VisualTier.CINEMATIC?12:8;
+            int segments=Math.max(1,Math.min(8,(int)Math.ceil(length/8)));
+            if(left-floor<sides*2){double stroke=width;ribbon("streak",true,List.of(from,to),u->stroke,u->alpha,rgb,Math.max(1,length/4),0);return;}
+            segments=Math.min(segments,Math.max(1,(left-floor)/(sides*2)));
+            // Sparse distant trails keep a clear two-pixel spine, rather than disappearing with world distance.
+            double projection=Math.max(.1,Math.abs(RenderSystem.getProjectionMatrix().m11()));int height=Math.max(1,net.minecraft.client.Minecraft.getInstance().getWindow().getHeight());
+            width=Math.max(width,Math.sqrt(cn.academy.port.macro.MacroVfx.distanceSquared(cam,from,to))*2.5/(height*projection));
+            for(int layer=0;layer<2;layer++){var out=buffers.getBuffer(AgEffectMaterials.type(layer));double radius=width*(layer==0?.45:1.7);
+                for(int j=0;j<segments;j++)for(int k=0;k<sides;k++){
+                    if(!room())return;left--;double d0=length*j/segments,d1=length*(j+1)/segments,f0=k/(double)sides,f1=(k+1)/(double)sides;
+                    Vec3 s0=r.scale(Math.cos(f0*Math.PI*2)).add(up.scale(Math.sin(f0*Math.PI*2))),s1=r.scale(Math.cos(f1*Math.PI*2)).add(up.scale(Math.sin(f1*Math.PI*2)));
+                    v(out,from.add(axis.scale(d0)).add(s0.scale(radius)),(float)d0,(float)f0,rgb[0],rgb[1],rgb[2],(float)alpha);
+                    v(out,from.add(axis.scale(d1)).add(s0.scale(radius)),(float)d1,(float)f0,rgb[0],rgb[1],rgb[2],(float)alpha);
+                    v(out,from.add(axis.scale(d1)).add(s1.scale(radius)),(float)d1,(float)f1,rgb[0],rgb[1],rgb[2],(float)alpha);
+                    v(out,from.add(axis.scale(d0)).add(s1.scale(radius)),(float)d0,(float)f1,rgb[0],rgb[1],rgb[2],(float)alpha);
+                }
             }
         }
         // ------------------------------------------------------------------ FX4 materials (textures/fx4, shader modes with fallback)
@@ -320,8 +359,10 @@ final class CanonFx {
                 ()->{RenderSystem.enableBlend();RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA,GlStateManager.DestFactor.ONE);},
                 ()->{RenderSystem.disableBlend();RenderSystem.defaultBlendFunc();});
         static RenderType make(String tex,boolean additive){
-            var state=CompositeState.builder().setShaderState(new ShaderStateShard(GameRenderer::getPositionTexColorShader))
-                    .setTextureState(new TextureStateShard(ResourceLocation.fromNamespaceAndPath("academy","textures/canon_fx/"+tex+".png"),true,false))
+            boolean material=tex.startsWith("macro/");
+            int family=AgVolumeRenderer.family(tex.substring(tex.lastIndexOf('/')+1));
+            var state=CompositeState.builder().setShaderState(new ShaderStateShard(()->tex.startsWith("streak")?AgEffectMaterials.filament(false,tex.equals("streak_ink")):material?AgVolumeRenderer.surface(family):GameRenderer.getPositionTexColorShader()))
+                    .setTextureState(new TextureStateShard(ResourceLocation.fromNamespaceAndPath("academy","textures/canon_fx/"+(tex.equals("streak_ink")?"streak":tex)+".png"),true,false))
                     .setTransparencyState(additive?GLOW_BLEND:TRANSLUCENT_TRANSPARENCY).setCullState(NO_CULL).setLightmapState(NO_LIGHTMAP)
                     .setOverlayState(NO_OVERLAY).setWriteMaskState(COLOR_WRITE).setOutputState(PARTICLES_TARGET).createCompositeState(false);
             return RenderType.create("academy_canon_fx_"+tex+(additive?"_add":"_alpha"),DefaultVertexFormat.POSITION_TEX_COLOR,VertexFormat.Mode.QUADS,4096,false,true,state);

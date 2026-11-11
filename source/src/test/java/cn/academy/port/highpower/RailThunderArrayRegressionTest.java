@@ -14,7 +14,7 @@ public final class RailThunderArrayRegressionTest {
     private static BigDecimal sum(List<BigDecimal> values){return values.stream().reduce(BigDecimal.ZERO,BigDecimal::add);}
     private static void fails(Runnable action,String why){try{action.run();throw new AssertionError(why);}catch(IllegalArgumentException expected){checks++;}}
     public static void main(String[] args){
-        check(RailThunderArrayRules.RANGE==96&&RailThunderArrayRules.MAX_TARGETS==16&&RailThunderArrayRules.SCAN_LIMIT==64,"finite query and geometry bounds");
+        check(RailThunderArrayRules.RANGE==96&&RailThunderArrayRules.MAX_TARGETS==Integer.MAX_VALUE&&RailThunderArrayRules.SCAN_LIMIT==Integer.MAX_VALUE,"fixed trajectory, full loaded roster");
         for(String input:List.of("1","5e18","1e20","1.000000000000001","0.000000000000000000001","99999999999999999999.999")){
             BigDecimal d=new BigDecimal(input),total=RailThunderArrayRules.budget(d);
             exact(total,d.multiply(BigDecimal.valueOf(4)),"whole cast equals4D including synthetic cumulative total above final-hit cap");
@@ -34,7 +34,8 @@ public final class RailThunderArrayRegressionTest {
         }
         check(RailThunderArrayRules.budget(null)==null&&RailThunderArrayRules.budget(BigDecimal.ZERO)==null&&RailThunderArrayRules.budget(BigDecimal.ONE.negate())==null,"invalid damage rejected");
         check(RailThunderArrayRules.budget(new BigDecimal("1e21"))==null&&RailThunderArrayRules.budget(new BigDecimal("1e-1000000000"))==null,"unbounded input representation rejected");
-        fails(()->RailThunderArrayRules.split(BigDecimal.ONE,0),"zero slots rejected");fails(()->RailThunderArrayRules.split(BigDecimal.ONE,17),"17 targets rejected");
+        fails(()->RailThunderArrayRules.split(BigDecimal.ONE,0),"zero slots rejected");
+        for(int count:new int[]{17,65,130,256})exact(sum(RailThunderArrayRules.split(BigDecimal.ONE,count)),BigDecimal.ONE,"large roster still shares one pulse");
         exact(sum(RailThunderArrayRules.split(BigDecimal.ZERO,16)),BigDecimal.ZERO,"zero allocations conserved without emission");
         double cost=0;for(int pulse=0;pulse<3;pulse++)cost+=RailThunderArrayRules.pulseCost(pulse);check(cost==1,"dyadic costs sum exactly one");
         exact(new BigDecimal(RailThunderArrayRules.pulseCost(0)).add(new BigDecimal(RailThunderArrayRules.pulseCost(1))).add(new BigDecimal(RailThunderArrayRules.pulseCost(2))),BigDecimal.ONE,"binary64 values themselves sum exactly one");

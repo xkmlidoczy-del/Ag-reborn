@@ -194,14 +194,14 @@ public final class MulticoreCanopy {
         send(c,DEPLOY,PREPARED,List.of());
     }
     private static void chooseMode(Context c,boolean held){
-        c.modeChosen=true;c.held=held;int count=held?c.roster.size():c.cores.size();List<BigDecimal> shares=MulticoreCanopyRules.shares(c.damage,count);List<Slot> slots=new ArrayList<>(count);
-        for(int i=0;i<count;i++)slots.add(new Slot(i,held?c.coreRoster.get(i%c.coreRoster.size()):c.cores.get(i).core.id(),c.roster.get(i%c.roster.size()),shares.get(i)));
+        c.modeChosen=true;c.held=held;int count=held?c.roster.size():Math.max(c.cores.size(),c.roster.size());List<BigDecimal> shares=MulticoreCanopyRules.shares(c.damage,count);List<Slot> slots=new ArrayList<>(count);
+        for(int i=0;i<count;i++)slots.add(new Slot(i,held?c.coreRoster.get(i%c.coreRoster.size()):c.cores.get(i%c.cores.size()).core.id(),c.roster.get(i%c.roster.size()),shares.get(i)));
         c.slots=List.copyOf(slots);
     }
     private static List<TargetState> acquire(Context c,Work work){
         ServerPlayer p=c.identity.owner();ServerLevel world=c.identity.level();Vec3 eye=p.getEyePosition(),look=p.getLookAngle().normalize(),position=p.position();
-        List<Entity> raw=new ArrayList<>();world.getEntities(EntityTypeTest.forClass(Entity.class),new AABB(eye,eye).inflate(96),e->true,raw,65);
-        if(!work.entities(raw.size())||raw.size()>64||!sameWorld(p,world,work)||!contextState(c)||!position.equals(p.position())||!eye.equals(p.getEyePosition())||!look.equals(p.getLookAngle().normalize())){work.refuse();return List.of();}
+        List<Entity> raw=new ArrayList<>();world.getEntities(EntityTypeTest.forClass(Entity.class),new AABB(eye,eye).inflate(96),e->true,raw,Integer.MAX_VALUE);
+        if(!work.entities(raw.size())||!sameWorld(p,world,work)||!contextState(c)||!position.equals(p.position())||!eye.equals(p.getEyePosition())||!look.equals(p.getLookAngle().normalize())){work.refuse();return List.of();}
         List<LivingEntity> candidates=new ArrayList<>();
         for(Entity entity:raw)if(entity instanceof LivingEntity target&&harmPermitted(p,target,work)
                 &&MulticoreCanopyGeometry.inCone(vector(eye),vector(look),vector(target.getBoundingBox().getCenter())))candidates.add(target);
@@ -211,7 +211,7 @@ public final class MulticoreCanopy {
             if(!sameWorld(p,world,work)||!contextState(c)||!position.equals(p.position())||!eye.equals(p.getEyePosition())||!look.equals(p.getLookAngle().normalize())){work.refuse();return List.of();}
             Vec3 center=target.getBoundingBox().getCenter();NativeHit hit=nativeTrace(p,eye,center,false,MulticoreCanopyRules.BEAM_RADIUS,work);
             if(hit.permitted&&hit.target==target&&harmState(p,target)&&ids.add(target.getUUID()))result.add(new TargetState(target,center));
-            if(!work.valid())return List.of();if(result.size()==16)break;
+            if(!work.valid())return List.of();
         }
         return List.copyOf(result);
     }
@@ -232,7 +232,7 @@ public final class MulticoreCanopy {
     private static void emitOpportunity(Context c,boolean held){
         ServerPlayer p=c.identity.owner();c.lastEmission=physicalTick;
         Vec3 ownerPosition=p.position(),ownerEye=p.getEyePosition(),ownerLook=p.getLookAngle();
-        int end=held?Math.min(c.slots.size(),c.slotIndex+1):c.slots.size();List<FrozenTarget> prepared=new ArrayList<>();
+        int end=Math.min(c.slots.size(),c.slotIndex+(held?1:64));List<FrozenTarget> prepared=new ArrayList<>();
         for(int i=c.slotIndex;i<end;i++){
             FrozenTarget target=prepare(c,c.slots.get(i),c.work);if(target!=null)prepared.add(target);
             if(!c.work.valid()||!contextState(c)||!pose(p,ownerPosition,ownerEye,ownerLook)){finish(c);return;}
@@ -254,6 +254,7 @@ public final class MulticoreCanopy {
         List<SegmentVisual> path=new ArrayList<>();
         for(FrozenTarget target:prepared){
             if(!c.paid||!contextState(c)||!c.work.valid())break;
+            if(!cn.academy.port.macro.MacroSettlement.reserve(p.server)){c.slotIndex=target.slot.index;break;}
             c.attempts++;EmissionPermit permit=new EmissionPermit(c,target);c.emitting=permit;
             BigDecimal hp=health(target.slot.target.entity),shield=HighPowerCombat.shield(target.slot.target.entity);float absorption=target.slot.target.entity.getAbsorptionAmount();boolean accepted;
             try{accepted=HighPowerCombat.attackMulticoreCanopy(permit);}finally{c.emitting=null;}
@@ -262,11 +263,11 @@ public final class MulticoreCanopy {
             else if(accepted&&(HighPowerCombat.shield(target.slot.target.entity).compareTo(shield)<0||target.slot.target.entity.getAbsorptionAmount()<absorption))status=ABSORBED;
             if(status==DAMAGED||status==ABSORBED)c.successes++;
             diagnostic("NEW251 stage=settled token={} tick={} core={} slot={} origin={} endpoint={} share={} status={} hpBefore={} hpAfter={} shieldBefore={} shieldAfter={}",c.identity.token(),physicalTick,target.slot.coreId,target.slot.index,target.origin,target.endpoint,target.slot.damage,status,hp,health(target.slot.target.entity),shield,HighPowerCombat.shield(target.slot.target.entity));
-            path.add(new SegmentVisual(target.slot.coreId,target.slot.index,target.origin,target.endpoint,status));
+            path.add(new SegmentVisual(target.slot.coreId,target.slot.index%16,target.origin,target.endpoint,status));
         }
         record(c,path);if(owned(p)==c)send(c,FIRE,c.successes>0?DAMAGED:prepared.isEmpty()?MISS:REFUSED,path);
         if(c.successes>0&&!c.rewarded&&owned(p)==c&&valid(c)){c.rewarded=true;c.identity.state().addExperience(ID,.005);AbilityStorage.save(p);}
-        if(c.slotIndex>=c.slots.size()||!held||!c.work.valid()||!contextState(c))finish(c);
+        if(c.slotIndex>=c.slots.size()||!c.work.valid()||!contextState(c))finish(c);
     }
     private static FrozenTarget prepare(Context c,Slot slot,Work work){
         ServerPlayer p=c.identity.owner();TargetState target=slot.target;CoreState core=core(c,slot.coreId);
@@ -404,8 +405,9 @@ public final class MulticoreCanopy {
     private static List<TargetVisual> targetVisuals(Context c){return c.roster.stream().filter(target->!target.retired).map(target->new TargetVisual(target.id,target.lastVisible,target.invisibleAt<0?PREPARED:LOST)).toList();}
     private static void send(Context c,int phase,int status,List<SegmentVisual> path){
         ServerPlayer p=c.identity.owner();if(phase!=ENDED&&owned(p)!=c)return;c.lastVisual=physicalTick;
+        if(c.paid)cn.academy.port.macro.MacroVfx.emit(p,ID,phase==ENDED?cn.academy.port.macro.MacroVfx.Phase.END:status==DAMAGED||status==ABSORBED?cn.academy.port.macro.MacroVfx.Phase.HIT:cn.academy.port.macro.MacroVfx.Phase.ACTIVE,p.getEyePosition(),path.isEmpty()?p.getEyePosition():path.getFirst().end(),32,0);
         Visual visual=new Visual(p.getId(),p.getUUID(),c.input.epoch(),c.input.input(),c.identity.token(),++c.sequence,phase,status,
-                phase==ENDED?0:remainingTicks(p),p.position(),phase==ENDED?List.of():coreVisuals(c),phase==ENDED?List.of():targetVisuals(c),path,c.held,c.slotIndex,
+                phase==ENDED?0:remainingTicks(p),p.position(),phase==ENDED?List.of():coreVisuals(c),phase==ENDED?List.of():targetVisuals(c).stream().limit(16).toList(),path.stream().limit(6).toList(),c.held,Math.min(16,c.slotIndex),
                 c.fireStarted<0?0:(int)Math.max(0,12-(physicalTick-c.fireStarted)));
         if(phase!=ENDED){c.audience.add(p);for(ServerPlayer observer:c.identity.level().players())if(observer.distanceToSqr(p)<=96*96)c.audience.add(observer);}
         for(ServerPlayer observer:c.audience)if(observer.connection!=null&&!observer.hasDisconnected()&&observer.serverLevel()==c.identity.level())PacketDistributor.sendToPlayer(observer,visual);

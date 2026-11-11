@@ -99,7 +99,8 @@ public final class HighPowerCastPoseTests {
         boolean negativeEntity = false;
         try { new CastPoseNet.Cue(-1, 0, 0); } catch (IllegalArgumentException refused) { negativeEntity = true; }
         h.assertTrue(negativeEntity, "a negative entity id is rejected");
-        h.assertTrue(HighPowerSkills.IDS.stream().allMatch(id -> CastPose.of(id) != null), "every high-power skill has a gesture");
+        h.assertTrue(HighPowerSkills.ALL.stream().allMatch(skill -> CastPose.of(skill.id()) != null), "every native high-power record has its native gesture");
+        h.assertTrue(cn.academy.port.canon.CanonSkills.IDS.stream().allMatch(id -> cn.academy.port.canon.CanonVfxDesign.find(id) != null), "every canon record has the accepted-event design used by CanonPoseClient");
         h.succeed();
     }
 

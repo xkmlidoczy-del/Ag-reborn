@@ -53,6 +53,7 @@ final class CanonUltimates {
 
     /** Folds a server visual of an ultimate into its cast's show, or opens a new show and starts its one-shot work. */
     static void receive(CanonVfx.Visual v,boolean local,double now){
+        if(cn.academy.port.VisualTierConfig.tier()!=cn.academy.port.VisualTier.OFF&&cn.academy.port.macro.MacroSkillRules.ultimate(v.skill()))return;
         Spec spec=SPECS.get(v.skill());if(spec==null||CanonReceiptFx.replacesLegacy(v.skill()))return;
         boolean liquid=CanonFxLiquid.FIELD_SKILL.equals(v.skill()),hydro="hydro_domain".equals(v.skill());
         boolean buoyancy="float_field".equals(v.skill()), nitrogen="nitrogen_dome".equals(v.skill());

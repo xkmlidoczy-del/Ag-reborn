@@ -37,7 +37,7 @@ public final class SkillTuning {
     }
 
     public static List<String> displayFields(String skill) {
-        return ROWS.getOrDefault(skill, EMPTY).displayFields();
+        return ROWS.getOrDefault(skill, EMPTY).displayFields().stream().filter(k->!BigDecimal.valueOf(Integer.MAX_VALUE).equals(fields(skill).get(k))).toList();
     }
 
     public static double number(String skill, String key) {
@@ -53,6 +53,7 @@ public final class SkillTuning {
         return PARAMETER.matcher(description).replaceAll(token -> {
             var value = fields.get(token.group(1));
             if (value == null) return Matcher.quoteReplacement(token.group());
+            if(value.compareTo(BigDecimal.valueOf(Integer.MAX_VALUE))==0)return "∞";
             String scale = token.group(2);
             if ("s".equals(scale)) {
                 value = value.divide(TICKS_PER_SECOND);

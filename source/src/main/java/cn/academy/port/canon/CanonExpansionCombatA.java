@@ -81,6 +81,7 @@ public final class CanonExpansionCombatA {
     public static boolean frontalBarrier(String skill){return Set.of("dark_shard_screen","nitrogen_plate","nitrogen_shield_line","nitrogen_bulwark","aero_pressure_wall").contains(skill);}
     public static boolean physicalBarrier(String skill){return frontalBarrier(skill)||Set.of("dark_guard","dark_panel_dome","aero_air_curtain").contains(skill);}
     public static AABB barrierBox(Vec3 centre,String skill){double w=frontalBarrier(skill)?barrierHalfWidth(skill):skill.equals("dark_guard")?CONTACT_GUARD_HINT_WIDTH:number(skill, "radius");return new AABB(centre.subtract(w,w,w),centre.add(w,w,w));}
+    public static AABB barrierInnerBox(Vec3 centre,String skill){return skill.equals("aero_air_curtain")?new AABB(centre.subtract(2.6,2.6,2.6),centre.add(2.6,2.6,2.6)):barrierBox(centre,skill);}
     private static final class Barrier {
         final Context initial; final Vec3 anchor,axis; final long expires; final int cap; long lastTick=Long.MIN_VALUE;int intercepted;
         Barrier(Context initial,int life,int cap) {this.initial=initial;anchor=initial.eye;axis=initial.look.normalize();expires=initial.tick+life;this.cap=cap;}
@@ -106,7 +107,7 @@ public final class CanonExpansionCombatA {
                     || !state.learned(id) || !SkillCatalog.enabled(state.category,id)
                     || HighPowerResources.effectiveLevel(p)<definition.level()) return false;
             Context c=new Context(p,state,p.serverLevel(),p.position(),p.getEyePosition(),p.getLookAngle(),p.getDeltaMovement(),p.getKnownMovement(),
-                    state.presets.current(),state.presets.revision(),state.level,p.serverLevel().getGameTime(),p.onGround(),p.isShiftKeyDown(),id);
+                    state.presets.current(),state.presets.revision(),state.level,p.serverLevel().getGameTime(),p.onGround(),p.isShiftKeyDown(),id,state.exp(id));
             return switch(id) {
                 case "mental_puppet" -> puppet(c);
                 case "dark_synthesis" -> synthesize(c);
@@ -150,10 +151,10 @@ public final class CanonExpansionCombatA {
         int n=0;for(Mob m:seen){if(n++>=4)break;CanonVfx.emit(c.p,"mental_probe",c.eye,m.position().add(0,m.getBbHeight()*.5,0),CanonVfx.Phase.HIT,100);}
     }
     private record Context(ServerPlayer p,AbilityProgress state,ServerLevel world,Vec3 pos,Vec3 eye,Vec3 look,Vec3 velocity,Vec3 knownMovement,
-                           int preset,long revision,int level,long tick,boolean ground,boolean shift,String skill) {}
+                           int preset,long revision,int level,long tick,boolean ground,boolean shift,String skill,double mastery) {}
     private static boolean context(Context c) {
         ServerPlayer p=c.p; var state=AbilityStorage.get(p);
-        return p.server.isSameThread() && p.serverLevel()==c.world && c.world.getGameTime()==c.tick
+        return p.server.isSameThread() && p.serverLevel()==c.world && (c.world.getGameTime()==c.tick||cn.academy.port.macro.MacroSkillRules.ultimate(c.skill)&&c.world.getGameTime()>c.tick)
                 && !p.isRemoved() && p.isAlive() && !p.isSpectator() && !p.hasDisconnected() && p.connection!=null
                 && p.server.getPlayerList().getPlayer(p.getUUID())==p && p.containerMenu==p.inventoryMenu
                 && state==c.state && state.level==c.level && state.presets.current()==c.preset && state.presets.revision()==c.revision
@@ -178,12 +179,13 @@ public final class CanonExpansionCombatA {
         return switch(c.skill) {
             case "mental_life_scan", "mental_hostile_scan" -> reach(c);
             case "mental_silence_field", "mental_panic_field", "mental_pursuit_field", "mental_pursuit_break", "mental_relay_interference",
-                 "mental_conflict_ring", "mental_crossfire", "mental_crowd_detach", "mental_lure_pair" -> number(c.skill, "radius");
-            case "aero_ring_push" -> number(c.skill, "radius");
+                 "mental_conflict_ring", "mental_crossfire", "mental_crowd_detach", "mental_lure_pair" -> cn.academy.port.macro.MacroSkillRules.area(c.skill,c.mastery,number(c.skill,"radius"));
+            case "aero_ring_push" -> cn.academy.port.macro.MacroSkillRules.area(c.skill,c.mastery,number(c.skill,"radius"));
             case "dark_guard" -> CONTACT_GUARD_HINT_WIDTH;
             case "dark_spear_fan" -> 0; // Three rays, not a spherical area.
-            case "dark_panel_dome", "aero_air_curtain" -> number(c.skill, "radius");
-            default -> { StrikeShape shape=shape(c.skill); yield shape!=null && shape.cone<0 && !shape.direct && !shape.line ? shape.radius : 0; }
+            // These controllers intercept against barrierBox(), whose half-width is fixed.
+            case "dark_panel_dome", "aero_air_curtain" -> number(c.skill,"radius");
+            default -> { StrikeShape shape=shape(c.skill,c.mastery); yield shape!=null && shape.cone<0 && !shape.direct && !shape.line ? shape.radius : 0; }
         };
     }
     private static void success(Context c,Vec3 end) {
@@ -293,7 +295,7 @@ public final class CanonExpansionCombatA {
     private static boolean control(Context c) {
         int duration = integer(c.skill, "duration_ticks");
         int cap = integer(c.skill, "target_cap");
-        if (MIND_LEASES.size()>=64 || c.tick<0 || c.tick>Long.MAX_VALUE-duration) return false;
+        if (MIND_LEASES.size()>=64&&!cn.academy.port.macro.MacroSkillRules.ultimate(c.skill) || c.tick<0 || c.tick>Long.MAX_VALUE-duration) return false;
         Mob selected=aimed(c); var changes=new ArrayList<Assignment>();
         if (c.skill.equals("mental_route_interrupt")) {
             if(selected==null || mentalLeased(selected) || CanonSkillsCombatA.mentalTargetLeased(selected)
@@ -311,10 +313,10 @@ public final class CanonExpansionCombatA {
             }
             final ServerPlayer anchor=protectedAlly;
             if(c.skill.equals("mental_lure_pair") && selected==null)return false;
-            double radius = number(c.skill, "radius");
+            double radius = cn.academy.port.macro.MacroSkillRules.area(c.skill,c.mastery,number(c.skill,"radius"));
             var nearby=new ArrayList<Mob>(c.world.getEntitiesOfClass(Mob.class,c.p.getBoundingBox().inflate(radius),
                     m -> c.p.distanceToSqr(m) <= radius * radius && eligible(c,m) && !mentalLeased(m) && !CanonSkillsCombatA.mentalTargetLeased(m)));
-            if(nearby.size()>32)return false;
+            if(nearby.size()>32&&!cn.academy.port.macro.MacroSkillRules.ultimate(c.skill))return false;
             nearby.sort(Comparator.comparingDouble((Mob m)->c.p.distanceToSqr(m)).thenComparingInt(Entity::getId));
             if(c.skill.equals("mental_conflict_ring") || c.skill.equals("mental_crossfire")) {
                 if(nearby.size()<(c.skill.equals("mental_crossfire")?4:3))return false;
@@ -377,11 +379,31 @@ public final class CanonExpansionCombatA {
                 }
             }
         }
-        if (changes.isEmpty() || changes.size()>cap || MIND_LEASES.size()+changes.size()>64) return false;
+        if (changes.isEmpty() || changes.size()>cap || MIND_LEASES.size()+changes.size()>64&&!cn.academy.port.macro.MacroSkillRules.ultimate(c.skill)) return false;
         for (Assignment a:changes) if (!MUTATING.add(a.mob)) {
             for (Assignment prior:changes) { if(prior==a)break; MUTATING.remove(prior.mob); } return false;
         }
         var written=new ArrayList<Assignment>();
+        if(cn.academy.port.macro.MacroSkillRules.ultimate(c.skill)){
+            if(!pay(c,changes.size(),80)){for(var a:changes)MUTATING.remove(a.mob);return false;}
+            boolean[] failed={false};
+            cn.academy.port.macro.MacroSettlement.submit(c.world,changes,()->true,a->{
+                if(failed[0])return;
+                if(!context(c)||!eligible(c,a.mob)||a.mob.getTarget()!=a.previous||MIND_LEASES.containsKey(a.mob)||!validWritten(c,a)){failed[0]=true;return;}
+                if(a.routeOnly)a.mob.getNavigation().stop();else a.mob.setTarget(a.written);
+                if(a.mob.getTarget()!=a.written||!context(c)||!eligible(c,a.mob)||!validWritten(c,a)){failed[0]=true;return;}
+                written.add(a);if(duration>0)MIND_LEASES.put(a.mob,new MindLease(c,a.mob,a.previous,a.written,c.tick+duration,a.routeOnly,a.consent));
+            },()->{
+                try{
+                    if(failed[0]||!context(c)){
+                        for(var a:written){var lease=MIND_LEASES.get(a.mob);if(lease!=null&&lease.owner==c)MIND_LEASES.remove(a.mob,lease);}
+                        rollback(written);return;
+                    }
+                    success(c,changes.getFirst().mob.position());
+                    if(duration>0)CanonVfx.emit(c.p,c.skill,c.pos,changes.getFirst().mob.position(),CanonVfx.Phase.ACTIVE,duration,area(c));
+                }finally{for(var a:changes)MUTATING.remove(a.mob);}
+            });return true;
+        }
         try {
             if (!pay(c,changes.size(),80)) return false;
             for (Assignment a:changes) {
@@ -548,36 +570,37 @@ public final class CanonExpansionCombatA {
         success(c,c.pos.add(next));return true;
     }
     public record StrikeShape(double radius,double cone,int maximum,boolean direct,boolean line,boolean ground,boolean shell,int push) {}
-    public static StrikeShape shape(String id) {
+    public static StrikeShape shape(String id) {return shape(id,1);}
+    private static StrikeShape shape(String id,double mastery) {
         return switch(id) {
             case "dark_shard" -> new StrikeShape(cn.academy.port.core.RangedSkillRanges.fixed("dark_shard"),-1,integer(id, "target_cap"),true,false,false,false,0);
             case "dark_sweep" -> new StrikeShape(number(id, "reach"),.35,integer(id, "target_cap"),false,false,false,false,1);
             case "dark_spread" -> new StrikeShape(cn.academy.port.core.RangedSkillRanges.fixed("dark_spread"),.72,integer(id, "target_cap"),false,false,false,false,0);
             case "dark_pierce" -> new StrikeShape(cn.academy.port.core.RangedSkillRanges.fixed("dark_pierce"),-1,integer(id, "target_cap"),false,true,false,false,0);
-            case "dark_shard_salvo" -> new StrikeShape(number(id, "radius"),-1,integer(id, "target_cap"),false,false,false,false,0);
-            case "dark_rain" -> new StrikeShape(number(id, "radius"),-1,integer(id, "target_cap"),false,false,false,false,0);
+            case "dark_shard_salvo" -> new StrikeShape(cn.academy.port.macro.MacroSkillRules.area(id,mastery,number(id,"radius")),-1,integer(id, "target_cap"),false,false,false,false,0);
+            case "dark_rain" -> new StrikeShape(cn.academy.port.macro.MacroSkillRules.area(id,mastery,number(id,"radius")),-1,integer(id, "target_cap"),false,false,false,false,0);
             case "dark_wing_charge" -> new StrikeShape(number(id, "reach"),-1,integer(id, "target_cap"),true,false,false,false,1);
             case "dark_spear_fan" -> new StrikeShape(cn.academy.port.core.RangedSkillRanges.fixed("dark_spear_fan"),-1,integer(id, "target_cap"),false,false,false,false,0);
-            case "dark_shard_ring" -> new StrikeShape(number(id, "radius"),-1,integer(id, "target_cap"),false,false,false,false,0);
+            case "dark_shard_ring" -> new StrikeShape(cn.academy.port.macro.MacroSkillRules.area(id,mastery,number(id,"radius")),-1,integer(id, "target_cap"),false,false,false,false,0);
             case "dark_matter_barrage" -> new StrikeShape(cn.academy.port.core.RangedSkillRanges.fixed("dark_matter_barrage"),.65,integer(id, "target_cap"),false,false,false,false,1);
             case "nitrogen_burst" -> new StrikeShape(number(id, "reach"),-1,integer(id, "target_cap"),true,false,false,true,1);
             case "nitrogen_uppercut" -> new StrikeShape(number(id, "reach"),-1,integer(id, "target_cap"),true,false,false,true,2);
             case "nitrogen_sweep" -> new StrikeShape(number(id, "reach"),.35,integer(id, "target_cap"),false,false,false,true,1);
             case "nitrogen_cone" -> new StrikeShape(cn.academy.port.core.RangedSkillRanges.fixed("nitrogen_cone"),.72,integer(id, "target_cap"),false,false,false,true,0);
-            case "nitrogen_ground_wave" -> new StrikeShape(number(id, "radius"),-1,integer(id, "target_cap"),false,false,true,true,1);
+            case "nitrogen_ground_wave" -> new StrikeShape(cn.academy.port.macro.MacroSkillRules.area(id,mastery,number(id,"radius")),-1,integer(id, "target_cap"),false,false,true,true,1);
             case "nitrogen_ram" -> new StrikeShape(number(id, "reach"),-1,integer(id, "target_cap"),true,false,true,true,1);
-            case "nitrogen_shock_ring" -> new StrikeShape(number(id, "radius"),-1,integer(id, "target_cap"),false,false,false,true,1);
+            case "nitrogen_shock_ring" -> new StrikeShape(cn.academy.port.macro.MacroSkillRules.area(id,mastery,number(id,"radius")),-1,integer(id, "target_cap"),false,false,false,true,1);
             case "nitrogen_impact" -> new StrikeShape(number(id, "reach"),-1,integer(id, "target_cap"),true,false,false,true,1);
             case "aero_gust" -> new StrikeShape(cn.academy.port.core.RangedSkillRanges.fixed("aero_gust"),-1,integer(id, "target_cap"),true,false,false,false,1);
             case "aero_cone" -> new StrikeShape(cn.academy.port.core.RangedSkillRanges.fixed("aero_cone"),.72,integer(id, "target_cap"),false,false,false,false,0);
             case "aero_ground_blast" -> new StrikeShape(cn.academy.port.core.RangedSkillRanges.fixed("aero_ground_blast"),.55,integer(id, "target_cap"),false,false,true,false,1);
             case "aero_pressure_lance" -> new StrikeShape(cn.academy.port.core.RangedSkillRanges.fixed("aero_pressure_lance"),-1,integer(id, "target_cap"),false,true,false,false,0);
-            case "aero_squall" -> new StrikeShape(number(id, "radius"),-1,integer(id, "target_cap"),false,false,false,false,1);
+            case "aero_squall" -> new StrikeShape(cn.academy.port.macro.MacroSkillRules.area(id,mastery,number(id,"radius")),-1,integer(id, "target_cap"),false,false,false,false,1);
             default -> null;
         };
     }
     private static boolean strike(Context c) {
-        StrikeShape shape=shape(c.skill);if(shape==null || shape.shell && !CanonSkillsCombatA.ownsNitrogenShell(c.p)
+        StrikeShape shape=shape(c.skill,c.mastery);if(shape==null || shape.shell && !CanonSkillsCombatA.ownsNitrogenShell(c.p)
                 || shape.ground && !grounded(c))return false;
         boolean groundBlast = c.skill.equals("aero_ground_blast");
         var selected=new ArrayList<LivingEntity>();
@@ -587,7 +610,7 @@ public final class CanonExpansionCombatA {
             if(hit instanceof EntityHitResult e && e.getEntity() instanceof LivingEntity target && strikeCandidate(c,shape,target))selected.add(target);
         } else {
             var found=c.world.getEntitiesOfClass(LivingEntity.class,c.p.getBoundingBox().inflate(shape.radius),target->strikeCandidate(c,shape,target));
-            if(found.size()>64)return false;
+            if(found.size()>64&&!cn.academy.port.macro.MacroSkillRules.ultimate(c.skill))return false;
             selected.addAll(found);selected.sort(Comparator.comparingDouble((LivingEntity e)->c.p.distanceToSqr(e)).thenComparingInt(Entity::getId));
             if (selected.size() > shape.maximum) {
                 var excess = selected.subList(shape.maximum, selected.size());
@@ -600,13 +623,14 @@ public final class CanonExpansionCombatA {
         if(!Double.isFinite(cost) || cost<=0)return false;
         var cast=CanonEmission.begin(c.p,c.skill,cost,80,List.copyOf(selected),target->strikeCandidate(c,shape,target));
         if(cast==null)return false;
-        int hits=0;
+        int[] hits={0};
         var contacts = new ArrayList<Vec3>();
-        for(LivingEntity target:selected) {
-            if (!strikeCandidate(c,shape,target)) continue;
+        final var deferredSurplus=surplus;
+        cast.forEach(target -> {
+            if (!strikeCandidate(c,shape,target)) return;
             Vec3 before = target.position();
-            if (!cast.attack(target)) continue;
-            hits++;
+            if (!cast.attack(target)) return;
+            hits[0]++;
             if (groundBlast && target.position().distanceToSqr(before) <= .01) {
                 contacts.add(before);
             }
@@ -618,15 +642,16 @@ public final class CanonExpansionCombatA {
             }
             Vec3 visualFrom=c.skill.equals("dark_rain")?target.getBoundingBox().getCenter().add(0,number(c.skill, "origin_height"),0):
                     c.skill.equals("dark_shard_ring")?shardOrigin(c,target):c.eye;
-            if(visualFrom!=null)CanonVfx.emit(c.p,c.skill,visualFrom,target.position().add(0,target.getBbHeight()*.5,0),CanonVfx.Phase.HIT,10,hits==1?area(c):0);
-        }
-        if(hits>0 && context(c) && (c.skill.equals("dark_wing_charge") || c.skill.equals("nitrogen_ram") || c.skill.equals("nitrogen_impact"))) {
+            if(visualFrom!=null)CanonVfx.emit(c.p,c.skill,visualFrom,target.position().add(0,target.getBbHeight()*.5,0),CanonVfx.Phase.HIT,10,hits[0]==1?area(c):0);
+        },()->{
+        if(hits[0]>0 && context(c) && (c.skill.equals("dark_wing_charge") || c.skill.equals("nitrogen_ram") || c.skill.equals("nitrogen_impact"))) {
             Vec3 next=strikeMotion(c);
             if(next!=null && safeMotion(c,next)){c.p.setDeltaMovement(next);c.p.hasImpulse=true;c.p.hurtMarked=true;
                 if(c.skill.equals("nitrogen_impact"))c.p.fallDistance=0;}
         }
-        if (!contacts.isEmpty() && context(c)) groundBlastEnvironment(c, shape, contacts, surplus);
-        if(hits>0 && AbilityStorage.get(c.p)==c.state && c.state.learned(c.skill)) {c.state.addExperience(c.skill,.01);AbilityStorage.save(c.p);}
+        if (!contacts.isEmpty() && context(c)) groundBlastEnvironment(c, shape, contacts, deferredSurplus);
+        if(hits[0]>0 && AbilityStorage.get(c.p)==c.state && c.state.learned(c.skill)) {c.state.addExperience(c.skill,.01);AbilityStorage.save(c.p);}
+        });
         return true;
     }
     private static void groundBlastEnvironment(Context c, StrikeShape shape, List<Vec3> contacts,
@@ -700,7 +725,11 @@ public final class CanonExpansionCombatA {
     }
     private static boolean clearOrigin(Context c,LivingEntity target,Vec3 origin) {
         Vec3 end=target.getBoundingBox().getCenter();
-        if(!finite(origin) || !finite(end) || !chunks(c.world,origin,end) || origin.distanceToSqr(end)>16*16)return false;
+        // The old local-origin safety gate still clipped the LV5 shard ring at
+        // 16 blocks after its real selector grew to 32–48. Membership remains
+        // bounded by strikeCandidate; retain the classic gate for lower levels.
+        double span=cn.academy.port.macro.MacroSkillRules.ultimate(c.skill)?cn.academy.port.macro.MacroSkillRules.MAX_SPAN:16;
+        if(!finite(origin) || !finite(end) || !chunks(c.world,origin,end) || origin.distanceToSqr(end)>span*span)return false;
         int steps=Math.max(1,(int)Math.ceil(origin.distanceTo(end)*2));
         for(int i=0;i<=steps;i++) {
             BlockPos at=BlockPos.containing(origin.lerp(end,(double)i/steps));
@@ -779,11 +808,13 @@ public final class CanonExpansionCombatA {
         else center=p.getEyePosition();
         if(!finite(center) || center.distanceToSqr(p.position())>64) {releaseBarrier(p,b);return;}
         AABB area=barrierBox(center,c.skill);
+        AABB inner=barrierInnerBox(center,c.skill);
         int checked=0;
         for(AbstractArrow arrow:c.world.getEntitiesOfClass(AbstractArrow.class,area.inflate(2),a->barrierArrow(b,a))) {
             if(++checked>16)break;Vec3 from=arrow.position(),velocity=arrow.getDeltaMovement();
-            if(area.contains(from))continue;
-            var impact=area.clip(from,from.add(velocity));if(impact.isEmpty())continue;
+            AABB surface=area.contains(from)?inner:area;
+            if(surface.contains(from))continue;
+            var impact=surface.clip(from,from.add(velocity));if(impact.isEmpty())continue;
             Vec3 next=velocity.scale(-.6),destination=impact.get().subtract(velocity.normalize().scale(.2));
             AABB moved=arrow.getBoundingBox().move(destination.subtract(from));Entity shooter=arrow.getOwner();
             if(!finite(destination) || !safeArrowPath(c,arrow,moved) || !HighPowerCombat.spendShieldFraction(p,new BigDecimal("0.01")))continue;
@@ -803,7 +834,7 @@ public final class CanonExpansionCombatA {
         if(arrow.getOwner() instanceof ServerPlayer shooter && (!AcademyConfig.ATTACK_PLAYERS.get()
                 || !p.server.isPvpAllowed() || !p.canHarmPlayer(shooter)))return false;
         Vec3 relative=arrow.position().subtract(p.getEyePosition());
-        return relative.lengthSqr()<=36 && arrow.getDeltaMovement().dot(relative)<0;
+        return relative.lengthSqr()<=(c.skill.equals("aero_air_curtain")?Math.pow(number(c.skill,"radius")+2,2):36) && arrow.getDeltaMovement().dot(relative)<0;
     }
     private static boolean fallGuard(Context c) {
         int duration = integer(c.skill, "duration_ticks");
@@ -904,7 +935,7 @@ public final class CanonExpansionCombatA {
         if(arrow.getOwner() instanceof ServerPlayer shooter && (!AcademyConfig.ATTACK_PLAYERS.get()
                 || !c.p.server.isPvpAllowed() || !protectedPlayer.canHarmPlayer(shooter)))return false;
         Vec3 relative=arrow.position().subtract(protectedPlayer.getEyePosition());
-        return relative.lengthSqr()<=36 && arrow.getDeltaMovement().dot(relative)<0;
+        return relative.lengthSqr()<=(c.skill.equals("aero_air_curtain")?Math.pow(number(c.skill,"radius")+2,2):36) && arrow.getDeltaMovement().dot(relative)<0;
     }
 
     /** A single immediate physical arrow deflection; no persistent arrow lease is stolen. */
@@ -962,7 +993,7 @@ public final class CanonExpansionCombatA {
 
     private record ItemImpulse(ItemEntity item,Vec3 pos,Vec3 velocity,Vec3 next,AABB swept) {}
     private static boolean vortex(Context c) {
-        double radius = number(c.skill, "radius");
+        double radius = cn.academy.port.macro.MacroSkillRules.area(c.skill,c.mastery,number(c.skill,"radius"));
         if(MagneticItemPull.itemsActive(c.p))return false;
         var candidates=new ArrayList<ItemEntity>(c.world.getEntitiesOfClass(ItemEntity.class,c.p.getBoundingBox().inflate(radius),
                 i->eligibleItem(c,i,radius) && visibleItem(c,i)));
@@ -988,7 +1019,7 @@ public final class CanonExpansionCombatA {
     }
     private record PushPlan(LivingEntity target,Vec3 pos,Vec3 velocity,Vec3 impulse) {}
     private static boolean ringPush(Context c) {
-        double radius = number(c.skill, "radius");
+        double radius = cn.academy.port.macro.MacroSkillRules.area(c.skill,c.mastery,number(c.skill,"radius"));
         int targetCap = integer(c.skill, "target_cap");
         var candidates=new ArrayList<LivingEntity>(c.world.getEntitiesOfClass(LivingEntity.class,c.p.getBoundingBox().inflate(radius),
                 t->impulseEligible(c,t)));
@@ -1011,7 +1042,7 @@ public final class CanonExpansionCombatA {
     }
     private static boolean impulseEligible(Context c,LivingEntity target) {
         if(target==c.p || !target.isAlive() || target.isRemoved() || target.isSpectator() || target.level()!=c.world
-                || c.world.getEntity(target.getUUID())!=target || c.p.distanceToSqr(target)>number(c.skill, "radius")*number(c.skill, "radius") || !c.p.hasLineOfSight(target)
+                || c.world.getEntity(target.getUUID())!=target || c.p.distanceToSqr(target)>cn.academy.port.macro.MacroSkillRules.area(c.skill,c.mastery,number(c.skill,"radius"))*cn.academy.port.macro.MacroSkillRules.area(c.skill,c.mastery,number(c.skill,"radius")) || !c.p.hasLineOfSight(target)
                 || c.p.isAlliedTo(target) || target.isAlliedTo(c.p) || !c.world.hasChunkAt(target.blockPosition())
                 || !c.world.mayInteract(c.p,target.blockPosition()))return false;
         return CanonTargetPolicy.hostile(target);

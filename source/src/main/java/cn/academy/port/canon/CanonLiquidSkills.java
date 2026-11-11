@@ -105,19 +105,18 @@ public final class CanonLiquidSkills {
         var growth=HighPowerGrowth.values(p);
         double cost=growth.arcCost()*(id.equals("liquid_strike")?2:4);
         int cooldown=id.equals("liquid_strike")?40:100;
-        double range=id.equals("liquid_strike")?STRIKE_RANGE:FIELD_RANGE;
+        double range=id.equals("liquid_strike")?STRIKE_RANGE:fieldRadius(p);
         var paid=CanonEmission.begin(p,id,cost,cooldown,targets,target -> valid(lease)
                 && eligible(p,lease,target,range) && visible(lease,target)
                 && (!id.equals("liquid_strike") || target(p,lease).contains(target))); if(paid==null)return false;
-        boolean hit=false,announced=false;
-        for(LivingEntity target:targets) {
-            if(!valid(lease) || !eligible(p,lease,target,range) || !visible(lease,target))continue;
-            boolean accepted=paid.attack(target);hit |= accepted;
-            if(accepted)CanonVfx.emit(p,id,lease.body.position(),target.position(),CanonVfx.Phase.HIT,12,!announced&&id.equals("liquid_shadow_field")?FIELD_RANGE:0);
-            announced|=accepted;
+        boolean[] hit={false},announced={false};
+        paid.forEach(target->{
+            if(!valid(lease) || !eligible(p,lease,target,range) || !visible(lease,target))return;
+            boolean accepted=paid.attack(target);hit[0] |= accepted;
+            if(accepted)CanonVfx.emit(p,id,lease.body.position(),target.position(),CanonVfx.Phase.HIT,12,!announced[0]&&id.equals("liquid_shadow_field")?fieldRadius(p):0);
+            announced[0]|=accepted;
             inkLine(lease.world,lease.body.getBoundingBox().getCenter(),target.getBoundingBox().getCenter());
-        }
-        if(hit)award(p,id);return true;
+        },()->{if(hit[0])award(p,id);});return true;
     }
 
     /** Single burst intercepting up to three real hostile arrows near the body. */
@@ -439,11 +438,12 @@ public final class CanonLiquidSkills {
                 ||!eligible(p,lease,target,STRIKE_RANGE)||!visible(lease,target))return List.of();
         return List.of(target);
     }
+    private static double fieldRadius(ServerPlayer p){return cn.academy.port.macro.MacroSkillRules.area("liquid_shadow_field",AbilityStorage.get(p).exp("liquid_shadow_field"),FIELD_RANGE);}
     private static List<LivingEntity> targets(ServerPlayer p,Lease lease) {
-        var area=lease.body.getBoundingBox().inflate(FIELD_RANGE);
-        if(!chunksLoaded(lease.world,new Vec3(area.minX,area.minY,area.minZ),new Vec3(area.maxX,area.maxY,area.maxZ)))return List.of();
-        var found=lease.world.getEntitiesOfClass(Mob.class,area,m->eligible(p,lease,m,FIELD_RANGE));
-        if(found.size()>MAX_CANDIDATES)return List.of();found.sort(Comparator.comparing(Mob::getUUID));
+        var area=lease.body.getBoundingBox().inflate(fieldRadius(p));
+
+        var found=lease.world.getEntitiesOfClass(Mob.class,area,m->eligible(p,lease,m,fieldRadius(p)));
+        found.sort(Comparator.comparing(Mob::getUUID));
         var selected=new ArrayList<LivingEntity>();
         for(Mob mob:found){if(selected.size()==MAX_FIELD_TARGETS)break;if(p.hasLineOfSight(mob)&&visible(lease,mob))selected.add(mob);}
         return List.copyOf(selected);
@@ -451,7 +451,7 @@ public final class CanonLiquidSkills {
     private static boolean eligible(ServerPlayer p,Lease lease,LivingEntity target,double range) {
         if(!(target instanceof Mob)||!CanonTargetPolicy.hostile(target)||target.isRemoved()||!target.isAlive()
                 ||target.isPassenger()||target.isVehicle()||target.isAlliedTo(p)||p.isAlliedTo(target)
-                ||target.distanceToSqr(lease.body)>range*range||!finite(target.position())||!p.hasLineOfSight(target)
+                ||!lease.world.hasChunkAt(target.blockPosition())||target.distanceToSqr(lease.body)>range*range||!finite(target.position())||!p.hasLineOfSight(target)
                 ||HighPowerCombat.unsupportedReason(target).isPresent())return false;
         var type=target.getType();
         return CanonTargetPolicy.reviewed(target)||net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(type).getNamespace().equals("minecraft")

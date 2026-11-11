@@ -85,11 +85,11 @@ public final class CanonWaterExpansion {
                         t->same(p,id,state,world,preset,revision,now,pos,eye,look,velocity)
                                 &&CanonWaterSkills.validSource(p,water)&&attackGeometry(p,id,t));
                 if(emission==null)return false;
-                boolean hit=false;for(var t:targets)if(emission.attack(t)){
-                    CanonVfx.emit(p,id,water.getCenter(),t.getBoundingBox().getCenter(),CanonVfx.Phase.HIT,12,!hit&&id.equals("hydro_eddy")?number(id, "radius"):0);hit=true;
-                }
-                if(hit&&AbilityStorage.get(p)==state&&state.learned(id)){state.addExperience(id,.01);AbilityStorage.save(p);}
-                return hit;
+                boolean[] hit={false};emission.forEach(t->{if(emission.attack(t)){
+                    CanonVfx.emit(p,id,water.getCenter(),t.getBoundingBox().getCenter(),CanonVfx.Phase.HIT,12,!hit[0]&&id.equals("hydro_eddy")?cn.academy.port.macro.MacroSkillRules.area(id,AbilityStorage.get(p).exp(id),number(id,"radius")):0);hit[0]=true;
+                }},()->{
+                if(hit[0]&&AbilityStorage.get(p)==state&&state.learned(id)){state.addExperience(id,.01);AbilityStorage.save(p);}
+                });return cn.academy.port.macro.MacroSkillRules.ultimate(id)||hit[0];
             }
             if(id.equals("hydro_campfire_out")||id.equals("hydro_candle_out")){
                 BlockHitResult hit=block(p,id);if(hit==null)return false;BlockPos target=hit.getBlockPos();BlockState old=world.getBlockState(target);
@@ -129,14 +129,15 @@ public final class CanonWaterExpansion {
     }
     private static boolean same(ServerPlayer p,String id,cn.academy.port.core.AbilityProgress s,ServerLevel w,int preset,long revision,long tick,
                                 Vec3 pos,Vec3 eye,Vec3 look,Vec3 velocity){
-        return AbilityStorage.get(p)==s&&p.serverLevel()==w&&w.getGameTime()==tick&&after(p,id)
+        return AbilityStorage.get(p)==s&&p.serverLevel()==w&&(w.getGameTime()==tick||cn.academy.port.macro.MacroSkillRules.ultimate(id)&&w.getGameTime()>tick)&&after(p,id)
                 &&s.presets.current()==preset&&s.presets.revision()==revision&&p.position().equals(pos)
                 &&p.getEyePosition().equals(eye)&&ClassicRaytrace.direction(p).equals(look)&&p.getDeltaMovement().equals(velocity);
     }
     private static boolean pay(ServerPlayer p,String id){double cost=HighPowerGrowth.values(p).arcCost();return Double.isFinite(cost)&&cost>0&&HighPowerResources.trySpend(p,id,cost,30);}
     private static void success(ServerPlayer p,String id,Vec3 from,Vec3 to){
+        double radius=id.equals("hydro_brake_field")?cn.academy.port.macro.MacroSkillRules.area(id,AbilityStorage.get(p).exp(id),number(id,"radius")):0;
         var s=AbilityStorage.get(p);if(CATEGORY.equals(s.category)&&s.learned(id)){s.addExperience(id,.01);AbilityStorage.save(p);}
-        CanonVfx.emit(p,id,from,to,CanonVfx.Phase.HIT,12,id.equals("hydro_brake_field")?number(id, "radius"):0);
+        CanonVfx.emit(p,id,from,to,CanonVfx.Phase.HIT,12,radius);
     }
     private static LivingEntity target(ServerPlayer p,String id){
         if(id.equals("hydro_douse_self"))return p;
@@ -164,10 +165,10 @@ public final class CanonWaterExpansion {
             var hit=ClassicRaytrace.living(p,number(id, "reach"),ClipContext.Fluid.NONE);
             return hit instanceof EntityHitResult h&&h.getEntity() instanceof LivingEntity t&&attackGeometry(p,id,t)?List.of(t):List.of();
         }
-        double range=number(id, "radius");var pos=p.position();
-        if(!loaded(p.serverLevel(),pos.add(-range,0,-range),pos.add(range,0,range)))return List.of();
+        double range=cn.academy.port.macro.MacroSkillRules.area(id,AbilityStorage.get(p).exp(id),number(id,"radius"));var pos=p.position();
+        if(!cn.academy.port.macro.MacroSkillRules.ultimate(id)&&!loaded(p.serverLevel(),pos.add(-range,0,-range),pos.add(range,0,range)))return List.of();
         var found=p.serverLevel().getEntitiesOfClass(LivingEntity.class,p.getBoundingBox().inflate(range),t->attackGeometry(p,id,t));
-        if(found.size()>64)return List.of();found.sort(Comparator.comparing(net.minecraft.world.entity.Entity::getUUID));
+        if(found.size()>64&&!cn.academy.port.macro.MacroSkillRules.ultimate(id))return List.of();found.sort(Comparator.comparing(net.minecraft.world.entity.Entity::getUUID));
         return List.copyOf(found.subList(0,Math.min(found.size(),integer(id, "target_cap"))));
     }
     private static boolean attackGeometry(ServerPlayer p,String id,LivingEntity target){
@@ -179,8 +180,8 @@ public final class CanonWaterExpansion {
                 ||type==EntityType.WITHER||type==EntityType.ENDER_DRAGON||type==EntityType.WARDEN||type==EntityType.ELDER_GUARDIAN))return false;
         Vec3 delta=target.getBoundingBox().getCenter().subtract(p.getEyePosition());double distance=delta.lengthSqr();
         if(!finite(delta)||distance<1e-8)return false;
-        if(id.equals("hydro_eddy"))return target.isInWaterOrBubble()&&p.distanceToSqr(target)<=Math.pow(number(id, "radius"),2);
-        if(id.equals("hydro_fan"))return p.distanceToSqr(target)<=Math.pow(number(id, "radius"),2)&&delta.normalize().dot(ClassicRaytrace.direction(p))>=.6427876097;
+        if(id.equals("hydro_eddy"))return target.isInWaterOrBubble()&&p.distanceToSqr(target)<=Math.pow(cn.academy.port.macro.MacroSkillRules.area(id,AbilityStorage.get(p).exp(id),number(id,"radius")),2);
+        if(id.equals("hydro_fan"))return p.distanceToSqr(target)<=Math.pow(cn.academy.port.macro.MacroSkillRules.area(id,AbilityStorage.get(p).exp(id),number(id,"radius")),2)&&delta.normalize().dot(ClassicRaytrace.direction(p))>=.6427876097;
         if(p.distanceToSqr(target)>Math.pow(number(id, "reach"),2))return false;
         var hit=ClassicRaytrace.living(p,number(id, "reach"),ClipContext.Fluid.NONE);
         return hit instanceof EntityHitResult e&&e.getEntity()==target;
@@ -188,10 +189,10 @@ public final class CanonWaterExpansion {
     private static List<LivingEntity> motionTargets(ServerPlayer p,String id){
         if(id.equals("hydro_dive")||id.equals("hydro_lateral_current"))return motionEligible(p,p,id)?List.of(p):List.of();
         if(id.equals("hydro_brake_field")){
-            double radius=number(id, "radius");
-            Vec3 c=p.position();if(!loaded(p.serverLevel(),c.add(-radius,0,-radius),c.add(radius,0,radius)))return List.of();
+            double radius=cn.academy.port.macro.MacroSkillRules.area(id,AbilityStorage.get(p).exp(id),number(id,"radius"));
+            Vec3 c=p.position();if(!cn.academy.port.macro.MacroSkillRules.ultimate(id)&&!loaded(p.serverLevel(),c.add(-radius,0,-radius),c.add(radius,0,radius)))return List.of();
             var found=p.serverLevel().getEntitiesOfClass(ServerPlayer.class,p.getBoundingBox().inflate(radius),t->motionEligible(p,t,id));
-            if(found.size()>64)return List.of();found.sort(Comparator.comparing(net.minecraft.world.entity.Entity::getUUID));
+            if(found.size()>64&&!cn.academy.port.macro.MacroSkillRules.ultimate(id))return List.of();found.sort(Comparator.comparing(net.minecraft.world.entity.Entity::getUUID));
             return List.copyOf(found.subList(0,Math.min(found.size(),integer(id, "target_cap"))));
         }
         Vec3 eye=p.getEyePosition(),end=eye.add(ClassicRaytrace.direction(p).scale(number(id, "reach")));if(!loaded(p.serverLevel(),eye,end))return List.of();

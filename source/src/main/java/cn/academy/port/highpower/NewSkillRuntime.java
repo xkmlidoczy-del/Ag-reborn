@@ -129,6 +129,7 @@ public final class NewSkillRuntime {
             BigDecimal q = HighPowerGrowth.values(p).position();
             cost = NewSkillBudget.cp(kind.budget, q); cooldown = NewSkillBudget.cooldownTicks(kind.budget, q);
         }
+        int macroIndex;
     }
 
     private NewSkillRuntime() {}
@@ -476,7 +477,7 @@ public final class NewSkillRuntime {
 
     private static void tickDominion(ServerPlayer p, Context c) {
         long age = now(p) - c.started;
-        if (!c.paid || age > ZenithDominionRules.LIFT_TICKS + ZenithDominionRules.RELEASE_TICKS) { finish(c, true); return; }
+        if (!c.paid || age > ZenithDominionRules.LIFT_TICKS + ZenithDominionRules.RELEASE_TICKS && c.macroIndex>=c.marks.size()) { finish(c, true); return; }
         if (age < ZenithDominionRules.LIFT_TICKS) {
             double up = ZenithDominionRules.liftVelocity((int) age);
             for (UUID id : c.marks) {
@@ -486,10 +487,12 @@ public final class NewSkillRuntime {
             if (age % 4 == 0) send(c, LIFT, p.getEyePosition(), Vec3.ZERO, positions(p, c.marks));
             return;
         }
-        if (age == ZenithDominionRules.LIFT_TICKS && !c.done) {
+        if (age >= ZenithDominionRules.LIFT_TICKS && (!c.done||c.macroIndex<c.marks.size())) {
             c.done = true;
             var hits = new ArrayList<Vec3>();
-            for (int i = 0; i < c.marks.size(); i++) {
+            for (int i = c.macroIndex; i < c.marks.size(); i++) {
+                if(!cn.academy.port.macro.MacroSettlement.reserve(p.server))break;
+                c.macroIndex=i+1;
                 Entity e = p.serverLevel().getEntity(c.marks.get(i));
                 if (!(e instanceof LivingEntity t) || !t.isAlive() || !VectorCageWorld.hostile(p, t)) continue;
                 hits.add(t.position().add(0, t.getBbHeight() / 2, 0));
@@ -517,7 +520,7 @@ public final class NewSkillRuntime {
         public boolean claim() { if(claimed || !valid()) return false; claimed=true; return true; }
         public boolean valid() {
             return thread(player()) && context.kind==Kind.ZENITH_DOMINION && context.paid && context.done && NewSkillRuntime.valid(context)
-                    && now(player())-context.started==ZenithDominionRules.LIFT_TICKS && index>=0 && index<context.marks.size()
+                    && now(player())-context.started>=ZenithDominionRules.LIFT_TICKS && index>=0 && index<context.marks.size()
                     && context.marks.get(index).equals(target.getUUID()) && player().serverLevel().getEntity(target.getId())==target
                     && player().serverLevel().getEntity(target.getUUID())==target && target.position().equals(position);
         }
@@ -610,6 +613,7 @@ public final class NewSkillRuntime {
 
     private static void send(Context c, int phase, Vec3 point, Vec3 dir, List<Vec3> points) {
         ServerPlayer p = c.identity.owner();
+        cn.academy.port.macro.MacroVfx.emit(p,c.kind.id,phase==END?cn.academy.port.macro.MacroVfx.Phase.END:phase==START?cn.academy.port.macro.MacroVfx.Phase.CHARGE:phase==RELEASE&&c.paid?cn.academy.port.macro.MacroVfx.Phase.HIT:cn.academy.port.macro.MacroVfx.Phase.ACTIVE,point,points.isEmpty()?point:points.getFirst(),32,0);
         broadcast(p, new Visual(c.kind.ordinal(), p.getId(), p.getUUID(), c.identity.token(), ++c.sequence, c.input.input(), c.input.epoch(),
                 p.serverLevel().dimension().location(), phase, point, dir, points.subList(0, Math.min(16, points.size())), now(p)));
     }

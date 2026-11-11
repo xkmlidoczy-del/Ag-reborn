@@ -72,7 +72,7 @@ public final class CanonOffense {
         var c=new Cast(player,spec,targets,body,paper,sheets);
         if(HighPowerResources.availableCp(player)<c.cost()||!valid(c))return false;
         CASTS.put(player,c);
-        CanonVfx.emit(player,id,c.origin(),area(spec)>0?c.areaCentre:visualPoint(c,targets.getFirst()),CanonVfx.Phase.START,spec.warmup()+2,area(spec));
+        CanonVfx.emit(player,id,c.origin(),area(player,spec)>0?c.areaCentre:visualPoint(c,targets.getFirst()),CanonVfx.Phase.START,spec.warmup()+2,area(player,spec));
         observer.accept(new Receipt(player.getUUID(),id,"WARMUP",c.started,targets.size(),0,0,HighPowerResources.cp(player),HighPowerResources.cp(player)));
         return true;
     }
@@ -87,7 +87,7 @@ public final class CanonOffense {
     private static boolean valid(Cast c){
         var p=c.player;var s=AbilityStorage.get(p);
         return owner(p,c.spec)&&s==c.state&&s.level==c.level&&s.presets.current()==c.preset&&s.presets.revision()==c.revision
-                &&p.serverLevel()==c.world&&c.world.getGameTime()>=c.started&&c.world.getGameTime()-c.started<=c.spec.warmup()+2
+                &&p.serverLevel()==c.world&&c.world.getGameTime()>=c.started&&(c.committed||c.world.getGameTime()-c.started<=c.spec.warmup()+2)
                 &&(c.body==null||CanonLiquidSkills.sameBody(p,c.body))
                 &&(c.sheets==0||c.committed||(p.getMainHandItem()==c.paper||p.getOffhandItem()==c.paper)
                     &&ItemStack.matches(c.paper,c.paperSnapshot)&&c.paper.getCount()>=c.sheets);
@@ -100,14 +100,16 @@ public final class CanonOffense {
         if(t instanceof Player other)return AcademyConfig.ATTACK_PLAYERS.get()&&p.server.isPvpAllowed()&&p.canHarmPlayer(other);
         return t instanceof Mob&&CanonTargetPolicy.hostile(t);
     }
-    private static double area(CanonOffenseSkills.Spec spec){return spec.shape()==CanonOffenseSkills.Shape.AREA?spec.radius():0;}
+    private static double radius(ServerPlayer p,CanonOffenseSkills.Spec spec){return cn.academy.port.macro.MacroSkillRules.area(spec.id(),AbilityStorage.get(p).exp(spec.id()),spec.radius());}
+    private static double area(ServerPlayer p,CanonOffenseSkills.Spec spec){return spec.shape()==CanonOffenseSkills.Shape.AREA?radius(p,spec):0;}
     private static LivingEntity aimed(ServerPlayer p,double reach){
-        var hit=ClassicRaytrace.perform(p,p.getEyePosition(),p.getEyePosition().add(ClassicRaytrace.direction(p).scale(reach)),ClipContext.Fluid.NONE,e->true);
+        var end=p.getEyePosition().add(ClassicRaytrace.direction(p).scale(reach));if(reach>64)end=cn.academy.port.macro.MacroGeometry.loadedEnd(p.serverLevel(),p.getEyePosition(),end);
+        var hit=ClassicRaytrace.perform(p,p.getEyePosition(),end,ClipContext.Fluid.NONE,e->true);
         return hit instanceof EntityHitResult e&&e.getEntity() instanceof LivingEntity t?t:null;
     }
     private static Vec3 aimPoint(ServerPlayer p,double reach){
         var t=aimed(p,reach);if(target(p,t,reach))return t.getBoundingBox().getCenter();
-        Vec3 from=p.getEyePosition(),end=from.add(ClassicRaytrace.direction(p).scale(reach));
+        Vec3 from=p.getEyePosition(),end=from.add(ClassicRaytrace.direction(p).scale(reach));if(reach>64)end=cn.academy.port.macro.MacroGeometry.loadedEnd(p.serverLevel(),from,end);
         var hit=p.serverLevel().clip(new ClipContext(from,end,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,p));
         return hit.getType()==HitResult.Type.MISS?end:hit.getLocation();
     }
@@ -118,35 +120,35 @@ public final class CanonOffense {
             return target(p,t,reach)&&(spec.shape()!=CanonOffenseSkills.Shape.AIR_POINT||airborne(t))?List.of(t):List.of();
         }
         if(spec.body()){
-            Vec3 origin=body.getBoundingBox().getCenter();double radius=spec.radius();
+            Vec3 origin=body.getBoundingBox().getCenter();double radius=radius(p,spec);
             var list=new ArrayList<>(world.getEntitiesOfClass(LivingEntity.class,body.getBoundingBox().inflate(radius),t->t!=body&&target(p,t,reach)
                     &&t.getBoundingBox().getCenter().distanceToSqr(origin)<=radius*radius
                     &&world.clip(new ClipContext(origin,t.getBoundingBox().getCenter(),ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,body)).getType()==HitResult.Type.MISS));
             list.sort(Comparator.comparingDouble(t->t.distanceToSqr(body)));return List.copyOf(list.subList(0,Math.min(spec.targets(),list.size())));
         }
-        Vec3 end=eye.add(axis.scale(reach));var block=world.clip(new ClipContext(eye,end,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,p));
+        Vec3 end=eye.add(axis.scale(reach));if(reach>64)end=cn.academy.port.macro.MacroGeometry.loadedEnd(world,eye,end);var block=world.clip(new ClipContext(eye,end,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,p));
         if(block.getType()!=HitResult.Type.MISS)end=block.getLocation();
         if(spec.shape()==CanonOffenseSkills.Shape.AREA){
             Vec3 centre=aimPoint(p,reach);
-            var list=new ArrayList<>(world.getEntitiesOfClass(LivingEntity.class,new AABB(centre,centre).inflate(spec.radius()),v->target(p,v,reach)
-                    &&v.getBoundingBox().getCenter().distanceToSqr(centre)<=spec.radius()*spec.radius()));
+            var list=new ArrayList<>(world.getEntitiesOfClass(LivingEntity.class,new AABB(centre,centre).inflate(radius(p,spec)),v->target(p,v,reach+radius(p,spec))
+                    &&v.getBoundingBox().getCenter().distanceToSqr(centre)<=radius(p,spec)*radius(p,spec)));
             list.sort(Comparator.comparingDouble(v->v.getBoundingBox().getCenter().distanceToSqr(centre)));
             return List.copyOf(list.subList(0,Math.min(spec.targets(),list.size())));
         }
         final Vec3 finish=end;double length=eye.distanceTo(end);
-        var list=new ArrayList<>(world.getEntitiesOfClass(LivingEntity.class,new AABB(eye,end).inflate(spec.radius()),t->{
+        var list=new ArrayList<>(world.getEntitiesOfClass(LivingEntity.class,new AABB(eye,end).inflate(radius(p,spec)),t->{
             if(!target(p,t,reach))return false;Vec3 delta=t.getBoundingBox().getCenter().subtract(eye);double along=delta.dot(axis);
             if(along<=0||along>length)return false;
-            return spec.shape()==CanonOffenseSkills.Shape.LINE?t.getBoundingBox().inflate(spec.radius()).clip(eye,finish).isPresent()
+            return spec.shape()==CanonOffenseSkills.Shape.LINE?t.getBoundingBox().inflate(radius(p,spec)).clip(eye,finish).isPresent()
                     :delta.lengthSqr()>0&&delta.normalize().dot(axis)>=.82;
         }));
         list.sort(Comparator.comparingDouble(p::distanceToSqr));return List.copyOf(list.subList(0,Math.min(spec.targets(),list.size())));
     }
     private static boolean geometry(Cast c,LivingEntity t){
-        if(!valid(c)||!target(c.player,t,c.spec.reach())||!c.targets.contains(t))return false;
-        if(c.spec.body())return c.body.getBoundingBox().getCenter().distanceToSqr(t.getBoundingBox().getCenter())<=c.spec.radius()*c.spec.radius()
+        if(!valid(c)||!target(c.player,t,c.spec.reach()+(c.spec.shape()==CanonOffenseSkills.Shape.AREA?radius(c.player,c.spec):0))||!c.targets.contains(t))return false;
+        if(c.spec.body())return c.body.getBoundingBox().getCenter().distanceToSqr(t.getBoundingBox().getCenter())<=radius(c.player,c.spec)*radius(c.player,c.spec)
                 &&c.world.clip(new ClipContext(c.body.getBoundingBox().getCenter(),t.getBoundingBox().getCenter(),ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,c.body)).getType()==HitResult.Type.MISS;
-        if(c.spec.shape()==CanonOffenseSkills.Shape.AREA)return t.getBoundingBox().getCenter().distanceToSqr(c.areaCentre)<=c.spec.radius()*c.spec.radius();
+        if(c.spec.shape()==CanonOffenseSkills.Shape.AREA)return t.getBoundingBox().getCenter().distanceToSqr(c.areaCentre)<=radius(c.player,c.spec)*radius(c.player,c.spec);
         if(c.spec.shape()==CanonOffenseSkills.Shape.POINT||c.spec.shape()==CanonOffenseSkills.Shape.AIR_POINT){
             if(c.spec.shape()==CanonOffenseSkills.Shape.AIR_POINT&&!airborne(t))return false;
             var hit=ClassicRaytrace.perform(c.player,c.origin(),t.getBoundingBox().getCenter(),ClipContext.Fluid.NONE,e->true);
@@ -172,18 +174,18 @@ public final class CanonOffense {
             if(emission==null){end(c);continue;}
             if(c.sheets>0){if(!valid(c)){end(c);continue;}c.paper.shrink(c.sheets);c.player.getInventory().setChanged();}
             c.committed=true;
-            boolean any=false;double dealt=0;int hits=0;
-            for(var t:victims){
+            final double[] dealt={0};final int[] hits={0};
+            emission.forEach(t->{
                 var before=cn.academy.port.highpower.CityNpcPower.health(t);
-                if(!emission.attack(t))continue;any=true;hits++;
-                dealt+=before.subtract(cn.academy.port.highpower.CityNpcPower.health(t)).max(java.math.BigDecimal.ZERO).doubleValue();
+                if(!emission.attack(t))return;hits[0]++;
+                dealt[0]+=before.subtract(cn.academy.port.highpower.CityNpcPower.health(t)).max(java.math.BigDecimal.ZERO).doubleValue();
                 affect(c,t);
-                CanonVfx.emit(c.player,c.spec.id(),origin,hits==1&&area(c.spec)>0?c.areaCentre:visualPoint(c,t),CanonVfx.Phase.HIT,24,
-                        hits==1?area(c.spec):0);
-            }
-            if(any){c.state.addExperience(c.spec.id(),.01);AbilityStorage.save(c.player);}
-            else CanonVfx.emit(c.player,c.spec.id(),origin,c.centre(),CanonVfx.Phase.END,6);
-            observer.accept(new Receipt(c.player.getUUID(),c.spec.id(),"RESOLVE",c.world.getGameTime(),hits,cp,dealt,cpBefore,cpAfter));
+                CanonVfx.emit(c.player,c.spec.id(),origin,hits[0]==1&&area(c.player,c.spec)>0?c.areaCentre:visualPoint(c,t),CanonVfx.Phase.HIT,24,hits[0]==1?area(c.player,c.spec):0);
+            },()->{
+                if(hits[0]>0&&valid(c)){c.state.addExperience(c.spec.id(),.01);AbilityStorage.save(c.player);}
+                else CanonVfx.emit(c.player,c.spec.id(),origin,c.centre(),CanonVfx.Phase.END,6);
+                observer.accept(new Receipt(c.player.getUUID(),c.spec.id(),"RESOLVE",c.world.getGameTime(),hits[0],cp,dealt[0],cpBefore,cpAfter));
+            });
         }
     }
     private static void affect(Cast c,LivingEntity t){

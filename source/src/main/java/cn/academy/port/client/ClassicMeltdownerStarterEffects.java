@@ -310,6 +310,7 @@ public final class ClassicMeltdownerStarterEffects {
         ray.wiggle.frame(CLOCK.elapsed() + 1, RANDOM);
         double width = ClassicMeltdownerStarterTimeline.rayWidth(age), length = ray.length * ClassicMeltdownerStarterTimeline.rayLengthScale(age);
         double alpha = ClassicMeltdownerStarterTimeline.rayAlpha(age), glow = ClassicMeltdownerStarterTimeline.rayGlowAlpha(age, ray.wiggle.glow);
+        if(cn.academy.port.client.canon.AgNativeBeams.draw(buffers,matrix,Vec3.ZERO,ray.origin.subtract(camera),ray.origin.add(ray.direction.scale(length)).subtract(camera),.045*width,alpha,new float[]{.32f,1,.23f}))return;
         // No first-person view optimization. Degenerate zero-length boards retain source endpoints.
         Vec3 origin = ray.origin.subtract(camera), up = origin.cross(ray.direction).normalize();
         Vec3 end = origin.add(ray.direction.scale(length)), mid1 = origin.add(ray.direction.scale(.3)), mid2 = end.subtract(ray.direction.scale(.3));

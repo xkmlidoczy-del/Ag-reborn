@@ -260,8 +260,13 @@ public final class ElectromasterChargeDecoy {
                 && world.getWorldBorder().isWithinBounds(block) && world.mayInteract(p, block);
     }
     private static boolean loadedArea(ServerLevel world, AABB box) {
+        // The influence volume may cross a build-height boundary. The support
+        // itself is checked separately; querying entities in its loaded chunks
+        // must not reject otherwise valid ground close to the world floor.
         if (!Double.isFinite(box.minX) || !Double.isFinite(box.maxX) || !Double.isFinite(box.minZ) || !Double.isFinite(box.maxZ)
-                || box.getXsize() > 41 || box.getZsize() > 41 || box.minY < world.getMinBuildHeight() || box.maxY >= world.getMaxBuildHeight()) return false;
+                || !Double.isFinite(box.minY) || !Double.isFinite(box.maxY)
+                || box.getXsize() > 41 || box.getZsize() > 41
+                || box.maxY < world.getMinBuildHeight() || box.minY >= world.getMaxBuildHeight()) return false;
         for (int x = ((int) Math.floor(box.minX)) >> 4; x <= ((int) Math.floor(box.maxX)) >> 4; x++)
             for (int z = ((int) Math.floor(box.minZ)) >> 4; z <= ((int) Math.floor(box.maxZ)) >> 4; z++)
                 if (!world.hasChunk(x, z)) return false;

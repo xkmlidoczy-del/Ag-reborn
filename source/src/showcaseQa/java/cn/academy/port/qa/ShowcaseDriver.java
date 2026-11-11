@@ -38,7 +38,8 @@ public final class ShowcaseDriver {
     private static String recName; private static int recFrame;
     private static double[] orbit; private static int orbitTick;
     // Fixed cinematic camera (vcam:x,y,z,focusX,focusY,focusZ | vcam:off) so a third-person cast can be filmed from the side.
-    private static double[] vcam; private static java.lang.reflect.Method cameraSetPosition;
+    private static double[] vcam;
+    private static net.minecraft.world.entity.decoration.ArmorStand filmingCamera;
     private static net.minecraft.world.item.ItemStack blockedDeveloperStack;
     private static java.util.UUID blockedDeveloperOwner;
     private static String blockedDeveloperSkill;
@@ -51,20 +52,25 @@ public final class ShowcaseDriver {
 
     private ShowcaseDriver() {}
 
-    @SubscribeEvent
-    public static void camera(net.neoforged.neoforge.client.event.ViewportEvent.ComputeCameraAngles event) {
-        if (!ENABLED || vcam == null) return;
+    private static void updateFilmingCamera(Minecraft mc) {
+        if (vcam == null) {
+            if (filmingCamera != null && mc.getCameraEntity() == filmingCamera) mc.setCameraEntity(mc.player);
+            filmingCamera = null;
+            return;
+        }
+        if (filmingCamera == null || filmingCamera.level() != mc.level)
+            filmingCamera = new net.minecraft.world.entity.decoration.ArmorStand(mc.level, 0, 0, 0);
         var pos = new net.minecraft.world.phys.Vec3(vcam[0], vcam[1], vcam[2]);
         var d = new net.minecraft.world.phys.Vec3(vcam[3], vcam[4], vcam[5]).subtract(pos);
-        try {
-            if (cameraSetPosition == null) {
-                cameraSetPosition = net.minecraft.client.Camera.class.getDeclaredMethod("setPosition", net.minecraft.world.phys.Vec3.class);
-                cameraSetPosition.setAccessible(true);
-            }
-            cameraSetPosition.invoke(event.getCamera(), pos);
-        } catch (ReflectiveOperationException e) { throw new IllegalStateException(e); }
-        event.setYaw((float) -Math.toDegrees(Math.atan2(d.x, d.z)));
-        event.setPitch((float) -Math.toDegrees(Math.atan2(d.y, Math.hypot(d.x, d.z))));
+        float yaw=(float)-Math.toDegrees(Math.atan2(d.x,d.z));
+        float pitch=(float)-Math.toDegrees(Math.atan2(d.y,Math.hypot(d.x,d.z)));
+        // ComputeCameraAngles runs before Camera.setup overwrites its position in 1.21.1.
+        // A client-only, unspawned camera entity leaves the real caster and server aim untouched.
+        filmingCamera.moveTo(pos.x,pos.y-filmingCamera.getEyeHeight(),pos.z,yaw,pitch);
+        filmingCamera.xo=filmingCamera.getX();filmingCamera.yo=filmingCamera.getY();filmingCamera.zo=filmingCamera.getZ();
+        filmingCamera.yRotO=yaw;filmingCamera.xRotO=pitch;
+        filmingCamera.setYHeadRot(yaw);filmingCamera.yHeadRotO=yaw;
+        mc.setCameraEntity(filmingCamera);
     }
 
     @SubscribeEvent
@@ -72,6 +78,12 @@ public final class ShowcaseDriver {
         if (!ENABLED || finished) return;
         Minecraft mc = Minecraft.getInstance();
         forceWindowActive(mc);
+        updateFilmingCamera(mc);
+        if(filmingCamera!=null&&mc.player!=null&&mc.getConnection()!=null&&mc.getCameraEntity()==filmingCamera){
+            // Preserve the real input-driven player's normal movement stream while filming from an unspawned camera.
+            var p=mc.player;
+            mc.getConnection().send(new net.minecraft.network.protocol.game.ServerboundMovePlayerPacket.PosRot(p.getX(),p.getY(),p.getZ(),p.getYRot(),p.getXRot(),p.onGround()));
+        }
         FxProbeQa.sample(mc);
         if(CanonFormalClientQa.observerTick(mc)) return;
         if(DualPoseQa.observerTick(mc)) return;
@@ -134,11 +146,17 @@ public final class ShowcaseDriver {
             case "fx4qa" -> { if(!Fx4RolloutQa.step(mc,arg))index--; wait=0; }
             case "urbanformal" -> { if(!UrbanStoryFormalQa.step(mc,arg))index--; wait=0; }
             case "canonformal" -> { if(!CanonFormalClientQa.step(mc,arg))index--; wait=0; }
+            case "macroqa" -> {MacroVisualAuditQa.step(mc,arg);wait=1;}
             case "offenseqa" -> { CanonOffenseShowcaseQa.step(mc,arg); wait=6; }
             case "cityqa" -> { if (!StoryCityClientQa.step(mc, arg)) index--; else wait = 30; }
             case "cityshopqa" -> { if (!CityCommerceQa.step(mc, arg)) { index--; wait=0; } else wait=6; }
             case "cityvisual" -> { if (!CityVisualQa.step(mc, arg)) { index--; wait=0; } else wait=6; }
             case "citynpc" -> { if (!CityNpcQa.step(mc, arg)) { index--; wait=0; } else wait=6; }
+            case "interiorqa" -> { if (!CityInteriorQa.step(mc,arg)) {index--;wait=0;} else wait=6; }
+            case "interiordual" -> { if (!CityInteriorMultiplayerQa.step(mc,arg)) {index--;wait=0;} else wait=6; }
+            case "citysaveqa" -> { if (!CityInteriorSaveQa.step(mc,arg)) {index--;wait=0;} else wait=6; }
+            case "interiorperf" -> { if (!CityInteriorPerfQa.step(mc,arg)) {index--;wait=0;} else wait=6; }
+            case "interiorpan" -> {CityInteriorTourQa.pan(mc,arg);wait=1;}
             case "cityesper" -> { if (!CityEsperNumericQa.step(mc, arg)) { index--; wait=0; } else wait=6; }
             case "mousehold" -> {int button=Integer.parseInt(arg);var k=com.mojang.blaze3d.platform.InputConstants.Type.MOUSE.getOrCreate(button);net.minecraft.client.KeyMapping.set(k,true);}
             case "mouserelease" -> {int button=Integer.parseInt(arg);var k=com.mojang.blaze3d.platform.InputConstants.Type.MOUSE.getOrCreate(button);net.minecraft.client.KeyMapping.set(k,false);}
@@ -149,7 +167,7 @@ public final class ShowcaseDriver {
             case "citylife" -> { if(!CityLifeQa.step(mc,arg)){index--;wait=0;}else wait=6; }
             case "wait" -> wait = Integer.parseInt(arg);
             case "lang" -> { mc.options.languageCode=arg; mc.getLanguageManager().setSelected(arg); mc.reloadResourcePacks(); wait=100; }
-            case "cmd" -> { LOG.info("QA_CMD {}", arg); mc.player.connection.sendCommand(arg); wait = 6; }
+            case "cmd" -> { LOG.info("QA_CMD {}", arg); mc.player.connection.sendCommand(arg); wait = Math.max(2,Integer.getInteger("academy.qa.commandWaitTicks",6)); }
             case "clientcmd" -> { LOG.info("QA_CLIENT_CMD {} handled={}", arg, net.neoforged.neoforge.client.ClientCommandHandler.runCommand(arg)); wait = 1; }
             case "shot" -> shot(mc, arg);
             case "rec" -> { recName = arg; recFrame = 0; new java.io.File(mc.gameDirectory, "screenshots/rec/" + arg).mkdirs(); LOG.info("QA_REC_START {}", arg); }

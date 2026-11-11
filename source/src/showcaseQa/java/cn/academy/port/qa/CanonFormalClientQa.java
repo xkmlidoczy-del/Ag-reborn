@@ -199,6 +199,10 @@ public final class CanonFormalClientQa {
             receipt("disconnect-request",null,mc);disconnectPending=true;reconnecting=true;connecting=false;titleTicks=0;
             mc.disconnect(new TitleScreen());return true;
         }
+        if(action.equals("reconnect-city")){
+            if(!Boolean.getBoolean("academy.qa.city.dual")||!ROLE.equals("observer")||mc.player==null||!(mc.player.getVehicle()instanceof cn.academy.port.city.CityElevatorEntity cabin)||cabin.phaseValue()!=cn.academy.port.city.CityElevatorController.Phase.MOVING.ordinal())return false;
+            receipt("disconnect-request",null,mc);disconnectPending=true;reconnecting=true;connecting=false;titleTicks=0;mc.disconnect(new TitleScreen());return true;
+        }
         if(action.equals("wait-clean"))return !disconnectPending&&!dimensionPending&&activeCount()==0;
         if(action.equals("done")){receipt("done",null,mc);return true;}
         throw new IllegalArgumentException("unknown canon QA action "+action);

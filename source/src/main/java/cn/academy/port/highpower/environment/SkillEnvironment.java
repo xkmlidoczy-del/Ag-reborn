@@ -49,6 +49,8 @@ public final class SkillEnvironment {
     private static final int MAX_NEW_WRITES_PER_TICK = 32, MAX_RESTORE_WRITES_PER_TICK = 16;
     private static final int MAX_ENTITY_CANDIDATES = 64, MAX_PUSHES = 16, MAX_PUSHES_PER_TICK = 64;
     private static final Map<MinecraftServer, Budget> BUDGETS = new WeakHashMap<>();
+    private static final Map<MinecraftServer,java.util.ArrayDeque<TerrainJob>> JOBS=new WeakHashMap<>();
+    private record TerrainJob(Cast cast,java.util.Iterator<BlockPos> candidates,boolean drops){}
     // Native events remain the protection path for all other listeners.
     private static final List<String> UNVERIFIED_CLAIMS = List.of(
             "ftbchunks", "openpartiesandclaims", "simpleclaims", "cadmus", "landclaim");
@@ -67,6 +69,8 @@ public final class SkillEnvironment {
     public static void register(IEventBus bus, ModContainer container) {
         TemporaryEnvironmentBlock.register(bus);
         NeoForge.EVENT_BUS.addListener(TemporaryEnvironmentBlock::reapIndex);
+        NeoForge.EVENT_BUS.addListener(SkillEnvironment::tickQueued);
+        NeoForge.EVENT_BUS.addListener((net.neoforged.neoforge.event.server.ServerStoppedEvent e)->{JOBS.remove(e.getServer());BUDGETS.remove(e.getServer());});
         container.registerConfig(ModConfig.Type.SERVER, SPEC, "academy-environment.toml");
     }
 
@@ -110,6 +114,8 @@ public final class SkillEnvironment {
         private final ServerLevel world;
         private final String skill;
         private final int level;
+        private final UUID presentation = UUID.randomUUID();
+        private Vec3 impactCentre;
         private final Set<BlockPos> blocks = new HashSet<>();
         private final Set<UUID> entities = new HashSet<>();
         private int blockWrites, pushes;
@@ -121,7 +127,7 @@ public final class SkillEnvironment {
             this.skill = skill;
             this.level = switch (skill) {
                 case "electromaster.railgun", "aero_hand.aero_ground_blast" -> level == 4 ? level : 0;
-                case "vecmanip.plasma_cannon" -> level == 5 ? level : 0;
+                case "vecmanip.plasma_cannon", "meltdowner.mine_ray_luck" -> level == 5 ? level : 0;
                 default -> 0;
             };
         }
@@ -140,8 +146,8 @@ public final class SkillEnvironment {
         }
 
         public boolean breakBlock(BlockPos candidate, BooleanSupplier drops) {
-            if (insideHook || !allowsBlockChanges() || blocks.size() >= MAX_BLOCK_CANDIDATES
-                    || blockWrites >= (level == 4 ? 12 : 24)) return false;
+            if (insideHook || !allowsBlockChanges() || blocks.size() >= (level==5?32768:MAX_BLOCK_CANDIDATES)
+                    || blockWrites >= (level == 4 ? 12 : cn.academy.port.macro.MacroSkillRules.BLOCKS_PER_CAST)) return false;
             BlockPos pos = candidate.immutable();
             var budget = budget(world.getServer());
             if (!blocks.add(pos) || budget.blockChecks + budget.entityCandidates >= MAX_BLOCK_CHECKS_PER_TICK
@@ -150,7 +156,7 @@ public final class SkillEnvironment {
             var chunk = residentChunk(world, pos);
             if (chunk == null || !canBuild(world, owner, pos)) return false;
             BlockState original = chunk.getBlockState(pos);
-            if (!eligibleOriginal(original) || !eligibleNeighbors(world, pos)) return false;
+            if (!eligibleMaterial(original) || !eligibleNeighbors(world, pos)) return false;
             Mode current = mode(world);
             var cell = new Cell(world.dimension(), pos);
             if (!budget.activeCells.add(cell)) return false;
@@ -166,15 +172,102 @@ public final class SkillEnvironment {
                 if (budget.blockWrites >= MAX_NEW_WRITES_PER_TICK) return false;
                 blockWrites++;
                 budget.blockWrites++;
+                boolean changed;
                 if (current == Mode.RESTORE)
-                    return TemporaryEnvironmentBlock.place(world, owner, pos, original, level == 4 ? 600 : 1200);
-                boolean drop = drops.getAsBoolean();
-                return unchanged(pos, chunk, original, current) && destroy(world, owner, pos, original, drop);
+                    changed = TemporaryEnvironmentBlock.place(world, owner, pos, original, level == 4 ? 600 : 1200);
+                else {
+                    boolean drop = drops.getAsBoolean();
+                    changed = unchanged(pos, chunk, original, current) && destroy(world, owner, pos, original, drop);
+                }
+                if (changed) cn.academy.port.macro.BeamImpactVfx.changed(owner, skill, presentation, impactCentre, pos, original);
+                return changed;
             } finally {
                 insideHook = false;
                 budget.activeCells.remove(cell);
             }
         }
+
+        /** Queue a full roster, rather than silently losing candidates when this tick's budget is exhausted. */
+        public void enqueue(java.util.Collection<BlockPos> candidates,boolean drops){
+            if(level!=5||!world.getServer().isSameThread()||!allowsBlockChanges())return;
+            var chunks=new java.util.TreeMap<Long,java.util.ArrayDeque<BlockPos>>();
+            for(var pos:candidates)chunks.computeIfAbsent(net.minecraft.world.level.ChunkPos.asLong(pos.getX()>>4,pos.getZ()>>4),k->new java.util.ArrayDeque<>()).add(pos.immutable());
+            var ordered=new java.util.ArrayList<BlockPos>(candidates.size());
+            boolean more;do{more=false;for(var group:chunks.values())if(!group.isEmpty()){ordered.add(group.removeFirst());more=true;}}while(more);
+            JOBS.computeIfAbsent(world.getServer(),s->new java.util.ArrayDeque<>()).addLast(new TerrainJob(this,ordered.iterator(),drops));
+        }
+
+        /** Compact bowl and connected fissures. Height queries run inside the bounded queue, never in this planner. */
+        public void blast(Vec3 centre,double radius,java.util.Collection<BlockPos> core){
+            if(level!=5||!allowsBlockChanges()||!Double.isFinite(radius)||radius<0||radius>64)return;
+            impactCentre=centre;
+            record Column(int x,int z,int depth){}
+            var base=BlockPos.containing(centre);var columns=new java.util.LinkedHashSet<Column>();
+            double phase=Math.floorMod(presentation.getLeastSignificantBits(),997)/997d*Math.PI*2;
+            for(int x=-5;x<=5;x++)for(int z=-5;z<=5;z++){
+                double d=Math.hypot(x,z),rim=4.2+.45*Math.sin(Math.atan2(z,x)*5+phase);if(d>Math.min(rim,radius))continue;
+                int depth=d<1.6?3:d<3?2:1;
+                for(int y=0;y<depth;y++)columns.add(new Column(base.getX()+x,base.getZ()+z,y));
+            }
+            // Four long pressure cracks and two shorter branches. Curved paths are rasterized
+            // with face-connected steps, rather than drawing a regular cross or a lattice.
+            int r=(int)Math.floor(radius);
+            for(int side=0;side<6;side++){
+                int x=0,z=0,extent=side<4?r:(int)(r*.38);double angle=side<4?side*Math.PI/2+.24+.13*Math.sin(phase):side==4?1.12:4.06;
+                for(int i=1;i<=extent;i++){
+                    double bend=Math.sin(i*.16+phase+side)*1.25*i/Math.max(1,extent);
+                    int toX=(int)Math.round(Math.cos(angle)*i-Math.sin(angle)*bend),toZ=(int)Math.round(Math.sin(angle)*i+Math.cos(angle)*bend);
+                    while(x!=toX||z!=toZ){
+                        if(Math.abs(toX-x)>=Math.abs(toZ-z))x+=Integer.signum(toX-x);else z+=Integer.signum(toZ-z);
+                        if(x*x+z*z<=radius*radius)columns.add(new Column(base.getX()+x,base.getZ()+z,0));
+                    }
+                }
+            }
+            var ordered=new java.util.ArrayList<>(columns);
+            ordered.sort(java.util.Comparator.comparingDouble(c->(double)(c.x-base.getX())*(c.x-base.getX())+(double)(c.z-base.getZ())*(c.z-base.getZ())+c.depth*.1));
+            var surface=ordered.iterator();var nativeCells=core.stream().sorted(java.util.Comparator.comparingDouble(p->p.distToCenterSqr(centre))).iterator();
+            var heights=new java.util.HashMap<Long,Integer>();var floors=new java.util.HashMap<Long,Integer>();var probes=new java.util.HashMap<Long,Integer>();
+            var candidates=new java.util.Iterator<BlockPos>(){
+                private Column pending;
+                public boolean hasNext(){return pending!=null||surface.hasNext()||nativeCells.hasNext();}
+                public BlockPos next(){
+                    if(pending==null&&!surface.hasNext())return nativeCells.next().immutable();
+                    if(pending==null)pending=surface.next();var c=pending;var horizontal=new BlockPos(c.x,base.getY(),c.z);var chunk=residentChunk(world,horizontal);
+                    if(chunk==null){pending=null;return horizontal;}
+                    long key=net.minecraft.world.level.ChunkPos.asLong(c.x,c.z);
+                    int height=heights.computeIfAbsent(key,k->Math.min(base.getY(),chunk.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,c.x&15,c.z&15)));
+                    int scan=probes.getOrDefault(key,0),floor=floors.getOrDefault(key,height-scan);var top=new BlockPos(c.x,floor,c.z);
+                    // One bounded probe per queue visit. A roof above the impact is not the ground;
+                    // air underneath it is searched over subsequent visits, never in an unbounded loop.
+                    budget(world.getServer()).blockChecks++;var state=chunk.getBlockState(top);
+                    if(!floors.containsKey(key)&&(state.isAir()||isVacancy(state))){
+                        if(scan<8){probes.put(key,scan+1);return top;}
+                        pending=null;return new BlockPos(c.x,world.getMinBuildHeight()-1,c.z);
+                    }
+                    floors.putIfAbsent(key,floor);pending=null;
+                    // Refusal at the surface must not cause a deeper excavation underneath it.
+                    if(c.depth>0&&!state.isAir()&&!isVacancy(state))return new BlockPos(c.x,world.getMinBuildHeight()-1,c.z);
+                    var at=new BlockPos(c.x,floor-c.depth,c.z);
+                    return at.distToCenterSqr(centre)<=radius*radius?at:new BlockPos(c.x,world.getMinBuildHeight()-1,c.z);
+                }
+            };
+            JOBS.computeIfAbsent(world.getServer(),s->new java.util.ArrayDeque<>()).addLast(new TerrainJob(this,candidates,true));
+        }
+
+        private boolean eligibleMaterial(BlockState state) {
+            // The plasma's native explosion already breaks soil. Keep that material in the
+            // managed crater, without widening the railgun or harvesting allow-list.
+            return eligibleOriginal(state) || skill.equals("vecmanip.plasma_cannon") && naturalGround(state);
+        }
+
+        /** A classic harvesting path keeps its native loot/event semantics while sharing the global write budget. */
+        public boolean reserveClassicBreak(BlockPos pos){
+            if(!world.getServer().isSameThread()||!liveOwner()||blockWrites>=512||residentChunk(world,pos)==null
+                    ||world.getBlockEntity(pos)!=null||!canBuild(world,owner,pos))return false;
+            var b=budget(world.getServer());if(b.blockWrites>=MAX_NEW_WRITES_PER_TICK||b.blockChecks+b.entityCandidates>=MAX_BLOCK_CHECKS_PER_TICK)return false;
+            b.blockChecks++;b.blockWrites++;blockWrites++;return true;
+        }
+        public int changedBlocks(){return blockWrites;}
 
         /** Adds one optional impulse after the caller excludes entities already moved by core combat. */
         public boolean push(LivingEntity target, Vec3 direction, double strength) {
@@ -273,6 +366,12 @@ public final class SkillEnvironment {
                 && state.getValue(BlockStateProperties.PERSISTENT);
     }
 
+    static boolean naturalGround(BlockState state) {
+        return !state.hasBlockEntity() && state.getFluidState().isEmpty()
+                && (state.is(BlockTags.DIRT) || state.is(BlockTags.SAND) || state.is(Blocks.GRAVEL)
+                || state.is(Blocks.CLAY) || state.is(Blocks.SNOW_BLOCK));
+    }
+
     static boolean eligibleNeighbors(ServerLevel level, BlockPos center) {
         for (Direction direction : Direction.values()) {
             BlockPos pos = center.relative(direction);
@@ -281,7 +380,7 @@ public final class SkillEnvironment {
             BlockState state = chunk.getBlockState(pos);
             if (!state.isAir() && !isVacancy(state) && !state.is(Blocks.STONE) && !state.is(Blocks.COBBLESTONE)
                     && !state.is(Blocks.DIRT) && !state.is(Blocks.GRASS_BLOCK)
-                    && !(eligibleOriginal(state) && !state.is(Blocks.SHORT_GRASS))) return false;
+                    && !naturalGround(state) && !(eligibleOriginal(state) && !state.is(Blocks.SHORT_GRASS))) return false;
         }
         return true;
     }
@@ -302,6 +401,16 @@ public final class SkillEnvironment {
             value.activeCells.clear();
         }
         return value;
+    }
+
+    private static void tickQueued(net.neoforged.neoforge.event.tick.ServerTickEvent.Post e){
+        var jobs=JOBS.get(e.getServer());if(jobs==null)return;var b=budget(e.getServer());int examined=0;
+        while(!jobs.isEmpty()&&examined<MAX_BLOCK_CHECKS_PER_TICK&&b.blockChecks+b.entityCandidates<MAX_BLOCK_CHECKS_PER_TICK-1&&b.blockWrites<MAX_NEW_WRITES_PER_TICK){
+            var job=jobs.removeFirst();var cast=job.cast();
+            if(!cast.allowsBlockChanges()||cast.blockWrites>=512||!job.candidates().hasNext())continue;
+            var pos=job.candidates().next();examined++;cast.breakBlock(pos,job.drops());
+            if(job.candidates().hasNext()&&cast.blockWrites<512)jobs.addLast(job);
+        }
     }
 
     private record Cell(ResourceKey<Level> dimension, BlockPos pos) {}

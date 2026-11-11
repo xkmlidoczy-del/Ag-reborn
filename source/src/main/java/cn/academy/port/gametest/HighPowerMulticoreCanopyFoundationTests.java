@@ -88,10 +88,10 @@ public final class HighPowerMulticoreCanopyFoundationTests {
         h.runAtTickTime(6,()->{h.assertTrue(MulticoreCanopy.start(f.p,f.wire(2)),"empty preparation processed");var receipt=MulticoreCanopy.receipt(f.p);h.assertTrue(receipt!=null&&!receipt.paid()&&receipt.frozenTargets()==0,"empty plan never paid");near(h,f.debit(cp),.01,"placement remains paid");near(h,f.xp(),xp,"no idleXP");h.succeed();});
     }
     @GameTest(template=TEMPLATE,batch=BATCH+"_flood",timeoutTicks=10)
-    public static void multicore_raw_sixty_five_item_roster_overflow_refuses_before_filtering(GameTestHelper h){
+    public static void multicore_filters_all_sixty_five_nonhostile_items_without_buying_a_fire(GameTestHelper h){
         Fixture f=new Fixture(h);f.armOne();
         for(int i=0;i<65;i++){var item=new net.minecraft.world.entity.item.ItemEntity(h.getLevel(),f.eye.x+5,f.eye.y,f.eye.z+5,new ItemStack(Items.COBBLESTONE));item.setNoGravity(true);item.setDeltaMovement(Vec3.ZERO);h.getLevel().addFreshEntity(item);f.entities.add(item);}
-        h.runAtTickTime(6,()->{double cp=f.cp();h.assertFalse(MulticoreCanopy.start(f.p,f.wire(2)),"65 raw nonhostile candidates fail closed");near(h,f.cp(),cp,"overflow buys no fire");h.assertFalse(MulticoreCanopy.active(f.p),"refused bounded work retires plan");h.succeed();});
+        h.runAtTickTime(6,()->{double cp=f.cp();h.assertTrue(MulticoreCanopy.start(f.p,f.wire(2)),"full nonhostile roster is filtered as a real empty command");near(h,f.cp(),cp,"empty command buys no fire");h.assertFalse(MulticoreCanopy.active(f.p),"completed empty plan retires");h.succeed();});
     }
     @GameTest(template=TEMPLATE,batch=BATCH+"_retire",timeoutTicks=10)
     public static void multicore_owner_eight_meter_limit_retires_original_identity(GameTestHelper h){
@@ -118,7 +118,7 @@ public final class HighPowerMulticoreCanopyFoundationTests {
     public static void multicore_native_trace_bounds_irrelevant_bodies_before_filter(GameTestHelper h){
         Fixture f=new Fixture(h);Vec3 origin=f.eye.add(0,0,5);
         for(int i=0;i<65;i++){var item=new net.minecraft.world.entity.item.ItemEntity(h.getLevel(),origin.x,origin.y,origin.z,new ItemStack(Items.COBBLESTONE));item.setNoGravity(true);h.getLevel().addFreshEntity(item);f.entities.add(item);}
-        NativeTrace hit=trace(f.p,origin,origin.add(0,0,1),true,.035);h.assertFalse(hit.permitted,"raw spatial overflow refuses before projectile eligibility");h.succeed();
+        NativeTrace hit=trace(f.p,origin,origin.add(0,0,1),true,.035);h.assertTrue(hit.permitted&&!hit.contact,"all65 ignored item bodies are filtered without fabricating a collision");h.succeed();
     }
     @GameTest(template=TEMPLATE,batch=BATCH+"_hidden",timeoutTicks=35)
     public static void multicore_hidden_target_retains_last_visible_point_then_retires(GameTestHelper h){

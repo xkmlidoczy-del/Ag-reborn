@@ -196,6 +196,30 @@ public final class CanonFloatRuntimeTests {
         } catch(Throwable failure) {if(a!=null)a.discard();if(b!=null)b.discard();if(foreign!=null)foreign.discard();f.close();other.close();throw failure;}
     }
 
+    @GameTest(template="empty", batch="canon_float", timeoutTicks=30)
+    public static void releasing_pending_buoyancy_field_cancels_queue_without_requiring_an_installed_item(GameTestHelper h) {
+        var f=new Fixture(h);ItemEntity item=null;
+        try {
+            f.loadChunks();var state=AbilityStorage.get(f.player);
+            state.learn("float_item_lift");state.learn("float_item_field");state.learn("float_release_field");
+            f.select("float_item_field");item=f.player.drop(new ItemStack(Items.STONE,3),false);
+            h.assertTrue(item!=null&&MagneticItemProvenance.ownedBy(item,f.player.getUUID()),"real native owned drop");
+            item.setPos(f.player.getEyePosition().add(0,-.3,2));item.setDeltaMovement(Vec3.ZERO);
+            // Simulate other LV5 work exhausting this server tick's actual shared queue budget.
+            for(int i=0;i<64&&cn.academy.port.macro.MacroSettlement.reserve(f.player.server);i++){}
+            h.assertFalse(cn.academy.port.macro.MacroSettlement.reserve(f.player.server),"shared target budget exhausted before field submission");
+            h.assertTrue(CanonSkillsCombatB.cast(f.player,"float_item_field"),"real field submits pending settlement");
+            f.select("float_release_field");
+            h.assertTrue(CanonSkillsCombatB.cast(f.player,"float_release_field"),"release accepts pending field before any item lease is installed");
+            ItemEntity released=item;
+            h.runAtTickTime(3,()->{
+                h.assertTrue(released.getDeltaMovement().y<.01,"canceled settlement never installs buoyancy later");
+                h.assertTrue(released.getItem().getCount()==3,"release neither consumes nor duplicates the real stack");
+                released.discard();f.close();h.succeed();
+            });
+        }catch(Throwable error){if(item!=null)item.discard();f.close();throw error;}
+    }
+
     private static final class Fixture {
         final GameTestHelper helper; final ServerPlayer player; final EmbeddedChannel channel; boolean closed;
         Fixture(GameTestHelper helper) {

@@ -42,7 +42,7 @@ import net.neoforged.neoforge.gametest.GameTestHooks;
 public final class VanillaCombatContract {
     public static final String ID = "academy:vanilla_protection_cooldown_v2";
     private static final Map<String, String> MODS = Map.of("minecraft", "1.21.1", "neoforge", "21.1.252",
-            "academy", "0.1.0-m41-highpower.0.81.5-city-a3.61");
+            "academy", "0.1.0-m41-highpower.0.81.5-city-a3.63");
     private static final Set<String> PACKS = Set.of("vanilla", "mod_data", "mod/neoforge", "mod/academy", "bundle", "trade_rebalance");
     private static final Map<EntityType<?>, Class<?>> CLASSES = Map.ofEntries(
             Map.entry(EntityType.VILLAGER, Villager.class), Map.entry(EntityType.PIG, Pig.class),

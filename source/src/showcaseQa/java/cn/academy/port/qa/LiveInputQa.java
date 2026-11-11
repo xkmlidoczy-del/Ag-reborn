@@ -150,6 +150,9 @@ final class LiveInputQa {
             server.execute(() -> {
                 try {
                     var p = server.getPlayerList().getPlayer(id);
+                    // Each owned recording fixture starts independently of a previous toggle defense.
+                    cn.academy.port.skill.VecDeviation.remove(p);cn.academy.port.skill.VecReflection.remove(p);
+                    cn.academy.port.skill.LightShield.remove(p);cn.academy.port.skill.StormWing.remove(p);
                     if (target != null) { target.discard(); target = null; }
                     p.setGameMode(GameType.SURVIVAL);
                     setupPosition = p.position();

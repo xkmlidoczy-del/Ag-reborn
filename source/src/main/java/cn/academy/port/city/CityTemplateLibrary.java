@@ -29,8 +29,11 @@ final class CityTemplateLibrary {
         return at(x, z, CityTemplateSites.at(seed, x, z));
     }
     static Column at(int x, int z, CityTemplateSites.Site site) {
+        return at(x,z,site,false);
+    }
+    static Column at(int x,int z,CityTemplateSites.Site site,boolean interiors) {
         if (site == null) return null;
-        Template template = CACHE.computeIfAbsent(site.id(), CityTemplateLibrary::load);
+        Template template = CACHE.computeIfAbsent((interiors ? "v1/" : "")+site.id(), CityTemplateLibrary::load);
         int insetX = (site.reservedWidth() - template.width) / 2;
         int insetZ = (site.reservedDepth() - template.depth) / 2;
         return new Column(template, x - site.originX() - insetX, z - site.originZ() - insetZ);
@@ -56,7 +59,8 @@ final class CityTemplateLibrary {
     }
 
     private static Template load(String id) {
-        String path = "data/academy/structure/city/" + (id.equals("grand_complex") ? "" : "library/") + id + ".nbt";
+        boolean revised=id.startsWith("v1/");if(revised)id=id.substring(3);
+        String path = "data/academy/structure/city/" + (revised ? "interior_v1/" : id.equals("grand_complex") ? "" : "library/") + id + ".nbt";
         try (var stream = CityTemplateLibrary.class.getClassLoader().getResourceAsStream(path)) {
             if (stream == null) throw new IllegalStateException("Missing city structure " + path);
             CompoundTag nbt = NbtIo.readCompressed(stream, NbtAccounter.unlimitedHeap());

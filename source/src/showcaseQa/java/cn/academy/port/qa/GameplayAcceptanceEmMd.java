@@ -49,13 +49,16 @@ public final class GameplayAcceptanceEmMd {
             Map.entry("disintegration_sweep",new Spec(3,true,false,0)),
             Map.entry("multicore_canopy",new Spec(1,false,false,0)));
     private static final class Fixture {
-        final UUID owner; final String skill; final Spec spec; final List<Husk> targets=new ArrayList<>();
+        final UUID owner; final String skill; final Spec spec; final List<net.minecraft.world.entity.LivingEntity> targets=new ArrayList<>();
         final Map<UUID,BigDecimal> initial=new LinkedHashMap<>();
+        final Map<UUID,BigDecimal> initialHp=new LinkedHashMap<>(),initialShield=new LinkedHashMap<>();
         final java.util.Set<UUID> attributedHits=new java.util.HashSet<>();
         double nativeBefore, nativeMinimum, budgetBefore, budgetMinimum; int materialBefore,mechanismPeak; long clockBefore,baselineTick; boolean baseline,passed,sweepGeometryTraced;
         Fixture(UUID owner,String skill,Spec spec){this.owner=owner;this.skill=skill;this.spec=spec;}
     }
     private static Fixture fixture;
+    private record Layers(String skill,String hp,String shield,String hpLoss,String shieldLoss,double radius,boolean passed) {}
+    private static volatile Layers layers;
     private GameplayAcceptanceEmMd() {}
 
     /** ShowcaseDriver route: case "gameem" -> { GameplayAcceptanceEmMd.run(mc,arg); wait=6; }. */
@@ -79,7 +82,18 @@ public final class GameplayAcceptanceEmMd {
             server.submit(()->{
                 var p=server.getPlayerList().getPlayer(owner);
                 require(fixture!=null&&fixture.owner.equals(owner),"same gameplay fixture owner");
-                if(action.equals("baseline")) baseline(p);
+                if(action.equals("shielded-target")) {
+                    require(!fixture.baseline&&fixture.skill.equals("electron_missile"),"prepare real city esper before missile baseline");
+                    var previous=fixture.targets.getFirst();var target=cn.academy.port.city.CityNpcContent.NPC.get().create(p.serverLevel());
+                    require(target!=null,"real city esper type");var data=new net.minecraft.nbt.CompoundTag();data.putString("Esper","electro");data.putInt("EsperLevel",5);target.readAdditionalSaveData(data);
+                    target.setNoAi(true);target.setNoGravity(true);target.setSilent(true);target.setPos(previous.position());
+                    require(p.serverLevel().addFreshEntity(target),"real city esper added");target.combat();previous.discard();fixture.targets.set(0,target);
+                }
+                else if(action.equals("unshielded")) {
+                    require(!fixture.baseline,"shield preparation must precede baseline and real input");
+                    for(var target:fixture.targets)require(HighPowerCombat.spendShieldFraction(target,BigDecimal.ONE),"finite fixture target shield spent once");
+                }
+                else if(action.equals("baseline")) baseline(p);
                 else if(action.equals("assert")) verify(p);
                 else if(action.equals("verify")) require(fixture.passed,"last real mechanism assertion completed");
                 else throw new IllegalArgumentException(action);
@@ -91,6 +105,7 @@ public final class GameplayAcceptanceEmMd {
         require(p!=null&&HighPowerCombat.enabled(p),"real player enrollment exists");
         if(fixture!=null) for(var target:fixture.targets) target.discard();
         fixture=new Fixture(p.getUUID(),id,COMBAT.get(id));
+        layers=null;
         var world=p.serverLevel();var feet=p.blockPosition();
         // A legal, clear test lane. No world edits occur after baseline.
         for(int z=-1;z<=24;z++) for(int x=-4;x<=4;x++) {
@@ -120,6 +135,8 @@ public final class GameplayAcceptanceEmMd {
             require(target.isAlive(),"durable target alive at baseline");
             if(f.spec.rain()) require(target.isInWaterOrRain(),"actual environmental conductivity, not a forged mark");
             f.initial.put(target.getUUID(),pool(target));
+            f.initialHp.put(target.getUUID(),new BigDecimal(HighPowerCombat.healthText(target)));
+            f.initialShield.put(target.getUUID(),HighPowerCombat.shield(target));
         }
         f.nativeBefore=f.nativeMinimum=AbilityStorage.get(p).cp;
         f.budgetBefore=f.budgetMinimum=HighPowerResources.availableCp(p);
@@ -129,8 +146,15 @@ public final class GameplayAcceptanceEmMd {
     }
     /** Observe real debit even when native CP regenerates before a delayed projectile lands. */
     @SubscribeEvent public static void observe(ServerTickEvent.Post event) {
-        var f=fixture;if(f==null||!f.baseline||f.passed)return;
+        var f=fixture;if(f==null||!f.baseline)return;
         var p=event.getServer().getPlayerList().getPlayer(f.owner);if(p==null)return;
+        if(f.skill.equals("electron_missile")&&!f.targets.isEmpty()){
+            var target=f.targets.getFirst();var hp=new BigDecimal(HighPowerCombat.healthText(target));var shield=HighPowerCombat.shield(target);
+            layers=new Layers(f.skill,hp.toPlainString(),shield.toPlainString(),f.initialHp.get(target.getUUID()).subtract(hp).toPlainString(),
+                    f.initialShield.get(target.getUUID()).subtract(shield).toPlainString(),
+                    cn.academy.port.core.SkillEffectParameters.current(f.skill,"reach",AbilityStorage.get(p).exp(f.skill)),f.passed);
+        }
+        if(f.passed)return;
         f.nativeMinimum=Math.min(f.nativeMinimum,AbilityStorage.get(p).cp);
         f.budgetMinimum=Math.min(f.budgetMinimum,HighPowerResources.availableCp(p));
         int count=switch(f.skill){
@@ -159,6 +183,8 @@ public final class GameplayAcceptanceEmMd {
         var losses=new LinkedHashMap<UUID,BigDecimal>();int damaged=0;
         for(var target:f.targets) {
             BigDecimal loss=f.initial.get(target.getUUID()).subtract(pool(target));losses.put(target.getUUID(),loss);
+            LOG.info("QA_GAMEPLAY_LAYERS skill={} target={} hpBefore={} hpAfter={} shieldBefore={} shieldAfter={} totalLoss={}",f.skill,target.getUUID(),
+                    f.initialHp.get(target.getUUID()),HighPowerCombat.healthText(target),f.initialShield.get(target.getUUID()),HighPowerCombat.shield(target),loss);
             if(!f.skill.equals("scatter_bomb"))require(loss.signum()>0,"actual target pool decreased: "+f.skill+" target="+target.getUUID()+" loss="+loss);
             if(loss.signum()>0){damaged++;require(f.attributedHits.contains(target.getUUID()),"normal damage event attributed to casting player: "+target.getUUID());}
         }
@@ -178,6 +204,17 @@ public final class GameplayAcceptanceEmMd {
         f.passed=true;
         LOG.info("QA_GAMEPLAY_PASS skill={} witness=actual_world_damage targetLosses={} playerAttributedTargets={} nativeMinimum={} nativeBefore={} budgetMinimum={} budgetBefore={} materialSpent={} mechanismPeak={} paymentClockBefore={} paymentClockAfter={} closedFinitePayment={} noRuntimeStartOrAttackCalled=true",
                 f.skill,losses,f.attributedHits.size(),f.nativeMinimum,f.nativeBefore,f.budgetMinimum,f.budgetBefore,f.materialBefore-material(p,f.skill),f.mechanismPeak,f.clockBefore,clockAfter,closedPayment);
+    }
+    /** QA-only visible ledger, so a shield-only hit cannot be mistaken for a harmless beam. */
+    @SubscribeEvent public static void overlay(net.neoforged.neoforge.client.event.RenderGuiEvent.Post event){
+        var v=layers;var mc=Minecraft.getInstance();if(v==null||mc.player==null)return;
+        var g=event.getGuiGraphics();int x=8,y=45;
+        g.fill(x-4,y-4,x+365,y+61,0xc8111824);
+        String name=net.minecraft.network.chat.Component.translatable("ac.ability.meltdowner."+v.skill+".name").getString();
+        g.drawString(mc.font,name+" | "+(v.passed?"已核验真实伤害":"正在记录真实伤害"),x,y,0xffa7ffcf);
+        g.drawString(mc.font,"目标 HP: "+v.hp+"   S: "+v.shield,x,y+14,0xffeef5ff);
+        g.drawString(mc.font,"生命损失: "+v.hpLoss+"   护盾损失: "+v.shieldLoss,x,y+28,0xffffdc90);
+        g.drawString(mc.font,"HP=生命  S=护盾；护盾吸收时生命可保持不变",x,y+42,0xffb3cff0);
     }
     private static void sweepTrace(ServerPlayer p){
         try{
@@ -205,7 +242,7 @@ public final class GameplayAcceptanceEmMd {
     @SubscribeEvent(priority=EventPriority.HIGHEST) public static void beforeRegeneration(net.neoforged.neoforge.event.tick.PlayerTickEvent.Post event){
         var f=fixture;if(f!=null&&f.baseline&&!f.passed&&event.getEntity() instanceof ServerPlayer p&&p.getUUID().equals(f.owner))observePools(p,f);
     }
-    private static BigDecimal pool(Husk target) {return new BigDecimal(HighPowerCombat.healthText(target)).add(HighPowerCombat.shield(target));}
+    private static BigDecimal pool(net.minecraft.world.entity.LivingEntity target) {return new BigDecimal(HighPowerCombat.healthText(target)).add(HighPowerCombat.shield(target));}
     private static int material(ServerPlayer p,String id) {
         if(id.equals("railgun"))return p.getMainHandItem().getCount();
         if(id.equals("iron_sand_lance"))return p.getOffhandItem().is(IronSandMedium.ITEM.get())?p.getOffhandItem().getCount():0;

@@ -21,7 +21,7 @@ public final class ElectromasterFinalSkillsRegressionTest {
             float exp = e / 10000F;
             same(ThunderClapSession.overload(exp), lerpf(390, 252, exp), "ThunderClap overload float fidelity");
             same(ThunderClapSession.consumption(exp), lerpf(18, 25, exp), "ThunderClap CP float fidelity");
-            same(ThunderClapSession.range(exp), lerpf(15, 30, exp), "ThunderClap range float fidelity");
+            same(ThunderClapSession.range(exp), lerpf(32, 64, exp), "LV5 ThunderClap expanded range float fidelity");
             same(BodyIntensifySession.overload(exp), lerpf(200, 120, exp), "BodyIntensify overload float fidelity");
             same(BodyIntensifySession.consumption(exp), lerpf(20, 15, exp), "BodyIntensify CP float fidelity");
             check(BodyIntensifySession.cooldown(exp) == (int) lerpf(900, 600, exp), "BodyIntensify cooldown float truncation");

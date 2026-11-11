@@ -145,7 +145,7 @@ final class TemporaryEnvironmentBlock extends BaseEntityBlock {
             String name = tag.getString("ownerName");
             if (name.isBlank() || name.length() > 16) return;
             BlockState original = NbtUtils.readBlockState(registries.lookupOrThrow(Registries.BLOCK), tag.getCompound("original"));
-            if (SkillEnvironment.eligibleOriginal(original)) {
+            if (SkillEnvironment.eligibleOriginal(original) || SkillEnvironment.naturalGround(original)) {
                 record = new Record(tag.getUUID("transaction"), new GameProfile(tag.getUUID("owner"), name),
                         original, tag.getLong("expires"));
             }

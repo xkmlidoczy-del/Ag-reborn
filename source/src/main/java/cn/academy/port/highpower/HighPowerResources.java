@@ -321,6 +321,7 @@ public final class HighPowerResources {
         data.putLong(clock, now + cooldownTicks);
         player.getPersistentData().put(DATA_KEY, data);
         ability.setCooldown(skill, cooldownTicks);
+        cn.academy.port.macro.MacroVfx.paid(player,skill);
         return true;
     }
     /**

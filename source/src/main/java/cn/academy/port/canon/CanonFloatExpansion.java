@@ -81,7 +81,8 @@ public final class CanonFloatExpansion {
             var pos=p.position();var eye=p.getEyePosition();var look=ClassicRaytrace.direction(p);var velocity=p.getDeltaMovement();
             if(!finite(pos)||!finite(eye)||!finite(look)||!finite(velocity))return false;
             if(id.startsWith("float_item_"))return itemCast(p,id,state,world,preset,revision,pos,eye,look,velocity);
-            List<LivingEntity> targets=select(p,id); if(targets.isEmpty()||ACTIVE.size()+targets.size()>64)return false;
+            double shownRadius=id.equals("float_hover_field")||id.equals("float_rescue_field")?livingReach(p,id):0;
+            List<LivingEntity> targets=select(p,id); if(targets.isEmpty()||ACTIVE.size()+targets.size()>64&&!cn.academy.port.macro.MacroSkillRules.ultimate(id))return false;
             for(var t:targets)if(occupied(t))return false;
             int ticks=integer(id, "duration_ticks");
             long now=world.getGameTime();if(now<0||now>Long.MAX_VALUE-ticks)return false;
@@ -90,11 +91,14 @@ public final class CanonFloatExpansion {
             if(AbilityStorage.get(p)!=state||p.serverLevel()!=world||world.getGameTime()!=now||!readyAfter(p,id)
                     ||state.presets.current()!=preset||state.presets.revision()!=revision||!p.position().equals(pos)
                     ||!p.getEyePosition().equals(eye)||!ClassicRaytrace.direction(p).equals(look)||!p.getDeltaMovement().equals(velocity)
-                    ||ACTIVE.size()+targets.size()>64||!select(p,id).equals(targets))return false;
+                    ||ACTIVE.size()+targets.size()>64&&!cn.academy.port.macro.MacroSkillRules.ultimate(id)||!select(p,id).equals(targets))return false;
             for(var t:targets)if(occupied(t))return false;
-            Mode mode=mode(id); for(var t:targets) ACTIVE.put(t.getUUID(),new Lease(p,world,t,id,mode,hostile(id)&&mode==Mode.HOVER?t.getY()+number(id, "rise_limit"):t.getY(),now+ticks,preset,revision));
+            Mode mode=mode(id);
+            java.util.function.Consumer<LivingEntity> install=t->{if(eligible(p,t,id,true)&&!occupied(t))ACTIVE.put(t.getUUID(),new Lease(p,world,t,id,mode,hostile(id)&&mode==Mode.HOVER?t.getY()+number(id,"rise_limit"):t.getY(),now+ticks,preset,revision));};
+            if(cn.academy.port.macro.MacroSkillRules.ultimate(id))cn.academy.port.macro.MacroSettlement.submit(world,targets,()->readyAfter(p,id)&&p.serverLevel()==world&&AbilityStorage.get(p)==state&&state.presets.current()==preset&&state.presets.revision()==revision,install,()->{});
+            else targets.forEach(install);
             state.addExperience(id,.01);AbilityStorage.save(p);
-            CanonVfx.emit(p,id,p.position(),targets.getFirst().position(),CanonVfx.Phase.START,15,id.equals("float_hover_field")||id.equals("float_rescue_field")?number(id, "radius"):0);return true;
+            CanonVfx.emit(p,id,p.position(),targets.getFirst().position(),CanonVfx.Phase.START,15,shownRadius);return true;
         } finally {BUSY.remove(p);}
     }
     private static boolean ready(ServerPlayer p,String id){return !AbilityConsumption.busy(p)&&HighPowerResources.ready(p)&&readyAfter(p,id)&&AbilityStorage.get(p).canUse(id);}
@@ -115,7 +119,7 @@ public final class CanonFloatExpansion {
     private static boolean itemCast(ServerPlayer p,String id,cn.academy.port.core.AbilityProgress state,ServerLevel world,
                                     int preset,long revision,Vec3 pos,Vec3 eye,Vec3 look,Vec3 velocity){
         if(MagneticItemPull.itemsActive(p))return false;
-        var items=itemTargets(p,id);if(items.isEmpty()||ITEMS.size()+items.size()>64)return false;
+        var items=itemTargets(p,id);if(items.isEmpty()||ITEMS.size()+items.size()>64&&!cn.academy.port.macro.MacroSkillRules.ultimate(id))return false;
         var snapshots=items.stream().map(e->e.getItem().copy()).toList();
         var positions=items.stream().map(Entity::position).toList();var speeds=items.stream().map(Entity::getDeltaMovement).toList();
         int ticks=integer(id, "duration_ticks");
@@ -125,23 +129,27 @@ public final class CanonFloatExpansion {
         if(AbilityStorage.get(p)!=state||p.serverLevel()!=world||world.getGameTime()!=now||!readyAfter(p,id)
                 ||state.presets.current()!=preset||state.presets.revision()!=revision||!p.position().equals(pos)
                 ||!p.getEyePosition().equals(eye)||!ClassicRaytrace.direction(p).equals(look)||!p.getDeltaMovement().equals(velocity)
-                ||MagneticItemPull.itemsActive(p)||ITEMS.size()+items.size()>64||!itemTargets(p,id).equals(items))return false;
+                ||MagneticItemPull.itemsActive(p)||ITEMS.size()+items.size()>64&&!cn.academy.port.macro.MacroSkillRules.ultimate(id)||!itemTargets(p,id).equals(items))return false;
         for(int i=0;i<items.size();i++)if(!items.get(i).position().equals(positions.get(i))
                 ||!items.get(i).getDeltaMovement().equals(speeds.get(i))||!ItemStack.matches(items.get(i).getItem(),snapshots.get(i)))return false;
-        for(int i=0;i<items.size();i++)ITEMS.put(items.get(i).getUUID(),new ItemLease(p,world,items.get(i),snapshots.get(i),id,positions.get(i),now+ticks,preset,revision));
-        state.addExperience(id,.01);AbilityStorage.save(p);CanonVfx.emit(p,id,pos,positions.getFirst(),CanonVfx.Phase.START,15,id.equals("float_item_shelf_field")?number(id, "radius"):0);return true;
+        if(cn.academy.port.macro.MacroSkillRules.ultimate(id)){
+            var indices=java.util.stream.IntStream.range(0,items.size()).boxed().toList();
+            cn.academy.port.macro.MacroSettlement.submit(world,indices,()->readyAfter(p,id)&&p.serverLevel()==world&&AbilityStorage.get(p)==state&&state.presets.current()==preset&&state.presets.revision()==revision,
+                i->{var item=items.get(i);if(itemEligible(p,item,number(id,"radius"))&&!occupied(item)&&ItemStack.matches(item.getItem(),snapshots.get(i)))ITEMS.put(item.getUUID(),new ItemLease(p,world,item,snapshots.get(i),id,positions.get(i),now+ticks,preset,revision));},()->{});
+        }else for(int i=0;i<items.size();i++)ITEMS.put(items.get(i).getUUID(),new ItemLease(p,world,items.get(i),snapshots.get(i),id,positions.get(i),now+ticks,preset,revision));
+        state.addExperience(id,.01);AbilityStorage.save(p);CanonVfx.emit(p,id,pos,positions.getFirst(),CanonVfx.Phase.START,15,id.equals("float_item_shelf_field")?cn.academy.port.macro.MacroSkillRules.area(id,AbilityStorage.get(p).exp(id),number(id,"radius")):0);return true;
     }
     private static List<ItemEntity> itemTargets(ServerPlayer p,String id){
         Vec3 eye=p.getEyePosition();var w=p.serverLevel();
         if(id.equals("float_item_shelf_field")){
-            double radius=number(id, "radius");
-            if(!loaded(w,p.position().add(-radius,0,-radius),p.position().add(radius,0,radius)))return List.of();
+            double radius=cn.academy.port.macro.MacroSkillRules.area(id,AbilityStorage.get(p).exp(id),number(id,"radius"));
+
             var found=w.getEntitiesOfClass(ItemEntity.class,p.getBoundingBox().inflate(radius),e->itemEligible(p,e,radius)&&!occupied(e));
-            if(found.size()>64)return List.of();found.sort(Comparator.comparing(Entity::getUUID));return List.copyOf(found.subList(0,Math.min(integer(id, "target_cap"),found.size())));
+            if(found.size()>64&&!cn.academy.port.macro.MacroSkillRules.ultimate(id))return List.of();found.sort(Comparator.comparing(Entity::getUUID));return List.copyOf(found.subList(0,Math.min(integer(id, "target_cap"),found.size())));
         }
         double reach=number(id, "reach");
         Vec3 end=eye.add(ClassicRaytrace.direction(p).scale(reach));if(!loaded(w,eye,end))return List.of();
-        var found=w.getEntitiesOfClass(ItemEntity.class,new AABB(eye,end).inflate(.5),e->itemEligible(p,e,reach)&&!occupied(e));if(found.size()>64)return List.of();
+        var found=w.getEntitiesOfClass(ItemEntity.class,new AABB(eye,end).inflate(.5),e->itemEligible(p,e,reach)&&!occupied(e));if(found.size()>64&&!cn.academy.port.macro.MacroSkillRules.ultimate(id))return List.of();
         var block=w.clip(new ClipContext(eye,end,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,p));
         double best=block.getType()==HitResult.Type.MISS?eye.distanceToSqr(end):eye.distanceToSqr(block.getLocation());ItemEntity chosen=null;
         for(var item:found){var hit=item.getBoundingBox().inflate(.25).clip(eye,end);if(hit.isEmpty())continue;double d=eye.distanceToSqr(hit.get());
@@ -166,10 +174,10 @@ public final class CanonFloatExpansion {
         if(id.equals("float_hover")||id.equals("float_ascent")||id.equals("float_descent")||id.equals("float_air_brake"))
             return eligible(p,p,id,true)?List.of(p):List.of();
         if(id.equals("float_hover_field")||id.equals("float_rescue_field")){
-            double radius=number(id, "radius");
-            if(!loaded(p.serverLevel(),p.position().add(-radius,0,-radius),p.position().add(radius,0,radius)))return List.of();
+            double radius=cn.academy.port.macro.MacroSkillRules.area(id,AbilityStorage.get(p).exp(id),number(id,"radius"));
+
             var found=p.serverLevel().getEntitiesOfClass(LivingEntity.class,p.getBoundingBox().inflate(radius),e->eligible(p,e,id,true)&&p.distanceToSqr(e)<=radius*radius);
-            if(found.size()>64)return List.of();found.sort(Comparator.comparing(Entity::getUUID));
+            if(found.size()>64&&!cn.academy.port.macro.MacroSkillRules.ultimate(id))return List.of();found.sort(Comparator.comparing(Entity::getUUID));
             return List.copyOf(found.subList(0,Math.min(found.size(),integer(id, "target_cap"))));
         }
         double reach=number(id, "reach");
@@ -177,14 +185,14 @@ public final class CanonFloatExpansion {
         var hit=ClassicRaytrace.living(p,reach,ClipContext.Fluid.NONE);
         return hit instanceof EntityHitResult e&&e.getEntity() instanceof LivingEntity living&&eligible(p,living,id,true)?List.of(living):List.of();
     }
-    private static double livingReach(String skill) {
+    private static double livingReach(ServerPlayer p,String skill) {
         return skill.equals("float_hover_field")||skill.equals("float_rescue_field")
-                ? cn.academy.port.core.RangedSkillRanges.CANON_TARGET : number(skill, "reach");
+                ? cn.academy.port.macro.MacroSkillRules.area(skill,AbilityStorage.get(p).exp(skill),number(skill,"radius")) : number(skill, "reach");
     }
     private static boolean eligible(ServerPlayer p,LivingEntity e,String id,boolean starting){
         var w=p.serverLevel();if(e.level()!=w||e.isRemoved()||!e.isAlive()||e.isPassenger()||e.isVehicle()||e.isNoGravity()
                 ||e.hasEffect(MobEffects.LEVITATION)||e.hasEffect(MobEffects.SLOW_FALLING)||!finite(e.position())
-                ||!finite(e.getDeltaMovement())||e!=p&&p.distanceToSqr(e)>Math.pow(livingReach(id),2)||!w.hasChunkAt(e.blockPosition())
+                ||!finite(e.getDeltaMovement())||e!=p&&p.distanceToSqr(e)>Math.pow(livingReach(p,id),2)||!w.hasChunkAt(e.blockPosition())
                 ||!w.mayInteract(p,e.blockPosition())||!w.getWorldBorder().isWithinBounds(e.getBoundingBox()))return false;
         boolean self=e==p,ally=id.startsWith("float_ally_")||id.equals("float_rescue_field");
         if(e instanceof ServerPlayer other){

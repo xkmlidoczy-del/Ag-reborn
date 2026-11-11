@@ -157,7 +157,7 @@ public final class HighPowerBeamEtchingMiningRuntimeTests {
         for(Block block:List.of(Blocks.STONE,Blocks.SAND,Blocks.GRAVEL,Blocks.CHEST,Blocks.WATER,Blocks.BEDROCK)){
             var target=f.target(block,index++);h.assertFalse(BeamEtchingMining.inspect(f.p,target,cap).eligible(),"unreviewed block refused "+block);
         }
-        var dirt=f.target(Blocks.DIRT,index);for(ItemStack stack:List.of(new ItemStack(Items.STICK),new ItemStack(Items.DIAMOND_SWORD))){f.p.setItemInHand(InteractionHand.MAIN_HAND,stack);h.assertFalse(BeamEtchingMining.inspect(f.p,dirt,cap).eligible(),"unreviewed tool refused");}
+        var dirt=f.target(Blocks.DIRT,index);for(ItemStack stack:List.of(new ItemStack(Items.FISHING_ROD),new ItemStack(Items.DIAMOND_SWORD))){f.p.setItemInHand(InteractionHand.MAIN_HAND,stack);h.assertFalse(BeamEtchingMining.inspect(f.p,dirt,cap).eligible(),"unreviewed tool refused");}
         ItemStack enchanted=new ItemStack(Items.IRON_SHOVEL);enchanted.enchant(h.getLevel().registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.SILK_TOUCH),1);f.p.setItemInHand(InteractionHand.MAIN_HAND,enchanted);
         h.assertFalse(BeamEtchingMining.inspect(f.p,dirt,cap).eligible(),"enchantment cannot change reviewed loot");
         f.p.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY);

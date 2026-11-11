@@ -127,7 +127,7 @@ public final class HighPowerMulticoreCanopyDamageRuntimeTests {
     }
 
     @GameTest(template=TEMPLATE,batch=BATCH+"_03",timeoutTicks=140)
-    public static void held_command_freezes_sixteen_unique_targets_once_and_spaces_native_hits_five_ticks(GameTestHelper h) {
+    public static void held_command_freezes_all_seventeen_unique_targets_once_and_spaces_native_hits_five_ticks(GameTestHelper h) {
         Fixture f = new Fixture(h); ServerPlayer caster = f.caster(16, 4);
         List<Zombie> targets = new ArrayList<>(); List<Observation> hits = new ArrayList<>();
         for (int row = 0; row < 4; row++) for (int column = 0; column < 4; column++) {
@@ -136,30 +136,31 @@ public final class HighPowerMulticoreCanopyDamageRuntimeTests {
         }
         Zombie extra = f.target(caster, 0, 2.9, 22, true, true); targets.add(extra); hits.add(f.observe(extra));
         BigDecimal budget = HighPowerGrowth.values(caster).damage().multiply(n("4")).min(CombatAmounts.CAP);
-        BigDecimal share = budget.divide(n("16"));
+        BigDecimal share = budget.divide(n("17"),CombatAmounts.MAX_ABSOLUTE_SCALE,RoundingMode.DOWN);
+        BigDecimal remainder=budget.subtract(share.multiply(n("16")));
         f.deploy(List.of(caster), 6, () -> {
             List<Vec3> cores = MulticoreCanopy.cores(caster).stream().map(MulticoreCanopy.CoreVisual::center).toList();
             double cp = HighPowerResources.cp(caster); BigDecimal credits = f.credits.get(caster);
-            h.assertTrue(MulticoreCanopy.start(caster, f.input(caster, 0)), "a held second press freezes at most sixteen identities before payment");
-            h.runAfterDelay(91, () -> {
+            h.assertTrue(MulticoreCanopy.start(caster, f.input(caster, 0)), "a held second press freezes all seventeen identities before payment");
+            h.runAfterDelay(97, () -> {
                 BigDecimal spent = BigDecimal.ZERO; List<Long> ticks = new ArrayList<>(); Set<Vec3> used = new HashSet<>(); int damaged = 0;
                 for (int i = 0; i < targets.size(); i++) {
                     BigDecimal loss = cn.academy.port.highpower.core.HighPowerLevel.LV5.maxHealth().subtract(hp(targets.get(i))); spent = spent.add(loss);
                     h.assertTrue(hits.get(i).skills <= 1 && hits.get(i).posts <= 1, "a frozen hostile is attempted once in the whole held command");
-                    if (loss.signum() > 0) { damaged++; eq(h, loss, share, "held count defines the immutable one-sixteenth allocation"); ticks.add(hits.get(i).postTick); used.add(hits.get(i).source.getSourcePosition()); }
+                    if (loss.signum() > 0) { damaged++; h.assertTrue(loss.compareTo(share)==0||loss.compareTo(remainder)==0,"one-seventeenth share or final decimal remainder"); ticks.add(hits.get(i).postTick); used.add(hits.get(i).source.getSourcePosition()); }
                 }
                 Collections.sort(ticks);
-                h.assertTrue(damaged == 16 && ticks.size() == 16, "the seventeenth initial hostile receives no slot");
+                h.assertTrue(damaged == 17 && ticks.size() == 17, "the seventeenth initial hostile retains its own slot");
                 for (int i = 1; i < ticks.size(); i++) h.assertTrue(ticks.get(i) - ticks.get(i - 1) == 5, "held slots execute at physical five-tick spacing without catch-up");
-                eq(h, spent, budget, "sixteen independent native hits close one whole four-D ledger");
+                eq(h, spent, budget, "seventeen independent native hits close one whole four-D ledger");
                 h.assertTrue(used.equals(new HashSet<>(cores)), "held slots use the same six frozen core identities");
                 List<Observation> ordered = hits.stream().filter(hit -> hit.posts == 1).sorted(Comparator.comparingLong(hit -> hit.postTick)).toList();
                 for (int i = 0; i < ordered.size(); i++) h.assertTrue(ordered.get(i).source.getSourcePosition().equals(cores.get(i % 6)),
                         "each held native source follows the frozen core-ID cycle at slot " + i);
                 var receipt = MulticoreCanopy.receipt(caster);
-                h.assertTrue(receipt != null && receipt.held() && receipt.paid() && receipt.slots() == 16 && receipt.emittedSlots() == 16,
-                        "the finite held command has exhausted all sixteen slots");
-                near(h, f.debit(caster, cp, credits), .2, "sixteen native hits have one fire debit"); h.succeed();
+                h.assertTrue(receipt != null && receipt.held() && receipt.paid() && receipt.slots() == 17 && receipt.emittedSlots() == 17,
+                        "the finite held command has exhausted all seventeen slots");
+                near(h, f.debit(caster, cp, credits), .2, "seventeen native hits have one fire debit"); h.succeed();
             });
         });
     }

@@ -441,6 +441,9 @@ public final class TacticalCoordinateFormation {
             if (invitation != null) endInvitation(invitation, result, moved, receiptSource);
             String ownerReason = traveler != caster && moved && result.isEmpty() ? "recipient_moved" : result;
             finish(s, ownerReason, traveler == caster && moved, receiptSource, template);
+            if(paid&&moved&&result.isEmpty()&&live(caster))
+                cn.academy.port.macro.MacroVfx.emit(caster,ID,cn.academy.port.macro.MacroVfx.Phase.HIT,
+                        receiptSource,template.feet(),32,0);
             if (paid && live(caster)) {
                 try { AbilityStorage.save(caster); AcademyNetwork.sync(caster); }
                 catch (RuntimeException failure) { LOG.warn("NEW353 final sync failed; payment remains terminal", failure); }

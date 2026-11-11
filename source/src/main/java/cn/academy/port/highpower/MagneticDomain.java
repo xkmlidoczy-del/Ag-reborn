@@ -257,6 +257,8 @@ public final class MagneticDomain {
     }
     private static void send(Context c, int phase, Vec3 point) {
         ServerPlayer p = c.identity.owner(); if (!finite(point) || !finite(p.getLookAngle())) return;
+        cn.academy.port.macro.MacroVfx.emit(p,ID,phase==ENDED?cn.academy.port.macro.MacroVfx.Phase.END:cn.academy.port.macro.MacroVfx.Phase.ACTIVE,
+                p.position(),p.position(),phase==ENDED?8:24,phase==ENDED?0:RADIUS);
         c.audience.removeIf(v -> v.connection == null || v.hasDisconnected() || v.isRemoved() || v.serverLevel() != c.identity.level() || v.position().distanceToSqr(p.position()) > 64 * 64);
         for (ServerPlayer viewer : c.identity.level().players()) if (viewer.position().distanceToSqr(p.position()) <= 48 * 48) c.audience.add(viewer);
         c.audience.add(p);

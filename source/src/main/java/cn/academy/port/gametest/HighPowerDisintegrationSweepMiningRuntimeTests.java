@@ -314,7 +314,7 @@ public final class HighPowerDisintegrationSweepMiningRuntimeTests {
                     ItemStack named = new ItemStack(Items.DIRT, 63); named.set(DataComponents.CUSTOM_NAME, net.minecraft.network.chat.Component.literal("different components"));
                     f.p.getInventory().setItem(1, named);
                 }
-                case 2 -> f.p.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.STICK));
+                case 2 -> f.p.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.FISHING_ROD));
                 case 3 -> f.p.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_SWORD));
                 case 4 -> {
                     ItemStack enchanted = new ItemStack(Items.IRON_SHOVEL);

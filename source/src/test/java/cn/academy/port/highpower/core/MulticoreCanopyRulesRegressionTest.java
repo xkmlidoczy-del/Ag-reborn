@@ -21,7 +21,13 @@ public final class MulticoreCanopyRulesRegressionTest {
             check(shares.getLast().compareTo(shares.getFirst())>=0,"last deterministic slot owns remainder");
             if(slots>1)check(shares.getFirst().compareTo(total)<0,"lost slot cannot give another full budget");
         }
-        check(shares(d("1"),0).isEmpty(),"empty free opportunity");reject(()->shares(d("1"),17),"slot bound");
+        check(shares(d("1"),0).isEmpty(),"empty free opportunity");
+        for(int count:new int[]{17,65,130,256}){
+            var all=shares(d("1"),count);check(all.size()==count,"all loaded target slots retained");
+            equal(all.stream().reduce(BigDecimal.ZERO,BigDecimal::add),d("1"),"expanded roster preserves one whole-fire budget");
+        }
+        reject(()->shares(d("1"),-1),"negative slot count");
+        check(MAX_CORES==6,"physical core count remains six");
         check(remaining(100,100)==LIFETIME&&remaining(100,99+LIFETIME)==1&&remaining(100,100+LIFETIME)==0,"immutable first-press lifetime");
         check(remaining(100,99)==0&&remaining(Long.MAX_VALUE,Long.MAX_VALUE)==0,"corrupt clocks refuse");
         check(!ready(100,104,5)&&ready(100,105,5)&&!ready(105,105,5),"one held emission every physical5ticks");

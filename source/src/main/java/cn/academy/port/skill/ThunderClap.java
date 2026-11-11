@@ -67,6 +67,7 @@ public final class ThunderClap {
     public static Vec3 aim(Entity player) {
         Vec3 start = player.getEyePosition();
         Vec3 end = start.add(ClassicRaytrace.direction(player).normalize().scale(ThunderClapSession.AIM_DISTANCE));
+        if(player.level() instanceof ServerLevel world)end=cn.academy.port.macro.MacroGeometry.loadedEnd(world,start,end);
         HitResult result = ClassicRaytrace.perform(player, start, end, ClipContext.Fluid.NONE, entity -> false);
         return result.getType() == HitResult.Type.MISS ? end : result.getLocation();
     }
@@ -89,12 +90,16 @@ public final class ThunderClap {
             }
             double range = ThunderClapSession.range(hold.session.mastery());
             float damage = ThunderClapSession.damage(hold.session.mastery(), hold.session.ticks());
-            for (Entity target : targets(player, hold.point, range)) {
-                // Central AbilityDamage preserves original calculation-event-before-canAttack ordering.
-                if (target instanceof ServerPlayer other && !other.canHarmPlayer(player)) continue;
-                float applied = ThunderClapSession.radialDamage(damage, target.position().distanceTo(hold.point), range);
-                AbilityDamage.attack(player, "electromaster.thunder_clap", target, applied);
-            }
+            cn.academy.port.macro.MacroVfx.emit(player,ID,cn.academy.port.macro.MacroVfx.Phase.HIT,hold.point,hold.point,70,range);
+            var state=hold.session.state();
+            cn.academy.port.macro.MacroSettlement.submit(hold.level,targets(player,hold.point,range),
+                    ()->player.isAlive()&&!player.hasDisconnected()&&player.serverLevel()==hold.level&&AbilityStorage.get(player)==state,
+                    target->{
+                        if(target.isRemoved()||target.level()!=hold.level||!hold.level.hasChunkAt(target.blockPosition())||!ThunderClapSession.within(target.position().distanceToSqr(hold.point),range))return;
+                        if(target instanceof ServerPlayer other&&!other.canHarmPlayer(player))return;
+                        float applied=ThunderClapSession.radialDamage(damage,target.position().distanceTo(hold.point),range);
+                        AbilityDamage.attack(player,"electromaster.thunder_clap",target,applied);
+                    },()->{});
             hold.session.complete();
             cn.academy.port.achievements.ClassicAchievements.trigger(player,"electromaster.thunder_clap");
         } finally {

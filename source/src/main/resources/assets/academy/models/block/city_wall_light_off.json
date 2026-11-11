@@ -1,0 +1,82 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "academy:blocks/city/interior_housing",
+    "housing": "academy:blocks/city/interior_housing",
+    "metal": "academy:blocks/city/interior_metal",
+    "oak": "academy:blocks/city/interior_oak",
+    "fabric": "academy:blocks/city/interior_fabric",
+    "screen": "academy:blocks/city/interior_screen",
+    "lens": "academy:blocks/city/interior_lens_off",
+    "notice": "academy:blocks/city/interior_notice",
+    "ceramic": "academy:blocks/city/interior_ceramic",
+    "lens_off": "academy:blocks/city/interior_lens_off"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#housing"
+        },
+        "south": {
+          "texture": "#housing"
+        },
+        "east": {
+          "texture": "#housing"
+        },
+        "west": {
+          "texture": "#housing"
+        },
+        "up": {
+          "texture": "#housing"
+        },
+        "down": {
+          "texture": "#housing"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        3,
+        -0.01
+      ],
+      "to": [
+        13,
+        13,
+        0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#lens"
+        },
+        "south": {
+          "texture": "#lens"
+        },
+        "east": {
+          "texture": "#lens"
+        },
+        "west": {
+          "texture": "#lens"
+        },
+        "up": {
+          "texture": "#lens"
+        },
+        "down": {
+          "texture": "#lens"
+        }
+      }
+    }
+  ],
+  "ambientocclusion": true
+}

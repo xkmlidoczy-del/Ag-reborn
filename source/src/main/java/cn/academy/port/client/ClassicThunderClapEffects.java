@@ -262,11 +262,11 @@ public final class ClassicThunderClapEffects {
             RenderSystem.setShaderColor(1, 1, 1, 1);
             for (Charge charge : CONTEXTS.values()) if (charge.valid(minecraft)) renderSurround(charge, poses, camera, partial);
             for (Charge charge : TAILS) if (charge.valid(minecraft)) renderSurround(charge, poses, camera, partial);
-            buffers.endBatch(RenderTypes.ARC);
+            buffers.endBatch(RenderTypes.arc());
             for (Charge charge : CONTEXTS.values())
                 if (charge.valid(minecraft) && charge.hold.markVisible(charge.local) && finite(charge.mark))
                     renderRipple(charge, poses, camera, partial);
-            buffers.endBatch(RenderTypes.RIPPLE);
+            buffers.endBatch(RenderTypes.ripple());
         } finally {
             // Private buffers only; never flush vanilla or another mod's geometry.
             try { buffers.endBatch(); }
@@ -297,7 +297,7 @@ public final class ClassicThunderClapEffects {
             // Modern caster.position() is explicitly feet-based, replacing 1.7's local posY-1.6 workaround.
             poses.translate(center.x - camera.x, center.y - camera.y, center.z - camera.z);
             Matrix4f matrix = poses.last().pose();
-            VertexConsumer out = buffers.getBuffer(RenderTypes.ARC);
+            VertexConsumer out = buffers.getBuffer(RenderTypes.arc());
             for (SubArc arc : charge.subArcs) {
                 if (arc.dead || !arc.shown) continue;
                 Pattern pattern = BOLD_PATTERNS.get(arc.pattern);
@@ -317,7 +317,7 @@ public final class ClassicThunderClapEffects {
             // Subtract camera in double precision before converting local mesh vertices to floats.
             poses.translate(position.x - camera.x, position.y - camera.y, position.z - camera.z);
             Matrix4f matrix = poses.last().pose();
-            VertexConsumer out = buffers.getBuffer(RenderTypes.RIPPLE);
+            VertexConsumer out = buffers.getBuffer(RenderTypes.ripple());
             for (int layer = 0; layer < ClassicThunderClapTimeline.RIPPLE_LAYERS; layer++) {
                 long phase = ClassicThunderClapTimeline.ripplePhase(elapsed, layer);
                 float half = ClassicThunderClapTimeline.rippleSize(phase) / 2;
@@ -504,6 +504,10 @@ public final class ClassicThunderClapEffects {
         }, () -> { RenderSystem.disableBlend(); RenderSystem.defaultBlendFunc(); });
         static final RenderType ARC = create("academy_thunder_clap_bold", ARC_TEXTURE, ARC_DEPTH);
         static final RenderType RIPPLE = create("academy_thunder_clap_ripple", RIPPLE_TEXTURE, RIPPLE_DEPTH);
+        static final RenderType NEW_ARC=create("academy_thunder_macro_arc",ResourceLocation.fromNamespaceAndPath("academy","textures/canon_fx/macro/thunder_arc.png"),ARC_DEPTH);
+        static final RenderType NEW_RIPPLE=create("academy_thunder_macro_ripple",ResourceLocation.fromNamespaceAndPath("academy","textures/canon_fx/macro/thunder_ripple.png"),RIPPLE_DEPTH);
+        static RenderType arc(){return cn.academy.port.VisualTierConfig.tier()==cn.academy.port.VisualTier.OFF?ARC:NEW_ARC;}
+        static RenderType ripple(){return cn.academy.port.VisualTierConfig.tier()==cn.academy.port.VisualTier.OFF?RIPPLE:NEW_RIPPLE;}
         private static RenderType create(String name, ResourceLocation texture, DepthTestStateShard depth) {
             return RenderType.create(name, DefaultVertexFormat.POSITION_TEX_COLOR, VertexFormat.Mode.QUADS, 4096,
                     false, false, CompositeState.builder()

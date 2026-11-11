@@ -148,7 +148,7 @@ public final class CityResponseUpgradeRuntimeTests {
     }
     @GameTest(template=TEMPLATE,batch="response18",timeoutTicks=100)
     public static void pinned_visual_library_preserves_strict_contract_and_unknown_versions_still_refuse(GameTestHelper h){
-        var base=new HashMap<>(Map.of("minecraft","1.21.1","neoforge","21.1.252","academy","0.1.0-m41-highpower.0.81.5-city-a3.61"));var packs=Set.of("vanilla","mod/neoforge","mod/academy");
+        var base=new HashMap<>(Map.of("minecraft","1.21.1","neoforge","21.1.252","academy","0.1.0-m41-highpower.0.81.5-city-a3.63"));var packs=Set.of("vanilla","mod/neoforge","mod/academy");
         h.assertTrue(VanillaCombatContract.runtimeReason(base,packs).isEmpty()&&VanillaMiningContract.runtimeReason(base,packs).isEmpty(),"original base remains approved");
         base.put("geckolib","4.7");var visual=Set.of("vanilla","mod/neoforge","mod/academy","mod/geckolib");h.assertTrue(VanillaCombatContract.runtimeReason(base,visual).isEmpty()&&VanillaMiningContract.runtimeReason(base,visual).isEmpty(),"bundled exact visual runtime preserves both strict contracts");
         base.put("geckolib","4.8");h.assertTrue(VanillaCombatContract.runtimeReason(base,visual).isPresent()&&VanillaMiningContract.runtimeReason(base,visual).isPresent(),"unreviewed version refused");base.put("geckolib","4.7");base.put("foreign_hook","1");h.assertTrue(VanillaCombatContract.runtimeReason(base,visual).isPresent(),"unknown hooks still refused");h.succeed();

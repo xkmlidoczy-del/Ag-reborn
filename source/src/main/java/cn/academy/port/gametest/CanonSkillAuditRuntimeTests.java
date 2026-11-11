@@ -390,6 +390,11 @@ public final class CanonSkillAuditRuntimeTests {
         });
         h.runAfterDelay(press, () -> {
             if (wet) { player.baseTick(); if (friend != null) friend.baseTick(); }
+            // AIR_POINT attacks require a genuinely unsupported body, not a zombie
+            // standing on the arena floor. Keep ordinary gravity and the full warm-up.
+            if (needs.contains("target_airborne")) for (var m : mobs) {
+                m.setPos(m.position().add(0, 3, 0)); m.setOnGround(false); m.setDeltaMovement(0, .15, 0);
+            }
             // Crosshair on whatever the skill acts on.
             boolean aims = needs.stream().anyMatch(n -> n.startsWith("aim_") || n.equals("not_on_you") || n.equals("second_hostile") || n.equals("two_pursuing"));
             if (friend != null) aimAt(player, friend.getBoundingBox().getCenter());

@@ -10,7 +10,7 @@ import java.util.List;
 /** NEW251: one immutable deployment, one exact decimal whole-fire budget, no replacement slots. */
 public final class MulticoreCanopyRules {
     public static final int LIFETIME = SkillTuning.integer("multicore_canopy", "duration_ticks"),DEPLOY_INTERVAL=5,WARNING_TICKS=12,SHOT_INTERVAL=5,FIRE_INTERVAL=20,
-            PREVIEW_INTERVAL=5,LOS_TIMEOUT=10,MAX_CORES = SkillTuning.integer("multicore_canopy", "max_cores"),MAX_TARGETS=16,SCAN_LIMIT=64;
+            PREVIEW_INTERVAL=5,LOS_TIMEOUT=10,MAX_CORES = SkillTuning.integer("multicore_canopy", "max_cores"),MAX_TARGETS=Integer.MAX_VALUE,SCAN_LIMIT=Integer.MAX_VALUE;
     public static final int MAX_PREFIXES=131072,MAX_ENTITY_VISITS=262144,MAX_SHAPES=262144,MAX_PERMISSION_CELLS=524288;
     public static final double RANGE = SkillTuning.number("multicore_canopy", "reach"),CORE_RADIUS=.18,BEAM_RADIUS=.035,MAX_CORE_DISTANCE=8,CONE_DEGREES=10;
     private static final ContinuousHighPowerGrowth.Curve DEPLOY=ContinuousHighPowerGrowth.curve("4","2","1",".2",".01");

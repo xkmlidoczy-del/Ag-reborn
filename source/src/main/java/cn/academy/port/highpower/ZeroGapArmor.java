@@ -498,6 +498,8 @@ public final class ZeroGapArmor {
             packet = new Visual(last.entity, last.owner, last.input, last.token, last.epoch, ++c.sequence, ENDED,
                     last.feet, last.yaw, last.phaseTick, last.selectedMask, 0, last.breakTicks, -1, last.feet);
         }
+        if(c.lastVisual==null||c.lastVisual.phase()!=phase||phase==HIT||p.serverLevel().getGameTime()%10==0)
+            cn.academy.port.macro.MacroVfx.emit(p,HighPowerSkills.ZERO_GAP_ARMOR,phase==ENDED?cn.academy.port.macro.MacroVfx.Phase.END:phase==STARTUP?cn.academy.port.macro.MacroVfx.Phase.CHARGE:phase==HIT?cn.academy.port.macro.MacroVfx.Phase.HIT:cn.academy.port.macro.MacroVfx.Phase.ACTIVE,p.position(),point,32,0);
         c.lastVisual = packet;
         c.audience.removeIf(v -> v.connection == null || v.hasDisconnected() || v.isRemoved() || v.serverLevel() != c.identity.level()
                 || phase != ENDED && v.position().distanceToSqr(p.position()) > 64 * 64);

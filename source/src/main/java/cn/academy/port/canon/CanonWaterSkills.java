@@ -96,7 +96,7 @@ public final class CanonWaterSkills {
         }
         else if (id.equals("hydro_domain")) {
             FLOWS.put(p.getUUID(), new Flow(p, world, source, targets.stream().map(Entity::getUUID).toList(), horizontal.normalize(), now + ticks));
-            CanonVfx.emit(p,id,source.getCenter(),targets.getFirst().position(),CanonVfx.Phase.START,ticks,id.equals("hydro_domain")?DOMAIN_RANGE:0);
+            CanonVfx.emit(p,id,source.getCenter(),targets.getFirst().position(),CanonVfx.Phase.START,ticks,id.equals("hydro_domain")?domainRadius(p):0);
         } else {
             LivingEntity target = targets.getFirst();
             Vec3 push = target.position().subtract(p.position()); push = new Vec3(push.x, 0, push.z);
@@ -191,16 +191,17 @@ public final class CanonWaterSkills {
         return List.of(target);
     }
 
+    private static double domainRadius(ServerPlayer p){return cn.academy.port.macro.MacroSkillRules.area("hydro_domain",AbilityStorage.get(p).exp("hydro_domain"),DOMAIN_RANGE);}
     private static List<LivingEntity> domainTargets(ServerPlayer p) {
         var world = p.serverLevel(); var at = p.position();
-        if (!chunksLoaded(world, at.add(-DOMAIN_RANGE, 0, -DOMAIN_RANGE), at.add(DOMAIN_RANGE, 0, DOMAIN_RANGE))) return List.of();
-        var candidates = world.getEntitiesOfClass(Mob.class, p.getBoundingBox().inflate(DOMAIN_RANGE),
+
+        var candidates = world.getEntitiesOfClass(Mob.class, p.getBoundingBox().inflate(domainRadius(p)),
                 mob -> eligible(p, mob) && mob.isInWaterOrBubble());
-        if (candidates.size() > MAX_CANDIDATES) return List.of();
+
         candidates.sort(Comparator.comparing(Mob::getUUID)); var result = new ArrayList<LivingEntity>();
         for (Mob mob : candidates) {
             if (result.size() == MAX_TARGETS) break;
-            if (mob.distanceToSqr(p) <= DOMAIN_RANGE * DOMAIN_RANGE && p.hasLineOfSight(mob)) result.add(mob);
+            if (mob.distanceToSqr(p) <= domainRadius(p) * domainRadius(p) && p.hasLineOfSight(mob)) result.add(mob);
         }
         return List.copyOf(result);
     }
@@ -239,7 +240,7 @@ public final class CanonWaterSkills {
             for (UUID id : flow.targets) {
                 Entity entity = flow.world.getEntity(id);
                 if (!(entity instanceof LivingEntity target) || !eligible(flow.owner, target)
-                        || !target.isInWaterOrBubble() || target.distanceToSqr(flow.owner) > DOMAIN_RANGE * DOMAIN_RANGE
+                        || !target.isInWaterOrBubble() || target.distanceToSqr(flow.owner) > domainRadius(flow.owner) * domainRadius(flow.owner)
                         || !flow.owner.hasLineOfSight(target)) continue;
                 Vec3 previous = target.getDeltaMovement();
                 double speed = number("hydro_domain", "horizontal_speed");

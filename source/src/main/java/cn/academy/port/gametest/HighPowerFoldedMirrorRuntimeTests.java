@@ -141,6 +141,9 @@ public final class HighPowerFoldedMirrorRuntimeTests {
     public static void folded_mirror_editing_never_refreshes_first_placement_deadline(GameTestHelper h){
         Fixture f=new Fixture(h);Zombie target=f.target(6,8);f.place(target,1);long first=FoldedMirrorArray.placedAt(f.p);f.pump();
         h.runAtTickTime(20,()->{
+            // Move inside the selection radius before editing; native crouch eye-height changes
+            // otherwise place the original exact-range slab just beyond the later eye sample.
+            f.p.setPos(f.p.position().add(0,0,.25));f.p.connection.resetPosition();
             f.face(FoldedMirrorArray.plates(f.p).getFirst().center());f.p.setShiftKeyDown(true);h.assertTrue(FoldedMirrorArray.start(f.p,f.wire(2)),"select original mirror for paid orientation edit");
             f.face(target.getBoundingBox().getCenter());h.assertTrue(FoldedMirrorArray.release(f.p,f.wire(2)),"edited plane commits once");h.assertTrue(FoldedMirrorArray.placedAt(f.p)==first,"paid edit preserves original deadline");
         });
