@@ -1,0 +1,113 @@
+{
+  "atlas": {
+    "bones": 52,
+    "cuboids": 446,
+    "emissive_cuboids": 33,
+    "halo_sources": 9,
+    "box_uv_resolution": [
+      512,
+      512
+    ],
+    "texture_pixels": [
+      1024,
+      1024
+    ],
+    "face_materials": {
+      "bellows": 132,
+      "chassis": 114,
+      "armor_panel": 330,
+      "armor_base": 120,
+      "bearing": 281,
+      "ram": 372,
+      "plate_edge": 504,
+      "vent": 96,
+      "energy": 162,
+      "titanium_dark": 330,
+      "rotor": 1,
+      "titanium": 60,
+      "energy_core": 12,
+      "glass": 6,
+      "hazard": 24,
+      "bolt": 108,
+      "energy_amber": 24
+    },
+    "blockbench_sha256": "f91bd782ea8320ee6515c2e3dd8f0f3176ed465b746594c1f2f6634f28275a49",
+    "reference_glb": "atlas-09.glb",
+    "reference_glb_sha256": "e9e5ec9ffe17fa447992ce0a50f87a5023e6bb8e12bff554c23c130149cedb47",
+    "imagegen_sha256": "baf237556a5c0c16eb708c469c87728d6dbce952a0818d4ab2a2ef8844ec8876",
+    "atlas_sha256": "a9066fc5e5d3c11a9588b833b0e2e2ca0254333240c2b2e91bb3a869c80b62ce",
+    "imagegen_finish_sha256": "f0b01fbb1622f86e5f59cca1afcb3615e4a7d9ca0afc72aa0f6f8b5b417cda58"
+  },
+  "aether": {
+    "bones": 52,
+    "cuboids": 409,
+    "emissive_cuboids": 28,
+    "halo_sources": 8,
+    "box_uv_resolution": [
+      512,
+      256
+    ],
+    "texture_pixels": [
+      1024,
+      512
+    ],
+    "face_materials": {
+      "bellows": 132,
+      "chassis": 126,
+      "armor_panel": 324,
+      "armor_base": 96,
+      "bearing": 252,
+      "ram": 366,
+      "plate_edge": 456,
+      "vent": 96,
+      "energy": 162,
+      "titanium_dark": 306,
+      "glass": 6,
+      "titanium": 18,
+      "bolt": 108,
+      "energy_core": 6
+    },
+    "blockbench_sha256": "f592dca719e005774ea72bbb3a2e85f9b68998f900c66f3e3a1d24e7382e8dd0",
+    "reference_glb": "aether-02.glb",
+    "reference_glb_sha256": "ed91ecddff69d3de088e475dcf529a5ab410d04b5c61ddb394ed29f482e8ce41",
+    "imagegen_sha256": "8cbd475117002d9d77711f13de038fcb4beecf476af01f296e7d8c1e943d1080",
+    "atlas_sha256": "f671c0b2884ca17082ce5ea0f2773cc729275e6691a2d6752ed9bbf5d26eb336",
+    "imagegen_finish_sha256": "f0b01fbb1622f86e5f59cca1afcb3615e4a7d9ca0afc72aa0f6f8b5b417cda58"
+  },
+  "seraph": {
+    "bones": 78,
+    "cuboids": 587,
+    "emissive_cuboids": 54,
+    "halo_sources": 20,
+    "box_uv_resolution": [
+      512,
+      512
+    ],
+    "texture_pixels": [
+      1024,
+      1024
+    ],
+    "face_materials": {
+      "bellows": 150,
+      "chassis": 210,
+      "armor_panel": 486,
+      "armor_base": 96,
+      "bearing": 420,
+      "ram": 468,
+      "plate_edge": 654,
+      "vent": 102,
+      "energy": 312,
+      "titanium_dark": 444,
+      "glass": 6,
+      "titanium": 18,
+      "bolt": 144,
+      "energy_core": 12
+    },
+    "blockbench_sha256": "f814faa0ff710b6cda6bdce7135a0435a2acc36a9aecbf5a8b047a6e6f87ffa7",
+    "reference_glb": "seraph-03.glb",
+    "reference_glb_sha256": "68b88df32fd5948816ac689c925c1473fcd6f82c602158b8cadfb19c011831fe",
+    "imagegen_sha256": "316098d146b65ecc0caf74c9b6245744c1a002e7fdc001b082ddfb075f5bf373",
+    "atlas_sha256": "fb2bb4eb2a6ebd896ccb97be5c31672f048e9ee8a6d8a3c8d24b39e9fd7d24ff",
+    "imagegen_finish_sha256": "f0b01fbb1622f86e5f59cca1afcb3615e4a7d9ca0afc72aa0f6f8b5b417cda58"
+  }
+}

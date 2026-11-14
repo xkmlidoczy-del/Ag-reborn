@@ -1,0 +1,37 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "academy"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "aether_crate",
+  "pattern": [
+    "MCM",
+    "BFB",
+    " P "
+  ],
+  "key": {
+    "M": {
+      "item": "minecraft:observer"
+    },
+    "C": {
+      "item": "academy:calc_chip"
+    },
+    "B": {
+      "item": "academy:imag_silicon_ingot"
+    },
+    "F": {
+      "item": "acamech:flux_cell"
+    },
+    "P": {
+      "item": "minecraft:piston"
+    }
+  },
+  "result": {
+    "id": "acamech:aether_crate",
+    "count": 1
+  }
+}

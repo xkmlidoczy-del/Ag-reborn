@@ -81,7 +81,7 @@ public final class HighPowerConstructRuntimeTests {
 
     @GameTest(template = TEMPLATE, batch = BATCH, timeoutTicks = 20)
     public static void only_the_exact_reviewed_physics_bundle_extends_the_damage_contract(GameTestHelper h) {
-        Map<String, String> base = Map.of("minecraft", "1.21.1", "neoforge", "21.1.252", "academy", "0.1.0-m41-highpower.0.81.5-city-a3.63");
+        Map<String, String> base = Map.of("minecraft", "1.21.1", "neoforge", "21.1.252", "academy", "0.1.0-m41-highpower.0.81.5-city-a3.63-mech.1");
         Map<String, String> bundle = new HashMap<>(base); bundle.putAll(PhysicsBundle.MODS);
         Set<String> packs = Set.of("vanilla", "mod_data", "mod/neoforge", "mod/academy", "mod/sable");
         h.assertTrue(VanillaCombatContract.runtimeReason(bundle, packs).isEmpty() && VanillaMiningContract.runtimeReason(bundle, packs).isEmpty(), "reviewed bundle admitted");

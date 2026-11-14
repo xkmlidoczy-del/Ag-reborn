@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "atlas_crate",
+  "pattern": [
+    "MIM",
+    "BFB",
+    "PIP"
+  ],
+  "key": {
+    "M": {
+      "item": "minecraft:piston"
+    },
+    "I": {
+      "item": "minecraft:iron_block"
+    },
+    "B": {
+      "item": "minecraft:iron_ingot"
+    },
+    "F": {
+      "item": "acamech:flux_cell"
+    },
+    "P": {
+      "item": "minecraft:piston"
+    }
+  },
+  "result": {
+    "id": "acamech:atlas_crate",
+    "count": 1
+  }
+}

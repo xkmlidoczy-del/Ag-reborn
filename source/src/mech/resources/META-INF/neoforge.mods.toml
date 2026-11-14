@@ -1,0 +1,26 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="MIT; converted assets CC0-1.0 (see bundled notices)"
+[[mods]]
+modId="acamech"
+version="${modVersion}"
+displayName="ACA Mech | 学园机库"
+description='''Pilot three articulated, rechargeable mechs. Works independently and adds survival recipes and charging support when installed with Ag重生.'''
+[[dependencies.acamech]]
+modId="neoforge"
+type="required"
+versionRange="[21.1.252,21.2)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.acamech]]
+modId="minecraft"
+type="required"
+versionRange="[1.21.1,1.21.2)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.acamech]]
+modId="academy"
+type="optional"
+versionRange="[0,)"
+ordering="AFTER"
+side="BOTH"

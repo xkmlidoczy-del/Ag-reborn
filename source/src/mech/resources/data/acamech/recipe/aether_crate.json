@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "aether_crate",
+  "pattern": [
+    "MIM",
+    "BFB",
+    "PIP"
+  ],
+  "key": {
+    "M": {
+      "item": "minecraft:observer"
+    },
+    "I": {
+      "item": "minecraft:copper_block"
+    },
+    "B": {
+      "item": "minecraft:iron_ingot"
+    },
+    "F": {
+      "item": "acamech:flux_cell"
+    },
+    "P": {
+      "item": "minecraft:piston"
+    }
+  },
+  "result": {
+    "id": "acamech:aether_crate",
+    "count": 1
+  }
+}

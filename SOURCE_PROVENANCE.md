@@ -6,4 +6,6 @@ This repository starts with the privacy-reviewed a3.61 export. Its build inputs 
 
 The a3.63 update retains the previously sanitized train model, portable scripts and 76 PNGs. The publishable tree was reviewed for machine paths, personal identifiers and credentials. An isolated JDK 21 build from the staged tree matched the local a3.63 production classes and packaged resources, with non-rendering metadata differences in the 76 PNGs. Their decoded pixels match.
 
+The a3.63-mech.1 update adds ACA Mech 0.4.3 sources, runtime assets, editable Blockbench models, test driver and license notices under `source/src/mech`, `source/src/mechQa` and `source/integration/aca-mech`. It also changes the version and compatibility integration files. Editable model texture paths are relative. The module's source and converted assets retain their MIT and CC0 notices; the original model author is credited in `source/integration/aca-mech/NOTICE.md` and `ASSET-LICENSE.md`.
+
 `LICENSE` and `NOTICE` preserve the original GPLv3 text, additional AcademyCraft notices and third-party attributions. The interaction between the upstream additional terms and GPLv3 is not resolved here.

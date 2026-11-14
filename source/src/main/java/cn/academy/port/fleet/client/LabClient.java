@@ -108,6 +108,11 @@ public final class LabClient {
 
     private static boolean gun(Minecraft mc) {
         if (!playerView(mc) || mc.player.getVehicle() instanceof LabVehicle) return false;
+        // The embedded mech shares G with the fleet guns. A pilot's held gun
+        // must not also fire while the mech is interpreting that key.
+        var vehicle = mc.player.getVehicle();
+        if (vehicle != null && net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE
+                .getKey(vehicle.getType()).getNamespace().equals("acamech")) return false;
         if (!(mc.player.getMainHandItem().getItem() instanceof GunItem g)) return false;
         return g.variant >= 0 && g.variant < InteractionLab.GUN_IDS.length;
     }

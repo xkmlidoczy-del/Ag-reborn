@@ -1,0 +1,13 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="MIT"
+[[mods]]
+modId="acamechqa"
+version="1.0"
+displayName="ACA Mech QA runner"
+[[dependencies.acamechqa]]
+modId="acamech"
+type="required"
+versionRange="[0.1.0,)"
+ordering="AFTER"
+side="BOTH"

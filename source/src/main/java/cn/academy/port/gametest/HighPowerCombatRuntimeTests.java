@@ -443,7 +443,7 @@ public final class HighPowerCombatRuntimeTests {
         h.assertFalse(HighPowerCombat.attack(player, SKILL, target, LOW_HIT), "unapproved legacy ledger refuses high-power attack");
         h.assertTrue(HighPowerCombat.approveVanillaContract(target), "explicit approval accepts a reviewed vanilla environment");
         h.assertTrue(health.equals(HighPowerCombat.healthText(target)) && shield.equals(HighPowerCombat.shieldText(target)), "approval preserves every HP and shield digit");
-        Map<String, String> trusted = Map.of("minecraft", "1.21.1", "neoforge", "21.1.252", "academy", "0.1.0-m41-highpower.0.81.5-city-a3.63");
+        Map<String, String> trusted = Map.of("minecraft", "1.21.1", "neoforge", "21.1.252", "academy", "0.1.0-m41-highpower.0.81.5-city-a3.63-mech.1");
         var previousLandingVisual = new java.util.HashMap<>(trusted); previousLandingVisual.put("academy", "0.1.0-m41-highpower.0.56-prototype");
         h.assertTrue(VanillaCombatContract.runtimeReason(previousLandingVisual, Set.of("vanilla", "mod_data")).isPresent(), "released .56 cannot masquerade as the reviewed .57 artifact");
         var releasedFallback = new java.util.HashMap<>(trusted); releasedFallback.put("academy", "0.1.0-m41-highpower.0.50-prototype");

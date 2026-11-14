@@ -3,11 +3,11 @@ loaderVersion="[4,)"
 license="GPL-3.0; upstream additional restrictions, see NOTICE"
 [[mods]]
 modId="academy"
-version="0.1.0-m41-highpower.0.81.5-city-a3.63"
+version="0.1.0-m41-highpower.0.81.5-city-a3.63-mech.1"
 displayName="Academy generation reborn"
 logoFile="assets/academy/branding/ag-reborn.png"
 authors="Lambda Innovation (original); xkmlidoczy_del and port contributors"
-description='''Academy generation reborn (Ag重生): an unofficial AcademyCraft port and expansion with twelve esper ability trees, a fixed Academy City, survival portals, vehicles, tactical guardians and twelve titans. See the included compatibility and validation notes.'''
+description='''Academy generation reborn (Ag重生): an unofficial AcademyCraft port and expansion with twelve esper ability trees, a fixed Academy City, survival portals, vehicles, tactical guardians, twelve titans and the bundled ACA Mech hangar. See the included compatibility and validation notes.'''
 [[dependencies.academy]]
 modId="neoforge"
 type="required"

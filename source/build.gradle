@@ -6,12 +6,23 @@ plugins {
 // with the default pure/server check outputs without rewriting their classpath.
 if (providers.gradleProperty('qaBuildDirectory').isPresent())
     layout.buildDirectory.set(layout.projectDirectory.dir(providers.gradleProperty('qaBuildDirectory').get()))
-version = '0.1.0-m41-highpower.0.81.5-city-a3.63'
+version = '0.1.0-m41-highpower.0.81.5-city-a3.63-mech.1'
 group = 'cn.academy'
 base { archivesName = 'academy-generation-reborn' }
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+// Keep the independently versioned mech namespace and saved entity IDs. Its
+// sources build a real NeoForge mod which is bundled into the production JAR.
+sourceSets {
+    mech
+    mechQa {
+        compileClasspath += mech.output
+        runtimeClasspath += mech.output
+    }
+}
 neoForge {
     version = '21.1.252'
+    addModdingDependenciesTo sourceSets.mech
+    addModdingDependenciesTo sourceSets.mechQa
     runs {
         client { client(); if(providers.gradleProperty('canonExperimental').getOrElse('false').toBoolean())systemProperty 'academy.canon.experimental','true'; gameDirectory = layout.projectDirectory.dir(providers.gradleProperty('clientDirectory').getOrElse('run-client')); if(providers.gradleProperty('visualQA').getOrElse('false').toBoolean())systemProperty 'academy.visual.qa','true'; if(providers.gradleProperty('wirelessQA').getOrElse('false').toBoolean())systemProperty 'academy.wireless.qa','true' }
         server { server(); gameDirectory = layout.projectDirectory.dir(providers.gradleProperty('serverDirectory').getOrElse('run-server')); if (providers.gradleProperty('urbanWorldgenProbe').isPresent()) systemProperty 'academy.urban.worldgenProbe', providers.gradleProperty('urbanWorldgenProbe').get(); if (providers.gradleProperty('canonExperimental').getOrElse('false').toBoolean()) systemProperty 'academy.canon.experimental','true'; programArgument '--nogui' }
@@ -59,7 +70,28 @@ neoForge {
             programArgument 'academy-restart-world'
         }
     }
-    mods { academy { sourceSet(sourceSets.main) } }
+    mods {
+        academy { sourceSet(sourceSets.main) }
+        acamech { sourceSet(sourceSets.mech) }
+    }
+}
+
+tasks.named('processMechResources') {
+    inputs.property 'mechVersion', '0.4.3'
+    filesMatching('META-INF/neoforge.mods.toml') { expand(modVersion: '0.4.3') }
+}
+def mechJar = tasks.register('mechJar', Jar) {
+    archiveBaseName = 'aca-mech-neoforge-1.21.1'
+    archiveVersion = '0.4.3'
+    archiveClassifier = 'embedded'
+    manifest { attributes('Automatic-Module-Name': 'cn.acamech') }
+    from sourceSets.mech.output
+    into('META-INF') { from('integration/aca-mech/LICENSE', 'integration/aca-mech/NOTICE.md', 'integration/aca-mech/CC0-1.0.txt', 'integration/aca-mech/ASSET-LICENSE.md') }
+}
+tasks.register('mechQaJar', Jar) {
+    archiveBaseName = 'aca-mech-integration-qa'
+    archiveVersion = '0.4.3'
+    from sourceSets.mechQa.output
 }
 
 tasks.register('macroRulesTest', JavaExec) {
@@ -85,6 +117,7 @@ repositories {
     }
 }
 dependencies {
+    jarJar files(mechJar)
     implementation 'software.bernie.geckolib:geckolib-neoforge-1.21.1:4.7'
     jarJar('software.bernie.geckolib:geckolib-neoforge-1.21.1') {
         version { strictly '[4.7,4.8)'; prefer '4.7' }

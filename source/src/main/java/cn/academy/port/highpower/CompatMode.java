@@ -32,7 +32,10 @@ public final class CompatMode {
     /** Mod ids outside the reviewed base set, for the one-time server log and player notice. */
     public static Set<String> foreignMods() {
         Set<String> out = new TreeSet<>();
-        for (var info : ModList.get().getMods()) if (!KNOWN.contains(info.getModId())) out.add(info.getModId());
+        for (var info : ModList.get().getMods()) {
+            if ("acamech".equals(info.getModId()) && "0.4.3".equals(info.getVersion().toString())) continue;
+            if (!KNOWN.contains(info.getModId())) out.add(info.getModId());
+        }
         return out;
     }
 }

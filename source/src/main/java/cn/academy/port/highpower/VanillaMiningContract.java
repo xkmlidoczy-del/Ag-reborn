@@ -25,7 +25,7 @@ import net.neoforged.fml.ModList;
 public final class VanillaMiningContract {
     public static final String ID = "academy:vanilla_beam_etching_harvest_1_21_1_21_1_252_v1";
     private static final Map<String, String> MODS = Map.of("minecraft", "1.21.1", "neoforge", "21.1.252",
-            "academy", "0.1.0-m41-highpower.0.81.5-city-a3.63");
+            "academy", "0.1.0-m41-highpower.0.81.5-city-a3.63-mech.1");
     private static final Set<String> PACKS = Set.of("vanilla", "mod_data", "mod/neoforge", "mod/academy", "bundle", "trade_rebalance");
     private record BlockContract(Class<?> type, Item drop, String sha256) {}
     private static final Map<Block, BlockContract> BLOCKS = Map.of(
@@ -52,9 +52,12 @@ public final class VanillaMiningContract {
         var reviewed = new java.util.HashMap<>(mods);
         boolean visual = "4.7".equals(reviewed.get("geckolib"));
         if (visual) reviewed.remove("geckolib");
+        // The embedded mech data pack contains only its own recipes.
+        boolean mech = "0.4.3".equals(reviewed.get("acamech"));
+        if (mech) reviewed.remove("acamech");
         boolean physics = PhysicsBundle.exact(MODS, reviewed);
         if (!MODS.equals(reviewed) && !physics) return Optional.of("Unreviewed mining mod/version set");
-        if (!packs.contains("vanilla") || !packs.stream().allMatch(pack -> PACKS.contains(pack) || visual && pack.equals("mod/geckolib") || physics && PhysicsBundle.PACKS.contains(pack))) return Optional.of("Unreviewed mining data pack");
+        if (!packs.contains("vanilla") || !packs.stream().allMatch(pack -> PACKS.contains(pack) || visual && pack.equals("mod/geckolib") || mech && pack.equals("mod/acamech") || physics && PhysicsBundle.PACKS.contains(pack))) return Optional.of("Unreviewed mining data pack");
         return Optional.empty();
     }
     public static Optional<String> unsupportedReason(ServerPlayer player) {

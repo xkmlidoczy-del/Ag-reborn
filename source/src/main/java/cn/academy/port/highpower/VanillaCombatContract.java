@@ -42,7 +42,7 @@ import net.neoforged.neoforge.gametest.GameTestHooks;
 public final class VanillaCombatContract {
     public static final String ID = "academy:vanilla_protection_cooldown_v2";
     private static final Map<String, String> MODS = Map.of("minecraft", "1.21.1", "neoforge", "21.1.252",
-            "academy", "0.1.0-m41-highpower.0.81.5-city-a3.63");
+            "academy", "0.1.0-m41-highpower.0.81.5-city-a3.63-mech.1");
     private static final Set<String> PACKS = Set.of("vanilla", "mod_data", "mod/neoforge", "mod/academy", "bundle", "trade_rebalance");
     private static final Map<EntityType<?>, Class<?>> CLASSES = Map.ofEntries(
             Map.entry(EntityType.VILLAGER, Villager.class), Map.entry(EntityType.PIG, Pig.class),
@@ -81,9 +81,13 @@ public final class VanillaCombatContract {
         var reviewed = new java.util.HashMap<>(mods);
         boolean visual = "4.7".equals(reviewed.get("geckolib"));
         if (visual) reviewed.remove("geckolib");
+        // ACA Mech 0.4.3 registers its own entities, packets and recipes; it
+        // has no server-wide damage hooks or vanilla data overrides.
+        boolean mech = "0.4.3".equals(reviewed.get("acamech"));
+        if (mech) reviewed.remove("acamech");
         boolean physics = PhysicsBundle.exact(MODS, reviewed);
         if (!MODS.equals(reviewed) && !physics) return Optional.of("This mod/version set has no approved high-power damage contract");
-        if (!packs.contains("vanilla") || !packs.stream().allMatch(pack -> PACKS.contains(pack) || visual && pack.equals("mod/geckolib") || physics && PhysicsBundle.PACKS.contains(pack))) {
+        if (!packs.contains("vanilla") || !packs.stream().allMatch(pack -> PACKS.contains(pack) || visual && pack.equals("mod/geckolib") || mech && pack.equals("mod/acamech") || physics && PhysicsBundle.PACKS.contains(pack))) {
             return Optional.of("Extra server data packs need an approved high-power damage contract");
         }
         return Optional.empty();
