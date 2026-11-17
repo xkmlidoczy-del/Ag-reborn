@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:two_toed_sloth",
+  "spawners": {
+    "type": "aca_fauna:two_toed_sloth",
+    "weight": 6,
+    "minCount": 1,
+    "maxCount": 1
+  }
+}

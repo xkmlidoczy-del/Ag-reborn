@@ -42,6 +42,8 @@ public interface ConstructLink {
     default List<net.minecraft.world.level.block.state.BlockState> palette(ServerLevel level, UUID body, int max) { return List.of(); }
     /** Destroys the body and the blocks it carries without writing them back to the grid; true when something was destroyed. */
     default boolean shatter(ServerLevel level, UUID body) { return false; }
+    /** Clears transient per-session control/block caches on server stop. */
+    default void clear() {}
 
     static ConstructLink get() { return Holder.INSTANCE; }
 

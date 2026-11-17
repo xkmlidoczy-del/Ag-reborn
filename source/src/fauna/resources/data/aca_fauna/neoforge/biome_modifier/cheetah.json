@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:cheetah",
+  "spawners": {
+    "type": "aca_fauna:cheetah",
+    "weight": 2,
+    "minCount": 2,
+    "maxCount": 3
+  }
+}

@@ -159,13 +159,6 @@ final class CanonSignatures {
             for(int i=0;i<5;i++){double y=(i-2)*w*.42;var p=arc(centre.add(x.r().scale(-w)).add(0,y,0),centre.add(x.r().scale(w)).add(0,y,0),.08,8);
                 ribbon(c,"ah_stream",p,.12,AIR,.7*x.e(),-x.t()*.15+i*.2);}
         }, "aero_pressure_wall");
-        reg((c, x) -> {
-            double radius=x.v().radius();if(radius<=0)return;
-            Vec3 centre=CanonBarrierGeometry.centre(x.v()).subtract(0,radius,0);
-            for(int i=0;i<6;i++){Vec3 d=rot(x.f(),x.r(),i*Math.PI/3);Vec3 at=centre.add(d.scale(radius));
-                var p=arc(at.add(0,.1,0),at.add(0,2.3,0).add(rightOf(d).scale(.45)),.2,6);
-                ribbon(c,"ah_stream",p,.34,AIR,.65*x.e(),-x.t()*.14);}
-        }, "aero_air_curtain");
         // ============================================================ Dark Matter: white matter, feathers and crystal shards
         reg((c, x) -> { // Dark Blade: a crystal blade sweeps through the target
             double sw = clamp01(x.t() / 5) * 2 - 1; Vec3 at = x.at(), d = rot(x.f(), x.r(), sw * 1.1);

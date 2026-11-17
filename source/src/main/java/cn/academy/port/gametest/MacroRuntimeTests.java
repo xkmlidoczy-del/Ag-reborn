@@ -74,6 +74,51 @@ public final class MacroRuntimeTests {
     public static void real_half_mastery_area_includes_inside_and_excludes_outside_48_blocks(GameTestHelper h){boundary(h,.5,48,4);}
     @GameTest(template=TEMPLATE,batch="macro_boundary64",timeoutTicks=160)
     public static void real_mastered_area_includes_inside_and_excludes_outside_64_blocks(GameTestHelper h){boundary(h,1,64,6);}
+
+    @GameTest(template=TEMPLATE,batch="macro_vertical_receipts",timeoutTicks=155)
+    public static void real_vertical_boundary_and_hit_receipts_share_the_cast_id(GameTestHelper h){
+        String skill="mental_resonance_cascade";
+        var f=new Fixture(h,"mental_out",skill);
+        AbilityStorage.get(f.p).experience.put(skill,0d);
+        var anchor=f.mob(0,4);
+        // Stay inside the prepared 24-block-high structure while probing a real
+        // vertical cross-section of the 32-block sphere.
+        double horizontal=30;
+        var inside=f.mob(-horizontal,4);
+        var outside=f.mob(horizontal,4);
+        double vertical=Math.sqrt(32*32-horizontal*horizontal);
+        inside.moveTo(inside.position().add(0,vertical-.08,0));
+        outside.moveTo(outside.position().add(0,vertical+.08,0));
+        var beforeInside=hp(inside);var beforeOutside=hp(outside);
+        var centre=anchor.getBoundingBox().getCenter();
+        var phases=new ArrayList<MacroVfx.Event>();
+        var results=new ArrayList<cn.academy.port.macro.BeamImpactVfx.Scene>();
+        var previousVisual=MacroVfx.observer;
+        var previousImpact=cn.academy.port.macro.BeamImpactVfx.observer;
+        MacroVfx.observer=v->{previousVisual.accept(v);if(v.owner().equals(f.p.getUUID()))phases.add(v);};
+        cn.academy.port.macro.BeamImpactVfx.observer=v->{previousImpact.accept(v);if(v.owner().equals(f.p.getUUID()))results.add(v);};
+        h.runAfterDelay(65,()->{f.place();h.assertTrue(CanonOffense.cast(f.p,skill),"real resonant area cast");});
+        h.runAfterDelay(115,()->{try{
+            var charge=phases.stream().filter(v->v.phase()==MacroVfx.Phase.CHARGE).findFirst();
+            var hit=phases.stream().filter(v->v.phase()==MacroVfx.Phase.HIT).findFirst();
+            h.assertTrue(hp(inside).compareTo(beforeInside)<0&&hp(outside).compareTo(beforeOutside)==0,
+                    "vertical sphere applies damage only inside 32 blocks: inside "+beforeInside+" -> "+hp(inside)+", outside "+beforeOutside+" -> "+hp(outside)
+                            +", phase "+hit.map(v->v.to()+"/"+v.actualRadius())+", positions "+inside.position()+" "+outside.position());
+            h.assertTrue(charge.isPresent()&&hit.isPresent()&&charge.get().boundary()==MacroVfx.Boundary.SEARCH
+                    &&hit.get().boundary()==MacroVfx.Boundary.EFFECT&&hit.get().actualRadius()==32
+                    &&hit.get().to().distanceToSqr(centre)<.01
+                    &&charge.get().cast().equals(hit.get().cast()),"real anchor, search and resolved sphere share one cast identifier");
+            int contacted=0;
+            for(var result:results){
+                h.assertTrue(result.cast().equals(hit.orElseThrow().cast()),"confirmed effects use the settled cast identifier");
+                for(var contact:result.contacts())if(contact.outcome()==cn.academy.port.macro.BeamImpactVfx.Outcome.HEALTH){
+                    h.assertTrue(contact.point().distanceToSqr(outside.getBoundingBox().getCenter())>1,"outside target never emits a hit cue");contacted++;
+                }
+            }
+            h.assertTrue(contacted==2,"only the centre and the target just within the vertical edge received health damage");
+            h.succeed();
+        }finally{MacroVfx.observer=previousVisual;cn.academy.port.macro.BeamImpactVfx.observer=previousImpact;f.close();}});
+    }
     private static void boundary(GameTestHelper h,double mastery,double radius,int expected){
         var f=new Fixture(h,"mental_out","mental_resonance_cascade");AbilityStorage.get(f.p).experience.put("mental_resonance_cascade",mastery);
         f.mob(0,4);for(double x:new double[]{31.99,32.01,47.99,48.01,63.99,64.01}){

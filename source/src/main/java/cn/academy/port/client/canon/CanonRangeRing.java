@@ -17,7 +17,8 @@ final class CanonRangeRing {
     private CanonRangeRing() {}
 
     static void draw(Canvas c,View v){
-        if(v.radius()<=0||v.rangeCentre()==null||v.phase()==3||cn.academy.port.canon.CanonExpansionCombatA.physicalBarrier(v.skill()))return;
+        if(v.radius()<=0||v.rangeCentre()==null||v.phase()==3||cn.academy.port.canon.CanonExpansionCombatA.physicalBarrier(v.skill())
+                ||MacroVfxClient.drawsBoundary(v.skill(),v.owner(),v.rangeCentre()))return;
         double e=CanonFxScripts.env(v);if(e<=.01)return;
         // A control packet's radius admits targets at cast time. The actual
         // marks continue with their own lease; the selection boundary does not.
@@ -25,7 +26,14 @@ final class CanonRangeRing {
             e *= 1 - CanonFxScripts.clamp01((v.age() - 6) / 6);
         if (e <= .01) return;
         float[] rgb=COLOURS.getOrDefault(v.category(),new float[]{1,1,1});
-        double grow=Math.min(1,v.age()/4.0),R=v.radius();
+        double grow=AgModernVfx.snapEase(v.age()/3.0),R=v.radius();
+        if(cn.academy.port.VisualTierConfig.tier()!=cn.academy.port.VisualTier.OFF){
+            AgModernVfx.terrainShockCrown(c,v.rangeCentre(),R,rgb,v.age(),e*grow*.88,36,v.phase()==2&&v.tier()>=4);
+            if(v.tier()>=4&&R>=3.0){
+                AgModernVfx.calculationArray(c,v.rangeCentre().add(0,.12,0),new Vec3(0,1,0),R,v.category(),v.age(),e*grow*.58,28);
+            }
+            return;
+        }
         Vec3 at=v.rangeCentre().add(0,.06,0);
         // A dashed range cue has its centreline at the authoritative radius from its first frame.
         // Texture padding and an expanding shockwave are not reliable measurements of reach.

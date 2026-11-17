@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:musk_ox",
+  "spawners": {
+    "type": "aca_fauna:musk_ox",
+    "weight": 6,
+    "minCount": 2,
+    "maxCount": 3
+  }
+}

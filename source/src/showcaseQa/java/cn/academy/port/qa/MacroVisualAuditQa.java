@@ -12,6 +12,8 @@ import net.neoforged.neoforge.common.NeoForge;
 
 /** Passive audit of actual server actions, usable with the a3.61 baseline as well as the upgraded JAR. */
 final class MacroVisualAuditQa {
+    private static final int COVERAGE_FRAME_INTERVAL = Math.max(1, Integer.getInteger("academy.qa.coverageFrameInterval", 12));
+    private static final Set<String> COVERAGE_SHOTS = new HashSet<>(Arrays.asList(System.getProperty("academy.qa.coverageShots", "").split(",")));
     private static final List<String> visuals=Collections.synchronizedList(new ArrayList<>());
     private static final List<String> received=Collections.synchronizedList(new ArrayList<>());
     private static final List<String> impacts=Collections.synchronizedList(new ArrayList<>());
@@ -22,15 +24,28 @@ final class MacroVisualAuditQa {
     private static final List<Double> frameCpu=Collections.synchronizedList(new ArrayList<>()),intervals=Collections.synchronizedList(new ArrayList<>()),ticks=Collections.synchronizedList(new ArrayList<>());
     private static volatile String timing;private static String trial;private static int firstVisual,firstAttack;private static long frameStart,lastFrame,tickStart,startTick;
     private static boolean installed,macroAvailable;private static int sampledFrames;private static Consumer<Object> previous;private static java.lang.reflect.Field field;
+    private static final Set<String> capturedShots = new HashSet<>();
+    private static java.lang.reflect.Field drawStats, volumeStats, beamStats;
     private MacroVisualAuditQa(){}
     public static final class Observer {
         @SubscribeEvent public void attack(SkillAttackEvent e){
             attacks.add(Map.of("skill",e.skill,"tick",e.player.serverLevel().getGameTime(),"target",e.target.getUUID().toString(),"requestedAmount",e.amount));
         }
-        @SubscribeEvent public void frameStart(net.neoforged.neoforge.client.event.RenderFrameEvent.Pre e){if(timing!=null){long now=System.nanoTime();frameStart=now;if(lastFrame!=0)intervals.add((now-lastFrame)/1e6);lastFrame=now;}}
+        @SubscribeEvent public void frameStart(net.neoforged.neoforge.client.event.RenderFrameEvent.Pre e){
+            if (trial != null && drawStats != null) {
+                try {
+                    drawStats.set(null, null);
+                    if (volumeStats != null) volumeStats.set(null, Map.of());
+                    if (beamStats != null) beamStats.set(null, Map.of());
+                } catch (IllegalAccessException failure) {
+                    throw new IllegalStateException("Unable to start a fresh QA drawing sample", failure);
+                }
+            }
+            if(timing!=null){long now=System.nanoTime();frameStart=now;if(lastFrame!=0)intervals.add((now-lastFrame)/1e6);lastFrame=now;}
+        }
         @SubscribeEvent public void frameEnd(net.neoforged.neoforge.client.event.RenderFrameEvent.Post e){
             if(timing!=null&&frameStart!=0)frameCpu.add((System.nanoTime()-frameStart)/1e6);
-            if(Boolean.getBoolean("academy.qa.coverageRenderSamples")&&trial!=null&&++sampledFrames%12==0)step(Minecraft.getInstance(),"peek");
+            if(Boolean.getBoolean("academy.qa.coverageRenderSamples")&&trial!=null&&++sampledFrames%COVERAGE_FRAME_INTERVAL==0)step(Minecraft.getInstance(),"peek");
         }
         @SubscribeEvent(priority=net.neoforged.bus.api.EventPriority.HIGHEST) public void tickStart(net.neoforged.neoforge.event.tick.ServerTickEvent.Pre e){if(timing!=null)tickStart=System.nanoTime();}
         @SubscribeEvent(priority=net.neoforged.bus.api.EventPriority.LOWEST) public void tickEnd(net.neoforged.neoforge.event.tick.ServerTickEvent.Post e){
@@ -48,6 +63,9 @@ final class MacroVisualAuditQa {
     @SuppressWarnings("unchecked") static void step(Minecraft mc,String op){
         if(op.equals("init")){
             if(installed)return;installed=true;NeoForge.EVENT_BUS.register(new Observer());
+            drawStats = optionalStats("CanonFx", "lastStats");
+            volumeStats = optionalStats("AgVolumeRenderer", "diagnostics");
+            beamStats = optionalStats("AgEnergyBeam", "diagnostics");
             try{field=Class.forName("cn.academy.port.macro.MacroVfx").getField("observer");previous=(Consumer<Object>)field.get(null);
                 field.set(null,(Consumer<Object>)v->{previous.accept(v);visuals.add(v.toString());});macroAvailable=true;
                 var receiving=Class.forName("cn.academy.port.macro.MacroVfx").getField("receiver");var previousReceiving=(Consumer<Object>)receiving.get(null);
@@ -64,6 +82,23 @@ final class MacroVisualAuditQa {
                 var volume=Class.forName("cn.academy.port.client.canon.AgVolumeRenderer").getDeclaredField("diagnostics");volume.setAccessible(true);
                 var data=new LinkedHashMap<String,Object>();data.put("operation",op);data.put("trial",trial==null?"":trial);data.put("activeShows",active.stream().map(Object::toString).toList());data.put("volumeDiagnostics",volume.get(null));data.put("clientTick",mc.level==null?-1:mc.level.getGameTime());
                 data.put("player",mc.player==null?"none":mc.player.position().toString());data.put("camera",mc.gameRenderer.getMainCamera().getPosition().toString());
+                data.put("perspective",mc.options.getCameraType().toString());
+                data.put("freshFrameTelemetry",drawStats!=null);
+                var budget=Class.forName("cn.academy.port.client.canon.CanonFx").getDeclaredField("lastStats");budget.setAccessible(true);
+                var frame=budget.get(null);
+                if(frame!=null){
+                    var groups=frame.getClass().getDeclaredMethod("groups");groups.setAccessible(true);
+                    Object rendered = groups.invoke(frame);
+                    data.put("renderedGroups",rendered);
+                    if (trial != null && COVERAGE_SHOTS.contains(trial) && !capturedShots.contains(trial)
+                            && rendered instanceof Map<?, ?> counts && counts.entrySet().stream().anyMatch(entry ->
+                            entry.getKey() instanceof String key && key.startsWith("result:" + trial + ":")
+                                    && entry.getValue() instanceof Number count && count.intValue() > 0)) {
+                        capturedShots.add(trial);
+                        net.minecraft.client.Screenshot.grab(mc.gameDirectory, "draw_" + trial + ".png", mc.getMainRenderTarget(),
+                                message -> LogUtils.getLogger().info("QA_COVERAGE_SHOT {}", message.getString()));
+                    }
+                }
                 try{var beam=Class.forName("cn.academy.port.client.canon.AgEnergyBeam").getDeclaredField("diagnostics");beam.setAccessible(true);data.put("beamDiagnostics",beam.get(null));}catch(ClassNotFoundException oldPreview){}
                 try{var cNative=Class.forName("cn.academy.port.client.canon.AgNativeBeams");var drawn=cNative.getDeclaredField("drawn");var remaining=cNative.getDeclaredField("remaining");drawn.setAccessible(true);remaining.setAccessible(true);data.put("nativeBeamMeshes",Map.of("drawn",drawn.get(null),"remainingQuads",remaining.get(null)));}catch(ClassNotFoundException oldPreview){}
                 presentations.add(data);
@@ -105,5 +140,15 @@ final class MacroVisualAuditQa {
         double[] values; synchronized(data){values=data.stream().mapToDouble(Double::doubleValue).sorted().toArray();}
         if(values.length==0)return Map.of("samples",0);
         return Map.of("samples",values.length,"meanMs",Arrays.stream(values).average().orElse(0),"p50Ms",values[(int)Math.ceil(values.length*.5)-1],"p95Ms",values[(int)Math.ceil(values.length*.95)-1],"maxMs",values[values.length-1]);
+    }
+
+    private static java.lang.reflect.Field optionalStats(String owner, String member) {
+        try {
+            var counter = Class.forName("cn.academy.port.client.canon." + owner).getDeclaredField(member);
+            counter.setAccessible(true);
+            return counter;
+        } catch (ClassNotFoundException | NoSuchFieldException absent) {
+            return null;
+        }
     }
 }

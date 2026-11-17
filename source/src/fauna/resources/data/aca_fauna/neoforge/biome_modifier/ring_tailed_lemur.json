@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:ring_tailed_lemur",
+  "spawners": {
+    "type": "aca_fauna:ring_tailed_lemur",
+    "weight": 6,
+    "minCount": 2,
+    "maxCount": 3
+  }
+}

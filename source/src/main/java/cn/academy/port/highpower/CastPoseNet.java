@@ -71,13 +71,14 @@ public final class CastPoseNet {
             level = skill.level();
         }
         Long last = LAST.get(player.getUUID());
-        if (last != null && gameTime - last < MIN_GAP_TICKS && intent.phase() != END) return null;
+        if (last != null && gameTime >= last && gameTime - last < MIN_GAP_TICKS && intent.phase() != END) return null;
         LAST.put(player.getUUID(), gameTime);
         if (LAST.size() > 512) LAST.keySet().removeIf(id -> !id.equals(player.getUUID()) && LAST.size() > 256);
         return new Cue(player.getId(), intent.archetype(), intent.phase(), state.category, intent.skill(), level);
     }
 
     @SubscribeEvent public static void logout(PlayerEvent.PlayerLoggedOutEvent e) { LAST.remove(e.getEntity().getUUID()); }
+    @SubscribeEvent public static void stopped(net.neoforged.neoforge.event.server.ServerStoppedEvent e) { LAST.clear(); }
 
     @EventBusSubscriber(modid = "academy", bus = EventBusSubscriber.Bus.MOD)
     public static final class Network {

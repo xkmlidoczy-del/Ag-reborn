@@ -2,9 +2,9 @@
 
 Ag:reborn（Ag重生）是基于 **Lambda Innovation** 开源项目 [AcademyCraft](https://github.com/LambdaInnovation/AcademyCraft) 移植、修改和扩展的非官方 Minecraft 模组。原作者及原项目的署名、许可和附加声明予以保留；本项目不代表原作者的官方发布或背书。
 
-当前公开源码版本为 **0.81.5-city-a3.63-mech.1 Beta**，适用于 **Minecraft 1.21.1、NeoForge 21.1.252 和 Java 21**。本版将 ACA Mech 0.4.3 内置到 Ag 重生：ATLAS、AETHER、SERAPH 三台机甲可部署、驾驶、近战、远程攻击、维修和充能，保留原有 `acamech` 存档 ID。新生成的学园都市建筑保留 a3.63 内装、家具和真实电梯；旧存档中涉及已有区块的建筑沿用原布局。
+当前公开源码版本为 **0.81.5-city-a3.67 Beta**，适用于 **Minecraft 1.21.1、NeoForge 21.1.252 和 Java 21**。本版内置 **ACA Fauna 0.1.17 R18** 的 53 种动物和 13 套幼体模型，沿用独立版的 `aca_fauna` 注册名和存档字段。动物在原版主世界按生境自然生成，两张学园都市地图保留既有生态，附属动物可用刷怪蛋或命令放置。
 
-运行时只需安装本仓库构建的 Ag 重生 JAR。升级时移出旧版 Ag 重生和独立 ACA Mech JAR，客户端与服务器使用同一版本。机甲可在创造模式“ACA 学园机库”部署，也有生存合成配方。默认 W/S 移动、A/D 转向、X 专属动作、Z 近战、G 远程、Shift 下机。旧都市存档、真实远程多人及全部能力与机甲的交互尚未逐项复测。
+本版同时包含 ACA Mech 0.4.5、a3.64 的技能数值与范围基线，以及之后的 Iris、墙面停束、气流护幕与电梯安全修复。升级时将旧 Ag 重生、独立 ACA Fauna 和独立 ACA Mech 的 JAR 移出 `mods/`，安装本仓库构建的整合 JAR。客户端与服务端使用同版。机甲仍可在创造模式「ACA 学园机库」部署，动物蛋位于「刷怪蛋」。
 
 ## 构建
 
@@ -19,13 +19,14 @@ Windows 可使用 `gradlew.bat jar`。首次构建需要联网获取 Gradle、Ne
 
 ## 目录
 
-- `source/src/main/`：模组代码、模型、贴图、音效和数据；`source/src/mech/` 是内置机甲代码和游戏资源。
+- `source/src/main/` 为本体源码和资产，`source/src/mech/` 和 `source/src/fauna/` 为内置机甲及动物模块。
+- `source/integration/aca-fauna/` 记录动物整合版本；随动物模块提供素材出处和许可。
 - `source/integration/aca-mech/`：机甲许可、来源、可编辑 Blockbench 方盒模型与导出工具；`source/src/mechQa/` 为独立测试驱动。
 - `source/src/test/`、`source/qa/`：测试代码、测试夹具及辅助脚本；部分历史人工或原生客户端验证仍需要外部环境。
 - `source/model-sources/`：已纳入快照的可编辑模型源文件。
 - `source/docs/`、`source/NOTICE`：技术说明、来源和第三方版权声明。
 
-公开快照清理了本机路径、列车模型中的本机字段以及部分生成贴图的非画面元数据。原始像素和游戏逻辑保留；由于元数据不同，重新构建的 JAR 文件哈希可能与本地交付包不同。完整范围见 [来源与清理说明](SOURCE_PROVENANCE.md)。
+公开快照保留构建源码、运行资源、测试夹具及原作者署名。选定贴图清理了非画面元数据，解码像素保持一致。重新构建的 JAR 摘要受这些元数据影响。[来源与清理说明](SOURCE_PROVENANCE.md)
 
 ## 原作者与许可
 

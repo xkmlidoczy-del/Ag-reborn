@@ -555,7 +555,7 @@ public final class HighPowerEsperGuardTests {
     private static void legacyDefenseMatrix(GameTestHelper h,LegacyDefense defense,boolean otherPlayer){
         Fixture f=new Fixture(h,defense.kind,true);ServerPlayer victim=f.player(10,10);
         ServerPlayer owner=otherPlayer?f.player(30,10):victim;
-        // A second live global context proves the first owner alone pays and trains.
+        // A second live context must not duplicate spending or mastery.
         ServerPlayer later=otherPlayer&&defense!=LegacyDefense.REFLECTION?f.player(30,30):null;
         var witness=new LegacyNativeDamageWitness(victim);f.hook(witness);
         f.ready(()->{
@@ -579,7 +579,7 @@ public final class HighPowerEsperGuardTests {
                 h.assertTrue(witness.early==1&&witness.late==1&&witness.posts==1,"one genuine incoming and Post, never a synthetic or duplicate settlement");
                 h.assertTrue(witness.before>0&&Float.isFinite(witness.before),"real positive native amount reaches the classic defense");
                 if(environment)h.assertTrue(witness.before>80,"real cactus damage passed the level-scaled environmental guard");
-                boolean applies=!otherPlayer||defense!=LegacyDefense.REFLECTION;
+                boolean applies=!otherPlayer||defense==LegacyDefense.DEVIATION;
                 float expected=witness.before;
                 double cpExpected=cpBefore;
                 if(applies)switch(defense){

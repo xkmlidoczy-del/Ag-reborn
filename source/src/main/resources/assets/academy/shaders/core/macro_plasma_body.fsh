@@ -69,6 +69,7 @@ void main() {
 
     vec4 rc = rayMarch(cam - dir * 3, dir);
     rc.a = clamp(rc.a, 0, 1) * (0.5 + alpha * 0.5);
+    if (rc.a < 0.003) discard;
 
 	fragColor = rc;
 }

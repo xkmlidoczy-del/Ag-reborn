@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:giant_anteater",
+  "spawners": {
+    "type": "aca_fauna:giant_anteater",
+    "weight": 6,
+    "minCount": 1,
+    "maxCount": 1
+  }
+}

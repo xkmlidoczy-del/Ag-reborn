@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:european_badger",
+  "spawners": {
+    "type": "aca_fauna:european_badger",
+    "weight": 6,
+    "minCount": 2,
+    "maxCount": 3
+  }
+}

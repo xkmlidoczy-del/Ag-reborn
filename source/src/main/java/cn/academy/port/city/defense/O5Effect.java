@@ -19,11 +19,12 @@ public record O5Effect(int kind,int owner,int move,int variant,long tick,Vec3 fr
         b.writeDouble(p.from.x);b.writeDouble(p.from.y);b.writeDouble(p.from.z);b.writeDouble(p.to.x);b.writeDouble(p.to.y);b.writeDouble(p.to.z);
     },b->new O5Effect(b.readVarInt(),b.readVarInt(),b.readVarInt(),b.readVarInt(),b.readLong(),new Vec3(b.readDouble(),b.readDouble(),b.readDouble()),new Vec3(b.readDouble(),b.readDouble(),b.readDouble())));
     @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
+    public static java.util.function.Consumer<O5Effect> clientReceiver = p -> {};
     public static void emit(O5OperativeEntity actor,int kind,int move,int variant,Vec3 from,Vec3 to){
         if(actor.level() instanceof ServerLevel world)PacketDistributor.sendToPlayersNear(world,null,to.x,to.y,to.z,128,new O5Effect(kind,actor.getId(),move,variant,world.getGameTime(),from,to));
     }
     @EventBusSubscriber(modid="academy",bus=EventBusSubscriber.Bus.MOD)
     public static final class Registration {
-        @SubscribeEvent public static void register(RegisterPayloadHandlersEvent e){e.registrar("1").playToClient(TYPE,CODEC,(p,c)->c.enqueueWork(()->cn.academy.port.client.city.o5.CombatEffects.accept(p)));}
+        @SubscribeEvent public static void register(RegisterPayloadHandlersEvent e){e.registrar("1").playToClient(TYPE,CODEC,(p,c)->c.enqueueWork(()->clientReceiver.accept(p)));}
     }
 }

@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:harbor_seal",
+  "spawners": {
+    "type": "aca_fauna:harbor_seal",
+    "weight": 6,
+    "minCount": 2,
+    "maxCount": 3
+  }
+}

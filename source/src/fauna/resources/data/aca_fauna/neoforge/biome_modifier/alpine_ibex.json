@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:alpine_ibex",
+  "spawners": {
+    "type": "aca_fauna:alpine_ibex",
+    "weight": 6,
+    "minCount": 2,
+    "maxCount": 3
+  }
+}

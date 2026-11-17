@@ -8,12 +8,10 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -71,16 +69,11 @@ public final class LightShield {
     }
     /** Classic LivingHurtEvent is pre-mitigation, mapped to NeoForge's incoming event. */
     @SubscribeEvent public static void hurt(LivingIncomingDamageEvent event) {
-        if (event.getEntity().level().isClientSide || !(event.getEntity() instanceof Player)
-                || !event.getEntity().getServer().isSameThread()) return;
-        Hold chosen = null;
-        for (var hold : new ArrayList<>(HOLDS.values())) {
-            if (hold.player.getServer() != event.getEntity().getServer()) continue;
-            if (!identityValid(hold)) { remove(hold.player); continue; }
-            if (chosen == null) chosen = hold;
-        }
-        if (chosen == null) return;
-        // Source never verifies event.entityLiving == context.player. Null direct source still awards EXP.
+        if (!(event.getEntity() instanceof ServerPlayer player) || !player.server.isSameThread()) return;
+        Hold chosen = HOLDS.get(player.getUUID());
+        if (chosen == null || chosen.player != player) return;
+        if (!identityValid(chosen)) { remove(player); return; }
+        // The shield belongs to this player. Null direct sources still use the original skill formula.
         float amount = chosen.session.absorb(event.getAmount(), event.getSource().getDirectEntity() != null,
                 chosen.player.getAbilities().instabuild);
         event.setAmount(amount); if (amount == 0) event.setCanceled(true);

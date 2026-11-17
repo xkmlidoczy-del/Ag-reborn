@@ -84,12 +84,11 @@ final class MechRenderer extends EntityRenderer<MechEntity> {
                     age -> pose(mech, partial, (float) age, -1));
         }
         if (rangedAge >= 0 && mech.rangedResult() != RangedWeapon.ABORTED) {
-            RangedPose.chargeEffects(new AttackEffects.Pen(stack.last(), buffers.getBuffer(MechRenderTypes.STRIKE_LIGHT)),
-                    rig, ranged, rangedAge);
+            RangedPose.chargeEffects(stack, buffers, rig, ranged, rangedAge, !showBody);
         }
         stack.popPose();
         if (!mech.strikeImpacts().isEmpty()) {
-            AttackEffects.impacts(stack, buffers.getBuffer(MechRenderTypes.STRIKE_LIGHT), mech, partial);
+            AttackEffects.impacts(stack, buffers, mech, partial, game.gameRenderer.getMainCamera().getPosition());
         }
         if (showBody) super.render(mech, yaw, partial, stack, buffers, light);
     }

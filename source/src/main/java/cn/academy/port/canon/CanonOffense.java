@@ -54,7 +54,7 @@ public final class CanonOffense {
             double side=player.getMainArm()==net.minecraft.world.entity.HumanoidArm.RIGHT?.32:-.32;
             return player.getEyePosition().add(0,-.35,0).add(right.scale(side)).add(axis.scale(.48));
         }
-        Vec3 centre(){return targets.getFirst().getBoundingBox().getCenter();}
+        Vec3 centre(){return targets.isEmpty()?areaCentre:targets.getFirst().getBoundingBox().getCenter();}
         double cost(){return HighPowerGrowth.values(player).arcCost()*spec.cp();}
     }
     private CanonOffense() {}
@@ -192,7 +192,8 @@ public final class CanonOffense {
         String id=c.spec.id();
         if(c.spec.category().equals("mental_out")){
             int time=cn.academy.port.core.SkillTuning.fields(id).containsKey("control_ticks")?cn.academy.port.core.SkillTuning.integer(id,"control_ticks"):0;
-            if(time>0)t.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,time,1,false,true),c.player);
+            if(time>0&&t.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,time,1,false,true),c.player))
+                cn.academy.port.macro.BeamImpactVfx.contact(c.player,id,c.origin(),visualPoint(c,t),cn.academy.port.macro.BeamImpactVfx.Outcome.CONTROL);
             if(id.equals("mental_feedback_spike")&&t instanceof Mob m){m.getNavigation().stop();}
         }else if(c.spec.category().equals("float_dial")){
             var v=t.getDeltaMovement();double vertical=id.equals("float_reversal_drop")||id.equals("float_pressure_drop")||id.equals("float_collapse_field")?-.42:.34;

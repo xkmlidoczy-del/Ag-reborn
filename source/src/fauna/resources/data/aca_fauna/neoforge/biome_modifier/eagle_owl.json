@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:eagle_owl",
+  "spawners": {
+    "type": "aca_fauna:eagle_owl",
+    "weight": 2,
+    "minCount": 2,
+    "maxCount": 3
+  }
+}

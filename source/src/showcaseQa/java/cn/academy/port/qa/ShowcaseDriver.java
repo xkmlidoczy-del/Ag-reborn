@@ -4,6 +4,8 @@ import com.mojang.logging.LogUtils;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.client.Camera;
+import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Screenshot;
 import net.minecraft.client.gui.screens.TitleScreen;
@@ -16,9 +18,12 @@ import net.minecraft.world.level.WorldDataConfiguration;
 import net.minecraft.world.level.levelgen.WorldOptions;
 import net.minecraft.world.level.levelgen.presets.WorldPresets;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.CalculateDetachedCameraDistanceEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.ViewportEvent;
 import org.slf4j.Logger;
 
 /**
@@ -40,6 +45,7 @@ public final class ShowcaseDriver {
     // Fixed cinematic camera (vcam:x,y,z,focusX,focusY,focusZ | vcam:off) so a third-person cast can be filmed from the side.
     private static double[] vcam;
     private static net.minecraft.world.entity.decoration.ArmorStand filmingCamera;
+    private static float coverageCameraDistance;
     private static net.minecraft.world.item.ItemStack blockedDeveloperStack;
     private static java.util.UUID blockedDeveloperOwner;
     private static String blockedDeveloperSkill;
@@ -51,6 +57,25 @@ public final class ShowcaseDriver {
     }
 
     private ShowcaseDriver() {}
+
+    private static boolean usesCoverageCamera(Camera camera) {
+        if (!ENABLED || finished || coverageCameraDistance <= 0) return false;
+        Minecraft mc = Minecraft.getInstance();
+        return mc.player != null && camera.getEntity() == mc.player && mc.options.getCameraType() == CameraType.THIRD_PERSON_BACK;
+    }
+
+    /** Keep the real camera entity and player aim while using the game's third-person distance for QA. */
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void coverageCameraAngles(ViewportEvent.ComputeCameraAngles event) {
+        if (!usesCoverageCamera(event.getCamera())) return;
+        event.setYaw(Minecraft.getInstance().player.getYRot() + 24);
+        event.setPitch(15);
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void coverageCameraDistance(CalculateDetachedCameraDistanceEvent event) {
+        if (usesCoverageCamera(event.getCamera())) event.setDistance(coverageCameraDistance);
+    }
 
     private static void updateFilmingCamera(Minecraft mc) {
         if (vcam == null) {
@@ -177,6 +202,7 @@ public final class ShowcaseDriver {
             case "vcamrel" -> { var f = arg.split(","); var at = mc.player.position(); vcam = new double[6];   // vcamrel:dx,dy,dz,fx,fy,fz relative to the player
                 for (int i = 0; i < 6; i++) vcam[i] = Double.parseDouble(f[i]) + (i % 3 == 0 ? at.x : i % 3 == 1 ? at.y : at.z); }
             case "vcam" -> { if (arg.equals("off")) vcam = null; else { var f = arg.split(","); vcam = new double[6]; for (int i = 0; i < 6; i++) vcam[i] = Double.parseDouble(f[i]); } }
+            case "viewdist" -> { coverageCameraDistance = Float.parseFloat(arg); wait = 2; }
             case "gui" -> mc.options.hideGui = arg.equals("off");
             case "key" -> key(mc, arg);
             case "keydown" -> heldKey(mc, arg, true);

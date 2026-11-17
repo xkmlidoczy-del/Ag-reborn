@@ -13,6 +13,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Screenshot;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -20,6 +21,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.Husk;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.CalculateDetachedCameraDistanceEvent;
 import net.neoforged.neoforge.client.event.RenderFrameEvent;
@@ -33,9 +35,11 @@ import static cn.acamech.qa.NativeRun.*;
 /** Isolated filming harness. All driving, attacks and mounting go through the released client controls. */
 final class DriveShowcase {
     private enum View { LINEUP, PILOT, TRAIL, FRONT, SPRINT, LIFT, RANGE, EXIT, WEIGHT, GAIT_DETAIL }
-    private static final int FLOOR = -60, OPENING = 56, WEIGHT_DRIVE = 202;
+    private static final boolean COCKPIT_SHOWCASE = Boolean.getBoolean("acamech.qa.cockpit");
+    private static final boolean SERAPH_ONLY = Boolean.getBoolean("acamech.qa.seraphOnly");
+    private static final int FLOOR = -60, OPENING = 56, WEIGHT_DRIVE = COCKPIT_SHOWCASE ? 0 : 254;
     private static final int ATLAS_END = 438 + WEIGHT_DRIVE, AETHER_END = 784 + 2 * WEIGHT_DRIVE, END = 1094 + 3 * WEIGHT_DRIVE;
-    private static final double LANE_X = 32.5, LANE_Z = -13.5;
+    private static final double LANE_X = 43.5, LANE_Z = -14.5;
     private static final InputConstants.Key AUX = InputConstants.Type.KEYSYM.getOrCreate(GLFW.GLFW_KEY_X);
     private static final InputConstants.Key STRIKE = InputConstants.Type.KEYSYM.getOrCreate(GLFW.GLFW_KEY_Z);
     private static final InputConstants.Key FIRE = InputConstants.Type.KEYSYM.getOrCreate(GLFW.GLFW_KEY_G);
@@ -59,12 +63,18 @@ final class DriveShowcase {
     private static BlockPos cover;
     private static Vec3 shotPoint;
     private static double testDistance;
-    private static float walkSpeed, runSpeed, brakeBlend;
+    private static float walkSpeed, runSpeed, brakeBlend, maxDownLoad;
+    private static double crest;
+    private static int turnTick;
     private static Vec3 brakePoint;
     private static float angleOnRun;
     private static GaitProbe gaitProbe;
     private static int gaitTick = -1;
-    private static boolean runStill, brakeStill, turnStill, chargeHatchStill, strikeHatchStill;
+    private static int lipState;
+    private static double lipStartY, lipMinY;
+    private static Vec3 lipStop;
+    private static boolean runStill, splitStill, downStill, brakeStill, turnStill, chargeHatchStill, strikeHatchStill;
+    private static boolean lipBrakeStill;
 
     static void register() {
         var bus = NeoForge.EVENT_BUS;
@@ -87,24 +97,44 @@ final class DriveShowcase {
             else if (z == -11 && Math.floorMod(x, 4) < 2) surface = Blocks.WHITE_CONCRETE;
             level.setBlockAndUpdate(new BlockPos(x, FLOOR - 1, z), surface.defaultBlockState());
         }
-        // A continuous flat surface with meter marks makes any planted-boot drift visible.
-        for (int z = -84; z <= -9; z++) for (int x = -9; x <= 72; x++) {
-            var block = (x == -9 || x == 72) ? Blocks.LIGHT_GRAY_CONCRETE
-                    : x == 26 || x == 39 ? Blocks.YELLOW_CONCRETE
-                    : Math.floorMod(z, 4) == 0 && x % 4 == 0 ? Blocks.WHITE_CONCRETE
-                    : x < 26 || x > 39 ? Blocks.GRAY_CONCRETE : Blocks.SMOOTH_STONE;
-            level.setBlockAndUpdate(new BlockPos(x, FLOOR - 1, z), block.defaultBlockState());
+        if (COCKPIT_SHOWCASE) return;
+        // Three real climbs, then a slab ramp with repeated half-block drops and room to turn across it.
+        for (int z = -70; z <= -9; z++) for (int x = 14; x <= 70; x++) {
+            boolean lane = x >= 34 && x <= 49;
+            boolean mark = Math.floorMod(x, 5) == 0 || x == 34 || x == 49;
+            var stone = lane ? Blocks.SMOOTH_STONE : Blocks.POLISHED_ANDESITE;
+            var floor = lane ? Blocks.SMOOTH_STONE : Blocks.GRAY_CONCRETE;
+            if (mark && Math.floorMod(z, 3) != 0) floor = Blocks.LIGHT_GRAY_CONCRETE;
+            level.setBlockAndUpdate(new BlockPos(x, FLOOR - 1, z), floor.defaultBlockState());
+            int rise = z >= -24 || z <= -56 ? 0 : z >= -30 ? 1 : z >= -40 ? 2 : z >= -50 ? 1 : 0;
+            for (int h = 0; h < rise; h++) {
+                boolean edge = z == -25 || z == -31 || z == -40 || z == -45 || z == -50;
+                var block = edge ? Blocks.LIGHT_GRAY_CONCRETE : stone;
+                level.setBlockAndUpdate(new BlockPos(x, FLOOR + h, z), block.defaultBlockState());
+            }
+            if (z == -30) {
+                var stair = Blocks.STONE_BRICK_STAIRS.defaultBlockState().setValue(StairBlock.FACING, Direction.NORTH);
+                level.setBlockAndUpdate(new BlockPos(x, FLOOR + 1, z), stair);
+            }
+            if (z <= -41 && z >= -45 || z <= -51 && z >= -55) {
+                var slab = z == -45 || z == -55 ? Blocks.POLISHED_ANDESITE_SLAB : Blocks.SMOOTH_STONE_SLAB;
+                level.setBlockAndUpdate(new BlockPos(x, FLOOR + rise, z), slab.defaultBlockState());
+            }
         }
-        for (int z = -75; z <= -10; z += 13) {
-            int x = 70;
-            for (int y = FLOOR; y <= FLOOR + 5; y++) {
-                var trim = y == FLOOR + 4 ? Blocks.SEA_LANTERN : Blocks.POLISHED_DEEPSLATE;
-                level.setBlockAndUpdate(new BlockPos(x, y, z), trim.defaultBlockState());
+        for (int z : new int[]{-23, -29, -39, -45, -50, -55}) {
+            for (int x : new int[]{14, 70}) {
+                for (int y = FLOOR; y <= FLOOR + 4; y++) {
+                    var trim = y == FLOOR + 4 ? Blocks.SEA_LANTERN : Blocks.POLISHED_DEEPSLATE;
+                    level.setBlockAndUpdate(new BlockPos(x, y, z), trim.defaultBlockState());
+                }
             }
         }
     }
 
     static boolean tick(Minecraft mc, int time) throws Exception {
+        // Focused troubleshooting keeps the same course and assertions, but skips
+        // the other two vehicles. It is not a replacement for the full showcase.
+        if (SERAPH_ONLY && time >= OPENING) time += AETHER_END - OPENING;
         age = time;
         if (time == 0) {
             mc.options.fov().set(51);
@@ -112,7 +142,8 @@ final class DriveShowcase {
             mc.options.hideGui = false;
             var version = ModList.get().getModContainerById("acamech").orElseThrow().getModInfo().getVersion();
             String scene = ModList.get().isLoaded("academy") ? "Ag 重生 a3.63 同装  /  试车场" : "独立运行  /  试车场";
-            card("lineup", version.toString(), "三台机甲 · 大步跑、急停与转向", scene);
+            String title = COCKPIT_SHOWCASE ? "三台机甲 · 驾驶舱与泰克能量特效" : "三台机甲 · 台阶、下坡与急停";
+            card("lineup", version.toString(), title, scene);
         }
         if (time >= END) return true;
         if (time < OPENING) return false;
@@ -141,8 +172,14 @@ final class DriveShowcase {
             weightDrive(mc, mech, local - 21);
             return false;
         }
-        if (local == 21 + WEIGHT_DRIVE) {
+        if (WEIGHT_DRIVE > 0 && local == 21 + WEIGHT_DRIVE) {
             gaitTick = -1;
+            require(checks.containsKey(chassis.id + "_gait_controls"), "finished full terrain course " + chassis);
+            require(lipState == 4 && checks.containsKey(chassis.id + "_braked_during_descent"),
+                    "braked and restarted on a descending step " + chassis + ": state=" + lipState);
+            mc.options.keyUp.setDown(false);
+            mc.options.keySprint.setDown(false);
+            mc.options.keyLeft.setDown(false);
             checks.put(chassis.id + "_rendered_gait", gaitProbe.results(chassis.id));
             server(mc, () -> {
                 mech.moveTo(initialPosition.x, initialPosition.y, initialPosition.z, initialYaw, 0);
@@ -165,73 +202,131 @@ final class DriveShowcase {
     private static void weightDrive(Minecraft mc, MechEntity mech, int t) throws Exception {
         gaitTick = t;
         if (t == 0) {
-            walkSpeed = runSpeed = brakeBlend = 0;
-            runStill = brakeStill = turnStill = false;
+            walkSpeed = runSpeed = brakeBlend = maxDownLoad = 0;
+            crest = FLOOR;
+            turnTick = -1;
+            runStill = splitStill = downStill = brakeStill = turnStill = false;
+            lipState = 0;
+            lipBrakeStill = false;
             gaitProbe = new GaitProbe();
             server(mc, () -> {
                 mech.moveTo(LANE_X, FLOOR, LANE_Z, 180, 0);
                 return null;
             });
             view = View.WEIGHT;
-            card(chassis.id + "_weight_start", caption(), "W  /  行走预备", "参照跑道标线观察支撑脚");
+            card(chassis.id + "_weight_start", caption(), "W  /  接近台阶", "实机碰撞测试 · 整格台阶、原版楼梯和半砖斜坡");
         }
         if (t == 10) mc.options.keyUp.setDown(true);
-        if (t == 36) walkSpeed = server(mc, mech::driveSpeed);
-        if (t == 41) {
+        if (t == 29) walkSpeed = server(mc, mech::driveSpeed);
+        if (t == 31) {
             mc.options.keySprint.setDown(true);
             String note = switch (chassis) {
-                case ATLAS -> "髋部先下沉，肩臂慢摆，低重心蹬地";
-                case AETHER -> "高抬膝跨步，前臂快速回收再摆出";
-                case SERAPH -> "背翼随髋部换重心，肩和手臂稳住机身";
+                case ATLAS -> "重心压低，先抬脚越过阶沿，再由宽肩和髋部推上去";
+                case AETHER -> "高抬膝跨上一级，收肘帮助快速换脚";
+                case SERAPH -> "两脚分高度承重，翼根随重心收放";
             };
-            card(chassis.id + "_weight_run", caption(), "W + Ctrl  /  走路切大步跑", note);
-        }
-        if (t == 69) {
             view = View.GAIT_DETAIL;
-            card(chassis.id + "_gait_hydraulics", caption(), "蹬地、承重与液压伸缩", "看髋、膝、肘的滑杆和跨过标线的鞋底");
+            card(chassis.id + "_weight_run", caption(), "W + Ctrl  /  大步跑上阶", note);
         }
-        if (t == 83) {
-            runSpeed = server(mc, mech::driveSpeed);
-            require(runSpeed > walkSpeed * 1.22f && clientMech(mc).run(1) > .82f,
-                    "walk transitions to run " + chassis + " " + walkSpeed + " → " + runSpeed);
+
+        var model = clientMech(mc);
+        if (t >= 36 && turnTick < 0) {
+            crest = Math.max(crest, model.getY());
+            runSpeed = Math.max(runSpeed, model.driveSpeed());
+            maxDownLoad = Math.max(maxDownLoad, model.descentLoad(1));
+            if (cue.endsWith("_weight_run") && model.getZ() < -37.6) {
+                view = View.WEIGHT;
+                card(chassis.id + "_gait_down", caption(), "保持奔跑  /  下坡卸力", "下一级先伸脚找支点，髋膝和液压缸接住重量");
+            }
+            if (model.getZ() < -45.7 && maxDownLoad > .30f) {
+                require(crest >= FLOOR + 1.99 && runSpeed > walkSpeed * 1.22f && model.running(),
+                        "vehicle ran up the step and over the crest " + chassis + " " + model.position()
+                                + " height=" + crest + " run=" + runSpeed + " walk=" + walkSpeed);
+                turnTick = t;
+                angleOnRun = server(mc, mech::getYRot);
+                mc.options.keyLeft.setDown(true);
+                card(chassis.id + "_gait_turn", caption(), "W + Ctrl + A  /  下坡跑动转向", "压住支撑脚，另一只脚踩向弧线内的台面");
+            }
         }
-        if (t == 94) {
-            view = View.WEIGHT;
-            angleOnRun = server(mc, mech::getYRot);
-            mc.options.keyLeft.setDown(true);
-            card(chassis.id + "_gait_turn", caption(), "W + Ctrl + A  /  跑动转向", "外侧脚跨入弧线，支撑脚留在落点，肩带反向稳住");
-        }
-        if (t == 117) {
+        if (turnTick < 0) return;
+        int sinceTurn = t - turnTick;
+        if (sinceTurn == 22) {
             float turn = server(mc, () -> Math.abs(Mth.wrapDegrees(mech.getYRot() - angleOnRun)));
-            require(turn > 35 && clientMech(mc).running() && clientMech(mc).driveSpeed() > walkSpeed,
-                    "curved running at speed " + chassis + ": " + turn + " deg");
+            require(turn > 33 && model.running() && model.driveSpeed() >= walkSpeed,
+                    "curved descent at running speed " + chassis + ": " + turn + " deg, " + model.position());
             checks.put(chassis.id + "_running_turn_degrees", round(turn));
             mc.options.keyLeft.setDown(false);
         }
-        if (t == 136) {
+        if (sinceTurn == 29) {
             brakePoint = server(mc, mech::position);
             mc.options.keyUp.setDown(false);
             mc.options.keySprint.setDown(false);
-            card(chassis.id + "_gait_brake", caption(), "松开 W  /  急停", "最后一步落地，髋膝吸收惯性后回正");
+            card(chassis.id + "_gait_brake", caption(), "松开 W  /  下坡后急停", "最后一脚踏实，髋膝回正");
         }
-        if (t >= 137 && t < 165) brakeBlend = Math.max(brakeBlend, clientMech(mc).braking(1));
-        if (t == 165) {
-            var model = clientMech(mc);
+        if (sinceTurn > 29) {
+            brakeBlend = Math.max(brakeBlend, model.braking(1));
+            maxDownLoad = Math.max(maxDownLoad, model.descentLoad(1));
+        }
+        if (sinceTurn == 53) {
+            double distance = server(mc, () -> brakePoint.subtract(mech.position()).horizontalDistance());
+            require(brakeBlend > .53f && model.driveSpeed() < .003f && distance > .15 && distance < 2.6
+                            && model.feet() != null && model.feet().swingSide() == 0,
+                    "settled stop after turning on the ramp " + chassis + ": " + distance + " blend=" + brakeBlend);
+            require(maxDownLoad > .55 && model.getY() < crest - .45, "descent traveled under load " + chassis);
+            checks.put(chassis.id + "_gait_controls", Map.of("walk_kmh", round(walkSpeed * 72),
+                    "run_kmh", round(runSpeed * 72), "peak_height_blocks", round(crest - FLOOR),
+                    "descent_before_restart_blocks", round(crest - model.getY()),
+                    "stop_distance_blocks", round(distance), "peak_descent_load", round(maxDownLoad)));
+            mc.options.keyUp.setDown(true);
+            card(chassis.id + "_gait_resume", caption(), "W  /  停稳后重新起步", "从各自的台面接回行走节奏");
+        }
+        if (sinceTurn == 72) {
+            require(model.driveSpeed() > walkSpeed * .8, "restart after braking " + chassis + " pos=" + model.position());
+            mc.options.keyUp.setDown(false);
+        }
+        // Separately verify braking while the collision body actually descends a lip;
+        // the previous running turn may already have carried it onto level ground.
+        if (sinceTurn == 76) {
+            mc.options.keyUp.setDown(false);
+            mc.options.keySprint.setDown(false);
             server(mc, () -> {
-                double brakingDistance = brakePoint.distanceTo(mech.position());
-                require(brakeBlend > .53f && mech.driveSpeed() < .003f && brakingDistance > .15 && brakingDistance < 2.6
-                        && model.feet() != null && model.feet().swingSide() == 0, "settled running stop " + chassis
-                        + " distance=" + brakingDistance + " blend=" + brakeBlend);
-                checks.put(chassis.id + "_gait_controls", Map.of("walk_kmh", round(walkSpeed * 72), "run_kmh", round(runSpeed * 72),
-                        "stop_distance_blocks", round(brakingDistance), "peak_brake_pose", round(brakeBlend)));
+                mech.moveTo(LANE_X, FLOOR + 2, -37.4, 180, 0);
                 return null;
             });
-            mc.options.keyUp.setDown(true);
-            card(chassis.id + "_gait_resume", caption(), "W  /  急停后重新起步", "双脚从最后的落点接回行走节奏");
+            mc.player.setYRot(180);
+            view = View.GAIT_DETAIL;
+            card(chassis.id + "_lip_setup", caption(), "准备坡沿刹停", "重新放置在坡顶，等待机体和足迹同步");
         }
-        if (t == 186) {
-            require(clientMech(mc).driveSpeed() > walkSpeed * .8, "restart after braking " + chassis
-                    + " speed=" + clientMech(mc).driveSpeed() + " position=" + clientMech(mc).position());
+        if (sinceTurn == 84) {
+            lipState = 1;
+            mc.options.keyUp.setDown(true);
+            mc.options.keySprint.setDown(true);
+            card(chassis.id + "_lip_approach", caption(), "W + Ctrl  /  驶近下坡沿", "接近半格落差后松开方向键");
+        }
+        if (lipState == 1 && model.getZ() <= -40 - chassis.width * .5 + .25 && model.driveSpeed() > .08) {
+            lipState = 2;
+            lipStartY = lipMinY = model.getY();
+            mc.options.keyUp.setDown(false);
+            mc.options.keySprint.setDown(false);
+            card(chassis.id + "_lip_brake", caption(), "坡沿松开 W  /  下坡中刹停", "记录机体高度和脚底与台阶的实际接触");
+        }
+        if (lipState == 2) {
+            lipMinY = Math.min(lipMinY, model.getY());
+            if (model.driveSpeed() < .003 && model.feet() != null && model.feet().swingSide() == 0) {
+                require(lipMinY < lipStartY - .20 && lipMinY > FLOOR + .25,
+                        "body descended while braking on the slope " + chassis + ": " + lipStartY + " -> " + lipMinY);
+                lipStop = model.position();
+                checks.put(chassis.id + "_braked_during_descent", Map.of("start_y", round(lipStartY),
+                        "lowest_y", round(lipMinY), "drop_blocks", round(lipStartY - lipMinY),
+                        "stop_x", round(lipStop.x), "stop_z", round(lipStop.z)));
+                lipState = 3;
+                mc.options.keyUp.setDown(true);
+                card(chassis.id + "_lip_resume", caption(), "W  /  坡面重新起步", "从刹停位置恢复行走");
+            }
+        }
+        if (lipState == 3 && model.driveSpeed() > walkSpeed * .65
+                && model.position().subtract(lipStop).horizontalDistance() > .30) {
+            lipState = 4;
             mc.options.keyUp.setDown(false);
         }
     }
@@ -563,14 +658,29 @@ final class DriveShowcase {
         if (chassis == null || cue == null) return;
         var model = clientMech(mc);
         if (model == null) return;
-        if (!runStill && cue.endsWith("_weight_run") && model.run(1) > .85f && model.feet() != null
-                && Mth.frac(model.phase(1) * 2) > .22f && Mth.frac(model.phase(1) * 2) < .52f) {
+        if (!runStill && cue.endsWith("_weight_run") && model.run(1) > .72f && model.getZ() < -21
+                && model.incline(1) > .32f && Mth.frac(model.phase(1) * 2) > .24f && Mth.frac(model.phase(1) * 2) < .76f) {
             Screenshot.grab(mc.gameDirectory, chassis.id + "-run.png", mc.getMainRenderTarget(), ignored -> {});
             runStill = true;
+        }
+        var feet = model.feet();
+        if (!splitStill && cue.endsWith("_weight_run") && feet != null && feet.left().supported() && feet.right().supported()
+                && Math.abs(feet.left().point().y - feet.right().point().y) > .35) {
+            Screenshot.grab(mc.gameDirectory, chassis.id + "-split.png", mc.getMainRenderTarget(), ignored -> {});
+            splitStill = true;
+        }
+        if (!downStill && cue.endsWith("_gait_down") && model.descentLoad(1) > .47f) {
+            Screenshot.grab(mc.gameDirectory, chassis.id + "-down.png", mc.getMainRenderTarget(), ignored -> {});
+            downStill = true;
         }
         if (!brakeStill && cue.endsWith("_gait_brake") && model.braking(1) > .62f) {
             Screenshot.grab(mc.gameDirectory, chassis.id + "-brake.png", mc.getMainRenderTarget(), ignored -> {});
             brakeStill = true;
+        }
+        if (!lipBrakeStill && cue.endsWith("_lip_brake") && model.braking(1) > .25f
+                && model.descentLoad(1) > .10f) {
+            Screenshot.grab(mc.gameDirectory, chassis.id + "-slope-brake.png", mc.getMainRenderTarget(), ignored -> {});
+            lipBrakeStill = true;
         }
         if (!turnStill && cue.endsWith("_gait_turn") && Math.abs(model.turning(1)) > .46f) {
             Screenshot.grab(mc.gameDirectory, chassis.id + "-turn.png", mc.getMainRenderTarget(), ignored -> {});
@@ -640,16 +750,16 @@ final class DriveShowcase {
             case WEIGHT -> {
                 Vec3 track = forward(163);
                 Vec3 side = new Vec3(-track.z, 0, track.x);
-                yield pos.add(track.scale(2.2)).add(side.scale(-height * 1.55)).add(0, 2.02, 0);
+                yield pos.add(track.scale(2.2)).add(side.scale(-height * 1.60)).add(0, 2.62, 0);
             }
-            case GAIT_DETAIL -> pos.add(ahead.scale(-height * .74)).add(east.scale(height * 1.04)).add(0, height * .40, 0);
+            case GAIT_DETAIL -> pos.add(ahead.scale(-height * .49)).add(east.scale(height * 1.53)).add(0, height * .48, 0);
             case EXIT -> pos.add(ahead.scale(6.7)).add(east.scale(8.8)).add(0, 3.9, 0);
             default -> pos.add(ahead.scale(height * 1.04)).add(east.scale(-height * 1.35)).add(0, height * .63, 0);
         };
         if (view == View.WEIGHT) {
             at = pos.add(ahead.scale(.79)).add(0, height * (chassis == Chassis.SERAPH ? .49 : .43), 0);
         } else if (view == View.GAIT_DETAIL) {
-            at = pos.add(0, height * .41, 0);
+            at = pos.add(0, height * .37, 0);
         }
         if (view == View.RANGE) {
             boolean projectile = chassis.ranged == RangedWeapon.PULSE;
@@ -739,10 +849,10 @@ final class DriveShowcase {
         g.drawString(mc.font, detail, 18, y + 20, 0xffc5d9e6);
         g.flush();
         try {
-            if (gaitTick >= 56 && gaitTick < 163) {
+            if (gaitTick >= 36 && gaitTick < WEIGHT_DRIVE - 1 && !cue.endsWith("_lip_setup")) {
                 var mech = clientMech(mc);
                 float partial = mc.getTimer().getGameTimeDeltaPartialTick(false);
-                if (mech != null) gaitProbe.sample(mc, mech, partial);
+                if (mech != null) gaitProbe.sample(mc, mech, partial, cue.substring(chassis.id.length() + 1));
             }
             if (recorder == null) recorder = new ShowcaseCapture(mc);
             cues.putIfAbsent(cue, recorder.currentFrame());

@@ -80,21 +80,25 @@ public final class MechMod {
     public static EntityType<MechEntity> entity(Chassis model) { return MECHS.get(model).get(); }
     public static MechCrate crate(Chassis model) { return CRATES.get(model).get(); }
 
+    public static java.util.function.BiConsumer<RangedEffect, net.minecraft.world.entity.player.Player> clientRangedEffect = (m, p) -> {};
+
     private static void registerPackets(RegisterPayloadHandlersEvent event) {
-        event.registrar("5").playToServer(Controls.TYPE, Controls.CODEC, (msg, ctx) -> {
+        event.registrar("6").playToServer(Controls.TYPE, Controls.CODEC, (msg, ctx) -> {
             if (ctx.player() instanceof ServerPlayer player && player.getVehicle() instanceof MechEntity mech) {
                 mech.acceptControls(player, msg.bits, msg.mount);
             }
         }).playToClient(StrikeImpact.TYPE, StrikeImpact.CODEC, (msg, ctx) -> {
-            if (ctx.player().level().getEntity(msg.mount()) instanceof MechEntity mech) {
+            var player = ctx.player();
+            if (player != null && player.level() != null && player.level().getEntity(msg.mount()) instanceof MechEntity mech) {
                 mech.showStrikeImpact(msg.positions(), msg.yaw());
             }
         }).playToClient(RangedEffect.TYPE, RangedEffect.CODEC, (msg, ctx) -> {
-            if (FMLEnvironment.dist == Dist.CLIENT) cn.acamech.client.RangedEffects.receive(msg, ctx.player().level());
+            var player = ctx.player();
+            if (player != null && player.level() != null) clientRangedEffect.accept(msg, player);
         });
     }
 
-    record StrikeImpact(int mount, float yaw, List<Vec3> positions) implements CustomPacketPayload {
+    public record StrikeImpact(int mount, float yaw, List<Vec3> positions) implements CustomPacketPayload {
         private static final Type<StrikeImpact> TYPE = new Type<>(id("strike_impact"));
         private static final StreamCodec<RegistryFriendlyByteBuf, StrikeImpact> CODEC = StreamCodec.composite(
                 ByteBufCodecs.VAR_INT, StrikeImpact::mount,

@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:woodpecker",
+  "spawners": {
+    "type": "aca_fauna:woodpecker",
+    "weight": 6,
+    "minCount": 2,
+    "maxCount": 3
+  }
+}

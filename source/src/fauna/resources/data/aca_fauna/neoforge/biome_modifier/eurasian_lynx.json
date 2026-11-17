@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:eurasian_lynx",
+  "spawners": {
+    "type": "aca_fauna:eurasian_lynx",
+    "weight": 2,
+    "minCount": 1,
+    "maxCount": 1
+  }
+}

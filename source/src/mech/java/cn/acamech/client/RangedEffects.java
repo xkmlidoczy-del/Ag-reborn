@@ -26,7 +26,7 @@ public final class RangedEffects {
     }
 
     static void render(RenderLevelStageEvent event) {
-        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES) return;
+        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES || MechRenderTypes.isShadowPass()) return;
         var game = Minecraft.getInstance();
         useLevel(game.level);
         if (game.level == null || flashes.isEmpty()) return;
@@ -36,20 +36,54 @@ public final class RangedEffects {
         Vec3 eye = event.getCamera().getPosition();
         PoseStack pose = event.getPoseStack();
         pose.pushPose();
-        pose.translate(-eye.x, -eye.y, -eye.z);
-        var batch = game.renderBuffers().bufferSource();
-        var pen = new AttackEffects.Pen(pose.last(), batch.getBuffer(MechRenderTypes.STRIKE_LIGHT));
-        for (var flash : flashes) {
-            float age = tick - flash.received + event.getPartialTick().getGameTimeDeltaPartialTick(false);
-            RangedWeapon weapon = flash.effect.weapon();
-            for (var ray : flash.effect.rays()) {
-                Vec3 direction = ray.end().subtract(ray.start()).normalize();
-                if (weapon != RangedWeapon.PULSE) beam(pen, ray, direction, weapon, age);
-                if (ray.contact() != RangedWeapon.MISS) impact(pen, ray.end(), direction, weapon, age, ray.contact() > 0);
+        try {
+            pose.translate(-eye.x, -eye.y, -eye.z);
+            var batch = game.renderBuffers().bufferSource();
+            var pen = new AttackEffects.Pen(pose.last(), batch.getBuffer(MechRenderTypes.STRIKE_LIGHT));
+            float partial = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+            for (var flash : flashes) {
+                float age = tick - flash.received + partial;
+                RangedWeapon weapon = flash.effect.weapon();
+                for (var ray : flash.effect.rays()) {
+                    Vec3 direction = ray.end().subtract(ray.start()).normalize();
+                    if (weapon != RangedWeapon.PULSE) beam(pen, ray, direction, weapon, age);
+                    if (ray.contact() != RangedWeapon.MISS) impact(pen, ray.end(), direction, weapon, age, ray.contact() > 0);
+                }
             }
+            batch.endBatch(MechRenderTypes.STRIKE_LIGHT);
+
+            var sprites = new PlasmaSprites.Pen(pose.last(), batch.getBuffer(MechRenderTypes.PLASMA));
+            for (var flash : flashes) {
+                float age = tick - flash.received + partial;
+                RangedWeapon weapon = flash.effect.weapon();
+                for (var ray : flash.effect.rays()) {
+                    if (ray.contact() != RangedWeapon.MISS) texturedImpact(sprites, ray, weapon, age, eye);
+                }
+            }
+            batch.endBatch(MechRenderTypes.PLASMA);
+        } finally {
+            pose.popPose();
         }
-        pose.popPose();
-        batch.endBatch(MechRenderTypes.STRIKE_LIGHT);
+    }
+
+    private static void texturedImpact(PlasmaSprites.Pen sprites, RangedRay ray, RangedWeapon weapon, float age, Vec3 eye) {
+        boolean hit = ray.contact() > 0;
+        float life = hit ? 10 : 7;
+        if (age >= life) return;
+        Vec3 direction = ray.end().subtract(ray.start()).normalize();
+        Vec3 towardsEye = eye.subtract(ray.end()).normalize();
+        Vec3 position = ray.end().subtract(direction.scale(hit ? .17 : .085));
+        double radius = switch (weapon) { case PULSE -> 2.06; case NEEDLE -> 1.03; case CONVERGENCE -> 1.42; };
+        // Both convergence rays can land together. Limit the sum of their light.
+        float strength = weapon == RangedWeapon.CONVERGENCE ? .59f : .94f;
+        PlasmaSprites.impact(sprites, position, towardsEye, radius * (hit ? 1 : .69), 1,
+                hit ? .11f : .66f, hit ? weapon.color : AMBER, age, life, strength * (hit ? 1 : .67f));
+        if (hit && weapon == RangedWeapon.PULSE) {
+            var axes = Frame.perpendicular(direction);
+            float fade = 1 - AttackPose.ease(age / life);
+            PlasmaSprites.ring(sprites, position.subtract(direction.scale(.11)), axes, .82 + .15 * age,
+                    age * .12f, weapon.color, fade * .58f);
+        }
     }
 
     private static void useLevel(Level level) {
@@ -136,8 +170,9 @@ public final class RangedEffects {
         }
     }
 
-    static void charge(AttackEffects.Pen pen, Vec3 at, Vec3 direction, RangedWeapon weapon, float energy, float time, float barrel) {
-        float gain = AttackPose.ease(energy);
+    static void charge(AttackEffects.Pen pen, Vec3 at, Vec3 direction, RangedWeapon weapon,
+                       float energy, float time, float barrel, float viewGain) {
+        float gain = AttackPose.ease(energy) * viewGain;
         if (gain <= 0) return;
         Frame axes = Frame.perpendicular(direction);
         double radius = barrel * (.62 + .27 * (1 - energy));
@@ -157,9 +192,10 @@ public final class RangedEffects {
         }
     }
 
-    static void discharge(AttackEffects.Pen pen, Vec3 at, Vec3 axis, RangedWeapon weapon, float age, float barrel) {
+    static void discharge(AttackEffects.Pen pen, Vec3 at, Vec3 axis, RangedWeapon weapon,
+                          float age, float barrel, float viewGain) {
         if (age < 0 || age >= 6.5f) return;
-        float fade = 1 - AttackPose.ease(age / 6.5f);
+        float fade = (1 - AttackPose.ease(age / 6.5f)) * viewGain;
         var axes = Frame.perpendicular(axis);
         pen.ring(at.add(axis.scale(.34 + age * .09)), axes.x, axes.y, barrel * (.67 + age * .12),
                 .105, 6, 0, weapon.color, fade * .93f);

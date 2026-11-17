@@ -24,9 +24,13 @@ public final class CityRideReceipts {
             if(s.boarding()&&s.station()>=0)RIDES.put(p.getUUID(),new Ride(car.getUUID(),s.station(),p.level().getGameTime()));
         }else{
             var ride=RIDES.remove(p.getUUID());
-            if(ride!=null&&ride.vehicle.equals(car.getUUID())&&s.boarding()&&s.station()>=0&&s.station()!=ride.from&&p.isAlive()&&p.level().getGameTime()-ride.start>=20)
+            long now=p.level().getGameTime();
+            if(ride!=null&&ride.vehicle.equals(car.getUUID())&&s.boarding()&&s.station()>=0&&s.station()!=ride.from&&p.isAlive()&&now>=ride.start&&now-ride.start>=20)
                 CityErrands.rode(p,ride.from,s.station());
         }
     }
     @SubscribeEvent public static void logout(PlayerEvent.PlayerLoggedOutEvent e){RIDES.remove(e.getEntity().getUUID());}
+    @SubscribeEvent public static void dimension(PlayerEvent.PlayerChangedDimensionEvent e){RIDES.remove(e.getEntity().getUUID());}
+    @SubscribeEvent public static void death(net.neoforged.neoforge.event.entity.living.LivingDeathEvent e){RIDES.remove(e.getEntity().getUUID());}
+    @SubscribeEvent public static void stopped(net.neoforged.neoforge.event.server.ServerStoppedEvent e){RIDES.clear();}
 }

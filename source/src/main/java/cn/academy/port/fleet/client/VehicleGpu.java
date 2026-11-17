@@ -19,11 +19,11 @@ public final class VehicleGpu {
  public static boolean shaderPackActive(){long now=net.minecraft.Util.getMillis();if(irisChecked==Long.MIN_VALUE||now-irisChecked>100){shaderPack=IRIS.getAsBoolean();irisChecked=now;}return shaderPack;}
  private static final LinkedHashMap<String,VertexBuffer> CACHE=new LinkedHashMap<>(64,.75f,true);
  public static void clear(){var old=new ArrayList<>(CACHE.values());CACHE.clear();if(RenderSystem.isOnRenderThread())old.forEach(VertexBuffer::close);else RenderSystem.recordRenderCall(()->old.forEach(VertexBuffer::close));}
- private static VertexBuffer create(AcmMeshReader.Part part,int light){
+ private static VertexBuffer create(AcmMeshReader.Part part){
   var result=new VertexBuffer(VertexBuffer.Usage.STATIC);
   try(var memory=new ByteBufferBuilder(Math.max(4096,part.triangles()*144))){
    var builder=new BufferBuilder(memory,VertexFormat.Mode.QUADS,DefaultVertexFormat.NEW_ENTITY);float[] a=part.values();
-   for(int tri=0;tri<part.triangles();tri++)for(int corner=0;corner<4;corner++){int i=(tri*3+Math.min(corner,2))*8;builder.addVertex(a[i],a[i+1],a[i+2]).setColor(255,255,255,255).setUv(a[i+6],a[i+7]).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(a[i+3],a[i+4],a[i+5]);}
+   for(int tri=0;tri<part.triangles();tri++)for(int corner=0;corner<4;corner++){int i=(tri*3+Math.min(corner,2))*8;builder.addVertex(a[i],a[i+1],a[i+2]).setColor(255,255,255,255).setUv(a[i+6],a[i+7]).setOverlay(OverlayTexture.NO_OVERLAY).setLight(0xF000F0).setNormal(a[i+3],a[i+4],a[i+5]);}
    result.bind();try(var data=builder.buildOrThrow()){result.upload(data);}finally{VertexBuffer.unbind();}
   }
   return result;
@@ -31,8 +31,25 @@ public final class VehicleGpu {
  public static boolean draw(String mesh,AcmMeshReader.Part part,PoseStack ps,ResourceLocation texture,int light){
   // Iris needs its own extended vertex attributes and render pass. Let the normal
   // entity buffer build those attributes; feeding the private VBO hides the shell.
-  if(shader==null||shaderPackActive())return false;String key=mesh+":"+part.name()+":"+light;var buffer=CACHE.get(key);if(buffer==null){buffer=create(part,light);CACHE.put(key,buffer);if(CACHE.size()>256){var it=CACHE.entrySet().iterator();it.next().getValue().close();it.remove();}}
-  var type=RenderType.entityCutoutNoCull(texture);type.setupRenderState();RenderSystem.setShader(()->shader);shader.safeGetUniform("PoseNormalMat").set(ps.last().normal());
-  buffer.bind();buffer.drawWithShader(new Matrix4f(RenderSystem.getModelViewMatrix()).mul(ps.last().pose()),RenderSystem.getProjectionMatrix(),shader);VertexBuffer.unbind();type.clearRenderState();return true;
+  if(shader==null||shaderPackActive())return false;
+  String key=mesh+":"+part.name();
+  var buffer=CACHE.get(key);
+  if(buffer==null){buffer=create(part);CACHE.put(key,buffer);if(CACHE.size()>128){var it=CACHE.entrySet().iterator();it.next().getValue().close();it.remove();}}
+  var type=RenderType.entityCutoutNoCull(texture);
+  type.setupRenderState();
+  try{
+   RenderSystem.setShader(()->shader);
+   shader.safeGetUniform("PoseNormalMat").set(ps.last().normal());
+   shader.safeGetUniform("PackedLight").set(light&0xFFFF,(light>>>16)&0xFFFF);
+   buffer.bind();
+   try{
+    buffer.drawWithShader(new Matrix4f(RenderSystem.getModelViewMatrix()).mul(ps.last().pose()),RenderSystem.getProjectionMatrix(),shader);
+   }finally{
+    VertexBuffer.unbind();
+   }
+  }finally{
+   type.clearRenderState();
+  }
+  return true;
  }
 }

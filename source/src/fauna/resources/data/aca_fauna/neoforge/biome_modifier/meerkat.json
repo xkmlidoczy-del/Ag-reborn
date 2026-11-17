@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:meerkat",
+  "spawners": {
+    "type": "aca_fauna:meerkat",
+    "weight": 6,
+    "minCount": 2,
+    "maxCount": 3
+  }
+}

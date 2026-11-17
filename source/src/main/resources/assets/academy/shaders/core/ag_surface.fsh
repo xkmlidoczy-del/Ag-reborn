@@ -10,8 +10,13 @@ in vec3 cameraPosition;
 out vec4 fragColor;
 float pattern(vec2 p){return fract(sin(dot(p,vec2(91.37,207.13)))*37841.31);}
 void main(){
-    vec4 tex=texture(Sampler0,uv);vec3 normal=normalize(cross(dFdx(cameraPosition),dFdy(cameraPosition)));
-    vec3 eye=normalize(-cameraPosition);float facing=abs(dot(normal,eye));
+    vec4 tex=texture(Sampler0,uv);
+    vec3 rawN=cross(dFdx(cameraPosition),dFdy(cameraPosition));
+    float nLen=dot(rawN,rawN);
+    vec3 normal=nLen>1e-12?rawN*inversesqrt(nLen):vec3(0.0,0.0,1.0);
+    float cLen=dot(cameraPosition,cameraPosition);
+    vec3 eye=cLen>1e-12?-cameraPosition*inversesqrt(cLen):vec3(0.0,0.0,1.0);
+    float facing=abs(dot(normal,eye));
     float light=.43+.57*abs(dot(normal,normalize(vec3(.3,.8,.45))));
     vec3 colour=tex.rgb;float alpha=tex.a;
     if(Family>7.5&&Family<8.5){

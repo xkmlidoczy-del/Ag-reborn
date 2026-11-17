@@ -76,8 +76,6 @@ public final class RangedSkillRuntimeTests {
     @GameTestGenerator public static Collection<TestFunction> boundaries(){
         var list=new ArrayList<TestFunction>();
         for(var skill:SKILLS)for(String mode:List.of("near","extended","outside","blocked")){
-            // The classic railgun intentionally penetrates terrain; its charge/admission is covered by the native suite.
-            if(skill.id.equals("railgun")&&mode.equals("blocked"))continue;
             String name=skill.id+"_"+mode;
             list.add(new TestFunction("ranged", "academy_ranged."+name,"academy_ranged:lane",Rotation.NONE,100,0,true,false,1,1,false,h->exercise(h,skill,mode)));
         }
@@ -109,7 +107,11 @@ public final class RangedSkillRuntimeTests {
             h.assertTrue(cn.academy.port.AcademyConfig.DESTROY_BLOCKS.get(),"native terrain destruction enabled in isolated fixture");
             var result=cn.academy.port.skill.RailgunDamage.perform(p,60,1000000);
             long changed=inside.stream().filter(pos->!w.getBlockState(pos).is(Blocks.STONE)).count();
-            h.assertTrue(result.beamLength()==reach&&changed>0&&changed<=12,"actual diagonal cannon changes at most 12 reachable stone cells; mode="+cn.academy.port.highpower.environment.SkillEnvironment.mode(w)+" interact="+w.mayInteract(p,p.blockPosition())+" changed="+changed+" axis="+axis+" origin="+origin);
+            h.assertTrue(result.beamLength()>0&&result.beamLength()<=reach&&changed>0&&changed<=12,"actual diagonal cannon changes at most 12 reachable stone cells; mode="+cn.academy.port.highpower.environment.SkillEnvironment.mode(w)+" interact="+w.mayInteract(p,p.blockPosition())+" changed="+changed+" axis="+axis+" origin="+origin);
+            if(result.beamLength()<reach){
+                var contact=cn.academy.port.skill.RailgunVisualContact.sample(p,w,origin,axis,result.beamLength());
+                h.assertTrue(contact!=null&&Math.abs(contact.distance()-result.beamLength())<1e-4,"budget-exhausted beam ends at surviving stone");
+            }
             h.assertTrue(outside.stream().allMatch(pos->w.getBlockState(pos).is(Blocks.STONE)),"voxel stepping cannot extend terrain damage past the configured beam reach");h.succeed();
         }finally{for(var entry:saved.entrySet())w.setBlock(entry.getKey(),entry.getValue(),2);try{p.server.getPlayerList().remove(p);}finally{channel.finishAndReleaseAll();}}
     }
@@ -152,7 +154,22 @@ public final class RangedSkillRuntimeTests {
                 if(expected)h.assertTrue(visuals.stream().anyMatch(v->v.skill().equals(skill.id)&&v.endpoint().distanceTo(mobPoint(v,victim))<.05&&v.axis().distanceTo(p.getLookAngle().normalize())<1e-6),"server visual retains the actual aim axis and ends on the real target, including a close hit");
                 else h.assertTrue(visuals.stream().noneMatch(v->v.skill().equals(skill.id)),"refusal emits no phantom cast");
             }
-            if(skill.id.equals("railgun"))h.assertTrue(beam==reach,"actual cannon trace and reported beam have identical maximum reach");
+            if(skill.id.equals("railgun")){
+                if(mode.equals("blocked")||mode.equals("near")){
+                    var eye = p.getEyePosition();
+                    var axis = cn.academy.port.skill.ClassicRaytrace.direction(p).normalize();
+                    var end = eye.add(axis.scale(reach));
+                    var obstruction = w.clip(new net.minecraft.world.level.ClipContext(eye,end,
+                            net.minecraft.world.level.ClipContext.Block.COLLIDER,net.minecraft.world.level.ClipContext.Fluid.NONE,p));
+                    double expectedLength = obstruction.getType()==net.minecraft.world.phys.HitResult.Type.MISS
+                            ? reach : obstruction.getLocation().subtract(eye).dot(axis);
+                    h.assertTrue(Math.abs(beam-expectedLength)<1e-4,"beam ends at real surviving terrain or full reach, expected="+expectedLength+" actual="+beam);
+                    if(expectedLength<reach){
+                        var face=cn.academy.port.skill.RailgunVisualContact.sample(p,w,eye,axis,beam);
+                        h.assertTrue(face!=null&&Math.abs(face.distance()-beam)<1e-4,"reported face agrees with beam length "+beam);
+                    }
+                }else h.assertTrue(beam==reach,"clear cannon trace retains its configured range");
+            }
             if(skill.id.equals("arc_gen")){
                 h.assertTrue(packets.arcs().size()==1,"the real arc emits one server endpoint, even if damage removes the target");
                 var packet=packets.arcs().getFirst();Vec3 from=new Vec3(packet.getDouble("x"),packet.getDouble("y"),packet.getDouble("z"));

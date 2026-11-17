@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:spotted_hyena",
+  "spawners": {
+    "type": "aca_fauna:spotted_hyena",
+    "weight": 2,
+    "minCount": 2,
+    "maxCount": 3
+  }
+}

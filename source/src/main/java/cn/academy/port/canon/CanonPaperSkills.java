@@ -135,6 +135,7 @@ public final class CanonPaperSkills {
             for(BlockPos pos:positions)if(!CanonPaperContent.owned(p,pos))return false;
             if(!p.getAbilities().instabuild){held.shrink(sheets);p.getInventory().setChanged();}
             committed=true;CanonVfx.emit(p,id,support.getCenter(),positions.getLast().getCenter(),CanonVfx.Phase.START,25);
+            if(bridge)cn.academy.port.macro.BeamImpactVfx.paper(p,id,positions);
             state.addExperience(id,.01);AbilityStorage.save(p);return true;
         } finally {if(!committed)for(UUID token:tokens)CanonPaperContent.discard(token);}
     }
@@ -290,6 +291,7 @@ public final class CanonPaperSkills {
             for(BlockPos pos:positions)if(!CanonPaperContent.owned(p,pos))return false;
             if(!p.getAbilities().instabuild){held.shrink(positions.size()*2);p.getInventory().setChanged();}
             committed=true;CanonVfx.emit(p,skill,positions.getFirst().getCenter(),positions.getLast().getCenter(),CanonVfx.Phase.START,30);
+            cn.academy.port.macro.BeamImpactVfx.paper(p,skill,positions);
             state.addExperience(skill,.01);AbilityStorage.save(p);return true;
         } finally {if(!committed)for(UUID token:tokens)CanonPaperContent.discard(token);}
     }

@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:impala",
+  "spawners": {
+    "type": "aca_fauna:impala",
+    "weight": 6,
+    "minCount": 2,
+    "maxCount": 3
+  }
+}

@@ -14,11 +14,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 final class CockpitHud {
-    private static final int GLASS_WIDTH = 376, GLASS_HEIGHT = 176;
-    private static final int INK = 0xffecfaff, MUTED = 0xffa5c9d2, RULE = 0x62537782;
+    private static final int GLASS_WIDTH = 512, GLASS_HEIGHT = 288;
+    private static final int INK = 0xffecfaff, MUTED = 0xffadcad9, RULE = 0x4c6b93a7;
     private static final int AMBER = 0xffffca7a, ALERT = 0xffff9c86;
     private static final String[] CARDINALS = {"N", "E", "S", "W"};
-    private static final ResourceLocation GLASS = MechMod.id("textures/gui/tek_glass.png");
+    private static final ResourceLocation GLASS = MechMod.id("textures/gui/cockpit_v045.png");
 
     private CockpitHud() {}
 
@@ -56,7 +56,7 @@ final class CockpitHud {
         }
 
         if (w < 160 || h < 101) return;
-        int screenX = 8, screenY = 10, panel = 188, height = 116;
+        int screenX = 8, screenY = 8, panel = 198, height = 118;
         float scale = Math.min(w < 360 || h < 265 ? .875f : 1f, Math.min((w - 16f) / panel, (h - 20f) / height));
         int x = 0, y = 0;
         g.flush();
@@ -69,40 +69,42 @@ final class CockpitHud {
         RenderSystem.disableBlend();
 
         var font = game.font;
-        int l = x + 9, r = x + panel - 9, mid = x + panel / 2;
-        g.fill(l, y + 8, l + 2, y + 27, accent);
-        g.drawString(font, Component.translatable("hud.acamech.instrument"), l + 6, y + 9, MUTED, false);
-        g.drawString(font, mech.chassis().displayName(), l + 6, y + 21, INK, false);
-        g.fill(l, y + 33, r, y + 34, RULE);
-
+        int l = x + 13, r = x + panel - 13, mid = x + panel / 2;
         String speed = digits(Math.round(Math.abs(mech.driveSpeed()) * 72), 2);
         int unit = font.width("km/h");
-        g.drawString(font, "km/h", r - unit, y + 20, MUTED, false);
+        int speedBox = Math.max(47, Math.round(font.width(speed) * 1.95f) + unit + 10);
+        int split = r - speedBox;
+        g.fill(l, y + 12, l + 1, y + 33, modeColor);
+        fitted(g, font, Component.translatable("hud.acamech.instrument"), l + 5, y + 12, split - l - 8, MUTED);
+        fitted(g, font, mech.chassis().displayName(), l + 5, y + 24, split - l - 8, INK);
+        g.fill(split, y + 10, r, y + 33, 0x661c3549);
+        g.fill(split, y + 32, r, y + 33, alpha(accent, 119));
+        g.drawString(font, "km/h", r - unit - 3, y + 23, MUTED, false);
         g.pose().pushPose();
-        g.pose().translate(r - unit - 4 - font.width(speed) * 1.8f, y + 12, 0);
-        g.pose().scale(1.8f, 1.8f, 1);
+        g.pose().translate(r - unit - 7 - font.width(speed) * 1.95f, y + 12, 0);
+        g.pose().scale(1.95f, 1.95f, 1);
         g.drawString(font, speed, 0, 0, accent, false);
         g.pose().popPose();
+        g.fill(l, y + 38, r, y + 39, RULE);
 
-        gauge(g, font, l, mid - 5, y + 40, "hull_label", mech.hull(), mech.chassis().hull, hull);
-        gauge(g, font, mid + 5, r, y + 40, "power_label", mech.charge(), mech.chassis().energy, power);
-        g.fill(mid, y + 40, mid + 1, y + 60, RULE);
+        gauge(g, font, l, mid - 5, y + 45, "hull_label", mech.hull(), mech.chassis().hull, hull);
+        gauge(g, font, mid + 5, r, y + 45, "power_label", mech.charge(), mech.chassis().energy, power);
+        g.fill(mid, y + 44, mid + 1, y + 63, RULE);
 
-        g.fill(l, y + 67, r, y + 79, alpha(modeColor, 24));
-        g.fill(l, y + 67, l + 2, y + 79, modeColor);
-        g.drawString(font, status, l + 6, y + 69, modeColor, false);
+        g.fillGradient(l, y + 69, r, y + 83, alpha(modeColor, 27), alpha(modeColor, 10));
+        g.fill(l, y + 69, l + 2, y + 83, modeColor);
+        fitted(g, font, status, l + 6, y + 72, r - l - 10, modeColor);
         if (swinging) {
             int length = Mth.clamp(strikeAge * (r - l) / mech.chassis().attack.duration, 1, r - l);
-            g.fill(l, y + 80, r, y + 81, alpha(modeColor, 34));
-            g.fill(l, y + 80, l + length, y + 81, modeColor);
+            g.fill(l, y + 83, l + length, y + 84, modeColor);
         }
         if (hints && !drained && !swinging) {
             var keys = mech.running() || Math.abs(mech.driveSpeed()) > .055f
                     ? Component.translatable("hud.acamech.run_key", game.options.keySprint.getTranslatedKeyMessage())
                     : Component.translatable("hud.acamech.keys", aux.getTranslatedKeyMessage(), strike.getTranslatedKeyMessage());
-            if (font.width(keys) + font.width(status) < r - l - 15) textRight(g, font, keys, r - 3, y + 69, MUTED);
+            if (font.width(keys) + font.width(status) < r - l - 15) textRight(g, font, keys, r - 3, y + 72, MUTED);
         }
-        rangedPanel(g, font, game, mech, fire, l, r, y + 84, accent, charging);
+        rangedPanel(g, font, game, mech, fire, l, r, y + 87, accent, charging);
         g.pose().popPose();
 
         if (firstPerson && w >= 320 && h >= 180) {
@@ -145,11 +147,11 @@ final class CockpitHud {
             state = Component.translatable("hud.acamech.ranged_ready");
         }
         g.fill(l, y, r, y + 1, RULE);
-        int labelWidth = r - l - font.width(state) - 7;
-        if (font.width(label) <= labelWidth) g.drawString(font, label, l, y + 6, color, false);
-        else g.drawString(font, font.plainSubstrByWidth(label.getString(), Math.max(0, labelWidth - 6)) + "…",
-                l, y + 6, color, false);
-        textRight(g, font, state, r, y + 6, INK);
+        int pillWidth = font.width(state) + 7;
+        int pill = r - pillWidth;
+        g.fill(pill, y + 3, r, y + 15, alpha(color, charging || result > 0 ? 62 : 29));
+        fitted(g, font, label, l, y + 5, pill - l - 5, color);
+        textRight(g, font, state, r - 3, y + 5, charging ? AMBER : INK);
         for (int i = 0; i < 17; i++) {
             int start = l + i * (r - l) / 17, end = l + (i + 1) * (r - l) / 17 - 1;
             g.fill(start, y + 18, end, y + 21, 0xff243b45);
@@ -199,7 +201,7 @@ final class CockpitHud {
 
     private static void visor(GuiGraphics g, int w, int h, int color, boolean powered, boolean swinging) {
         int x = w / 2, y = h / 2;
-        int rail = alpha(color, 125), shadow = 0xa913252e;
+        int rail = alpha(color, 108), shadow = 0x8c101c2a;
         int edgeHeight = Math.min(35, h / 8), edgeWidth = Math.min(45, w / 12);
         g.fillGradient(0, 0, w, 9, shadow, 0x0013252e);
         g.fillGradient(0, h - 9, w, h, 0x0013252e, shadow);
@@ -210,17 +212,15 @@ final class CockpitHud {
             trace(g, a, edgeHeight, cap, 4, rail);
             trace(g, a, h - edgeHeight, cap, h - 5, rail);
         }
-        int guide = alpha(color, powered ? 195 : 95), flare = alpha(color, 65);
-        int span = swinging ? 30 : 24;
+        int guide = alpha(color, powered ? 218 : 85);
+        int span = swinging ? 27 : 22;
         g.fill(x - span, y, x - 10, y + 1, guide);
         g.fill(x + 11, y, x + span + 1, y + 1, guide);
         g.fill(x, y - 11, x + 1, y - 6, guide);
         g.fill(x, y + 7, x + 1, y + 12, guide);
         trace(g, x - span - 5, y + 7, x - span, y + 2, guide);
         trace(g, x + span, y + 2, x + span + 5, y + 7, guide);
-        g.fill(x - 3, y - 3, x + 4, y + 4, flare);
-        g.fill(x, y - 1, x + 1, y + 2, guide);
-        g.fill(x - 1, y, x + 2, y + 1, guide);
+        g.fill(x, y, x + 1, y + 1, guide);
     }
 
     private static void hitMarker(GuiGraphics g, int x, int y, int color) {
@@ -244,6 +244,15 @@ final class CockpitHud {
     private static String digits(int value, int width) {
         String raw = Integer.toString(value);
         return (raw.length() < width ? "0".repeat(width - raw.length()) : "") + raw;
+    }
+
+    private static void fitted(GuiGraphics g, Font font, Component text, int x, int y, int available, int color) {
+        if (font.width(text) <= available) {
+            g.drawString(font, text, x, y, color, false);
+        } else if (available > font.width("…")) {
+            String shortText = font.plainSubstrByWidth(text.getString(), available - font.width("…")) + "…";
+            g.drawString(font, shortText, x, y, color, false);
+        }
     }
 
     private static void textRight(GuiGraphics g, Font font, Component text, int x, int y, int color) {

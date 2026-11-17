@@ -137,6 +137,15 @@
       "values": [
         0
       ]
+    },
+    {
+      "name": "PackedLight",
+      "type": "int",
+      "count": 2,
+      "values": [
+        -1,
+        -1
+      ]
     }
   ]
 }

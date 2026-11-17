@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import java.util.function.DoubleConsumer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
@@ -108,17 +109,29 @@ final class AttackEffects {
         return new Blade(heel, tip.add(tip.subtract(heel).normalize().scale(.48)));
     }
 
-    static void impacts(PoseStack stack, VertexConsumer vertices, MechEntity mech, float partial) {
+    static void impacts(PoseStack stack, MultiBufferSource buffers, MechEntity mech, float partial, Vec3 eye) {
         float age = mech.strikeImpactAge(partial);
         if (age >= MechAttack.IMPACT_LIFE) return;
         Vec3 base = mech.getPosition(partial);
+        var geometry = buffers.getBuffer(MechRenderTypes.STRIKE_LIGHT);
+        MechAttack attack = mech.chassis().attack;
         for (Vec3 point : mech.strikeImpacts()) {
             Vec3 offset = point.subtract(base);
             stack.pushPose();
             stack.translate(offset.x, offset.y, offset.z);
             stack.mulPose(Axis.YP.rotationDegrees(-mech.strikeImpactYaw()));
-            contact(new Pen(stack.last(), vertices), mech.chassis().attack, age);
+            contact(new Pen(stack.last(), geometry), attack, age);
             stack.popPose();
+        }
+        if (age >= 9) return;
+        var sprites = new PlasmaSprites.Pen(stack.last(), buffers.getBuffer(MechRenderTypes.PLASMA));
+        for (Vec3 point : mech.strikeImpacts()) {
+            Vec3 towardsEye = eye.subtract(point).normalize();
+            Vec3 center = point.subtract(base).add(towardsEye.scale(.43));
+            double radius = switch (attack) { case HYDRAULIC -> 1.62; case SWEEP -> 1.08; case WINGS -> 1.40; };
+            double stretch = attack == MechAttack.SWEEP ? 1.37 : 1;
+            float twist = attack == MechAttack.SWEEP ? -.34f : .11f;
+            PlasmaSprites.impact(sprites, center, towardsEye, radius, stretch, twist, attack.color, age, 9, .94f);
         }
     }
 
@@ -156,7 +169,7 @@ final class AttackEffects {
         pen.ring(new Vec3(0, .02, .22 + t * .64), RIGHT, UP, size * (.42 + 1.23 * spread),
                 .082 + .074 * pressure, 10, .12, AMBER, pressure * .91f);
         pen.beam(new Vec3(-size * .68, .05, -.24), new Vec3(size * .65, .11, .33), UP, .34,
-                CORE, pressure * .90f);
+                CORE, pressure * .64f);
         for (int i = 0; i < 8; i++) {
             double x = Math.cos(i * 2.39996), y = Math.sin(i * 2.39996);
             Vec3 fragment = new Vec3(x * (.36 + spread * size * 1.72),

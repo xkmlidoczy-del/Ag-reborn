@@ -1,0 +1,5514 @@
+{
+  "sika_deer.ambient": {
+    "subtitle": "subtitles.aca_fauna.sika_deer.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:sika_deer/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:sika_deer/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "sika_deer.alert": {
+    "subtitle": "subtitles.aca_fauna.sika_deer.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:sika_deer/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:sika_deer/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "sika_deer.hurt": {
+    "subtitle": "subtitles.aca_fauna.sika_deer.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:sika_deer/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:sika_deer/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "sika_deer.death": {
+    "subtitle": "subtitles.aca_fauna.sika_deer.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:sika_deer/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:sika_deer/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "sika_deer.step": {
+    "subtitle": "subtitles.aca_fauna.sika_deer.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:sika_deer/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:sika_deer/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "sika_deer.attack": {
+    "subtitle": "subtitles.aca_fauna.sika_deer.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:sika_deer/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:sika_deer/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "sika_deer.eat": {
+    "subtitle": "subtitles.aca_fauna.sika_deer.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:sika_deer/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:sika_deer/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "sika_deer.special": {
+    "subtitle": "subtitles.aca_fauna.sika_deer.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:sika_deer/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:sika_deer/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "moose.ambient": {
+    "subtitle": "subtitles.aca_fauna.moose.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:moose/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:moose/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "moose.alert": {
+    "subtitle": "subtitles.aca_fauna.moose.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:moose/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:moose/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "moose.hurt": {
+    "subtitle": "subtitles.aca_fauna.moose.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:moose/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:moose/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "moose.death": {
+    "subtitle": "subtitles.aca_fauna.moose.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:moose/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:moose/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "moose.step": {
+    "subtitle": "subtitles.aca_fauna.moose.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:moose/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:moose/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "moose.attack": {
+    "subtitle": "subtitles.aca_fauna.moose.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:moose/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:moose/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "moose.eat": {
+    "subtitle": "subtitles.aca_fauna.moose.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:moose/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:moose/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "moose.special": {
+    "subtitle": "subtitles.aca_fauna.moose.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:moose/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:moose/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "wild_boar.ambient": {
+    "subtitle": "subtitles.aca_fauna.wild_boar.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:wild_boar/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:wild_boar/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "wild_boar.alert": {
+    "subtitle": "subtitles.aca_fauna.wild_boar.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:wild_boar/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:wild_boar/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "wild_boar.hurt": {
+    "subtitle": "subtitles.aca_fauna.wild_boar.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:wild_boar/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:wild_boar/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "wild_boar.death": {
+    "subtitle": "subtitles.aca_fauna.wild_boar.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:wild_boar/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:wild_boar/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "wild_boar.step": {
+    "subtitle": "subtitles.aca_fauna.wild_boar.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:wild_boar/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:wild_boar/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "wild_boar.attack": {
+    "subtitle": "subtitles.aca_fauna.wild_boar.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:wild_boar/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:wild_boar/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "wild_boar.eat": {
+    "subtitle": "subtitles.aca_fauna.wild_boar.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:wild_boar/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:wild_boar/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "wild_boar.special": {
+    "subtitle": "subtitles.aca_fauna.wild_boar.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:wild_boar/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:wild_boar/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "brown_bear.ambient": {
+    "subtitle": "subtitles.aca_fauna.brown_bear.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:brown_bear/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:brown_bear/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "brown_bear.alert": {
+    "subtitle": "subtitles.aca_fauna.brown_bear.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:brown_bear/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:brown_bear/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "brown_bear.hurt": {
+    "subtitle": "subtitles.aca_fauna.brown_bear.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:brown_bear/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:brown_bear/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "brown_bear.death": {
+    "subtitle": "subtitles.aca_fauna.brown_bear.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:brown_bear/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:brown_bear/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "brown_bear.step": {
+    "subtitle": "subtitles.aca_fauna.brown_bear.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:brown_bear/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:brown_bear/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "brown_bear.attack": {
+    "subtitle": "subtitles.aca_fauna.brown_bear.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:brown_bear/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:brown_bear/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "brown_bear.eat": {
+    "subtitle": "subtitles.aca_fauna.brown_bear.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:brown_bear/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:brown_bear/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "brown_bear.special": {
+    "subtitle": "subtitles.aca_fauna.brown_bear.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:brown_bear/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:brown_bear/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "eurasian_lynx.ambient": {
+    "subtitle": "subtitles.aca_fauna.eurasian_lynx.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:eurasian_lynx/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:eurasian_lynx/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "eurasian_lynx.alert": {
+    "subtitle": "subtitles.aca_fauna.eurasian_lynx.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:eurasian_lynx/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:eurasian_lynx/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "eurasian_lynx.hurt": {
+    "subtitle": "subtitles.aca_fauna.eurasian_lynx.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:eurasian_lynx/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:eurasian_lynx/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "eurasian_lynx.death": {
+    "subtitle": "subtitles.aca_fauna.eurasian_lynx.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:eurasian_lynx/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:eurasian_lynx/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "eurasian_lynx.step": {
+    "subtitle": "subtitles.aca_fauna.eurasian_lynx.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:eurasian_lynx/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:eurasian_lynx/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "eurasian_lynx.attack": {
+    "subtitle": "subtitles.aca_fauna.eurasian_lynx.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:eurasian_lynx/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:eurasian_lynx/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "eurasian_lynx.eat": {
+    "subtitle": "subtitles.aca_fauna.eurasian_lynx.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:eurasian_lynx/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:eurasian_lynx/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "eurasian_lynx.special": {
+    "subtitle": "subtitles.aca_fauna.eurasian_lynx.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:eurasian_lynx/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:eurasian_lynx/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "raccoon.ambient": {
+    "subtitle": "subtitles.aca_fauna.raccoon.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:raccoon/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:raccoon/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "raccoon.alert": {
+    "subtitle": "subtitles.aca_fauna.raccoon.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:raccoon/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:raccoon/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "raccoon.hurt": {
+    "subtitle": "subtitles.aca_fauna.raccoon.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:raccoon/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:raccoon/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "raccoon.death": {
+    "subtitle": "subtitles.aca_fauna.raccoon.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:raccoon/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:raccoon/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "raccoon.step": {
+    "subtitle": "subtitles.aca_fauna.raccoon.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:raccoon/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:raccoon/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "raccoon.attack": {
+    "subtitle": "subtitles.aca_fauna.raccoon.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:raccoon/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:raccoon/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "raccoon.eat": {
+    "subtitle": "subtitles.aca_fauna.raccoon.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:raccoon/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:raccoon/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "raccoon.special": {
+    "subtitle": "subtitles.aca_fauna.raccoon.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:raccoon/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:raccoon/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "european_badger.ambient": {
+    "subtitle": "subtitles.aca_fauna.european_badger.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:european_badger/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:european_badger/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "european_badger.alert": {
+    "subtitle": "subtitles.aca_fauna.european_badger.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:european_badger/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:european_badger/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "european_badger.hurt": {
+    "subtitle": "subtitles.aca_fauna.european_badger.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:european_badger/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:european_badger/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "european_badger.death": {
+    "subtitle": "subtitles.aca_fauna.european_badger.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:european_badger/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:european_badger/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "european_badger.step": {
+    "subtitle": "subtitles.aca_fauna.european_badger.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:european_badger/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:european_badger/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "european_badger.attack": {
+    "subtitle": "subtitles.aca_fauna.european_badger.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:european_badger/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:european_badger/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "european_badger.eat": {
+    "subtitle": "subtitles.aca_fauna.european_badger.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:european_badger/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:european_badger/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "european_badger.special": {
+    "subtitle": "subtitles.aca_fauna.european_badger.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:european_badger/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:european_badger/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "red_squirrel.ambient": {
+    "subtitle": "subtitles.aca_fauna.red_squirrel.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:red_squirrel/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:red_squirrel/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "red_squirrel.alert": {
+    "subtitle": "subtitles.aca_fauna.red_squirrel.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:red_squirrel/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:red_squirrel/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "red_squirrel.hurt": {
+    "subtitle": "subtitles.aca_fauna.red_squirrel.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:red_squirrel/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:red_squirrel/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "red_squirrel.death": {
+    "subtitle": "subtitles.aca_fauna.red_squirrel.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:red_squirrel/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:red_squirrel/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "red_squirrel.step": {
+    "subtitle": "subtitles.aca_fauna.red_squirrel.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:red_squirrel/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:red_squirrel/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "red_squirrel.attack": {
+    "subtitle": "subtitles.aca_fauna.red_squirrel.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:red_squirrel/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:red_squirrel/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "red_squirrel.eat": {
+    "subtitle": "subtitles.aca_fauna.red_squirrel.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:red_squirrel/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:red_squirrel/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "red_squirrel.special": {
+    "subtitle": "subtitles.aca_fauna.red_squirrel.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:red_squirrel/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:red_squirrel/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "hedgehog.ambient": {
+    "subtitle": "subtitles.aca_fauna.hedgehog.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:hedgehog/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:hedgehog/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "hedgehog.alert": {
+    "subtitle": "subtitles.aca_fauna.hedgehog.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:hedgehog/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:hedgehog/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "hedgehog.hurt": {
+    "subtitle": "subtitles.aca_fauna.hedgehog.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:hedgehog/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:hedgehog/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "hedgehog.death": {
+    "subtitle": "subtitles.aca_fauna.hedgehog.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:hedgehog/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:hedgehog/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "hedgehog.step": {
+    "subtitle": "subtitles.aca_fauna.hedgehog.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:hedgehog/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:hedgehog/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "hedgehog.attack": {
+    "subtitle": "subtitles.aca_fauna.hedgehog.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:hedgehog/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:hedgehog/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "hedgehog.eat": {
+    "subtitle": "subtitles.aca_fauna.hedgehog.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:hedgehog/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:hedgehog/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "hedgehog.special": {
+    "subtitle": "subtitles.aca_fauna.hedgehog.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:hedgehog/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:hedgehog/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "beaver.ambient": {
+    "subtitle": "subtitles.aca_fauna.beaver.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:beaver/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:beaver/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "beaver.alert": {
+    "subtitle": "subtitles.aca_fauna.beaver.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:beaver/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:beaver/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "beaver.hurt": {
+    "subtitle": "subtitles.aca_fauna.beaver.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:beaver/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:beaver/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "beaver.death": {
+    "subtitle": "subtitles.aca_fauna.beaver.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:beaver/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:beaver/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "beaver.step": {
+    "subtitle": "subtitles.aca_fauna.beaver.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:beaver/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:beaver/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "beaver.attack": {
+    "subtitle": "subtitles.aca_fauna.beaver.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:beaver/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:beaver/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "beaver.eat": {
+    "subtitle": "subtitles.aca_fauna.beaver.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:beaver/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:beaver/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "beaver.special": {
+    "subtitle": "subtitles.aca_fauna.beaver.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:beaver/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:beaver/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "african_elephant.ambient": {
+    "subtitle": "subtitles.aca_fauna.african_elephant.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:african_elephant/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:african_elephant/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "african_elephant.alert": {
+    "subtitle": "subtitles.aca_fauna.african_elephant.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:african_elephant/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:african_elephant/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "african_elephant.hurt": {
+    "subtitle": "subtitles.aca_fauna.african_elephant.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:african_elephant/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:african_elephant/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "african_elephant.death": {
+    "subtitle": "subtitles.aca_fauna.african_elephant.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:african_elephant/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:african_elephant/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "african_elephant.step": {
+    "subtitle": "subtitles.aca_fauna.african_elephant.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:african_elephant/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:african_elephant/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "african_elephant.attack": {
+    "subtitle": "subtitles.aca_fauna.african_elephant.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:african_elephant/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:african_elephant/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "african_elephant.eat": {
+    "subtitle": "subtitles.aca_fauna.african_elephant.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:african_elephant/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:african_elephant/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "african_elephant.special": {
+    "subtitle": "subtitles.aca_fauna.african_elephant.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:african_elephant/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:african_elephant/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "giraffe.ambient": {
+    "subtitle": "subtitles.aca_fauna.giraffe.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:giraffe/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:giraffe/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "giraffe.alert": {
+    "subtitle": "subtitles.aca_fauna.giraffe.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:giraffe/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:giraffe/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "giraffe.hurt": {
+    "subtitle": "subtitles.aca_fauna.giraffe.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:giraffe/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:giraffe/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "giraffe.death": {
+    "subtitle": "subtitles.aca_fauna.giraffe.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:giraffe/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:giraffe/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "giraffe.step": {
+    "subtitle": "subtitles.aca_fauna.giraffe.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:giraffe/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:giraffe/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "giraffe.attack": {
+    "subtitle": "subtitles.aca_fauna.giraffe.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:giraffe/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:giraffe/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "giraffe.eat": {
+    "subtitle": "subtitles.aca_fauna.giraffe.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:giraffe/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:giraffe/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "giraffe.special": {
+    "subtitle": "subtitles.aca_fauna.giraffe.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:giraffe/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:giraffe/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "plains_zebra.ambient": {
+    "subtitle": "subtitles.aca_fauna.plains_zebra.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:plains_zebra/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:plains_zebra/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "plains_zebra.alert": {
+    "subtitle": "subtitles.aca_fauna.plains_zebra.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:plains_zebra/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:plains_zebra/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "plains_zebra.hurt": {
+    "subtitle": "subtitles.aca_fauna.plains_zebra.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:plains_zebra/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:plains_zebra/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "plains_zebra.death": {
+    "subtitle": "subtitles.aca_fauna.plains_zebra.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:plains_zebra/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:plains_zebra/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "plains_zebra.step": {
+    "subtitle": "subtitles.aca_fauna.plains_zebra.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:plains_zebra/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:plains_zebra/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "plains_zebra.attack": {
+    "subtitle": "subtitles.aca_fauna.plains_zebra.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:plains_zebra/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:plains_zebra/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "plains_zebra.eat": {
+    "subtitle": "subtitles.aca_fauna.plains_zebra.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:plains_zebra/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:plains_zebra/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "plains_zebra.special": {
+    "subtitle": "subtitles.aca_fauna.plains_zebra.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:plains_zebra/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:plains_zebra/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "white_rhino.ambient": {
+    "subtitle": "subtitles.aca_fauna.white_rhino.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:white_rhino/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:white_rhino/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "white_rhino.alert": {
+    "subtitle": "subtitles.aca_fauna.white_rhino.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:white_rhino/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:white_rhino/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "white_rhino.hurt": {
+    "subtitle": "subtitles.aca_fauna.white_rhino.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:white_rhino/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:white_rhino/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "white_rhino.death": {
+    "subtitle": "subtitles.aca_fauna.white_rhino.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:white_rhino/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:white_rhino/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "white_rhino.step": {
+    "subtitle": "subtitles.aca_fauna.white_rhino.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:white_rhino/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:white_rhino/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "white_rhino.attack": {
+    "subtitle": "subtitles.aca_fauna.white_rhino.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:white_rhino/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:white_rhino/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "white_rhino.eat": {
+    "subtitle": "subtitles.aca_fauna.white_rhino.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:white_rhino/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:white_rhino/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "white_rhino.special": {
+    "subtitle": "subtitles.aca_fauna.white_rhino.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:white_rhino/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:white_rhino/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "hippopotamus.ambient": {
+    "subtitle": "subtitles.aca_fauna.hippopotamus.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:hippopotamus/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:hippopotamus/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "hippopotamus.alert": {
+    "subtitle": "subtitles.aca_fauna.hippopotamus.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:hippopotamus/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:hippopotamus/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "hippopotamus.hurt": {
+    "subtitle": "subtitles.aca_fauna.hippopotamus.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:hippopotamus/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:hippopotamus/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "hippopotamus.death": {
+    "subtitle": "subtitles.aca_fauna.hippopotamus.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:hippopotamus/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:hippopotamus/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "hippopotamus.step": {
+    "subtitle": "subtitles.aca_fauna.hippopotamus.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:hippopotamus/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:hippopotamus/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "hippopotamus.attack": {
+    "subtitle": "subtitles.aca_fauna.hippopotamus.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:hippopotamus/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:hippopotamus/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "hippopotamus.eat": {
+    "subtitle": "subtitles.aca_fauna.hippopotamus.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:hippopotamus/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:hippopotamus/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "hippopotamus.special": {
+    "subtitle": "subtitles.aca_fauna.hippopotamus.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:hippopotamus/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:hippopotamus/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "african_buffalo.ambient": {
+    "subtitle": "subtitles.aca_fauna.african_buffalo.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:african_buffalo/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:african_buffalo/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "african_buffalo.alert": {
+    "subtitle": "subtitles.aca_fauna.african_buffalo.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:african_buffalo/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:african_buffalo/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "african_buffalo.hurt": {
+    "subtitle": "subtitles.aca_fauna.african_buffalo.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:african_buffalo/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:african_buffalo/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "african_buffalo.death": {
+    "subtitle": "subtitles.aca_fauna.african_buffalo.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:african_buffalo/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:african_buffalo/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "african_buffalo.step": {
+    "subtitle": "subtitles.aca_fauna.african_buffalo.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:african_buffalo/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:african_buffalo/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "african_buffalo.attack": {
+    "subtitle": "subtitles.aca_fauna.african_buffalo.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:african_buffalo/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:african_buffalo/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "african_buffalo.eat": {
+    "subtitle": "subtitles.aca_fauna.african_buffalo.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:african_buffalo/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:african_buffalo/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "african_buffalo.special": {
+    "subtitle": "subtitles.aca_fauna.african_buffalo.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:african_buffalo/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:african_buffalo/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "impala.ambient": {
+    "subtitle": "subtitles.aca_fauna.impala.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:impala/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:impala/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "impala.alert": {
+    "subtitle": "subtitles.aca_fauna.impala.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:impala/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:impala/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "impala.hurt": {
+    "subtitle": "subtitles.aca_fauna.impala.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:impala/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:impala/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "impala.death": {
+    "subtitle": "subtitles.aca_fauna.impala.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:impala/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:impala/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "impala.step": {
+    "subtitle": "subtitles.aca_fauna.impala.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:impala/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:impala/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "impala.attack": {
+    "subtitle": "subtitles.aca_fauna.impala.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:impala/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:impala/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "impala.eat": {
+    "subtitle": "subtitles.aca_fauna.impala.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:impala/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:impala/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "impala.special": {
+    "subtitle": "subtitles.aca_fauna.impala.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:impala/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:impala/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "lion.ambient": {
+    "subtitle": "subtitles.aca_fauna.lion.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:lion/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:lion/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "lion.alert": {
+    "subtitle": "subtitles.aca_fauna.lion.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:lion/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:lion/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "lion.hurt": {
+    "subtitle": "subtitles.aca_fauna.lion.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:lion/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:lion/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "lion.death": {
+    "subtitle": "subtitles.aca_fauna.lion.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:lion/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:lion/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "lion.step": {
+    "subtitle": "subtitles.aca_fauna.lion.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:lion/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:lion/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "lion.attack": {
+    "subtitle": "subtitles.aca_fauna.lion.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:lion/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:lion/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "lion.eat": {
+    "subtitle": "subtitles.aca_fauna.lion.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:lion/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:lion/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "lion.special": {
+    "subtitle": "subtitles.aca_fauna.lion.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:lion/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:lion/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "cheetah.ambient": {
+    "subtitle": "subtitles.aca_fauna.cheetah.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:cheetah/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:cheetah/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "cheetah.alert": {
+    "subtitle": "subtitles.aca_fauna.cheetah.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:cheetah/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:cheetah/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "cheetah.hurt": {
+    "subtitle": "subtitles.aca_fauna.cheetah.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:cheetah/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:cheetah/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "cheetah.death": {
+    "subtitle": "subtitles.aca_fauna.cheetah.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:cheetah/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:cheetah/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "cheetah.step": {
+    "subtitle": "subtitles.aca_fauna.cheetah.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:cheetah/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:cheetah/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "cheetah.attack": {
+    "subtitle": "subtitles.aca_fauna.cheetah.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:cheetah/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:cheetah/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "cheetah.eat": {
+    "subtitle": "subtitles.aca_fauna.cheetah.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:cheetah/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:cheetah/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "cheetah.special": {
+    "subtitle": "subtitles.aca_fauna.cheetah.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:cheetah/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:cheetah/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "spotted_hyena.ambient": {
+    "subtitle": "subtitles.aca_fauna.spotted_hyena.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:spotted_hyena/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:spotted_hyena/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "spotted_hyena.alert": {
+    "subtitle": "subtitles.aca_fauna.spotted_hyena.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:spotted_hyena/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:spotted_hyena/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "spotted_hyena.hurt": {
+    "subtitle": "subtitles.aca_fauna.spotted_hyena.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:spotted_hyena/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:spotted_hyena/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "spotted_hyena.death": {
+    "subtitle": "subtitles.aca_fauna.spotted_hyena.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:spotted_hyena/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:spotted_hyena/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "spotted_hyena.step": {
+    "subtitle": "subtitles.aca_fauna.spotted_hyena.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:spotted_hyena/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:spotted_hyena/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "spotted_hyena.attack": {
+    "subtitle": "subtitles.aca_fauna.spotted_hyena.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:spotted_hyena/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:spotted_hyena/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "spotted_hyena.eat": {
+    "subtitle": "subtitles.aca_fauna.spotted_hyena.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:spotted_hyena/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:spotted_hyena/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "spotted_hyena.special": {
+    "subtitle": "subtitles.aca_fauna.spotted_hyena.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:spotted_hyena/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:spotted_hyena/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "malayan_tapir.ambient": {
+    "subtitle": "subtitles.aca_fauna.malayan_tapir.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:malayan_tapir/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:malayan_tapir/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "malayan_tapir.alert": {
+    "subtitle": "subtitles.aca_fauna.malayan_tapir.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:malayan_tapir/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:malayan_tapir/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "malayan_tapir.hurt": {
+    "subtitle": "subtitles.aca_fauna.malayan_tapir.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:malayan_tapir/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:malayan_tapir/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "malayan_tapir.death": {
+    "subtitle": "subtitles.aca_fauna.malayan_tapir.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:malayan_tapir/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:malayan_tapir/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "malayan_tapir.step": {
+    "subtitle": "subtitles.aca_fauna.malayan_tapir.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:malayan_tapir/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:malayan_tapir/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "malayan_tapir.attack": {
+    "subtitle": "subtitles.aca_fauna.malayan_tapir.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:malayan_tapir/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:malayan_tapir/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "malayan_tapir.eat": {
+    "subtitle": "subtitles.aca_fauna.malayan_tapir.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:malayan_tapir/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:malayan_tapir/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "malayan_tapir.special": {
+    "subtitle": "subtitles.aca_fauna.malayan_tapir.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:malayan_tapir/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:malayan_tapir/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "two_toed_sloth.ambient": {
+    "subtitle": "subtitles.aca_fauna.two_toed_sloth.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:two_toed_sloth/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:two_toed_sloth/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "two_toed_sloth.alert": {
+    "subtitle": "subtitles.aca_fauna.two_toed_sloth.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:two_toed_sloth/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:two_toed_sloth/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "two_toed_sloth.hurt": {
+    "subtitle": "subtitles.aca_fauna.two_toed_sloth.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:two_toed_sloth/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:two_toed_sloth/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "two_toed_sloth.death": {
+    "subtitle": "subtitles.aca_fauna.two_toed_sloth.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:two_toed_sloth/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:two_toed_sloth/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "two_toed_sloth.step": {
+    "subtitle": "subtitles.aca_fauna.two_toed_sloth.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:two_toed_sloth/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:two_toed_sloth/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "two_toed_sloth.attack": {
+    "subtitle": "subtitles.aca_fauna.two_toed_sloth.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:two_toed_sloth/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:two_toed_sloth/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "two_toed_sloth.eat": {
+    "subtitle": "subtitles.aca_fauna.two_toed_sloth.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:two_toed_sloth/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:two_toed_sloth/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "two_toed_sloth.special": {
+    "subtitle": "subtitles.aca_fauna.two_toed_sloth.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:two_toed_sloth/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:two_toed_sloth/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "giant_anteater.ambient": {
+    "subtitle": "subtitles.aca_fauna.giant_anteater.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:giant_anteater/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:giant_anteater/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "giant_anteater.alert": {
+    "subtitle": "subtitles.aca_fauna.giant_anteater.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:giant_anteater/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:giant_anteater/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "giant_anteater.hurt": {
+    "subtitle": "subtitles.aca_fauna.giant_anteater.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:giant_anteater/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:giant_anteater/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "giant_anteater.death": {
+    "subtitle": "subtitles.aca_fauna.giant_anteater.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:giant_anteater/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:giant_anteater/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "giant_anteater.step": {
+    "subtitle": "subtitles.aca_fauna.giant_anteater.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:giant_anteater/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:giant_anteater/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "giant_anteater.attack": {
+    "subtitle": "subtitles.aca_fauna.giant_anteater.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:giant_anteater/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:giant_anteater/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "giant_anteater.eat": {
+    "subtitle": "subtitles.aca_fauna.giant_anteater.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:giant_anteater/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:giant_anteater/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "giant_anteater.special": {
+    "subtitle": "subtitles.aca_fauna.giant_anteater.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:giant_anteater/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:giant_anteater/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "capybara.ambient": {
+    "subtitle": "subtitles.aca_fauna.capybara.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:capybara/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:capybara/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "capybara.alert": {
+    "subtitle": "subtitles.aca_fauna.capybara.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:capybara/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:capybara/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "capybara.hurt": {
+    "subtitle": "subtitles.aca_fauna.capybara.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:capybara/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:capybara/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "capybara.death": {
+    "subtitle": "subtitles.aca_fauna.capybara.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:capybara/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:capybara/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "capybara.step": {
+    "subtitle": "subtitles.aca_fauna.capybara.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:capybara/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:capybara/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "capybara.attack": {
+    "subtitle": "subtitles.aca_fauna.capybara.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:capybara/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:capybara/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "capybara.eat": {
+    "subtitle": "subtitles.aca_fauna.capybara.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:capybara/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:capybara/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "capybara.special": {
+    "subtitle": "subtitles.aca_fauna.capybara.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:capybara/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:capybara/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "ring_tailed_lemur.ambient": {
+    "subtitle": "subtitles.aca_fauna.ring_tailed_lemur.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:ring_tailed_lemur/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:ring_tailed_lemur/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "ring_tailed_lemur.alert": {
+    "subtitle": "subtitles.aca_fauna.ring_tailed_lemur.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:ring_tailed_lemur/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:ring_tailed_lemur/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "ring_tailed_lemur.hurt": {
+    "subtitle": "subtitles.aca_fauna.ring_tailed_lemur.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:ring_tailed_lemur/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:ring_tailed_lemur/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "ring_tailed_lemur.death": {
+    "subtitle": "subtitles.aca_fauna.ring_tailed_lemur.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:ring_tailed_lemur/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:ring_tailed_lemur/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "ring_tailed_lemur.step": {
+    "subtitle": "subtitles.aca_fauna.ring_tailed_lemur.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:ring_tailed_lemur/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:ring_tailed_lemur/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "ring_tailed_lemur.attack": {
+    "subtitle": "subtitles.aca_fauna.ring_tailed_lemur.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:ring_tailed_lemur/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:ring_tailed_lemur/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "ring_tailed_lemur.eat": {
+    "subtitle": "subtitles.aca_fauna.ring_tailed_lemur.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:ring_tailed_lemur/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:ring_tailed_lemur/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "ring_tailed_lemur.special": {
+    "subtitle": "subtitles.aca_fauna.ring_tailed_lemur.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:ring_tailed_lemur/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:ring_tailed_lemur/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "jaguar.ambient": {
+    "subtitle": "subtitles.aca_fauna.jaguar.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:jaguar/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:jaguar/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "jaguar.alert": {
+    "subtitle": "subtitles.aca_fauna.jaguar.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:jaguar/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:jaguar/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "jaguar.hurt": {
+    "subtitle": "subtitles.aca_fauna.jaguar.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:jaguar/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:jaguar/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "jaguar.death": {
+    "subtitle": "subtitles.aca_fauna.jaguar.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:jaguar/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:jaguar/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "jaguar.step": {
+    "subtitle": "subtitles.aca_fauna.jaguar.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:jaguar/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:jaguar/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "jaguar.attack": {
+    "subtitle": "subtitles.aca_fauna.jaguar.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:jaguar/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:jaguar/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "jaguar.eat": {
+    "subtitle": "subtitles.aca_fauna.jaguar.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:jaguar/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:jaguar/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "jaguar.special": {
+    "subtitle": "subtitles.aca_fauna.jaguar.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:jaguar/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:jaguar/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "alpine_ibex.ambient": {
+    "subtitle": "subtitles.aca_fauna.alpine_ibex.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:alpine_ibex/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:alpine_ibex/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "alpine_ibex.alert": {
+    "subtitle": "subtitles.aca_fauna.alpine_ibex.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:alpine_ibex/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:alpine_ibex/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "alpine_ibex.hurt": {
+    "subtitle": "subtitles.aca_fauna.alpine_ibex.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:alpine_ibex/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:alpine_ibex/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "alpine_ibex.death": {
+    "subtitle": "subtitles.aca_fauna.alpine_ibex.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:alpine_ibex/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:alpine_ibex/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "alpine_ibex.step": {
+    "subtitle": "subtitles.aca_fauna.alpine_ibex.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:alpine_ibex/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:alpine_ibex/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "alpine_ibex.attack": {
+    "subtitle": "subtitles.aca_fauna.alpine_ibex.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:alpine_ibex/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:alpine_ibex/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "alpine_ibex.eat": {
+    "subtitle": "subtitles.aca_fauna.alpine_ibex.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:alpine_ibex/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:alpine_ibex/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "alpine_ibex.special": {
+    "subtitle": "subtitles.aca_fauna.alpine_ibex.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:alpine_ibex/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:alpine_ibex/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "snow_leopard.ambient": {
+    "subtitle": "subtitles.aca_fauna.snow_leopard.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:snow_leopard/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:snow_leopard/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "snow_leopard.alert": {
+    "subtitle": "subtitles.aca_fauna.snow_leopard.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:snow_leopard/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:snow_leopard/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "snow_leopard.hurt": {
+    "subtitle": "subtitles.aca_fauna.snow_leopard.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:snow_leopard/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:snow_leopard/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "snow_leopard.death": {
+    "subtitle": "subtitles.aca_fauna.snow_leopard.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:snow_leopard/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:snow_leopard/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "snow_leopard.step": {
+    "subtitle": "subtitles.aca_fauna.snow_leopard.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:snow_leopard/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:snow_leopard/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "snow_leopard.attack": {
+    "subtitle": "subtitles.aca_fauna.snow_leopard.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:snow_leopard/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:snow_leopard/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "snow_leopard.eat": {
+    "subtitle": "subtitles.aca_fauna.snow_leopard.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:snow_leopard/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:snow_leopard/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "snow_leopard.special": {
+    "subtitle": "subtitles.aca_fauna.snow_leopard.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:snow_leopard/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:snow_leopard/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "marmot.ambient": {
+    "subtitle": "subtitles.aca_fauna.marmot.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:marmot/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:marmot/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "marmot.alert": {
+    "subtitle": "subtitles.aca_fauna.marmot.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:marmot/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:marmot/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "marmot.hurt": {
+    "subtitle": "subtitles.aca_fauna.marmot.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:marmot/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:marmot/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "marmot.death": {
+    "subtitle": "subtitles.aca_fauna.marmot.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:marmot/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:marmot/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "marmot.step": {
+    "subtitle": "subtitles.aca_fauna.marmot.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:marmot/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:marmot/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "marmot.attack": {
+    "subtitle": "subtitles.aca_fauna.marmot.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:marmot/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:marmot/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "marmot.eat": {
+    "subtitle": "subtitles.aca_fauna.marmot.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:marmot/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:marmot/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "marmot.special": {
+    "subtitle": "subtitles.aca_fauna.marmot.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:marmot/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:marmot/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "fennec_fox.ambient": {
+    "subtitle": "subtitles.aca_fauna.fennec_fox.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:fennec_fox/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:fennec_fox/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "fennec_fox.alert": {
+    "subtitle": "subtitles.aca_fauna.fennec_fox.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:fennec_fox/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:fennec_fox/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "fennec_fox.hurt": {
+    "subtitle": "subtitles.aca_fauna.fennec_fox.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:fennec_fox/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:fennec_fox/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "fennec_fox.death": {
+    "subtitle": "subtitles.aca_fauna.fennec_fox.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:fennec_fox/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:fennec_fox/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "fennec_fox.step": {
+    "subtitle": "subtitles.aca_fauna.fennec_fox.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:fennec_fox/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:fennec_fox/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "fennec_fox.attack": {
+    "subtitle": "subtitles.aca_fauna.fennec_fox.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:fennec_fox/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:fennec_fox/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "fennec_fox.eat": {
+    "subtitle": "subtitles.aca_fauna.fennec_fox.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:fennec_fox/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:fennec_fox/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "fennec_fox.special": {
+    "subtitle": "subtitles.aca_fauna.fennec_fox.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:fennec_fox/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:fennec_fox/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "meerkat.ambient": {
+    "subtitle": "subtitles.aca_fauna.meerkat.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:meerkat/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:meerkat/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "meerkat.alert": {
+    "subtitle": "subtitles.aca_fauna.meerkat.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:meerkat/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:meerkat/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "meerkat.hurt": {
+    "subtitle": "subtitles.aca_fauna.meerkat.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:meerkat/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:meerkat/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "meerkat.death": {
+    "subtitle": "subtitles.aca_fauna.meerkat.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:meerkat/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:meerkat/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "meerkat.step": {
+    "subtitle": "subtitles.aca_fauna.meerkat.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:meerkat/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:meerkat/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "meerkat.attack": {
+    "subtitle": "subtitles.aca_fauna.meerkat.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:meerkat/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:meerkat/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "meerkat.eat": {
+    "subtitle": "subtitles.aca_fauna.meerkat.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:meerkat/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:meerkat/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "meerkat.special": {
+    "subtitle": "subtitles.aca_fauna.meerkat.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:meerkat/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:meerkat/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "musk_ox.ambient": {
+    "subtitle": "subtitles.aca_fauna.musk_ox.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:musk_ox/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:musk_ox/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "musk_ox.alert": {
+    "subtitle": "subtitles.aca_fauna.musk_ox.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:musk_ox/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:musk_ox/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "musk_ox.hurt": {
+    "subtitle": "subtitles.aca_fauna.musk_ox.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:musk_ox/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:musk_ox/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "musk_ox.death": {
+    "subtitle": "subtitles.aca_fauna.musk_ox.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:musk_ox/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:musk_ox/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "musk_ox.step": {
+    "subtitle": "subtitles.aca_fauna.musk_ox.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:musk_ox/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:musk_ox/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "musk_ox.attack": {
+    "subtitle": "subtitles.aca_fauna.musk_ox.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:musk_ox/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:musk_ox/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "musk_ox.eat": {
+    "subtitle": "subtitles.aca_fauna.musk_ox.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:musk_ox/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:musk_ox/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "musk_ox.special": {
+    "subtitle": "subtitles.aca_fauna.musk_ox.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:musk_ox/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:musk_ox/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "ostrich.ambient": {
+    "subtitle": "subtitles.aca_fauna.ostrich.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:ostrich/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:ostrich/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "ostrich.alert": {
+    "subtitle": "subtitles.aca_fauna.ostrich.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:ostrich/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:ostrich/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "ostrich.hurt": {
+    "subtitle": "subtitles.aca_fauna.ostrich.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:ostrich/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:ostrich/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "ostrich.death": {
+    "subtitle": "subtitles.aca_fauna.ostrich.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:ostrich/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:ostrich/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "ostrich.step": {
+    "subtitle": "subtitles.aca_fauna.ostrich.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:ostrich/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:ostrich/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "ostrich.attack": {
+    "subtitle": "subtitles.aca_fauna.ostrich.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:ostrich/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:ostrich/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "ostrich.eat": {
+    "subtitle": "subtitles.aca_fauna.ostrich.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:ostrich/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:ostrich/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "ostrich.special": {
+    "subtitle": "subtitles.aca_fauna.ostrich.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:ostrich/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:ostrich/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "peacock.ambient": {
+    "subtitle": "subtitles.aca_fauna.peacock.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:peacock/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:peacock/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "peacock.alert": {
+    "subtitle": "subtitles.aca_fauna.peacock.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:peacock/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:peacock/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "peacock.hurt": {
+    "subtitle": "subtitles.aca_fauna.peacock.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:peacock/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:peacock/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "peacock.death": {
+    "subtitle": "subtitles.aca_fauna.peacock.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:peacock/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:peacock/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "peacock.step": {
+    "subtitle": "subtitles.aca_fauna.peacock.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:peacock/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:peacock/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "peacock.attack": {
+    "subtitle": "subtitles.aca_fauna.peacock.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:peacock/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:peacock/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "peacock.eat": {
+    "subtitle": "subtitles.aca_fauna.peacock.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:peacock/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:peacock/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "peacock.special": {
+    "subtitle": "subtitles.aca_fauna.peacock.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:peacock/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:peacock/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "flamingo.ambient": {
+    "subtitle": "subtitles.aca_fauna.flamingo.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:flamingo/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:flamingo/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "flamingo.alert": {
+    "subtitle": "subtitles.aca_fauna.flamingo.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:flamingo/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:flamingo/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "flamingo.hurt": {
+    "subtitle": "subtitles.aca_fauna.flamingo.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:flamingo/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:flamingo/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "flamingo.death": {
+    "subtitle": "subtitles.aca_fauna.flamingo.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:flamingo/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:flamingo/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "flamingo.step": {
+    "subtitle": "subtitles.aca_fauna.flamingo.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:flamingo/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:flamingo/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "flamingo.attack": {
+    "subtitle": "subtitles.aca_fauna.flamingo.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:flamingo/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:flamingo/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "flamingo.eat": {
+    "subtitle": "subtitles.aca_fauna.flamingo.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:flamingo/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:flamingo/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "flamingo.special": {
+    "subtitle": "subtitles.aca_fauna.flamingo.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:flamingo/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:flamingo/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "swan.ambient": {
+    "subtitle": "subtitles.aca_fauna.swan.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:swan/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:swan/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "swan.alert": {
+    "subtitle": "subtitles.aca_fauna.swan.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:swan/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:swan/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "swan.hurt": {
+    "subtitle": "subtitles.aca_fauna.swan.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:swan/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:swan/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "swan.death": {
+    "subtitle": "subtitles.aca_fauna.swan.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:swan/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:swan/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "swan.step": {
+    "subtitle": "subtitles.aca_fauna.swan.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:swan/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:swan/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "swan.attack": {
+    "subtitle": "subtitles.aca_fauna.swan.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:swan/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:swan/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "swan.eat": {
+    "subtitle": "subtitles.aca_fauna.swan.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:swan/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:swan/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "swan.special": {
+    "subtitle": "subtitles.aca_fauna.swan.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:swan/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:swan/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "mallard_duck.ambient": {
+    "subtitle": "subtitles.aca_fauna.mallard_duck.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:mallard_duck/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:mallard_duck/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "mallard_duck.alert": {
+    "subtitle": "subtitles.aca_fauna.mallard_duck.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:mallard_duck/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:mallard_duck/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "mallard_duck.hurt": {
+    "subtitle": "subtitles.aca_fauna.mallard_duck.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:mallard_duck/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:mallard_duck/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "mallard_duck.death": {
+    "subtitle": "subtitles.aca_fauna.mallard_duck.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:mallard_duck/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:mallard_duck/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "mallard_duck.step": {
+    "subtitle": "subtitles.aca_fauna.mallard_duck.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:mallard_duck/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:mallard_duck/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "mallard_duck.attack": {
+    "subtitle": "subtitles.aca_fauna.mallard_duck.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:mallard_duck/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:mallard_duck/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "mallard_duck.eat": {
+    "subtitle": "subtitles.aca_fauna.mallard_duck.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:mallard_duck/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:mallard_duck/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "mallard_duck.special": {
+    "subtitle": "subtitles.aca_fauna.mallard_duck.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:mallard_duck/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:mallard_duck/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "red_crowned_crane.ambient": {
+    "subtitle": "subtitles.aca_fauna.red_crowned_crane.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:red_crowned_crane/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:red_crowned_crane/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "red_crowned_crane.alert": {
+    "subtitle": "subtitles.aca_fauna.red_crowned_crane.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:red_crowned_crane/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:red_crowned_crane/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "red_crowned_crane.hurt": {
+    "subtitle": "subtitles.aca_fauna.red_crowned_crane.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:red_crowned_crane/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:red_crowned_crane/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "red_crowned_crane.death": {
+    "subtitle": "subtitles.aca_fauna.red_crowned_crane.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:red_crowned_crane/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:red_crowned_crane/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "red_crowned_crane.step": {
+    "subtitle": "subtitles.aca_fauna.red_crowned_crane.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:red_crowned_crane/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:red_crowned_crane/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "red_crowned_crane.attack": {
+    "subtitle": "subtitles.aca_fauna.red_crowned_crane.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:red_crowned_crane/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:red_crowned_crane/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "red_crowned_crane.eat": {
+    "subtitle": "subtitles.aca_fauna.red_crowned_crane.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:red_crowned_crane/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:red_crowned_crane/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "red_crowned_crane.special": {
+    "subtitle": "subtitles.aca_fauna.red_crowned_crane.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:red_crowned_crane/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:red_crowned_crane/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "toucan.ambient": {
+    "subtitle": "subtitles.aca_fauna.toucan.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:toucan/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:toucan/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "toucan.alert": {
+    "subtitle": "subtitles.aca_fauna.toucan.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:toucan/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:toucan/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "toucan.hurt": {
+    "subtitle": "subtitles.aca_fauna.toucan.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:toucan/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:toucan/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "toucan.death": {
+    "subtitle": "subtitles.aca_fauna.toucan.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:toucan/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:toucan/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "toucan.step": {
+    "subtitle": "subtitles.aca_fauna.toucan.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:toucan/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:toucan/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "toucan.attack": {
+    "subtitle": "subtitles.aca_fauna.toucan.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:toucan/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:toucan/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "toucan.eat": {
+    "subtitle": "subtitles.aca_fauna.toucan.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:toucan/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:toucan/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "toucan.special": {
+    "subtitle": "subtitles.aca_fauna.toucan.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:toucan/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:toucan/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "woodpecker.ambient": {
+    "subtitle": "subtitles.aca_fauna.woodpecker.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:woodpecker/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:woodpecker/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "woodpecker.alert": {
+    "subtitle": "subtitles.aca_fauna.woodpecker.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:woodpecker/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:woodpecker/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "woodpecker.hurt": {
+    "subtitle": "subtitles.aca_fauna.woodpecker.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:woodpecker/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:woodpecker/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "woodpecker.death": {
+    "subtitle": "subtitles.aca_fauna.woodpecker.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:woodpecker/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:woodpecker/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "woodpecker.step": {
+    "subtitle": "subtitles.aca_fauna.woodpecker.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:woodpecker/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:woodpecker/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "woodpecker.attack": {
+    "subtitle": "subtitles.aca_fauna.woodpecker.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:woodpecker/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:woodpecker/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "woodpecker.eat": {
+    "subtitle": "subtitles.aca_fauna.woodpecker.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:woodpecker/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:woodpecker/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "woodpecker.special": {
+    "subtitle": "subtitles.aca_fauna.woodpecker.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:woodpecker/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:woodpecker/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "eagle_owl.ambient": {
+    "subtitle": "subtitles.aca_fauna.eagle_owl.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:eagle_owl/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:eagle_owl/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "eagle_owl.alert": {
+    "subtitle": "subtitles.aca_fauna.eagle_owl.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:eagle_owl/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:eagle_owl/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "eagle_owl.hurt": {
+    "subtitle": "subtitles.aca_fauna.eagle_owl.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:eagle_owl/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:eagle_owl/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "eagle_owl.death": {
+    "subtitle": "subtitles.aca_fauna.eagle_owl.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:eagle_owl/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:eagle_owl/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "eagle_owl.step": {
+    "subtitle": "subtitles.aca_fauna.eagle_owl.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:eagle_owl/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:eagle_owl/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "eagle_owl.attack": {
+    "subtitle": "subtitles.aca_fauna.eagle_owl.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:eagle_owl/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:eagle_owl/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "eagle_owl.eat": {
+    "subtitle": "subtitles.aca_fauna.eagle_owl.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:eagle_owl/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:eagle_owl/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "eagle_owl.special": {
+    "subtitle": "subtitles.aca_fauna.eagle_owl.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:eagle_owl/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:eagle_owl/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "bald_eagle.ambient": {
+    "subtitle": "subtitles.aca_fauna.bald_eagle.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:bald_eagle/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:bald_eagle/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "bald_eagle.alert": {
+    "subtitle": "subtitles.aca_fauna.bald_eagle.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:bald_eagle/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:bald_eagle/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "bald_eagle.hurt": {
+    "subtitle": "subtitles.aca_fauna.bald_eagle.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:bald_eagle/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:bald_eagle/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "bald_eagle.death": {
+    "subtitle": "subtitles.aca_fauna.bald_eagle.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:bald_eagle/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:bald_eagle/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "bald_eagle.step": {
+    "subtitle": "subtitles.aca_fauna.bald_eagle.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:bald_eagle/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:bald_eagle/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "bald_eagle.attack": {
+    "subtitle": "subtitles.aca_fauna.bald_eagle.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:bald_eagle/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:bald_eagle/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "bald_eagle.eat": {
+    "subtitle": "subtitles.aca_fauna.bald_eagle.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:bald_eagle/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:bald_eagle/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "bald_eagle.special": {
+    "subtitle": "subtitles.aca_fauna.bald_eagle.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:bald_eagle/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:bald_eagle/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "nile_crocodile.ambient": {
+    "subtitle": "subtitles.aca_fauna.nile_crocodile.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:nile_crocodile/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:nile_crocodile/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "nile_crocodile.alert": {
+    "subtitle": "subtitles.aca_fauna.nile_crocodile.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:nile_crocodile/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:nile_crocodile/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "nile_crocodile.hurt": {
+    "subtitle": "subtitles.aca_fauna.nile_crocodile.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:nile_crocodile/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:nile_crocodile/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "nile_crocodile.death": {
+    "subtitle": "subtitles.aca_fauna.nile_crocodile.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:nile_crocodile/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:nile_crocodile/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "nile_crocodile.step": {
+    "subtitle": "subtitles.aca_fauna.nile_crocodile.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:nile_crocodile/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:nile_crocodile/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "nile_crocodile.attack": {
+    "subtitle": "subtitles.aca_fauna.nile_crocodile.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:nile_crocodile/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:nile_crocodile/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "nile_crocodile.eat": {
+    "subtitle": "subtitles.aca_fauna.nile_crocodile.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:nile_crocodile/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:nile_crocodile/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "nile_crocodile.special": {
+    "subtitle": "subtitles.aca_fauna.nile_crocodile.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:nile_crocodile/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:nile_crocodile/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "komodo_dragon.ambient": {
+    "subtitle": "subtitles.aca_fauna.komodo_dragon.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:komodo_dragon/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:komodo_dragon/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "komodo_dragon.alert": {
+    "subtitle": "subtitles.aca_fauna.komodo_dragon.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:komodo_dragon/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:komodo_dragon/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "komodo_dragon.hurt": {
+    "subtitle": "subtitles.aca_fauna.komodo_dragon.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:komodo_dragon/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:komodo_dragon/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "komodo_dragon.death": {
+    "subtitle": "subtitles.aca_fauna.komodo_dragon.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:komodo_dragon/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:komodo_dragon/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "komodo_dragon.step": {
+    "subtitle": "subtitles.aca_fauna.komodo_dragon.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:komodo_dragon/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:komodo_dragon/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "komodo_dragon.attack": {
+    "subtitle": "subtitles.aca_fauna.komodo_dragon.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:komodo_dragon/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:komodo_dragon/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "komodo_dragon.eat": {
+    "subtitle": "subtitles.aca_fauna.komodo_dragon.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:komodo_dragon/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:komodo_dragon/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "komodo_dragon.special": {
+    "subtitle": "subtitles.aca_fauna.komodo_dragon.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:komodo_dragon/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:komodo_dragon/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "green_iguana.ambient": {
+    "subtitle": "subtitles.aca_fauna.green_iguana.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:green_iguana/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:green_iguana/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "green_iguana.alert": {
+    "subtitle": "subtitles.aca_fauna.green_iguana.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:green_iguana/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:green_iguana/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "green_iguana.hurt": {
+    "subtitle": "subtitles.aca_fauna.green_iguana.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:green_iguana/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:green_iguana/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "green_iguana.death": {
+    "subtitle": "subtitles.aca_fauna.green_iguana.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:green_iguana/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:green_iguana/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "green_iguana.step": {
+    "subtitle": "subtitles.aca_fauna.green_iguana.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:green_iguana/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:green_iguana/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "green_iguana.attack": {
+    "subtitle": "subtitles.aca_fauna.green_iguana.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:green_iguana/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:green_iguana/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "green_iguana.eat": {
+    "subtitle": "subtitles.aca_fauna.green_iguana.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:green_iguana/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:green_iguana/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "green_iguana.special": {
+    "subtitle": "subtitles.aca_fauna.green_iguana.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:green_iguana/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:green_iguana/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "veiled_chameleon.ambient": {
+    "subtitle": "subtitles.aca_fauna.veiled_chameleon.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:veiled_chameleon/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:veiled_chameleon/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "veiled_chameleon.alert": {
+    "subtitle": "subtitles.aca_fauna.veiled_chameleon.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:veiled_chameleon/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:veiled_chameleon/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "veiled_chameleon.hurt": {
+    "subtitle": "subtitles.aca_fauna.veiled_chameleon.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:veiled_chameleon/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:veiled_chameleon/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "veiled_chameleon.death": {
+    "subtitle": "subtitles.aca_fauna.veiled_chameleon.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:veiled_chameleon/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:veiled_chameleon/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "veiled_chameleon.step": {
+    "subtitle": "subtitles.aca_fauna.veiled_chameleon.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:veiled_chameleon/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:veiled_chameleon/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "veiled_chameleon.attack": {
+    "subtitle": "subtitles.aca_fauna.veiled_chameleon.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:veiled_chameleon/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:veiled_chameleon/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "veiled_chameleon.eat": {
+    "subtitle": "subtitles.aca_fauna.veiled_chameleon.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:veiled_chameleon/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:veiled_chameleon/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "veiled_chameleon.special": {
+    "subtitle": "subtitles.aca_fauna.veiled_chameleon.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:veiled_chameleon/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:veiled_chameleon/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "sea_otter.ambient": {
+    "subtitle": "subtitles.aca_fauna.sea_otter.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:sea_otter/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:sea_otter/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "sea_otter.alert": {
+    "subtitle": "subtitles.aca_fauna.sea_otter.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:sea_otter/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:sea_otter/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "sea_otter.hurt": {
+    "subtitle": "subtitles.aca_fauna.sea_otter.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:sea_otter/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:sea_otter/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "sea_otter.death": {
+    "subtitle": "subtitles.aca_fauna.sea_otter.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:sea_otter/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:sea_otter/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "sea_otter.step": {
+    "subtitle": "subtitles.aca_fauna.sea_otter.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:sea_otter/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:sea_otter/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "sea_otter.attack": {
+    "subtitle": "subtitles.aca_fauna.sea_otter.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:sea_otter/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:sea_otter/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "sea_otter.eat": {
+    "subtitle": "subtitles.aca_fauna.sea_otter.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:sea_otter/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:sea_otter/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "sea_otter.special": {
+    "subtitle": "subtitles.aca_fauna.sea_otter.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:sea_otter/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:sea_otter/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "harbor_seal.ambient": {
+    "subtitle": "subtitles.aca_fauna.harbor_seal.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:harbor_seal/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:harbor_seal/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "harbor_seal.alert": {
+    "subtitle": "subtitles.aca_fauna.harbor_seal.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:harbor_seal/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:harbor_seal/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "harbor_seal.hurt": {
+    "subtitle": "subtitles.aca_fauna.harbor_seal.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:harbor_seal/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:harbor_seal/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "harbor_seal.death": {
+    "subtitle": "subtitles.aca_fauna.harbor_seal.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:harbor_seal/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:harbor_seal/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "harbor_seal.step": {
+    "subtitle": "subtitles.aca_fauna.harbor_seal.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:harbor_seal/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:harbor_seal/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "harbor_seal.attack": {
+    "subtitle": "subtitles.aca_fauna.harbor_seal.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:harbor_seal/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:harbor_seal/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "harbor_seal.eat": {
+    "subtitle": "subtitles.aca_fauna.harbor_seal.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:harbor_seal/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:harbor_seal/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "harbor_seal.special": {
+    "subtitle": "subtitles.aca_fauna.harbor_seal.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:harbor_seal/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:harbor_seal/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "bottlenose_dolphin.ambient": {
+    "subtitle": "subtitles.aca_fauna.bottlenose_dolphin.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:bottlenose_dolphin/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:bottlenose_dolphin/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "bottlenose_dolphin.alert": {
+    "subtitle": "subtitles.aca_fauna.bottlenose_dolphin.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:bottlenose_dolphin/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:bottlenose_dolphin/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "bottlenose_dolphin.hurt": {
+    "subtitle": "subtitles.aca_fauna.bottlenose_dolphin.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:bottlenose_dolphin/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:bottlenose_dolphin/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "bottlenose_dolphin.death": {
+    "subtitle": "subtitles.aca_fauna.bottlenose_dolphin.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:bottlenose_dolphin/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:bottlenose_dolphin/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "bottlenose_dolphin.step": {
+    "subtitle": "subtitles.aca_fauna.bottlenose_dolphin.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:bottlenose_dolphin/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:bottlenose_dolphin/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "bottlenose_dolphin.attack": {
+    "subtitle": "subtitles.aca_fauna.bottlenose_dolphin.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:bottlenose_dolphin/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:bottlenose_dolphin/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "bottlenose_dolphin.eat": {
+    "subtitle": "subtitles.aca_fauna.bottlenose_dolphin.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:bottlenose_dolphin/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:bottlenose_dolphin/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "bottlenose_dolphin.special": {
+    "subtitle": "subtitles.aca_fauna.bottlenose_dolphin.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:bottlenose_dolphin/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:bottlenose_dolphin/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "orca.ambient": {
+    "subtitle": "subtitles.aca_fauna.orca.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:orca/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:orca/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "orca.alert": {
+    "subtitle": "subtitles.aca_fauna.orca.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:orca/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:orca/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "orca.hurt": {
+    "subtitle": "subtitles.aca_fauna.orca.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:orca/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:orca/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "orca.death": {
+    "subtitle": "subtitles.aca_fauna.orca.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:orca/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:orca/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "orca.step": {
+    "subtitle": "subtitles.aca_fauna.orca.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:orca/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:orca/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "orca.attack": {
+    "subtitle": "subtitles.aca_fauna.orca.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:orca/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:orca/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "orca.eat": {
+    "subtitle": "subtitles.aca_fauna.orca.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:orca/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:orca/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "orca.special": {
+    "subtitle": "subtitles.aca_fauna.orca.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:orca/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:orca/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "hammerhead_shark.ambient": {
+    "subtitle": "subtitles.aca_fauna.hammerhead_shark.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:hammerhead_shark/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:hammerhead_shark/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "hammerhead_shark.alert": {
+    "subtitle": "subtitles.aca_fauna.hammerhead_shark.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:hammerhead_shark/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:hammerhead_shark/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "hammerhead_shark.hurt": {
+    "subtitle": "subtitles.aca_fauna.hammerhead_shark.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:hammerhead_shark/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:hammerhead_shark/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "hammerhead_shark.death": {
+    "subtitle": "subtitles.aca_fauna.hammerhead_shark.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:hammerhead_shark/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:hammerhead_shark/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "hammerhead_shark.step": {
+    "subtitle": "subtitles.aca_fauna.hammerhead_shark.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:hammerhead_shark/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:hammerhead_shark/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "hammerhead_shark.attack": {
+    "subtitle": "subtitles.aca_fauna.hammerhead_shark.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:hammerhead_shark/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:hammerhead_shark/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "hammerhead_shark.eat": {
+    "subtitle": "subtitles.aca_fauna.hammerhead_shark.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:hammerhead_shark/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:hammerhead_shark/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "hammerhead_shark.special": {
+    "subtitle": "subtitles.aca_fauna.hammerhead_shark.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:hammerhead_shark/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:hammerhead_shark/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "bluespotted_ray.ambient": {
+    "subtitle": "subtitles.aca_fauna.bluespotted_ray.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:bluespotted_ray/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:bluespotted_ray/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "bluespotted_ray.alert": {
+    "subtitle": "subtitles.aca_fauna.bluespotted_ray.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:bluespotted_ray/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:bluespotted_ray/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "bluespotted_ray.hurt": {
+    "subtitle": "subtitles.aca_fauna.bluespotted_ray.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:bluespotted_ray/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:bluespotted_ray/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "bluespotted_ray.death": {
+    "subtitle": "subtitles.aca_fauna.bluespotted_ray.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:bluespotted_ray/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:bluespotted_ray/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "bluespotted_ray.step": {
+    "subtitle": "subtitles.aca_fauna.bluespotted_ray.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:bluespotted_ray/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:bluespotted_ray/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "bluespotted_ray.attack": {
+    "subtitle": "subtitles.aca_fauna.bluespotted_ray.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:bluespotted_ray/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:bluespotted_ray/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "bluespotted_ray.eat": {
+    "subtitle": "subtitles.aca_fauna.bluespotted_ray.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:bluespotted_ray/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:bluespotted_ray/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "bluespotted_ray.special": {
+    "subtitle": "subtitles.aca_fauna.bluespotted_ray.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:bluespotted_ray/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:bluespotted_ray/special_2",
+        "volume": 1
+      }
+    ]
+  },
+  "pukeko.ambient": {
+    "subtitle": "subtitles.aca_fauna.pukeko.ambient",
+    "sounds": [
+      {
+        "name": "aca_fauna:pukeko/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "aca_fauna:pukeko/ambient_2",
+        "volume": 0.65
+      }
+    ]
+  },
+  "pukeko.alert": {
+    "subtitle": "subtitles.aca_fauna.pukeko.alert",
+    "sounds": [
+      {
+        "name": "aca_fauna:pukeko/alert_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:pukeko/alert_2",
+        "volume": 1
+      }
+    ]
+  },
+  "pukeko.hurt": {
+    "subtitle": "subtitles.aca_fauna.pukeko.hurt",
+    "sounds": [
+      {
+        "name": "aca_fauna:pukeko/hurt_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:pukeko/hurt_2",
+        "volume": 1
+      }
+    ]
+  },
+  "pukeko.death": {
+    "subtitle": "subtitles.aca_fauna.pukeko.death",
+    "sounds": [
+      {
+        "name": "aca_fauna:pukeko/death_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:pukeko/death_2",
+        "volume": 1
+      }
+    ]
+  },
+  "pukeko.step": {
+    "subtitle": "subtitles.aca_fauna.pukeko.step",
+    "sounds": [
+      {
+        "name": "aca_fauna:pukeko/step_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:pukeko/step_2",
+        "volume": 1
+      }
+    ]
+  },
+  "pukeko.attack": {
+    "subtitle": "subtitles.aca_fauna.pukeko.attack",
+    "sounds": [
+      {
+        "name": "aca_fauna:pukeko/attack_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:pukeko/attack_2",
+        "volume": 1
+      }
+    ]
+  },
+  "pukeko.eat": {
+    "subtitle": "subtitles.aca_fauna.pukeko.eat",
+    "sounds": [
+      {
+        "name": "aca_fauna:pukeko/eat_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:pukeko/eat_2",
+        "volume": 1
+      }
+    ]
+  },
+  "pukeko.special": {
+    "subtitle": "subtitles.aca_fauna.pukeko.special",
+    "sounds": [
+      {
+        "name": "aca_fauna:pukeko/special_1",
+        "volume": 1
+      },
+      {
+        "name": "aca_fauna:pukeko/special_2",
+        "volume": 1
+      }
+    ]
+  }
+}

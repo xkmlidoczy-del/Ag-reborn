@@ -52,11 +52,23 @@ public final class CanonCompleteFixturesQa {
             for(var mob:mobs){mob.setTarget(target);if(!mob.getNavigation().moveTo(target,1.0))throw new IllegalStateException("native navigation path required");}
             LogUtils.getLogger().info("QA_COMPLETE_FIXTURE op={} mobs={} actualTarget={} nativeNavigationPrepared=true isSkillResult=false",op,mobs.size(),target.getUUID());return null;
         }
-        if(op.equals("incoming-arrow")){
+        if(op.equals("incoming-arrow") || op.equals("incoming-body-arrow")){
             var shooter=EntityType.HUSK.create(world);if(shooter==null)throw new IllegalStateException("shooter fixture");
-            Vec3 direction=p.getLookAngle().normalize(),at=p.getEyePosition().add(direction.scale(3.8));shooter.setPos(at.add(1.2,-1.6,0));shooter.setNoAi(true);
+            Vec3 direction = p.getLookAngle().normalize();
+            Vec3 at = p.getEyePosition().add(direction.scale(3.8));
+            Vec3 velocity = direction.scale(-.22).add(0, .15, 0);
+            if (op.equals("incoming-body-arrow")) {
+                var body = world.getEntitiesOfClass(cn.academy.port.canon.CanonLiquidEntities.Shadow.class,
+                        p.getBoundingBox().inflate(24), e -> e.controlOwner().filter(p.getUUID()::equals).isPresent())
+                        .stream().findFirst().orElseThrow(() -> new IllegalStateException("Real owned liquid body must already exist"));
+                var forward = direction.multiply(1, 0, 1).normalize();
+                if (forward.lengthSqr() < .01) forward = new Vec3(0, 0, 1);
+                at = body.getBoundingBox().getCenter().add(forward.scale(2.8)).add(0, .36, 0);
+                velocity = forward.scale(-.38).add(0, .06, 0);
+            }
+            shooter.setPos(at.add(1.2,-1.6,0));shooter.setNoAi(true);
             if(!world.addFreshEntity(shooter))throw new IllegalStateException("shooter admission");
-            var arrow=new Arrow(world,shooter,new ItemStack(Items.ARROW),new ItemStack(Items.BOW));arrow.setPos(at);arrow.setDeltaMovement(direction.scale(-.22).add(0,.15,0));arrow.setNoGravity(false);
+            var arrow=new Arrow(world,shooter,new ItemStack(Items.ARROW),new ItemStack(Items.BOW));arrow.setPos(at);arrow.setDeltaMovement(velocity);arrow.setNoGravity(false);
             if(!world.addFreshEntity(arrow))throw new IllegalStateException("arrow admission");
             LogUtils.getLogger().info("QA_COMPLETE_FIXTURE op={} arrow={} hostileOwner={} position={} velocity={} vanillaArrow=true actualSkillInputStillRequired=true",op,arrow.getUUID(),shooter.getUUID(),at,arrow.getDeltaMovement());return null;
         }

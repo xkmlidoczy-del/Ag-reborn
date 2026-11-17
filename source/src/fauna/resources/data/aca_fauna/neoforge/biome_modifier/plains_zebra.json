@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:plains_zebra",
+  "spawners": {
+    "type": "aca_fauna:plains_zebra",
+    "weight": 6,
+    "minCount": 2,
+    "maxCount": 3
+  }
+}

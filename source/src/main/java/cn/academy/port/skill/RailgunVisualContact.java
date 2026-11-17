@@ -15,7 +15,9 @@ public record RailgunVisualContact(double distance, Direction face) {
                                              Vec3 direction, double length) {
         if (player.serverLevel() != level || !Double.isFinite(length) || length <= 0
                 || length > RangedSkillRanges.fixed("railgun")) return null;
-        Vec3 end = origin.add(direction.scale(length));
+        // A ray ending exactly on a voxel face still needs an impact witness at that face.
+        double probe = length + 1e-4;
+        Vec3 end = origin.add(direction.scale(probe));
         var context = new ClipContext(origin, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player);
         // A non-null miss terminates traversal immediately at an unloaded cell.
         BlockHitResult hit = BlockGetter.traverseBlocks(origin, end, context, (clip, pos) -> {
@@ -25,7 +27,7 @@ public record RailgunVisualContact(double distance, Direction face) {
         }, ignored -> null);
         if (hit == null || hit.getType() != BlockHitResult.Type.BLOCK || hit.isInside()) return null;
         double distance = hit.getLocation().subtract(origin).dot(direction);
-        return Double.isFinite(distance) && distance > 0 && distance <= length
-                ? new RailgunVisualContact(distance, hit.getDirection()) : null;
+        return Double.isFinite(distance) && distance > 0 && distance <= probe
+                ? new RailgunVisualContact(Math.min(distance, length), hit.getDirection()) : null;
     }
 }

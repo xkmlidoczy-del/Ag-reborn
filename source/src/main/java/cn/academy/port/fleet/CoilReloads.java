@@ -28,9 +28,10 @@ public final class CoilReloads {
  }
  public static void cancel(ServerPlayer p){Action a=ACTIONS.remove(p.getUUID());if(a==null)return;GunItem.reload(a.gun,0,0);stage(a.gun,0);AudioDefs.emit(p,a.variant,"cancel",a.start);InteractionLab.LOGGER.info("C03_RELOAD_CANCEL removed={} inserted={} loaded={} hasMag={}",a.removed,a.inserted,GunItem.ammo(a.gun),GunItem.hasMagazine(a.gun));}
  private static void stage(ItemStack s,int n){CustomData.update(DataComponents.CUSTOM_DATA,s,t->t.putInt("c03_reload_stage",n));}
+ public static void clear(){ACTIONS.clear();}
  public static void tick(ServerPlayer p){
   Action a=ACTIONS.get(p.getUUID());if(a==null)return;if(!p.isAlive()||p.getMainHandItem()!=a.gun){cancel(p);return;}
-  var timing=GunSpec.timing(a.variant);int t=(int)(p.level().getGameTime()-a.start);
+  var timing=GunSpec.timing(a.variant);long elapsed=p.level().getGameTime()-a.start;if(elapsed<0){cancel(p);return;}int t=(int)elapsed;
   if(!a.latched&&t>=timing.release()-1){a.latched=true;AudioDefs.emit(p,a.variant,"latch",a.start);}
   int insertion=a.empty?timing.emptyInsert():timing.tacticalInsert(),end=a.empty?timing.emptyEnd():timing.tacticalEnd();
   if(!a.guided&&t>=insertion-3){a.guided=true;AudioDefs.emit(p,a.variant,"guide",a.start);}

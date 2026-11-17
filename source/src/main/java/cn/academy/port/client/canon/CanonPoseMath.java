@@ -11,7 +11,19 @@ public final class CanonPoseMath {
     public static Pose sample(String category,String skill,double age,int duration,boolean rightHand,boolean impact){
         if(category==null||skill==null||duration<1||!Double.isFinite(age)||age<0||age>=duration)return NONE;
         double rise=Math.min(1,(age+1)/3),fall=Math.min(1,(duration-age)/4),strength=rise*fall;
+        double breath=Math.sin(age*.26)*.045;
+        double hit=impact?Math.pow(Math.max(0,1-age/duration),2):0;
         Pose target=cn.academy.port.canon.CanonOffenseSkills.find(skill)!=null?offense(category,skill,age/duration,impact):switch(category){
+            case "electromaster" -> skill.equals("thunder_clap")
+                    ? p(-1.83+hit*.47,-.26,.37,-1.26+hit*.26,.31,-.32,.15*hit,.086,.06,-.18)
+                    : p(-1.19-hit*.21,-.24,.16,-.45,.17,-.27,.11*hit,.14,.03,-.16);
+            case "vecmanip" -> skill.equals("plasma_cannon")
+                    ? p(-1.55-hit*.23,-.38,.50,-1.55-hit*.23,.38,-.50,.18*hit,.14,.05,-.11)
+                    : p(-.86-hit*.58,-.27,.29,-.72-hit*.30,.31,-.39,.18*hit,.12,.02,-.15);
+            case "meltdowner" -> skill.equals("electron_missile")
+                    ? p(-1.10-hit*.45,-.30,.24,-.61,.38,-.48,.13*hit,.13,.04,-.16)
+                    : p(-1.31-hit*.31,-.15,.13,-.83,.26,-.38,.16*hit,.14,-.02,-.17);
+            case "teleporter" -> p(-.78-hit*.58,-.36,.35,-.40,.14,-.26,.10*hit,.10,.04,-.11);
             case "mental_out" -> skill.contains("crowd")||skill.contains("conflict") ? p(-1.25,-.18,.25,-1.12,.22,-.22,.02,.10,.03,-.08)
                     : p(-1.42,-.22,.12,-.35,.12,-.16,.02,.08,.05,-.09);
             case "dark_matter" -> skill.contains("blade")||skill.contains("strike") ? p(-1.38,-.20,.20,-.48,.14,-.22,.16,.15,-.04,-.16)
@@ -28,6 +40,9 @@ public final class CanonPoseMath {
                     : p(-1.12,-.28,.44,-1.12,.28,-.44,.04,.08,.02,-.1);
             default -> NONE;
         };
+        if(target==NONE)return NONE;
+        target=new Pose(target.rightX+breath,target.rightY,target.rightZ,target.leftX-breath,target.leftY,target.leftZ,
+                target.lean,target.handX,target.handY,target.handZ);
         if(!rightHand)target=new Pose(target.leftX,-target.leftY,-target.leftZ,target.rightX,-target.rightY,-target.rightZ,
                 target.lean,-target.handX,target.handY,target.handZ);
         return scale(target,strength);
@@ -49,6 +64,6 @@ public final class CanonPoseMath {
         };
     }
     private static Pose p(double rx,double ry,double rz,double lx,double ly,double lz,double lean,double hx,double hy,double hz){return new Pose(rx,ry,rz,lx,ly,lz,lean,hx,hy,hz);}
-    private static Pose scale(Pose p,double v){return new Pose(p.rightX*v,p.rightY*v,p.rightZ*v,p.leftX*v,p.leftY*v,p.leftZ*v,p.lean*v,p.handX*v,p.handY*v,p.handZ*v);}
+    static Pose scale(Pose p,double v){return new Pose(p.rightX*v,p.rightY*v,p.rightZ*v,p.leftX*v,p.leftY*v,p.leftZ*v,p.lean*v,p.handX*v,p.handY*v,p.handZ*v);}
     public static double envelope(double age,int duration){return !Double.isFinite(age)||age<0||duration<1||age>=duration?0:Math.min(1,(age+1)/3)*Math.min(1,(duration-age)/4);}
 }

@@ -221,6 +221,7 @@ public final class SableConstructBridge implements ConstructLink {
     @Override public double effort(UUID body) { return body == null ? 0 : EFFORT.getOrDefault(body, 0d); }
 
     @Override public void release(UUID body) { if (body != null) { CONTROLS.remove(body); EFFORT.remove(body); } }
+    @Override public void clear() { CONTROLS.clear(); EFFORT.clear(); HELD.clear(); }
 
     @Override
     public net.minecraft.world.phys.Vec3 throwAim(ServerPlayer player, UUID ignoredBody, double range) {
@@ -248,7 +249,7 @@ public final class SableConstructBridge implements ConstructLink {
             Control c = e.getValue();
             if (c.level != level) continue;
             ServerSubLevel s = find(level, e.getKey());
-            if (s == null) { CONTROLS.remove(e.getKey()); continue; }
+            if (s == null) { CONTROLS.remove(e.getKey()); EFFORT.remove(e.getKey()); HELD.remove(e.getKey()); continue; }
             RigidBodyHandle h = system.getPhysicsHandle(s);
             if (h == null || !h.isValid()) continue;
             double mass = s.getMassTracker().getMass();

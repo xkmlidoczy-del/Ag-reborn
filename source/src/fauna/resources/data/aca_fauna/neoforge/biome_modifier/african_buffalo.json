@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:african_buffalo",
+  "spawners": {
+    "type": "aca_fauna:african_buffalo",
+    "weight": 6,
+    "minCount": 2,
+    "maxCount": 3
+  }
+}

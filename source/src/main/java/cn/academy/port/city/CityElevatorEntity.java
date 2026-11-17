@@ -23,7 +23,7 @@ public final class CityElevatorEntity extends Entity {
     public BlockPos controller(){return entityData.get(CONTROLLER);}public void controller(BlockPos p){entityData.set(CONTROLLER,p.immutable());}
     public int displayFloor(){return entityData.get(FLOOR);}public void floor(int n){entityData.set(FLOOR,n);}public int phaseValue(){return entityData.get(PHASE);}
     public int door(){return entityData.get(DOOR);}public void door(int n){entityData.set(DOOR,n);}public void phase(int n){entityData.set(PHASE,n);}
-    public CityElevatorController owner(){return !level().isClientSide&&level().hasChunkAt(controller())&&level().getBlockEntity(controller())instanceof CityElevatorController c&&!c.isRemoved()?c:null;}
+    public CityElevatorController owner(){return !level().isClientSide&&level().hasChunkAt(controller())&&level().getBlockEntity(controller())instanceof CityElevatorController c&&!c.isRemoved()&&c.cabin()==this?c:null;}
     @Override public boolean shouldBeSaved(){return false;}
     @Override protected void readAdditionalSaveData(CompoundTag t){}
     @Override protected void addAdditionalSaveData(CompoundTag t){}

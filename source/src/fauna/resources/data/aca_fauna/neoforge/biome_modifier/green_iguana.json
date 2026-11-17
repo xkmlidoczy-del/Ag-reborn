@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:green_iguana",
+  "spawners": {
+    "type": "aca_fauna:green_iguana",
+    "weight": 6,
+    "minCount": 1,
+    "maxCount": 1
+  }
+}

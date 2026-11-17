@@ -2866,6 +2866,23 @@ public final class AcademyClient {
             if(!own&&overrides(key)){key.setDown(false);while(key.consumeClick()){};}
         }
     }
+    /** Iris can consume a newly queued press at the end of the same tick. Fence it on the key edge. */
+    @SubscribeEvent public static void suppressConflictingShaderKeys(InputEvent.Key event){
+        if(event.getAction()!=GLFW.GLFW_PRESS&&event.getAction()!=GLFW.GLFW_REPEAT)return;
+        var mc=Minecraft.getInstance();
+        if(mc.player==null||mc.level==null||mc.screen!=null||!mc.player.isAlive()||mc.player.isSpectator()||!state.isActivated())return;
+        var pressed=com.mojang.blaze3d.platform.InputConstants.getKey(event.getKey(),event.getScanCode());
+        for(var mapping:mc.options.keyMappings){
+            boolean shaderShortcut=switch(mapping.getName()){
+                case "iris.keybind.reload","iris.keybind.toggleShaders","iris.keybind.shaderPackSelection" -> true;
+                default -> false;
+            };
+            if(shaderShortcut&&mapping.isActiveAndMatches(pressed)&&overrides(mapping)){
+                mapping.setDown(false);
+                while(mapping.consumeClick()){}
+            }
+        }
+    }
     /** Observe menu-owned mouse edges before a native button can close its screen. */
     @SubscribeEvent(priority=net.neoforged.bus.api.EventPriority.HIGHEST,receiveCanceled=true)
     public static void menuMouseButton(InputEvent.MouseButton.Pre event){
@@ -2980,7 +2997,12 @@ public final class AcademyClient {
 
     @EventBusSubscriber(modid="academy",value=Dist.CLIENT,bus=EventBusSubscriber.Bus.MOD)
     public static final class Registration {
-        @SubscribeEvent public static void setup(FMLClientSetupEvent event) {AcademyNetwork.clientReceiver=AcademyClient::receive;event.enqueueWork(()->{
+        @SubscribeEvent public static void setup(FMLClientSetupEvent event) {
+            AcademyNetwork.clientReceiver=AcademyClient::receive;
+            cn.academy.port.city.defense.O5Effect.clientReceiver=cn.academy.port.client.city.o5.CombatEffects::accept;
+            cn.academy.port.fleet.LabNetwork.clientAudioReceiver=cn.academy.port.fleet.client.FleetAudio::receive;
+            cn.academy.port.titan.TitanFxPayload.clientReceiver=cn.academy.port.titan.TitanFxClient::accept;
+            event.enqueueWork(()->{
             ClassicEnergyUnitProperties.register();
             net.minecraft.client.renderer.item.ItemProperties.register(AcademyCraft.DEVELOPER.get(),ResourceLocation.fromNamespaceAndPath("academy","charge_icon"),(stack,level,entity,seed)->{int damage=(int)Math.round(13*(1-new cn.academy.port.develop.DeveloperItemEnergy(stack,cn.academy.port.develop.DeveloperType.PORTABLE).energy()/10000));return damage<3?2f:damage>10?0f:1f;});
             net.minecraft.client.renderer.item.ItemProperties.register(AcademyCraft.INDUCTION_FACTOR.get(),ResourceLocation.fromNamespaceAndPath("academy","category"),(stack,level,entity,seed)->cn.academy.port.develop.InductionFactors.category(stack).map(cat->(float)cn.academy.port.develop.DevelopmentActions.CATEGORIES.indexOf(cat)).orElse(0f));

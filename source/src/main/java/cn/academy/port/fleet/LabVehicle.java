@@ -53,10 +53,11 @@ public final class LabVehicle extends Entity {
  }
  @Override public void tick(){
   super.tick();wheelPhase=(wheelPhase+speed()*115)%360;oldSteer=visualSteer;visualSteer+=(steering()-visualSteer)*.65f;oldPitch=visualPitch;visualPitch+=(bodyPitch()-visualPitch)*.65f;oldRoll=visualRoll;visualRoll+=(bodyRoll()-visualRoll)*.65f;doorPrevious=doorVisual;doorVisual+=((entityData.get(DOOR)?1:0)-doorVisual)*.18f;
-  if(level().isClientSide)return;if(response!=null&&level().getGameTime()>dutyEnd){ejectPassengers();discard();return;}var cfg=config();if(getFirstPassenger()==null||level().getGameTime()-lastInput>8){throttle=0;steer=0;}
+  if(level().isClientSide)return;if(!level().hasChunkAt(blockPosition()))return;if(response!=null&&level().getGameTime()>dutyEnd){ejectPassengers();discard();return;}var cfg=config();if(getFirstPassenger()==null||level().getGameTime()-lastInput>8){throttle=0;steer=0;}
   entityData.set(DRIVE,throttle);
   float max=cfg.scooter()?.34f:cfg.kind.equals("bus")?.26f:.32f,speed=speed();if(throttle!=0)speed+=throttle*(cfg.kind.equals("bus")?.007f:.011f);else speed*=.95f;
   speed=Math.max(-max*.4f,Math.min(max,speed));if(Math.abs(speed)<.002f&&throttle==0)speed=0;
+  if(speed==0&&throttle==0&&steer==0&&Math.abs(steering())<.005f&&onGround()&&(tickCount&7)!=0){entityData.set(SPEED,0f);entityData.set(STEER,0f);setDeltaMovement(Vec3.ZERO);return;}
   float smooth=steering()+(steer-steering())*.25f;float yaw=getYRot()-smooth*Math.min(2.4f,Math.abs(speed)*10)*Math.signum(speed);double a=Math.toRadians(yaw);
   Vec3 next=position().add(-Math.sin(a)*speed,0,Math.cos(a)*speed);double total=0,front=0,rear=0,left=0,right=0;int hits=0,nf=0,nr=0,nl=0,ng=0;
   for(var wheel:cfg.wheels){Vec3 sample=localToWorld(new Vec3(wheel.position().x,0,wheel.position().z),next,yaw,0,0);var hit=level().clip(new ClipContext(new Vec3(sample.x,getY()+1.4,sample.z),new Vec3(sample.x,getY()-2.2,sample.z),ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,this));

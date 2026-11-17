@@ -807,6 +807,9 @@ public final class CanonExpansionCombatA {
         if(plane) center=(c.skill.equals("nitrogen_shield_line")?b.anchor:p.getEyePosition()).add(b.axis.scale(barrierDistance(c.skill)));
         else center=p.getEyePosition();
         if(!finite(center) || center.distanceToSqr(p.position())>64) {releaseBarrier(p,b);return;}
+        if(c.skill.equals("aero_air_curtain")&&now%6==0)
+            cn.academy.port.macro.MacroVfx.emit(p,c.skill,cn.academy.port.macro.MacroVfx.Phase.ACTIVE,center,center,
+                    (int)Math.max(1,b.expires-now),area(c));
         AABB area=barrierBox(center,c.skill);
         AABB inner=barrierInnerBox(center,c.skill);
         int checked=0;
@@ -822,6 +825,7 @@ public final class CanonExpansionCombatA {
                     || !arrow.getDeltaMovement().equals(velocity) || !safeArrowPath(c,arrow,moved))continue;
             arrow.setPos(destination);arrow.setDeltaMovement(next);arrow.hasImpulse=true;arrow.hurtMarked=true;b.intercepted++;
             CanonVfx.emit(p,c.skill,center,impact.get(),CanonVfx.Phase.HIT,10);
+            cn.academy.port.macro.BeamImpactVfx.contact(p,c.skill,from,impact.get(),cn.academy.port.macro.BeamImpactVfx.Outcome.SHIELD);
         }
     }
     private static boolean barrierArrow(Barrier b,AbstractArrow arrow) {

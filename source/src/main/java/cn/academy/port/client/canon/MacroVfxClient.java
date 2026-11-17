@@ -21,6 +21,7 @@ import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
 public final class MacroVfxClient {
     private record Show(MacroVfx.Event event,double start,Vec3 previous){}
     record VolumeSample(MacroVfx.Event event,double age,Vec3 centre,double radius,double opacity){}
+    record NativeBody(UUID owner,String skill){}
     private static final List<Show> SHOWS=new ArrayList<>();
     private static ClientLevel world;
     private static final float[] WHITE={1,1,1};
@@ -33,6 +34,13 @@ public final class MacroVfxClient {
     @SubscribeEvent public static void logout(net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent.LoggingOut e){SHOWS.clear();world=null;}
     static boolean any(){sync();return VisualTierConfig.tier()!=VisualTier.OFF&&!SHOWS.isEmpty();}
     static int count(){sync();return VisualTierConfig.tier()==VisualTier.OFF?0:SHOWS.size();}
+    /** Old renderers keep native sound/input state and take over when the classic tier is selected. */
+    public static boolean owns(String skill,UUID owner){
+        sync();
+        if(VisualTierConfig.tier()==VisualTier.OFF||world==null)return false;
+        return SHOWS.stream().anyMatch(s->s.event.owner().equals(owner)&&s.event.skill().equals(skill)
+                &&!expired(s,world.getGameTime()));
+    }
     private static void receive(MacroVfx.Event v){
         sync();var mc=Minecraft.getInstance();var p=MacroSkillRules.find(v.skill());
         if(world==null||mc.player==null||p==null||!world.dimension().location().equals(v.dimension())||v.life()<1||v.life()>2400
@@ -41,15 +49,13 @@ public final class MacroVfxClient {
                 ||!Float.isFinite(v.visualRadius())||v.visualRadius()<0||v.visualRadius()>64||v.shape()!=p.shape()
                 ||MacroVfx.distanceSquared(mc.player.getEyePosition(),v.from(),v.to())>Math.pow(80+v.visualRadius(),2))return;
         var actor=world.getEntity(v.entity());if(actor!=null&&!actor.getUUID().equals(v.owner()))return;
-        double now=world.getGameTime();if(v.tick()>now+100||now-v.tick()>v.life()+100)return;
+        double now=world.getGameTime();if(v.tick()>now+100||now>=v.tick()+v.life()||v.phaseStart()>v.tick())return;
+        if(VisualTierConfig.tier()!=VisualTier.OFF)CanonPoseClient.accept(v);
         var prior=SHOWS.stream().filter(s->s.event.cast().equals(v.cast())).findFirst().orElse(null);
-        if(v.phase()==MacroVfx.Phase.END&&prior!=null&&(prior.event.phase()==MacroVfx.Phase.HIT||prior.event.shape()==MacroSkillRules.Shape.LINE&&prior.event.from().distanceToSqr(prior.event.to())>1))return;
+        if(v.phase()==MacroVfx.Phase.END&&prior!=null&&prior.event.phase()==MacroVfx.Phase.HIT)return;
         if(prior!=null&&v.phase()==MacroVfx.Phase.HIT&&v.actualRadius()==0&&prior.event.actualRadius()>0){
-            // Queued target details do not move or erase the previously confirmed area boundary.
-            // Their precise individual impacts continue through the native per-target renderer.
-            SHOWS.remove(prior);var a=prior.event;
-            var area=new MacroVfx.Event(v.cast(),v.entity(),v.owner(),v.dimension(),v.skill(),v.phase(),a.from(),a.to(),a.shape(),a.visualRadius(),a.actualRadius(),v.tick(),v.life());
-            SHOWS.add(new Show(area,prior.start,prior.previous));return;
+            // The live field and its per-target contacts have independent lifetimes.
+            return;
         }
         SHOWS.removeIf(s->s.event.cast().equals(v.cast()));
         if(SHOWS.size()>=64){
@@ -57,75 +63,97 @@ public final class MacroVfxClient {
             SHOWS.sort(Comparator.comparingInt(s->(s.event.owner().equals(mc.player.getUUID())?2:0)+(s.event.actualRadius()>0?1:0)));
             SHOWS.removeFirst();
         }
-        double began=prior!=null&&prior.event.phase()==v.phase()&&v.phase()==MacroVfx.Phase.ACTIVE?prior.start:Math.max(v.tick(),now-6);
+        double began=v.phaseStart();
         SHOWS.add(new Show(v,began,prior==null?v.from():prior.event.from()));
     }
-    private static boolean expired(Show s,double now){return now-(s.event.phase()==MacroVfx.Phase.ACTIVE?s.event.tick():s.start)>s.event.life()||now<s.start-100;}
-    private static Vec3 fieldCentre(MacroVfx.Event v){
+    private static boolean expired(Show s,double now){return now>=s.event.tick()+s.event.life()||now<s.start-100;}
+    private static Vec3 fieldCentre(MacroVfx.Event v,float partial){
         if(v.actualRadius()>0&&Set.of("electron_missile","magnetic_domain","dark_construct","nitrogen_dome").contains(v.skill())){
-            var actor=world.getEntity(v.entity());if(actor!=null&&actor.getUUID().equals(v.owner()))return actor.getPosition(1);
+            var actor=world.getEntity(v.entity());if(actor!=null&&actor.getUUID().equals(v.owner()))return actor.getPosition(partial);
+        }
+        if(v.boundary()==MacroVfx.Boundary.CURTAIN){
+            var actor=world.getEntity(v.entity());
+            if(actor!=null&&actor.getUUID().equals(v.owner()))return actor.getEyePosition(partial);
         }
         return v.actualRadius()>0||v.phase()==MacroVfx.Phase.HIT?v.to():v.from();
     }
     static List<VolumeSample> volumeSamples(double now){
         sync();SHOWS.removeIf(s->expired(s,now));var out=new ArrayList<VolumeSample>();
-        for(var s:SHOWS){var v=s.event;var p=MacroSkillRules.find(v.skill());double age=Math.max(0,now-s.start);double remaining=v.life()-(now-(v.phase()==MacroVfx.Phase.ACTIVE?v.tick():s.start));
+        float partial=(float)Math.clamp(now-Math.floor(now),0.0,1.0);
+        for(var s:SHOWS){var v=s.event;var p=MacroSkillRules.find(v.skill());double age=Math.max(0,now-s.start);double remaining=v.tick()+v.life()-now;
             // This native beam already resolves the actual hand/view origin. Its dedicated material
             // is upgraded in ClassicMeltdownerBeamEffects; an eye-origin volume would duplicate it.
-            if(v.skill().equals("meltdowner"))continue;
+            if(v.skill().equals("meltdowner")||v.boundary()==MacroVfx.Boundary.CURTAIN
+                    ||v.skill().equals("electron_missile")||p.category().equals("mental_out")
+                    ||p.category().equals("teleporter")||p.category().equals("paper_psychokinesis")
+                    ||SkillCinematicFx.usesNativeRoute(v.skill()))continue;
+            if(!p.ultimate()||VisualTierConfig.tier()==VisualTier.LOW)continue;
             boolean releasePulse=v.skill().equals("float_release_field")&&v.phase()==MacroVfx.Phase.END;
             double opacity=Math.min(1,(age+1)/2)*Math.min(1,remaining/7);if(v.phase()==MacroVfx.Phase.END&&!releasePulse)opacity*=.3;
-            Vec3 centre=releasePulse?v.to():fieldCentre(v);
+            Vec3 centre=releasePulse?v.to():fieldCentre(v,partial);
             if(v.skill().equals("plasma_cannon")&&v.phase()==MacroVfx.Phase.ACTIVE)centre=s.previous.lerp(v.from(),Math.clamp((now-v.tick())/4,0,1));
-            if(v.shape()==MacroSkillRules.Shape.SELF&&v.phase()!=MacroVfx.Phase.HIT&&v.from().distanceToSqr(v.to())<.1){var actor=world.getEntity(v.entity());if(actor!=null&&actor.getUUID().equals(v.owner()))centre=actor.getPosition(1).add(0,1,0);}
+            if(v.shape()==MacroSkillRules.Shape.SELF&&v.phase()!=MacroVfx.Phase.HIT&&v.from().distanceToSqr(v.to())<.1){var actor=world.getEntity(v.entity());if(actor!=null&&actor.getUUID().equals(v.owner()))centre=actor.getPosition(partial).add(0,1,0);}
             double radius=p.ultimate()?v.visualRadius():Math.min(6,.8+p.level()*.8);
             if(v.shape()==MacroSkillRules.Shape.LINE&&v.from().distanceToSqr(v.to())>1)radius=.5+p.level()*.3;
-            if(v.skill().equals("plasma_cannon")&&v.phase()!=MacroVfx.Phase.HIT)radius=10+Math.min(10,age*.12);
-            if(p.category().equals("mental_out")&&v.life()>200&&age>80){radius=Math.min(radius,5);opacity*=.18;}
+            if(v.skill().equals("plasma_cannon")){
+                radius=v.phase()==MacroVfx.Phase.HIT?v.actualRadius()*AgModernVfx.snapEase(age/4.0):5+Math.min(3,age*.09);
+                if(v.phase()==MacroVfx.Phase.END)continue;
+                opacity*=v.phase()==MacroVfx.Phase.HIT?.42:.54;
+            }
+            if(v.skill().equals("thunder_clap")){
+                if(v.phase()!=MacroVfx.Phase.HIT||age>28)continue;
+                radius=Math.min(radius,24);
+                opacity*=.39;
+            }
             if(opacity>.001)out.add(new VolumeSample(v,age,centre,radius,opacity));
         }return out;
     }
-    static void draw(CanonFx.Canvas c,double now,int allowance){
+    static void draw(CanonFx.Canvas c,double now,int allowance,Set<NativeBody> nativeBodies){
         sync();if(world==null||VisualTierConfig.tier()==VisualTier.OFF)return;
         SHOWS.removeIf(s->expired(s,now));
+        float partial=(float)Math.clamp(now-Math.floor(now),0.0,1.0);
         var tier=VisualTierConfig.tier();int detail=Math.min(tier==VisualTier.CINEMATIC?48:tier==VisualTier.STANDARD?32:16,Math.max(8,(allowance-40)/8));
         for(var show:List.copyOf(SHOWS)){
             var v=show.event;var profile=MacroSkillRules.find(v.skill());double age=Math.max(0,now-show.start);
-            double fade=Math.min(1,(age+1)/4)*Math.min(1,(v.life()-(now-(v.phase()==MacroVfx.Phase.ACTIVE?v.tick():show.start)))/10);
+            double fade=Math.min(1,(age+1)/4)*Math.min(1,(v.tick()+v.life()-now)/10);
             boolean releasePulse=v.skill().equals("float_release_field")&&v.phase()==MacroVfx.Phase.END;
             if(v.phase()==MacroVfx.Phase.END&&!releasePulse)fade*=.35;
             if(fade<=0)continue;int before=c.left,scope=c.limit(allowance);
             try{
                 if(v.skill().equals("meltdowner"))continue;
-                Vec3 centre=releasePulse?v.to():fieldCentre(v);
-                if(v.actualRadius()==0&&v.shape()==MacroSkillRules.Shape.SELF&&v.phase()!=MacroVfx.Phase.HIT&&v.from().distanceToSqr(v.to())<.1){var actor=world.getEntity(v.entity());if(actor!=null&&actor.getUUID().equals(v.owner()))centre=actor.getPosition(1).add(0,1,0);}
+                Vec3 centre=releasePulse?v.to():fieldCentre(v,partial);
+                if(v.skill().equals("plasma_cannon")&&v.phase()==MacroVfx.Phase.ACTIVE)
+                    centre=show.previous.lerp(v.from(),Math.clamp((now-v.tick())/4,0,1));
+                if(MacroVfx.distanceSquared(c.cam,v.from(),v.to())>Math.pow(v.visualRadius()+104,2))continue;
+                if(v.actualRadius()==0&&v.shape()==MacroSkillRules.Shape.SELF&&v.phase()!=MacroVfx.Phase.HIT&&v.from().distanceToSqr(v.to())<.1){var actor=world.getEntity(v.entity());if(actor!=null&&actor.getUUID().equals(v.owner()))centre=actor.getPosition(partial).add(0,1,0);}
                 float[] color=colour(profile.category());String texture="macro/"+profile.category();
                 if(profile.category().equals("mental_out")&&v.life()>200&&age>80){
                     c.sprite(texture,false,centre,.5,age*.015,WHITE,(float)(fade*.25));
                     continue;
                 }
-                double radius=profile.ultimate()?v.visualRadius():Math.min(v.visualRadius(),.8+profile.level()*.8),grow=1-Math.pow(1-Math.clamp(age/14,0,1),3);
+                double radius=v.actualRadius()>0?v.actualRadius():profile.ultimate()?v.visualRadius():Math.min(v.visualRadius(),.8+profile.level()*.8);
+                double grow=AgModernVfx.snapEase(age/4.0);
                 grow=switch(v.phase()){
-                    case CHARGE -> .65-.3*Math.clamp(age/Math.max(1,v.life()),0,1);
-                    case ACTIVE -> .85+.15*Math.sin(age*.065);
+                    case CHARGE -> .68-.26*Math.clamp(age/Math.max(1,v.life()),0,1);
+                    case ACTIVE -> .94+.06*Math.sin(age*.085);
                     case HIT -> grow;
-                    case END -> .9+age*.01;
+                    case END -> .95;
+                    case RELEASE -> 1;
                 };
-                // A confirmed area boundary is a thin continuous rim. Ambient, non-damaging details remain sparse.
-                // Air Curtain's actual oriented box is drawn by CanonBarrierGeometry, never replaced by a circle.
-                if(v.actualRadius()>0&&!cn.academy.port.canon.CanonExpansionCombatA.physicalBarrier(v.skill()))boundary(c,centre,v.actualRadius(),color,(float)(fade*.55),detail*2);
+                double boundaryFade=v.phase()==MacroVfx.Phase.HIT?fade*Math.clamp((26-age)/10,0,1):fade;
+                SkillCinematicFx.boundary(c,v,centre,color,age,boundaryFade);
+                if(SkillCinematicFx.centerpiece(c,v,centre,age,fade,detail))continue;
+                SkillCinematicFx.accent(c,v,centre,color,age,fade,detail);
+                if(nativeBodies.contains(new NativeBody(v.owner(),v.skill())))continue;
                 if(AgVolumeRenderer.owns(v.cast())){
                     switch(profile.category()){
                         case "electromaster" -> lightning(c,centre,radius*grow,age,fade,color,detail);
-                        case "vecmanip" -> {if(!v.skill().equals("plasma_cannon"))vectors(c,centre,radius*grow,age,fade,color,detail);}
-                        case "mental_out" -> neural(c,centre,radius*grow,age*.04,fade,color,detail);
+                        case "vecmanip" -> vectors(c,centre,radius*grow,age,fade,color,detail);
                         case "aero_hand" -> vortex(c,centre,radius*grow,age*.04,fade,color,detail,false);
                         case "float_dial" -> pressure(c,centre,radius*grow,age*.04,fade,color,detail);
-                        case "paper_psychokinesis" -> paper(c,centre,radius*grow,age*.04,fade,detail);
                         case "dark_matter" -> shards(c,centre,radius*grow,age*.04,fade,color,detail);
                         case "liquid_shadow" -> liquid(c,centre,radius*grow,age*.04,fade,color,detail);
                         case "hydro_hand" -> vortex(c,centre,radius*grow,age*.04,fade,color,detail,true);
-                        case "teleporter" -> spatial(c,centre,radius*grow,age*.04,fade,color,detail);
                         default -> {}
                     }
                     continue;
@@ -135,7 +163,8 @@ public final class MacroVfxClient {
                     c.sprite(texture,false,centre,.5,age*.015,WHITE,(float)(fade*.25));
                     continue;
                 }
-                if(v.from().distanceToSqr(v.to())>1&&!v.skill().equals("meltdowner")){
+                if(v.shape()==MacroSkillRules.Shape.LINE&&v.actualRadius()==0&&v.from().distanceToSqr(v.to())>1
+                        &&!profile.category().equals("mental_out")){
                     var axis=v.to().subtract(v.from()).normalize();var side=axis.cross(new Vec3(0,1,0));if(side.lengthSqr()<.01)side=new Vec3(1,0,0);else side=side.normalize();
                     for(int k=0;k<3;k++){
                         var pts=CanonFx.wave(v.from(),v.to(),detail,profile.ultimate()?1.1:.12,2+k,age*.16+k,side);
@@ -145,11 +174,10 @@ public final class MacroVfxClient {
                 }
                 double t=age*.04;
                 switch(profile.category()){
-                    case "electromaster" -> {lightning(c,centre,radius*grow,age,fade,color,detail);if(v.skill().equals("thunder_clap")&&v.phase()==MacroVfx.Phase.HIT)c.plane("macro/thunder_main",true,centre.add(0,22,0),c.right.scale(14),new Vec3(0,25,0),WHITE,(float)(fade*.7));}
-                    case "vecmanip" -> {vectors(c,centre,radius*grow,age,fade,color,detail);if(v.skill().equals("plasma_cannon"))plasma(c,centre,radius*grow,age,fade,v.phase(),detail);}
+                    case "electromaster" -> lightning(c,centre,radius*grow,age,fade,color,detail);
+                    case "vecmanip" -> vectors(c,centre,radius*grow,age,fade,color,detail);
                     case "meltdowner" -> beam(c,v,centre,age,fade,color,detail);
                     case "teleporter" -> spatial(c,centre,radius*grow,t,fade,color,detail);
-                    case "mental_out" -> neural(c,centre,radius*grow,t,fade,color,detail);
                     case "aero_hand" -> vortex(c,centre,radius*grow,t,fade,color,detail,false);
                     case "float_dial" -> pressure(c,centre,radius*grow,t,fade,color,detail);
                     case "paper_psychokinesis" -> paper(c,centre,radius*grow,t,fade,detail);
@@ -162,9 +190,14 @@ public final class MacroVfxClient {
                 double size=profile.ultimate()?Math.min(7,1+age*.12):.45+profile.level()*.18;
                 double near=Math.clamp((Minecraft.getInstance().gameRenderer.getMainCamera().getPosition().distanceTo(centre)-1)/5,0,1);
                 c.sprite(texture,false,centre,size,t*.2,WHITE,(float)(fade*.48*near));
-                if(v.skill().equals("plasma_cannon"))c.sprite("macro/plasma_body",true,centre,Math.min(2,size),t*.3,WHITE,(float)(fade*.12));
             }finally{c.restore(scope);c.record("macro:"+v.skill()+":"+v.cast(),before);}
         }
+    }
+    static boolean drawsBoundary(String skill,UUID owner,Vec3 centre){
+        if(VisualTierConfig.tier()==VisualTier.OFF||world==null)return false;
+        double now=world.getGameTime();
+        return SHOWS.stream().anyMatch(s->s.event.skill().equals(skill)&&s.event.owner().equals(owner)&&s.event.boundary()!=MacroVfx.Boundary.NONE
+                &&!expired(s,now)&&fieldCentre(s.event,1f).distanceToSqr(centre)<1);
     }
     private static float[] colour(String cat){return switch(cat){
         case "electromaster"->new float[]{.42f,.82f,1};case "meltdowner"->new float[]{.3f,1,.28f};
@@ -175,70 +208,44 @@ public final class MacroVfxClient {
         case "dark_matter"->new float[]{.92f,.83f,1};default->new float[]{.7f,.92f,1};};}
     private static Vec3 radial(double a,double r,double y){return new Vec3(Math.cos(a)*r,y,Math.sin(a)*r);}
     private static void boundary(CanonFx.Canvas c,Vec3 p,double r,float[] color,float alpha,int segments){
-        var pts=new ArrayList<Vec3>();for(int i=0;i<=segments;i++)pts.add(p.add(radial(i*Math.PI*2/segments,r,.08)));
-        c.ribbon("streak",true,pts,u->.1,u->alpha,color,1,0);
+        AgModernVfx.planarRing(c,p.add(0,.08,0),new Vec3(1,0,0),new Vec3(0,0,1),r,0,segments,.11,color,alpha,true);
     }
     private static void lightning(CanonFx.Canvas c,Vec3 p,double r,double age,double e,float[] color,int n){
-        for(int k=0;k<6;k++){double a=k*Math.PI/3+Math.floor(age/3)*.23;Vec3 end=p.add(radial(a,r,Math.min(20,r*.3)));
-            var pts=CanonFx.wave(p,end,n/2,Math.max(.1,r*.045),4,k+Math.floor(age/3),new Vec3(0,1,0));
-            c.ribbon("streak",true,pts,u->.13,u->e*.55,color,2,0);
-            c.ribbon("streak",true,pts,u->.035,u->e*.9,WHITE,2,0);
+        AgModernVfx.calculationArray(c,p.add(0,.14,0),new Vec3(0,1,0),Math.min(r,18.0),"electromaster",age,e*.68,Math.min(32,n));
+        long kf=(long)Math.floor(age/2.0);
+        for(int k=0;k<6;k++){
+            double a=k*Math.PI/3+kf*.23;
+            Vec3 end=p.add(radial(a,r,Math.min(18,r*.28)));
+            AgModernVfx.fractalArc(c,p.add(0,.35,0),end,3,kf*31+k*97L,1.0,Math.clamp(r*.025,.09,.28),color,e*.82,r>=4.0);
         }
-        c.sprite("macro/electromaster",true,p.add(0,Math.min(20,r*.4),0),Math.min(12,r*.22),0,WHITE,(float)(e*.45));
+        c.sprite("macro/electromaster",true,p.add(0,Math.min(18,r*.36),0),Math.min(10,r*.20),0,WHITE,(float)(e*.45));
     }
     private static void vectors(CanonFx.Canvas c,Vec3 p,double r,double age,double e,float[] color,int n){
-        for(int k=0;k<8;k++){double a=k*Math.PI/4;Vec3 axis=radial(a,1,0);var pts=List.of(p.add(axis.scale(r)),p.add(axis.scale(r*.35)).add(0,2,0),p.add(0,3,0));
-            c.ribbon("streak",true,pts,u->.12+u*.2,u->e*.4,color,3,age*.03);
-            Vec3 tip=p.add(axis.scale(r*(1-(age%16)/16)));c.sprite("macro/vecmanip",false,tip,Math.max(.2,r*.035),a,WHITE,(float)(e*.45));}
-    }
-    private static void plasma(CanonFx.Canvas c,Vec3 p,double r,double age,double e,MacroVfx.Phase phase,int n){
-        float[] corona={.62f,.48f,1};
-        // Converging ion layers leave the classic volumetric core legible; the impact rolls outward.
-        for(int layer=0;layer<3;layer++){
-            double ring=phase==MacroVfx.Phase.HIT?r*(.55+layer*.2):Math.min(12,r*.3)*(1+layer*.25);
-            var pts=new ArrayList<Vec3>();
-            for(int i=0;i<=n;i++){double a=i*Math.PI*2/n;pts.add(p.add(radial(a,ring,Math.sin(a*3+age*.08+layer)*.7+layer*.6)));}
-            c.ribbon("streak",true,pts,u->.18,u->e*(phase==MacroVfx.Phase.HIT?.32:.42),corona,3,-age*.03);
-        }
-        if(phase==MacroVfx.Phase.HIT){
-            c.sprite("macro/plasma_body",true,p.add(0,2,0),5,age*.018,WHITE,(float)(e*.32));
-            for(int k=0;k<8;k++){
-                double a=k*Math.PI/4;var pts=CanonFx.wave(p.add(radial(a,r,0)),p.add(0,10,0),n/3,.6,3,age*.12+k,new Vec3(0,1,0));
-                c.ribbon("streak",true,pts,u->.12+.2*u,u->e*.32,corona,3,age*.03);
-            }
-        }
+        AgModernVfx.calculationArray(c,p.add(0,.16,0),new Vec3(0,1,0),Math.min(r,20.0),"vecmanip",age,e*.72,Math.min(32,n));
+        for(int k=0;k<8;k++){double a=k*Math.PI/4+age*.012;Vec3 axis=radial(a,1,0);var pts=List.of(p.add(axis.scale(r)),p.add(axis.scale(r*.35)).add(0,2,0),p.add(0,3.2,0));
+            c.ribbon("streak",true,pts,u->.14+u*.22,u->e*.48,color,3,age*.03);
+            Vec3 tip=p.add(axis.scale(r*(1-(age%16)/16)));c.sprite("macro/vecmanip",false,tip,Math.max(.22,r*.036),a,WHITE,(float)(e*.52));}
     }
     private static void beam(CanonFx.Canvas c,MacroVfx.Event v,Vec3 p,double age,double e,float[] color,int n){
         if(v.to().distanceToSqr(v.from())>1&&!v.skill().equals("meltdowner")){
-            if(AgEffectMaterials.beams())c.energyStream(v.from(),v.to(),.24,color,e*.7);
+            double beamR=v.actualRadius()>0?v.actualRadius():.55;
+            if(AgEffectMaterials.beams())c.energyStream(v.from(),v.to(),Math.min(.42,beamR*.32),color,e*.76);
             else{var pts=List.of(v.from(),v.to());c.ribbon("macro/beam_tile",true,pts,u->1.3,u->e*.7,WHITE,Math.max(1,v.from().distanceTo(v.to())/12),-age*.04);}
+            AgModernVfx.grandBeamHelices(c,v.from(),v.to(),beamR,"meltdowner",color,age,e*.72,Math.min(28,n));
         }
         for(int k=0;k<n/2;k++){double a=k*2.39996+age*.03;Vec3 at=p.add(radial(a,v.visualRadius()*.5*(.3+(k%7)/10.0),k%4));c.sprite("glow",true,at,.1+(k%3)*.07,0,color,(float)(e*.5));}
     }
     private static void spatial(CanonFx.Canvas c,Vec3 p,double r,double t,double e,float[] color,int n){
-        for(int k=0;k<6;k++){double a=k*Math.PI/3;Vec3 at=p.add(radial(a,r*.75,1+(k%3)*r*.15));double w=Math.max(.2,r*.07);
+        AgModernVfx.calculationArray(c,p.add(0,.9,0),new Vec3(0,1,0),r,"teleporter",t*25.0,e*.74,Math.min(32,n));
+        for(int k=0;k<6;k++){double a=k*Math.PI/3-t*.4;Vec3 at=p.add(radial(a,r*.78,1+(k%3)*r*.15));double w=Math.max(.22,r*.075);
             Vec3 x=radial(a+Math.PI/2,w,0),y=new Vec3(0,w*2,0);
-            c.ribbon("streak",true,List.of(at.subtract(x).subtract(y),at.add(x).subtract(y),at.add(x).add(y),at.subtract(x).add(y),at.subtract(x).subtract(y)),u->.06,u->e*.5,color,1,0);
-            c.sprite("macro/teleporter",false,at,w,t*.1,WHITE,(float)(e*.4));}
-    }
-    private static void neural(CanonFx.Canvas c,Vec3 p,double r,double t,double e,float[] color,int n){
-        int count=n>=28?6:4;var centre=p.add(0,2.5,0);var nodes=new ArrayList<Vec3>();float[] ink={.31f,.035f,.11f};
-        for(int k=0;k<count;k++){double a=k*2.39996;nodes.add(p.add(radial(a,r*(.48+.40*k/Math.max(1,count-1)),2+(k%3)*1.7+Math.sin(t+k)*.3)));}
-        for(int k=0;k<count;k++){
-            var at=nodes.get(k);var sideways=at.subtract(centre).cross(new Vec3(0,1,0)).normalize();var path=new ArrayList<Vec3>();
-            for(int j=0;j<=14;j++){double u=j/14d;path.add(centre.lerp(at,u).add(sideways.scale(Math.sin(Math.PI*u)*r*.13*(k%2==0?1:-1))).add(0,Math.sin(Math.PI*u)*1.5,0));}
-            c.ribbon("streak_ink",false,path,u->.34+r*.002,u->e*.63,ink,3,-t*.7);
-            c.ribbon("streak",true,path,u->.16+r*.001,u->e*.95,color,3,-t*.7);
-            double nodeRadius=Math.clamp(r*.025,.35,1.4);c.neuralNode(at,nodeRadius*1.4,color,(float)(e*.9));
-            c.sprite("glow",true,at,Math.max(.22,nodeRadius*.38),0,WHITE,(float)(e*.85));
-            double u=(t*.65+k*.17)%1;int i=Math.min(13,(int)(u*14));var pulse=path.get(i).lerp(path.get(i+1),u*14-i);
-            c.sprite("glow",true,pulse,Math.max(.18,nodeRadius*.24),0,WHITE,(float)(e*.9));
-            if((k&1)==1){var branch=CanonFx.wave(path.get(9),nodes.get((k+1)%count),6,.3,2,t+k,new Vec3(0,1,0));c.ribbon("streak",true,branch,v->.10,v->e*.55,color,2,-t);}
-        }
+            c.ribbon("streak",true,List.of(at.subtract(x).subtract(y),at.add(x).subtract(y),at.add(x).add(y),at.subtract(x).add(y),at.subtract(x).subtract(y)),u->.07,u->e*.62,color,1,0);
+            c.sprite("macro/teleporter",false,at,w,t*.1,WHITE,(float)(e*.45));}
     }
     private static void vortex(CanonFx.Canvas c,Vec3 p,double r,double t,double e,float[] color,int n,boolean water){
-        for(int k=0;k<(water?3:5);k++){var pts=new ArrayList<Vec3>();for(int i=0;i<=n;i++){double u=i/(double)n,a=t*2+k*Math.PI*2/5+u*6.28;pts.add(p.add(radial(a,r*(.15+.8*u),u*Math.min(28,r*.5))));}
-            c.ribbon(water?"macro/hydro_hand":"streak",water,pts,u->water?.5+u*1.5:.18+u*.4,u->e*(water?.45:.38),color,4,-t*.3);}
+        AgModernVfx.calculationArray(c,p.add(0,.12,0),new Vec3(0,1,0),Math.min(r,22.0),water?"hydro_hand":"aero_hand",t*25.0,e*.62,Math.min(30,n));
+        for(int k=0;k<(water?4:5);k++){var pts=new ArrayList<Vec3>();for(int i=0;i<=n;i++){double u=i/(double)n,a=t*2.2+k*Math.PI*2/(water?4:5)+u*6.28;pts.add(p.add(radial(a,r*(.15+.85*u),u*Math.min(28,r*.52))));}
+            c.ribbon(water?"macro/hydro_hand":"streak",water,pts,u->water?.5+u*1.5:.18+u*.42,u->e*(water?.50:.44),color,4,-t*.3);}
     }
     private static void pressure(CanonFx.Canvas c,Vec3 p,double r,double t,double e,float[] color,int n){
         for(int k=0;k<3;k++)boundary(c,p.add(0,k*1.4+Math.sin(t+k)*.3,0),r*(.4+k*.25),color,(float)(e*.5),n);
@@ -270,7 +277,9 @@ public final class MacroVfxClient {
             }}
     }
     private static void condensation(CanonFx.Canvas c,Vec3 p,double r,double t,double e,float[] color,int n){
-        for(int k=0;k<n/2;k++){double a=k*2.39996+t*.04;Vec3 at=p.add(radial(a,r,1+(k%4)*1.8));c.sprite("macro/nitrogen_armor",false,at,Math.max(.5,r*.08),a,WHITE,(float)(e*.22));}
+        AgModernVfx.fresnelDome(c,p,r,r,color,t*25.0,e*.48,7,16);
+        AgModernVfx.calculationArray(c,p.add(0,.12,0),new Vec3(0,1,0),Math.min(r,20.0),"nitrogen_armor",t*25.0,e*.60,Math.min(28,n));
+        for(int k=0;k<n/2;k++){double a=k*2.39996+t*.04;Vec3 at=p.add(radial(a,r,1+(k%4)*1.8));c.sprite("macro/nitrogen_armor",false,at,Math.max(.5,r*.08),a,WHITE,(float)(e*.28));}
     }
     @SubscribeEvent public static void commands(RegisterClientCommandsEvent e){
         var root=Commands.literal("agfx");

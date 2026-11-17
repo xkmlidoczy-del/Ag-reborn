@@ -13,6 +13,7 @@ uniform sampler2D Sampler2;
 uniform vec3 Light0_Direction;
 uniform vec3 Light1_Direction;
 uniform int FogShape;
+uniform ivec2 PackedLight;
 out vec2 surfaceUv;
 out vec4 surfaceLight;
 out float surfaceDistance;
@@ -20,6 +21,7 @@ void main(){
  vec4 viewPoint=ModelViewMat*vec4(Position,1.0);
  gl_Position=ProjMat*viewPoint;
  surfaceUv=UV0;
- surfaceLight=minecraft_mix_light(Light0_Direction,Light1_Direction,normalize(PoseNormalMat*Normal),Color)*texelFetch(Sampler2,UV2/16,0);
+ ivec2 lightCoords=PackedLight.x>=0?PackedLight:UV2;
+ surfaceLight=minecraft_mix_light(Light0_Direction,Light1_Direction,normalize(PoseNormalMat*Normal),Color)*texelFetch(Sampler2,lightCoords/16,0);
  surfaceDistance=fog_distance(viewPoint.xyz,FogShape);
 }

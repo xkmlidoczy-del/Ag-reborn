@@ -182,6 +182,7 @@ public final class CityNpcRenderer extends MobRenderer<CityNpcEntity, CityNpcRen
                     rightArm.zRot=-.22f;leftArm.zRot=.20f;
                 }
             }
+            cn.academy.port.client.canon.CanonPoseClient.applyNpc(this,npc,age-npc.tickCount);
             hat.copyFrom(head);
             leftPants.copyFrom(leftLeg);
             rightPants.copyFrom(rightLeg);

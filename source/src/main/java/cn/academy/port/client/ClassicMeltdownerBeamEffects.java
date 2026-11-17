@@ -2,6 +2,9 @@
  * and staged MELTDOWNER_BEAM_VISUALS.md. AcademyCraft GPLv3; LambdaLib MIT. */
 package cn.academy.port.client;
 
+import cn.academy.port.VisualTier;
+import cn.academy.port.VisualTierConfig;
+import cn.academy.port.client.canon.AgEnergyBeam;
 import cn.academy.port.client.vfx2.MdNearEyeClient;
 import cn.academy.port.client.vfx2.MdNearEyeMaterial;
 import cn.academy.port.client.vfx2.MdNearEyeVisibility;
@@ -56,7 +59,7 @@ public final class ClassicMeltdownerBeamEffects {
     private static final ResourceLocation MD_PARTICLE = texture("effects/md_particle"), WHITE = texture("port/white");
     private static final ResourceLocation[] MD_TEXTURES = rayTextures("mdray"), MINE_TEXTURES = rayTextures("mdray_small");
     private static final ResourceLocation[] EXPERT_TEXTURES = rayTextures("mdray_expert"), LUCK_TEXTURES = rayTextures("mdray_luck");
-    private static final ResourceLocation[] UPGRADED_MD_TEXTURES = {texture("canon_fx/macro/md_blend_in"),texture("canon_fx/macro/md_tile"),texture("canon_fx/macro/md_blend_out")};
+    private static final ResourceLocation[] UPGRADED_MD_TEXTURES = {texture("canon_fx/cinema/md_head"),texture("canon_fx/cinema/md_body"),texture("canon_fx/cinema/md_tail")};
     private static final Map<Integer, Context> EXPERT_MINERS = new HashMap<>(), LUCK_MINERS = new HashMap<>();
     private static final Tokens EXPERT_TOKENS = new Tokens(), LUCK_TOKENS = new Tokens();
     private static final ClassicMeltdownerStarterTimeline.Input EXPERT_INPUT = new ClassicMeltdownerStarterTimeline.Input(), LUCK_INPUT = new ClassicMeltdownerStarterTimeline.Input();
@@ -143,7 +146,7 @@ public final class ClassicMeltdownerBeamEffects {
                     || !Double.isFinite(vector(tag, "dx", "dy", "dz").lengthSqr())
                     || vector(tag, "dx", "dy", "dz").lengthSqr() < 1E-12
                     || !tag.contains("length", Tag.TAG_DOUBLE) || !Double.isFinite(tag.getDouble("length"))
-                    || tag.getDouble("length") < 0 || tag.getDouble("length") > (ray ? 30 : 10)
+                    || tag.getDouble("length") < 0 || tag.getDouble("length") > (ray ? 64 : 10)
                     || reflection && tag.getDouble("length") != 10) return;
             if (ray && (!tag.contains("charge", Tag.TAG_INT) || tag.getInt("charge") < MIN_CHARGE || tag.getInt("charge") > MAX_CHARGE)) return;
         }
@@ -292,7 +295,7 @@ public final class ClassicMeltdownerBeamEffects {
                 .map(c -> new ExpertDecorRay(c.skill, c.token, c.ray.origin, c.ray.direction, c.ray.length, c.ticks)).toList();
     }
     @SubscribeEvent public static void render(RenderLevelStageEvent event) {
-        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES) return;
+        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES || cn.academy.port.client.canon.AgVolumeRenderer.isShadowPass()) return;
         Minecraft mc = Minecraft.getInstance(); synchronizeSession(mc); updateClock(mc);
         if (mc.level == null || mc.player == null || !mc.player.isAlive()) return;
         if (buffers == null) buffers = MultiBufferSource.immediate(new ByteBufferBuilder(65536));
@@ -319,7 +322,7 @@ public final class ClassicMeltdownerBeamEffects {
         renderRay(ray, mc, camera, matrix, false); // Historical classic-only recording entry.
     }
     private static void renderRay(Ray ray, Minecraft mc, Vec3 camera, Matrix4f matrix, boolean currentCamera) {
-        if(ray.spec==MD&&cn.academy.port.client.canon.AgEnergyBeam.replacesClassic())return;
+        if(ray.spec==MD&&AgEnergyBeam.owns(ray.caster,ray.origin))return;
         long age = CLOCK.elapsed() - ray.created; ray.wiggle.frame(CLOCK.elapsed() + 1, RANDOM);
         double width = width(ray.spec, age, ray.wiggle.width), length = ray.length * lengthScale(ray.spec, age);
         double alpha = alpha(ray.spec, age), glowAlpha = glowAlpha(ray.spec, age, ray.wiggle.glow);
@@ -363,13 +366,17 @@ public final class ClassicMeltdownerBeamEffects {
         }
         boolean applyViewFix=!ray.entityAligned && !playerMain;
         Glow geometry = glow(origin, point(visualDirection), length, point(Vec3.ZERO), firstPerson, ray.spec.glowWidth(), applyViewFix);
-        ResourceLocation[] textures = ray.spec == MD ? (cn.academy.port.VisualTierConfig.tier()!=cn.academy.port.VisualTier.OFF?UPGRADED_MD_TEXTURES:MD_TEXTURES) : ray.spec == ClassicAdvancedMineRayTimeline.EXPERT ? EXPERT_TEXTURES : ray.spec == ClassicAdvancedMineRayTimeline.LUCK ? LUCK_TEXTURES : MINE_TEXTURES;
-        boolean upgraded=ray.spec==MD&&cn.academy.port.client.canon.AgEnergyBeam.replacesClassic();
+        CylinderFrame frame = cylinderFrame(origin, point(visualDirection), length, firstPerson, applyViewFix);
+        boolean upgraded = ray.spec == MD && VisualTierConfig.tier() != VisualTier.OFF;
+        if (upgraded && !AgEnergyBeam.replacesClassic()) {
+            renderMeltdownerFallback(matrix, geometry, frame, length, width, alpha, glowAlpha, firstPerson && currentCamera);
+            return;
+        }
+        ResourceLocation[] textures = ray.spec == MD ? (upgraded ? UPGRADED_MD_TEXTURES : MD_TEXTURES) : ray.spec == ClassicAdvancedMineRayTimeline.EXPERT ? EXPERT_TEXTURES : ray.spec == ClassicAdvancedMineRayTimeline.LUCK ? LUCK_TEXTURES : MINE_TEXTURES;
         double boardWidth=ray.spec.glowWidth()*width*(upgraded?2.2:1);
         board(nearEye ? MdNearEyeMaterial.choose(textures[0], false, Material.type(textures[0], false)) : Material.type(textures[0], false), matrix, geometry.from(), geometry.mid1(), geometry.up(), boardWidth, glowAlpha);
         board(nearEye ? MdNearEyeMaterial.choose(textures[1], false, Material.type(textures[1], false)) : Material.type(textures[1], false), matrix, geometry.mid1(), geometry.mid2(), geometry.up(), boardWidth, glowAlpha);
         board(nearEye ? MdNearEyeMaterial.choose(textures[2], false, Material.type(textures[2], false)) : Material.type(textures[2], false), matrix, geometry.mid2(), geometry.to(), geometry.up(), boardWidth, glowAlpha);
-        CylinderFrame frame = cylinderFrame(origin, point(visualDirection), length, firstPerson, applyViewFix);
         if (ray.spec == ClassicAdvancedMineRayTimeline.LUCK) {
             var inner = ClassicAdvancedMineRayTimeline.LUCK_INNER; var outer = ClassicAdvancedMineRayTimeline.LUCK_OUTER;
             cylinder(frame, matrix, length, ray.spec.inner() * width, .98, inner.r(), inner.g(), inner.b(), inner.a() / 255.0 * alpha, nearEye);
@@ -384,8 +391,51 @@ public final class ClassicMeltdownerBeamEffects {
             else cylinder(frame, matrix, length, ray.spec.outer() * width, 1, 106, 242, 106, 50 / 255.0 * alpha, nearEye);
         }
     }
+    private static void renderMeltdownerFallback(Matrix4f matrix, Glow glow, CylinderFrame frame, double length,
+                                                  double width, double alpha, double glowAlpha, boolean localFirstPerson) {
+        // Keep the textured light outside a depth-tested, saturated tube without writing translucent depth.
+        double envelope = MD.glowWidth() * width * (localFirstPerson ? .9 : 1.5);
+        double light = glowAlpha * (localFirstPerson ? .28 : .44);
+        board(Material.fallback(UPGRADED_MD_TEXTURES[0], false), matrix, glow.from(), glow.mid1(), glow.up(), envelope, light);
+        if (length > MD.glowWidth() * 2) fallbackFilaments(matrix, glow, envelope, light);
+        board(Material.fallback(UPGRADED_MD_TEXTURES[2], false), matrix, glow.mid2(), glow.to(), glow.up(), envelope, light);
+        RenderType tube = Material.fallback(WHITE, true);
+        double radius = MD.outer() * width * (localFirstPerson ? .88 : 1.3);
+        cylinder(tube, frame, matrix, length, radius, 1, 34, 136, 38, .48 * alpha);
+        cylinder(tube, frame, matrix, length, radius * .73, .99, 111, 255, 51, .83 * alpha);
+        cylinder(tube, frame, matrix, length, radius * .38, .98, 223, 255, 189, .92 * alpha);
+    }
+    private static void fallbackFilaments(Matrix4f matrix, Glow glow, double width, double alpha) {
+        RenderType type = Material.fallback(UPGRADED_MD_TEXTURES[1], false);
+        VertexConsumer out = buffers.getBuffer(type);
+        Point range = glow.mid2().subtract(glow.mid1());
+        double length = range.length();
+        double fade = Math.min(.24, 1.35 / length);
+        double[] stops = {0, fade, 1 - fade, 1};
+        for (int along = 0; along < stops.length - 1; along++) {
+            double start = stops[along], end = stops[along + 1];
+            for (int strip = 0; strip < 8; strip++) {
+                double low = strip / 8.0, high = (strip + 1) / 8.0;
+                filamentVertex(out, matrix, glow, range, width, start, low, along == 0 ? 0 : alpha, length);
+                filamentVertex(out, matrix, glow, range, width, end, low, along == 2 ? 0 : alpha, length);
+                filamentVertex(out, matrix, glow, range, width, end, high, along == 2 ? 0 : alpha, length);
+                filamentVertex(out, matrix, glow, range, width, start, high, along == 0 ? 0 : alpha, length);
+            }
+        }
+        buffers.endBatch(type);
+    }
+    private static void filamentVertex(VertexConsumer out, Matrix4f matrix, Glow glow, Point range, double width,
+                                       double along, double across, double alpha, double length) {
+        Point point = glow.mid1().add(range.scale(along)).add(glow.up().scale((across - .5) * width));
+        double edge = Math.sin(Math.PI * across);
+        vertex(out, matrix, vec(point), (float)(along * length / 8), (float)across, 137, 255, 106, alpha * edge * edge);
+    }
     private static void cylinder(CylinderFrame frame, Matrix4f matrix, double length, double radius, double headFix, int r, int g, int b, double alpha, boolean nearEye) {
-        RenderType type = nearEye ? MdNearEyeMaterial.choose(WHITE, true, Material.type(WHITE, true)) : Material.type(WHITE, true); VertexConsumer out = buffers.getBuffer(type);
+        RenderType type = nearEye ? MdNearEyeMaterial.choose(WHITE, true, Material.type(WHITE, true)) : Material.type(WHITE, true);
+        cylinder(type, frame, matrix, length, radius, headFix, r, g, b, alpha);
+    }
+    private static void cylinder(RenderType type, CylinderFrame frame, Matrix4f matrix, double length, double radius, double headFix, int r, int g, int b, double alpha) {
+        VertexConsumer out = buffers.getBuffer(type);
         for (var quad : ClassicMeltdownerBeamTimeline.cylinder(length, radius, headFix)) for (var vertex : List.of(quad.a(), quad.b(), quad.c(), quad.d()))
             vertex(out, matrix, vec(frame.apply(vertex.point())), vertex.u(), vertex.v(), r, g, b, alpha);
         buffers.endBatch(type);
@@ -490,16 +540,23 @@ public final class ClassicMeltdownerBeamEffects {
     private static ResourceLocation[] rayTextures(String name) { return new ResourceLocation[] {texture("effects/" + name + "/blend_in"), texture("effects/" + name + "/tile"), texture("effects/" + name + "/blend_out")}; }
     private static SoundEvent sound(String path) { return SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath("academy", path)); }
     private static final class Material extends RenderType {
-        private record Key(ResourceLocation texture, boolean cull) {}
+        private record Key(ResourceLocation texture, boolean cull, boolean fallback) {}
         private static final Map<Key, RenderType> TYPES = new HashMap<>();
         private Material(String n, VertexFormat f, VertexFormat.Mode m, int s, boolean cr, boolean sort, Runnable setup, Runnable clear) { super(n, f, m, s, cr, sort, setup, clear); }
         static RenderType type(ResourceLocation texture, boolean cull) {
-            return TYPES.computeIfAbsent(new Key(texture, cull), key -> create("academy_classic_beam_" + key.texture.getPath() + "_" + cull,
+            return material(new Key(texture, cull, false));
+        }
+        static RenderType fallback(ResourceLocation texture, boolean cull) {
+            return material(new Key(texture, cull, true));
+        }
+        private static RenderType material(Key key) {
+            return TYPES.computeIfAbsent(key, state -> create((state.fallback ? "academy_beam_fallback_" : "academy_classic_beam_") + state.texture.getPath() + "_" + state.cull,
                     DefaultVertexFormat.POSITION_TEX_COLOR, VertexFormat.Mode.QUADS, 4096, false, false, CompositeState.builder()
-                            .setShaderState(new ShaderStateShard(cull ? GameRenderer::getPositionTexColorShader : ClassicMeltdownerStarterEffects.CutoffShader::get))
-                            .setTextureState(new TextureStateShard(texture, false, false)).setTransparencyState(TRANSLUCENT_TRANSPARENCY)
-                            .setCullState(cull ? CULL : NO_CULL).setLightmapState(NO_LIGHTMAP).setOverlayState(NO_OVERLAY)
-                            .setWriteMaskState(COLOR_DEPTH_WRITE).setOutputState(PARTICLES_TARGET).createCompositeState(false)));
+                            .setShaderState(new ShaderStateShard(state.cull || state.fallback ? GameRenderer::getPositionTexColorShader : ClassicMeltdownerStarterEffects.CutoffShader::get))
+                            .setTextureState(new TextureStateShard(state.texture, state.fallback, false)).setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                            .setCullState(state.cull ? CULL : NO_CULL).setLightmapState(NO_LIGHTMAP).setOverlayState(NO_OVERLAY)
+                            .setDepthTestState(LEQUAL_DEPTH_TEST).setWriteMaskState(state.fallback ? COLOR_WRITE : COLOR_DEPTH_WRITE)
+                            .setOutputState(PARTICLES_TARGET).createCompositeState(false)));
         }
     }
 }

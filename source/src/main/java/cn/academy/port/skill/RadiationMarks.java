@@ -22,7 +22,11 @@ public final class RadiationMarks {
     }
     /** Preserve the originating canonical skill in shared MD attacks. */
     public static void attack(ServerPlayer player,String skill,Entity target,double raw) {
-        AbilityDamage.attack(player,skill,target,raw);
+        attack(player,skill,target,raw,null,null);
+    }
+    public static void attack(ServerPlayer player,String skill,Entity target,double raw,
+                              net.minecraft.world.phys.Vec3 origin,net.minecraft.world.phys.Vec3 point) {
+        AbilityDamage.attack(player,skill,target,raw,origin,point);
         var state=AbilityStorage.get(player);
         if(state.learned("rad_intensify")) {
             var data=target.getPersistentData();data.putInt(TICKS,Math.max(60,player.getPersistentData().getInt(TICKS)));data.putFloat(RATE,(float)rate(state.exp("rad_intensify")));

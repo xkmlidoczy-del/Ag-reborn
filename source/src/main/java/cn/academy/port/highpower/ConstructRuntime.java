@@ -479,7 +479,11 @@ public final class ConstructRuntime {
     @SubscribeEvent public static void logout(PlayerEvent.PlayerLoggedOutEvent e) { if (e.getEntity() instanceof ServerPlayer p) drop(p); }
     @SubscribeEvent public static void dimension(PlayerEvent.PlayerChangedDimensionEvent e) { if (e.getEntity() instanceof ServerPlayer p) drop(p); }
     @SubscribeEvent public static void death(LivingDeathEvent e) { if (!e.isCanceled() && e.getEntity() instanceof ServerPlayer p) drop(p); }
-    @SubscribeEvent public static void stopped(ServerStoppedEvent e) { STATES.clear(); THROWN_BODIES.clear(); ENTOMBS.clear(); }
+    @SubscribeEvent public static void stopped(ServerStoppedEvent e) {
+        STATES.clear(); THROWN_BODIES.clear(); ENTOMBS.clear();
+        ConstructLink link = ConstructLink.get();
+        if (link != null) link.clear();
+    }
 
     /** Test/inspection: whether the player is currently holding a body, and which. */
     public static UUID heldBody(ServerPlayer p) { State s = STATES.get(p.getUUID()); return s == null || s.phase != Phase.HOLD ? null : s.body; }

@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:bluespotted_ray",
+  "spawners": {
+    "type": "aca_fauna:bluespotted_ray",
+    "weight": 6,
+    "minCount": 1,
+    "maxCount": 1
+  }
+}

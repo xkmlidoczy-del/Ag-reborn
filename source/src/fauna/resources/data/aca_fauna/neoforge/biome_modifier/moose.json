@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:moose",
+  "spawners": {
+    "type": "aca_fauna:moose",
+    "weight": 2,
+    "minCount": 2,
+    "maxCount": 3
+  }
+}

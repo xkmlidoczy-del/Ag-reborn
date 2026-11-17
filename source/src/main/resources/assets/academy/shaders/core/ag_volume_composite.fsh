@@ -20,7 +20,10 @@ void main(){
         float w=exp(-float(x*x+y*y)*.32)*step(d,worldDepth+.0002);
         glow+=max(texture(Medium,at).rgb-vec3(.18),vec3(0))*w*.065;
     }
-    vec3 colour=body.rgb/(vec3(1)+body.rgb);colour+=Glow*glow/(vec3(1)+glow);
-    if(body.a<.001&&dot(glow,glow)<.00001)discard;
-    fragColor=vec4(colour,body.a)*vertexColor;
+    vec3 mappedGlow=glow/(vec3(1)+glow);
+    vec3 colour=body.rgb/(vec3(1)+body.rgb)+Glow*mappedGlow;
+    float glowLum=dot(mappedGlow,vec3(.2126,.7152,.0722))*Glow;
+    float outAlpha=clamp(max(body.a,glowLum*.58),0.0,1.0);
+    if(outAlpha<.002&&dot(glow,glow)<.00001)discard;
+    fragColor=vec4(colour,outAlpha)*vertexColor;
 }

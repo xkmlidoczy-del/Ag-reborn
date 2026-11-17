@@ -155,6 +155,14 @@ public final class MechEntity extends Entity {
         return (left ? previous.left() : previous.right()).lerp(current, partial);
     }
     public float footing(float partial) { return Mth.lerp(partial, groundOld, groundBlend); }
+    public float incline(float partial) {
+        if (feet == null) return 0;
+        return Mth.lerp(partial, feetOld == null ? feet.incline() : feetOld.incline(), feet.incline());
+    }
+    public float descentLoad(float partial) {
+        if (feet == null) return 0;
+        return Mth.lerp(partial, feetOld == null ? feet.descent() : feetOld.descent(), feet.descent());
+    }
     public float braking(float partial) { return Mth.lerp(partial, brakeOld, brake); }
 
     public float phase(float tick) { return Mth.lerp(tick, phaseOld, gaitPhase); }
@@ -301,6 +309,9 @@ public final class MechEntity extends Entity {
         boolean grounded = onGround();
         move(MoverType.SELF, new Vec3(-Math.sin(radians) * speed, vy, Math.cos(radians) * speed));
         double moved = Math.hypot(getX() - before.x, getZ() - before.z);
+        if (grounded && !onGround() && moved > .008 && vy <= 0 && !lift && !isInWater() && !isNoGravity()) {
+            followDownStep(before.y);
+        }
         entityData.set(SPEED, (float) (Math.copySign(moved, speed)));
         setDeltaMovement(0, verticalCollision || onGround() ? 0 : vy * .97, 0);
 
@@ -325,6 +336,15 @@ public final class MechEntity extends Entity {
         entityData.set(SOLES, Optional.ofNullable(frame));
         if (frame != null) entityData.set(WALK_CYCLE, footsteps.cycle());
         if (strikeAge() == chassis.attack.contactTick) resolveStrike(pilot);
+    }
+
+    private void followDownStep(double previousY) {
+        // Native collision still sets the floor. A drop deeper than the step limit stays airborne.
+        double remaining = maxUpStep() - Math.max(0, previousY - getY());
+        if (remaining <= 0) return;
+        Vec3 search = new Vec3(0, -remaining - .001, 0);
+        Vec3 support = collideBoundingBox(this, search, getBoundingBox(), level(), List.of());
+        if (support.y > search.y + .0005) move(MoverType.SELF, new Vec3(0, support.y - .001, 0));
     }
 
     private Vec3 footPoint(int side, float forward) {

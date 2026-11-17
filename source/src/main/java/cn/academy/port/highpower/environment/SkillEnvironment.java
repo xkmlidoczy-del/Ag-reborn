@@ -114,7 +114,7 @@ public final class SkillEnvironment {
         private final ServerLevel world;
         private final String skill;
         private final int level;
-        private final UUID presentation = UUID.randomUUID();
+        private final UUID presentation;
         private Vec3 impactCentre;
         private final Set<BlockPos> blocks = new HashSet<>();
         private final Set<UUID> entities = new HashSet<>();
@@ -125,6 +125,7 @@ public final class SkillEnvironment {
             this.owner = owner;
             this.world = owner.serverLevel();
             this.skill = skill;
+            this.presentation = cn.academy.port.macro.MacroVfx.castId(owner,skill);
             this.level = switch (skill) {
                 case "electromaster.railgun", "aero_hand.aero_ground_blast" -> level == 4 ? level : 0;
                 case "vecmanip.plasma_cannon", "meltdowner.mine_ray_luck" -> level == 5 ? level : 0;

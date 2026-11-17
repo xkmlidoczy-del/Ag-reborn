@@ -29,9 +29,10 @@ final class PulseRenderer extends EntityRenderer<PulseBolt> {
         pen.beam(stern, front, axes.y(), .45, color, .66f);
         pen.beam(stern.scale(.51), front, axes.x(), .18, 0xeeffff, .98f);
         pen.beam(stern.scale(.51), front, axes.y(), .18, 0xeeffff, .98f);
-        pen.ring(axis.scale(.26), axes.x(), axes.y(), .62, .12, 6, age * .25, color, .94f);
         pen.ring(axis.scale(-.58), axes.x(), axes.y(), .39, .071, 6, -age * .32, color, .77f);
         pen.ring(axis.scale(-1.21), axes.x(), axes.y(), .25, .045, 6, age * .29, color, .59f);
+        var sprites = new PlasmaSprites.Pen(stack.last(), buffers.getBuffer(MechRenderTypes.PLASMA));
+        PlasmaSprites.ring(sprites, axis.scale(.30), axes, .65, age * .24f, color, .94f);
     }
 
     @Override public ResourceLocation getTextureLocation(PulseBolt bolt) {

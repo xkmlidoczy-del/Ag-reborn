@@ -108,14 +108,17 @@ final class CanonShapes {
         tag(Shape.RING,3,0,"liquid_listen","liquid_survey","liquid_dual_sensor");
         tag(Shape.LINK,1,0,"liquid_path","liquid_route","liquid_switch");
     }
-    private record Segment(Vec3 from,Vec3 to){}
+    private record Segment(int fx,int fy,int fz,int tx,int ty,int tz){}
     private static final Map<Segment,Vec3> CLIPPED=new HashMap<>();
     private static net.minecraft.client.multiplayer.ClientLevel clippedWorld;
     private static long clippedTick=Long.MIN_VALUE;
+    static void clearCache(){CLIPPED.clear();clippedWorld=null;clippedTick=Long.MIN_VALUE;}
+    private static int q16(double v){return (int)Math.round(v*16.0);}
     private static Vec3 clipped(Vec3 from,Vec3 to){
         var mc=net.minecraft.client.Minecraft.getInstance();if(mc.level==null)return to;
-        long tick=mc.level.getGameTime();if(mc.level!=clippedWorld||tick!=clippedTick){CLIPPED.clear();clippedWorld=mc.level;clippedTick=tick;}
-        return CLIPPED.computeIfAbsent(new Segment(from,to),s->mc.level.clip(new net.minecraft.world.level.ClipContext(s.from(),s.to(),net.minecraft.world.level.ClipContext.Block.COLLIDER,net.minecraft.world.level.ClipContext.Fluid.NONE,mc.player)).getLocation());
+        long tick=mc.level.getGameTime();if(mc.level!=clippedWorld||tick!=clippedTick||CLIPPED.size()>=512){CLIPPED.clear();clippedWorld=mc.level;clippedTick=tick;}
+        return CLIPPED.computeIfAbsent(new Segment(q16(from.x),q16(from.y),q16(from.z),q16(to.x),q16(to.y),q16(to.z)),
+                s->mc.level.clip(new net.minecraft.world.level.ClipContext(from,to,net.minecraft.world.level.ClipContext.Block.COLLIDER,net.minecraft.world.level.ClipContext.Fluid.NONE,mc.player)).getLocation());
     }
     private CanonShapes() {}
     static boolean tagged(String skill){return TAGS.containsKey(skill);}

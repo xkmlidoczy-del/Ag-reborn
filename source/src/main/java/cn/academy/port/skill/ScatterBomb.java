@@ -117,7 +117,10 @@ public final class ScatterBomb {
                     if (entityHit.getEntity() instanceof LivingEntity living) living.invulnerableTime = -1;
                     RadiationMarks.attack(player, "meltdowner." + ID, entityHit.getEntity(), hold.session.damage());
                 }
-                sendRay(player, hold, index, ball.position, destination);
+                Vec3 visualEnd = hit.getType() != net.minecraft.world.phys.HitResult.Type.MISS
+                        ? hit.getLocation()
+                        : destination;
+                sendRay(player, hold, index, ball.position, visualEnd);
             }
             hold.session.complete();
         } finally {

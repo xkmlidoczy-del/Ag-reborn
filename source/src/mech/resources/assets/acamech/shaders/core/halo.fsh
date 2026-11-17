@@ -18,5 +18,6 @@ void main() {
     float haze = (0.65 * exp(-6.2 * radius * radius) + 0.35 * exp(-2.65 * radius * radius))
         * (1.0 - smoothstep(0.62, 1.0, radius));
     float opacity = haze * tint.a * ColorModulator.a * linear_fog_fade(distanceToEye, FogStart, FogEnd);
+    if (opacity < 0.003) discard;
     fragColor = vec4(tint.rgb * ColorModulator.rgb, opacity);
 }

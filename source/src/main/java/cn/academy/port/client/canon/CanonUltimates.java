@@ -31,13 +31,13 @@ final class CanonUltimates {
             "float_field",new Spec(90,10,false));
     private static final class Show {
         final String skill;final int entity;final UUID owner;final Spec spec;final boolean local;final double start;final float yaw;
-        final Vec3 origin;
+        final Vec3 origin;final double radius;
         final CanonFxLiquid.InkField ink;
         Vec3 anchor;final List<Vec3> targets=new ArrayList<>();
-        Show(String skill,int entity,UUID owner,Spec spec,boolean local,double start,float yaw,Vec3 anchor,Vec3 origin){
+        Show(String skill,int entity,UUID owner,Spec spec,boolean local,double start,float yaw,Vec3 anchor,Vec3 origin,double radius){
             this.skill=skill;this.entity=entity;this.owner=owner;this.spec=spec;this.local=local;this.start=start;this.yaw=yaw;this.anchor=anchor;
-            this.origin=origin;
-            this.ink=CanonFxLiquid.FIELD_SKILL.equals(skill)?CanonFxLiquid.fieldAt(origin,spec.radius):null;
+            this.origin=origin;this.radius=radius;
+            this.ink=CanonFxLiquid.FIELD_SKILL.equals(skill)?CanonFxLiquid.fieldAt(origin,radius):null;
         }
     }
     private static final List<Show> SHOWS=new ArrayList<>();
@@ -53,7 +53,6 @@ final class CanonUltimates {
 
     /** Folds a server visual of an ultimate into its cast's show, or opens a new show and starts its one-shot work. */
     static void receive(CanonVfx.Visual v,boolean local,double now){
-        if(cn.academy.port.VisualTierConfig.tier()!=cn.academy.port.VisualTier.OFF&&cn.academy.port.macro.MacroSkillRules.ultimate(v.skill()))return;
         Spec spec=SPECS.get(v.skill());if(spec==null||CanonReceiptFx.replacesLegacy(v.skill()))return;
         boolean liquid=CanonFxLiquid.FIELD_SKILL.equals(v.skill()),hydro="hydro_domain".equals(v.skill());
         boolean buoyancy="float_field".equals(v.skill()), nitrogen="nitrogen_dome".equals(v.skill());
@@ -66,17 +65,18 @@ final class CanonUltimates {
             // Liquid reports its field on the first accepted HIT; the other HITs are target-only.
             // Hydro's START carries the live area. Its END cancels the remaining source flourish.
             if(v.radius()<=0||v.phase()!=(liquid?CanonVfx.Phase.HIT:CanonVfx.Phase.START))return;
-            spec=new Spec(buoyancy?Math.min(v.duration(),18):v.duration(),v.radius(),nitrogen);
+            spec=new Spec(buoyancy?Math.min(v.duration(),36):v.duration(),v.radius(),nitrogen);
         }else for(Show s:SHOWS)if(s.owner.equals(v.owner())&&s.skill.equals(v.skill())&&now-s.start<25){addTarget(s,v);return;}
         var actor=mc.level.getEntity(v.entity());
         Vec3 anchor=v.skill().startsWith("liquid_")?v.origin():actor!=null?actor.position():v.origin();
         float yaw=actor instanceof net.minecraft.world.entity.LivingEntity l?l.yBodyRot:0;
         SHOWS.removeIf(s->s.owner.equals(v.owner())&&s.skill.equals(v.skill()));
         if(SHOWS.size()>=8)SHOWS.remove(0);
-        Show s=new Show(v.skill(),v.entity(),v.owner(),spec,local,now,yaw,anchor,v.origin());addTarget(s,v);SHOWS.add(s);
-        begin(s,radius(s,v));
+        double resolvedR=radius(spec,v);
+        Show s=new Show(v.skill(),v.entity(),v.owner(),spec,local,now,yaw,anchor,v.origin(),resolvedR);addTarget(s,v);SHOWS.add(s);
+        begin(s,resolvedR);
     }
-    private static double radius(Show s,CanonVfx.Visual v){return v.radius()>0?v.radius():s.spec.radius;}
+    private static double radius(Spec spec,CanonVfx.Visual v){return v.radius()>0?v.radius():spec.radius;}
     private static void addTarget(Show s,CanonVfx.Visual v){
         if(v.origin().distanceToSqr(v.endpoint())>1&&s.targets.size()<12)s.targets.add(v.endpoint());
     }
@@ -116,20 +116,47 @@ final class CanonUltimates {
         if(SHOWS.isEmpty())return;
         var mc=Minecraft.getInstance();if(mc.level==null){SHOWS.clear();return;}
         SHOWS.removeIf(s->CanonReceiptFx.replacesLegacy(s.skill)||now-s.start>s.spec.life||now<s.start-1);
+        float partial=(float)Math.clamp(now-Math.floor(now),0.0,1.0);
         for(Show s:List.copyOf(SHOWS)){
-            if(s.spec.follow){var e=mc.level.getEntity(s.entity);if(e!=null&&e.getUUID().equals(s.owner))s.anchor=e.position();}
-            double age=now-s.start,p=age/s.spec.life,e=Math.min(1,age/6)*(p>.75?Math.max(0,(1-p)/.25):1);if(e<=.01)continue;
-            double R=s.spec.radius;
+            if(s.spec.follow){var e=mc.level.getEntity(s.entity);if(e!=null&&e.getUUID().equals(s.owner))s.anchor=e.getPosition(partial);}
+            double age=now-s.start,p=age/s.spec.life,e=Math.min(1,age/5)*(p>.75?Math.max(0,(1-p)/.25):1);if(e<=.01)continue;
+            double R=s.radius;
             int before=c.left,scope=c.limit(allowance);
             try{switch(s.skill){
-                case "dark_construct" -> darkConstruct(c,s,age,e,R);
-                case "nitrogen_dome" -> nitrogenDome(c,s,age,e,R);
-                case "aero_barrage" -> aeroBarrage(c,s,age,e,R);
-                case "mental_out_crowd" -> mentalCrowd(c,s,age,e,R);
-                case "hydro_domain" -> CanonFxHydro.domainSource(c,s.origin,age,e);
-                case "paper_array" -> paperArray(c,s,age,e,R);
-                case CanonFxLiquid.FIELD_SKILL -> CanonFxLiquid.drawField(c,s.ink,R,p,e);
-                case "float_field" -> floatField(c,s,age,e,R);
+                case "dark_construct" -> {
+                    darkConstruct(c,s,age,e,R);
+                    AgModernVfx.calculationArray(c,s.anchor.add(0,.12,0),new Vec3(0,1,0),R,"dark_matter",age,e*.68,32);
+                }
+                case "nitrogen_dome" -> {
+                    nitrogenDome(c,s,age,e,R);
+                    AgModernVfx.fresnelDome(c,s.anchor,R,R,ICE,age,e*.62,8,18);
+                    AgModernVfx.terrainShockCrown(c,s.anchor,R,FROST,age,e*.66,36,true);
+                }
+                case "aero_barrage" -> {
+                    aeroBarrage(c,s,age,e,R);
+                    AgModernVfx.terrainShockCrown(c,s.anchor,R,AIR,age,e*.62,36,true);
+                }
+                case "mental_out_crowd" -> {
+                    mentalCrowd(c,s,age,e,R);
+                    AgModernVfx.calculationArray(c,s.anchor.add(0,.12,0),new Vec3(0,1,0),R,"mental_out",age,e*.64,32);
+                }
+                case "hydro_domain" -> {
+                    CanonFxHydro.domainSource(c,s.origin,age,e);
+                    AgModernVfx.terrainShockCrown(c,s.origin,R,WATER,age,e*.68,36,true);
+                }
+                case "paper_array" -> {
+                    paperArray(c,s,age,e,R);
+                    AgModernVfx.calculationArray(c,s.anchor.add(0,3.3,0),new Vec3(0,1,0),Math.min(R,8.5),"paper_psychokinesis",age,e*.72,28);
+                }
+                case CanonFxLiquid.FIELD_SKILL -> {
+                    CanonFxLiquid.drawField(c,s.ink,R,p,e);
+                    AgModernVfx.terrainShockCrown(c,s.origin,R,new float[]{.42f,.56f,.88f},age,e*.62,32,false);
+                }
+                case "float_field" -> {
+                    floatField(c,s,age,e,R);
+                    AgModernVfx.fresnelDome(c,s.origin,R,R*.72,FLOAT,age,e*.54,7,16);
+                    AgModernVfx.calculationArray(c,s.origin.add(0,.14,0),new Vec3(0,1,0),R,"float_dial",age,e*.65,30);
+                }
                 default -> { }
             }}finally{c.restore(scope);c.record("ultimate:"+s.skill,before);}
         }

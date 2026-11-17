@@ -28,7 +28,7 @@ import org.joml.Matrix4f;
 @EventBusSubscriber(modid="academy",value=Dist.CLIENT)
 final class AgImpactFx {
     private record Fragment(BlockState state,Vec3 from,Vec3 velocity,double born,double size,double spin){}
-    private record Mark(Vec3 centre,Vec3 normal,double radius,double born,int life,double seed,boolean heat){}
+    private record Mark(Vec3 centre,Vec3 normal,double radius,double born,int life,double seed,boolean heat,BlockPos sourceCell){}
     private static final List<Fragment> FRAGMENTS=new ArrayList<>();
     private static final List<Mark> MARKS=new ArrayList<>();
     private static final Map<UUID,Set<BlockPos>> SEEN=new LinkedHashMap<>();
@@ -50,20 +50,23 @@ final class AgImpactFx {
                 FRAGMENTS.add(new Fragment(state,pos.getCenter(),away.scale(.07+random.nextDouble()*.09).add(axis.scale(.025)).add(0,.10+random.nextDouble()*.10,0),now,.12+random.nextDouble()*.18,random.nextDouble()*360));
             }
             for(int i=0;i<(max>40?3:1);i++)world.addParticle(new BlockParticleOption(ParticleTypes.BLOCK,state),pos.getX()+random.nextDouble(),pos.getY()+random.nextDouble(),pos.getZ()+random.nextDouble(),(random.nextDouble()-.5)*.08,.05+random.nextDouble()*.07,(random.nextDouble()-.5)*.08);
-            if(scene.style()==BeamImpactVfx.Style.BEAM)for(Direction side:Direction.values()){
+            if(scene.style()==BeamImpactVfx.Style.BEAM||scene.style()==BeamImpactVfx.Style.BLAST)for(Direction side:Direction.values()){
                 BlockPos neighbour=pos.relative(side);if(!world.hasChunkAt(neighbour))continue;var surface=world.getBlockState(neighbour);if(surface.isAir()||surface.hasBlockEntity()||!surface.canOcclude())continue;
                 Vec3 n=new Vec3(-side.getStepX(),-side.getStepY(),-side.getStepZ());Vec3 at=pos.getCenter().add(side.getStepX()*.498,side.getStepY()*.498,side.getStepZ()*.498);
-                addMark(new Mark(at,n,.64,now,90,random.nextDouble(),true));
+                addMark(new Mark(at,n,scene.style()==BeamImpactVfx.Style.BEAM?.64:.46,now,90,random.nextDouble(),true,pos));
             }
         }
         for(var point:scene.impacts())if(cn.academy.port.macro.MacroVfx.finite(point)&&point.distanceToSqr(scene.from())<192*192){
-            addMark(new Mark(point,axis.scale(-1),Math.min(1.7,.35+scene.radius()*.25),now,18,new Random(scene.cast().getMostSignificantBits()).nextDouble(),false));
+            addMark(new Mark(point,axis.scale(-1),Math.min(1.7,.35+scene.radius()*.25),now,18,new Random(scene.cast().getMostSignificantBits()).nextDouble(),false,null));
         }
     }
     private static void addMark(Mark mark){if(MARKS.size()>=192)MARKS.removeFirst();MARKS.add(mark);}
     @SubscribeEvent public static void render(RenderLevelStageEvent e){
         if(e.getStage()!=RenderLevelStageEvent.Stage.AFTER_PARTICLES||AgVolumeRenderer.shadow())return;sync();if(world==null||VisualTierConfig.tier()==VisualTier.OFF)return;
-        double now=world.getGameTime()+e.getPartialTick().getGameTimeDeltaPartialTick(false);FRAGMENTS.removeIf(f->now-f.born>30);MARKS.removeIf(m->now-m.born>m.life);
+        double now=world.getGameTime()+e.getPartialTick().getGameTimeDeltaPartialTick(false);
+        FRAGMENTS.removeIf(f->now-f.born>30);
+        MARKS.removeIf(m->now-m.born>m.life||m.sourceCell!=null&&(!world.hasChunkAt(m.sourceCell)||now-m.born>5
+                &&!world.getBlockState(m.sourceCell).isAir()&&!cn.academy.port.highpower.environment.SkillEnvironment.isVacancy(world.getBlockState(m.sourceCell))));
         if(FRAGMENTS.isEmpty()&&MARKS.isEmpty())return;if(buffers==null)buffers=MultiBufferSource.immediate(new ByteBufferBuilder(1<<18));var mc=Minecraft.getInstance();var camera=e.getCamera().getPosition();var stack=RenderSystem.getModelViewStack();stack.pushMatrix();
         try{stack.set(e.getModelViewMatrix());RenderSystem.applyModelViewMatrix();var ps=e.getPoseStack();
             for(var f:List.copyOf(FRAGMENTS)){

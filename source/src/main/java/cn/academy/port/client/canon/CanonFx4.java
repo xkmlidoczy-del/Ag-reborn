@@ -51,19 +51,30 @@ final class CanonFx4 {
     static RenderType type(String texture,Mode mode){
         return TYPES.computeIfAbsent(texture+"|"+mode,k->Material.make(texture,mode));
     }
-    static void clear(){TYPES.clear();}
+    static void clear(){
+        TYPES.clear();
+        if(scene!=null){scene.destroyBuffers();scene=null;}
+    }
 
     /** Copies the current colour buffer so refraction can sample what is behind it. Called once per frame before the late batch. */
     static void captureScene(){
         RenderTarget main=Minecraft.getInstance().getMainRenderTarget();
-        if(scene==null||scene.width!=main.width||scene.height!=main.height){
-            if(scene!=null)scene.destroyBuffers();
-            scene=new TextureTarget(main.width,main.height,false,Minecraft.ON_OSX);
+        int read=GL11.glGetInteger(GL30.GL_READ_FRAMEBUFFER_BINDING);
+        int draw=GL11.glGetInteger(GL30.GL_DRAW_FRAMEBUFFER_BINDING);
+        int[] viewport=new int[4];GL11.glGetIntegerv(GL11.GL_VIEWPORT,viewport);
+        try{
+            if(scene==null||scene.width!=main.width||scene.height!=main.height){
+                if(scene!=null)scene.destroyBuffers();
+                scene=new TextureTarget(main.width,main.height,false,Minecraft.ON_OSX);
+            }
+            GlStateManager._glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER,main.frameBufferId);
+            GlStateManager._glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER,scene.frameBufferId);
+            GlStateManager._glBlitFrameBuffer(0,0,main.width,main.height,0,0,main.width,main.height,GL11.GL_COLOR_BUFFER_BIT,GL11.GL_NEAREST);
+        }finally{
+            GlStateManager._glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER,read);
+            GlStateManager._glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER,draw);
+            RenderSystem.viewport(viewport[0],viewport[1],viewport[2],viewport[3]);
         }
-        GlStateManager._glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER,main.frameBufferId);
-        GlStateManager._glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER,scene.frameBufferId);
-        GlStateManager._glBlitFrameBuffer(0,0,main.width,main.height,0,0,main.width,main.height,GL11.GL_COLOR_BUFFER_BIT,GL11.GL_NEAREST);
-        main.bindWrite(false);
     }
 
     @EventBusSubscriber(modid="academy",value=Dist.CLIENT,bus=EventBusSubscriber.Bus.MOD)

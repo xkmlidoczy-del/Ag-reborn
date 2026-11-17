@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:mallard_duck",
+  "spawners": {
+    "type": "aca_fauna:mallard_duck",
+    "weight": 6,
+    "minCount": 2,
+    "maxCount": 3
+  }
+}

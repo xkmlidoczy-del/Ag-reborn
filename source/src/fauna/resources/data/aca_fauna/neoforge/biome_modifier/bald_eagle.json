@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:bald_eagle",
+  "spawners": {
+    "type": "aca_fauna:bald_eagle",
+    "weight": 6,
+    "minCount": 2,
+    "maxCount": 3
+  }
+}

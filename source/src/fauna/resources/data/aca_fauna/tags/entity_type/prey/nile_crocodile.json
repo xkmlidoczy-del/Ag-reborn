@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:rabbit",
+    "minecraft:chicken",
+    "aca_fauna:red_squirrel",
+    "aca_fauna:marmot",
+    "aca_fauna:mallard_duck",
+    "aca_fauna:sika_deer",
+    "aca_fauna:impala"
+  ]
+}

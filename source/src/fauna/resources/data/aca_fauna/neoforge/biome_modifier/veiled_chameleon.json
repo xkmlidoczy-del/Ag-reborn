@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:veiled_chameleon",
+  "spawners": {
+    "type": "aca_fauna:veiled_chameleon",
+    "weight": 6,
+    "minCount": 1,
+    "maxCount": 1
+  }
+}

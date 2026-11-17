@@ -260,11 +260,11 @@ public final class ClassicThunderClapEffects {
             modelView.set(event.getModelViewMatrix());
             RenderSystem.applyModelViewMatrix();
             RenderSystem.setShaderColor(1, 1, 1, 1);
-            for (Charge charge : CONTEXTS.values()) if (charge.valid(minecraft)) renderSurround(charge, poses, camera, partial);
-            for (Charge charge : TAILS) if (charge.valid(minecraft)) renderSurround(charge, poses, camera, partial);
+            for (Charge charge : CONTEXTS.values()) if (charge.valid(minecraft) && charge.classic()) renderSurround(charge, poses, camera, partial);
+            for (Charge charge : TAILS) if (charge.valid(minecraft) && charge.classic()) renderSurround(charge, poses, camera, partial);
             buffers.endBatch(RenderTypes.arc());
             for (Charge charge : CONTEXTS.values())
-                if (charge.valid(minecraft) && charge.hold.markVisible(charge.local) && finite(charge.mark))
+                if (charge.valid(minecraft) && charge.classic() && charge.hold.markVisible(charge.local) && finite(charge.mark))
                     renderRipple(charge, poses, camera, partial);
             buffers.endBatch(RenderTypes.ripple());
         } finally {
@@ -348,6 +348,7 @@ public final class ClassicThunderClapEffects {
         final Random random = new Random();
         final ClassicThunderClapTimeline.Hold hold = new ClassicThunderClapTimeline.Hold();
         final List<SubArc> subArcs = new ArrayList<>();
+        boolean cinematic;
         Vec3 mark = Vec3.ZERO, previousMark = Vec3.ZERO;
 
         Charge(Entity caster, ClientLevel level, long token, boolean local, long inputNonce) {
@@ -360,6 +361,11 @@ public final class ClassicThunderClapEffects {
         boolean valid(Minecraft minecraft) {
             return minecraft.level == level && caster.level() == level && caster.isAlive() && !caster.isRemoved()
                     && level.getEntity(caster.getId()) == caster && (!local || caster == minecraft.player);
+        }
+        boolean classic() {
+            if (cn.academy.port.VisualTierConfig.tier() == cn.academy.port.VisualTier.OFF) return true;
+            cinematic |= cn.academy.port.client.canon.MacroVfxClient.owns("thunder_clap", caster.getUUID());
+            return !cinematic;
         }
         void tick() {
             previousMark = mark;

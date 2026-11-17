@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:hammerhead_shark",
+  "spawners": {
+    "type": "aca_fauna:hammerhead_shark",
+    "weight": 6,
+    "minCount": 2,
+    "maxCount": 3
+  }
+}

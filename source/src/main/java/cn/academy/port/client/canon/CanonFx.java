@@ -28,10 +28,10 @@ final class CanonFx {
     /** anchor: attached body position for this frame; yaw: actor body yaw degrees. */
     /** {@code radius}/{@code rangeCentre}: the server-checked area of the skill, or 0 when it has none. */
     record View(String skill,String category,Motif motif,Vec3 origin,Vec3 endpoint,Vec3 anchor,float yaw,int phase,double age,int life,
-                boolean local,int tier,net.minecraft.world.phys.AABB targetBox,double radius,Vec3 rangeCentre,Vec3 barrierCentre,Vec3 aimAxis) {
+                boolean local,int tier,net.minecraft.world.phys.AABB targetBox,double radius,Vec3 rangeCentre,Vec3 barrierCentre,Vec3 aimAxis,java.util.UUID owner) {
         View(String skill,String category,Motif motif,Vec3 origin,Vec3 endpoint,Vec3 anchor,float yaw,int phase,double age,int life,
              boolean local,int tier,net.minecraft.world.phys.AABB targetBox,double radius,Vec3 rangeCentre){
-            this(skill,category,motif,origin,endpoint,anchor,yaw,phase,age,life,local,tier,targetBox,radius,rangeCentre,null,null);
+            this(skill,category,motif,origin,endpoint,anchor,yaw,phase,age,life,local,tier,targetBox,radius,rangeCentre,null,null,null);
         }
         View(String skill,String category,Motif motif,Vec3 origin,Vec3 endpoint,Vec3 anchor,float yaw,int phase,double age,int life,boolean local,int tier){
             this(skill,category,motif,origin,endpoint,anchor,yaw,phase,age,life,local,tier,null,0,null);
@@ -42,8 +42,15 @@ final class CanonFx {
         }
     }
 
-    private static final int QUAD_BUDGET=2600;
-    private static final boolean QA_BUDGET=Boolean.getBoolean("academy.qa.signatureBudget");
+    private static int activeBudget(){
+        return switch(cn.academy.port.VisualTierConfig.tier()){
+            case CINEMATIC -> 2600;
+            case STANDARD -> 2200;
+            case LOW -> 1600;
+            case OFF -> 1200;
+        };
+    }
+    static final boolean QA_BUDGET=Boolean.getBoolean("academy.qa.signatureBudget");
     private record FrameStats(int quads,int dropped,Map<String,Integer> groups) {}
     private static FrameStats lastStats;
     private static final Map<String,RenderType> TYPES=new HashMap<>();
@@ -52,13 +59,14 @@ final class CanonFx {
     private static boolean lateUsed;
     private CanonFx() {}
 
-    static void clear(){TYPES.clear();CanonFx4.clear();CanonFxForms.clear();CanonFxClassic.clear();ClassicSignatures.clear();CanonCamera.clear();CanonParticles.clear();CanonDecals.clear();CanonWarps.clear();
+    static void clear(){TYPES.clear();CanonFx4.clear();CanonFxForms.clear();CanonFxClassic.clear();ClassicSignatures.clear();CanonCamera.clear();CanonParticles.clear();CanonDecals.clear();CanonWarps.clear();SkillCinematicFx.clear();CanonShapes.clearCache();AgModernVfx.clearCache();
         if(storage!=null)storage.close();if(lateStorage!=null)lateStorage.close();storage=lateStorage=null;buffers=late=null;}
 
     static void render(RenderLevelStageEvent event,List<View> views){
-        if(views.isEmpty()&&!CanonParticles.any()&&!CanonDecals.any()&&!CanonWarps.any()&&!CanonUltimates.any()&&!ClassicSignatures.any()&&!MacroVfxClient.any())return;
-        if(buffers==null){storage=new ByteBufferBuilder(1<<18);buffers=MultiBufferSource.immediate(storage);
-            lateStorage=new ByteBufferBuilder(1<<15);late=MultiBufferSource.immediate(lateStorage);}
+        if(AgVolumeRenderer.isShadowPass())return;
+        if(views.isEmpty()&&!CanonParticles.any()&&!CanonDecals.any()&&!CanonWarps.any()&&!CanonUltimates.any()&&!ClassicSignatures.any()&&!MacroVfxClient.any()&&!SkillCinematicFx.any())return;
+        if(buffers==null){storage=new ByteBufferBuilder(1<<19);buffers=MultiBufferSource.immediate(storage);
+            lateStorage=new ByteBufferBuilder(1<<16);late=MultiBufferSource.immediate(lateStorage);}
         double partial=net.minecraft.client.Minecraft.getInstance().isPaused()?0:event.getPartialTick().getGameTimeDeltaPartialTick(false);lateUsed=false;
         var camera=event.getCamera();var modelView=RenderSystem.getModelViewStack();float[] color=RenderSystem.getShaderColor().clone();
         modelView.pushMatrix();
@@ -70,22 +78,28 @@ final class CanonFx {
             int macros=MacroVfxClient.count();
             int macroBudget=Math.min(1800,macros*640);
             int groups=visible.size()+ClassicSignatures.count()+CanonUltimates.count();
-            int allowance=Math.max(1,(QUAD_BUDGET-320-macroBudget)/Math.max(1,groups));
+            var level=net.minecraft.client.Minecraft.getInstance().level;
+            if(level!=null)SkillCinematicFx.results(c,level.getGameTime()+partial);
+            var nativeBodies=new java.util.HashSet<MacroVfxClient.NativeBody>();
+            int allowance=Math.max(1,(c.left-320-macroBudget)/Math.max(1,groups));
             for(View v:visible){
                 int before=c.left,scope=c.limit(allowance);
                 try{
                     // Leave a share for the identifying detail even when a shell/wing uses many faces.
                     int body=c.limit(allowance*3/4);
-                    try{CanonFxScripts.draw(c,v);CanonShapes.draw(c,v);}finally{c.restore(body);}
+                    try{
+                        boolean paperBuild=SkillCinematicFx.drawsPaperBuild(v);
+                        if(!paperBuild){CanonFxScripts.draw(c,v);CanonShapes.draw(c,v);}
+                        if(v.owner!=null&&(paperBuild||c.left<before))nativeBodies.add(new MacroVfxClient.NativeBody(v.owner,v.skill));
+                    }finally{c.restore(body);}
                     CanonBarrierGeometry.boundary(c,v,CanonSignatures.colour(v.category()),CanonFxScripts.env(v));
                     CanonRangeRing.draw(c,v);CanonSignatures.draw(c,v);
                 }finally{c.restore(scope);c.record("view:"+v.skill,before);}
             }
-            var level=net.minecraft.client.Minecraft.getInstance().level;
-            if(level!=null){MacroVfxClient.draw(c,level.getGameTime()+partial,macros==0?0:macroBudget/macros);CanonUltimates.draw(c,level.getGameTime()+partial,allowance);ClassicSignatures.draw(c,level.getGameTime()+partial,allowance);} // game time: hit freezes must not stretch a finale
+            if(level!=null){MacroVfxClient.draw(c,level.getGameTime()+partial,macros==0?0:macroBudget/macros,nativeBodies);CanonUltimates.draw(c,level.getGameTime()+partial,allowance);ClassicSignatures.draw(c,level.getGameTime()+partial,allowance);} // game time: hit freezes must not stretch a finale
             int residue=c.limit(320);
             try{CanonDecals.draw(c,partial);CanonParticles.draw(c,partial);CanonWarps.draw(c,partial);}finally{c.restore(residue);}
-            if(QA_BUDGET)lastStats=new FrameStats(QUAD_BUDGET-c.left,c.dropped,Map.copyOf(c.groups));
+            if(QA_BUDGET)lastStats=new FrameStats(c.budget-c.left,c.dropped,Map.copyOf(c.groups));
             buffers.endBatch();
             // Refraction samples what is already on screen, so it is copied after everything else and drawn last.
             if(lateUsed){CanonFx4.captureScene();late.endBatch();}
@@ -94,7 +108,7 @@ final class CanonFx {
 
     /** Per-frame drawing surface. Positions are world space; conversion to camera space happens here. */
     static final class Canvas {
-        final Matrix4f matrix;final Vec3 cam,right,up;int left=QUAD_BUDGET;
+        final Matrix4f matrix;final Vec3 cam,right,up;final int budget=activeBudget();int left=budget;
         private int floor,dropped;
         private final Map<String,Integer> groups=QA_BUDGET?new HashMap<>():null;
         Canvas(Matrix4f matrix,Vec3 cam,Vec3 right,Vec3 up){this.matrix=matrix;this.cam=cam;this.right=right;this.up=up;}

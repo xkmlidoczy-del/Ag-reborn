@@ -153,8 +153,10 @@ public final class ElectronBomb {
             RadiationMarks.attack(player, entityHit.getEntity(),
                     (float) cast.plan.cost.damage());
         }
-        // Classic visuals extend to the looking destination even when the oblique orb ray hit earlier.
-        sendRay(player, from, destination);
+        Vec3 visualEnd = hit.getType() != HitResult.Type.MISS
+                ? hit.getLocation()
+                : destination;
+        sendRay(player, from, visualEnd);
     }
 
     private static Vec3 lookingDestination(ServerPlayer player) {

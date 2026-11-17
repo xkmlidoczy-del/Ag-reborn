@@ -116,12 +116,12 @@ void main() {
     cam.z = -cam.z;
     float distance = length(cam);
     if (distance < 0.0001 || ballCount <= 0 || alpha <= 0.0) {
-        fragColor = vec4(0.0);
-        return;
+        discard;
     }
     vec3 direction = normalize(cam);
     float phase = 6.28318530718 * clamp(VisualPhase, 0.0, 1.0);
     vec4 result = rayMarch(cam - direction * 3.0, direction, materialFrame(), phase);
     result.a = clamp(result.a, 0.0, 1.0) * (0.5 + alpha * 0.5);
+    if (result.a < 0.003) discard;
     fragColor = result;
 }

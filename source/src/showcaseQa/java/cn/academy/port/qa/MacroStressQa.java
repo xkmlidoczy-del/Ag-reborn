@@ -1,7 +1,9 @@
 package cn.academy.port.qa;
 
 import cn.academy.port.*;
+import cn.academy.port.canon.CanonExpansionCombatA;
 import cn.academy.port.canon.CanonOffense;
+import cn.academy.port.canon.CanonPaperSkills;
 import cn.academy.port.highpower.*;
 import cn.academy.port.city.*;
 import com.mojang.authlib.GameProfile;
@@ -14,6 +16,8 @@ import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.CommonListenerCookie;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.registration.NetworkRegistry;
@@ -23,6 +27,7 @@ final class MacroStressQa {
     private static final List<ServerPlayer> casters=new ArrayList<>();
     private static final List<EmbeddedChannel> channels=new ArrayList<>();
     private static final List<Entity> entities=new ArrayList<>();
+    private static final List<String> MIXED=List.of("mental_resonance_cascade","float_collapse_field","aero_squall","paper_array","dark_shard_ring");
     private MacroStressQa(){}
     static void step(Minecraft mc,String op){
         if(!Boolean.getBoolean("academy.qa.confirmOwnWorld"))throw new IllegalStateException("owned QA world required");
@@ -34,7 +39,7 @@ final class MacroStressQa {
         }
         mc.getSingleplayerServer().submit(()->{
             var server=mc.getSingleplayerServer();var world=server.overworld();
-            if(op.equals("setup")){
+            if(op.equals("setup")||op.equals("setup-mixed")){
                 clear();
                 for(int i=0;i<5;i++){
                     var cookie=CommonListenerCookie.createInitial(new GameProfile(UUID.randomUUID(),"FxCaster"+i),false);
@@ -42,10 +47,13 @@ final class MacroStressQa {
                     var connection=new Connection(PacketFlow.SERVERBOUND);var channel=new EmbeddedChannel(connection);NetworkRegistry.configureMockConnection(connection);
                     server.getPlayerList().placeNewPlayer(connection,p,cookie);casters.add(p);channels.add(channel);
                     p.setGameMode(GameType.SURVIVAL);p.moveTo(new Vec3((i-2)*3,-60,0),0,0);p.setYHeadRot(0);p.connection.resetPosition();p.setNoGravity(true);
-                    var state=AbilityStorage.get(p);state.changeCategoryClassic("mental_out");state.setLevel(5);
-                    for(var skill:SkillCatalog.REGISTERED)if(skill.category().equals("mental_out"))state.learn(skill.id());
-                    state.activated=true;state.overloadFine=true;state.experience.put("mental_resonance_cascade",1d);
-                    if(!state.presets.edit(0,0,"mental_resonance_cascade",state::learned)||!HighPowerCombat.enroll(p,5))throw new IllegalStateException("finite real caster fixture");
+                    String skillId=op.equals("setup-mixed")?MIXED.get(i):MIXED.getFirst();
+                    var definition=SkillCatalog.REGISTERED.stream().filter(s->s.id().equals(skillId)).findFirst().orElseThrow();
+                    var state=AbilityStorage.get(p);state.changeCategoryClassic(definition.category());state.setLevel(5);
+                    for(var skill:SkillCatalog.REGISTERED)if(skill.category().equals(definition.category()))state.learn(skill.id());
+                    state.activated=true;state.overloadFine=true;state.experience.put(skillId,1d);
+                    if(skillId.equals("paper_array"))p.setItemSlot(EquipmentSlot.MAINHAND,new ItemStack(Items.PAPER,64));
+                    if(!state.presets.edit(0,0,skillId,state::learned)||!HighPowerCombat.enroll(p,5))throw new IllegalStateException("finite real caster fixture");
                     HighPowerResources.initializeBudget(p);AbilityStorage.save(p);
                 }
                 for(int i=0;i<20;i++){
@@ -62,6 +70,21 @@ final class MacroStressQa {
                     caster.setYRot((float)-Math.toDegrees(Math.atan2(aim.x,aim.z)));caster.setXRot((float)-Math.toDegrees(Math.atan2(aim.y,Math.hypot(aim.x,aim.z))));caster.setYHeadRot(caster.getYRot());
                 }
                 LogUtils.getLogger().info("QA_MACRO_STRESS setup actualCityNpcs=10 mockConnectedCasters=5 realHuskTargets=20 syntheticVisuals=false");
+            }else if(op.equals("cast-mixed")){
+                var accepted=new ArrayList<String>();
+                for(int i=0;i<MIXED.size();i++){
+                    var p=casters.get(i);var goal=entities.get(8+i).getBoundingBox().getCenter();
+                    aim(p,goal);
+                    String skill=MIXED.get(i);
+                    boolean cast=switch(skill){
+                        case "mental_resonance_cascade","float_collapse_field" -> CanonOffense.cast(p,skill);
+                        case "paper_array" -> CanonPaperSkills.cast(p,skill);
+                        default -> CanonExpansionCombatA.cast(p,skill);
+                    };
+                    if(cast)accepted.add(skill);
+                }
+                LogUtils.getLogger().info("QA_MACRO_STRESS acceptedMixed={} actualCityNpcs=10",accepted);
+                if(!accepted.equals(MIXED))throw new IllegalStateException("Mixed cast fixture refused one or more controllers: "+accepted);
             }else if(op.equals("cast")){
                 int accepted=0;for(var p:casters){
                     // Living head/body rotation advances during the warm-up fixture wait. Aim at the real
@@ -88,6 +111,12 @@ final class MacroStressQa {
             }else if(op.equals("clear"))clear();else throw new IllegalArgumentException(op);
             return null;
         }).join();
+    }
+    private static void aim(ServerPlayer player,Vec3 goal){
+        var d=goal.subtract(player.getEyePosition());
+        float yaw=(float)-Math.toDegrees(Math.atan2(d.x,d.z));
+        player.setYRot(yaw);player.setYHeadRot(yaw);player.setYBodyRot(yaw);
+        player.setXRot((float)-Math.toDegrees(Math.atan2(d.y,Math.hypot(d.x,d.z))));
     }
     private static void clear(){entities.forEach(Entity::discard);entities.clear();for(var p:casters){p.server.getPlayerList().remove(p);p.discard();}casters.clear();channels.forEach(EmbeddedChannel::finishAndReleaseAll);channels.clear();}
 }

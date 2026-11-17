@@ -17,8 +17,9 @@ public final class LabNetwork {
         public static final StreamCodec<RegistryFriendlyByteBuf,Request> CODEC=StreamCodec.of((buf,p)->{buf.writeUtf(p.action,16);buf.writeFloat(p.a);buf.writeFloat(p.b);},buf->new Request(buf.readUtf(16),buf.readFloat(),buf.readFloat()));
         @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
     }
+    public static java.util.function.Consumer<Audio> clientAudioReceiver = p -> {};
     public static void register(RegisterPayloadHandlersEvent event) {
-        event.registrar("1").playToClient(Audio.TYPE,Audio.CODEC,(packet,ctx)->ctx.enqueueWork(()->cn.academy.port.fleet.client.FleetAudio.receive(packet)));
+        event.registrar("1").playToClient(Audio.TYPE,Audio.CODEC,(packet,ctx)->ctx.enqueueWork(()->clientAudioReceiver.accept(packet)));
         event.registrar("1").playToServer(Request.TYPE, Request.CODEC, (request,ctx)->{
             ctx.enqueueWork(()->{if(ctx.player() instanceof ServerPlayer p&&p.isAlive()&&!p.isSpectator())LabGameplay.request(p,request);});
         });

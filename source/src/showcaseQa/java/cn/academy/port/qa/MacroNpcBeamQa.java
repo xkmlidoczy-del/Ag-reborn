@@ -29,7 +29,7 @@ final class MacroNpcBeamQa {
             }).join();
         }else if(op.equals("fire")){
             mc.getSingleplayerServer().submit(()->{var d=EntityAbilityRuntime.DEFINITIONS.stream().filter(v->v.id().equals("meltdowner")).findFirst().orElseThrow();if(!npc.combat().runtime().begin(d,target,false))throw new IllegalStateException("Real NPC beam start refused");}).join();
-        }else if(op.equals("check")){
+        }else if(op.equals("check") || op.equals("check-shader")){
             try{
                 if(origin==null||damage<=0)throw new IllegalStateException("No actual NPC hit receipt");
                 var type=Class.forName("cn.academy.port.client.canon.AgEnergyBeam");var live=type.getDeclaredField("LIVE");live.setAccessible(true);Object selected=null;BeamImpactVfx.Scene scene=null;
@@ -37,8 +37,14 @@ final class MacroNpcBeamQa {
                 if(selected==null)throw new IllegalStateException("NPC pulse absent");var resolve=type.getDeclaredMethod("resolve",selected.getClass(),double.class);resolve.setAccessible(true);var resolved=resolve.invoke(null,selected,(double)mc.level.getGameTime());var actual=(Vec3)call(resolved,"from",new Class<?>[0]);
                 if(actual.distanceToSqr(origin)>1e-12)throw new IllegalStateException("NPC origin offset twice: "+origin+" -> "+actual);
                 var renderer=Class.forName("cn.academy.port.client.canon.AgVolumeRenderer");var diagnostics=renderer.getDeclaredField("diagnostics");diagnostics.setAccessible(true);var map=(Map<?,?>)diagnostics.get(null);
-                if(!((List<?>)map.getOrDefault("castIds",null)).contains(scene.cast().toString()))throw new IllegalStateException("NPC pulse did not enter actual volume rendering");
-                report.put("npc",Map.of("serverHandOrigin",origin.toString(),"renderedOrigin",actual.toString(),"damageReceipt",damage,"cast",scene.cast().toString(),"verifiedActualVolume",true));
+                boolean checkedVolume = map.get("castIds") instanceof List<?> ids && ids.contains(scene.cast().toString());
+                if (op.equals("check-shader")) {
+                    if (!cn.academy.port.client.ShaderPackState.active() || cn.academy.port.client.canon.AgEnergyBeam.replacesClassic())
+                        throw new IllegalStateException("NPC shader fixture must use the fallback renderer");
+                    checkFallbackOrigin();
+                } else if (!checkedVolume) throw new IllegalStateException("NPC pulse did not enter actual volume rendering");
+                report.put("npc",Map.of("serverHandOrigin",origin.toString(),"renderedOrigin",actual.toString(),"damageReceipt",damage,
+                        "cast",scene.cast().toString(),"verifiedActualVolume",checkedVolume,"shaderFallbackRegistered",op.equals("check-shader")));
             }catch(ReflectiveOperationException e){throw new IllegalStateException(e);}
             write(mc);mc.getSingleplayerServer().submit(()->{npc.discard();target.discard();}).join();
         }else if(op.equals("hover")){
@@ -47,6 +53,19 @@ final class MacroNpcBeamQa {
             try{var c=Class.forName("cn.academy.port.client.canon.AgNativeBeams");var f=c.getDeclaredField("lastFrom");f.setAccessible(true);var v=(Vec3)f.get(null);if(v==null)throw new IllegalStateException("No actual native ray mesh");report.put(op+"VerticalOrigin",v.toString());if(op.equals("left"))left=v;else if(left==null||left.x<=v.x+.1)throw new IllegalStateException("Vertical hand origins did not separate: "+left+" / "+v);}
             catch(ReflectiveOperationException e){throw new IllegalStateException(e);}write(mc);
         }else throw new IllegalArgumentException(op);
+    }
+    private static void checkFallbackOrigin() throws ReflectiveOperationException {
+        var rays = cn.academy.port.client.ClassicMeltdownerBeamEffects.class.getDeclaredField("RAYS");
+        rays.setAccessible(true);
+        for (var ray : (List<?>) rays.get(null)) {
+            var owner = ray.getClass().getDeclaredField("uuid");
+            owner.setAccessible(true);
+            if (!npc.getUUID().equals(owner.get(ray))) continue;
+            var point = ray.getClass().getDeclaredField("origin");
+            point.setAccessible(true);
+            if (((Vec3) point.get(ray)).distanceToSqr(origin) <= 1e-12) return;
+        }
+        throw new IllegalStateException("Missing shader-compatible NPC ray at the confirmed hand position");
     }
     private static void write(Minecraft mc){try{var path=Path.of(System.getProperty("academy.qa.macro.root",mc.gameDirectory.toString())).resolve("actual-npc-and-vertical-origins.json");Files.writeString(path,new GsonBuilder().setPrettyPrinting().create().toJson(report));LogUtils.getLogger().info("QA_MACRO_ORIGINS {}",report);}catch(java.io.IOException e){throw new IllegalStateException(e);}}
 }

@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:red_squirrel",
+  "spawners": {
+    "type": "aca_fauna:red_squirrel",
+    "weight": 6,
+    "minCount": 1,
+    "maxCount": 1
+  }
+}

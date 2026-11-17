@@ -40,6 +40,7 @@ public final class MechClient {
     private static boolean hasStruck;
 
     public MechClient(IEventBus modBus) {
+        MechMod.clientRangedEffect = (msg, player) -> RangedEffects.receive(msg, player.level());
         modBus.addListener(MechRenderTypes::registerShaders);
         modBus.addListener((RegisterKeyMappingsEvent event) -> {
             event.register(AUX);

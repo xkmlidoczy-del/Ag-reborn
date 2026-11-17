@@ -54,10 +54,10 @@ public final class MechIntegrationRuntimeTests {
                 .collect(Collectors.toMap(m -> m.getModId(), m -> m.getVersion().toString()));
         Set<String> packs = h.getLevel().getServer().getResourceManager().listPacks()
                 .map(p -> p.packId()).collect(Collectors.toSet());
-        h.assertTrue("0.4.3".equals(mods.get("acamech")), "real mech 0.4.3 is loaded: " + mods);
+        h.assertTrue("0.4.5".equals(mods.get("acamech")), "real mech 0.4.5 is loaded: " + mods);
         h.assertTrue(VanillaCombatContract.runtimeReason(mods, packs).isEmpty(), "strict combat admits the actual mod and pack set");
         h.assertTrue(VanillaMiningContract.runtimeReason(mods, packs).isEmpty(), "strict mining admits the actual mod and pack set");
-        var changed = new HashMap<>(mods); changed.put("acamech", "0.4.4");
+        var changed = new HashMap<>(mods); changed.put("acamech", "0.4.6");
         h.assertTrue(VanillaCombatContract.runtimeReason(changed, packs).isPresent()
                 && VanillaMiningContract.runtimeReason(changed, packs).isPresent(), "other mech versions fail closed");
         changed = new HashMap<>(mods); changed.put("unreviewed", "1");

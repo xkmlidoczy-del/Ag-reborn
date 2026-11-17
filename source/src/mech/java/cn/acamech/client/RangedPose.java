@@ -2,6 +2,8 @@ package cn.acamech.client;
 
 import cn.acamech.MechEntity;
 import cn.acamech.RangedWeapon;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
@@ -96,24 +98,45 @@ final class RangedPose {
         return age >= weapon.windup ? 1 - AttackPose.ease((age - weapon.windup) / 4.5f) : 0;
     }
 
-    static void chargeEffects(AttackEffects.Pen pen, BoxRig rig, RangedWeapon weapon, float age) {
+    static void chargeEffects(PoseStack stack, MultiBufferSource buffers, BoxRig rig, RangedWeapon weapon,
+                              float age, boolean pilotView) {
+        var emitters = switch (weapon) {
+            case PULSE -> new Emitter[]{emitter(rig, "pulse_emitter.sleeve", 10, 1.08f, 0)};
+            case NEEDLE -> new Emitter[]{emitter(rig, "needle_emitter.sleeve", 6.3f, .47f, 0)};
+            case CONVERGENCE -> new Emitter[]{
+                    emitter(rig, "wing_emitter.L.sleeve", 7.3f, .61f, 0),
+                    emitter(rig, "wing_emitter.R.sleeve", 7.3f, .61f, 4)};
+        };
         float fill = Mth.clamp(age / weapon.windup, 0f, 1f);
-        switch (weapon) {
-            case PULSE -> charge(pen, rig, weapon, "pulse_emitter.sleeve", 10, 1.08f, fill, age, 0);
-            case NEEDLE -> charge(pen, rig, weapon, "needle_emitter.sleeve", 6.3f, .47f, fill, age, 0);
-            case CONVERGENCE -> {
-                charge(pen, rig, weapon, "wing_emitter.L.sleeve", 7.3f, .61f, fill, age, 0);
-                charge(pen, rig, weapon, "wing_emitter.R.sleeve", 7.3f, .61f, fill, age, 4);
+        boolean charging = age < weapon.windup;
+        float afterFire = age - weapon.windup;
+        float geometryGain = pilotView ? .64f : 1f;
+        var geometry = new AttackEffects.Pen(stack.last(), buffers.getBuffer(MechRenderTypes.STRIKE_LIGHT));
+        for (var e : emitters) {
+            if (charging) RangedEffects.charge(geometry, e.muzzle, e.axis, weapon, fill, age + e.phase, e.radius, geometryGain);
+            else RangedEffects.discharge(geometry, e.muzzle, e.axis, weapon, afterFire, e.radius, geometryGain);
+        }
+        if (afterFire >= 7) return;
+        var sprites = new PlasmaSprites.Pen(stack.last(), buffers.getBuffer(MechRenderTypes.PLASMA));
+        for (var e : emitters) {
+            float glow = charging ? AttackPose.ease(fill) * .89f : (1 - AttackPose.ease(afterFire / 7)) * .84f;
+            double size = e.radius * (charging ? .71 + .43 * (1 - fill) : .85 + afterFire * .15);
+            if (pilotView) {
+                glow *= .48f;
+                size *= .78;
             }
+            double offset = charging ? .19 : .29 + afterFire * .12;
+            var center = e.muzzle.add(e.axis.scale(offset));
+            PlasmaSprites.ring(sprites, center, RangedEffects.Frame.perpendicular(e.axis), size,
+                    (age + e.phase) * (weapon == RangedWeapon.NEEDLE ? -.26f : .14f), weapon.color, glow);
         }
     }
 
-    private static void charge(AttackEffects.Pen pen, BoxRig rig, RangedWeapon weapon, String bone,
-                               float depth, float radius, float fill, float age, float phase) {
+    private static Emitter emitter(BoxRig rig, String bone, float depth, float radius, float phase) {
         Vec3 at = rig.anchor(bone, 0, 0, -depth);
         Vec3 axis = at.subtract(rig.anchor(bone, 0, 0, 0)).normalize();
-        if (axis.lengthSqr() < .01) axis = FRONT;
-        if (age < weapon.windup) RangedEffects.charge(pen, at, axis, weapon, fill, age + phase, radius);
-        else RangedEffects.discharge(pen, at, axis, weapon, age - weapon.windup, radius);
+        return new Emitter(at, axis.lengthSqr() < .01 ? FRONT : axis, radius, phase);
     }
+
+    private record Emitter(Vec3 muzzle, Vec3 axis, float radius, float phase) {}
 }

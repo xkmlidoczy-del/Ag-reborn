@@ -23,7 +23,7 @@ import org.joml.Matrix4f;
 @EventBusSubscriber(modid="academy",value=Dist.CLIENT)
 public final class AgEnergyBeam {
     private record Pulse(BeamImpactVfx.Scene scene,double began,boolean alignHand){}
-    private record Resolved(Vec3 from,Vec3 to,double radius,double alpha,double age){}
+    private record Resolved(Vec3 from,Vec3 to,Vec3 wrist,double radius,double alpha,double age,boolean textured,float[] tint){}
     private static final List<Pulse> LIVE=new ArrayList<>();
     private static ClientLevel world;
     private static MultiBufferSource.BufferSource buffers;
@@ -34,6 +34,12 @@ public final class AgEnergyBeam {
     }
     private static void sync(){var w=Minecraft.getInstance().level;if(w!=world){LIVE.clear();world=w;}}
     public static boolean replacesClassic(){return AgEffectMaterials.beams();}
+    public static boolean owns(net.minecraft.world.entity.LivingEntity actor,Vec3 origin){
+        sync();if(world==null||actor==null||!AgEffectMaterials.beams())return false;
+        double now=world.getGameTime();
+        return LIVE.stream().anyMatch(p->p.scene.owner().equals(actor.getUUID())&&p.scene.from().distanceToSqr(origin)<.25
+                &&now-p.began<p.scene.life());
+    }
     private static void receive(BeamImpactVfx.Scene v){
         receive(v,true);
     }
@@ -42,7 +48,14 @@ public final class AgEnergyBeam {
                 ||!MacroVfx.finite(v.from())||!MacroVfx.finite(v.to())||v.from().distanceToSqr(v.to())>192*192||!Float.isFinite(v.radius())||v.radius()<=0||v.radius()>12
                 ||!Float.isFinite(v.yaw())||Math.abs(v.hand())!=1||v.life()<1||v.life()>200||v.tick()>world.getGameTime()+100||world.getGameTime()-v.tick()>200)return;
         var actor=world.getEntity(v.entity());if(actor!=null&&!actor.getUUID().equals(v.owner()))return;
-        if(v.style()==BeamImpactVfx.Style.BEAM){if(LIVE.size()>=32)LIVE.removeFirst();LIVE.add(new Pulse(v,Math.max(v.tick(),world.getGameTime()-4),alignHand));}
+        SkillCinematicFx.accept(v);
+        if(v.style()==BeamImpactVfx.Style.CONTACT||v.style()==BeamImpactVfx.Style.PAPER)return;
+        if(v.style()==BeamImpactVfx.Style.BEAM){
+            LIVE.removeIf(p->p.scene.owner().equals(v.owner())&&p.scene.skill().equals(v.skill())
+                    &&p.scene.from().distanceToSqr(v.from())<.25&&p.scene.to().distanceToSqr(v.to())<.25);
+            if(LIVE.size()>=32)LIVE.removeFirst();
+            LIVE.add(new Pulse(v,Math.max(v.tick(),world.getGameTime()-4),alignHand));
+        }
         AgImpactFx.accept(v);
     }
     /** Existing NPC adapter has already validated the entity-skill envelope. */
@@ -52,25 +65,34 @@ public final class AgEnergyBeam {
         receive(new BeamImpactVfx.Scene(UUID.randomUUID(),actor.getId(),actor.getUUID(),world.dimension().location(),"meltdowner",BeamImpactVfx.Style.BEAM,from,to,2,1,actor.getYHeadRot(),world.getGameTime(),50,List.of(),List.of()),false);
     }
     private static Resolved resolve(Pulse pulse,double now){
-        var mc=Minecraft.getInstance();var v=pulse.scene;double age=Math.max(0,now-pulse.began),life=v.life();
-        double alpha=Math.min(1,(age+.5)/2)*Math.clamp((life-age)/14,0,1);if(alpha<=0)return null;
+        var v=pulse.scene;double age=Math.max(0,now-pulse.began),life=v.life();
+        double alpha=Math.clamp((life-age)/18,0,1)*(.42+.58*Math.exp(-age*.095));if(alpha<=0)return null;
         var direction=v.to().subtract(v.from()).normalize();double yaw=Math.toRadians(v.yaw());Vec3 side=new Vec3(-Math.cos(yaw),0,-Math.sin(yaw));
         var actor=world.getEntity(v.entity());boolean handOrigin=pulse.alignHand&&(actor==null||actor.getEyePosition().distanceToSqr(v.from())<4);
-        Vec3 from=handOrigin?v.from().add(side.scale(v.hand()*.32)).add(0,-.35,0).add(direction.scale(.65)):v.from();
-        boolean first=actor==mc.player&&mc.getCameraEntity()==mc.player&&mc.options.getCameraType().isFirstPerson();
-        if(handOrigin&&actor instanceof Player p&&!first&&actor.getUUID().equals(v.owner())&&actor.position().distanceToSqr(v.from())<16)from=CastPoseClient.worldHandAnchor(p,world.getGameTime(),0);
-        // Near the hand the dense beam tapers, leaving the upper view clear. The checked endpoint never moves.
-        return new Resolved(from,v.to(),v.radius(),alpha,age);
+        Vec3 wrist=handOrigin?v.from().add(side.scale(v.hand()*.32)).add(0,-.35,0).add(direction.scale(.45)):v.from();
+        if(handOrigin&&actor instanceof Player p&&actor.getUUID().equals(v.owner())&&actor.position().distanceToSqr(v.from())<16){
+            Vec3 animated=CastPoseClient.handAnchor(p,now,(float)(now-world.getGameTime()));
+            if(animated.distanceToSqr(v.from())<=2.25)wrist=animated;
+        }
+        // Only the short connector follows the wrist. The long tube retains the confirmed axis.
+        double lead=Math.min(2.65,v.from().distanceTo(v.to())*.25);
+        Vec3 from=handOrigin?v.from().add(direction.scale(lead)):v.from();
+        var profile=MacroSkillRules.find(v.skill());
+        float[] tint=AgModernVfx.categoryPalette(profile==null?"meltdowner":profile.category())[0];
+        return new Resolved(from,v.to(),wrist,v.radius(),alpha,age,v.skill().equals("meltdowner"),tint);
     }
     static List<MacroVfxClient.VolumeSample> volumes(double now){
         sync();LIVE.removeIf(p->now-p.began>p.scene.life());if(!AgEffectMaterials.beams())return List.of();var result=new ArrayList<MacroVfxClient.VolumeSample>();
         for(var p:LIVE){var a=resolve(p,now);if(a==null)continue;var v=p.scene;
             var event=new MacroVfx.Event(v.cast(),v.entity(),v.owner(),v.dimension(),v.skill(),MacroVfx.Phase.ACTIVE,a.from,a.to,MacroSkillRules.Shape.LINE,(float)a.radius,0,v.tick(),v.life());
-            result.add(new MacroVfxClient.VolumeSample(event,a.age,a.from.lerp(a.to,.5),Math.min(1.2,a.radius*.38),a.alpha*.38));
+            result.add(new MacroVfxClient.VolumeSample(event,a.age,a.from.lerp(a.to,.5),Math.min(2.4,a.radius*.78),a.alpha*.42));
         }return result;
     }
     @SubscribeEvent public static void render(RenderLevelStageEvent e){
-        if(e.getStage()!=RenderLevelStageEvent.Stage.AFTER_PARTICLES||AgVolumeRenderer.shadow())return;sync();if(world==null||!AgEffectMaterials.beams())return;
+        if(e.getStage()!=RenderLevelStageEvent.Stage.AFTER_PARTICLES||AgVolumeRenderer.shadow())return;
+        sync();
+        // The classic beam adapter owns the full depth-tested fallback when analytical materials are unavailable.
+        if(world==null||!AgEffectMaterials.beams())return;
         double now=world.getGameTime()+e.getPartialTick().getGameTimeDeltaPartialTick(false);LIVE.removeIf(p->now-p.began>p.scene.life());if(LIVE.isEmpty())return;
         if(buffers==null)buffers=MultiBufferSource.immediate(new ByteBufferBuilder(1<<18));var cam=e.getCamera().getPosition();var model=RenderSystem.getModelViewStack();model.pushMatrix();
         try{model.set(e.getModelViewMatrix());RenderSystem.applyModelViewMatrix();
@@ -83,27 +105,42 @@ public final class AgEnergyBeam {
             if(Boolean.getBoolean("academy.qa.signatureBudget"))diagnostics=Map.of("visible",visible.size(),"quadsCeiling",visible.size()*3*sides*segments,"endpoints",visible.stream().map(Object::toString).toList());
             for(var a:visible){
                 for(int layer=2;layer>=0;layer--)tube(e.getPoseStack().last().pose(),cam,a,layer,sides,segments);
+                if(a.wrist.distanceToSqr(a.from)>.006){
+                    var connector=new Resolved(a.wrist,a.from,a.wrist,a.radius*.78,a.alpha*.94,a.age,a.textured,a.tint);
+                    int connectorSides=tier==VisualTier.CINEMATIC?12:8;
+                    tube(e.getPoseStack().last().pose(),cam,connector,1,connectorSides,3);
+                    tube(e.getPoseStack().last().pose(),cam,connector,0,connectorSides,3);
+                }
             }
             buffers.endBatch();
         }finally{model.popMatrix();RenderSystem.applyModelViewMatrix();}
     }
     private static void tube(Matrix4f matrix,Vec3 camera,Resolved a,int layer,int sides,int segments){
-        var axis=a.to.subtract(a.from);double length=axis.length();if(length<.05)return;axis=axis.scale(1/length);Vec3 right=axis.cross(new Vec3(0,1,0));if(right.lengthSqr()<1e-9)right=new Vec3(1,0,0);else right=right.normalize();var up=right.cross(axis).normalize();
-        double radius=Math.min(layer==0?.22:layer==1?.75:1.3,a.radius*(layer==0?.075:layer==1?.25:.44));
-        var out=buffers.getBuffer(AgEffectMaterials.type(layer));
+        var axis=a.to.subtract(a.from);double length=axis.length();if(length<.05)return;
+        var basis=HitVolumes.obbBasis(axis,0f);
+        axis=basis.forward();Vec3 right=basis.right(),up=basis.up();
+        // Outer Mach sheath matches 0.96x server hit radius; inner core (0.16x) and plasma body (0.52x) give crisp anime contrast.
+        double radius=Math.min(layer==0?.58:layer==1?1.55:3.60,a.radius*(layer==0?.16:layer==1?.52:.96));
+        int matMode=a.textured?8+layer:(layer==0?6:layer==1?7:11);
+        var out=buffers.getBuffer(AgEffectMaterials.type(matMode));
+        float cr=a.textured?1f:(layer==0?Math.min(1f,a.tint[0]*.45f+.55f):a.tint[0]);
+        float cg=a.textured?1f:(layer==0?Math.min(1f,a.tint[1]*.45f+.55f):a.tint[1]);
+        float cb=a.textured?1f:(layer==0?Math.min(1f,a.tint[2]*.45f+.55f):a.tint[2]);
         for(int j=0;j<segments;j++){
-            // Always reserve the first segment for the hand taper, even when many beams share the mesh budget.
             double first=Math.min(.18,2.8/length);
             double t0=j==0?0:first+(1-first)*(j-1)/(segments-1),t1=first+(1-first)*j/(segments-1);
-            double reach=1-Math.pow(1-Math.clamp(a.age/3,0,1),3);if(t0>reach)break;t1=Math.min(t1,reach);
             double d0=t0*length,d1=t1*length;
-            double r0=radius*(.04+.96*Math.clamp(d0/3.6,0,1))*(.95+.05*Math.sin(d0*3-a.age*.5));double r1=radius*(.04+.96*Math.clamp(d1/3.6,0,1))*(.95+.05*Math.sin(d1*3-a.age*.5));
+            double r0=radius*(.30+.70*Math.clamp(d0/2.2,0,1))*(.96+.04*Math.sin(d0*3.2-a.age*.55));
+            double r1=radius*(.30+.70*Math.clamp(d1/2.2,0,1))*(.96+.04*Math.sin(d1*3.2-a.age*.55));
             for(int k=0;k<sides;k++){
                 double f0=k/(double)sides,f1=(k+1)/(double)sides;Vec3 s0=right.scale(Math.cos(f0*Math.PI*2)).add(up.scale(Math.sin(f0*Math.PI*2))),s1=right.scale(Math.cos(f1*Math.PI*2)).add(up.scale(Math.sin(f1*Math.PI*2)));
-                vertex(out,matrix,camera,a.from.add(axis.scale(d0)).add(s0.scale(r0)),d0,f0,a.alpha);vertex(out,matrix,camera,a.from.add(axis.scale(d1)).add(s0.scale(r1)),d1,f0,a.alpha);vertex(out,matrix,camera,a.from.add(axis.scale(d1)).add(s1.scale(r1)),d1,f1,a.alpha);vertex(out,matrix,camera,a.from.add(axis.scale(d0)).add(s1.scale(r0)),d0,f1,a.alpha);
+                vertex(out,matrix,camera,a.from.add(axis.scale(d0)).add(s0.scale(r0)),d0,f0,cr,cg,cb,a.alpha);
+                vertex(out,matrix,camera,a.from.add(axis.scale(d1)).add(s0.scale(r1)),d1,f0,cr,cg,cb,a.alpha);
+                vertex(out,matrix,camera,a.from.add(axis.scale(d1)).add(s1.scale(r1)),d1,f1,cr,cg,cb,a.alpha);
+                vertex(out,matrix,camera,a.from.add(axis.scale(d0)).add(s1.scale(r0)),d0,f1,cr,cg,cb,a.alpha);
             }
         }
     }
-    private static void vertex(VertexConsumer out,Matrix4f m,Vec3 camera,Vec3 p,double u,double v,double alpha){p=p.subtract(camera);out.addVertex(m,(float)p.x,(float)p.y,(float)p.z).setUv((float)u,(float)v).setColor(255,255,255,(int)(Math.clamp(alpha,0,1)*255));}
+    private static void vertex(VertexConsumer out,Matrix4f m,Vec3 camera,Vec3 p,double u,double v,float r,float g,float b,double alpha){p=p.subtract(camera);out.addVertex(m,(float)p.x,(float)p.y,(float)p.z).setUv((float)u,(float)v).setColor(r,g,b,(float)Math.clamp(alpha,0,1));}
     @SubscribeEvent public static void logout(ClientPlayerNetworkEvent.LoggingOut e){LIVE.clear();world=null;}
 }

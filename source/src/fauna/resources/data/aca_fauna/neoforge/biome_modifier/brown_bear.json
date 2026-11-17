@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:brown_bear",
+  "spawners": {
+    "type": "aca_fauna:brown_bear",
+    "weight": 6,
+    "minCount": 1,
+    "maxCount": 1
+  }
+}

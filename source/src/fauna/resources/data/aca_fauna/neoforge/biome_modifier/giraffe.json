@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:giraffe",
+  "spawners": {
+    "type": "aca_fauna:giraffe",
+    "weight": 2,
+    "minCount": 2,
+    "maxCount": 3
+  }
+}

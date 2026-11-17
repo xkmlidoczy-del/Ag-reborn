@@ -140,14 +140,14 @@ final class CanonFxAero {
     private static void wall(Canvas c,View v,double e,double t){
         if(v.phase()==CanonVfx.Phase.HIT.ordinal()){contact(c,v,e,t);return;}
         if(v.phase()==CanonVfx.Phase.END.ordinal())return;
+        if(v.skill().equals("aero_air_curtain"))return; // The box and interception flash describe this stationary barrier.
         // A curtain of rising air: a row of refraction panels with streams flowing upward through them.
         Vec3 f=flat(CanonBarrierGeometry.forward(v)),r=rightOf(f);double rise=easeOut(reveal(v,6));
-        boolean around=v.skill().equals("aero_air_curtain");
-        double w=around?v.radius():cn.academy.port.canon.CanonExpansionCombatA.barrierHalfWidth(v.skill());
+        double w=cn.academy.port.canon.CanonExpansionCombatA.barrierHalfWidth(v.skill());
         if(w<=0)return;
-        Vec3 base=CanonBarrierGeometry.centre(v);int n=around?10:5;
-        for(int k=0;k<n;k++){double ang=k*Math.PI*2/n;Vec3 off=around?f.scale(Math.cos(ang)*w).add(r.scale(Math.sin(ang)*w)):r.scale((k-2)*w*.42);
-            Vec3 p=base.add(off);c.refract(NOISE,false,p,(around?.55:.28)*rise,(float)(.7*e),AIR);
+        Vec3 base=CanonBarrierGeometry.centre(v);
+        for(int k=0;k<5;k++){Vec3 off=r.scale((k-2)*w*.42);
+            Vec3 p=base.add(off);c.refract(NOISE,false,p,.28*rise,(float)(.7*e),AIR);
             var up=new ArrayList<Vec3>();for(int i=0;i<8;i++)up.add(base.add(off).add(r.scale(.04*Math.sin(t*.3+i+k))).add(0,(i/7.0*2-1)*w*rise,0));stream(c,up,.12,e,t);}
     }
     private static void contact(Canvas c,View v,double e,double t){

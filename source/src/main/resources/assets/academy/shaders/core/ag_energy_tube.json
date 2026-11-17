@@ -1,7 +1,7 @@
 {
   "vertex": "academy:ag_surface",
   "fragment": "academy:ag_energy_tube",
-  "samplers": [],
+  "samplers": [{"name": "Sampler0"}],
   "uniforms": [
     {
       "name": "ModelViewMat",
@@ -72,6 +72,12 @@
       "values": [
         0
       ]
+    },
+    {
+      "name": "Textured",
+      "type": "float",
+      "count": 1,
+      "values": [0]
     }
   ]
 }

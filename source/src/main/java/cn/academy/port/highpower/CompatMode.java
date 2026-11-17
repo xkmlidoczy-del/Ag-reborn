@@ -33,7 +33,7 @@ public final class CompatMode {
     public static Set<String> foreignMods() {
         Set<String> out = new TreeSet<>();
         for (var info : ModList.get().getMods()) {
-            if ("acamech".equals(info.getModId()) && "0.4.3".equals(info.getVersion().toString())) continue;
+            if ("acamech".equals(info.getModId()) && "0.4.5".equals(info.getVersion().toString())) continue;
             if (!KNOWN.contains(info.getModId())) out.add(info.getModId());
         }
         return out;

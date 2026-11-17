@@ -1,0 +1,47 @@
+[
+  {
+    "registered_id": "aca_fauna:plains_zebra",
+    "source": "assets/cc0-originals/quaternius_ultimate/Horse.gltf",
+    "sha256": "3deb61550dff1d2786d04b6e8559d63ad3907d6ab606ba28ce0af074ed96341b",
+    "license": "CC0-1.0",
+    "author_page": "https://quaternius.com/packs/ultimateanimatedanimals.html",
+    "adaptation": "Rigid reconstruction of Horse geometry and source motion, with zebra proportions and stripes authored in this project.",
+    "source_clips": [
+      "Attack_Headbutt",
+      "Attack_Kick",
+      "Death",
+      "Eating",
+      "Gallop",
+      "Gallop_Jump",
+      "Idle",
+      "Idle_2",
+      "Idle_Headlow",
+      "Idle_HitReact1",
+      "Idle_HitReact2",
+      "Jump_toIdle",
+      "Walk"
+    ]
+  },
+  {
+    "registered_id": "aca_fauna:fennec_fox",
+    "source": "assets/cc0-originals/quaternius_ultimate/Fox.gltf",
+    "sha256": "2f36e3c9c75ecddda85c5f9944e98ee1e88e7c679a546534aff1cea8ecde64c7",
+    "license": "CC0-1.0",
+    "author_page": "https://quaternius.com/packs/ultimateanimatedanimals.html",
+    "adaptation": "Metre-scaled rigid reconstruction of Fox geometry and motion, with fennec ears, coat, feet, tail tip, jaw and two gestures authored in this project.",
+    "source_clips": [
+      "Attack",
+      "Death",
+      "Eating",
+      "Gallop",
+      "Gallop_Jump",
+      "Idle",
+      "Idle_2",
+      "Idle_2_HeadLow",
+      "Idle_HitReact1",
+      "Idle_HitReact2",
+      "Jump_ToIdle",
+      "Walk"
+    ]
+  }
+]

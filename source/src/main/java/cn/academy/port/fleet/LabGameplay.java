@@ -42,9 +42,11 @@ public final class LabGameplay {
 
     }
     @SubscribeEvent public static void death(net.neoforged.neoforge.event.entity.living.LivingDeathEvent e){if(e.getEntity() instanceof ServerPlayer p)CoilReloads.cancel(p);}
+    @SubscribeEvent public static void dimension(net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerChangedDimensionEvent e){if(e.getEntity() instanceof ServerPlayer p)CoilReloads.cancel(p);}
     @SubscribeEvent public static void logout(net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent e){
         if(e.getEntity() instanceof ServerPlayer p)CoilReloads.cancel(p);
     }
+    @SubscribeEvent public static void stopped(net.neoforged.neoforge.event.server.ServerStoppedEvent e){CoilReloads.clear();}
     @SubscribeEvent public static void commands(RegisterCommandsEvent e){
         e.getDispatcher().register(Commands.literal("aca_fleet").requires(s->s.hasPermission(2))
             .then(Commands.literal("kit").executes(c->kit(c.getSource().getPlayerOrException(),2))

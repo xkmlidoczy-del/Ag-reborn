@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:lion",
+  "spawners": {
+    "type": "aca_fauna:lion",
+    "weight": 2,
+    "minCount": 2,
+    "maxCount": 3
+  }
+}

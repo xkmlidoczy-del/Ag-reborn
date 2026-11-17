@@ -67,6 +67,7 @@ final class SkillMotifs {
     static double range(String skill) {
         if(skill==null)return 28;
         var range=cn.academy.port.core.RangedSkillRanges.find(skill);if(range!=null)return range.at(AcademyClient.state.exp(skill));
+        double exp = AcademyClient.state.exp(skill);
         return switch(skill){
             case "mine_ray_basic" -> cn.academy.port.skill.MineRayBasicSession.RANGE;
             case "mine_ray_expert","mine_ray_luck" -> cn.academy.port.core.SkillTuning.number(skill, "reach");
@@ -76,6 +77,14 @@ final class SkillMotifs {
             case "electron_bomb" -> cn.academy.port.skill.ElectronBomb.RANGE;
             case "ray_barrage" -> cn.academy.port.skill.RayBarrageRules.RANGE;
             case "thunder_bolt" -> cn.academy.port.skill.ThunderBoltRules.RANGE;
+            case "threatening_teleport" -> cn.academy.port.skill.ThreateningTeleport.rules(exp).range();
+            case "flesh_ripping" -> cn.academy.port.skill.TeleporterProgressionRules.fleshRange(exp);
+            case "penetrate_teleport" -> cn.academy.port.skill.TeleporterProgressionRules.penetrateRange(exp);
+            case "mark_teleport" -> cn.academy.port.skill.TeleporterProgressionRules.markRange(exp);
+            case "shift_tp" -> cn.academy.port.skill.TeleporterFinalRules.shiftRange(exp);
+            case "flashing" -> 12.0;
+            case "jet_engine" -> 12.0;
+            case "mine_detect" -> cn.academy.port.skill.MineDetectRules.range(exp);
             default -> 28;
         };
     }

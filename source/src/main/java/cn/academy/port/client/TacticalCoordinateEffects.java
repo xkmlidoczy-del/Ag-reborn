@@ -75,7 +75,9 @@ public final class TacticalCoordinateEffects {
             Matrix4f matrix = poses.last().pose();
             if (from != null && mc.level == confirmedLevel && mc.level.dimension().location().toString().equals(dimension)) {
                 // Endpoint effects and previews are exclusive, keeping the global stroke budget below64.
-                endpoint(event,matrix,from,camera,forward); endpoint(event,matrix,to,camera,forward);
+                if(!cn.academy.port.client.canon.MacroVfxClient.owns("tactical_coordinate_formation",mc.player.getUUID())){
+                    endpoint(event,matrix,from,camera,forward); endpoint(event,matrix,to,camera,forward);
+                }
             } else if (snapshot != null) {
                 int count = 0;
                 for (var template : snapshot.templates()) {

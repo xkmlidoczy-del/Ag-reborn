@@ -2,7 +2,10 @@ package cn.academy.port.client.canon;
 
 import static cn.academy.port.client.canon.CanonFxScripts.*;
 
+import cn.academy.port.VisualTier;
+import cn.academy.port.VisualTierConfig;
 import cn.academy.port.canon.CanonVfx;
+import cn.academy.port.highpower.environment.SkillEnvironment;
 import java.util.Set;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -81,6 +84,18 @@ final class CanonEnvironment {
         Vec3 g = new Vec3(at.x, y + .03, at.z); BlockPos pos = BlockPos.containing(g.x, y - .01, g.z), above = pos.above();
         var state = mc.level.getBlockState(pos); boolean water = !mc.level.getFluidState(pos).isEmpty() || !mc.level.getFluidState(above).isEmpty();
         float[] tint = lit(water ? WATER : dust(state, pos), above);
+        if(!water&&VisualTierConfig.tier()!=VisualTier.OFF){
+            if(SkillEnvironment.mode(mc.level)==SkillEnvironment.Mode.OFF)return;
+            // Nearby ground vibrates from the pressure wave. Only AgImpactFx may draw actual broken cells.
+            serial++;
+            for(int i=0;i<4;i++){
+                double a=i*Math.TAU/4+rnd(serial+i)*.4;
+                Vec3 drift=new Vec3(Math.cos(a),.07,Math.sin(a));
+                CanonParticles.spawn("ah_dust_sheet",i,g.add(drift.scale(.3)),drift.scale(.04*power),-.0015,.05,
+                        .36+.24*power,.016,24,tint,.36f,CanonFx4.Mode.ALPHA,CanonParticles.Land.NONE,false,delay);
+            }
+            return;
+        }
         if (k == Kind.FLOAT) {
             for (int i = 0; i < 5; i++) CanonParticles.spawn("ah_dust_sheet", i, g.add((rnd(i + serial) - .5) * .8, .15, (rnd(i + serial + 9) - .5) * .8),
                     new Vec3(0, .025, 0), -.001, .05, .35, .01, 28, tint, .25f, CanonFx4.Mode.ALPHA, CanonParticles.Land.NONE, false, delay);

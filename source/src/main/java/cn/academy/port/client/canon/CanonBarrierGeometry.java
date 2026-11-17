@@ -12,9 +12,13 @@ final class CanonBarrierGeometry {
     static Vec3 centre(View v){return v.barrierCentre()!=null?v.barrierCentre():v.anchor().add(0,1.62,0).add(forward(v).scale(CanonExpansionCombatA.frontalBarrier(v.skill())?CanonExpansionCombatA.barrierDistance(v.skill()):0));}
     static void boundary(Canvas c,View v,float[] rgb,double e){
         if(!CanonExpansionCombatA.physicalBarrier(v.skill())||v.phase()==2||v.phase()==3)return;
-        var box=CanonExpansionCombatA.barrierBox(centre(v),v.skill());
-        drawBox(c,box,rgb,e*.55);
-        if(v.skill().equals("aero_air_curtain"))drawBox(c,CanonExpansionCombatA.barrierInnerBox(centre(v),v.skill()),rgb,e*.8);
+        Vec3 centre=centre(v);
+        if(v.skill().equals("aero_air_curtain")){
+            if(!MacroVfxClient.drawsBoundary(v.skill(),v.owner(),centre))
+                SkillCinematicFx.curtainBoundary(c,centre,v.skill(),rgb,e);
+            return;
+        }
+        drawBox(c,CanonExpansionCombatA.barrierBox(centre,v.skill()),rgb,e*.55);
     }
     private static void drawBox(Canvas c,net.minecraft.world.phys.AABB box,float[] rgb,double e){
         Vec3[] p=new Vec3[8];for(int i=0;i<8;i++)p[i]=new Vec3((i&1)==0?box.minX:box.maxX,(i&2)==0?box.minY:box.maxY,(i&4)==0?box.minZ:box.maxZ);

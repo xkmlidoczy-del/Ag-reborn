@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:sea_otter",
+  "spawners": {
+    "type": "aca_fauna:sea_otter",
+    "weight": 6,
+    "minCount": 2,
+    "maxCount": 3
+  }
+}

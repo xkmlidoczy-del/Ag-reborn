@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:sika_deer",
+  "spawners": {
+    "type": "aca_fauna:sika_deer",
+    "weight": 6,
+    "minCount": 2,
+    "maxCount": 3
+  }
+}

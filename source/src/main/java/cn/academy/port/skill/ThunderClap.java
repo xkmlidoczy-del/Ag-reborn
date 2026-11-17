@@ -48,6 +48,7 @@ public final class ThunderClap {
         if (inputNonce > 0) CLIENT_INPUTS.put(player.getUUID(), inputNonce);
         // Source sends effect_start before overload consume; same-token end covers overload disposal.
         send(player, hold, "thunder_clap_start");
+        show(player,hold,cn.academy.port.macro.MacroVfx.Phase.CHARGE,aim(player),ThunderClapSession.MAX_TICKS);
         if (!session.active()) abort(player);
         return true;
     }
@@ -63,6 +64,8 @@ public final class ThunderClap {
         var result = hold.session.tick(player.getAbilities().instabuild);
         if (result == ThunderClapSession.TickResult.FIRE) discharge(player, hold);
         else if (result != ThunderClapSession.TickResult.CONTINUE) abort(player);
+        else if (hold.session.ticks()%4==0)
+            show(player,hold,cn.academy.port.macro.MacroVfx.Phase.CHARGE,hold.point,ThunderClapSession.MAX_TICKS-hold.session.ticks()+2);
     }
     public static Vec3 aim(Entity player) {
         Vec3 start = player.getEyePosition();
@@ -90,7 +93,7 @@ public final class ThunderClap {
             }
             double range = ThunderClapSession.range(hold.session.mastery());
             float damage = ThunderClapSession.damage(hold.session.mastery(), hold.session.ticks());
-            cn.academy.port.macro.MacroVfx.emit(player,ID,cn.academy.port.macro.MacroVfx.Phase.HIT,hold.point,hold.point,70,range);
+            cn.academy.port.macro.MacroVfx.emit(player,ID,cn.academy.port.macro.MacroVfx.Phase.HIT,hold.point,hold.point,70,range,hold.token);
             var state=hold.session.state();
             cn.academy.port.macro.MacroSettlement.submit(hold.level,targets(player,hold.point,range),
                     ()->player.isAlive()&&!player.hasDisconnected()&&player.serverLevel()==hold.level&&AbilityStorage.get(player)==state,
@@ -105,6 +108,7 @@ public final class ThunderClap {
         } finally {
             COMMITTING.remove(player.getUUID());
             send(player, hold, "thunder_clap_end");
+            show(player,hold,cn.academy.port.macro.MacroVfx.Phase.END,hold.point,10);
         }
     }
     public static boolean release(ServerPlayer player) {
@@ -114,7 +118,11 @@ public final class ThunderClap {
     public static void abort(ServerPlayer player) {
         if (!serverThread(player)) return;
         Hold hold = HOLDS.remove(player.getUUID());
-        if (hold != null) { hold.session.end(); send(player, hold, "thunder_clap_end"); }
+        if (hold != null) {
+            hold.session.end();
+            send(player, hold, "thunder_clap_end");
+            show(player,hold,cn.academy.port.macro.MacroVfx.Phase.END,player.getEyePosition(),10);
+        }
     }
     /** Final player/session disposal retires replay history; ordinary cancellation keeps it. */
     public static void remove(ServerPlayer player) { if (serverThread(player)) { abort(player); CLIENT_INPUTS.remove(player.getUUID()); } }
@@ -140,6 +148,10 @@ public final class ThunderClap {
     private static void send(ServerPlayer player, Hold hold, String kind) {
         var tag = new CompoundTag(); tag.putString("kind", kind); tag.putInt("entity", player.getId()); tag.putLong("token", hold.token); tag.putLong("input", hold.inputNonce);
         for (ServerPlayer viewer : hold.audience) if (!viewer.hasDisconnected()) PacketDistributor.sendToPlayer(viewer, new AcademyNetwork.ClientData(tag));
+    }
+    private static void show(ServerPlayer p,Hold hold,cn.academy.port.macro.MacroVfx.Phase phase,Vec3 point,int life){
+        cn.academy.port.macro.MacroVfx.emit(p,ID,phase,p.getEyePosition(),point,life,
+                phase==cn.academy.port.macro.MacroVfx.Phase.CHARGE?ThunderClapSession.range(hold.session.mastery()):0,hold.token);
     }
     private static final class Hold {
         final ServerLevel level; final ThunderClapSession session; final long token, inputNonce; final Set<ServerPlayer> audience;

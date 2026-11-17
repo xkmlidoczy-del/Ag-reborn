@@ -53,7 +53,8 @@ vec3 palette(float family,float hot){
 vec4 field(vec3 world,float footprint,out vec2 distortion){
     float r=max(Dimensions.x,.25),h=max(Dimensions.y,1.0),time=Animation.x,seed=Animation.w*11.0;
     vec3 local=world-Centre;vec3 q=local/r;float radial=length(q.xz),sy=local.y/h;
-    float envelope=1.0-smoothstep(.83,1.12,length(vec3(q.x,sy*1.8,q.z)));
+    float yAspect=abs(h-r)<.25?1.0:1.35;
+    float envelope=1.0-smoothstep(.86,1.04,length(vec3(q.x,sy*yAspect,q.z)));
     float density=0.0,hot=0.0,refraction=0.0;distortion=vec2(0);
     vec3 line=SegmentEnd-SegmentStart;float len=length(line);
     if(Dimensions.w>.5&&len>1.0){
@@ -134,16 +135,16 @@ vec4 field(vec3 world,float footprint,out vec2 distortion){
     }
     // Match the native skill's functional silhouette while retaining the category material.
     if(Family>1.5){
-        if(Form>.5&&Form<1.5)density*=ridge(length(vec3(q.x,sy*1.8,q.z))-.7,.18)*1.8;
+        if(Form>.5&&Form<1.5)density*=ridge(length(vec3(q.x,sy*yAspect,q.z))-.82,.16)*1.85;
         else if(Form>1.5&&Form<2.5){float wing=abs(q.x)*.45+.12;density*=ridge(sy-wing,.14)*1.6;}
         else if(Form>2.5&&Form<3.5)density*=ridge(radial-.24,.32)*(1.0+.25*sin(sy*20.0-time*5.0));
-        else if(Form>3.5&&Form<4.5)density*=ridge(length(vec3(q.x,sy*1.8,q.z)),.45)*1.8;
-        else if(Form>4.5)density*=ridge(length(vec3(q.x,sy*1.8,q.z))-fract(time*.6),.055)*1.4;
+        else if(Form>3.5&&Form<4.5)density*=ridge(length(vec3(q.x,sy*yAspect,q.z)),.52)*1.8;
+        else if(Form>4.5)density*=ridge(length(vec3(q.x,sy*yAspect,q.z))-fract(time*.6),.055)*1.4;
     }
     vec3 colour=palette(Family,clamp(hot,0.0,1.0));
     // Keep the scalar conditional separate: optional shader AST preprocessors can
     // lose the required grouping of a compound vector *= conditional expression.
-    float categoryIntensity=Family<1.5?2.6:Family<3.5?1.5:Family<5.5?1.1:Family<6.5?.65:1.0;
+    float categoryIntensity=Family<.5?1.7:Family<1.5?1.25:Family<3.5?1.5:Family<5.5?1.1:Family<6.5?.65:1.0;
     colour*=categoryIntensity;
     distortion*=refraction;return vec4(colour,max(0.0,density));
 }
@@ -162,7 +163,9 @@ void main(){
     for(int i=0;i<56;i++){
         if(i>=count||transmission<.015)break;
         vec2 distortion;vec4 sampleValue=field(direction*at,stepLength,distortion);
-        float absorb=1.0-exp(-sampleValue.a*stepLength*Animation.z*phaseScale()*2.4);
+        float focusDistance=Family>.5&&Family<1.5?7.4:3.6;
+        float frontClarity=smoothstep(1.05,focusDistance,at);
+        float absorb=1.0-exp(-sampleValue.a*stepLength*Animation.z*phaseScale()*2.35*frontClarity);
         if(absorb>.001){first=min(first,at);radiance+=transmission*absorb*sampleValue.rgb;bend+=distortion*transmission*absorb;transmission*=1.0-absorb;}
         at+=stepLength;
     }

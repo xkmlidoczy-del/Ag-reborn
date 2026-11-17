@@ -1,0 +1,27 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="Project rights reserved; included CC0 models and GeckoLib MIT retain their own licenses"
+[[mods]]
+modId="aca_fauna"
+version="${mod_version}"
+displayName="ACA Fauna"
+authors="ACA Fauna project"
+description='''53 ecological animal species with habitat-based spawning, distinctive behavior and juvenile models. Embedded R18 build for Academy Generation Reborn.'''
+[[dependencies.aca_fauna]]
+modId="neoforge"
+type="required"
+versionRange="[21.1.252,21.2)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.aca_fauna]]
+modId="minecraft"
+type="required"
+versionRange="[1.21.1]"
+ordering="NONE"
+side="BOTH"
+[[dependencies.aca_fauna]]
+modId="geckolib"
+type="required"
+versionRange="[4.7,4.8)"
+ordering="NONE"
+side="BOTH"

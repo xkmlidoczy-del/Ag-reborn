@@ -481,6 +481,12 @@ public final class HighPowerCombat {
     public static BigDecimal shield(LivingEntity entity) {
         return read(entity).map(ExactCombatState::shield).orElse(BigDecimal.ZERO);
     }
+    public static cn.academy.port.macro.BeamImpactVfx.Pools visualPools(LivingEntity entity) {
+        var exact=read(entity,false).orElse(null);
+        return new cn.academy.port.macro.BeamImpactVfx.Pools(
+                exact==null?decimal(entity.getHealth()):exact.health(),
+                exact==null?BigDecimal.ZERO:exact.shield(),entity.getAbsorptionAmount());
+    }
     public static String shieldText(LivingEntity entity) { return CombatAmounts.decimalString(shield(entity)); }
     public static String maxShieldText(LivingEntity entity) {
         return read(entity).map(s -> CombatAmounts.decimalString(s.maxShield())).orElse("unavailable");
@@ -1797,8 +1803,11 @@ public final class HighPowerCombat {
         boolean capAccepted = false;
         CapBreak.arm(target);
         try {
+            var visualBefore=cn.academy.port.macro.BeamImpactVfx.before(player,skill,target);
             boolean accepted = target.hurt(source, witness);
             capAccepted = accepted;
+            cn.academy.port.macro.BeamImpactVfx.after(player,skill,target,visualBefore,accepted&&!source.rejected,
+                    projectileOrigin,certifiedBeamEndpoint);
             if (accepted && !source.rejected) TrainingTargetReadout.hit(player, skill, target, raw);
             if(source.spatialPincerCorridorPermit!=null||source.multidimensionalLandingArrayPermit!=null)
                 tpContactDiagnostic(source.skill,"native_hurt accepted="+accepted+" rejected="+source.rejected+" ordinaryPrepared="+source.ordinaryPrepared+" armorObserved="+source.ordinaryArmorObserved+" beforeArmor="+source.ordinaryBeforeArmor+" preLimit="+source.ordinaryPreLimit,!source.rejected&&accepted);

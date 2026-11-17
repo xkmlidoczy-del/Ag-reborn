@@ -166,6 +166,7 @@ public final class CanonVfxClient {
     private static final List<Pending> PENDING=new ArrayList<>();
     @SubscribeEvent public static void tick(ClientTickEvent.Post event){
         Minecraft mc=Minecraft.getInstance();if(mc.level!=world){EFFECTS.clear();PENDING_FLOAT_BINDINGS.clear();PENDING.clear();CanonMeshRenderer.clear();CanonFx.clear();CanonUltimates.clear();world=mc.level;}
+        SkillCinematicFx.tick();
         if(!PENDING.isEmpty()&&Minecraft.getInstance().level!=null){long at=Minecraft.getInstance().level.getGameTime();
             for(var p:List.copyOf(PENDING))if(at>=p.at()){PENDING.remove(p);receive(p.visual(),false);}}
         if(world==null||mc.player==null||mc.isPaused())return;
@@ -176,13 +177,14 @@ public final class CanonVfxClient {
         settleFloatTargets();
     }
     @SubscribeEvent public static void mesh(RenderLevelStageEvent event){
-        if(event.getStage()!=RenderLevelStageEvent.Stage.AFTER_PARTICLES)return;
+        if(event.getStage()!=RenderLevelStageEvent.Stage.AFTER_PARTICLES||AgVolumeRenderer.shadow())return;
         Minecraft mc=Minecraft.getInstance();if(world==null||world!=mc.level||mc.player==null)return;
         if(EFFECTS.isEmpty()){CanonFx.render(event,List.of());return;} // particles and ground traces outlive their effect
         double partial=mc.isPaused()?0:event.getPartialTick().getGameTimeDeltaPartialTick(false);
         var views=new ArrayList<CanonMeshRenderer.View>();var fx=new ArrayList<CanonFx.View>();
         for(Effect e:List.copyOf(EFFECTS)){
             var motif=e.design.motif();
+            if(e.visual.skill().equals("aero_air_curtain")&&MacroVfxClient.owns(e.visual.skill(),e.visual.owner()))continue;
             var entity=world.getEntity(e.visual.entity());
             if(!(entity instanceof LivingEntity actor)||!actor.getUUID().equals(e.visual.owner())||actor.isRemoved())continue;
             if(e.trackedTarget!=null&&(e.trackedTarget.level()!=world||e.trackedTarget.isRemoved()||!e.trackedTarget.isAlive()))continue;
@@ -242,7 +244,7 @@ public final class CanonVfxClient {
             boolean self=!targetAnchored&&(currentEndpoint.distanceToSqr(feet)<2.5*2.5||currentEndpoint.distanceToSqr(e.visual.origin())<1.5*1.5);
             fx.add(new CanonFx.View(e.visual.skill(),e.design.category(),motif,self?feet.add(0,1.2,0):offense!=null?origin:e.visual.origin(),self?feet:currentEndpoint,feet,yaw,
                     e.visual.phase().ordinal(),age,e.life,actor==mc.player,tier(e.design.category(),e.visual.skill()),targetBox,
-                    e.visual.radius(),rangeCentre(e.visual,feet),barrierCentre,barrierAxis!=null?barrierAxis:e.visual.axis()));
+                    e.visual.radius(),rangeCentre(e.visual,feet),barrierCentre,barrierAxis!=null?barrierAxis:e.visual.axis(),e.visual.owner()));
         }
         CanonMeshRenderer.render(event,views);CanonFx.render(event,fx);
     }

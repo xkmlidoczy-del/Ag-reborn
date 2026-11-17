@@ -22,11 +22,13 @@ public record TitanFxPayload(String species,int slot,int phase,int age,Vec3 orig
             new Vec3(b.readDouble(),b.readDouble(),b.readDouble()),new Vec3(b.readDouble(),b.readDouble(),b.readDouble()),b.readFloat()));
     @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
 
+    public static java.util.function.Consumer<TitanFxPayload> clientReceiver = p -> {};
+
     @EventBusSubscriber(modid=TitanBlocks.MODID,bus=EventBusSubscriber.Bus.MOD)
     public static final class Registration {
         private Registration() {}
         @SubscribeEvent public static void register(RegisterPayloadHandlersEvent event) {
-            event.registrar("6").playToClient(TYPE,CODEC,(payload,context)->TitanFxClient.accept(payload));
+            event.registrar("6").playToClient(TYPE,CODEC,(payload,context)->context.enqueueWork(()->clientReceiver.accept(payload)));
         }
     }
 }

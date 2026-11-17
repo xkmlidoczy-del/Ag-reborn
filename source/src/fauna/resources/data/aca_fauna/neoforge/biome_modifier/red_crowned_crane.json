@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:red_crowned_crane",
+  "spawners": {
+    "type": "aca_fauna:red_crowned_crane",
+    "weight": 6,
+    "minCount": 2,
+    "maxCount": 3
+  }
+}

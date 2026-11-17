@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:komodo_dragon",
+  "spawners": {
+    "type": "aca_fauna:komodo_dragon",
+    "weight": 2,
+    "minCount": 1,
+    "maxCount": 1
+  }
+}

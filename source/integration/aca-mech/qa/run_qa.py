@@ -25,7 +25,11 @@ def main():
     cli.add_argument("--production-jar", type=Path, required=True, help="The integrated Ag production archive")
     cli.add_argument("--qa-jar", type=Path, required=True, help="The integration QA driver archive")
     cli.add_argument("--showcase-ffmpeg", type=Path, help="Capture driving demonstration with this FFmpeg executable")
+    cli.add_argument("--cockpit-showcase", action="store_true",
+                     help="Record the cockpit and attack scenes without the separate terrain course")
     arg = cli.parse_args()
+    if arg.cockpit_showcase and not arg.showcase_ffmpeg:
+        cli.error("--cockpit-showcase requires --showcase-ffmpeg")
     if not arg.run.replace("-", "").isalnum():
         raise SystemExit("Use a simple run name")
     if arg.showcase_ffmpeg and arg.continuation:
@@ -59,6 +63,8 @@ def main():
         vm += ["-javaagent:" + str(arg.hidden_agent.resolve())]
     if arg.showcase_ffmpeg:
         vm += ["-Dacamech.qa.ffmpeg=" + str(arg.showcase_ffmpeg.resolve())]
+    if arg.cockpit_showcase:
+        vm += ["-Dacamech.qa.cockpit=true"]
     run = shlex.split((prepared / "showcaseClientRunProgramArgs.txt").read_text(), comments=True)
 
     def option(key, value):

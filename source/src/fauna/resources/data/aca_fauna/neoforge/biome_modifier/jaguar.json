@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#aca_fauna:jaguar",
+  "spawners": {
+    "type": "aca_fauna:jaguar",
+    "weight": 2,
+    "minCount": 1,
+    "maxCount": 1
+  }
+}
