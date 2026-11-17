@@ -25,7 +25,7 @@ import net.neoforged.fml.ModList;
 public final class VanillaMiningContract {
     public static final String ID = "academy:vanilla_beam_etching_harvest_1_21_1_21_1_252_v1";
     private static final Map<String, String> MODS = Map.of("minecraft", "1.21.1", "neoforge", "21.1.252",
-            "academy", "0.1.0-m41-highpower.0.81.5-city-a3.67");
+            "academy", "0.1.0-m41-highpower.0.81.5-city-a3.68");
     private static final Set<String> PACKS = Set.of("vanilla", "mod_data", "mod/neoforge", "mod/academy", "bundle", "trade_rebalance");
     private record BlockContract(Class<?> type, Item drop, String sha256) {}
     private static final Map<Block, BlockContract> BLOCKS = Map.of(
@@ -57,9 +57,15 @@ public final class VanillaMiningContract {
         if (mech) reviewed.remove("acamech");
         boolean fauna = "0.1.17".equals(reviewed.get("aca_fauna"));
         if (fauna) reviewed.remove("aca_fauna");
+        // This HUM data pack adds only its own dimension and damage type.
+        boolean hum = "0.9.1".equals(reviewed.get("acabiohum"));
+        if (hum) reviewed.remove("acabiohum");
         boolean physics = PhysicsBundle.exact(MODS, reviewed);
         if (!MODS.equals(reviewed) && !physics) return Optional.of("Unreviewed mining mod/version set");
-        if (!packs.contains("vanilla") || !packs.stream().allMatch(pack -> PACKS.contains(pack) || visual && pack.equals("mod/geckolib") || mech && pack.equals("mod/acamech") || fauna && pack.equals("mod/aca_fauna") || physics && PhysicsBundle.PACKS.contains(pack))) return Optional.of("Unreviewed mining data pack");
+        if (!packs.contains("vanilla") || !packs.stream().allMatch(pack -> PACKS.contains(pack)
+                || visual && pack.equals("mod/geckolib") || mech && pack.equals("mod/acamech")
+                || fauna && pack.equals("mod/aca_fauna") || hum && pack.equals("mod/acabiohum")
+                || physics && PhysicsBundle.PACKS.contains(pack))) return Optional.of("Unreviewed mining data pack");
         return Optional.empty();
     }
     public static Optional<String> unsupportedReason(ServerPlayer player) {

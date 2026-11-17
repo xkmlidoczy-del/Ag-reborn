@@ -1,0 +1,7115 @@
+{
+  "combat.aim_share.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aim_share/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "combat.aim_share.illusion": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aim_share/illusion",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.aim_share.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aim_share/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.aim_share.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aim_share/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "combat.aim_share.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aim_share/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.aim_share.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aim_share/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "combat.aim_share.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aim_share/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.aim_share.terrain": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aim_share/terrain",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.terrain"
+  },
+  "combat.aim_share.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aim_share/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "combat.aim_track.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aim_track/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "combat.aim_track.illusion": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aim_track/illusion",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.aim_track.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aim_track/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.aim_track.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aim_track/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "combat.aim_track.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aim_track/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.aim_track.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aim_track/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "combat.aim_track.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aim_track/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.aim_track.terrain": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aim_track/terrain",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.terrain"
+  },
+  "combat.aim_track.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aim_track/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "combat.aleister_interlock.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_interlock/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "combat.aleister_interlock.illusion": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_interlock/illusion",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.aleister_interlock.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_interlock/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.aleister_interlock.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_interlock/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "combat.aleister_interlock.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_interlock/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.aleister_interlock.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_interlock/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "combat.aleister_interlock.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_interlock/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.aleister_interlock.terrain": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_interlock/terrain",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.terrain"
+  },
+  "combat.aleister_interlock.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_interlock/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "combat.aleister_karma.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_karma/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "combat.aleister_karma.illusion": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_karma/illusion",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.aleister_karma.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_karma/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.aleister_karma.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_karma/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "combat.aleister_karma.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_karma/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.aleister_karma.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_karma/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "combat.aleister_karma.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_karma/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.aleister_karma.terrain": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_karma/terrain",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.terrain"
+  },
+  "combat.aleister_karma.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_karma/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "combat.aleister_spiritual_rapier.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_spiritual_rapier/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "combat.aleister_spiritual_rapier.illusion": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_spiritual_rapier/illusion",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.aleister_spiritual_rapier.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_spiritual_rapier/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.aleister_spiritual_rapier.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_spiritual_rapier/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "combat.aleister_spiritual_rapier.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_spiritual_rapier/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.aleister_spiritual_rapier.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_spiritual_rapier/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "combat.aleister_spiritual_rapier.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_spiritual_rapier/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.aleister_spiritual_rapier.terrain": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_spiritual_rapier/terrain",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.terrain"
+  },
+  "combat.aleister_spiritual_rapier.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_spiritual_rapier/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "combat.aleister_spiritual_trip.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_spiritual_trip/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "combat.aleister_spiritual_trip.illusion": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_spiritual_trip/illusion",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.aleister_spiritual_trip.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_spiritual_trip/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.aleister_spiritual_trip.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_spiritual_trip/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "combat.aleister_spiritual_trip.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_spiritual_trip/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.aleister_spiritual_trip.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_spiritual_trip/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "combat.aleister_spiritual_trip.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_spiritual_trip/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.aleister_spiritual_trip.terrain": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_spiritual_trip/terrain",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.terrain"
+  },
+  "combat.aleister_spiritual_trip.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_spiritual_trip/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "combat.aleister_staff.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_staff/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.aleister_staff.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_staff/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.aleister_vitals.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_vitals/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "combat.aleister_vitals.illusion": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_vitals/illusion",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.aleister_vitals.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_vitals/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.aleister_vitals.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_vitals/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "combat.aleister_vitals.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_vitals/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.aleister_vitals.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_vitals/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "combat.aleister_vitals.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_vitals/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.aleister_vitals.terrain": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_vitals/terrain",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.terrain"
+  },
+  "combat.aleister_vitals.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/aleister_vitals/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "combat.almighty_position.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/almighty_position/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.almighty_position.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/almighty_position/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.amakusa_formation.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/amakusa_formation/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.amakusa_formation.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/amakusa_formation/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.amakusa_guard.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/amakusa_guard/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.amakusa_guard.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/amakusa_guard/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.amakusa_lance_cover.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/amakusa_lance_cover/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.amakusa_lance_cover.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/amakusa_lance_cover/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.amakusa_spear.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/amakusa_spear/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.amakusa_spear.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/amakusa_spear/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.amazing_punch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/amazing_punch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.amazing_punch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/amazing_punch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.analysis.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/analysis/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.analysis.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/analysis/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.anna_observe.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/anna_observe/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.anna_observe.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/anna_observe/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.anna_recovery.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/anna_recovery/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.anna_recovery.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/anna_recovery/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.arm_manifest.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/arm_manifest/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.arm_manifest.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/arm_manifest/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.armor_counter.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/armor_counter/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.armor_counter.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/armor_counter/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.ascalon_break.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/ascalon_break/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.ascalon_break.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/ascalon_break/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.ascalon_cleave.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/ascalon_cleave/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "combat.ascalon_cleave.illusion": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/ascalon_cleave/illusion",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.ascalon_cleave.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/ascalon_cleave/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.ascalon_cleave.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/ascalon_cleave/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "combat.ascalon_cleave.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/ascalon_cleave/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.ascalon_cleave.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/ascalon_cleave/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "combat.ascalon_cleave.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/ascalon_cleave/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.ascalon_cleave.terrain": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/ascalon_cleave/terrain",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.terrain"
+  },
+  "combat.ascalon_cleave.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/ascalon_cleave/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "combat.ascalon_guard.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/ascalon_guard/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "combat.ascalon_guard.illusion": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/ascalon_guard/illusion",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.ascalon_guard.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/ascalon_guard/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.ascalon_guard.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/ascalon_guard/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "combat.ascalon_guard.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/ascalon_guard/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.ascalon_guard.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/ascalon_guard/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "combat.ascalon_guard.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/ascalon_guard/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.ascalon_guard.terrain": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/ascalon_guard/terrain",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.terrain"
+  },
+  "combat.ascalon_guard.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/ascalon_guard/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "combat.bethlehem_prepare.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/bethlehem_prepare/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.bethlehem_prepare.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/bethlehem_prepare/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.bethlehem_relic_survey.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/bethlehem_relic_survey/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.bethlehem_relic_survey.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/bethlehem_relic_survey/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.bethlehem_star.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/bethlehem_star/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.bethlehem_star.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/bethlehem_star/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.black_wings.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/black_wings/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.black_wings.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/black_wings/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.blasting_rod.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/blasting_rod/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.blasting_rod.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/blasting_rod/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.choker_calculate.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/choker_calculate/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.choker_calculate.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/choker_calculate/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_accelerator_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_accelerator_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_accelerator_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_accelerator_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_accelerator_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_accelerator_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_accelerator_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_accelerator_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_acqua_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_acqua_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_acqua_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_acqua_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_acqua_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_acqua_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_acqua_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_acqua_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_acqua_strike.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_acqua_strike/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_acqua_strike.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_acqua_strike/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_agnese_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_agnese_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_agnese_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_agnese_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_agnese_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_agnese_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_agnese_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_agnese_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_agnese_strike.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_agnese_strike/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_agnese_strike.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_agnese_strike/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_aleister_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_aleister_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_aleister_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_aleister_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_aleister_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_aleister_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_aleister_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_aleister_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_aleister_strike.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_aleister_strike/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_aleister_strike.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_aleister_strike/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_alice_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_alice_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_alice_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_alice_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_alice_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_alice_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_alice_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_alice_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_anna_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_anna_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_anna_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_anna_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_anna_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_anna_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_anna_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_anna_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_carissa_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_carissa_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_carissa_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_carissa_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_carissa_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_carissa_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_carissa_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_carissa_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_carissa_strike.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_carissa_strike/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_carissa_strike.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_carissa_strike/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_crc_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_crc_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_crc_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_crc_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_crc_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_crc_react/impact",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_crc_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_crc_react/release",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_crc_strike.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_crc_strike/impact",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_crc_strike.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_crc_strike/release",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_elizard_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_elizard_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_elizard_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_elizard_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_elizard_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_elizard_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_elizard_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_elizard_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_elizard_strike.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_elizard_strike/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_elizard_strike.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_elizard_strike/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_fiamma_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_fiamma_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_fiamma_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_fiamma_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_fiamma_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_fiamma_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_fiamma_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_fiamma_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_hamazura_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_hamazura_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_hamazura_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_hamazura_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_hamazura_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_hamazura_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_hamazura_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_hamazura_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_hamazura_strike.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_hamazura_strike/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_hamazura_strike.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_hamazura_strike/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_index_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_index_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_index_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_index_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_index_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_index_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_index_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_index_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_itsuwa_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_itsuwa_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_itsuwa_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_itsuwa_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_itsuwa_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_itsuwa_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_itsuwa_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_itsuwa_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_itsuwa_strike.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_itsuwa_strike/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_itsuwa_strike.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_itsuwa_strike/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_kakine_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kakine_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_kakine_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kakine_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_kakine_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kakine_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_kakine_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kakine_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_kanzaki_counter.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kanzaki_counter/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_kanzaki_counter.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kanzaki_counter/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_kanzaki_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kanzaki_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_kanzaki_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kanzaki_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_kanzaki_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kanzaki_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_kanzaki_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kanzaki_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_kanzaki_strike.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kanzaki_strike/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_kanzaki_strike.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kanzaki_strike/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_kihara_amata_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kihara_amata_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_kihara_amata_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kihara_amata_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_kihara_amata_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kihara_amata_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_kihara_amata_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kihara_amata_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_kihara_amata_strike.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kihara_amata_strike/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_kihara_amata_strike.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kihara_amata_strike/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_kinuhata_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kinuhata_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_kinuhata_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kinuhata_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_kinuhata_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kinuhata_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_kinuhata_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kinuhata_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_kinuhata_strike.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kinuhata_strike/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_kinuhata_strike.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kinuhata_strike/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_knight_leader_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_knight_leader_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_knight_leader_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_knight_leader_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_knight_leader_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_knight_leader_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_knight_leader_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_knight_leader_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_knight_leader_strike.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_knight_leader_strike/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_knight_leader_strike.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_knight_leader_strike/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_kuroko_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kuroko_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_kuroko_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kuroko_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_kuroko_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kuroko_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_kuroko_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kuroko_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_kuroko_strike.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kuroko_strike/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_kuroko_strike.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kuroko_strike/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_kuroyoru_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kuroyoru_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_kuroyoru_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kuroyoru_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_kuroyoru_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kuroyoru_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_kuroyoru_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kuroyoru_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_kuroyoru_strike.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kuroyoru_strike/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_kuroyoru_strike.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_kuroyoru_strike/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_mikoto_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_mikoto_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_mikoto_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_mikoto_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_mikoto_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_mikoto_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_mikoto_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_mikoto_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_misaki_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_misaki_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_misaki_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_misaki_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_misaki_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_misaki_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_misaki_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_misaki_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_mugino_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_mugino_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_mugino_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_mugino_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_mugino_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_mugino_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_mugino_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_mugino_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_othinus_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_othinus_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_othinus_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_othinus_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_othinus_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_othinus_react/impact",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_othinus_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_othinus_react/release",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_sasha_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_sasha_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_sasha_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_sasha_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_sasha_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_sasha_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_sasha_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_sasha_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_sasha_strike.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_sasha_strike/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_sasha_strike.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_sasha_strike/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_sogiita_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_sogiita_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_sogiita_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_sogiita_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_sogiita_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_sogiita_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_sogiita_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_sogiita_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_sogiita_strike.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_sogiita_strike/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_sogiita_strike.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_sogiita_strike/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_stiyl_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_stiyl_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_stiyl_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_stiyl_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_stiyl_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_stiyl_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_stiyl_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_stiyl_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_stiyl_strike.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_stiyl_strike/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_stiyl_strike.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_stiyl_strike/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_tatemiya_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_tatemiya_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_tatemiya_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_tatemiya_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_tatemiya_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_tatemiya_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_tatemiya_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_tatemiya_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_tatemiya_strike.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_tatemiya_strike/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_tatemiya_strike.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_tatemiya_strike/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_thor_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_thor_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_thor_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_thor_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_thor_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_thor_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_thor_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_thor_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_thor_strike.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_thor_strike/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_thor_strike.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_thor_strike/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_touma_flinch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_touma_flinch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_touma_flinch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_touma_flinch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_touma_react.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_touma_react/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_touma_react.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_touma_react/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.close_touma_strike.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_touma_strike/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.close_touma_strike.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/close_touma_strike/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.cover.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/cover/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.cover.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/cover/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.curtana_interpose.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/curtana_interpose/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.curtana_interpose.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/curtana_interpose/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.curtana_slice.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/curtana_slice/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.curtana_slice.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/curtana_slice/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.curtana_territory.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/curtana_territory/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.curtana_territory.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/curtana_territory/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.dark_feather_fan.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/dark_feather_fan/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.dark_feather_fan.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/dark_feather_fan/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.dark_forge.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/dark_forge/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.dark_forge.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/dark_forge/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.dark_matter_screen.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/dark_matter_screen/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.dark_matter_screen.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/dark_matter_screen/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.dark_matter_wings.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/dark_matter_wings/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.dark_matter_wings.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/dark_matter_wings/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.dragon_strike.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/dragon_strike/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.dragon_strike.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/dragon_strike/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.electric_shock.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/electric_shock/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.electric_shock.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/electric_shock/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.electro_magnetic_dash.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/electro_magnetic_dash/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.electro_magnetic_dash.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/electro_magnetic_dash/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.exorcism_tether.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/exorcism_tether/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.exorcism_tether.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/exorcism_tether/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.fire_sever.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/fire_sever/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "combat.fire_sever.illusion": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/fire_sever/illusion",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.fire_sever.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/fire_sever/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.fire_sever.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/fire_sever/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "combat.fire_sever.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/fire_sever/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.fire_sever.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/fire_sever/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "combat.fire_sever.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/fire_sever/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.fire_sever.terrain": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/fire_sever/terrain",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.terrain"
+  },
+  "combat.fire_sever.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/fire_sever/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "combat.flame_sword.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/flame_sword/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.flame_sword.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/flame_sword/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.gungnir.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/gungnir/impact",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.gungnir.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/gungnir/release",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.gunshot.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/gunshot/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "combat.gunshot.illusion": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/gunshot/illusion",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.gunshot.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/gunshot/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.gunshot.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/gunshot/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "combat.gunshot.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/gunshot/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.gunshot.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/gunshot/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "combat.gunshot.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/gunshot/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.gunshot.terrain": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/gunshot/terrain",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.terrain"
+  },
+  "combat.gunshot.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/gunshot/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "combat.guts_guard.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/guts_guard/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.guts_guard.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/guts_guard/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.holy_right.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/holy_right/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.holy_right.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/holy_right/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.holy_right_close.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/holy_right_close/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.holy_right_close.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/holy_right_close/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.holy_right_intercept.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/holy_right_intercept/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.holy_right_intercept.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/holy_right_intercept/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.hound_direct.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/hound_direct/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.hound_direct.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/hound_direct/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.hound_feint.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/hound_feint/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.hound_feint.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/hound_feint/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.hunting_sword.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/hunting_sword/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.hunting_sword.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/hunting_sword/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.imagine_breaker.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/imagine_breaker/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "combat.imagine_breaker.illusion": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/imagine_breaker/illusion",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.imagine_breaker.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/imagine_breaker/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.imagine_breaker.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/imagine_breaker/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "combat.imagine_breaker.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/imagine_breaker/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.imagine_breaker.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/imagine_breaker/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "combat.imagine_breaker.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/imagine_breaker/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.imagine_breaker.terrain": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/imagine_breaker/terrain",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.terrain"
+  },
+  "combat.imagine_breaker.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/imagine_breaker/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "combat.iron_sand_colossus.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/iron_sand_colossus/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.iron_sand_colossus.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/iron_sand_colossus/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.iron_sand_deconstruct.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/iron_sand_deconstruct/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "combat.iron_sand_deconstruct.illusion": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/iron_sand_deconstruct/illusion",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.iron_sand_deconstruct.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/iron_sand_deconstruct/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.iron_sand_deconstruct.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/iron_sand_deconstruct/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "combat.iron_sand_deconstruct.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/iron_sand_deconstruct/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.iron_sand_deconstruct.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/iron_sand_deconstruct/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "combat.iron_sand_deconstruct.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/iron_sand_deconstruct/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.iron_sand_deconstruct.terrain": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/iron_sand_deconstruct/terrain",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.terrain"
+  },
+  "combat.iron_sand_deconstruct.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/iron_sand_deconstruct/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "combat.iron_sand_intercept.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/iron_sand_intercept/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "combat.iron_sand_intercept.illusion": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/iron_sand_intercept/illusion",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.iron_sand_intercept.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/iron_sand_intercept/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.iron_sand_intercept.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/iron_sand_intercept/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "combat.iron_sand_intercept.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/iron_sand_intercept/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.iron_sand_intercept.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/iron_sand_intercept/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "combat.iron_sand_intercept.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/iron_sand_intercept/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.iron_sand_intercept.terrain": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/iron_sand_intercept/terrain",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.terrain"
+  },
+  "combat.iron_sand_intercept.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/iron_sand_intercept/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "combat.iron_sand_lash.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/iron_sand_lash/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.iron_sand_lash.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/iron_sand_lash/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.itsuwa_guard.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/itsuwa_guard/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.itsuwa_guard.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/itsuwa_guard/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.johns_pen.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/johns_pen/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.johns_pen.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/johns_pen/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.leyline_trap.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/leyline_trap/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.leyline_trap.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/leyline_trap/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.lotus_wand.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/lotus_wand/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.lotus_wand.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/lotus_wand/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.magnetism.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/magnetism/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.magnetism.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/magnetism/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.material_body.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/material_body/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.material_body.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/material_body/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.material_counterform.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/material_counterform/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.material_counterform.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/material_counterform/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.meltdowner.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/meltdowner/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.meltdowner.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/meltdowner/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.meltdowner_aim_relay.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/meltdowner_aim_relay/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.meltdowner_aim_relay.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/meltdowner_aim_relay/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.meltdowner_scatter.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/meltdowner_scatter/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.meltdowner_scatter.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/meltdowner_scatter/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.meltdowner_sweep.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/meltdowner_sweep/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.meltdowner_sweep.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/meltdowner_sweep/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.mental_assist.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/mental_assist/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.mental_assist.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/mental_assist/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.mental_memory.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/mental_memory/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.mental_memory.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/mental_memory/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.mental_retreat.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/mental_retreat/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.mental_retreat.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/mental_retreat/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.mental_stop.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/mental_stop/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.mental_stop.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/mental_stop/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.nitrogen_armor.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/nitrogen_armor/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.nitrogen_armor.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/nitrogen_armor/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.nitrogen_lance.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/nitrogen_lance/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.nitrogen_lance.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/nitrogen_lance/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.othinus_black_moon.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/othinus_black_moon/impact",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.othinus_black_moon.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/othinus_black_moon/release",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.othinus_duel_reset.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/othinus_duel_reset/impact",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.othinus_duel_reset.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/othinus_duel_reset/release",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.othinus_mimir_eye.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/othinus_mimir_eye/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.othinus_mimir_eye.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/othinus_mimir_eye/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.othinus_sky_crossbow.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/othinus_sky_crossbow/impact",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.othinus_sky_crossbow.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/othinus_sky_crossbow/release",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.othinus_world_alpha.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/othinus_world_alpha/impact",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.othinus_world_alpha.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/othinus_world_alpha/release",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.othinus_world_beta.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/othinus_world_beta/impact",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.othinus_world_beta.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/othinus_world_beta/release",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.othinus_world_dark.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/othinus_world_dark/impact",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.othinus_world_dark.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/othinus_world_dark/release",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.othinus_world_duel.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/othinus_world_duel/impact",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.othinus_world_duel.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/othinus_world_duel/release",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.othinus_world_loops.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/othinus_world_loops/impact",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.othinus_world_loops.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/othinus_world_loops/release",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.othinus_world_omega.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/othinus_world_omega/impact",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.othinus_world_omega.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/othinus_world_omega/release",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.othinus_world_return.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/othinus_world_return/impact",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.othinus_world_return.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/othinus_world_return/release",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.pistol_reload.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/pistol_reload/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "combat.pistol_reload.illusion": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/pistol_reload/illusion",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.pistol_reload.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/pistol_reload/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.pistol_reload.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/pistol_reload/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "combat.pistol_reload.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/pistol_reload/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.pistol_reload.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/pistol_reload/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "combat.pistol_reload.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/pistol_reload/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.pistol_reload.terrain": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/pistol_reload/terrain",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.terrain"
+  },
+  "combat.pistol_reload.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/pistol_reload/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "combat.plasma_interrupt.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/plasma_interrupt/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.plasma_interrupt.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/plasma_interrupt/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.protect_takitsubo.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/protect_takitsubo/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.protect_takitsubo.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/protect_takitsubo/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.punch.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/punch/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.punch.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/punch/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.railgun.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/railgun/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "combat.railgun.illusion": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/railgun/illusion",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.railgun.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/railgun/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.railgun.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/railgun/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "combat.railgun.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/railgun/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.railgun.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/railgun/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "combat.railgun.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/railgun/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.railgun.terrain": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/railgun/terrain",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.terrain"
+  },
+  "combat.railgun.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/railgun/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "combat.remote_pen_light.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/remote_pen_light/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.remote_pen_light.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/remote_pen_light/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.rose_cross_flash.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/rose_cross_flash/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.rose_cross_flash.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/rose_cross_flash/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.rose_spell.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/rose_spell/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.rose_spell.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/rose_spell/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.royal_knights.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/royal_knights/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.royal_knights.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/royal_knights/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.royal_standard.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/royal_standard/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.royal_standard.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/royal_standard/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.rune_fire_screen.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/rune_fire_screen/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.rune_fire_screen.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/rune_fire_screen/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.rune_relay.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/rune_relay/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.rune_relay.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/rune_relay/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.rune_summon.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/rune_summon/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "combat.rune_summon.illusion": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/rune_summon/illusion",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.rune_summon.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/rune_summon/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.rune_summon.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/rune_summon/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "combat.rune_summon.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/rune_summon/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.rune_summon.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/rune_summon/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "combat.rune_summon.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/rune_summon/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.rune_summon.terrain": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/rune_summon/terrain",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.terrain"
+  },
+  "combat.rune_summon.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/rune_summon/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "combat.rune_trace.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/rune_trace/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.rune_trace.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/rune_trace/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.saint_break.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/saint_break/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.saint_break.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/saint_break/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.saint_intercept.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/saint_intercept/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.saint_intercept.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/saint_intercept/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.saint_mercy.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/saint_mercy/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.saint_mercy.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/saint_mercy/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.saint_water_guard.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/saint_water_guard/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.saint_water_guard.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/saint_water_guard/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.seven_flash.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/seven_flash/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "combat.seven_flash.illusion": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/seven_flash/illusion",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.seven_flash.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/seven_flash/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.seven_flash.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/seven_flash/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "combat.seven_flash.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/seven_flash/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.seven_flash.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/seven_flash/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "combat.seven_flash.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/seven_flash/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.seven_flash.terrain": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/seven_flash/terrain",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.terrain"
+  },
+  "combat.seven_flash.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/seven_flash/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "combat.sheol_fear.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/sheol_fear/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.sheol_fear.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/sheol_fear/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.spell_intercept.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/spell_intercept/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.spell_intercept.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/spell_intercept/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.st_george_sanctuary.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/st_george_sanctuary/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.st_george_sanctuary.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/st_george_sanctuary/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.tactics.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/tactics/impact",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.tactics.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/tactics/release",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.teleport_carry.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/teleport_carry/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.teleport_carry.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/teleport_carry/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.teleport_rescue.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/teleport_rescue/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.teleport_rescue.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/teleport_rescue/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.teleport_self.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/teleport_self/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.teleport_self.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/teleport_self/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.thunder_arc_parry.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/thunder_arc_parry/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.thunder_arc_parry.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/thunder_arc_parry/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.thunder_blade.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/thunder_blade/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.thunder_blade.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/thunder_blade/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.thunder_step.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/thunder_step/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.thunder_step.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/thunder_step/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.understander_observe.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/understander_observe/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.understander_observe.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/understander_observe/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.vector_air_intercept.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/vector_air_intercept/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.vector_air_intercept.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/vector_air_intercept/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.vector_airlift.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/vector_airlift/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "combat.vector_airlift.illusion": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/vector_airlift/illusion",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.vector_airlift.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/vector_airlift/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.vector_airlift.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/vector_airlift/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "combat.vector_airlift.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/vector_airlift/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.vector_airlift.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/vector_airlift/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "combat.vector_airlift.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/vector_airlift/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.vector_airlift.terrain": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/vector_airlift/terrain",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.terrain"
+  },
+  "combat.vector_airlift.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/vector_airlift/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "combat.vector_building_throw.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/vector_building_throw/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.vector_building_throw.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/vector_building_throw/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.vector_guard.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/vector_guard/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "combat.vector_guard.illusion": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/vector_guard/illusion",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.vector_guard.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/vector_guard/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.vector_guard.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/vector_guard/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "combat.vector_guard.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/vector_guard/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.vector_guard.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/vector_guard/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "combat.vector_guard.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/vector_guard/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.vector_guard.terrain": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/vector_guard/terrain",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.terrain"
+  },
+  "combat.vector_guard.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/vector_guard/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "combat.vector_headwind.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/vector_headwind/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.vector_headwind.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/vector_headwind/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.vector_impact.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/vector_impact/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.vector_impact.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/vector_impact/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.white_wing_flight.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/white_wing_flight/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.white_wing_flight.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/white_wing_flight/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.white_wings.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/white_wings/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.white_wings.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/white_wings/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.wind_plasma.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/wind_plasma/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "combat.wind_plasma.illusion": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/wind_plasma/illusion",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.wind_plasma.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/wind_plasma/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.wind_plasma.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/wind_plasma/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "combat.wind_plasma.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/wind_plasma/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.wind_plasma.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/wind_plasma/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "combat.wind_plasma.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/wind_plasma/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.wind_plasma.terrain": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/wind_plasma/terrain",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.terrain"
+  },
+  "combat.wind_plasma.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/wind_plasma/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "combat.wonderland_corridor.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/wonderland_corridor/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.wonderland_corridor.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/wonderland_corridor/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.wonderland_link.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/wonderland_link/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.wonderland_link.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/wonderland_link/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.wounded_beam.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/wounded_beam/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.wounded_beam.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/wounded_beam/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.yuisen.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/yuisen/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "combat.yuisen.illusion": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/yuisen/illusion",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.yuisen.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/yuisen/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "combat.yuisen.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/yuisen/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "combat.yuisen.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/yuisen/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "combat.yuisen.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/yuisen/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "combat.yuisen.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/yuisen/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "combat.yuisen.terrain": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/yuisen/terrain",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.terrain"
+  },
+  "combat.yuisen.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:combat/yuisen/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.cloth.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/cloth/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.cloth.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/cloth/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.cloth.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/cloth/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "foley.cloth.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/cloth/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.cloth.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/cloth/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.cloth.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/cloth/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "foley.cloth.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/cloth/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.cloth.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/cloth/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.curse.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/curse/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.curse.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/curse/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.curse.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/curse/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.curse.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/curse/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.curse.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/curse/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.curse.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/curse/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.electrical.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/electrical/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.electrical.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/electrical/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.electrical.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/electrical/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "foley.electrical.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/electrical/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.electrical.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/electrical/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.electrical.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/electrical/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "foley.electrical.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/electrical/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.electrical.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/electrical/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.fist.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/fist/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.fist.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/fist/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.fist.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/fist/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "foley.fist.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/fist/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.fist.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/fist/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.fist.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/fist/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "foley.fist.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/fist/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.flame.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/flame/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.flame.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/flame/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.flame.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/flame/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.flame.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/flame/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.flame.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/flame/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.flame.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/flame/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.glass.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/glass/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.glass.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/glass/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.glass.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/glass/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "foley.glass.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/glass/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.glass.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/glass/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.glass.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/glass/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "foley.glass.terrain": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/glass/terrain",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.terrain"
+  },
+  "foley.glass.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/glass/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.glass.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/glass/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.heavy.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/heavy/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.heavy.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/heavy/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.heavy.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/heavy/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "foley.heavy.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/heavy/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "foley.heavy.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/heavy/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.heavy.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/heavy/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.heavy.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/heavy/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "foley.heavy.wall": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/heavy/wall",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.wall"
+  },
+  "foley.heavy.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/heavy/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.heavy.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/heavy/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.illusion.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/illusion/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.illusion.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/illusion/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.illusion.illusion": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/illusion/illusion",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.illusion.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/illusion/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "foley.illusion.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/illusion/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.illusion.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/illusion/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.illusion.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/illusion/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "foley.illusion.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/illusion/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.illusion.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/illusion/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.iron.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/iron/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.iron.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/iron/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.iron.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/iron/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "foley.iron.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/iron/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.iron.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/iron/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.iron.wall": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/iron/wall",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.wall"
+  },
+  "foley.iron.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/iron/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.iron.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/iron/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.mechanical.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/mechanical/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.mechanical.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/mechanical/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.mechanical.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/mechanical/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "foley.mechanical.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/mechanical/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "foley.mechanical.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/mechanical/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.mechanical.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/mechanical/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.mechanical.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/mechanical/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "foley.mechanical.wall": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/mechanical/wall",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.wall"
+  },
+  "foley.mechanical.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/mechanical/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.mechanical.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/mechanical/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.melt.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/melt/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.melt.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/melt/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.melt.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/melt/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "foley.melt.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/melt/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.melt.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/melt/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.melt.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/melt/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "foley.melt.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/melt/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.melt.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/melt/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.paper.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/paper/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.paper.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/paper/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.paper.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/paper/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "foley.paper.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/paper/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.paper.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/paper/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.paper.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/paper/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "foley.paper.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/paper/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.paper.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/paper/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.plasma.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/plasma/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.plasma.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/plasma/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.rail.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/rail/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.rail.wall": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/rail/wall",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.wall"
+  },
+  "foley.rail.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/rail/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.scan.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/scan/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.scan.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/scan/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.scan.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/scan/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "foley.scan.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/scan/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.scan.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/scan/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.scan.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/scan/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "foley.scan.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/scan/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.scan.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/scan/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.sheathe.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/sheathe/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.sheathe.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/sheathe/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.sheathe.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/sheathe/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "foley.sheathe.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/sheathe/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.sheathe.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/sheathe/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.sheathe.wall": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/sheathe/wall",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.wall"
+  },
+  "foley.sheathe.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/sheathe/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.sheathe.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/sheathe/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.shot.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/shot/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.shot.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/shot/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.signal.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/signal/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.signal.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/signal/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.signal.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/signal/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "foley.signal.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/signal/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.signal.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/signal/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.signal.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/signal/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "foley.signal.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/signal/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.signal.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/signal/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.spear.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/spear/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.spear.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/spear/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.spear.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/spear/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "foley.spear.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/spear/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.spear.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/spear/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.spear.wall": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/spear/wall",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.wall"
+  },
+  "foley.spear.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/spear/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.spear.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/spear/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.spell.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/spell/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.spell.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/spell/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.spell.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/spell/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "foley.spell.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/spell/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.spell.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/spell/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.spell.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/spell/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "foley.spell.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/spell/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.spell.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/spell/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.staff.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/staff/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.staff.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/staff/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.staff.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/staff/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "foley.staff.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/staff/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.staff.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/staff/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.staff.wall": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/staff/wall",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.wall"
+  },
+  "foley.staff.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/staff/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.staff.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/staff/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.steel.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/steel/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.steel.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/steel/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.steel.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/steel/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "foley.steel.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/steel/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "foley.steel.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/steel/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.steel.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/steel/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.steel.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/steel/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "foley.steel.wall": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/steel/wall",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.wall"
+  },
+  "foley.steel.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/steel/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.steel.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/steel/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.step.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/step/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.step.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/step/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.step.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/step/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "foley.step.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/step/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.step.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/step/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.step.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/step/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "foley.step.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/step/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.step.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/step/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.stone.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/stone/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.stone.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/stone/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.stone.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/stone/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "foley.stone.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/stone/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.stone.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/stone/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.stone.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/stone/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "foley.stone.terrain": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/stone/terrain",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.terrain"
+  },
+  "foley.stone.wall": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/stone/wall",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.wall"
+  },
+  "foley.stone.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/stone/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.stone.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/stone/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.vector.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/vector/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.vector.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/vector/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.vector.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/vector/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.vector.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/vector/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.vector.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/vector/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.vector.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/vector/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.ward.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/ward/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.ward.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/ward/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.ward.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/ward/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "foley.ward.parry": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/ward/parry",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.parry"
+  },
+  "foley.ward.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/ward/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.ward.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/ward/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.ward.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/ward/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "foley.ward.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/ward/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.ward.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/ward/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.water.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/water/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.water.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/water/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.water.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/water/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "foley.water.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/water/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.water.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/water/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.water.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/water/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "foley.water.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/water/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.water.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/water/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.wind.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/wind/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.wind.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/wind/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.wind.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/wind/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.wind.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/wind/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.wind.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/wind/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.wind.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/wind/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.wing.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/wing/cancel",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.wing.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/wing/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.wing.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/wing/impact",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "foley.wing.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/wing/recover",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.wing.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/wing/reflect",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.wing.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/wing/release",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "foley.wing.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/wing/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.wing.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/wing/windup",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "foley.wire.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/wire/field",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.wire.wall": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/wire/wall",
+        "attenuation_distance": 24
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.wall"
+  },
+  "foley.wire.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/wire/whiff",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "foley.world.cancel": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/world/cancel",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.cancel"
+  },
+  "foley.world.field": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/world/field",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.field"
+  },
+  "foley.world.impact": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/world/impact",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.impact"
+  },
+  "foley.world.recover": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/world/recover",
+        "attenuation_distance": 34
+      }
+    ]
+  },
+  "foley.world.reflect": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/world/reflect",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.reflect"
+  },
+  "foley.world.release": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/world/release",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.release"
+  },
+  "foley.world.terrain": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/world/terrain",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.terrain"
+  },
+  "foley.world.whiff": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/world/whiff",
+        "attenuation_distance": 34
+      }
+    ]
+  },
+  "foley.world.windup": {
+    "sounds": [
+      {
+        "name": "acabiohum:foley/world/windup",
+        "attenuation_distance": 34
+      }
+    ],
+    "subtitle": "subtitles.acabiohum.windup"
+  },
+  "space.capsule": {
+    "sounds": [
+      "acabiohum:space/capsule"
+    ],
+    "subtitle": "subtitles.acabiohum.capsule"
+  },
+  "space.charge_wind": {
+    "subtitle": "subtitles.acabiohum.windup",
+    "sounds": [
+      "acabiohum:space/charge_wind"
+    ]
+  },
+  "space.charge_seal": {
+    "subtitle": "subtitles.acabiohum.windup",
+    "sounds": [
+      "acabiohum:space/charge_seal"
+    ]
+  },
+  "space.charge_sky": {
+    "subtitle": "subtitles.acabiohum.windup",
+    "sounds": [
+      "acabiohum:space/charge_sky"
+    ]
+  }
+}

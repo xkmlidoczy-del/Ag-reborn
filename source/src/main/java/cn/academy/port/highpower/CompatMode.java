@@ -34,6 +34,7 @@ public final class CompatMode {
         Set<String> out = new TreeSet<>();
         for (var info : ModList.get().getMods()) {
             if ("acamech".equals(info.getModId()) && "0.4.5".equals(info.getVersion().toString())) continue;
+            if ("acabiohum".equals(info.getModId()) && "0.9.1".equals(info.getVersion().toString())) continue;
             if (!KNOWN.contains(info.getModId())) out.add(info.getModId());
         }
         return out;

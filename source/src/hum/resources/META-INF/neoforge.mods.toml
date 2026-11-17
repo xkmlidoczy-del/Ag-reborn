@@ -1,0 +1,20 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="All Rights Reserved (fan project; see NOTICE.md)"
+[[mods]]
+modId="acabiohum"
+version="0.9.1"
+displayName="ACA bio HUM"
+description='''100 independently registered Minecraft-style NPCs with stage-specific actions, animations, and effects.'''
+[[dependencies.acabiohum]]
+modId="neoforge"
+type="required"
+versionRange="[21.1.252,)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.acabiohum]]
+modId="minecraft"
+type="required"
+versionRange="[1.21.1,1.21.2)"
+ordering="NONE"
+side="BOTH"

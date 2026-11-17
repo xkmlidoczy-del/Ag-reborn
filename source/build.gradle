@@ -6,7 +6,7 @@ plugins {
 // with the default pure/server check outputs without rewriting their classpath.
 if (providers.gradleProperty('qaBuildDirectory').isPresent())
     layout.buildDirectory.set(layout.projectDirectory.dir(providers.gradleProperty('qaBuildDirectory').get()))
-version = '0.1.0-m41-highpower.0.81.5-city-a3.67'
+version = '0.1.0-m41-highpower.0.81.5-city-a3.68'
 group = 'cn.academy'
 base { archivesName = 'academy-generation-reborn' }
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
@@ -15,6 +15,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 sourceSets {
     mech
     fauna
+    hum
     mechQa {
         compileClasspath += mech.output
         runtimeClasspath += mech.output
@@ -25,6 +26,7 @@ neoForge {
     addModdingDependenciesTo sourceSets.mech
     addModdingDependenciesTo sourceSets.mechQa
     addModdingDependenciesTo sourceSets.fauna
+    addModdingDependenciesTo sourceSets.hum
     runs {
         client { client(); if(providers.gradleProperty('canonExperimental').getOrElse('false').toBoolean())systemProperty 'academy.canon.experimental','true'; gameDirectory = layout.projectDirectory.dir(providers.gradleProperty('clientDirectory').getOrElse('run-client')); if(providers.gradleProperty('visualQA').getOrElse('false').toBoolean())systemProperty 'academy.visual.qa','true'; if(providers.gradleProperty('wirelessQA').getOrElse('false').toBoolean())systemProperty 'academy.wireless.qa','true' }
         server { server(); gameDirectory = layout.projectDirectory.dir(providers.gradleProperty('serverDirectory').getOrElse('run-server')); if (providers.gradleProperty('urbanWorldgenProbe').isPresent()) systemProperty 'academy.urban.worldgenProbe', providers.gradleProperty('urbanWorldgenProbe').get(); if (providers.gradleProperty('canonExperimental').getOrElse('false').toBoolean()) systemProperty 'academy.canon.experimental','true'; programArgument '--nogui' }
@@ -76,6 +78,7 @@ neoForge {
         academy { sourceSet(sourceSets.main) }
         acamech { sourceSet(sourceSets.mech) }
         aca_fauna { sourceSet(sourceSets.fauna) }
+        acabiohum { sourceSet(sourceSets.hum) }
     }
 }
 
@@ -102,6 +105,14 @@ def faunaJar = tasks.register('faunaJar', Jar) {
     archiveClassifier = 'embedded'
     manifest { attributes('Automatic-Module-Name': 'dev.acafauna') }
     from sourceSets.fauna.output
+}
+def humJar = tasks.register('humJar', Jar) {
+    archiveBaseName = 'aca-bio-hum'
+    archiveVersion = '0.9.1'
+    archiveClassifier = 'embedded'
+    manifest { attributes('Automatic-Module-Name': 'cn.academy.biohum') }
+    from sourceSets.hum.output
+    into('META-INF') { from('integration/aca-hum/NOTICE.md') }
 }
 tasks.register('mechQaJar', Jar) {
     archiveBaseName = 'aca-mech-integration-qa'
@@ -134,6 +145,7 @@ repositories {
 dependencies {
     jarJar files(mechJar)
     jarJar files(faunaJar)
+    jarJar files(humJar)
     implementation 'software.bernie.geckolib:geckolib-neoforge-1.21.1:4.7'
     faunaImplementation 'software.bernie.geckolib:geckolib-neoforge-1.21.1:4.7'
     jarJar('software.bernie.geckolib:geckolib-neoforge-1.21.1') {

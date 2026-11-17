@@ -42,7 +42,7 @@ import net.neoforged.neoforge.gametest.GameTestHooks;
 public final class VanillaCombatContract {
     public static final String ID = "academy:vanilla_protection_cooldown_v2";
     private static final Map<String, String> MODS = Map.of("minecraft", "1.21.1", "neoforge", "21.1.252",
-            "academy", "0.1.0-m41-highpower.0.81.5-city-a3.67");
+            "academy", "0.1.0-m41-highpower.0.81.5-city-a3.68");
     private static final Set<String> PACKS = Set.of("vanilla", "mod_data", "mod/neoforge", "mod/academy", "bundle", "trade_rebalance");
     private static final Map<EntityType<?>, Class<?>> CLASSES = Map.ofEntries(
             Map.entry(EntityType.VILLAGER, Villager.class), Map.entry(EntityType.PIG, Pig.class),
@@ -88,9 +88,16 @@ public final class VanillaCombatContract {
         // Fauna's own entities have native damage pipelines. Its only vanilla data addition is a water-breathing tag.
         boolean fauna = "0.1.17".equals(reviewed.get("aca_fauna"));
         if (fauna) reviewed.remove("aca_fauna");
+        // HUM's incoming-hit changes are scoped to its NPCs and explicit skill effects.
+        // The native transaction still validates cancellations and damage changes.
+        boolean hum = "0.9.1".equals(reviewed.get("acabiohum"));
+        if (hum) reviewed.remove("acabiohum");
         boolean physics = PhysicsBundle.exact(MODS, reviewed);
         if (!MODS.equals(reviewed) && !physics) return Optional.of("This mod/version set has no approved high-power damage contract");
-        if (!packs.contains("vanilla") || !packs.stream().allMatch(pack -> PACKS.contains(pack) || visual && pack.equals("mod/geckolib") || mech && pack.equals("mod/acamech") || fauna && pack.equals("mod/aca_fauna") || physics && PhysicsBundle.PACKS.contains(pack))) {
+        if (!packs.contains("vanilla") || !packs.stream().allMatch(pack -> PACKS.contains(pack)
+                || visual && pack.equals("mod/geckolib") || mech && pack.equals("mod/acamech")
+                || fauna && pack.equals("mod/aca_fauna") || hum && pack.equals("mod/acabiohum")
+                || physics && PhysicsBundle.PACKS.contains(pack))) {
             return Optional.of("Extra server data packs need an approved high-power damage contract");
         }
         return Optional.empty();
