@@ -7,16 +7,20 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
@@ -31,7 +35,7 @@ final class CanonFx4 {
     enum Mode { ADD, ALPHA, FLOW, DISSOLVE, HOLO, REFRACT, DISPERSE }
     private static final String[] SHADERS={"flow","dissolve","holo","refract","disperse"};
     private static final Map<String,ShaderInstance> LOADED=new HashMap<>();
-    private static final Map<String,RenderType> TYPES=new HashMap<>();
+    private static final Map<Mode, Map<String, RenderType>> TYPES = new EnumMap<>(Mode.class);
     private static RenderTarget scene;
     private CanonFx4() {}
 
@@ -49,7 +53,8 @@ final class CanonFx4 {
     static boolean late(Mode m){return m==Mode.REFRACT||m==Mode.DISPERSE;}
 
     static RenderType type(String texture,Mode mode){
-        return TYPES.computeIfAbsent(texture+"|"+mode,k->Material.make(texture,mode));
+        return TYPES.computeIfAbsent(mode, ignored -> new HashMap<>())
+                .computeIfAbsent(texture, name -> Material.make(name, mode));
     }
     static void clear(){
         TYPES.clear();
@@ -79,6 +84,20 @@ final class CanonFx4 {
 
     @EventBusSubscriber(modid="academy",value=Dist.CLIENT,bus=EventBusSubscriber.Bus.MOD)
     public static final class Shaders {
+        @SubscribeEvent
+        public static void resources(RegisterClientReloadListenersEvent event) {
+            event.registerReloadListener((ResourceManagerReloadListener) resources -> {
+                var textures = Minecraft.getInstance().getTextureManager();
+                Fx4Atlas.ALL.keySet().stream()
+                        .filter(name -> name.startsWith("of_") || name.startsWith("common_"))
+                        .map(CanonFx4::tex).forEach(textures::getTexture);
+                CanonShapes.preloadTextures(textures);
+                for (String name : List.of("ring", "ring2", "streak")) {
+                    textures.getTexture(CanonFx.texture(name));
+                }
+            });
+        }
+
         @SubscribeEvent public static void register(RegisterShadersEvent event){
             LOADED.clear();TYPES.clear();
             for(String name:SHADERS){

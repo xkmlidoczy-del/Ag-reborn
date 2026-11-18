@@ -21,6 +21,7 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import org.joml.Matrix4f;
 import org.joml.Vector4f;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
 final class WristPost {
@@ -168,6 +169,24 @@ final class WristPost {
             if (chain != null) chain.close();
             chain = null;
             unavailable = false;
+            var mc = Minecraft.getInstance();
+            var main = mc.getMainRenderTarget();
+            if (main == null || main.width == 0 || main.height == 0) return;
+
+            int read = GL11.glGetInteger(GL30.GL_READ_FRAMEBUFFER_BINDING);
+            int draw = GL11.glGetInteger(GL30.GL_DRAW_FRAMEBUFFER_BINDING);
+            int[] viewport = new int[4];
+            GL11.glGetIntegerv(GL11.GL_VIEWPORT, viewport);
+            try {
+                prepare(mc, main);
+            } catch (Exception ex) {
+                unavailable = true;
+                LogUtils.getLogger().warn("Could not prepare the Omnitrix post effect", ex);
+            } finally {
+                GlStateManager._glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, read);
+                GlStateManager._glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, draw);
+                RenderSystem.viewport(viewport[0], viewport[1], viewport[2], viewport[3]);
+            }
         };
         if (RenderSystem.isOnRenderThread()) clear.run();
         else RenderSystem.recordRenderCall(clear::run);

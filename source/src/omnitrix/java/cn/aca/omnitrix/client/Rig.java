@@ -291,7 +291,13 @@ final class Rig {
         });
     }
 
-    static void clear() { CACHE.clear(); }
+    static void reloadCelestialRigs() {
+        CACHE.clear();
+        var textures = Minecraft.getInstance().getTextureManager();
+        for (String path : List.of("alien_x", "bellicus", "serena")) {
+            textures.getTexture(get(path).texture);
+        }
+    }
 
     Motion animate(Motion base, String name, float tick, float weight) {
         PoseClip clip = clips.get(name);

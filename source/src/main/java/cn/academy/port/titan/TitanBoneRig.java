@@ -165,6 +165,10 @@ public final class TitanBoneRig {
             .scale(s.x,s.y,s.z).translate(-q.x,-q.y,-q.z);
         cache.put(bone.name(),parent);return parent;
     }
+    static void preload() {
+        TitanProfiles.all().keySet().forEach(TitanBoneRig::model);
+    }
+
     private static Model model(String id){return CACHE.computeIfAbsent(id,TitanBoneRig::load);}
     private static JsonObject json(String path) {
         try(InputStream stream=TitanBoneRig.class.getResourceAsStream("/assets/academy/"+path)) {

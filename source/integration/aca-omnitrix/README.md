@@ -1,6 +1,6 @@
 # ACA Omnitrix 0.7.0 整合
 
-Ag 重生 a3.71 已内置三只变身腕表和阿斯卡隆，适用于 Minecraft 1.21.1、NeoForge 21.1.252 和 Java 21。升级前备份存档，移出旧 Ag 重生及独立的 Omnitrix、ACA Mech、ACA Fauna 和 ACA bio HUM JAR。客户端和服务端都安装同一份整合 JAR。
+Ag 重生从 a3.71 起内置三只变身腕表和阿斯卡隆，适用于 Minecraft 1.21.1、NeoForge 21.1.252 和 Java 21。升级前备份存档，移出旧 Ag 重生及独立的 Omnitrix、ACA Mech、ACA Fauna 和 ACA bio HUM JAR。客户端和服务端都安装同一份整合 JAR。
 
 创造模式可在「ACA 变身腕表」栏领取。生存模式可用指南针右击学园都市公告板领取主世界坠落舱地图；也可以在新生成的主世界区块探索坠落舱，再通过封存台装配其他两只表。
 

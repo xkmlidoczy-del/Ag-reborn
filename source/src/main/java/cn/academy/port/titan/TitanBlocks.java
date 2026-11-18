@@ -16,6 +16,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
@@ -49,6 +50,7 @@ public final class TitanBlocks {
         container.registerConfig(ModConfig.Type.SERVER,TitanConfig.SPEC,"academy-city-titans-server.toml");
         container.registerConfig(ModConfig.Type.CLIENT,TitanVisualConfig.SPEC,"academy-city-titans-client.toml");
         bus.addListener(this::attributes); bus.addListener(this::creative);bus.addListener(this::spawnPlacements);
+        bus.addListener((FMLCommonSetupEvent event) -> TitanBoneRig.preload());
     }
     private void attributes(EntityAttributeCreationEvent event) {
         TYPES.forEach((id,t) -> event.put(t.get(), TitanEntity.attributes(TitanProfiles.get(id)).build()));

@@ -53,13 +53,14 @@ final class CanonFx {
     static final boolean QA_BUDGET=Boolean.getBoolean("academy.qa.signatureBudget");
     private record FrameStats(int quads,int dropped,Map<String,Integer> groups) {}
     private static FrameStats lastStats;
-    private static final Map<String,RenderType> TYPES=new HashMap<>();
+    private static final Map<String, RenderType> ADDITIVE_TYPES = new HashMap<>();
+    private static final Map<String, RenderType> TRANSLUCENT_TYPES = new HashMap<>();
     private static MultiBufferSource.BufferSource buffers,late;
     private static ByteBufferBuilder storage,lateStorage;
     private static boolean lateUsed;
     private CanonFx() {}
 
-    static void clear(){TYPES.clear();CanonFx4.clear();CanonFxForms.clear();CanonFxClassic.clear();ClassicSignatures.clear();CanonCamera.clear();CanonParticles.clear();CanonDecals.clear();CanonWarps.clear();SkillCinematicFx.clear();CanonShapes.clearCache();AgModernVfx.clearCache();
+    static void clear(){ADDITIVE_TYPES.clear();TRANSLUCENT_TYPES.clear();CanonFx4.clear();CanonFxForms.clear();CanonFxClassic.clear();ClassicSignatures.clear();CanonCamera.clear();CanonParticles.clear();CanonDecals.clear();CanonWarps.clear();SkillCinematicFx.clear();CanonShapes.clearCache();AgModernVfx.clearCache();
         if(storage!=null)storage.close();if(lateStorage!=null)lateStorage.close();storage=lateStorage=null;buffers=late=null;}
 
     static void render(RenderLevelStageEvent event,List<View> views){
@@ -362,8 +363,14 @@ final class CanonFx {
         }
     }
 
-    private static RenderType type(String tex,boolean additive){
-        return TYPES.computeIfAbsent(tex+(additive?"+":"="),k->Material.make(tex,additive));
+    static ResourceLocation texture(String name) {
+        return ResourceLocation.fromNamespaceAndPath("academy",
+                "textures/canon_fx/" + (name.equals("streak_ink") ? "streak" : name) + ".png");
+    }
+
+    private static RenderType type(String tex, boolean additive) {
+        return additive ? ADDITIVE_TYPES.computeIfAbsent(tex, name -> Material.make(name, true))
+                : TRANSLUCENT_TYPES.computeIfAbsent(tex, name -> Material.make(name, false));
     }
 
     private static final class Material extends RenderType {
@@ -376,7 +383,7 @@ final class CanonFx {
             boolean material=tex.startsWith("macro/");
             int family=AgVolumeRenderer.family(tex.substring(tex.lastIndexOf('/')+1));
             var state=CompositeState.builder().setShaderState(new ShaderStateShard(()->tex.startsWith("streak")?AgEffectMaterials.filament(false,tex.equals("streak_ink")):material?AgVolumeRenderer.surface(family):GameRenderer.getPositionTexColorShader()))
-                    .setTextureState(new TextureStateShard(ResourceLocation.fromNamespaceAndPath("academy","textures/canon_fx/"+(tex.equals("streak_ink")?"streak":tex)+".png"),true,false))
+                    .setTextureState(new TextureStateShard(texture(tex),true,false))
                     .setTransparencyState(additive?GLOW_BLEND:TRANSLUCENT_TRANSPARENCY).setCullState(NO_CULL).setLightmapState(NO_LIGHTMAP)
                     .setOverlayState(NO_OVERLAY).setWriteMaskState(COLOR_WRITE).setOutputState(PARTICLES_TARGET).createCompositeState(false);
             return RenderType.create("academy_canon_fx_"+tex+(additive?"_add":"_alpha"),DefaultVertexFormat.POSITION_TEX_COLOR,VertexFormat.Mode.QUADS,4096,false,true,state);

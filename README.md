@@ -2,7 +2,9 @@
 
 Ag:reborn（Ag重生）是基于 **Lambda Innovation** 开源项目 [AcademyCraft](https://github.com/LambdaInnovation/AcademyCraft) 移植、修改和扩展的非官方 Minecraft 模组。原作者及原项目的署名、许可和附加声明予以保留；本项目不代表原作者的官方发布或背书。
 
-当前公开源码版本为 **0.81.5-city-a3.71 Beta**，适用于 **Minecraft 1.21.1、NeoForge 21.1.252 和 Java 21**。本版在 a3.70 十二巨兽重制的基础上，内置 **ACA Omnitrix 0.7.0**，包含三只变身腕表及阿斯卡隆。主模组能力开关为 `V`，阿斯卡隆覆甲键为 `M`。[腕表与圣剑安装说明](source/integration/aca-omnitrix/README.md)
+当前公开源码版本为 **0.81.5-city-a3.72 Beta**，适用于 **Minecraft 1.21.1、NeoForge 21.1.252 和 Java 21**。本版在 a3.70 十二巨兽重制的基础上，内置 **ACA Omnitrix 0.7.0**，包含三只变身腕表及阿斯卡隆。主模组能力开关为 `V`，阿斯卡隆覆甲键为 `M`。[腕表与圣剑安装说明](source/integration/aca-omnitrix/README.md)
+
+a3.72 将重要特效的贴图加载移到资源重载阶段，并在模组加载时解析巨兽骨骼和动画。同场景复测覆盖 X 天神首次变身、定格、五个 LV5 同屏和四巨兽同时施法。[下载整合 JAR](https://github.com/xkmlidoczy-del/Ag-reborn/releases/download/v0.81.5-city-a3.72/Ag-reborn-a3.72.jar)
 
 整合 JAR 同时包含 **ACA Mech 0.4.5**、**ACA Fauna 0.1.17 R18**、**ACA bio HUM 0.9.1** 和 **GeckoLib 4.7**。升级时从 `mods/` 移出旧 Ag 重生及四个配套模组的独立 JAR，再在客户端和服务端安装本仓库构建的整合 JAR。
 

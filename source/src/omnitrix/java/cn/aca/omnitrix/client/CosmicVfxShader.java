@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 
@@ -72,6 +73,11 @@ public final class CosmicVfxShader {
     private CosmicVfxShader() {}
 
     static boolean available() { return shader != null; }
+
+    static void preloadTextures(TextureManager textures) {
+        textures.getTexture(FLOW_TEX);
+        textures.getTexture(SKILL_TEX);
+    }
 
     public static RenderType nebula() {
         return shader != null ? NEBULA : FALLBACK;

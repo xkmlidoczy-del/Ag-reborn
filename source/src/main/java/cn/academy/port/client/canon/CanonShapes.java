@@ -7,6 +7,7 @@ import cn.academy.port.client.canon.CanonFx.View;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.world.phys.Vec3;
 
 /**
@@ -29,6 +30,13 @@ final class CanonShapes {
             "float_dial",new Style(new float[]{.62f,1f,.72f},new float[]{.88f,1f,.95f},"fx4:fd_bubble_atlas","fx4:common_speedline",CanonFx4.Mode.ADD),
             "paper_psychokinesis",new Style(new float[]{1f,.86f,.6f},new float[]{1f,.96f,.86f},"fx4:pp_sheet_atlas","fx4:common_speedline",CanonFx4.Mode.ADD),
             "liquid_shadow",new Style(new float[]{.5f,.52f,.68f},new float[]{.15f,.15f,.2f},"fx4:ls_drip_sheet","fx4:ls_wet_ribbon",CanonFx4.Mode.ALPHA));
+    static void preloadTextures(TextureManager textures) {
+        for (Style style : STYLES.values()) {
+            textures.getTexture(CanonFx4.tex(style.glyph().substring(4)));
+            textures.getTexture(CanonFx4.tex(style.line().substring(4)));
+        }
+    }
+
     private static void tag(Shape s,double size,double angle,String... ids){for(String id:ids)TAGS.put(id,new Tag(s,size,angle));}
     static {
         // Mental Out: reads, links and fields of influence.

@@ -110,7 +110,8 @@ public final class OmnitrixClient {
 
     private static void reload(RegisterClientReloadListenersEvent e){
         e.registerReloadListener((ResourceManagerReloadListener)(ResourceManager ignored)-> {
-            Rig.clear();
+            Rig.reloadCelestialRigs();
+            CosmicVfxShader.preloadTextures(Minecraft.getInstance().getTextureManager());
             WristPost.reload();
         });
     }
