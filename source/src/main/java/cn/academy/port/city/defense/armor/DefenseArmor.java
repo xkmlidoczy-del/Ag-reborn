@@ -24,6 +24,22 @@ public final class DefenseArmor {
         EquipmentSlot[] slots={EquipmentSlot.HEAD,EquipmentSlot.CHEST,EquipmentSlot.LEGS,EquipmentSlot.FEET};
         for(int i=0;i<slots.length;i++){mob.setItemSlot(slots[i],new ItemStack(items[i]));mob.setDropChance(slots[i],0);}
     }
+    /** Cancel before native armor, absorption and the Academy shield bridge see the hit. */
+    @net.neoforged.bus.api.SubscribeEvent(priority = net.neoforged.bus.api.EventPriority.HIGHEST)
+    public static void protectPlayer(net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent event) {
+        if (event.getEntity() instanceof net.minecraft.server.level.ServerPlayer player
+                && blocksCombat(player, event.getSource())) event.setCanceled(true);
+    }
+
+    private static boolean blocksCombat(LivingEntity wearer, net.minecraft.world.damagesource.DamageSource source) {
+        return (source.getEntity() != null || source.getDirectEntity() != null
+                || source.is(net.minecraft.tags.DamageTypeTags.IS_EXPLOSION)
+                || source.is(net.minecraft.tags.DamageTypeTags.IS_PROJECTILE))
+                && !source.is(net.minecraft.world.damagesource.DamageTypes.FELL_OUT_OF_WORLD)
+                && !source.is(net.minecraft.world.damagesource.DamageTypes.GENERIC_KILL)
+                && full(wearer, true);
+    }
+
     public static boolean full(LivingEntity entity,boolean o5){
         for(var slot:new EquipmentSlot[]{EquipmentSlot.HEAD,EquipmentSlot.CHEST,EquipmentSlot.LEGS,EquipmentSlot.FEET}){
             if(!(entity.getItemBySlot(slot).getItem() instanceof DefenseArmorItem a)||a.isO5()!=o5||a.getEquipmentSlot()!=slot)return false;

@@ -56,7 +56,6 @@ final class CityNpcAbilityData {
         double max=20; // normalized native adapter; true amounts live in the player's exact ledger
         var attribute=npc.getAttribute(Attributes.MAX_HEALTH);if(attribute!=null)attribute.setBaseValue(max);
         if(fill)npc.setHealth((float)max);else npc.setHealth(Math.min(npc.getHealth(),(float)max));
-        npc.setInvulnerable(npc.esper()==CityEspers.Profile.NONE);
         if(!npc.level().isClientSide&&npc.esper()!=CityEspers.Profile.NONE) {
             HighPowerCombat.synchronizeCityNpc(npc,position(),null,fill?1:npc.getHealth()/npc.getMaxHealth());
             cachePosition(position());

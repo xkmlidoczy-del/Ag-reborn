@@ -63,8 +63,12 @@ public final class AcademyElectromasterFinalRuntimeTests {
         var f = new Fixture(helper); var p = f.player(); var s = ready(p, ThunderClap.ID, 0);
         helper.setBlock(new BlockPos(40, 2, 45), Blocks.STONE);
         Vec3 point = ThunderClap.aim(p); close(helper, point.z, helper.absoluteVec(new Vec3(0, 0, 45)).z, "aim reaches blockface");
-        var center = f.target(point); var half = f.target(point.add(7.5, 0, 0)); var boundary = f.target(point.add(15, 0, 0)); var outside = f.target(point.add(15.01, 0, 0));
-        var intercept = f.target(p.getEyePosition().add(0, 0, 8));
+        double radius = cn.academy.port.core.SkillTuning.number(ThunderClap.ID, "radius_novice");
+        var center = f.target(point);
+        var half = f.target(point.add(radius / 2, 0, 0));
+        var boundary = f.target(point.add(radius, 0, 0));
+        var outside = f.target(point.add(radius + .01, 0, 0));
+        var intercept = f.target(p.getEyePosition().add(0, 0, 1));
         close(helper, ThunderClap.aim(p).distanceTo(point), 0, "living ray intercept ignored");
         helper.setBlock(new BlockPos(43, 2, 45), Blocks.STONE); // No AOE LOS check.
         var hook = new AttackHook(p); f.hook(hook); double cp = s.cp;
@@ -112,7 +116,8 @@ public final class AcademyElectromasterFinalRuntimeTests {
     @GameTest(template = TEMPLATE, batch = BATCH, timeoutTicks = 70)
     public static void body_intensify40_real_fixed_order_buffs_hunger_and_post_exp_cooldown(GameTestHelper helper) {
         var f = new Fixture(helper); var p = f.player(); var s = ready(p, BodyIntensify.ID, 0); double cp = s.cp;
-        BodyIntensify.start(p); var probe = RandomSource.create(0); int expectedTime = (int) ((1 + probe.nextDouble()) * 40 * 1.5);
+        BodyIntensify.start(p); var probe = RandomSource.create(0); int expectedTime = (int) ((1 + probe.nextDouble()) * 40
+                * cn.academy.port.core.SkillTuning.number(BodyIntensify.ID, "buff_duration_multiplier_novice"));
         helper.assertTrue(probe.nextDouble() < 1 && probe.nextDouble() < 2D / 3, "owned random produces both sourcebuffs");
         f.ticks(40, tick -> {
             s.overload = 0; BodyIntensify.tick(p); close(helper, s.overload, 200, "overload locked whileholding");

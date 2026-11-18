@@ -158,10 +158,13 @@ public final class HighPowerModCompatRuntimeTests {
             classic.invulnerableTime = 0; // a later hit, outside the vanilla hurt cooldown
             cn.academy.port.AbilityDamage.attack(caster, "electromaster.arc_gen", classic, 100000);
             h.assertTrue(classic.isDeadOrDying() || !classic.isAlive(), "classic lethal hit defeats the capped target, health=" + classic.getHealth());
+            exact.setHealth(8);
             h.assertTrue(HighPowerCombat.attackIronSandLance(caster, exact, HIT, exact.position().add(0, .8, -2)) || !exact.isAlive(), "exact path accepted or target gone");
             h.assertTrue(exact.isDeadOrDying() || !exact.isAlive(), "exact lethal hit defeats the capped target, health=" + exact.getHealth());
-            cn.academy.port.AbilityDamage.attack(caster, "electromaster.arc_gen", rejecting, 100000);
-            h.assertTrue(rejecting.isDeadOrDying() || !rejecting.isAlive(), "a limiter that refuses the hit before vanilla runs (range/DPS lockout) is broken");
+            float rejectedHealth = rejecting.getHealth();
+            h.assertFalse(cn.academy.port.AbilityDamage.attack(caster, "electromaster.arc_gen", rejecting, 100000),
+                    "a hit refused before native damage is never retried");
+            h.assertTrue(rejecting.getHealth() == rejectedHealth, "the native refusal preserves health");
             float wallHealth = wall.getHealth();
             cn.academy.port.AbilityDamage.attack(caster, "electromaster.arc_gen", wall, 100000);
             h.assertTrue(wall.isAlive() && wall.getHealth() == wallHealth, "an entity that refuses every hit, bypass included, is treated as invulnerable and left alone");

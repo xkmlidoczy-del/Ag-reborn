@@ -57,6 +57,12 @@ public final class O5OperativeEntity extends GuardianEntity {
     }
     @Override protected void tactics(CityDefenseData.Team team){
         if(team==null||descending()||!armored())return;
+        if (team.closedAt >= 0) {
+            entityData.set(MOVE,-1);
+            locked=null;
+            super.tactics(team);
+            return;
+        }
         var world=(ServerLevel)level();long now=world.getGameTime();var enemy=CityDefense.target(world,team);
         if(enemy==null){setTarget(null);getNavigation().stop();return;}setTarget(enemy);getLookControl().setLookAt(enemy,50,50);
         var toward=enemy.position().subtract(position());float facing=(float)Math.toDegrees(Math.atan2(-toward.x,toward.z));setYRot(facing);yBodyRot=facing;yHeadRot=facing;

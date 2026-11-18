@@ -6,7 +6,7 @@ plugins {
 // with the default pure/server check outputs without rewriting their classpath.
 if (providers.gradleProperty('qaBuildDirectory').isPresent())
     layout.buildDirectory.set(layout.projectDirectory.dir(providers.gradleProperty('qaBuildDirectory').get()))
-version = '0.1.0-m41-highpower.0.81.5-city-a3.68'
+version = '0.1.0-m41-highpower.0.81.5-city-a3.71'
 group = 'cn.academy'
 base { archivesName = 'academy-generation-reborn' }
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
@@ -16,6 +16,7 @@ sourceSets {
     mech
     fauna
     hum
+    omnitrix
     mechQa {
         compileClasspath += mech.output
         runtimeClasspath += mech.output
@@ -27,6 +28,7 @@ neoForge {
     addModdingDependenciesTo sourceSets.mechQa
     addModdingDependenciesTo sourceSets.fauna
     addModdingDependenciesTo sourceSets.hum
+    addModdingDependenciesTo sourceSets.omnitrix
     runs {
         client { client(); if(providers.gradleProperty('canonExperimental').getOrElse('false').toBoolean())systemProperty 'academy.canon.experimental','true'; gameDirectory = layout.projectDirectory.dir(providers.gradleProperty('clientDirectory').getOrElse('run-client')); if(providers.gradleProperty('visualQA').getOrElse('false').toBoolean())systemProperty 'academy.visual.qa','true'; if(providers.gradleProperty('wirelessQA').getOrElse('false').toBoolean())systemProperty 'academy.wireless.qa','true' }
         server { server(); gameDirectory = layout.projectDirectory.dir(providers.gradleProperty('serverDirectory').getOrElse('run-server')); if (providers.gradleProperty('urbanWorldgenProbe').isPresent()) systemProperty 'academy.urban.worldgenProbe', providers.gradleProperty('urbanWorldgenProbe').get(); if (providers.gradleProperty('canonExperimental').getOrElse('false').toBoolean()) systemProperty 'academy.canon.experimental','true'; programArgument '--nogui' }
@@ -52,7 +54,7 @@ neoForge {
                     'run-highpower-gametest-isolated/' + java.util.UUID.randomUUID().toString()))
             systemProperty 'neoforge.enabledGameTestNamespaces', providers.gradleProperty('highPowerTestNamespaces').getOrElse('academy_highpower,academy_highpower_needle_capacity,academy_highpower_spatial_consent,academy_highpower_spatial_corridor,academy_highpower_borrowed,academy_highpower_array,academy_highpower_vector,academy_braking_touch_runtime,academy_windblade_runtime,academy_inertial_anchor_runtime,academy_yaw_palm_runtime,academy_trajectory_return_runtime,academy_circulation_relief_runtime,academy_circulation_listening_runtime,academy_vector_cage_runtime,academy_multi_axis_reflection,academy_wind_pressure_lift,academy_point_meltdown_runtime,academy_remote_scatter_relay_runtime,academy_scatter_locator_runtime,academy_control_hold_runtime,academy_autonomous_vector_circle,academy_magnetic_domain_team,academy_new_skills_runtime,academy_construct_runtime,academy_cast_pose,academy_esper_guard')
             // Legacy native-accounting fixtures hit enrolled espers with magic/wither/kill damage; the esper guard and growth styles are off for them and forced on by academy_esper_guard.
-            systemProperty 'academy.esperLegacyBypass', 'true'
+            systemProperty 'academy.esperLegacyBypass', providers.gradleProperty('esperLegacyTestBypass').getOrElse('true')
             if (providers.gradleProperty('auditOnly').isPresent()) systemProperty 'academy.audit.only', providers.gradleProperty('auditOnly').get()
             if (providers.gradleProperty('debugLease').isPresent()) systemProperty 'academy.debug.lease', 'true'
             // GameTests assert the closed vanilla contract; open compatibility (the shipped default) is exercised by its own tests.
@@ -79,6 +81,7 @@ neoForge {
         acamech { sourceSet(sourceSets.mech) }
         aca_fauna { sourceSet(sourceSets.fauna) }
         acabiohum { sourceSet(sourceSets.hum) }
+        aca_omnitrix { sourceSet(sourceSets.omnitrix) }
     }
 }
 
@@ -114,6 +117,20 @@ def humJar = tasks.register('humJar', Jar) {
     from sourceSets.hum.output
     into('META-INF') { from('integration/aca-hum/NOTICE.md') }
 }
+def omnitrixVersion = '0.7.0'
+tasks.named('processOmnitrixResources') {
+    inputs.property 'omnitrixVersion', omnitrixVersion
+    filesMatching('META-INF/neoforge.mods.toml') { expand(modVersion: omnitrixVersion) }
+}
+def omnitrixJar = tasks.register('omnitrixJar', Jar) {
+    archiveBaseName = 'aca-omnitrix-neoforge-1.21.1'
+    archiveVersion = omnitrixVersion
+    archiveClassifier = 'embedded'
+    manifest { attributes('Automatic-Module-Name': 'cn.aca.omnitrix') }
+    from sourceSets.omnitrix.output
+    into('META-INF') { from('integration/aca-omnitrix/NOTICE.md') }
+    into('META-INF/licenses') { from('integration/aca-omnitrix/licenses') }
+}
 tasks.register('mechQaJar', Jar) {
     archiveBaseName = 'aca-mech-integration-qa'
     archiveVersion = '0.4.5'
@@ -146,6 +163,7 @@ dependencies {
     jarJar files(mechJar)
     jarJar files(faunaJar)
     jarJar files(humJar)
+    jarJar files(omnitrixJar)
     implementation 'software.bernie.geckolib:geckolib-neoforge-1.21.1:4.7'
     faunaImplementation 'software.bernie.geckolib:geckolib-neoforge-1.21.1:4.7'
     jarJar('software.bernie.geckolib:geckolib-neoforge-1.21.1') {

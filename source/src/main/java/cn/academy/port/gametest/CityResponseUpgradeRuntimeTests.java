@@ -140,7 +140,7 @@ public final class CityResponseUpgradeRuntimeTests {
     }
     @GameTest(template=TEMPLATE,batch="response17",timeoutTicks=520)
     public static void autonomous_joint_response_eliminates_lv5_threat_without_rifles_stalling_melee(GameTestHelper h){
-        var s=scene(h);h.assertTrue(HighPowerCombat.enroll(s.enemy,5),"actual Lv5 target enrolled");s.enemy.setInvulnerable(false);
+        var s=scene(h);s.enemy.setInvulnerable(false);h.assertTrue(HighPowerCombat.enroll(s.enemy,5),"actual Lv5 target enrolled");
         for(int i=0;i<3;i++)killed(s,i);h.assertTrue(O5Reinforcements.update(s.world,s.team),"actual loss escalation");
         for(int i=3;i<10;i++)guard(s,i).setNoAi(false);
         h.runAfterDelay(450,()->{long contacts=0;for(var id:s.team.operatives)if(s.world.getEntity(id) instanceof O5OperativeEntity g)contacts+=g.confirmedHits();
@@ -148,7 +148,7 @@ public final class CityResponseUpgradeRuntimeTests {
     }
     @GameTest(template=TEMPLATE,batch="response18",timeoutTicks=100)
     public static void pinned_visual_library_preserves_strict_contract_and_unknown_versions_still_refuse(GameTestHelper h){
-        var base=new HashMap<>(Map.of("minecraft","1.21.1","neoforge","21.1.252","academy","0.1.0-m41-highpower.0.81.5-city-a3.68"));var packs=Set.of("vanilla","mod/neoforge","mod/academy");
+        var base=new HashMap<>(Map.of("minecraft","1.21.1","neoforge","21.1.252","academy","0.1.0-m41-highpower.0.81.5-city-a3.69"));var packs=Set.of("vanilla","mod/neoforge","mod/academy");
         h.assertTrue(VanillaCombatContract.runtimeReason(base,packs).isEmpty()&&VanillaMiningContract.runtimeReason(base,packs).isEmpty(),"original base remains approved");
         base.put("geckolib","4.7");var visual=Set.of("vanilla","mod/neoforge","mod/academy","mod/geckolib");h.assertTrue(VanillaCombatContract.runtimeReason(base,visual).isEmpty()&&VanillaMiningContract.runtimeReason(base,visual).isEmpty(),"bundled exact visual runtime preserves both strict contracts");
         base.put("acamech","0.4.5");var withMech=Set.of("vanilla","mod/neoforge","mod/academy","mod/geckolib","mod/acamech");

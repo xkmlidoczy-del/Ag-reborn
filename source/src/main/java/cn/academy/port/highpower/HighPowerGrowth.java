@@ -17,7 +17,8 @@ public final class HighPowerGrowth {
     private static final ContinuousHighPowerGrowth.Curve TETHER_COST=curve("4","2","1","0.5","0.1");
     private static final ContinuousHighPowerGrowth.Curve LV2_COST=curve("5","5","2","0.5","0.1");
     private static final ContinuousHighPowerGrowth.Curve GROUND_CD=curve("60","60","20","5","1");
-    private static final Map<ServerPlayer,Values> CACHE=new WeakHashMap<>();
+    private record Cached(String category, Values values) {}
+    private static final Map<ServerPlayer,Cached> CACHE=new WeakHashMap<>();
     public record Values(BigDecimal position,BigDecimal earnedPosition,BigDecimal damage,
                          double cpMaximum,double cpRecovery,double arcCost,int arcCooldown,
                          double tetherCost,double lv2Cost,int groundingCooldown) {}
@@ -32,13 +33,14 @@ public final class HighPowerGrowth {
         BigDecimal earned=HighPowerCombat.earnedGrowthPosition(player);
         if(earned==null||earned.compareTo(BigDecimal.ONE)<0||earned.compareTo(BigDecimal.valueOf(5))>0)throw new IllegalStateException("Missing earned growth contract");
         BigDecimal current=HighPowerActiveGrowth.position(player);
-        Values old=CACHE.get(player);
-        if(old!=null&&old.position.compareTo(current)==0&&old.earnedPosition.compareTo(earned)==0)return old;
+        Cached cached=CACHE.get(player);
+        if(cached!=null&&cached.category.equals(state.category)&&cached.values.position.compareTo(current)==0
+                &&cached.values.earnedPosition.compareTo(earned)==0)return cached.values;
         Values next=new Values(current,earned,categoryDamage(state.category,ContinuousHighPowerGrowth.sample(current).damage()),
                 CP_MAX.value(earned).doubleValue(),CP_REGEN.value(current).doubleValue(),ARC_COST.value(current).doubleValue(),
                 ContinuousHighPowerGrowth.ceilCooldownTicks(ARC_CD.value(current)),TETHER_COST.value(current).doubleValue(),
                 LV2_COST.value(current).doubleValue(),ContinuousHighPowerGrowth.ceilCooldownTicks(GROUND_CD.value(current)));
-        CACHE.put(player,next);return next;
+        CACHE.put(player,new Cached(state.category,next));return next;
     }
     public static BigDecimal categoryDamage(String category,BigDecimal unit){return cn.academy.port.highpower.core.MobilityScale.categoryDamage(category,unit);}
     public static double cpMaximumAt(BigDecimal position){return CP_MAX.value(position).doubleValue();}

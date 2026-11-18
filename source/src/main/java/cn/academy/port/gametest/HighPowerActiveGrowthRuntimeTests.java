@@ -86,7 +86,7 @@ public final class HighPowerActiveGrowthRuntimeTests {
     }
 
     @GameTest(template=TEMPLATE,batch=BATCH,timeoutTicks=20)
-    public static void saturated_switch_tiny_award_and_lagging_native_lv5_remain_continuous_until_genuine_xp_finishes(GameTestHelper h) {
+    public static void saturated_switch_preserves_growth_and_paid_rank_advances_both_ledgers(GameTestHelper h) {
         Fixture f=new Fixture(h);var p=f.player(HighPowerCategories.ELECTROMASTER,1);var s=AbilityStorage.get(p);
         s.addExperience(HighPowerSkills.FORKED_ARC,ClassicRules.levelThreshold(1,2)*.5);
         BigDecimal before=HighPowerGrowth.values(p).position();
@@ -97,18 +97,19 @@ public final class HighPowerActiveGrowthRuntimeTests {
         s.addExperience(HighPowerSkills.DUAL_POINT,.001);
         BigDecimal tiny=BigDecimal.valueOf((double)((float)s.levelExperience/threshold)).subtract(BigDecimal.valueOf((double)(previous/threshold)));
         equal(h,HighPowerGrowth.values(p).position(),before.add(tiny),"first genuine award credits only its own float quotient delta");
-        f.level(p);BigDecimal expected=before.add(tiny);
-        equal(h,HighPowerGrowth.values(p).position(),expected,"native LV2 unlock does not jump lagging q");
+        f.level(p);
+        BigDecimal expected=BigDecimal.TWO;
+        equal(h,HighPowerGrowth.values(p).position(),expected,"paid LV2 immediately aligns lagging active growth");
+        equal(h,HighPowerCombat.earnedGrowthPosition(p),expected,"paid LV2 aligns the earned ledger in the same operation");
         while(s.level<5) {
             int current=s.level;s.addExperience(HighPowerSkills.DUAL_POINT,ClassicRules.levelThreshold(current,SkillCatalog.levelSkillCount(s)));
             expected=expected.add(BigDecimal.ONE).min(BigDecimal.valueOf(5));
             equal(h,HighPowerGrowth.values(p).position(),expected,"each real full native level of XP advances q by one");
-            f.level(p);equal(h,HighPowerGrowth.values(p).position(),expected,"paid level keeps q continuous");
+            f.level(p);equal(h,HighPowerGrowth.values(p).position(),expected,"paid level retains progress already at the next rank");
         }
-        h.assertTrue(expected.compareTo(BigDecimal.valueOf(5))<0&&s.level==5,"native LV5 can arrive with explicitly lagging q");
-        s.addExperience(HighPowerSkills.DUAL_POINT,ClassicRules.levelThreshold(5,SkillCatalog.levelSkillCount(s)));
-        equal(h,HighPowerGrowth.values(p).position(),BigDecimal.valueOf(5),"continued genuine native LV5 XP reaches q5, without a level-fixed jump or permanent stall");
-        equal(h,HighPowerCombat.earnedGrowthPosition(p),BigDecimal.valueOf(5),"global earned capacity follows completed q");h.succeed();
+        h.assertTrue(s.level==5,"native LV5 is committed");
+        equal(h,HighPowerGrowth.values(p).position(),BigDecimal.valueOf(5),"LV5 immediately uses maximum active growth");
+        equal(h,HighPowerCombat.earnedGrowthPosition(p),BigDecimal.valueOf(5),"global earned capacity reaches LV5");h.succeed();
     }
 
     @GameTest(template=TEMPLATE,batch=BATCH,timeoutTicks=20)

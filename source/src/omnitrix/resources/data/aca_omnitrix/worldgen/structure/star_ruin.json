@@ -1,0 +1,8 @@
+{
+  "type": "aca_omnitrix:expedition",
+  "site": "star_ruin",
+  "biomes": "#aca_omnitrix:has_expedition",
+  "step": "surface_structures",
+  "terrain_adaptation": "none",
+  "spawn_overrides": {}
+}

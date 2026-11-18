@@ -79,7 +79,7 @@ public final class EntityAbilityRuntime {
     private final List<Control> controls=new ArrayList<>();
     private static final java.util.Map<Mob,EntityAbilityRuntime> MENTAL=new java.util.WeakHashMap<>();
     private static final java.util.Map<LivingEntity,EntityAbilityRuntime> BUOYANCY=new java.util.WeakHashMap<>();
-    private record Control(LivingEntity target,String skill,long until,double initialY) {}
+    private record Control(LivingEntity target,String skill,long until,double initialY,LivingEntity previous) {}
     public EntityAbilityRuntime(Host host){this.host=host;}
     private LivingEntity caster(){return host.entity();}
     private ServerLevel world(){return (ServerLevel)caster().level();}
@@ -190,14 +190,15 @@ public final class EntityAbilityRuntime {
         if(now<wingsUntil&&caster().getDeltaMovement().y<0){caster().setDeltaMovement(caster().getDeltaMovement().multiply(1,.35,1));caster().fallDistance=0;caster().hurtMarked=true;}
         if(now<rescueUntil&&caster().getDeltaMovement().y<-.1){caster().setDeltaMovement(caster().getDeltaMovement().x,-.1,caster().getDeltaMovement().z);caster().fallDistance=0;caster().hurtMarked=true;}
         controls.removeIf(c -> {
-            if(validTarget(c.target)&&now<c.until)return false;
-            if(c.target instanceof Mob mob&&MENTAL.get(mob)==this)MENTAL.remove(mob);
-            if(BUOYANCY.get(c.target)==this)BUOYANCY.remove(c.target);return true;
+            if (validTarget(c.target) && now < c.until
+                    && (!(c.target instanceof Mob mob) || !c.skill.equals("mental_disrupt")
+                        || MentalTargeting.assign(mob,null) && MentalTargeting.stopRoute(mob))) return false;
+            releaseControl(c);
+            return true;
         });
         for(var control:controls) {
             var t=control.target;
-            if(control.skill.equals("mental_disrupt")) {if(t instanceof Mob mob){mob.setTarget(null);mob.getNavigation().stop();}}
-            else {
+            if(!control.skill.equals("mental_disrupt")) {
                 var v=t.getDeltaMovement();double rise=SkillTuning.number(control.skill,"rise_limit"),dy=control.initialY+rise-t.getY();
                 t.setDeltaMovement(v.x*.55,Math.max(-.08,Math.min(.34,dy*.28+.08)),v.z*.55);t.hasImpulse=true;t.hurtMarked=true;
                 if(t instanceof Mob mob)mob.getNavigation().stop();
@@ -284,10 +285,16 @@ public final class EntityAbilityRuntime {
         if(validTarget(target)&&caster().hasLineOfSight(target)&&caster().distanceToSqr(target)<=range(d)*range(d)) {
             if(d.id.equals("aero_push"))impulse(target,SkillTuning.number(d.id,"horizontal_speed"),.15);
             else if(d.id.equals("mental_probe"))target.addEffect(new MobEffectInstance(MobEffects.GLOWING,SkillTuning.integer(d.id,"reveal_ticks"),0));
-            else if(d.id.equals("mental_disrupt")&&target instanceof Mob||d.id.startsWith("float_")&&!BUOYANCY.containsKey(target)) {
-                controls.add(new Control(target,d.id,world().getGameTime()+SkillTuning.integer(d.id,"duration_ticks"),target.getY()));
-                if(d.id.equals("mental_disrupt")&&target instanceof Mob mob){MENTAL.put(mob,this);mob.setTarget(null);mob.getNavigation().stop();}
-                else BUOYANCY.put(target,this);
+            else if(d.id.equals("mental_disrupt") && target instanceof Mob mob) {
+                var previous=MentalTargeting.target(mob);
+                if (MENTAL.containsKey(mob) || CanonSkillsCombatA.mentalTargetLeased(mob)
+                        || CanonExpansionCombatA.mentalLeased(mob) || !MentalTargeting.assign(mob,null)) return;
+                MentalTargeting.stopRoute(mob);
+                controls.add(new Control(mob,d.id,world().getGameTime()+SkillTuning.integer(d.id,"duration_ticks"),mob.getY(),previous));
+                MENTAL.put(mob,this);
+            } else if(d.id.startsWith("float_")&&!BUOYANCY.containsKey(target)) {
+                controls.add(new Control(target,d.id,world().getGameTime()+SkillTuning.integer(d.id,"duration_ticks"),target.getY(),null));
+                BUOYANCY.put(target,this);
             }
         }
         visual(d,"HIT",caster().getEyePosition(),endpoint(),Math.min(80,SkillTuning.fields(d.id).containsKey("duration_ticks")?SkillTuning.integer(d.id,"duration_ticks"):20));
@@ -352,7 +359,19 @@ public final class EntityAbilityRuntime {
     }
     private void receipt(Definition d,String phase,double damage){observer.accept(new Receipt(caster().getUUID(),d.id,phase,state().level,world().getGameTime(),state().cp,state().overload,damage));}
     public void abort(){if(casting!=null)receipt(casting,"ABORT",0);if(melt!=null)melt.discard();casting=null;melt=null;electron=null;}
-    public void clear(){abort();MENTAL.entrySet().removeIf(e -> e.getValue()==this);BUOYANCY.entrySet().removeIf(e -> e.getValue()==this);controls.clear();if(shadow!=null)shadow.discard();shadow=null;shield=0;guardUntil=wingsUntil=rescueUntil=0;}
+    private void releaseControl(Control control) {
+        if (control.target instanceof Mob mob && control.skill.equals("mental_disrupt") && MENTAL.remove(mob,this))
+            MentalTargeting.restore(mob,null,control.previous);
+        if (!control.skill.equals("mental_disrupt")) BUOYANCY.remove(control.target,this);
+    }
+    public void clear(){
+        abort();
+        controls.forEach(this::releaseControl);
+        controls.clear();
+        if(shadow!=null)shadow.discard();
+        shadow=null;shield=0;guardUntil=wingsUntil=rescueUntil=0;
+    }
+    static boolean mindControlled(Mob mob){return MENTAL.containsKey(mob);}
     @net.neoforged.bus.api.SubscribeEvent
     public static void mentalTarget(net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent event) {
         if(event.getEntity() instanceof Mob mob) {

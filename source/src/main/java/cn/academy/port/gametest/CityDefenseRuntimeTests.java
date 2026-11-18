@@ -33,14 +33,14 @@ public final class CityDefenseRuntimeTests {
         w.getStructureManager().getOrCreate(ResourceLocation.fromNamespaceAndPath("academy_city_defense",TEMPLATE)).load(w.registryAccess().lookupOrThrow(Registries.BLOCK),t);
     }
     private static Vec3 arena(GameTestHelper h){CityDefense.allowTestWorld(h.getLevel());for(int x=1;x<83;x++)for(int z=1;z<83;z++)h.setBlock(new BlockPos(x,1,z),Blocks.STONE);return Vec3.atBottomCenterOf(h.absolutePos(new BlockPos(40,2,40)));}
-    private static CityNpcEntity resident(GameTestHelper h,Vec3 p){var n=CityNpcContent.NPC.get().create(h.getLevel());n.moveTo(p.x,p.y,p.z,0,0);n.setNoAi(true);n.setInvulnerable(true);h.getLevel().addFreshEntity(n);n.combat();return n;}
+    private static CityNpcEntity resident(GameTestHelper h,Vec3 p){var n=CityNpcContent.NPC.get().create(h.getLevel());n.moveTo(p.x,p.y,p.z,0,0);n.setNoAi(true);n.setInvulnerable(false);h.getLevel().addFreshEntity(n);n.combat();return n;}
     private static Husk suspect(GameTestHelper h,Vec3 p){var e=EntityType.HUSK.create(h.getLevel());e.moveTo(p.x,p.y,p.z,0,0);e.setNoAi(true);e.setPersistenceRequired();e.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).setBaseValue(1000);e.setHealth(1000);h.getLevel().addFreshEntity(e);return e;}
-    private static GuardianEntity officer(GameTestHelper h,Vec3 p,int role){var g=CityDefenseContent.GUARD.get().create(h.getLevel());g.moveTo(p.x,p.y,p.z,0,0);g.prepare(UUID.randomUUID(),role,3,h.getLevel().getGameTime()+2000,"测试");g.setNoAi(true);h.getLevel().addFreshEntity(g);return g;}
+    private static GuardianEntity officer(GameTestHelper h,Vec3 p,int role){var g=CityDefenseContent.GUARD.get().create(h.getLevel());g.moveTo(p.x,p.y,p.z,0,0);g.prepare(null,role,3,h.getLevel().getGameTime()+2000,"测试");g.setNoAi(true);h.getLevel().addFreshEntity(g);return g;}
     private static void clean(ServerLevel w,CityDefenseData.Team t){for(var id:t.officers){var e=w.getEntity(id);if(e!=null){e.stopRiding();e.discard();}}for(var id:t.vehicles){var e=w.getEntity(id);if(e!=null)e.discard();}CityDefenseData.get(w).teams.remove(t.id);}
     @GameTest(template=TEMPLATE,batch="defense01",timeoutTicks=100)
     public static void real_damage_dispatches_ten_with_three_real_vehicles_and_no_duplicate_wave(GameTestHelper h){
         var p=arena(h);var n=resident(h,p);var e=suspect(h,p.add(8,0,0));float hp=n.getHealth();
-        h.assertTrue(n.hurt(h.getLevel().damageSources().mobAttack(e),2),"ambient invulnerability admits real civilian harm in city");h.assertTrue(n.getHealth()<hp,"real injury occurred");
+        h.assertTrue(n.hurt(h.getLevel().damageSources().mobAttack(e),2),"the civilian receives ordinary damage in the city");h.assertTrue(n.getHealth()<hp,"real injury occurred");
         var data=CityDefenseData.get(h.getLevel());var t=data.teams.values().stream().filter(x->x.victim.equals(n.getUUID())).findFirst().orElseThrow();
         h.assertTrue(t.officers.size()==10&&new HashSet<>(t.officers).size()==10,"exactly ten unique officers");h.assertTrue(t.vehicles.size()==3,"two patrol SUVs plus one rescue van");
         h.assertTrue(t.vehicles.stream().map(h.getLevel()::getEntity).mapToInt(Entity::countPlayerPassengers).sum()==0,"NPC crew uses actual vehicle seats");

@@ -123,7 +123,8 @@ public final class EsperShields {
         burst(player, bubble(), 18, .8, SoundEvents.BUBBLE_COLUMN_UPWARDS_INSIDE, 1.3F);
     }
 
-    @SubscribeEvent(priority = EventPriority.HIGH)
+    // An active personal or allied guard gets the first chance to settle this impact.
+    @SubscribeEvent(priority = EventPriority.LOW)
     public static void projectile(ProjectileImpactEvent event) {
         if (event.isCanceled() || !(event.getRayTraceResult() instanceof EntityHitResult hit) || !holding(hit.getEntity() instanceof LivingEntity living ? living : null)) return;
         var player = (ServerPlayer) hit.getEntity();

@@ -23,5 +23,9 @@ public final class CanonTargetPolicy {
     }
     /** The non-vanilla entities a canon skill may strike: the story boss and training dummies. */
     public static boolean reviewed(LivingEntity entity) { return urbanBoss(entity) || trainingTarget(entity); }
-    public static boolean hostile(LivingEntity entity) { return entity instanceof Enemy || reviewed(entity); }
+    public static boolean hostile(LivingEntity entity) {
+        return entity instanceof Enemy || entity instanceof cn.academy.port.city.defense.GuardianEntity
+                || entity instanceof cn.academy.port.city.CityNpcEntity npc && npc.look() == cn.academy.port.city.CityNpcEntity.Look.GUARD
+                || reviewed(entity);
+    }
 }

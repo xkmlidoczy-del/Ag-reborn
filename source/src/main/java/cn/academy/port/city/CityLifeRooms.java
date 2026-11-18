@@ -1,5 +1,8 @@
 package cn.academy.port.city;
 
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectMaps;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.core.BlockPos;
@@ -25,7 +28,7 @@ public final class CityLifeRooms {
     private record Notice(String first,String second,String third) {}
     private static long key(int x,int z){return ((long)x<<32)^(z&0xffffffffL);}
     private static final class Layout {
-        static final Map<Long,Column> COLUMNS;
+        static final Long2ObjectMap<Column> COLUMNS;
         static final Map<BlockPos,Notice> NOTICES=new HashMap<>();
         static final Map<BlockPos,String> BOOKS=new HashMap<>();
         static {
@@ -36,7 +39,7 @@ public final class CityLifeRooms {
                 for(var at:new BlockPos[]{site.home(),site.shelf(),site.waiting()})if(at!=null){b.put(at,Blocks.AIR.defaultBlockState());b.put(at.above(),Blocks.AIR.defaultBlockState());}
                 b.put(site.home().below(),Blocks.CYAN_GLAZED_TERRACOTTA.defaultBlockState());
             }
-            var out=new HashMap<Long,Column>();b.blocks.forEach((k,v)->out.put(k,new Column(Map.copyOf(v),v.keySet().stream().mapToInt(Integer::intValue).max().orElse(0),b.clearSky.contains(k))));COLUMNS=Map.copyOf(out);
+            var out=new Long2ObjectOpenHashMap<Column>(b.blocks.size());b.blocks.forEach((k,v)->out.put(k.longValue(),new Column(Map.copyOf(v),v.keySet().stream().mapToInt(Integer::intValue).max().orElse(0),b.clearSky.contains(k))));COLUMNS=Long2ObjectMaps.unmodifiable(out);
         }
     }
     private static final class Builder {

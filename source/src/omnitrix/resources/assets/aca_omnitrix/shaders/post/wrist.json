@@ -1,0 +1,14 @@
+{
+  "targets": ["wrist_color"],
+  "passes": [
+    {
+      "name": "aca_omnitrix:wrist",
+      "intarget": "minecraft:main",
+      "outtarget": "wrist_color",
+      "auxtargets": [
+        {"name": "DepthSampler", "id": "minecraft:main:depth"},
+        {"name": "AscalonFlowSampler", "id": "aca_omnitrix:ascalon_flow", "width": 1024, "height": 1024, "bilinear": true}
+      ]
+    }
+  ]
+}

@@ -53,7 +53,8 @@ public final class LabVehicle extends Entity {
  }
  @Override public void tick(){
   super.tick();wheelPhase=(wheelPhase+speed()*115)%360;oldSteer=visualSteer;visualSteer+=(steering()-visualSteer)*.65f;oldPitch=visualPitch;visualPitch+=(bodyPitch()-visualPitch)*.65f;oldRoll=visualRoll;visualRoll+=(bodyRoll()-visualRoll)*.65f;doorPrevious=doorVisual;doorVisual+=((entityData.get(DOOR)?1:0)-doorVisual)*.18f;
-  if(level().isClientSide)return;if(!level().hasChunkAt(blockPosition()))return;if(response!=null&&level().getGameTime()>dutyEnd){ejectPassengers();discard();return;}var cfg=config();if(getFirstPassenger()==null||level().getGameTime()-lastInput>8){throttle=0;steer=0;}
+  if(level().isClientSide)return;if(!level().hasChunkAt(blockPosition()))return;if(response!=null&&level() instanceof net.minecraft.server.level.ServerLevel world
+          &&!cn.academy.port.city.defense.CityDefense.onDuty(cn.academy.port.city.defense.CityDefenseData.get(world).team(response),world.getGameTime())){ejectPassengers();discard();return;}var cfg=config();if(getFirstPassenger()==null||level().getGameTime()-lastInput>8){throttle=0;steer=0;}
   entityData.set(DRIVE,throttle);
   float max=cfg.scooter()?.34f:cfg.kind.equals("bus")?.26f:.32f,speed=speed();if(throttle!=0)speed+=throttle*(cfg.kind.equals("bus")?.007f:.011f);else speed*=.95f;
   speed=Math.max(-max*.4f,Math.min(max,speed));if(Math.abs(speed)<.002f&&throttle==0)speed=0;

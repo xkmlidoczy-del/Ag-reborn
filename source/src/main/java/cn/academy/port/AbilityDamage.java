@@ -1,6 +1,8 @@
 package cn.academy.port;
 import cn.academy.port.api.SkillAttackEvent;
 import cn.academy.port.macro.BeamImpactVfx;
+import cn.academy.port.highpower.CapBreak;
+import cn.academy.port.highpower.DamageAudit;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
@@ -27,7 +29,10 @@ public final class AbilityDamage {
             amount=cn.academy.port.highpower.CityNpcPower.sparringDamage(target,amount);
         if(amount<=0)return false;
         var before=BeamImpactVfx.before(caster,skill,target);
-        boolean hit=target.hurt(new EntitySkillDamageSource(caster,skill,ignoreArmor),(float)amount);
+        var source=new EntitySkillDamageSource(caster,skill,ignoreArmor);
+        var audit=DamageAudit.begin(target,source);
+        boolean hit=CapBreak.hurt(target,source,(float)amount);
+        DamageAudit.finish(audit,skill,rawDamage,amount,hit,null);
         BeamImpactVfx.after(caster,skill,target,before,hit,null,null);
         return hit;
     }
@@ -57,18 +62,18 @@ public final class AbilityDamage {
     }
     private static boolean attack(ServerPlayer player,String skill,Entity target,double rawDamage,boolean ignoreArmor,boolean retaliation,Vec3 origin,Vec3 point) {
         var event=new SkillAttackEvent(player,skill,target,rawDamage);NeoForge.EVENT_BUS.post(event);double global=AcademyConfig.DAMAGE_SCALE.get(),local=1;int separator=skill.indexOf('.');if(separator>0)local=AcademyConfig.consumptionConfig().optionalFloat(skill.substring(0,separator),skill.substring(separator+1),"damage_scale");double amount=global==1&&local==1?event.amount:(float)global*(float)local*(float)event.amount;
-        if(!Double.isFinite(amount)||amount<=0)return false;
-        if(target instanceof Player&&!AcademyConfig.ATTACK_PLAYERS.get())return false;
-        if(target instanceof net.minecraft.world.entity.decoration.HangingEntity&&!AcademyConfig.contextTerrain(target.level(),skill))return false;
+        if(!Double.isFinite(amount)||amount<=0) return DamageAudit.refused(skill,rawDamage,"invalid_or_cancelled_amount");
+        if(target instanceof Player&&!AcademyConfig.ATTACK_PLAYERS.get()) return DamageAudit.refused(skill,rawDamage,"disabled_pvp");
+        if(target instanceof net.minecraft.world.entity.decoration.HangingEntity&&!AcademyConfig.contextTerrain(target.level(),skill))
+            return DamageAudit.refused(skill,rawDamage,"protected_terrain");
         var source=new SkillDamageSource(player,skill,ignoreArmor,retaliation);
-        if(target instanceof net.minecraft.world.entity.LivingEntity living)cn.academy.port.highpower.CapBreak.arm(living);
-        var before=target instanceof LivingEntity living?BeamImpactVfx.before(player,skill,living):null;
-        boolean hurt=target.hurt(source,(float)amount);
-        if(target instanceof LivingEntity living){
-            cn.academy.port.highpower.CapBreak.afterHit(player,skill,living,source,(float)amount,hurt);
-            BeamImpactVfx.after(player,skill,living,before,hurt,origin,point);
-        }
-        return hurt;
+        if (!(target instanceof LivingEntity living)) return target.hurt(source,(float)amount);
+        var before=BeamImpactVfx.before(player,skill,living);
+        var audit=DamageAudit.begin(living,source);
+        boolean accepted=CapBreak.hurt(living,source,(float)amount);
+        DamageAudit.finish(audit,skill,rawDamage,amount,accepted,null);
+        BeamImpactVfx.after(player,skill,living,before,accepted,origin,point);
+        return accepted;
     }
     public static final class SkillDamageSource extends DamageSource {
         public final String skill;

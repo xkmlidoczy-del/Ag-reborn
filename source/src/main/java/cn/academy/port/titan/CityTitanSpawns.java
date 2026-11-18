@@ -9,6 +9,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.*;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -19,13 +20,14 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
 @EventBusSubscriber(modid="academy")
 public final class CityTitanSpawns {
     private static final Map<ServerLevel,Long> NEXT=new WeakHashMap<>();
+    private static final EntityTypeTest<Entity, TitanEntity> TITAN = EntityTypeTest.forClass(TitanEntity.class);
+    private static final ThreadLocal<TitanEntity> SPAWNING = new ThreadLocal<>();
+    private static final int MAX_NATURAL = 4;
     private CityTitanSpawns(){}
     public static boolean automatic(MobSpawnType type){return type==MobSpawnType.NATURAL||type==MobSpawnType.CHUNK_GENERATION;}
     @SubscribeEvent public static void gate(FinalizeSpawnEvent event){
-        if(event.getEntity() instanceof TitanEntity e&&automatic(event.getSpawnType())){
-            var world=event.getLevel().getLevel();
-            if(!TitanConfig.NATURAL_SPAWNS.get()||!CityTitanZones.allowed(world,e.blockPosition(),e.getBbWidth()))event.setSpawnCancelled(true);
-        }
+        if(event.getEntity() instanceof TitanEntity e && automatic(event.getSpawnType()) && SPAWNING.get()!=e)
+            event.setSpawnCancelled(true);
     }
     public static boolean collisionFree(ServerLevel world,TitanEntity e,Vec3 pos){
         var box=e.getBoundingBox().move(pos.subtract(e.position()));
@@ -46,8 +48,30 @@ public final class CityTitanSpawns {
         }
         return bed==Integer.MIN_VALUE?null:new Vec3(at.getX()+.5,bed+.05,at.getZ()+.5);
     }
+    private static boolean enabled(ServerLevel world) {
+        return CityTitanZones.dimension(world.dimension()) && TitanConfig.NATURAL_SPAWNS.get()
+                && world.getDifficulty()!=Difficulty.PEACEFUL && world.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING);
+    }
+
+    private static List<? extends TitanEntity> naturalTitans(ServerLevel world) {
+        return world.getEntities(TITAN, titan -> titan.isAlive() && titan.isCityNatural());
+    }
+
+    private static double horizontalDistanceSquared(double x, double z, Entity entity) {
+        double dx=x-entity.getX(), dz=z-entity.getZ();
+        return dx*dx+dz*dz;
+    }
+
     public static TitanEntity trySpawn(ServerLevel world,String species,BlockPos at){
-        if(!CityTitanZones.dimension(world.dimension())||!TitanConfig.NATURAL_SPAWNS.get()||!world.hasChunkAt(at)||world.getDifficulty()==Difficulty.PEACEFUL||!world.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING))return null;
+        if (!enabled(world)) return null;
+        return trySpawn(world, species, at, naturalTitans(world));
+    }
+
+    private static TitanEntity trySpawn(ServerLevel world,String species,BlockPos at,List<? extends TitanEntity> natural) {
+        if (!world.hasChunkAt(at) || natural.size()>=MAX_NATURAL
+                || natural.stream().anyMatch(t -> horizontalDistanceSquared(at.getX()+.5,at.getZ()+.5,t)<320*320)
+                || world.players().stream().anyMatch(p -> !p.isSpectator()
+                    && horizontalDistanceSquared(at.getX()+.5,at.getZ()+.5,p)<64*64)) return null;
         var type=TitanBlocks.TYPES.get(species);if(type==null)return null;var e=type.get().create(world);if(e==null)return null;
         if(!CityTitanZones.allowed(world,at,e.getBbWidth()))return null;
         BlockPos top=world.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,at);
@@ -67,21 +91,31 @@ public final class CityTitanSpawns {
             position=new Vec3(at.getX()+.5,topY+(mobility==TitanProfiles.Mobility.FLY?12:.02),at.getZ()+.5);
         }
         if(!collisionFree(world,e,position))return null;e.moveTo(position.x,position.y,position.z,world.random.nextFloat()*360,0);
-        net.neoforged.neoforge.event.EventHooks.finalizeMobSpawn(e,world,world.getCurrentDifficultyAt(e.blockPosition()),MobSpawnType.NATURAL,null);
-        if(!world.addFreshEntity(e))return null;e.setPersistenceRequired();e.markCityNatural();
+        SPAWNING.set(e);
+        try {
+            net.neoforged.neoforge.event.EventHooks.finalizeMobSpawn(e,world,world.getCurrentDifficultyAt(e.blockPosition()),MobSpawnType.NATURAL,null);
+        } finally {
+            SPAWNING.remove();
+        }
+        if (e.isSpawnCancelled()) return null;
+        e.markCityNatural();
+        e.setPersistenceRequired();
+        if(!world.addFreshEntity(e))return null;
         cn.academy.port.fleet.InteractionLab.LOGGER.info("ACA_TITAN_NATURAL species={} position={} district={}",species,e.position(),cn.academy.port.city.CityPlan.district(at.getX(),at.getZ()));return e;
     }
     @SubscribeEvent public static void tick(LevelTickEvent.Post event){
-        if(!(event.getLevel() instanceof ServerLevel world)||!CityTitanZones.dimension(world.dimension())||world.getGameTime()%200!=0||!TitanConfig.NATURAL_SPAWNS.get())return;
-        long now=world.getGameTime();if(now<NEXT.getOrDefault(world,0L)||world.getDifficulty()==Difficulty.PEACEFUL||!world.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING))return;
-        var titans=new ArrayList<TitanEntity>();for(var e:world.getAllEntities())if(e instanceof TitanEntity t&&t.isAlive())titans.add(t);
-        if(titans.size()>=4)return;
+        if (!(event.getLevel() instanceof ServerLevel world) || world.getGameTime()%200!=0 || !enabled(world)) return;
+        long now=world.getGameTime();
+        if (now<NEXT.getOrDefault(world,0L) || world.players().stream().noneMatch(
+                p -> !p.isSpectator() && CityTitanZones.rural(p.getBlockX(),p.getBlockZ()))) return;
+        var titans=naturalTitans(world);
+        if(titans.size()>=MAX_NATURAL)return;
         for(var player:world.players()){
-            if(player.isSpectator()||!CityTitanZones.rural(player.getBlockX(),player.getBlockZ())||titans.stream().anyMatch(t->t.distanceToSqr(player)<320*320)||world.random.nextInt(TitanConfig.NATURAL_ONE_IN.get())!=0)continue;
+            if(player.isSpectator()||!CityTitanZones.rural(player.getBlockX(),player.getBlockZ())||world.random.nextInt(TitanConfig.NATURAL_ONE_IN.get())!=0)continue;
             for(int i=0;i<20;i++){
                 double angle=world.random.nextDouble()*Math.PI*2,radius=72+world.random.nextInt(41);var at=BlockPos.containing(player.getX()+Math.cos(angle)*radius,player.getY(),player.getZ()+Math.sin(angle)*radius);
-                if(world.players().stream().anyMatch(p->!p.isSpectator()&&p.position().distanceToSqr(Vec3.atCenterOf(at))<64*64))continue;
-                String id=TitanBlocks.IDS[world.random.nextInt(TitanBlocks.IDS.length)];var created=trySpawn(world,id,at);
+                String id=TitanBlocks.IDS[world.random.nextInt(TitanBlocks.IDS.length)];
+                var created=trySpawn(world,id,at,titans);
                 if(created!=null){NEXT.put(world,now+1200);return;}
             }
         }

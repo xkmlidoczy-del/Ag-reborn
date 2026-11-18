@@ -38,11 +38,19 @@ public final class TitanClient {
         @Override public void setCustomAnimations(TitanEntity entity,long instanceId,AnimationState<TitanEntity> state) {
             super.setCustomAnimations(entity,instanceId,state);
             int code=entity.limbSwingCode();
-            if(code==0)return;
+            int casting=entity.castClock();
+            if(code==0 && casting==0) {
+                if(entity.profile().mobility()!=TitanProfiles.Mobility.GROUND) {
+                    float turn=Mth.clamp(Mth.wrapDegrees(entity.getYRot()-entity.yRotO),-12,12);
+                    getBone("body").ifPresent(b->b.setRotZ(b.getRotZ()+turn*.017f));
+                }
+                return;
+            }
+            if(casting!=0)code=casting;
             boolean variantB=TitanEntity.limbCodeVariantB(code);
             if(!TitanBoneRig.supported(entity.species(),variantB))return;
             double time=TitanEntity.limbCodeTime(code,state.getPartialTick());
-            for(var entry:TitanBoneRig.poses(entity.species(),variantB,time).entrySet()) {
+            for(var entry:TitanBoneRig.poses(entity.species(),variantB,time,casting!=0).entrySet()) {
                 getBone(entry.getKey()).ifPresent(bone-> {
                     if(Boolean.getBoolean("titancollision.track") && TitanBoneRig.collisionBones(entity.species(),variantB).contains(entry.getKey()))
                         bone.setTrackingMatrices(true);

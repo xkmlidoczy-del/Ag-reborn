@@ -9,13 +9,15 @@ import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
-/** 模型:  assets/mcarmor/geo/item/armor/<set>.geo.json
- *  贴图:  assets/mcarmor/textures/item/armor/<set>.png
- *  发光:  assets/mcarmor/textures/item/armor/<set>_glowmask.png (AutoGlowingGeoLayer，不透明像素全亮) */
+/** Armor body textures are bound directly by the entity renderer. */
 public class SetArmorRenderer extends GeoArmorRenderer<DefenseArmorItem> {
     private final boolean translucentVisor;
     public SetArmorRenderer(String setName) {
-        super(new DefaultedItemGeoModel<>(ResourceLocation.fromNamespaceAndPath("academy", "armor/" + setName)));
+        super(new DefaultedItemGeoModel<>(ResourceLocation.fromNamespaceAndPath("academy", "armor/" + setName)) {
+            @Override public ResourceLocation getTextureResource(DefenseArmorItem item) {
+                return ResourceLocation.fromNamespaceAndPath("academy", "textures/models/armor/" + setName + ".png");
+            }
+        });
         this.translucentVisor = setName.equals("special_police");
         addRenderLayer(new AutoGlowingGeoLayer<>(this));
         if (setName.equals("black_gold")) addRenderLayer(new O5FlowLayer(this));

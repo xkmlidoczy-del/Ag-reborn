@@ -49,7 +49,13 @@ public class TitanEntity extends Monster implements GeoEntity {
     private static final EntityDataAccessor<Integer> LIMB_SWING = SynchedEntityData.defineId(TitanEntity.class,EntityDataSerializers.INT);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private final ServerBossEvent boss = new ServerBossEvent(Component.empty(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
+    private static final EntityDataAccessor<Integer> CAST_CLOCK=SynchedEntityData.defineId(TitanEntity.class,EntityDataSerializers.INT);
+    private final Set<UUID> castHits=new HashSet<>();
+    public int castClock(){return entityData.get(CAST_CLOCK);}
     private long cityNaturalExpires;
+    public boolean isCityNatural() {
+        return cityNaturalExpires > 0 || getPersistentData().getLong("academy_city_titan_expiry") > 0;
+    }
     public void markCityNatural(){cityNaturalExpires=level().getGameTime()+24000;getPersistentData().putLong("academy_city_titan_expiry",cityNaturalExpires);}
     private TitanProfiles.Ability casting;
     private Vec3 castOrigin, castEnd;
@@ -58,13 +64,13 @@ public class TitanEntity extends Monster implements GeoEntity {
     private int castAge, meleeAge, firstCooldown=65, secondCooldown=125, meleeCooldown=20;
     private double currentMeleeReach;
     private boolean secondNext, enraged, meleeBNext;
-    private boolean limbSwing, limbVariantB, castingSecond, meleeImpactSoundPlayed;
+    private boolean limbSwing, limbVariantB, castingSecond, meleeImpactSoundPlayed, leapLanded;
     private float limbTailYaw, previousLimbYaw;
     private Vec3 previousLimbPosition;
     private final Set<UUID> limbHitVictims=new HashSet<>();
 
     @Override protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);builder.define(LIMB_SWING,0);
+        super.defineSynchedData(builder);builder.define(LIMB_SWING,0);builder.define(CAST_CLOCK,0);
     }
     public int limbSwingCode(){return entityData.get(LIMB_SWING);}
     public static boolean limbCodeVariantB(int code){return (code&1)!=0;}
@@ -85,6 +91,10 @@ public class TitanEntity extends Monster implements GeoEntity {
     public String species() {return BuiltInRegistries.ENTITY_TYPE.getKey(getType()).getPath();}
     public TitanProfiles.Profile profile() {return TitanProfiles.get(species());}
     public boolean enraged() {return enraged;}
+    @Override public void onAddedToLevel() {
+        super.onAddedToLevel();
+        if (!level().isClientSide) cn.academy.port.highpower.HighPowerCombat.initializeTitan(this);
+    }
     @Override protected SoundEvent getHurtSound(DamageSource source) {return TitanSounds.sound(species(),"hurt");}
     @Override protected SoundEvent getDeathSound() {return TitanSounds.sound(species(),"death");}
     @Override protected float getSoundVolume() {return 1.6f;}
@@ -139,10 +149,12 @@ public class TitanEntity extends Monster implements GeoEntity {
             if(busy()){halt();return;}
             getLookControl().setLookAt(target,25,25);
             double standOff=Math.max(8,getBbWidth()*.5+3);
-            if(distanceToSqr(target)<=standOff*standOff){halt();return;}
             var mobility=profile().mobility();
+            if(distanceToSqr(target)<=standOff*standOff && (mobility!=TitanProfiles.Mobility.FLY || getY()<=target.getY()+2)){halt();return;}
             if(mobility==TitanProfiles.Mobility.FLY) {
-                getMoveControl().setWantedPosition(target.getX(),target.getY()+7,target.getZ(),1.0);
+                double distance=Math.sqrt(position().subtract(target.position()).horizontalDistanceSqr());
+                double height=Mth.clamp((distance-standOff)*.27,1.1,7);
+                getMoveControl().setWantedPosition(target.getX(),target.getY()+height,target.getZ(),1.0);
                 return;
             }
             if(mobility==TitanProfiles.Mobility.SWIM && isInWaterOrBubble()) {
@@ -179,20 +191,58 @@ public class TitanEntity extends Monster implements GeoEntity {
             setDeltaMovement(getDeltaMovement().scale(.90));
         } else super.travel(input);
     }
+    private void face(Vec3 target) {
+        Vec3 d=target.subtract(position());
+        if(d.horizontalDistanceSqr()<.001)return;
+        yBodyRot=(float)Math.toDegrees(Math.atan2(-d.x,d.z));setYRot(yBodyRot);yHeadRot=yBodyRot;
+    }
     private void beginCast(ServerLevel level,TitanProfiles.Ability a,LivingEntity target,boolean second) {
-        casting=a;castingSecond=second;castAge=0;castTarget=target;
-        castOrigin=a.shape()==TitanProfiles.Shape.BEAM?TitanCombat.beamStart(this):position();
-        Vec3 desired=target.position();
-        if(a.shape()==TitanProfiles.Shape.BEAM) {
-            desired=desired.add(0,target.getBbHeight()*.5,0);
-            desired=TitanCombat.clippedBeamEnd(level,this,castOrigin,desired,a.range());
-        }
-        castEnd=desired;
+        casting=a;castingSecond=second;castAge=0;castTarget=target;castOrigin=position();castEnd=target.position();
+        face(castEnd);castHits.clear();leapLanded=false;
         if(second)secondCooldown=a.cooldownTicks();else firstCooldown=a.cooldownTicks();
         secondNext=!second;halt();
-        triggerAnim("action","skill");
-        TitanSounds.play(this,second?"charge_b":"charge_a",position().add(0,Math.min(8,getBbHeight()*.4),0),5.0f);
-        TitanVfx.telegraph(level,species(),a,castOrigin,castEnd,0);
+        entityData.set(CAST_CLOCK,second?3:2);
+        triggerAnim("action",second?"skill_b":"skill_a");
+        TitanSounds.play(this,second?"charge_b":"charge_a",position().add(0,Math.min(8,getBbHeight()*.4),0),5f);
+        TitanPatternPayload.send(level,this,true,TitanPattern.sample(level,this,second,castOrigin,castEnd,0,-1));
+    }
+    private void advanceCast(ServerLevel level) {
+        halt();castAge++;
+        var move=TitanPattern.move(species(),castingSecond);
+        int windup=casting.windupTicks(), elapsed=castAge-windup;
+        boolean leap=move==TitanPattern.Move.LEAP;
+        int lock=leap?windup/3:windup-10;
+        if(castAge<lock && castTarget!=null && TitanCombat.eligible(this,castTarget)
+                && castOrigin.distanceToSqr(castTarget.position())<=casting.range()*casting.range()*1.21)castEnd=castTarget.position();
+        if(castAge<=lock)face(castEnd);
+        if(leap && castAge>=lock && elapsed<=0) {
+            if(castAge==lock)castEnd=TitanPattern.surface(level,castEnd);
+            double t=(castAge-lock)/(double)(windup-lock);
+            Vec3 dest=castOrigin.lerp(castEnd,t).add(0,4*7*t*(1-t),0);
+            move(MoverType.SELF,dest.subtract(position()));setDeltaMovement(Vec3.ZERO);fallDistance=0;
+        }
+        entityData.set(CAST_CLOCK,((castAge+1)<<1)|(castingSecond?1:0));
+        boolean warning=elapsed<0 && (castAge%4==0 || castAge==lock);
+        boolean landing=leap && !leapLanded && elapsed>=0
+                && (onGround() || !level.noCollision(this,getBoundingBox().move(0,-.35,0)));
+        if(warning || (leap?landing:TitanPattern.active(move,elapsed))) {
+            var zones=TitanPattern.sample(level,this,castingSecond,castOrigin,castEnd,castAge,elapsed);
+            if(!warning) {
+                if(TitanPattern.sequence(move))castHits.clear();
+                if(leap)leapLanded=true;
+                TitanCombat.strike(level,this,casting,zones,castHits,TitanPattern.sequence(move)?3:1);
+                if(elapsed==0 || landing){
+                    boolean centered=casting.shape()==TitanProfiles.Shape.RING;
+                    Vec3 site=landing?position():centered?castOrigin:castEnd;
+                    TitanEnvironment.interact(level,this,site,casting.radius());
+                    TitanSounds.play(this,castingSecond?"skill_b":"skill_a",site,6f);
+                }
+            }
+            TitanPatternPayload.send(level,this,warning,zones);
+        }
+        if(elapsed>=Math.max(27,TitanPattern.duration(move)+3)) {
+            casting=null;castTarget=null;castHits.clear();entityData.set(CAST_CLOCK,0);
+        }
     }
     private void updateCombat(ServerLevel level) {
         if(isNoAi() || !isAlive())return;
@@ -204,28 +254,7 @@ public class TitanEntity extends Monster implements GeoEntity {
             TitanSounds.play(this,"roar",position().add(0,Math.min(8,getBbHeight()*.4),0),6.0f);
             triggerAnim("action","roar");
         }
-        if(casting!=null) {
-            halt();castAge++;
-            // Track through most of the windup, then lock for the final warning.
-            // The same castEnd feeds both the visible telegraph and the damage resolver.
-            if(castAge<casting.windupTicks()-8 && castTarget!=null && TitanCombat.eligible(this,castTarget)
-                && distanceToSqr(castTarget)<=casting.range()*casting.range()*1.21) {
-                Vec3 desired=castTarget.position();
-                if(casting.shape()==TitanProfiles.Shape.BEAM) {
-                    desired=desired.add(0,castTarget.getBbHeight()*.5,0);
-                    desired=TitanCombat.clippedBeamEnd(level,this,castOrigin,desired,casting.range());
-                }
-                castEnd=desired;
-            }
-            if(castAge<casting.windupTicks() && castAge%5==0)TitanVfx.telegraph(level,species(),casting,castOrigin,castEnd,castAge);
-            if(castAge==casting.windupTicks()) {
-                TitanCombat.resolve(level,this,casting,castOrigin,castEnd);
-                TitanSounds.play(this,castingSecond?"skill_b":"skill_a",
-                    casting.shape()==TitanProfiles.Shape.RING?castOrigin:castEnd,6.0f);
-            }
-            if(castAge>=Math.max(56,casting.windupTicks()+8)){casting=null;castTarget=null;}
-            return;
-        }
+        if(casting!=null) {advanceCast(level);return;}
         if(meleeAge>0) {
             halt();meleeAge++;
             if(meleeAge==8)TitanSounds.play(this,limbVariantB?"swing_b":"swing_a",
@@ -301,11 +330,12 @@ public class TitanEntity extends Monster implements GeoEntity {
         super.tick();
         if(!level().isClientSide){if(cityNaturalExpires==0)cityNaturalExpires=getPersistentData().getLong("academy_city_titan_expiry");if(cityNaturalExpires>0&&level().getGameTime()>=cityNaturalExpires){discard();return;}}
         if(!level().isClientSide) {
+            if(isDeadOrDying() && casting!=null){casting=null;castTarget=null;castHits.clear();entityData.set(CAST_CLOCK,0);}
             if(isDeadOrDying() && limbSwing) {
                 limbSwing=false;meleeAge=0;meleeTarget=null;limbHitVictims.clear();entityData.set(LIMB_SWING,0);
             }
             boss.setProgress(Math.max(0,getHealth()/getMaxHealth()));
-            Component title=getDisplayName().copy();
+            Component title=getDisplayName().copy().append("  ·  LV"+profile().tier());
             if(casting!=null)title=title.copy().append("  ·  ").append(casting.name());
             else if(enraged)title=title.copy().append("  ·  狂暴");
             boss.setName(title);
@@ -322,12 +352,13 @@ public class TitanEntity extends Monster implements GeoEntity {
     @Override public void remove(RemovalReason reason){boss.removeAllPlayers();super.remove(reason);}
     @Override public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);tag.putBoolean("TitanEnraged",enraged);tag.putBoolean("TitanSecondNext",secondNext);
-        tag.putBoolean("TitanMeleeBNext",meleeBNext);
+        tag.putBoolean("TitanMeleeBNext",meleeBNext);tag.putInt("TitanMeleeCooldown",meleeCooldown);
         tag.putInt("TitanFirstCooldown",firstCooldown);tag.putInt("TitanSecondCooldown",secondCooldown);
     }
     @Override public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);enraged=tag.getBoolean("TitanEnraged");secondNext=tag.getBoolean("TitanSecondNext");
         meleeBNext=tag.getBoolean("TitanMeleeBNext");
+        if(tag.contains("TitanMeleeCooldown"))meleeCooldown=Math.max(0,tag.getInt("TitanMeleeCooldown"));
         if(tag.contains("TitanFirstCooldown"))firstCooldown=Math.max(0,tag.getInt("TitanFirstCooldown"));
         if(tag.contains("TitanSecondCooldown"))secondCooldown=Math.max(0,tag.getInt("TitanSecondCooldown"));
         if(enraged)getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(profile().speed()*1.12);
@@ -354,6 +385,8 @@ public class TitanEntity extends Monster implements GeoEntity {
             .triggerableAnim("attack_b",RawAnimation.begin().thenPlay("animation."+species()+".attack_b"))
             .triggerableAnim("roar",RawAnimation.begin().thenPlay("animation."+species()+".roar"))
             .triggerableAnim("hit",RawAnimation.begin().thenPlay("animation."+species()+".hit"))
+            .triggerableAnim("skill_a",RawAnimation.begin().thenPlay("animation."+species()+".skill_a"))
+            .triggerableAnim("skill_b",RawAnimation.begin().thenPlay("animation."+species()+".skill_b"))
             .triggerableAnim("skill",RawAnimation.begin().thenPlay("animation."+species()+".skill")));
     }
     @Override protected void tickDeath(){if(++deathTime>=55 && !level().isClientSide)remove(RemovalReason.KILLED);}

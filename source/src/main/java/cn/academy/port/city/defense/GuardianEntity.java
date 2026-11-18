@@ -55,13 +55,30 @@ public class GuardianEntity extends PathfinderMob {
     @Override public EntityDimensions getDefaultDimensions(Pose pose){return pose==Pose.CROUCHING?EntityDimensions.scalable(.6f,1.5f).withEyeHeight(1.27f):super.getDefaultDimensions(pose);}
     @Override public void tick(){
         super.tick();if(!(level() instanceof ServerLevel world))return;
-        if(team==null||world.getGameTime()>expires){if(isPassenger())stopRiding();discard();return;}
+        var response = team == null ? null : CityDefenseData.get(world).team(team);
+        if (team != null && !CityDefense.onDuty(response, world.getGameTime())) {
+            if (isPassenger()) stopRiding();
+            discard();
+            return;
+        }
         HighPowerCombat.tickShield(this);tickReload();
-        if(!isNoAi()&&tickCount%5==Math.floorMod(getId(),5))tactics(CityDefenseData.get(world).team(team));
+        if (response != null && !isNoAi() && tickCount % 5 == Math.floorMod(getId(),5)) tactics(response);
     }
     protected void tactics(CityDefenseData.Team response){
-        if(response==null){expires=Math.min(expires,level().getGameTime()+20);return;}
         long now=level().getGameTime();
+        if (response.closedAt >= 0) {
+            action(Action.RETURN);
+            setTarget(null);
+            if (!isPassenger() && now >= nextPlan) {
+                nextPlan = now + 35 + role();
+                var world = (ServerLevel) level();
+                for (var id : response.vehicles) if (world.getEntity(id) instanceof LabVehicle car) {
+                    move(car.position(), 1.0);
+                    break;
+                }
+            }
+            return;
+        }
         if(getVehicle() instanceof LabVehicle car){action(Action.DRIVE);CityDefense.drive(this,car,response);return;}
         LivingEntity enemy=CityDefense.target((ServerLevel)level(),response);
         LivingEntity civilian=CityDefense.civilian((ServerLevel)level(),response);

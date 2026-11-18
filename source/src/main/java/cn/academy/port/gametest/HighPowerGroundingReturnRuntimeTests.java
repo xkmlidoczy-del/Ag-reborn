@@ -61,7 +61,9 @@ public final class HighPowerGroundingReturnRuntimeTests {
         h.assertFalse(f.start(1),"replayed start rejected");
         h.assertFalse(f.start(2),"fresh redundant tap cannot restart active stance");
         h.assertTrue(GroundingReturn.abort(f.p,f.wire(2)),"latest emitted rejected tap still bounds focus cancellation of existing stance");
-        h.assertFalse(HighPowerCombat.shieldActive(f.p),"composite HUD ends with stance");
+        h.assertFalse(GroundingReturn.active(f.p),"paid stance ends on abort");
+        h.assertTrue(HighPowerCombat.shieldActive(f.p) == cn.academy.port.highpower.EsperShields.holding(f.p),
+                "after abort the HUD reflects the remaining base shield");
         h.assertFalse(f.start(3),"fresh input cannot bypass sixty-tick activation cooldown");
         eq(h,f.shield(),shield.subtract(n("4")),"abort/restart never refills");
         h.succeed();

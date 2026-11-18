@@ -82,7 +82,9 @@ public final class CityNpcPlayerParityRuntimeTests {
     @GameTest(template=TEMPLATE,batch=BATCH,timeoutTicks=100)
     public static void classic_npc_cast_uses_player_damage_and_original_cp_overload(GameTestHelper h) {
         EsperLegacyBypass.force(true);
-        var n=npc(h,"electro",3,3);var t=target(h,7);HighPowerCombat.enroll(t,3);
+        var n=npc(h,"electro",3,3);var t=target(h,7);
+        h.assertTrue(HighPowerCombat.enroll(t,3),"damage witness enrolled");
+        var startTick=n.tickCount;
         var d=EntityAbilityRuntime.definition("arc_gen");var cost=n.combat().runtime().cost(d);double cp=n.combat().ability().cp;
         var expected=BigDecimal.valueOf(ClassicRules.arc(.52).damage()).multiply(new BigDecimal("3162")).divide(new BigDecimal("50"));
         eq(h,BigDecimal.valueOf(cost.damage()),expected,"same player damage formula");
@@ -90,19 +92,23 @@ public final class CityNpcPlayerParityRuntimeTests {
         h.assertTrue(n.combat().ability().cp<cp&&n.combat().ability().overload>0,"classic resources charged");
         var before=CityNpcPower.health(t);
         h.runAfterDelay(16,()->{try {
+            h.assertTrue(n.tickCount>startTick,"NPC fixture received world ticks");
             eq(h,before.subtract(CityNpcPower.health(t)),expected.multiply(new BigDecimal("0.984")),"actual native damage after Husk armor");h.succeed();
         }finally{n.discard();t.discard();EsperLegacyBypass.force(false);}});
     }
     @GameTest(template=TEMPLATE,batch=BATCH,timeoutTicks=100)
     public static void paper_cast_uses_player_damage_separate_cp_and_real_material(GameTestHelper h) {
         EsperLegacyBypass.force(true);
-        var n=npc(h,"paper",3,3);var t=target(h,7);HighPowerCombat.enroll(t,3);
+        var n=npc(h,"paper",3,3);var t=target(h,7);
+        h.assertTrue(HighPowerCombat.enroll(t,3),"damage witness enrolled");
+        var startTick=n.tickCount;
         var d=EntityAbilityRuntime.definition("paper_blade");double cp=n.combat().additionalCp(),classic=n.combat().ability().cp;
         var cost=n.combat().runtime().cost(d);h.assertTrue(cost.cp()==2&&cost.overload()==0&&cost.cooldown()==30,"same player costs");
         h.assertTrue(n.combat().runtime().begin(d,t,false),"real paper cast accepted");
         h.assertTrue(n.combat().additionalCp()==cp-2&&n.combat().ability().cp==classic,"correct CP pool");
         h.assertTrue(n.combat().save().getInt("paper")==23,"one real sheet consumed");var before=CityNpcPower.health(t);
         h.runAfterDelay(18,()->{try {
+            h.assertTrue(n.tickCount>startTick,"NPC fixture received world ticks");
             eq(h,before.subtract(CityNpcPower.health(t)),new BigDecimal("1866.8448"),"player tier-one damage after Husk armor");h.succeed();
         }finally{n.discard();t.discard();EsperLegacyBypass.force(false);}});
     }
@@ -142,7 +148,7 @@ public final class CityNpcPlayerParityRuntimeTests {
         AbilityStorage.get(player).learn("arc_gen");AbilityStorage.get(player).activated=true;HighPowerCombat.enroll(player,3);
         h.runAfterDelay(65,()->{try {
             player.moveTo(n.getX()+2,n.getY(),n.getZ(),0,0);player.connection.resetPosition();
-            h.assertTrue(n.combat().sparringIncoming(player,new BigDecimal("10000")).signum()==0,"outside-duel exact hit refused");
+            h.assertTrue(!n.combat().sparringHit(world.damageSources().playerAttack(player)), "ordinary hits receive no duel-only floor");
             h.assertTrue(n.combat().startDuel(player),"consensual duel started");
             var hp=CityNpcPower.health(player);h.assertTrue(AbilityDamage.attackEntity(n,"electromaster.arc_gen",player,1e9,false),"NPC native hit accepted");
             h.assertTrue(CityNpcPower.health(player).compareTo(hp.multiply(new BigDecimal("0.15")))>=0,"player survives at the true floor");

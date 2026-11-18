@@ -2,11 +2,11 @@
 
 Ag:reborn（Ag重生）是基于 **Lambda Innovation** 开源项目 [AcademyCraft](https://github.com/LambdaInnovation/AcademyCraft) 移植、修改和扩展的非官方 Minecraft 模组。原作者及原项目的署名、许可和附加声明予以保留；本项目不代表原作者的官方发布或背书。
 
-当前公开源码版本为 **0.81.5-city-a3.68 Beta**，适用于 **Minecraft 1.21.1、NeoForge 21.1.252 和 Java 21**。本版内置 **ACA bio HUM 0.9.1**。创造物品栏「学园都市人物 NPC」收录全部 100 枚人物刷怪蛋，沿用独立版的角色实体与存档 ID。
+当前公开源码版本为 **0.81.5-city-a3.71 Beta**，适用于 **Minecraft 1.21.1、NeoForge 21.1.252 和 Java 21**。本版在 a3.70 十二巨兽重制的基础上，内置 **ACA Omnitrix 0.7.0**，包含三只变身腕表及阿斯卡隆。主模组能力开关为 `V`，阿斯卡隆覆甲键为 `M`。[腕表与圣剑安装说明](source/integration/aca-omnitrix/README.md)
 
-自动生成人物只有主城第七学区无窗之楼的一名亚雷斯塔。首次靠近时，在原始塔体内安装倒悬维生舱。生成记录随世界保存。塔东侧约 `-134 0 -152`，可用 `/biohum windowless enter` 进楼和 `/biohum windowless exit` 返回。[人物整合说明](source/integration/aca-hum/README.md)
+整合 JAR 同时包含 **ACA Mech 0.4.5**、**ACA Fauna 0.1.17 R18**、**ACA bio HUM 0.9.1** 和 **GeckoLib 4.7**。升级时从 `mods/` 移出旧 Ag 重生及四个配套模组的独立 JAR，再在客户端和服务端安装本仓库构建的整合 JAR。
 
-本版同时内置 **ACA Fauna 0.1.17 R18** 与 **ACA Mech 0.4.5**。升级时将旧 Ag 重生及独立 ACA bio HUM、ACA Fauna 和 ACA Mech 的 JAR 移出 `mods/`，安装本仓库构建的整合 JAR。客户端与服务端使用同版。动物仍在原版主世界按生境生成，动物蛋位于「刷怪蛋」，机甲可在「ACA 学园机库」部署。
+自动生成人物只有主城第七学区无窗之楼的一名亚雷斯塔。首次靠近时，在原始塔体内安装倒悬维生舱，生成记录随世界保存。塔东侧约 `-134 0 -152`，可用 `/biohum windowless enter` 进楼及 `/biohum windowless exit` 返回。100 枚人物刷怪蛋位于「学园都市人物 NPC」。动物在原版主世界按生境生成，机甲可在「ACA 学园机库」部署。[人物整合说明](source/integration/aca-hum/README.md)
 
 ## 构建
 
@@ -21,7 +21,7 @@ Windows 可使用 `gradlew.bat jar`。首次构建需要联网获取 Gradle、Ne
 
 ## 目录
 
-- `source/src/main/` 为本体源码和资产，`source/src/hum/`、`source/src/fauna/` 和 `source/src/mech/` 为内置人物、动物及机甲模块。
+- `source/src/main/` 为本体源码和资产，`source/src/hum/`、`source/src/fauna/`、`source/src/mech/` 和 `source/src/omnitrix/` 分别为内置人物、动物、机甲和腕表模块。
 - `source/integration/aca-hum/` 为人物整合说明和来源及权利声明。
 - `source/integration/aca-fauna/` 记录动物整合版本；随动物模块提供素材出处和许可。
 - `source/integration/aca-mech/`：机甲许可、来源、可编辑 Blockbench 方盒模型与导出工具；`source/src/mechQa/` 为独立测试驱动。

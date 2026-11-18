@@ -3962,5 +3962,7 @@
   "city.elevator.reason.unloaded": "Required chunks are unloaded",
   "city.elevator.reason.exit_blocked": "Landing exit is blocked",
   "city.elevator.reason.shaft_blocked": "Obstacle in the shaft",
-  "city.elevator.reason.shaft_damaged": "Shaft enclosure is damaged"
+  "city.elevator.reason.shaft_damaged": "Shaft enclosure is damaged",
+  "academy.mental.resisted": "The target resisted control.",
+  "academy.command.rank_commit_failed": "The rank and growth ledger could not be committed. Check /academyhp growth."
 }

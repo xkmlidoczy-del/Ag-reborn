@@ -1,0 +1,27 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "cn.aca.omnitrix.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "plugin": "cn.aca.omnitrix.mixin.OptionalAcademy",
+  "mixins": [
+    "AcademyRequest",
+    "FormPhysics",
+    "WakeSurface",
+    "PowderRunning",
+    "AssimilatedRail",
+    "DispenserAccess",
+    "DispenserOverload",
+    "AscalonProtection",
+    "EntityRemovalGuard",
+    "AscalonPlayerGuard",
+    "AscalonServerPlayerGuard"
+  ],
+  "client": [
+    "FirstPersonHands",
+    "VehicleHud",
+    "PlayerWristPose",
+    "PlayerFlightPose"
+  ],
+  "injectors": { "defaultRequire": 1 }
+}

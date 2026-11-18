@@ -275,6 +275,30 @@ public final class CanonExpansionARuntimeTests {
     @GameTest(template="empty",batch="canon_expansion_a",timeoutTicks=100)
     public static void nitrogen_shield_line(GameTestHelper h) { barrierTest(h,"nitrogen_shield_line"); }
 
+    @GameTest(template="empty", batch="canon_expansion_arrow_flight", timeoutTicks=100)
+    public static void dark_guard_reflects_native_arrow_flight_once(GameTestHelper h) {
+        var f = new Fixture(h, "dark_matter", "dark_guard");
+        var arrow = new Arrow(EntityType.ARROW, h.getLevel());
+        try {
+            f.loadChunks();
+            h.assertTrue(CanonSkillsCombatA.cast(f.p, "dark_guard"), "contact plate raised");
+            BigDecimal before = HighPowerCombat.shield(f.p);
+            BigDecimal fee = new BigDecimal(HighPowerCombat.maxShieldText(f.p)).movePointLeft(2);
+            arrow.setPos(f.p.position().add(0, 1.1, 1.5));
+            arrow.setDeltaMovement(0, 0, -2);
+            h.assertTrue(h.getLevel().addFreshEntity(arrow), "native arrow entered the world");
+            arrow.tick();
+            h.assertTrue(arrow.isAlive() && arrow.getDeltaMovement().z > 0, "same native arrow flies away");
+            arrow.tick();
+            h.assertTrue(before.subtract(HighPowerCombat.shield(f.p)).compareTo(fee) == 0,
+                    "one contact consumes exactly one plate fee across two flight ticks");
+            h.succeed();
+        } finally {
+            arrow.discard();
+            f.close();
+        }
+    }
+
     private static void barrierTest(GameTestHelper h,String id) {
         var definition=CanonExpansionA.find(id);var f=new Fixture(h,definition.category(),id);Arrow arrow=new Arrow(EntityType.ARROW,h.getLevel());
         try {

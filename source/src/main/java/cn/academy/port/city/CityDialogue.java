@@ -36,7 +36,7 @@ public final class CityDialogue {
     private static boolean shop(CityNpcEntity npc) {return npc.service()!=Role.NONE && !CityServicePlan.site(npc.service()).shop().isEmpty();}
     private static boolean guide(CityNpcEntity npc) {return npc.service()==Role.MENTOR || npc.service()==Role.LIBRARIAN || npc.look()==CityNpcEntity.Look.TEACHER;}
     public static void open(ServerPlayer player,CityNpcEntity npc) {
-        if(npc.distanceToSqr(player)>64 || npc.occupiedByOther(player)) {player.sendSystemMessage(tr("message.busy"));return;}
+        if(!npc.isAlive() || npc.level()!=player.level() || npc.distanceToSqr(player)>64 || npc.occupiedByOther(player)) {player.sendSystemMessage(tr("message.busy"));return;}
         close(player,true,false);
         npc.beginConversation(player);
         var session=new Session(npc);SESSIONS.put(player.getUUID(),session);send(player,npc,session);
@@ -182,7 +182,7 @@ public final class CityDialogue {
     private static Component combatProfile(CityNpcEntity npc) {
         var brain=npc.combat();var s=brain.ability();
         var b=tr("esper.profile",npc.esper().label(),npc.esperLevel()).copy().append("\n\n").append(npc.esper().description()).append("\n\n")
-                .append(tr("combat.stats",cn.academy.port.highpower.CityNpcPower.health(npc).toBigInteger(),cn.academy.port.highpower.CityNpcPower.maxHealth(npc).toBigInteger(),Math.round(s.cp),Math.round(s.maxCp()),Math.round(s.overload),Math.round(s.maxOverload())))
+                .append(tr("combat.stats",cn.academy.port.highpower.CityNpcPower.health(npc).stripTrailingZeros().toPlainString(),cn.academy.port.highpower.CityNpcPower.maxHealth(npc).stripTrailingZeros().toPlainString(),String.format(java.util.Locale.ROOT,"%.2f",s.cp),String.format(java.util.Locale.ROOT,"%.2f",s.maxCp()),String.format(java.util.Locale.ROOT,"%.2f",s.overload),String.format(java.util.Locale.ROOT,"%.2f",s.maxOverload())))
                 .append("\n").append(tr("combat.player_power",cn.academy.port.highpower.HighPowerCombat.shieldText(npc),cn.academy.port.highpower.HighPowerCombat.maxShieldText(npc),String.format(java.util.Locale.ROOT,"%.2f",brain.additionalCp()),String.format(java.util.Locale.ROOT,"%.2f",brain.additionalMaximum())))
                 .append("\n").append(tr(s.overloadFine?"combat.ready":"combat.overloaded")).append("\n\n");
         for(var d:brain.runtime().available()) {

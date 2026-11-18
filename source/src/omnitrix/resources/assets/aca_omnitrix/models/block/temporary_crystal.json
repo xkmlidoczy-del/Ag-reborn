@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "aca_omnitrix:block/temporary_crystal_side"
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "textures": {
+    "bone": "aca_omnitrix:block/bone_spike",
+    "particle": "aca_omnitrix:block/bone_spike"
+  },
+  "elements": [
+    {
+      "from": [
+        3,
+        0,
+        3
+      ],
+      "to": [
+        13,
+        3,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#bone"
+        },
+        "east": {
+          "texture": "#bone"
+        },
+        "south": {
+          "texture": "#bone"
+        },
+        "west": {
+          "texture": "#bone"
+        },
+        "up": {
+          "texture": "#bone"
+        },
+        "down": {
+          "texture": "#bone"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        3,
+        4
+      ],
+      "to": [
+        12,
+        6,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#bone"
+        },
+        "east": {
+          "texture": "#bone"
+        },
+        "south": {
+          "texture": "#bone"
+        },
+        "west": {
+          "texture": "#bone"
+        },
+        "up": {
+          "texture": "#bone"
+        },
+        "down": {
+          "texture": "#bone"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        6,
+        5
+      ],
+      "to": [
+        10,
+        10,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#bone"
+        },
+        "east": {
+          "texture": "#bone"
+        },
+        "south": {
+          "texture": "#bone"
+        },
+        "west": {
+          "texture": "#bone"
+        },
+        "up": {
+          "texture": "#bone"
+        },
+        "down": {
+          "texture": "#bone"
+        }
+      }
+    },
+    {
+      "from": [
+        7,
+        10,
+        6
+      ],
+      "to": [
+        9,
+        14,
+        8
+      ],
+      "faces": {
+        "north": {
+          "texture": "#bone"
+        },
+        "east": {
+          "texture": "#bone"
+        },
+        "south": {
+          "texture": "#bone"
+        },
+        "west": {
+          "texture": "#bone"
+        },
+        "up": {
+          "texture": "#bone"
+        },
+        "down": {
+          "texture": "#bone"
+        }
+      }
+    }
+  ]
+}

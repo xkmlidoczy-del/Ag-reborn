@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "aca_omnitrix:star_ruin",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 49,
+    "separation": 17,
+    "salt": 513857
+  }
+}

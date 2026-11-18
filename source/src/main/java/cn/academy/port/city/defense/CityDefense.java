@@ -15,6 +15,8 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.*;
 import net.neoforged.bus.api.*;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
@@ -25,19 +27,33 @@ public final class CityDefense {
     public static void allowTestWorld(ServerLevel world){if(!net.neoforged.neoforge.gametest.GameTestHooks.isGametestEnabled()&&!Boolean.getBoolean("academy.qa.confirmOwnWorld"))throw new IllegalStateException("Isolated QA only");TEST_WORLDS.add(world);}
     public static boolean enabled(ServerLevel world){return CityDefenseContent.ENABLED.get()&&(world.dimension().location().toString().equals("academy:story_city_map")||TEST_WORLDS.contains(world));}
     public static boolean civilian(LivingEntity e){return e instanceof CityNpcEntity n&&n.look()!=CityNpcEntity.Look.GUARD&&!n.sparring()||e instanceof Villager;}
-    public static boolean exposesCivilian(CityNpcEntity n,DamageSource source){return n.level() instanceof ServerLevel world&&enabled(world)&&civilian(n)&&source.getEntity() instanceof LivingEntity a&&a!=n&&!(a instanceof GuardianEntity)&&!a.isAlliedTo(n);}
     @SubscribeEvent(priority=EventPriority.LOWEST) public static void harmed(LivingDamageEvent.Post event){
         var victim=event.getEntity();if(!(victim.level() instanceof ServerLevel world)||!enabled(world)||!civilian(victim)||event.getNewDamage()<=0)return;
-        if(event.getSource().getEntity() instanceof LivingEntity suspect&&suspect!=victim&&!(suspect instanceof GuardianEntity)&&!suspect.isAlliedTo(victim))dispatch(world,victim,suspect);
+        registerHarm(world, victim, event.getSource());
     }
+
+    static CityDefenseData.Team registerHarm(ServerLevel world, LivingEntity victim, DamageSource source) {
+        if (civilian(victim) && source.getEntity() instanceof LivingEntity suspect
+                && suspect != victim && !(suspect instanceof GuardianEntity)
+                && !suspect.isAlliedTo(victim) && !victim.isAlliedTo(suspect))
+            return dispatch(world, victim, suspect);
+        return null;
+    }
+
     public static CityDefenseData.Team dispatch(ServerLevel world,LivingEntity victim,LivingEntity suspect){
         if(!enabled(world)||!civilian(victim)||suspect instanceof GuardianEntity||suspect==victim)return null;
         var data=CityDefenseData.get(world);long now=world.getGameTime();
         for(var t:data.teams.values())if(t.threats.contains(suspect.getUUID())||t.center.distanceToSqr(victim.position())<64*64){
-            if(t.active(now)){if(!t.threats.contains(suspect.getUUID()))t.threats.add(suspect.getUUID());t.lastHarm=now;t.quietSince=-1;data.setDirty();return t;}
+            if (t.closedAt < 0) {
+                if (!t.threats.contains(suspect.getUUID()) && t.threats.size()<16) t.threats.add(suspect.getUUID());
+                t.lastHarm=now;t.quietSince=-1;
+                renew(world,t,now+SEARCH_TICKS+40);
+                data.setDirty();
+                return t;
+            }
             if(now-Math.max(t.closedAt,t.expires)<600)return null;
         }
-        if(data.teams.values().stream().filter(t->t.active(now)).count()>=CityDefenseContent.MAX_TEAMS.get())return null;
+        if(data.teams.values().stream().filter(t->t.closedAt<0).count()>=CityDefenseContent.MAX_TEAMS.get())return null;
         var spawn=spawnSite(world,victim.position());if(spawn==null)return null;
         int sector=Math.floorMod((int)Math.floor(victim.getX()/256)+(int)Math.floor(victim.getZ()/256),4);
         String name=new String[]{"中央守护一队","学园守护二队","南区守护三队","外围守护四队"}[sector];
@@ -121,24 +137,96 @@ public final class CityDefense {
         }else car.aiInput(driver,distance<16?.3f:.8f,turn);
     }
     private static float yaw(Vec3 delta){return (float)Math.toDegrees(Math.atan2(-delta.x,delta.z));}
+
+    private static boolean hasContact(ServerLevel world, CityDefenseData.Team team, LivingEntity enemy) {
+        if (world.getGameTime()-team.lastHarm <= 80) return true;
+        for (var roster : List.of(team.officers,team.operatives))
+            for (var id : roster)
+                if (world.getEntity(id) instanceof GuardianEntity guard && guard.isAlive()
+                        && guard.distanceToSqr(enemy) <= 110*110 && guard.getSensing().hasLineOfSight(enemy)) return true;
+        return false;
+    }
+
+    private static UUID response(Entity entity) {
+        if (entity instanceof GuardianEntity guard) return guard.response();
+        return entity instanceof LabVehicle car ? car.response() : null;
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void joined(EntityJoinLevelEvent event) {
+        UUID id = response(event.getEntity());
+        if (event.isCanceled() || id == null || !(event.getLevel() instanceof ServerLevel level)) return;
+        var data = CityDefenseData.get(level);
+        var team = data.team(id);
+        if (team != null && team.unloaded.remove(event.getEntity().getUUID())) data.setDirty();
+    }
+
+    @SubscribeEvent public static void left(EntityLeaveLevelEvent event) {
+        UUID id = response(event.getEntity());
+        var reason = event.getEntity().getRemovalReason();
+        if (id == null || !(event.getLevel() instanceof ServerLevel level)
+                || reason != Entity.RemovalReason.UNLOADED_TO_CHUNK && reason != Entity.RemovalReason.UNLOADED_WITH_PLAYER) return;
+        var data = CityDefenseData.get(level);
+        var team = data.team(id);
+        UUID member = event.getEntity().getUUID();
+        if (team != null && !team.casualties.contains(member) && !team.unloaded.contains(member)) {
+            team.unloaded.add(member);
+            data.setDirty();
+        }
+    }
+
+    private static final int SEARCH_TICKS = 600;
+    private static final int WITHDRAW_TICKS = 200;
+
+    public static boolean onDuty(CityDefenseData.Team team, long now) {
+        return team != null && (team.closedAt < 0 || now - team.closedAt < WITHDRAW_TICKS);
+    }
+
+    private static void renew(ServerLevel world, CityDefenseData.Team team, long minimum) {
+        if (team.expires < minimum) {
+            team.expires = Math.max(minimum, world.getGameTime() + CityDefenseContent.LIFETIME.get());
+            CityDefenseData.get(world).setDirty();
+        }
+    }
     @SubscribeEvent public static void tick(LevelTickEvent.Post event){
-        if(!(event.getLevel() instanceof ServerLevel world)||world.getGameTime()%20!=0)return;
+        if (!(event.getLevel() instanceof ServerLevel world) || !enabled(world) || world.getGameTime() % 20 != 0) return;
         var data=CityDefenseData.get(world);long now=world.getGameTime();
-        for(var t:data.teams.values()){
-            if(t.active(now)){
-                O5Reinforcements.update(world,t);
-                if(target(world,t)==null){if(t.quietSince<0){t.quietSince=now;data.setDirty();}}else t.quietSince=-1;
-                // The escort uses existing native navigation; the daily AI is suspended only during the lease.
-                var civilian=civilian(world,t);var enemy=target(world,t);
-                if(civilian instanceof CityNpcEntity n&&enemy!=null&&!n.isPassenger()){
-                    Vec3 away=n.position().subtract(enemy.position()).multiply(1,0,1).normalize();var safe=ground(world,t.center.add(away.scale(10)));
-                    if(safe!=null)n.getNavigation().moveTo(safe.x,safe.y,safe.z,1.05);
+        for (var t : data.teams.values()) {
+            if (t.closedAt < 0) {
+                var enemy = target(world, t);
+                if (enemy != null && hasContact(world,t,enemy)) {
+                    renew(world, t, now + SEARCH_TICKS + 40);
+                    if (t.quietSince >= 0) { t.quietSince = -1; data.setDirty(); }
+                    O5Reinforcements.update(world, t);
+                    if (civilian(world,t) instanceof CityNpcEntity n && !n.isPassenger()) {
+                        Vec3 away = n.position().subtract(enemy.position()).multiply(1,0,1).normalize();
+                        var safe = ground(world,t.center.add(away.scale(10)));
+                        if (safe != null) n.getNavigation().moveTo(safe.x,safe.y,safe.z,1.05);
+                    }
+                } else {
+                    if (t.quietSince < 0) {
+                        t.quietSince = t.expires <= now ? Math.min(now, t.expires) - SEARCH_TICKS : now;
+                        data.setDirty();
+                    }
+                    if (now - t.quietSince >= SEARCH_TICKS) {
+                        t.closedAt = now;
+                        data.setDirty();
+                    } else renew(world, t, t.quietSince + SEARCH_TICKS + 20);
                 }
-                if(t.quietSince>=0&&now-t.quietSince>240||now+20>=t.expires){t.closedAt=now;data.setDirty();}
-            }else if(t.closedAt<0){t.closedAt=now;data.setDirty();}
-            if(t.closedAt>=0){for(var id:t.operatives){var e=world.getEntity(id);if(e!=null)e.discard();}for(var id:t.officers){var e=world.getEntity(id);if(e!=null){e.stopRiding();e.discard();}}for(var id:t.vehicles){var e=world.getEntity(id);if(e!=null){e.ejectPassengers();e.discard();}}}
+            }
+            if (!onDuty(t, now)) {
+                for (var id : t.operatives) { var entity = world.getEntity(id); if (entity != null) entity.discard(); }
+                for (var id : t.officers) { var entity = world.getEntity(id); if (entity != null) { entity.stopRiding(); entity.discard(); } }
+                for (var id : t.vehicles) { var entity = world.getEntity(id); if (entity != null) { entity.ejectPassengers(); entity.discard(); } }
+            }
         }
         if(data.teams.values().removeIf(t->t.closedAt>=0&&now-t.closedAt>1200))data.setDirty();
     }
-    public static boolean escorted(CityNpcEntity n){if(!(n.level() instanceof ServerLevel world)||!enabled(world))return false;long now=world.getGameTime();return CityDefenseData.get(world).teams.values().stream().anyMatch(t->t.active(now)&&t.victim.equals(n.getUUID()));}
+    public static boolean escorted(CityNpcEntity n) {
+        if (!(n.level() instanceof ServerLevel world) || !enabled(world)) return false;
+        long now=world.getGameTime();
+        for (var team : CityDefenseData.get(world).teams.values())
+            if (team.active(now) && team.victim.equals(n.getUUID())) return true;
+        return false;
+    }
 }

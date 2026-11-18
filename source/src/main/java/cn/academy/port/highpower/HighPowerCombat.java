@@ -126,8 +126,8 @@ public final class HighPowerCombat {
     /** Hostile targets for the classic controllers and their damage permits: any mod's hostile mob (vanilla Monster is an Enemy too),
      * or a tagged training dummy. Used to be Monster only, which refused slimes, ghasts, phantoms, modded Enemy mobs and dummies. */
     public static boolean hostileTarget(LivingEntity entity) {
-        return entity != null && !(entity instanceof net.minecraft.world.entity.player.Player)
-                && (entity instanceof net.minecraft.world.entity.monster.Enemy || cn.academy.port.canon.CanonTargetPolicy.trainingTarget(entity));
+        return !(entity instanceof net.minecraft.world.entity.player.Player)
+                && cn.academy.port.canon.CanonTargetPolicy.hostile(entity);
     }
 
     public static boolean needsContractApproval(LivingEntity entity) {
@@ -247,31 +247,111 @@ public final class HighPowerCombat {
         return true;
     }
 
-    /**
-     * The finite developer completion seam. The caller must wrap only the real,
-     * successfully paid level action. Generic LevelChangeEvent and login cannot
-     * certify a raw setLevel mutation. Completion itself always runs exactly once.
-     */
-    public static void completeEarnedLevel(ServerPlayer player, Runnable completion) {
-        java.util.Objects.requireNonNull(completion, "completion");
-        if (player == null || !serverThread(player)) { completion.run(); return; }
+    /** The finite developer action supplies the authority for the next rank. */
+    public static boolean completeEarnedLevel(ServerPlayer player, Runnable completion) {
         var ability = AbilityStorage.get(player);
-        int oldLevel = ability.level;
-        String originalCategory = ability.category;
-        boolean eligible = canChangeGrowth(player) && HighPowerGrowth.available(player) && HighPowerCategories.active(ability)
-                && oldLevel >= 1 && oldLevel < 5 && oldLevel <= earnedLevel(player)
-                && ability.levelProgress(SkillCatalog.levelSkillCount(ability)) >= 1;
-        // Capture legacy/current active output before native completion resets levelExperience.
-        if (eligible) HighPowerActiveGrowth.position(player);
+        if (EsperLegacyBypass.standAside()) {
+            completion.run();
+            return true;
+        }
+        if (!ability.hasCategory()) {
+            // A dormant account keeps earned pools when it awakens another category.
+            if (enabled(player)) {
+                completion.run();
+                HighPowerGrowth.invalidate(player);
+                return true;
+            }
+            return enrollRank(player, 1, completion);
+        }
+        if (!HighPowerCategories.active(ability) || ability.level >= 5
+                || ability.levelProgress(SkillCatalog.levelSkillCount(ability)) < 1
+                || enabled(player) && ability.level > earnedLevel(player)) return false;
+        return commitAbilityRank(player, ability.level + 1, completion);
+    }
+
+    /** Trusted developer and command entry. Finish all detached validation before native rank callbacks. */
+    public static boolean commitAbilityRank(ServerPlayer player, int level, Runnable completion) {
+        if (player == null || !serverThread(player) || !player.isAlive()
+                || level < 1 || level > 5 || !HighPowerCategories.active(AbilityStorage.get(player))) return false;
+        var ability = AbilityStorage.get(player);
+        if (!enabled(player)) return enrollRank(player, level, completion);
+        if (!canChangeGrowth(player)) return false;
+        flushRecovery(player);
+        var before = read(player).orElseThrow();
+        if (before.isDead()) return false;
+        BigDecimal floor = BigDecimal.valueOf(level);
+        boolean lowering = level < ability.level || level < earnedLevel(player);
+        BigDecimal capacity = lowering ? floor : earnedGrowthPosition(player).max(floor);
+        BigDecimal active;
+        try {
+            active = lowering ? floor : HighPowerActiveGrowth.position(player).max(floor).min(capacity);
+        } catch (IllegalArgumentException | IllegalStateException invalid) {
+            return false;
+        }
+        if (earnedLevel(player) == level && earnedGrowthPosition(player).compareTo(capacity) == 0
+                && HighPowerActiveGrowth.position(player).compareTo(active) == 0) {
+            completion.run();
+            return true;
+        }
+        var sample = ContinuousHighPowerGrowth.sample(capacity);
+        if (lowering && (before.health().compareTo(sample.maxHealth()) > 0
+                || before.shield().compareTo(sample.maxShield()) > 0)) return false;
+        var after = new ExactCombatState(
+                resizePool(before.health(), before.maxHealth(), sample.maxHealth()),
+                sample.maxHealth(), resizePool(before.shield(), before.maxShield(), sample.maxShield()),
+                sample.maxShield(), false);
+        if (!MagneticDomainReserve.canChangeCapacity(player, before, after)
+                || !ScatterPlateStorage.canChangeCapacity(player, before, after)) return false;
+        Runnable notifications;
+        try {
+            var draft = new GrowthChange(player, before, after, capacity, level, GrowthKind.RANK, active);
+            notifications = publishResources(player, after, null, null, draft);
+        } catch (IllegalArgumentException | IllegalStateException invalid) {
+            return false;
+        }
+        GROWTH_VALIDATION.remove(player);
+        PENDING_GROWTH.remove(player);
         completion.run();
-        if (!eligible || AbilityStorage.get(player) != ability || !originalCategory.equals(ability.category)
-                || ability.level != oldLevel + 1 || !canChangeGrowth(player)) return;
-        migrateGrowth(player);
-        int certified = Math.max(tag(player).getInt(EARNED_LEVEL), ability.level);
-        tag(player).putInt(EARNED_LEVEL, certified);
-        tag(player).putInt("level", certified);
-        // A paid integer unlock widens the future ceiling; it never jumps lagging active output.
-        HighPowerActiveGrowth.position(player);
+        HighPowerNaturalRecovery.capacityChanged(player, before, after);
+        synchronizeAdapter(player, after);
+        HighPowerGrowth.invalidate(player);
+        notifications.run();
+        return true;
+    }
+
+    private static boolean enrollRank(ServerPlayer player, int level, Runnable completion) {
+        BigDecimal healthFraction = decimal(player.getHealth()).divide(decimal(player.getMaxHealth()), RATIO_CONTEXT).min(BigDecimal.ONE);
+        if (!enroll(player, level)) return false;
+        var state = read(player).orElseThrow();
+        var initial = new ExactCombatState(state.maxHealth().multiply(healthFraction, RATIO_CONTEXT),
+                state.maxHealth(), state.shield(), state.maxShield(), false);
+        write(player, initial);
+        completion.run();
+        HighPowerActiveGrowth.reset(player, BigDecimal.valueOf(level));
+        synchronizeAdapter(player, initial);
+        HighPowerGrowth.invalidate(player);
+        HighPowerResources.initializeBudget(player);
+        return true;
+    }
+
+    private static BigDecimal resizePool(BigDecimal current, BigDecimal previousMaximum, BigDecimal nextMaximum) {
+        if (current.compareTo(previousMaximum) == 0) return nextMaximum;
+        if (nextMaximum.compareTo(previousMaximum) <= 0) return current;
+        return current.multiply(nextMaximum).divide(previousMaximum, RATIO_CONTEXT);
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOW)
+    public static void repairAuthenticatedRank(PlayerEvent.PlayerLoggedInEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player) || !enabled(player)) return;
+        var ability = AbilityStorage.get(player);
+        if (!HighPowerCategories.active(ability) || ability.level != earnedLevel(player)) return;
+        BigDecimal floor = BigDecimal.valueOf(ability.level);
+        try {
+            if (earnedGrowthPosition(player).compareTo(floor) < 0 || HighPowerActiveGrowth.position(player).compareTo(floor) < 0)
+                commitAbilityRank(player, ability.level, () -> {});
+        } catch (IllegalArgumentException | IllegalStateException invalid) {
+            // The administrator status command can describe malformed or unverified progress.
+        }
     }
 
     /**
@@ -376,6 +456,30 @@ public final class HighPowerCombat {
         synchronizeAdapter(entity, state);
         if (entity instanceof ServerPlayer player) HighPowerActiveGrowth.enrolled(player, level);
         return true;
+    }
+
+    /** Called after vanilla loads native health and persisted NeoForge data. */
+    public static void initializeTitan(cn.academy.port.titan.TitanEntity titan) {
+        if (!serverThread(titan) || !supported(titan) || !titan.isAlive()) return;
+        if (titan.species().equals(titan.getPersistentData().getCompound(DATA_KEY).getString("titanSpecies"))) {
+            var existing = read(titan);
+            if (existing.isPresent()) {
+                synchronizeAdapter(titan, existing.get());
+                return;
+            }
+        }
+        var profile = titan.profile();
+        BigDecimal maximum = profile.encounterHealth();
+        BigDecimal current = maximum.multiply(decimal(titan.getHealth()))
+                .divide(decimal(titan.getMaxHealth()), RATIO_CONTEXT).min(maximum);
+        CompoundTag data = new CompoundTag();
+        data.putString("titanSpecies", profile.id());
+        data.putInt("level", profile.tier());
+        data.putString(CONTRACT, VanillaCombatContract.ID);
+        titan.getPersistentData().put(DATA_KEY, data);
+        ExactCombatState state = new ExactCombatState(current, maximum, BigDecimal.ZERO, BigDecimal.ZERO, false);
+        write(titan, state);
+        synchronizeAdapter(titan, state);
     }
 
     public static boolean enabled(LivingEntity entity) { return read(entity).isPresent(); }
@@ -1744,9 +1848,13 @@ public final class HighPowerCombat {
         if (skill.equals("vecmanip.trajectory_return_native")) return false;
         if ((skill.equals(ConstructRuntime.DAMAGE_KEY) || skill.equals(NewSkillRuntime.Kind.ZENITH_DOMINION.damageKey))
                 && abilityEmission == null) return false;
-        if (target instanceof ServerPlayer && !AcademyConfig.ATTACK_PLAYERS.get()) return false;
-        if (unsupportedReason(player).isPresent() || unsupportedReason(target).isPresent()
-                || ACTIVE.containsKey(target) || TRACES.containsKey(target)
+        if (target instanceof ServerPlayer && !AcademyConfig.ATTACK_PLAYERS.get())
+            return DamageAudit.refused(skill, rawDamage, "disabled_pvp");
+        var casterRefusal = unsupportedReason(player);
+        var targetRefusal = unsupportedReason(target);
+        if (casterRefusal.isPresent() || targetRefusal.isPresent())
+            return DamageAudit.refused(skill, rawDamage, casterRefusal.or(() -> targetRefusal).orElseThrow());
+        if (ACTIVE.containsKey(target) || TRACES.containsKey(target)
                 || (deflectionStrikePermit != null || shearWindbladePermit != null || yawPalmPermit != null || vectorCagePermit != null || trajectoryReturnAirHammerPermit != null || remoteScatterRelayPermit != null || abilityEmission != null) && FRAMES.containsKey(target)) return false;
         if (target.getPersistentData().contains(DATA_KEY) && !enabled(target)) return false;
         BigDecimal raw;
@@ -1782,10 +1890,6 @@ public final class HighPowerCombat {
         try { raw = CombatAmounts.requirePositiveAmount(CombatAmounts.overkillClamp(raw.stripTrailingZeros()), "scaled raw damage"); }
         catch (IllegalArgumentException invalid) { return false; }
         flushRecovery(target);
-        if (target instanceof cn.academy.port.city.CityNpcEntity npc) {
-            raw = npc.combat().sparringIncoming(player, raw);
-            if (raw.signum() <= 0) return false;
-        }
         float witness = raw.min(BigDecimal.valueOf(MAX_NATIVE_WITNESS)).floatValue();
         if (!(witness > 0) || !Float.isFinite(witness)) return false;
         var source = new ExactSkillDamageSource(player, skill, target, raw, witness, projectileOrigin, stillValid,
@@ -1800,12 +1904,11 @@ public final class HighPowerCombat {
         BigDecimal cageHealthBefore = vectorCagePermit == null ? null : read(target).map(ExactCombatState::health).orElseGet(() -> decimal(target.getHealth()));
         float cageAbsorptionBefore = vectorCagePermit == null ? 0 : target.getAbsorptionAmount();
         ACTIVE.put(target, source);
-        boolean capAccepted = false;
-        CapBreak.arm(target);
+        boolean accepted = false;
+        var audit = DamageAudit.begin(target, source);
         try {
             var visualBefore=cn.academy.port.macro.BeamImpactVfx.before(player,skill,target);
-            boolean accepted = target.hurt(source, witness);
-            capAccepted = accepted;
+            accepted = CapBreak.hurt(target, source, witness);
             cn.academy.port.macro.BeamImpactVfx.after(player,skill,target,visualBefore,accepted&&!source.rejected,
                     projectileOrigin,certifiedBeamEndpoint);
             if (accepted && !source.rejected) TrainingTargetReadout.hit(player, skill, target, raw);
@@ -1834,8 +1937,7 @@ public final class HighPowerCombat {
             }
             flushRecovery(target);
             flushEarnedGrowth(target);
-            if (source.rejected) CapBreak.afterHit(null, skill, target, source, witness, false); // disarm only
-            else CapBreak.afterHit(player, skill, target, source, witness, capAccepted);
+            DamageAudit.finish(audit, skill, rawDamage, raw, accepted, source.rejected ? "exact_rejected" : null);
         }
     }
 
@@ -3044,6 +3146,12 @@ public final class HighPowerCombat {
             source.accounted = true;
             exactDamage = source.exactBeforeAbsorption.subtract(decimal(absorbed)).max(BigDecimal.ZERO);
         }
+        // Armor, blocking, absorption and the native cooldown have already settled this hit.
+        if (entity instanceof cn.academy.port.titan.TitanEntity titan && tag(entity).contains("titanSpecies")
+                && !(event.getSource() instanceof ExactSkillDamageSource)
+                && !(event.getSource() instanceof AbilityDamage.SkillDamageSource)
+                && !(event.getSource() instanceof AbilityDamage.EntitySkillDamageSource))
+            exactDamage = exactDamage.multiply(titan.profile().nativeHealthUnit());
         // Native /kill explicitly requests death, rather than a scalable combat amount.
         // Its vanilla GENERIC_KILL source still goes through native cancellation and death hooks.
         if (event.getSource().is(DamageTypes.GENERIC_KILL) && nativeDamage > 0) exactDamage = previous.health();
@@ -3206,9 +3314,10 @@ public final class HighPowerCombat {
             // and deferring observers until outer HP and lethal bookkeeping are complete.
             circleNotifications = publishResources(entity, next, null, null, null);
         } else commitResources(entity, next, scatterPlates == null ? null : scatterPlates.shares().afterBaseSpend(next.shield()), nextReserve);
-        if (entity instanceof cn.academy.port.city.CityNpcEntity npc && npc.ambient()
-                && previous.health().compareTo(next.health())>0 && next.health().compareTo(BigDecimal.ONE)<=0)
-            npc.combat().yieldAfterHit();
+        if (!(event.getSource() instanceof ExactSkillDamageSource)
+                && !(event.getSource() instanceof AbilityDamage.SkillDamageSource)
+                && !(event.getSource() instanceof AbilityDamage.EntitySkillDamageSource))
+            DamageAudit.nativeLedger(event, previous, next);
         if (EsperShields.eligible(entity) && (previous.shield().compareTo(next.shield()) > 0
                 || specialAbsorbed != null && specialAbsorbed.signum() > 0)) {
             tag(entity).putLong("lastShieldSpend", entity.level().getGameTime());
@@ -3589,7 +3698,10 @@ public final class HighPowerCombat {
         BigDecimal hp = state.health();
         for (LivingHealEvent heal : heals) {
             if (!heal.isCanceled() && Float.isFinite(heal.getAmount()) && heal.getAmount() > 0) {
-                hp = hp.add(decimal(heal.getAmount())).min(state.maxHealth());
+                BigDecimal restored = decimal(heal.getAmount());
+                if (entity instanceof cn.academy.port.titan.TitanEntity titan && tag(entity).contains("titanSpecies"))
+                    restored = restored.multiply(titan.profile().nativeHealthUnit());
+                hp = hp.add(restored).min(state.maxHealth());
             }
         }
         state = new ExactCombatState(hp, state.maxHealth(), state.shield(), state.maxShield(), false);
@@ -3606,7 +3718,7 @@ public final class HighPowerCombat {
         if (CityNpcPower.active(entity)) {
             var next = previous.withShieldEnabled(CityNpcPower.baseShieldEnabled()).applyMitigatedDamage(damage).state().withShieldEnabled(false);
             if (previous.shield().compareTo(next.shield()) > 0) tag(entity).putLong("lastShieldSpend", entity.level().getGameTime());
-            return entity instanceof cn.academy.port.city.CityNpcEntity npc?CityNpcPower.nonlethal(npc,next):next;
+            return entity instanceof cn.academy.port.city.CityNpcEntity npc?CityNpcPower.nonlethal(npc,next,source):next;
         }
         if (entity instanceof ServerPlayer player && EsperShields.eligible(player) && previous.shield().signum() > 0 && damage.signum() > 0) {
             var result = previous.withShieldEnabled(true).applyMitigatedDamage(damage);
@@ -3650,7 +3762,11 @@ public final class HighPowerCombat {
             }
             ExactCombatState state = ExactCombatState.fromDecimalMap(strings);
             if (state.shieldEnabled()) return Optional.empty();
-            if (tag.contains(GROWTH_CURVE) || tag.contains(GROWTH_POSITION) || tag.contains(EARNED_LEVEL)) {
+            if (tag.contains("titanSpecies")) {
+                if (!(entity instanceof cn.academy.port.titan.TitanEntity titan)
+                        || !titan.species().equals(tag.getString("titanSpecies")) || level.level() != titan.profile().tier()
+                        || state.maxHealth().compareTo(titan.profile().encounterHealth()) != 0 || state.maxShield().signum() != 0) return Optional.empty();
+            } else if (tag.contains(GROWTH_CURVE) || tag.contains(GROWTH_POSITION) || tag.contains(EARNED_LEVEL)) {
                 if (!tag.contains(GROWTH_CURVE, Tag.TAG_INT) || tag.getInt(GROWTH_CURVE) != ContinuousHighPowerGrowth.CURVE_VERSION
                         || !tag.contains(EARNED_LEVEL, Tag.TAG_INT) || tag.getInt(EARNED_LEVEL) != level.level()
                         || !tag.contains(GROWTH_POSITION, Tag.TAG_STRING)) return Optional.empty();
@@ -3676,7 +3792,7 @@ public final class HighPowerCombat {
         } catch (IllegalArgumentException invalid) { return Optional.empty(); }
     }
 
-    private enum GrowthKind { EARNED, RESET, CLONE }
+    private enum GrowthKind { EARNED, RESET, RANK, CLONE }
 
     /** Closed lifecycle capability: only this adapter can create a q/Q/capacity proposal. */
     static final class GrowthChange {
@@ -3714,11 +3830,11 @@ public final class HighPowerCombat {
             else {
                 BigDecimal q = ContinuousHighPowerGrowth.requirePosition(activePosition);
                 if (q.compareTo(this.position) > 0) throw new IllegalArgumentException("Active growth exceeds proposed capacity");
-                if (kind != GrowthKind.RESET && !source.contains("activeGrowth", Tag.TAG_COMPOUND))
+                if (kind != GrowthKind.RESET && kind != GrowthKind.RANK && !source.contains("activeGrowth", Tag.TAG_COMPOUND))
                     throw new IllegalArgumentException("Missing witnessed active growth");
                 active = new CompoundTag();
                 active.putString("position", q.stripTrailingZeros().toPlainString()); active.putBoolean("initial", false);
-                if (kind == GrowthKind.RESET) {
+                if (kind == GrowthKind.RESET || kind == GrowthKind.RANK) {
                     active.putInt("version", 1); active.putString("category", category);
                     active.putInt("nativeLevel", nativeLevel); active.putDouble("nativeXp", nativeXp);
                     active.putLong("revision", 0);
@@ -3747,6 +3863,9 @@ public final class HighPowerCombat {
                         || position.compareTo(ContinuousHighPowerGrowth.position(nativeLevel,
                             ability.levelProgress(SkillCatalog.levelSkillCount(ability)))) != 0)
                     throw new IllegalArgumentException("Reset differs from the current native growth witness");
+            } else if (kind == GrowthKind.RANK) {
+                if (!HighPowerCategories.active(ability) || position.compareTo(BigDecimal.valueOf(certified)) < 0)
+                    throw new IllegalArgumentException("Rank draft has no legal capacity floor");
             } else if (certified != oldCertified || position.compareTo(oldPosition) < 0
                     || kind == GrowthKind.EARNED && position.compareTo(oldPosition) <= 0)
                 throw new IllegalArgumentException("Growth cannot replace its certified high-water");

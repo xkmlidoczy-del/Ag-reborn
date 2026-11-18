@@ -26,9 +26,9 @@ public final class CityNpcPower {
         return HighPowerCombat.exactState(entity).map(ExactCombatState::maxHealth).orElseGet(()->BigDecimal.valueOf(entity.getMaxHealth()));
     }
     public static BigDecimal shield(LivingEntity entity) { return HighPowerCombat.shield(entity); }
-    static ExactCombatState nonlethal(CityNpcEntity npc, ExactCombatState next) {
-        if (!npc.ambient() && !npc.combat().dueling()) return next;
-        BigDecimal floor=npc.combat().dueling()?next.maxHealth().multiply(new BigDecimal("0.15")).max(BigDecimal.ONE):BigDecimal.ONE;
+    static ExactCombatState nonlethal(CityNpcEntity npc, ExactCombatState next, net.minecraft.world.damagesource.DamageSource source) {
+        if (!npc.combat().sparringHit(source)) return next;
+        BigDecimal floor = next.maxHealth().multiply(new BigDecimal("0.15")).max(BigDecimal.ONE);
         return next.health().compareTo(floor)>=0?next:new ExactCombatState(floor,next.maxHealth(),next.shield(),next.maxShield(),false);
     }
     /** Conservative pre-armor stop for an NPC's consensual hit on an enrolled player. */

@@ -8,6 +8,7 @@ import cn.academy.port.highpower.*;
 import com.mojang.authlib.GameProfile;
 import io.netty.channel.embedded.EmbeddedChannel;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -114,7 +115,7 @@ public final class HighPowerDualPointLearningRuntimeTests {
     }
 
     @GameTest(template=TEMPLATE,batch="highpower_dual_point_learning",timeoutTicks=15)
-    public static void paid_level_with_retained_native_threshold_never_catches_up_q_and_rollback_relogin_never_refill(GameTestHelper h){
+    public static void paid_rank_with_retained_native_threshold_aligns_ledgers_and_carries_pool_fractions(GameTestHelper h){
         var f=new Fixture(h);var p=f.player();var s=AbilityStorage.get(p);s.changeCategoryClassic("electromaster");
         f.portable(p,2340);h.assertTrue(DevelopmentController.startSkill(p,HighPowerSkills.FORKED_ARC),"real EM enrollment before retained-progress boundary probe");f.develop(p,78);
         s.addExperience(HighPowerSkills.FORKED_ARC,ClassicRules.levelThreshold(1,SkillCatalog.levelSkillCount(s))*.6);
@@ -125,19 +126,26 @@ public final class HighPowerDualPointLearningRuntimeTests {
         f.portable(p,2340);h.assertTrue(DevelopmentController.startSkill(p,HighPowerSkills.DUAL_POINT),"MD root requires finite paid learning");f.develop(p,78);
         h.assertTrue(s.levelProgress(SkillCatalog.levelSkillCount(s))==1&&HighPowerGrowth.values(p).position().compareTo(originalQ)==0,"native retained XP satisfies the smaller MD threshold without raising active q");
         var resources=p.getPersistentData().getCompound(HighPowerResources.DATA_KEY);resources.putDouble("cp",37);
-        String hp=HighPowerCombat.healthText(p),maximum=HighPowerCombat.maxHealthText(p);var shield=HighPowerCombat.shield(p);
+        var healthFraction=CityNpcPower.health(p).divide(CityNpcPower.maxHealth(p),MathContext.DECIMAL128);
+        var shieldFraction=HighPowerCombat.shield(p).divide(new BigDecimal(HighPowerCombat.maxShieldText(p)),MathContext.DECIMAL128);
         var battery=f.portable(p,7800);h.assertTrue(DevelopmentController.startLevel(p),"native threshold authorizes the ordinary finite level action");f.develop(p,259);
         h.assertTrue(s.level==1&&HighPowerCombat.earnedLevel(p)==1&&battery.energy()==30,"real integer level remains locked before final paid stimulation tick");f.develop(p,1);
         h.assertTrue(s.level==2&&HighPowerCombat.earnedLevel(p)==2&&battery.energy()==0&&DevelopmentController.process(p).state()==DevelopmentProcess.State.DONE,"ten native portable stimulations certify LV2 only after exactly 7800 IF");
-        h.assertTrue(HighPowerGrowth.values(p).position().compareTo(originalQ)==0&&HighPowerCombat.earnedGrowthPosition(p).compareTo(originalQ)==0,"paid level widens the future ceiling and preserves lagging q/Q continuously");
-        h.assertTrue(hp.equals(HighPowerCombat.healthText(p))&&maximum.equals(HighPowerCombat.maxHealthText(p))&&shield.equals(HighPowerCombat.shield(p))&&HighPowerResources.cp(p)==37,"paid level grants no exact HP/shield/CP or retained-progress capacity catch-up");
+        h.assertTrue(HighPowerGrowth.values(p).position().compareTo(BigDecimal.TWO)==0&&HighPowerCombat.earnedGrowthPosition(p).compareTo(BigDecimal.TWO)==0,"paid LV2 commits both growth ledgers");
+        h.assertTrue(CityNpcPower.maxHealth(p).compareTo(new BigDecimal("3560"))==0&&HighPowerResources.cp(p)==37,"paid level applies LV2 health and retains CP balance");
+        var currentHealthFraction=CityNpcPower.health(p).divide(CityNpcPower.maxHealth(p),MathContext.DECIMAL128);
+        var currentShieldFraction=HighPowerCombat.shield(p).divide(new BigDecimal(HighPowerCombat.maxShieldText(p)),MathContext.DECIMAL128);
+        h.assertTrue(currentHealthFraction.subtract(healthFraction).abs().doubleValue()<1e-12
+                && currentShieldFraction.subtract(shieldFraction).abs().doubleValue()<1e-12,"paid level preserves health and shield fractions");
         s.addExperience(HighPowerSkills.DUAL_POINT,ClassicRules.levelThreshold(2,SkillCatalog.levelSkillCount(s))*.1);
         var earned=HighPowerCombat.earnedGrowthPosition(p);double cpMaximum=HighPowerGrowth.values(p).cpMaximum();
-        h.assertTrue(earned.compareTo(originalQ)>0&&earned.compareTo(BigDecimal.TWO)<0,"actual new LV2 XP advances the lagging coordinate without jumping to its integer unlock");
+        h.assertTrue(earned.compareTo(BigDecimal.TWO)>0&&earned.compareTo(BigDecimal.valueOf(3))<0,"actual new LV2 XP advances the committed coordinate continuously");
         s.setLevel(1);
         h.assertTrue(HighPowerGrowth.values(p).position().compareTo(BigDecimal.ONE)==0&&HighPowerCombat.earnedGrowthPosition(p).compareTo(earned)==0,"raw rollback clamps active q to the lower level and retains earned capacity Q");
         s.setLevel(2);
         h.assertTrue(HighPowerGrowth.values(p).position().compareTo(BigDecimal.ONE)==0,"raw level increase cannot recover the discarded active fraction");
+        String hp=HighPowerCombat.healthText(p);
+        var shield=HighPowerCombat.shield(p);
         var restored=f.reload(p);var loaded=AbilityStorage.get(restored);
         h.assertTrue(loaded.level==2&&HighPowerGrowth.values(restored).position().compareTo(BigDecimal.ONE)==0&&HighPowerCombat.earnedGrowthPosition(restored).compareTo(earned)==0,"actual native entity save/load preserves lagging active q and global earned Q");
         h.assertTrue(HighPowerGrowth.values(restored).cpMaximum()==cpMaximum&&HighPowerResources.cp(restored)==37&&hp.equals(HighPowerCombat.healthText(restored))&&shield.equals(HighPowerCombat.shield(restored)),"reload never refills balances or shrinks previously earned CP capacity");

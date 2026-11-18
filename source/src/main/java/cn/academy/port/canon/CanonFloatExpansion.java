@@ -175,7 +175,7 @@ public final class CanonFloatExpansion {
             return eligible(p,p,id,true)?List.of(p):List.of();
         if(id.equals("float_hover_field")||id.equals("float_rescue_field")){
             double radius=cn.academy.port.macro.MacroSkillRules.area(id,AbilityStorage.get(p).exp(id),number(id,"radius"));
-
+            
             var found=p.serverLevel().getEntitiesOfClass(LivingEntity.class,p.getBoundingBox().inflate(radius),e->eligible(p,e,id,true)&&p.distanceToSqr(e)<=radius*radius);
             if(found.size()>64&&!cn.academy.port.macro.MacroSkillRules.ultimate(id))return List.of();found.sort(Comparator.comparing(Entity::getUUID));
             return List.copyOf(found.subList(0,Math.min(found.size(),integer(id, "target_cap"))));

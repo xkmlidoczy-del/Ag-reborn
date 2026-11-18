@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "aca_omnitrix:crash_pod",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 27,
+    "separation": 11,
+    "salt": 176431
+  }
+}

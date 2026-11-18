@@ -16,5 +16,6 @@ final class CityNpcMemory extends SavedData {
     static CityNpcMemory get(ServerLevel level){return level.getDataStorage().computeIfAbsent(FACTORY,"academy_city_people");}
     CompoundTag read(String key){var tag=residents.get(key);return tag==null?new CompoundTag():tag.copy();}
     void write(String key,CompoundTag tag){if(!key.isEmpty()){residents.put(key,tag.copy());setDirty();}}
+    void forget(String key){if(residents.remove(key)!=null)setDirty();}
     @Override public CompoundTag save(CompoundTag tag,HolderLookup.Provider lookup){residents.forEach(tag::put);return tag;}
 }

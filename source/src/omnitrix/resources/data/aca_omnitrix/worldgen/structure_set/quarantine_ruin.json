@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "aca_omnitrix:quarantine_ruin",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 43,
+    "separation": 16,
+    "salt": 821031
+  }
+}

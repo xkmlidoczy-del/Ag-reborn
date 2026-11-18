@@ -1,5 +1,8 @@
 package cn.academy.port.city;
 
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectMaps;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,8 +59,8 @@ final class CityServicePlan {
     record Column(Map<Integer, BlockState> states, int top) { BlockState block(int y) { return states.get(y); } }
     private static long key(int x, int z) { return ((long)x << 32) ^ (z & 0xffffffffL); }
     private static final class Layout {
-        static final Map<Long, Column> COLUMNS = build();
-        private static Map<Long, Column> build() {
+        static final Long2ObjectMap<Column> COLUMNS = build();
+        private static Long2ObjectMap<Column> build() {
             var columns = new HashMap<Long, Map<Integer, BlockState>>();
             // The station service kiosk occupies a previously unfurnished plaza edge.
             for (int x=-82; x<=-71; x++) for (int z=428; z<=437; z++) {
@@ -122,9 +125,9 @@ final class CityServicePlan {
                 put(columns, site.home().above(4), lamp);
                 if (site.waiting()!=null) put(columns, site.waiting().below(), Blocks.LIGHT_BLUE_CONCRETE.defaultBlockState());
             }
-            var result = new HashMap<Long, Column>();
-            columns.forEach((k, v) -> result.put(k, new Column(Map.copyOf(v), v.keySet().stream().mapToInt(Integer::intValue).max().orElse(0))));
-            return Map.copyOf(result);
+            var result = new Long2ObjectOpenHashMap<Column>(columns.size());
+            columns.forEach((k, v) -> result.put(k.longValue(), new Column(Map.copyOf(v), v.keySet().stream().mapToInt(Integer::intValue).max().orElse(0))));
+            return Long2ObjectMaps.unmodifiable(result);
         }
         private static void put(Map<Long, Map<Integer, BlockState>> columns, BlockPos pos, BlockState state) {
             columns.computeIfAbsent(key(pos.getX(),pos.getZ()), ignored -> new HashMap<>()).put(pos.getY(),state);

@@ -21,6 +21,7 @@ import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
@@ -78,7 +79,9 @@ public final class FaunaIntegrationRuntimeTests {
         var id = ResourceLocation.fromNamespaceAndPath(FAUNA, "sika_deer");
         var animal = BuiltInRegistries.ENTITY_TYPE.get(id);
         var feet = new BlockPos(8, 180, 8);
-        overworld.getChunkAt(feet);
+        var biome = overworld.registryAccess().registryOrThrow(Registries.BIOME)
+                .getHolderOrThrow(net.minecraft.world.level.biome.Biomes.FOREST);
+        overworld.getChunkAt(feet).fillBiomesFromNoise((x,y,z,sampler) -> biome, overworld.getChunkSource().randomState().sampler());
         overworld.setBlockAndUpdate(feet.below(), Blocks.GRASS_BLOCK.defaultBlockState());
         h.runAfterDelay(10, () -> {
             var rule = overworld.getGameRules().getRule(GameRules.RULE_DOMOBSPAWNING);
@@ -99,6 +102,49 @@ public final class FaunaIntegrationRuntimeTests {
             } finally {
                 rule.set(saved, server);
             }
+        });
+    }
+    @GameTest(template=TEMPLATE,batch=SUITE,timeoutTicks=100)
+    public static void every_fauna_species_matches_its_biome_pack_and_native_position_rule(GameTestHelper h) {
+        var world=h.getLevel();
+        var biomes=world.registryAccess().registryOrThrow(Registries.BIOME);
+        var at=new BlockPos(8,180,8);
+        var chunk=world.getChunkAt(at);
+        var noise=world.getChunkSource().randomState().sampler();
+        var rule=world.getGameRules().getRule(GameRules.RULE_DOMOBSPAWNING);
+        boolean saved=rule.get();
+        rule.set(true,world.getServer());
+        for (BlockPos cell:BlockPos.betweenClosed(at.offset(-5,-1,-5),at.offset(5,5,5)))
+            world.setBlock(cell,cell.getY()<at.getY()?Blocks.GRASS_BLOCK.defaultBlockState():Blocks.AIR.defaultBlockState(),2);
+        h.runAfterDelay(15,()->{
+            try {
+                int count=0;
+                var fauna=BuiltInRegistries.ENTITY_TYPE.entrySet().stream()
+                        .filter(entry->entry.getKey().location().getNamespace().equals(FAUNA)).toList();
+                for (var entry:fauna) {
+                    var id=entry.getKey().location();
+                    var type=entry.getValue();
+                    var habitat=TagKey.create(Registries.BIOME,id);
+                    var valid=biomes.getTag(habitat).orElseThrow().stream().findFirst().orElseThrow();
+                    var pack=valid.value().getMobSettings().getMobs(type.getCategory()).unwrap().stream()
+                            .filter(group->group.type==type).findFirst().orElseThrow();
+                    h.assertTrue(pack.getWeight().asInt()>0 && pack.minCount>=1 && pack.maxCount>=pack.minCount,id+" legal spawn group");
+                    chunk.fillBiomesFromNoise((x,y,z,sampler)->valid,noise);
+                    boolean aquatic=type.getCategory()==net.minecraft.world.entity.MobCategory.WATER_CREATURE;
+                    for (BlockPos cell:BlockPos.betweenClosed(at.offset(-5,-1,-5),at.offset(5,5,5)))
+                        world.setBlock(cell,aquatic?Blocks.WATER.defaultBlockState()
+                                :cell.getY()<at.getY()?Blocks.GRASS_BLOCK.defaultBlockState():Blocks.AIR.defaultBlockState(),2);
+                    h.assertTrue(SpawnPlacements.checkSpawnRules(type,world,MobSpawnType.NATURAL,at,world.random),
+                            id+" admits matching habitat and position");
+                    var invalid=biomes.holders().filter(b->!b.is(habitat)).findFirst().orElseThrow();
+                    chunk.fillBiomesFromNoise((x,y,z,sampler)->invalid,noise);
+                    h.assertFalse(SpawnPlacements.checkSpawnRules(type,world,MobSpawnType.NATURAL,at,world.random),id+" refuses wrong biome");
+                    h.assertTrue(SpawnPlacements.checkSpawnRules(type,world,MobSpawnType.SPAWN_EGG,at,world.random),id+" spawn egg uses explicit path");
+                    count++;
+                }
+                h.assertTrue(count==53,"all 53 Fauna species exercised");
+                h.succeed();
+            } finally { rule.set(saved,world.getServer()); }
         });
     }
 }

@@ -112,7 +112,7 @@ public final class AcademyClient {
             public boolean physicalDown(int key){return AcademyClient.physicalDown(key);}
             public boolean registeredMapping(String skill){return cn.academy.port.preset.PresetSkills.registeredMapping(state,skill);}
             public boolean eligible(ClassicClientInputBinding.Node node){
-                if(node.key<0&&fleetOwnsPointer()||menuMouseInputBlocked(node))return false;
+                if(node.key<0&&equipmentOwnsPointer()||menuMouseInputBlocked(node))return false;
                 if(node.skill.equals(cn.academy.port.highpower.DualPoint.ID))return dualPointDelegateEligible(mc,node.slot,node.key);
                 if(node.skill.equals(cn.academy.port.highpower.CirculationRelief.ID))return circulationReliefInputs.eligible(circulationReliefGates(mc,node.slot,node.key));
                 if(node.skill.equals(cn.academy.port.highpower.AutonomousVectorCircle.ID))return autonomousVectorCircleInputs.eligible(autonomousVectorCircleGates(mc,node.slot,node.key));
@@ -2856,8 +2856,18 @@ public final class AcademyClient {
     }
     /** Modern END adapter runs after all ordinary effect/context Post ticks. */
     @SubscribeEvent(priority=net.neoforged.bus.api.EventPriority.LOWEST) public static void finishContextDisposals(ClientTickEvent.Post event){if(binding!=null)binding.finishLocalDisposals();flushFoldedMirrorStart();flushDisintegrationSweepStart();flushParticleLaminateRelease();flushParticleLaminateStart();flushParticleLaminateRelease();flushDissipationCurtainRelease();flushDissipationCurtainStart();flushDissipationCurtainRelease();flushMulticoreCanopyRelease();flushMulticoreCanopyStart();flushMulticoreCanopyRelease();flushRecoveryMarkStart();flushReturnMarkStart();flushShortInterceptionStart();flushShortInterceptionRelease();flushCornerExchangeStart();flushCornerExchangeRelease();flushEmergencyReturnStart();flushEmergencyReturnRelease();flushMultidimensionalLandingArrayStart();flushMultidimensionalLandingArrayRelease();flushSpatialPincerStart();flushSpatialPincerRelease();flushSpatialRelayStart();flushSpatialRelayRelease();flushCrossSubstitutionStart();flushPhaseSidestepStart();flushDeflectionStrikeStart();flushYawPalmStart();flushYawPalmRelease();flushTrajectoryReturnStart();flushShearWindbladeStart();flushVectorCageInput();flushVectorParryRelease();flushVectorParryStart();flushVectorParryRelease();flushBrakingTouchRelease();flushBrakingTouchStart();flushBrakingTouchRelease();flushNewSkillRelease();flushNewSkillStart();flushNewSkillRelease();flushScatterLocatorRelease();flushScatterLocatorStart();flushScatterLocatorRelease();flushDisplacedProjectionStart();flushRemoteScatterRelayRelease();flushRemoteScatterRelayStart();flushRemoteScatterRelayRelease();}
-    private static boolean fleetOwnsPointer(){var p=Minecraft.getInstance().player;return p!=null&&(p.getMainHandItem().getItem() instanceof cn.academy.port.fleet.GunItem||p.getVehicle() instanceof cn.academy.port.fleet.LabVehicle);}
-    private static boolean overrides(KeyMapping vanilla){int key=sourceKey(vanilla.getKey());if(key<0&&fleetOwnsPointer())return false;for(int own:overrideKeys)if(own==key)return true;return false;}
+    private static final net.minecraft.tags.TagKey<net.minecraft.world.item.Item> OMNITRIX_POINTER_ITEMS =
+            net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM,
+                    net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("academy", "omnitrix_pointer_items"));
+
+    private static boolean equipmentOwnsPointer() {
+        var player = Minecraft.getInstance().player;
+        return player != null && (player.getMainHandItem().getItem() instanceof cn.academy.port.fleet.GunItem
+                || player.getVehicle() instanceof cn.academy.port.fleet.LabVehicle
+                || player.getMainHandItem().is(OMNITRIX_POINTER_ITEMS)
+                || player.getOffhandItem().is(OMNITRIX_POINTER_ITEMS));
+    }
+    private static boolean overrides(KeyMapping vanilla){int key=sourceKey(vanilla.getKey());if(key<0&&equipmentOwnsPointer())return false;for(int own:overrideKeys)if(own==key)return true;return false;}
     /** Source ControlOverrider suppresses vanilla mappings for bound delegates, even on cooldown. */
     @SubscribeEvent(priority=net.neoforged.bus.api.EventPriority.LOW) public static void suppressVanillaKeys(ClientTickEvent.Pre event){
         var mc=Minecraft.getInstance();synchronizeSession(mc);if(mc.player==null||mc.screen!=null)return;
@@ -2902,7 +2912,7 @@ public final class AcademyClient {
     }
     /** Callback-level mouse suppression also blocks vanilla before its click queue is populated. */
     @SubscribeEvent public static void suppressVanillaMouse(InputEvent.MouseButton.Pre event){
-        var mc=Minecraft.getInstance();if(mc.player==null||mc.level==null||mc.screen!=null||!state.activated||fleetOwnsPointer())return;
+        var mc=Minecraft.getInstance();if(mc.player==null||mc.level==null||mc.screen!=null||!state.activated||equipmentOwnsPointer())return;
         int source=ClassicPhysicalKeys.mouse(event.getButton());for(int key:overrideKeys)if(key==source){event.setCanceled(true);return;}
     }
     @SubscribeEvent public static void suppressVanillaInteraction(InputEvent.InteractionKeyMappingTriggered event){
@@ -3002,6 +3012,7 @@ public final class AcademyClient {
             cn.academy.port.city.defense.O5Effect.clientReceiver=cn.academy.port.client.city.o5.CombatEffects::accept;
             cn.academy.port.fleet.LabNetwork.clientAudioReceiver=cn.academy.port.fleet.client.FleetAudio::receive;
             cn.academy.port.titan.TitanFxPayload.clientReceiver=cn.academy.port.titan.TitanFxClient::accept;
+            cn.academy.port.titan.TitanPatternPayload.receiver=cn.academy.port.titan.TitanPatternRenderer::accept;
             event.enqueueWork(()->{
             ClassicEnergyUnitProperties.register();
             net.minecraft.client.renderer.item.ItemProperties.register(AcademyCraft.DEVELOPER.get(),ResourceLocation.fromNamespaceAndPath("academy","charge_icon"),(stack,level,entity,seed)->{int damage=(int)Math.round(13*(1-new cn.academy.port.develop.DeveloperItemEnergy(stack,cn.academy.port.develop.DeveloperType.PORTABLE).energy()/10000));return damage<3?2f:damage>10?0f:1f;});

@@ -69,12 +69,18 @@ public final class TitanImportRuntimeTests {
         var profile=TitanProfiles.get(id);
         helper.assertTrue(titan.getMaxHealth()==profile.health(),id+" has wrong health");
         helper.assertTrue(titan.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ARMOR)==profile.armor(),id+" has wrong armor");
-        for(TitanProfiles.Ability ability:new TitanProfiles.Ability[]{profile.first(),profile.second()}) {
+        helper.assertTrue(cn.academy.port.highpower.HighPowerCombat.level(titan)==profile.tier(),"fixed species tier");
+        helper.assertTrue(new java.math.BigDecimal(cn.academy.port.highpower.HighPowerCombat.maxHealthText(titan))
+                .compareTo(profile.encounterHealth())==0,"fixed species pool");
+        for(boolean second:new boolean[]{false,true}) {
+            var ability=second?profile.second():profile.first();
+            Vec3 aim=titan.position().add(0,1,23);
+            var zone=contactZone(helper,titan,second,aim);
+            Vec3 stand=midpoint(zone);
+            victim.moveTo(stand.x,stand.y-.6,stand.z,0,0);
             victim.setHealth(victim.getMaxHealth());victim.invulnerableTime=0;
-            Vec3 origin=ability.shape()==TitanProfiles.Shape.BEAM?TitanCombat.beamStart(titan):titan.position();
-            Vec3 target=ability.shape()==TitanProfiles.Shape.BEAM?victim.position().add(0,victim.getBbHeight()*.5,0):victim.position();
-            int hits=TitanCombat.resolve(helper.getLevel(),titan,ability,origin,target);
-            helper.assertTrue(hits==1 && victim.getHealth()<victim.getMaxHealth(),id+" skill failed: "+ability.name()+"; hits="+hits);
+            int hits=TitanCombat.resolve(helper.getLevel(),titan,ability,titan.position(),aim);
+            helper.assertTrue(hits>0 && victim.getHealth()<victim.getMaxHealth(),id+" skill contact "+ability.name()+" "+zone);
         }
         helper.assertTrue(titan.hurt(helper.getLevel().damageSources().genericKill(),5000),id+" lethal damage rejected");
         helper.assertTrue(!helper.getLevel().getEntitiesOfClass(ItemEntity.class,titan.getBoundingBox().inflate(3)).isEmpty(),id+" loot produced no items");
@@ -131,31 +137,29 @@ public final class TitanImportRuntimeTests {
         } finally {rule.set(previous,level.getServer());}
         frost.discard();helper.succeed();
     }
+    private static TitanPattern.Zone contactZone(GameTestHelper h,TitanEntity titan,boolean second,Vec3 aim) {
+        var ability=second?titan.profile().second():titan.profile().first();
+        int elapsed=TitanPattern.travelling(TitanPattern.move(titan.species(),second))?10:0;
+        return TitanPattern.sample(h.getLevel(),titan,second,titan.position(),aim,ability.windupTicks()+elapsed,elapsed)
+            .stream().filter(z->z.kind()!=TitanPattern.Kind.TRAIL).findFirst().orElseThrow();
+    }
+    private static Vec3 midpoint(TitanPattern.Zone z){
+        if(z.kind()==TitanPattern.Kind.ARC)return z.a().add(z.b().subtract(z.a()).normalize().scale((z.inner()+z.outer())*.5));
+        return z.a().lerp(z.b(),.5);
+    }
     private static void enlargedBoundary(GameTestHelper helper,String id) {
-        TitanEntity titan=helper.spawn(TitanBlocks.TYPES.get(id).get(),20,3,40);
+        TitanEntity titan=helper.spawn(TitanBlocks.TYPES.get(id).get(),30,12,30);
         titan.setNoAi(true);titan.setNoGravity(true);
-        IronGolem inside=helper.spawn(EntityType.IRON_GOLEM,40,3,40);
-        IronGolem outside=helper.spawn(EntityType.IRON_GOLEM,65,3,40);
-        inside.setNoAi(true);inside.setNoGravity(true);outside.setNoAi(true);outside.setNoGravity(true);
-        titan.setTarget(inside);
-        for(var a:new TitanProfiles.Ability[]{titan.profile().first(),titan.profile().second()}) {
-            inside.setHealth(inside.getMaxHealth());outside.setHealth(outside.getMaxHealth());
-            inside.invulnerableTime=0;outside.invulnerableTime=0;
-            Vec3 base=titan.position(),origin,end;
-            if(a.shape()==TitanProfiles.Shape.BEAM) {
-                origin=base.add(0,inside.getBbHeight()*.5,0);end=origin.add(38,0,0);
-                inside.moveTo(base.x+20,base.y,base.z+a.radius()-2,0,0);
-                outside.moveTo(base.x+20,base.y,base.z+a.radius()+4,0,0);
-            } else {
-                origin=base;end=base;
-                inside.moveTo(base.x+a.radius()-2,base.y,base.z,0,0);
-                outside.moveTo(base.x+a.radius()+4,base.y,base.z,0,0);
-            }
-            int hits=TitanCombat.resolve(helper.getLevel(),titan,a,origin,end);
-            helper.assertTrue(hits==1 && inside.getHealth()<inside.getMaxHealth(),id+" failed enlarged boundary "+a.name()+" hits="+hits);
-            helper.assertTrue(outside.getHealth()==outside.getMaxHealth(),id+" hit outside advertised radius "+a.name());
+        for(boolean second:new boolean[]{false,true}){
+            var z=contactZone(helper,titan,second,titan.position().add(0,0,23));
+            var axis=z.b().subtract(z.a()).normalize();
+            Vec3 direction=z.kind()==TitanPattern.Kind.ARC?axis:new Vec3(-axis.z,0,axis.x).normalize();
+            Vec3 start=z.kind()==TitanPattern.Kind.ARC?z.a():midpoint(z);
+            Vec3 inside=start.add(direction.scale(z.outer()-.3)),outside=start.add(direction.scale(z.outer()+.3));
+            helper.assertTrue(z.touches(new net.minecraft.world.phys.AABB(inside,inside).inflate(.02)),id+" lost inner edge "+z);
+            helper.assertTrue(!z.touches(new net.minecraft.world.phys.AABB(outside,outside).inflate(.02)),id+" passed outer edge "+z);
         }
-        titan.discard();inside.discard();outside.discard();helper.succeed();
+        titan.discard();helper.succeed();
     }
     private static void environmentSignature(GameTestHelper helper,String id) {
         var level=helper.getLevel();TitanEntity titan=helper.spawn(TitanBlocks.TYPES.get(id).get(),20,3,40);
@@ -190,6 +194,12 @@ public final class TitanImportRuntimeTests {
             titan.discard();target.discard();helper.succeed();
         });
     }
+    private static void placeAtLimb(TitanEntity titan,IronGolem contact,boolean second,Vec3 aim){
+        var shape=TitanBoneRig.shapes(titan.species(),second,.78,titan.position(),titan.yBodyRot,titan.getScale())
+            .stream().min(java.util.Comparator.comparingDouble(a->a.bounds().getCenter().distanceToSqr(aim))).orElseThrow();
+        Vec3 at=shape.bounds().getCenter();contact.moveTo(at.x,at.y-1,at.z,0,0);contact.setDeltaMovement(Vec3.ZERO);
+        contact.setHealth(contact.getMaxHealth());contact.invulnerableTime=0;
+    }
     private static void motionAttackCycle(GameTestHelper helper,String id) {
         TitanEntity titan=helper.spawn(TitanBlocks.TYPES.get(id).get(),20,20,40);
         titan.setNoGravity(true);titan.setPersistenceRequired();
@@ -203,6 +213,7 @@ public final class TitanImportRuntimeTests {
             var cooldown=TitanEntity.class.getDeclaredField("meleeCooldown");cooldown.setAccessible(true);cooldown.setInt(titan,0);
         } catch(ReflectiveOperationException e){throw new IllegalStateException(e);}
         Vec3 start=titan.position();titan.setTarget(target);
+        var contact=helper.spawn(EntityType.IRON_GOLEM,52,30,55);contact.setNoAi(true);contact.setNoGravity(true);
         double secondDistance=switch(id) {
             case "lava_rex" -> 18;
             case "frost_bastion" -> 14;
@@ -215,9 +226,9 @@ public final class TitanImportRuntimeTests {
             var source=target.getLastDamageSource();
             helper.assertTrue(source==null || source.getEntity()!=titan,id+" hit before the windup");
         });
-        helper.runAtTickTime(12,()-> {target.setHealth(target.getMaxHealth());target.invulnerableTime=0;});
+        helper.runAtTickTime(12,()->placeAtLimb(titan,contact,false,target.position()));
         helper.runAtTickTime(22,()-> {
-            helper.assertTrue(target.getHealth()<target.getMaxHealth()-2,id+" first strike missed: health="+target.getHealth());
+            helper.assertTrue(contact.getHealth()<contact.getMaxHealth()-2,id+" first strike missed: health="+contact.getHealth());
             helper.assertTrue(titan.position().distanceToSqr(start)>.09,id+" did not perform the short lunge");
             helper.assertTrue(nextMeleeIsB(titan),id+" did not choose the first attack variant");
         });
@@ -225,10 +236,11 @@ public final class TitanImportRuntimeTests {
             target.setHealth(target.getMaxHealth());target.invulnerableTime=0;
             target.moveTo(titan.getX()+secondDistance,titan.getY(),titan.getZ(),0,0);target.setDeltaMovement(Vec3.ZERO);
         });
+        helper.runAtTickTime(72,()->placeAtLimb(titan,contact,true,target.position()));
         helper.runAtTickTime(90,()-> {
-            helper.assertTrue(target.getHealth()<target.getMaxHealth()-2,id+" second strike missed: health="+target.getHealth());
+            helper.assertTrue(contact.getHealth()<contact.getMaxHealth()-2,id+" second strike missed: health="+contact.getHealth());
             helper.assertTrue(!nextMeleeIsB(titan),id+" did not alternate to the second attack variant");
-            titan.discard();target.discard();helper.succeed();
+            titan.discard();target.discard();contact.discard();helper.succeed();
         });
     }
     private static boolean nextMeleeIsB(TitanEntity titan) {

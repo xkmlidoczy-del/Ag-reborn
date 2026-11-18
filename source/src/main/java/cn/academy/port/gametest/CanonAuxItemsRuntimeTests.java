@@ -19,6 +19,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.gametest.framework.GameTestInfo;
+import net.minecraft.gametest.framework.GameTestListener;
+import net.minecraft.gametest.framework.GameTestRunner;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
@@ -341,19 +344,27 @@ public final class CanonAuxItemsRuntimeTests {
     @GameTest(template = "empty", batch = "canon_puppet_attack", timeoutTicks = 140)
     public static void puppet_spares_the_caster_and_fights_the_nearest_enemy(GameTestHelper h) {
         var f = puppetCaster(h);
+        for (int x = 1; x <= 11; x++) for (int z = 1; z <= 11; z++)
+            h.setBlock(new BlockPos(x, 2, z), net.minecraft.world.level.block.Blocks.STONE);
         Zombie puppet = armoured(h, new Vec3(6, 3, 8.5)), enemy = armoured(h, new Vec3(9.5, 3, 8.5));
-        try {
-            double cp = HighPowerResources.cp(f.p);
-            h.assertTrue(CanonSkillsCombatA.cast(f.p, "mental_puppet"), "puppet accepted");
-            h.assertTrue(HighPowerResources.cp(f.p) < cp, "real CP debit");
-            h.assertTrue(CanonPuppets.isPuppet(puppet) && CanonPuppets.owns(f.p), "the creature in sight is now the puppet");
-            float health = enemy.getHealth();
-            h.runAtTickTime(40, () -> {
-                h.assertTrue(puppet.getTarget() != f.p, "the puppet never targets its caster");
-                h.assertTrue(enemy.getHealth() < health || enemy.isDeadOrDying(), "the puppet hurt the other enemy");
-                f.close(); puppet.discard(); enemy.discard(); h.succeed();
-            });
-        } catch (Throwable failure) { f.close(); puppet.discard(); enemy.discard(); throw failure; }
+        enemy.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED).setBaseValue(0);
+        h.testInfo.addListener(new GameTestListener() {
+            private void close() { puppet.discard(); enemy.discard(); f.close(); }
+            public void testStructureLoaded(GameTestInfo info) {}
+            public void testPassed(GameTestInfo info, GameTestRunner runner) { close(); }
+            public void testFailed(GameTestInfo info, GameTestRunner runner) { close(); }
+            public void testAddedForRerun(GameTestInfo info, GameTestInfo next, GameTestRunner runner) {}
+        });
+        double cp = HighPowerResources.cp(f.p);
+        h.assertTrue(CanonSkillsCombatA.cast(f.p, "mental_puppet"), "puppet accepted");
+        h.assertTrue(HighPowerResources.cp(f.p) < cp, "real CP debit");
+        h.assertTrue(CanonPuppets.isPuppet(puppet) && CanonPuppets.owns(f.p), "caster acquired the visible creature");
+        float health = enemy.getHealth();
+        h.succeedWhen(() -> {
+            h.assertTrue(puppet.getTarget() != f.p, "puppet spares its caster");
+            h.assertTrue(enemy.getHealth() < health && enemy.getLastHurtByMob() == puppet,
+                    "the puppet's own native attack hit its enemy");
+        });
     }
 
     @GameTest(template = "empty", batch = "canon_aux", timeoutTicks = 140)

@@ -4,6 +4,7 @@ import cn.academy.port.worldboss.FxPacket;
 import cn.academy.port.worldboss.WorldBossContent;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -18,7 +19,13 @@ public class BossRenderer extends EntityRenderer<WorldBossContent.Boss> {
  static final ResourceLocation EM=ResourceLocation.fromNamespaceAndPath("academy","worldboss/emissive.png");
  static Mesh[] meshes;static Matrix4f[][][] clips;
  record Mesh(int bone,boolean fx,float[] v){}
- public BossRenderer(EntityRendererProvider.Context c){super(c);shadowRadius=7;load();var tm=net.minecraft.client.Minecraft.getInstance().getTextureManager();tm.register(TEX,new BossTexture());tm.register(EM,new BossTexture("emissive.png"));}
+ public BossRenderer(EntityRendererProvider.Context c){super(c);shadowRadius=7;}
+ private static void prepareAssets() {
+  load();
+  var textures=Minecraft.getInstance().getTextureManager();
+  if (!(textures.getTexture(TEX,null) instanceof BossTexture)) textures.register(TEX,new BossTexture());
+  if (!(textures.getTexture(EM,null) instanceof BossTexture)) textures.register(EM,new BossTexture("emissive.png"));
+ }
  static void load(){if(meshes!=null)return;try(var in=new DataInputStream(new BufferedInputStream(BossRenderer.class.getResourceAsStream("/assets/academy/worldboss/model.bin"),1<<16))){
   int bones=in.readInt(),n=in.readInt();meshes=new Mesh[n];for(int i=0;i<n;i++){int bone=in.readInt();boolean fx=in.readInt()!=0;float[] v=new float[24*8];for(int j=0;j<v.length;j++)v[j]=in.readFloat();meshes[i]=new Mesh(bone,fx,v);}
   clips=new Matrix4f[in.readInt()][][];for(int a=0;a<clips.length;a++){clips[a]=new Matrix4f[in.readInt()][bones];for(int f=0;f<clips[a].length;f++)for(int b=0;b<bones;b++){float[] v=new float[12];for(int k=0;k<12;k++)v[k]=in.readFloat();clips[a][f][b]=new Matrix4f(v[0],v[3],v[6],0,v[1],v[4],v[7],0,v[2],v[5],v[8],0,v[9],v[10],v[11],1);}}
@@ -27,6 +34,7 @@ public class BossRenderer extends EntityRenderer<WorldBossContent.Boss> {
  static Matrix4f[] pose(int clip,float frame){Matrix4f[][] c=clips[Math.max(0,Math.min(clip,clips.length-1))];frame=Mth.clamp(frame,0,c.length-1);int f=Math.max(0,Math.min((int)frame,c.length-1)),n=Math.min(f+1,c.length-1);float t=frame-f;Matrix4f[] m=new Matrix4f[c[f].length];for(int b=0;b<m.length;b++)m[b]=new Matrix4f(c[f][b]).lerp(c[n][b],t);return m;}
  public boolean shouldRender(WorldBossContent.Boss e,net.minecraft.client.renderer.culling.Frustum f,double x,double y,double z){return f.isVisible(e.getBoundingBox().inflate(80));}
  public void render(WorldBossContent.Boss e,float yaw,float partial,PoseStack ps,MultiBufferSource buffers,int light){
+  prepareAssets();
   int clip=e.clip();float frame=e.frame(partial);Matrix4f[] mats=pose(clip,frame);
   int overlay=OverlayTexture.pack(OverlayTexture.u(0),OverlayTexture.v(e.hurtTime>0||e.deathTime>0));
   if(e.blendFrom>=0){float age=(float)(e.level().getGameTime()-e.blendStart)+partial;if(age<9){float w=1-Mth.clamp(age/9f,0,1);w=w*w*(3-2*w);Matrix4f[] old=pose(e.blendFrom,e.blendFromFrame+age);for(int b=0;b<mats.length;b++)mats[b]=new Matrix4f(mats[b]).lerp(old[b],w);}else e.blendFrom=-1;}

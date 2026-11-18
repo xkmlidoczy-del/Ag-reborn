@@ -23,6 +23,32 @@ public final class TitanProfiles {
     public record Profile(String id, String name, int color, double health, double armor,
                           double attack, double speed, Mobility mobility, Environment environment,
                           Ability first, Ability second) {
+        public int tier() {
+            return switch (id) {
+                case "myco_frog","crystal_mantis","grove_titan","dune_scorpion","astral_moth","tidal_sail" -> 3;
+                default -> 4;
+            };
+        }
+        public java.math.BigDecimal damageUnit() {
+            return cn.academy.port.highpower.core.HighPowerLevel.forLevel(tier()).damage();
+        }
+        public java.math.BigDecimal nativeHealthUnit() {
+            // The same encounter factor applies to ordinary post-armor damage and healing.
+            // A sword therefore removes the same fraction of the bar as in legacy worlds.
+            int percent = switch (id) {
+                case "myco_frog" -> 125;
+                case "grove_titan" -> 108;
+                case "astral_moth" -> 112;
+                case "tidal_sail" -> 85;
+                case "frost_bastion" -> 96;
+                case "clockwork_rex", "ironback" -> 92;
+                default -> 100;
+            };
+            return damageUnit().multiply(java.math.BigDecimal.valueOf(percent,2)).divide(java.math.BigDecimal.valueOf(20));
+        }
+        public java.math.BigDecimal encounterHealth() {
+            return nativeHealthUnit().multiply(java.math.BigDecimal.valueOf(health));
+        }
         public Profile {
             if (id.isBlank() || health < 1 || health > 1024 || armor < 0 || armor > 30 || attack <= 0 || speed <= 0)
                 throw new IllegalArgumentException("Invalid titan profile: " + id);

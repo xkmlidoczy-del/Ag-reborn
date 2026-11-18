@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:armor_stand",
+    {
+      "id": "academy:urban_calibrator",
+      "required": false
+    }
+  ]
+}

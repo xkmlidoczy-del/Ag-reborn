@@ -34,15 +34,10 @@ public final class TitanBoneRig {
     private record Key(double time,Vec3 value) {}
     private record Channels(Track position,Track rotation,Track scale) {}
     private record Clip(Map<String,Channels> channels) {}
-    private record Model(Map<String,Bone> bones,Clip a,Clip b) {}
+    private record Model(Map<String,Bone> bones,Clip a,Clip b,Clip skillA,Clip skillB) {}
 
     public static boolean supported(String id,boolean variantB) {
-        return switch(id) {
-            case "lava_rex","frost_bastion","grove_titan","tidal_sail" -> variantB;
-            case "dune_scorpion" -> !variantB;
-            case "ironback" -> true;
-            default -> false;
-        };
+        return TitanProfiles.all().containsKey(id);
     }
     public static boolean turnsTailToTarget(String id,boolean variantB) {
         return (variantB && switch(id) {
@@ -58,13 +53,27 @@ public final class TitanBoneRig {
                 for(int i=0;i<4;i++)names.add("tendril_"+j+"_"+i);
             return List.copyOf(names);
         }
+        if (!turnsTailToTarget(id,variantB)) return switch (id) {
+            case "crystal_mantis" -> variantB ? List.of("claw_-1","claw_1") : List.of("claw_-1");
+            case "clockwork_rex" -> List.of("cutter_claw_-1","cutter_claw_1");
+            case "dune_scorpion" -> List.of("claw_-1","claw_1","finger_-1_-1","finger_-1_1","finger_1_-1","finger_1_1");
+            case "myco_frog" -> variantB ? List.of("foot_0_-1","foot_0_1") : List.of("tongue");
+            case "ossuary_dragon" -> variantB ? List.of("head","jaw") : List.of("claw_0_-1","claw_0_1","claw_1_-1","claw_1_1");
+            case "astral_moth" -> variantB ? List.of("primary_wing_-1","primary_wing_1","primary_tip_-1","primary_tip_1") : List.of("proboscis");
+            case "storm_drake" -> variantB ? List.of("wing_-1","wing_1","wing_tip_-1","wing_tip_1") : List.of("head","jaw");
+            default -> List.of("head","jaw");
+        };
         int count=switch(id){case "lava_rex" -> 6;case "frost_bastion" -> 3;
             case "grove_titan","dune_scorpion" -> 5;case "tidal_sail" -> 7;default -> 0;};
         var names=new ArrayList<String>();for(int i=0;i<count;i++)names.add("tail_"+i);return List.copyOf(names);
     }
     /** Raw JSON-space offsets and degrees. X/Y rotation signs are applied by the renderer. */
     public static Map<String,Pose> poses(String id,boolean variantB,double seconds) {
-        Model m=model(id);Clip clip=variantB?m.b():m.a();
+        return poses(id,variantB,seconds,false);
+    }
+    public static Map<String,Pose> poses(String id,boolean variantB,double seconds,boolean skill) {
+        Model m=model(id);
+        Clip clip=skill?(variantB?m.skillB():m.skillA()):(variantB?m.b():m.a());
         Map<String,Pose> result=new LinkedHashMap<>();
         // A colliding appendage and all its parents must use the same pose. All
         // animated bones are included so the whole pose shares one server clock.
@@ -87,7 +96,7 @@ public final class TitanBoneRig {
             Bone bone=model.bones().get(name);
             if(bone==null)throw new IllegalStateException("Missing collision bone "+id+"/"+name);
             Matrix4d matrix=boneMatrix(model,bone,pose,root,matrices);
-            String rootName=name.startsWith("tail_")?"tail_0":name.substring(0,name.lastIndexOf('_')+1)+"0";
+            String rootName=name.startsWith("tail_")?"tail_0":name.startsWith("tendril_")?name.substring(0,name.lastIndexOf('_')+1)+"0":bone.parent();
             Bone limbRoot=model.bones().get(rootName);
             Matrix4d rootMatrix=boneMatrix(model,limbRoot,pose,root,matrices);
             Vector3d p=new Vector3d(limbRoot.pivot().x,limbRoot.pivot().y,limbRoot.pivot().z);
@@ -116,6 +125,22 @@ public final class TitanBoneRig {
         Matrix4d matrix=boneMatrix(model,bone,poses(id,variantB,seconds),root,new HashMap<>());
         Vector3d p=matrix.transformPosition(new Vector3d(bone.pivot().x+offset.x,bone.pivot().y+offset.y,bone.pivot().z+offset.z));
         return new Vec3(p.x,p.y,p.z);
+    }
+    public static Map<String,Vec3> skillSockets(TitanEntity titan,boolean second,double seconds,String... names) {
+        String id=titan.species(); Model model=model(id);
+        var pose=poses(id,second,seconds,true);
+        var root=new Matrix4d().translate(titan.getX(),titan.getY(),titan.getZ()).scale(titan.getScale())
+                .rotateY(Math.toRadians(180-titan.yBodyRot)).translate(0,.01,0);
+        var matrices=new HashMap<String,Matrix4d>();
+        var result=new HashMap<String,Vec3>();
+        for(String name:names) {
+            Bone bone=model.bones().get(name);
+            if(bone==null)throw new IllegalArgumentException("Unknown skill socket "+id+"/"+name);
+            Vec3 p=bone.pivot();
+            Vector3d v=boneMatrix(model,bone,pose,root,matrices).transformPosition(new Vector3d(p.x,p.y,p.z));
+            result.put(name,new Vec3(v.x,v.y,v.z));
+        }
+        return result;
     }
     /** Pivot and three one-block basis endpoints, useful for renderer alignment tests. */
     public static List<Vec3> worldBoneFrame(String id,boolean variantB,double seconds,Vec3 entityPosition,float bodyYaw,float entityScale,String boneName) {
@@ -160,7 +185,7 @@ public final class TitanBoneRig {
         }
         JsonObject animations=json("animations/"+id+".animation.json").getAsJsonObject("animations");
         return new Model(Map.copyOf(bones),clip(animations.getAsJsonObject("animation."+id+".attack_a")),
-            clip(animations.getAsJsonObject("animation."+id+".attack_b")));
+            clip(animations.getAsJsonObject("animation."+id+".attack_b")),clip(animations.getAsJsonObject("animation."+id+".skill_a")),clip(animations.getAsJsonObject("animation."+id+".skill_b")));
     }
     private static Cube cube(JsonObject c) {
         Vec3 origin=vec(c.get("origin"),Vec3.ZERO),size=vec(c.get("size"),Vec3.ZERO);

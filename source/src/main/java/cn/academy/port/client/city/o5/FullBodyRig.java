@@ -14,8 +14,8 @@ import java.nio.charset.StandardCharsets;
 
 /** 18 rigid joints; two-bone arms/legs and independently planted feet. */
 public final class FullBodyRig {
- static final ResourceLocation BASE=id("textures/item/armor/black_gold.png"),GLOW=id("textures/item/armor/black_gold_glowmask.png");
- static final ResourceLocation SHEEN=id("textures/item/armor/black_gold_sheen.png");
+ static final ResourceLocation BASE=id("textures/models/armor/black_gold.png"),GLOW=id("textures/models/armor/black_gold_glowmask.png");
+ static final ResourceLocation SHEEN=id("textures/models/armor/black_gold_sheen.png");
  public static int sheenFrames;public static float maximumSheenAlpha;public static final Set<Integer> sheenPhases=new TreeSet<>();
  record Part(int texture,float[] vertices){}record Group(String name,Vector3f pivot,List<Part> parts){}
  record Chain(Vector3f start,Vector3f middle,Vector3f end,Quaternionf upper,Quaternionf lower){}
@@ -106,7 +106,7 @@ public final class FullBodyRig {
    sheen(ps,buffers,pose,frame,now,charged);
    pass(ps,buffers,pose,0,RenderType.entityTranslucent(GLOW),0xF000F0,0xFFFFFFFF);
    int phase=Math.floorMod((int)(now*(charged||evade?.8:.22)),8),alpha=(int)(255*(evade?.93:charged?.80:.32));
-   var texture=id("textures/item/armor/black_gold_flow_"+phase+".png");pass(ps,buffers,pose,0,RenderType.entityTranslucent(texture),0xF000F0,(alpha<<24)|0xFFFFFF);
+   var texture=id("textures/models/armor/black_gold_flow_"+phase+".png");pass(ps,buffers,pose,0,RenderType.entityTranslucent(texture),0xF000F0,(alpha<<24)|0xFFFFFF);
    glove(ps,buffers,pose.get("lHand"),light,true,frame.leftCurl,frame.leftIndex);glove(ps,buffers,pose.get("rHand"),light,false,frame.rightCurl,frame.rightIndex);
    for(String side:List.of("l","r")){boolean left=side.equals("l");ps.pushPose();ps.mulPose(pose.get(side+"Hand"));ps.translate(0,0,-.02);ps.mulPose(com.mojang.math.Axis.XP.rotationDegrees(-90));FistFlames.draw(ps,buffers,now,frame.energyDrive,frame.energyTurn,left?frame.leftCurl:frame.rightCurl,left,false,O5CombatVisuals.contactAge(frame.owner,now),frame.move);ps.popPose();}
   }

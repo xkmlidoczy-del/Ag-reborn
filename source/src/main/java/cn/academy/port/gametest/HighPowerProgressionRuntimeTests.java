@@ -49,10 +49,11 @@ public final class HighPowerProgressionRuntimeTests {
         h.assertTrue(wire(p,"develop_level",""),"real acquisition request accepted");f.develop(p,130);
         h.assertTrue(state.category.equals("electromaster")&&state.level==1,"factor consumed by real finite acquisition");
         h.assertTrue(p.getInventory().items.get(1).isEmpty(),"factor inventory slot actually consumed");
-        h.assertFalse(HighPowerCombat.enabled(p),"category acquisition alone does not opt into high power");
+        h.assertTrue(HighPowerCombat.enabled(p)&&HighPowerCombat.earnedLevel(p)==1,"finite acquisition commits the rank-one combat ledger");
+        h.assertTrue(HighPowerGrowth.values(p).damage().compareTo(HighPowerLevel.LV1.damage())==0,"rank-one damage basis is available immediately");
         h.assertTrue(wire(p,"learn",HighPowerSkills.FORKED_ARC),"portable learning ingress accepted");f.develop(p,77);
-        h.assertFalse(state.learned(HighPowerSkills.FORKED_ARC)||HighPowerCombat.enabled(p),"no early skill or health grant");
-        f.develop(p,1);h.assertTrue(state.learned(HighPowerSkills.FORKED_ARC)&&HighPowerCombat.enabled(p),"real completion enrolls and learns once");
+        h.assertFalse(state.learned(HighPowerSkills.FORKED_ARC),"no early skill grant");
+        f.develop(p,1);h.assertTrue(state.learned(HighPowerSkills.FORKED_ARC)&&HighPowerCombat.earnedLevel(p)==1,"real completion learns once and keeps the committed rank");
         h.assertTrue(wire(p,"learn",HighPowerSkills.MAGNETIC_BRACER),"second actual learning request");f.develop(p,78);
         h.assertTrue(state.learned(HighPowerSkills.MAGNETIC_BRACER),"bracer learned through its prerequisite");
         near(h,energy.energy(),1420,"five acquisition plus six learning stimulations use exactly 8580 IF");

@@ -398,6 +398,7 @@ public final class CanonSkillsARuntimeTests {
         var owner = new Fixture(h, "nitrogen_armor", "nitrogen_armor");
         var ally = new Fixture(h, "aero_hand", "aero_jet");
         Arrow arrow = new Arrow(EntityType.ARROW, owner.player.serverLevel());
+        Arrow teammateArrow = new Arrow(EntityType.ARROW, owner.player.serverLevel());
         var scoreboard = owner.player.server.getScoreboard();
         var team = scoreboard.addPlayerTeam("CA" + UUID.randomUUID().toString().substring(0, 8));
         try {
@@ -408,18 +409,65 @@ public final class CanonSkillsARuntimeTests {
             Vec3 hit = ally.player.position().add(0, 1, -.3);
             arrow.setPos(hit.add(0, 0, -.5)); arrow.setDeltaMovement(0, 0, 1); owner.player.serverLevel().addFreshEntity(arrow);
             BigDecimal before = HighPowerCombat.shield(owner.player);
+            BigDecimal allyBefore = HighPowerCombat.shield(ally.player);
+            boolean personalShield = cn.academy.port.highpower.EsperShields.holding(ally.player);
             var outsiderImpact = new ProjectileImpactEvent(arrow, new EntityHitResult(ally.player, hit));
             NeoForge.EVENT_BUS.post(outsiderImpact);
-            h.assertFalse(outsiderImpact.isCanceled(), "no interception for a player outside the team");
+            h.assertTrue(outsiderImpact.isCanceled() == personalShield, "an outsider is covered only by their own active category shield");
+            BigDecimal personalCost = personalShield ? new BigDecimal(HighPowerCombat.maxShieldText(ally.player))
+                    .multiply(cn.academy.port.highpower.EsperShields.PROJECTILE_COST) : BigDecimal.ZERO;
+            h.assertTrue(allyBefore.subtract(HighPowerCombat.shield(ally.player)).compareTo(personalCost) == 0,
+                    "only the outsider's own shield can pay");
             h.assertTrue(HighPowerCombat.shield(owner.player).compareTo(before) == 0, "outsider costs no shield");
             scoreboard.addPlayerToTeam(owner.player.getScoreboardName(), team);
             scoreboard.addPlayerToTeam(ally.player.getScoreboardName(), team);
-            var teammateImpact = new ProjectileImpactEvent(arrow, new EntityHitResult(ally.player, hit));
+            allyBefore = HighPowerCombat.shield(ally.player);
+            teammateArrow.setPos(hit.add(0, 0, -.5)); teammateArrow.setDeltaMovement(0, 0, 1);
+            owner.player.serverLevel().addFreshEntity(teammateArrow);
+            var teammateImpact = new ProjectileImpactEvent(teammateArrow, new EntityHitResult(ally.player, hit));
             NeoForge.EVENT_BUS.post(teammateImpact);
             h.assertTrue(teammateImpact.isCanceled(), "visible teammate was protected");
-            h.assertTrue(HighPowerCombat.shield(owner.player).compareTo(before) < 0, "owner pays shield");
+            h.assertTrue(teammateArrow.getDeltaMovement().z < 0, "the dome reflected the arrow");
+            BigDecimal domeCost = new BigDecimal(HighPowerCombat.maxShieldText(owner.player)).multiply(new BigDecimal("0.04"));
+            h.assertTrue(before.subtract(HighPowerCombat.shield(owner.player)).compareTo(domeCost) == 0, "owner pays exactly once");
+            h.assertTrue(HighPowerCombat.shield(ally.player).compareTo(allyBefore) == 0, "protected teammate keeps their personal shield");
             h.succeed();
-        } finally { arrow.discard(); scoreboard.removePlayerTeam(team); ally.close(); owner.close(); }
+        } finally { arrow.discard(); teammateArrow.discard(); scoreboard.removePlayerTeam(team); ally.close(); owner.close(); }
+    }
+
+    @GameTest(template="empty", batch="canon_dome_arrow_flight", timeoutTicks=100)
+    public static void allied_dome_reflects_native_flight_before_personal_shield(GameTestHelper h) {
+        var owner = new Fixture(h, "nitrogen_armor", "nitrogen_armor");
+        var ally = new Fixture(h, "aero_hand", "aero_jet");
+        var arrow = new Arrow(EntityType.ARROW, h.getLevel());
+        var scoreboard = owner.player.server.getScoreboard();
+        var team = scoreboard.addPlayerTeam("DF" + UUID.randomUUID().toString().substring(0, 8));
+        try {
+            owner.loadChunks();
+            ally.player.moveTo(h.absoluteVec(new Vec3(6.5, 3, 2.5)), 0, 0);
+            scoreboard.addPlayerToTeam(owner.player.getScoreboardName(), team);
+            scoreboard.addPlayerToTeam(ally.player.getScoreboardName(), team);
+            h.assertTrue(CanonSkillsCombatA.cast(owner.player, "nitrogen_armor"), "owner raised shell");
+            owner.select("nitrogen_dome");
+            h.assertTrue(CanonSkillsCombatA.cast(owner.player, "nitrogen_dome"), "owner raised dome");
+            BigDecimal before = HighPowerCombat.shield(owner.player), allyBefore = HighPowerCombat.shield(ally.player);
+            BigDecimal fee = new BigDecimal(HighPowerCombat.maxShieldText(owner.player)).multiply(new BigDecimal("0.04"));
+            arrow.setPos(ally.player.position().add(0, 1.1, 1.5));
+            arrow.setDeltaMovement(0, 0, -2);
+            h.assertTrue(h.getLevel().addFreshEntity(arrow), "native arrow entered the world");
+            arrow.tick();
+            h.assertTrue(arrow.isAlive() && arrow.getDeltaMovement().z > 0, "dome reflected the same flying arrow");
+            arrow.tick();
+            h.assertTrue(before.subtract(HighPowerCombat.shield(owner.player)).compareTo(fee) == 0,
+                    "dome owner was charged once across two native flight ticks");
+            h.assertTrue(HighPowerCombat.shield(ally.player).compareTo(allyBefore) == 0, "ally preserved personal shield");
+            h.succeed();
+        } finally {
+            arrow.discard();
+            scoreboard.removePlayerTeam(team);
+            ally.close();
+            owner.close();
+        }
     }
 
     @GameTest(template = "empty", batch = "canon_a", timeoutTicks = 100)

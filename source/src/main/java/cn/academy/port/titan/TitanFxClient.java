@@ -52,6 +52,33 @@ public final class TitanFxClient {
         if(Boolean.getBoolean("titanfxcapture.verify"))
             System.out.println("TITAN_V6_FX: "+message.species()+" slot="+message.slot()+" phase="+message.phase()+" spawned="+out.emitted);
     }
+    static void pattern(TitanEntity titan,TitanPatternPayload frame) {
+        var mc=Minecraft.getInstance();if(mc.level==null)return;
+        boolean warn=frame.warning();
+        float quality=switch(mc.options.particles().get()){case ALL -> 1f;case DECREASED -> .55f;case MINIMAL -> .2f;};
+        var random=new Random(titan.getId()*71L+mc.level.getGameTime());
+        var out=new Emitter(mc,mc.level,titan.species(),quality*frame.density(),random);
+        int clock=titan.castClock(),age=Math.max(0,(clock>>1)-1);
+        for(var z:frame.zones()){
+            Vec3 a=z.a(),b=z.b(),axis=b.subtract(a).normalize();
+            int n=out.n(warn?7:19);
+            for(int i=0;i<n;i++){
+                double t=(i+random.nextDouble())/n;
+                Vec3 p;double vy=warn?.025:.13;
+                if(z.kind()==TitanPattern.Kind.ARC){
+                    double radius=z.inner()>0?(z.inner()+z.outer())*.5:z.outer()*(warn?1:Math.sqrt(random.nextDouble()));
+                    p=a.add(axis.yRot((float)Math.toRadians((2*t-1)*z.angle())).scale(radius));
+                }else p=a.lerp(b,t);
+                if(z.kind()==TitanPattern.Kind.TRAIL && warn){
+                    double phase=(age%18)/18.;if(Math.abs(phase-t)>.18)continue;
+                }
+                var sprite=warn?OUTLINE:z.kind()==TitanPattern.Kind.RAY||z.kind()==TitanPattern.Kind.STRIP?SLASH:WISP;
+                out.p(sprite,p.x,p.y+.35,p.z,axis.x*.07,vy,axis.z*.07);
+                if(!warn && i%9==0)out.p(STARBURST,p.add(0,.65,0));
+            }
+        }
+        if(!warn && !frame.zones().isEmpty() && (age%6<2))shake(mc,frame.zones().get(0).a(),9,.68f);
+    }
     private static void shake(Minecraft mc,Vec3 center,int ticks,float maximum) {
         if(mc.gameRenderer.getMainCamera()==null)return;
         double distance=mc.gameRenderer.getMainCamera().getPosition().distanceTo(center);

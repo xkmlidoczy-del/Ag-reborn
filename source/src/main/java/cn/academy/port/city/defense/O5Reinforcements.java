@@ -14,11 +14,14 @@ import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 @EventBusSubscriber(modid="academy")
 public final class O5Reinforcements {
     @SubscribeEvent(priority=net.neoforged.bus.api.EventPriority.LOWEST) public static void died(LivingDeathEvent event){
-        if(event.isCanceled()||!(event.getEntity().level() instanceof ServerLevel world))return;
-        var dead=event.getEntity();var data=CityDefenseData.get(world);
+        if(event.isCanceled()||!(event.getEntity().level() instanceof ServerLevel world)||!CityDefense.enabled(world))return;
+        var dead=event.getEntity();
+        var incident=CityDefense.registerHarm(world,dead,event.getSource());
+        var data=CityDefenseData.get(world);
+        if (incident!=null) { incident.civilianLost=true; data.setDirty(); }
         for(var t:data.teams.values()){
             if(!t.active(world.getGameTime()))continue;
-            if(t.officers.contains(dead.getUUID())&&!t.casualties.contains(dead.getUUID())){t.casualties.add(dead.getUUID());data.setDirty();}
+            if(t.officers.contains(dead.getUUID())&&!t.casualties.contains(dead.getUUID())){t.casualties.add(dead.getUUID());t.unloaded.remove(dead.getUUID());data.setDirty();}
             if(t.victim.equals(dead.getUUID())){t.civilianLost=true;data.setDirty();}
         }
     }

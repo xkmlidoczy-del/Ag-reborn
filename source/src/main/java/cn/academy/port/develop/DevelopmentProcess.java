@@ -22,6 +22,7 @@ public final class DevelopmentProcess {
         /** Evaluated at completion, against current player/inventory state. */
         boolean validate(Developer developer);
         void complete();
+        default boolean tryComplete() { complete(); return true; }
     }
 
     public record Snapshot(State state, DeveloperType developerType, String action,
@@ -108,8 +109,7 @@ public final class DevelopmentProcess {
             tickThisStimulation = 0;
             ++stimulation;
             if (stimulation >= maxStimulations) {
-                boolean success = action.validate(developer);
-                if (success) action.complete();
+                boolean success = action.validate(developer) && action.tryComplete();
                 resetProgress(!success);
                 if (success) state = State.DONE;
             }

@@ -5,14 +5,17 @@ import java.util.EnumMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
@@ -23,17 +26,58 @@ public final class CityServices {
     private static final String ERRANDS = "academy:city_errands";
     private static final Map<ServerLevel, Map<CityServicePlan.Role, Actor>> LEVELS = new IdentityHashMap<>();
     private record Actor(CityNpcEntity clerk, CityNpcEntity customer) {}
+    private static final long REPLACEMENT_DELAY = 24000;
+
     private CityServices() {}
+
+    private static final class Vacancies extends SavedData {
+        private static final Factory<Vacancies> FACTORY = new Factory<>(Vacancies::new, (tag, lookup) -> {
+            var data = new Vacancies();
+            for (var role : CityServicePlan.Role.values())
+                if (tag.contains(role.name())) data.readyAt.put(role, tag.getLong(role.name()));
+            return data;
+        });
+        private final Map<CityServicePlan.Role, Long> readyAt = new EnumMap<>(CityServicePlan.Role.class);
+
+        static Vacancies get(ServerLevel level) {
+            return level.getDataStorage().computeIfAbsent(FACTORY, "academy_service_vacancies");
+        }
+
+        @Override public CompoundTag save(CompoundTag tag, HolderLookup.Provider lookup) {
+            readyAt.forEach((role, time) -> tag.putLong(role.name(), time));
+            return tag;
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void clerkDied(LivingDeathEvent event) {
+        if (event.isCanceled() || !(event.getEntity() instanceof CityNpcEntity npc)
+                || !(npc.level() instanceof ServerLevel level)) return;
+        var actors = LEVELS.get(level);
+        var actor = actors == null ? null : actors.get(npc.service());
+        if (actor == null || actor.clerk() != npc) return;
+        var vacancies = Vacancies.get(level);
+        vacancies.readyAt.put(npc.service(), level.getGameTime() + REPLACEMENT_DELAY);
+        vacancies.setDirty();
+        if (npc.getTradingPlayer() != null) npc.getTradingPlayer().closeContainer();
+        npc.endConversation();
+        if (actor.customer() != null) actor.customer().discard();
+        // Leave the dead clerk in the native death animation and item-drop path.
+        actors.remove(npc.service(), actor);
+    }
 
     @SubscribeEvent public static void tick(LevelTickEvent.Post event) {
         if (!(event.getLevel() instanceof ServerLevel level) || !level.dimension().equals(TrainManager.CITY)
                 || !(level.getChunkSource().getGenerator() instanceof CityGreyboxGenerator)
                 || level.getGameTime() % 40 != 0) return;
         var actors = LEVELS.computeIfAbsent(level, ignored -> new EnumMap<>(CityServicePlan.Role.class));
+        var vacancies = Vacancies.get(level);
+        long now = level.getGameTime();
         for (var site : CityServicePlan.SITES) {
             boolean loaded = level.getChunkSource().getChunkNow(site.home().getX() >> 4, site.home().getZ() >> 4) != null;
             boolean nearby = loaded && level.players().stream().anyMatch(player -> player.distanceToSqr(Vec3.atCenterOf(site.home())) < 96 * 96);
-            boolean enabled = nearby && CityServicePlan.open(site.role(), level.getDayTime())
+            boolean enabled = nearby && now >= vacancies.readyAt.getOrDefault(site.role(), 0L)
+                    && CityServicePlan.open(site.role(), level.getDayTime())
                     && CityServicePlan.marker(level.getBlockState(site.home().below()));
             Actor actor = actors.get(site.role());
             if (!enabled) {
@@ -46,6 +90,7 @@ public final class CityServices {
                 if (clerk == null) { actors.remove(site.role()); continue; }
                 CityNpcEntity customer = site.waiting() == null ? null : createCustomer(level, site.waiting());
                 actor = new Actor(clerk, customer); actors.put(site.role(), actor);
+                if (vacancies.readyAt.remove(site.role()) != null) vacancies.setDirty();
             }
             if (site.waiting() != null && (actor.customer() == null || actor.customer().isRemoved())) {
                 CityNpcEntity customer = createCustomer(level, site.waiting());

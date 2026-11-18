@@ -1,0 +1,8 @@
+{
+  "values": [
+    {"id": "aca_omnitrix:ascalon", "required": false},
+    {"id": "aca_omnitrix:omnitrix", "required": false},
+    {"id": "aca_omnitrix:alien_x_watch", "required": false},
+    {"id": "aca_omnitrix:carnitrix", "required": false}
+  ]
+}

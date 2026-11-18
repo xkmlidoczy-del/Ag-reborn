@@ -64,7 +64,7 @@ final class DisplacedProjectionWorld {
                 &&!target.isSpectator()&&!target.isInvulnerable()&&HighPowerCombat.supported(target)
                 &&HighPowerCombat.unsupportedReason(target).isEmpty()
                 &&p.serverLevel().getEntity(target.getUUID())==target&&p.serverLevel().getEntity(target.getId())==target
-                &&!p.isAlliedTo(target)&&!target.isAlliedTo(p)&&volume(p,target.getBoundingBox()).isEmpty();
+                &&!p.isAlliedTo(target)&&!target.isAlliedTo(p)&&volume(p,target.getBoundingBox(),target instanceof cn.academy.port.titan.TitanEntity ? 20000 : 12000).isEmpty();
     }
     /** Pinned native AbstractArrow uses0.3F body inflation; keep its chosen first body. */
     static boolean contactClear(ServerPlayer p,Vec3 start,Vec3 end,LivingEntity target,DisplacedNeedleEntity medium){
@@ -101,12 +101,13 @@ final class DisplacedProjectionWorld {
         if(endpointTarget!=null)return first!=null&&first.entity==endpointTarget&&first.distance<block;
         return first==null&&solid.getType()==HitResult.Type.MISS;
     }
-    static String volume(ServerPlayer p,AABB box){
+    static String volume(ServerPlayer p,AABB box){return volume(p,box,12000);}
+    private static String volume(ServerPlayer p,AABB box,int limit){
         if(p==null||box==null||!finite(new Vec3(box.minX,box.minY,box.minZ))||!finite(new Vec3(box.maxX,box.maxY,box.maxZ)))return "out_of_range";
         ServerLevel w=p.serverLevel();if(!w.getWorldBorder().isWithinBounds(box))return "border";
         if(box.minY<w.getMinBuildHeight()||box.maxY>w.getMaxBuildHeight())return "out_of_range";
         int x0=(int)Math.floor(box.minX),x1=(int)Math.floor(box.maxX),y0=(int)Math.floor(box.minY),y1=(int)Math.floor(box.maxY),z0=(int)Math.floor(box.minZ),z1=(int)Math.floor(box.maxZ);
-        if((long)(x1-x0+1)*(y1-y0+1)*(z1-z0+1)>12000)return "out_of_range";
+        if((long)(x1-x0+1)*(y1-y0+1)*(z1-z0+1)>limit)return "out_of_range";
         for(int x=x0>>4;x<=x1>>4;x++)for(int z=z0>>4;z<=z1>>4;z++)if(w.getChunkSource().getChunkNow(x,z)==null)return "unloaded";
         for(int x=x0;x<=x1;x++)for(int y=y0;y<=y1;y++)for(int z=z0;z<=z1;z++)if(!w.mayInteract(p,new BlockPos(x,y,z)))return "permission";
         return "";

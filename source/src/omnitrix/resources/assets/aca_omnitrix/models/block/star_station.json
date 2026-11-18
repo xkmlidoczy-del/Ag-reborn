@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "side": "aca_omnitrix:block/star_station_side",
+    "end": "aca_omnitrix:block/star_station_top"
+  }
+}

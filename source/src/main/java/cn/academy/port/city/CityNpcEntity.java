@@ -122,7 +122,7 @@ public final class CityNpcEntity extends PathfinderMob implements Merchant {
 
     void prepareAmbient(Look look, Activity activity) {
         ambient = true;
-        setInvulnerable(true);
+        setInvulnerable(false);
         entityData.set(LOOK, look.ordinal());
         perform(activity, activity.expression);
     }
@@ -251,12 +251,11 @@ public final class CityNpcEntity extends PathfinderMob implements Merchant {
         tag.putInt("EsperLevel",esperLevel());
         if(combat!=null)tag.put("NpcAbility",combat.save());
     }
-    @Override public boolean isInvulnerableTo(net.minecraft.world.damagesource.DamageSource source){return !cn.academy.port.city.defense.CityDefense.exposesCivilian(this,source)&&super.isInvulnerableTo(source);}
     @Override public boolean hurt(net.minecraft.world.damagesource.DamageSource source,float amount) {
         if(!level().isClientSide)amount=combat().protect(source,amount);
         return amount>0&&super.hurt(source,amount);
     }
     @Override public void remove(RemovalReason reason) {
-        if(!level().isClientSide&&combat!=null)combat.close();super.remove(reason);
+        if(!level().isClientSide&&combat!=null)combat.close(reason == RemovalReason.KILLED || isDeadOrDying());super.remove(reason);
     }
 }

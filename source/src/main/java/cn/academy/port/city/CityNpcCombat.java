@@ -33,10 +33,9 @@ public final class CityNpcCombat implements EntityAbilityRuntime.Host {
     private Mode mode=Mode.DAILY;
     private LivingEntity enemy;
     private UUID duel;
-    private long duelUntil,lastThreat,nextDecision,downUntil;
+    private long duelUntil,lastThreat,nextDecision;
     private String identity="";
     private boolean fleeOnly;
-    private boolean yieldRequested;
     private CityNpcEntity.Activity previousActivity=CityNpcEntity.Activity.STAND;
     private CityNpcEntity.Expression previousExpression=CityNpcEntity.Expression.NEUTRAL;
     public CityNpcCombat(CityNpcEntity npc){this.npc=npc;home=npc.blockPosition();data=new CityNpcAbilityData(npc);runtime=new EntityAbilityRuntime(this);}
@@ -54,7 +53,6 @@ public final class CityNpcCombat implements EntityAbilityRuntime.Host {
     public boolean busy(){return mode!=Mode.DAILY||runtime.busy()||cn.academy.port.city.defense.CityDefense.escorted(npc);}
     public boolean dueling(){return duel!=null;}
     public boolean dueling(Player p){return duel!=null&&duel.equals(p.getUUID());}
-    public void yieldAfterHit(){yieldRequested=true;}
     private static boolean lowHealth(LivingEntity entity) {
         return cn.academy.port.highpower.CityNpcPower.health(entity).compareTo(
                 cn.academy.port.highpower.CityNpcPower.maxHealth(entity).multiply(new java.math.BigDecimal("0.15")).max(java.math.BigDecimal.valueOf(2)))<=0;
@@ -64,7 +62,8 @@ public final class CityNpcCombat implements EntityAbilityRuntime.Host {
         if(target==null||target==npc||target instanceof CityNpcEntity||!target.isAlive()||target.isRemoved()
                 ||target.level()!=npc.level()||target.isAlliedTo(npc)||npc.isAlliedTo(target))return false;
         if(target instanceof Player p)return duel!=null&&duel.equals(p.getUUID())&&!p.isCreative()&&!p.isSpectator();
-        return target instanceof Monster;
+        return !(target instanceof cn.academy.port.city.defense.GuardianEntity)
+                && (target == enemy || cn.academy.port.canon.CanonTargetPolicy.hostile(target));
     }
     public void identity(String value) {
         identity=value;
@@ -72,11 +71,15 @@ public final class CityNpcCombat implements EntityAbilityRuntime.Host {
         publish();
     }
     public void checkpoint() {
-        if(!identity.isEmpty()&&npc.level() instanceof ServerLevel level)CityNpcMemory.get(level).write(identity,data.save());
+        if(npc.isAlive()&&!identity.isEmpty()&&npc.level() instanceof ServerLevel level)CityNpcMemory.get(level).write(identity,data.save());
     }
     public CompoundTag save(){return data.save();}
     public void load(CompoundTag tag){data.load(tag);publish();}
-    public void close(){runtime.clear();checkpoint();}
+    void close(boolean died){
+        runtime.clear();
+        if (died && !identity.isEmpty() && npc.level() instanceof ServerLevel level) CityNpcMemory.get(level).forget(identity);
+        else checkpoint();
+    }
     private void rememberDaily() {
         CityDialogue.interrupt(npc);
         if(mode==Mode.DAILY){previousActivity=npc.activity();previousExpression=npc.expression();}
@@ -98,33 +101,25 @@ public final class CityNpcCombat implements EntityAbilityRuntime.Host {
             if(attacker instanceof Player) {
                 if(dueling((Player)attacker)){enemy=attacker;lastThreat=npc.level().getGameTime();}
                 else if(!busy()){rememberDaily();mode=Mode.RETREATING;enemy=attacker;lastThreat=npc.level().getGameTime();}
-            } else if(attacker instanceof Monster) {
+            } else if (!(attacker instanceof CityNpcEntity) && !(attacker instanceof cn.academy.port.city.defense.GuardianEntity)
+                    && !attacker.isAlliedTo(npc) && !npc.isAlliedTo(attacker)) {
                 if(mode==Mode.DAILY)rememberDaily();enemy=attacker;fleeOnly=false;lastThreat=npc.level().getGameTime();mode=Mode.ALERT;
             }
         }
     }
     public float protect(DamageSource source,float amount) {
-        if(mode==Mode.DOWNED)return 0;
-        if(duel!=null&&source.getEntity() instanceof Player p&&!dueling(p))return 0;
-        if(cn.academy.port.highpower.CityNpcPower.active(npc)){attacked(source);return amount;}
-        // Exact player casts already pass the consent, guard and nonlethal adapter before
-        // their native witness is constructed; do not alter that witness a second time.
-        attacked(source);float remaining=source.getEntity()!=null&&!cn.academy.port.highpower.HighPowerCombat.isExactSkillSource(source)?runtime.absorb(amount):amount;
-        if(npc.ambient()||duel!=null)remaining=Math.min(remaining,Math.max(0,npc.getHealth()-1));
-        if(npc.getHealth()-remaining<=1.01f&&remaining>0) {
-            runtime.clear();downUntil=npc.level().getGameTime()+200;
-            if(duel!=null)finishDuel("duel_npc_yield");
-            enemy=null;mode=Mode.DOWNED;npc.getNavigation().stop();npc.perform(CityNpcEntity.Activity.SIT,CityNpcEntity.Expression.FOCUS);
-        }
-        return remaining;
+        boolean sparringHit = sparringHit(source);
+        if (duel != null && !sparringHit) finishDuel("duel_finished");
+        attacked(source);
+        if (cn.academy.port.highpower.CityNpcPower.active(npc)) return amount;
+        return source.getEntity() != null
+                && !cn.academy.port.highpower.HighPowerCombat.isExactSkillSource(source)
+                ? runtime.absorb(amount) : amount;
     }
-    /** Consented sparring is the sole player high-power entry for this entity class. */
-    public java.math.BigDecimal sparringIncoming(ServerPlayer player,java.math.BigDecimal amount) {
-        if(!dueling(player)||mode==Mode.DOWNED)return java.math.BigDecimal.ZERO;
-        if(cn.academy.port.highpower.CityNpcPower.active(npc))return amount;
-        float limit=Math.max(0,npc.getHealth()-Math.max(2,npc.getMaxHealth()*.15f));
-        float bounded=amount.min(java.math.BigDecimal.valueOf(limit)).floatValue();
-        return java.math.BigDecimal.valueOf(runtime.absorb(bounded));
+
+    /** Only damage from the consenting partner carries the nonlethal floor. */
+    public boolean sparringHit(DamageSource source) {
+        return source.getEntity() instanceof Player player && dueling(player);
     }
     public boolean practice(ServerPlayer player) {
         if(busy()||npc.esper()==CityEspers.Profile.NONE)return false;
@@ -139,13 +134,7 @@ public final class CityNpcCombat implements EntityAbilityRuntime.Host {
     public void tick() {
         long now=npc.level().getGameTime();data.tick();runtime.tick();
         if(cn.academy.port.city.defense.CityDefense.escorted(npc)&&duel==null){runtime.abort();return;}
-        if(yieldRequested){yieldRequested=false;runtime.clear();downUntil=now+200;mode=Mode.DOWNED;
-            npc.getNavigation().stop();npc.perform(CityNpcEntity.Activity.SIT,CityNpcEntity.Expression.FOCUS);}
         if(now%100==0)checkpoint();if(now%5==0)publish();
-        if(mode==Mode.DOWNED) {
-            if(now>=downUntil){mode=Mode.RETURNING;npc.perform(CityNpcEntity.Activity.STAND,CityNpcEntity.Expression.NEUTRAL);}
-            return;
-        }
         if(duel!=null) {
             if(!enemyValid()||now>=duelUntil||enemy instanceof Player p&&(p.isCreative()||p.isSpectator())) {finishDuel("duel_finished");return;}
             if(lowHealth(enemy)){finishDuel("duel_player_yield");return;}
@@ -219,6 +208,10 @@ public final class CityNpcCombat implements EntityAbilityRuntime.Host {
         if(event.getSource() instanceof AbilityDamage.EntitySkillDamageSource&&event.getSource().getEntity() instanceof CityNpcEntity npc
                 &&event.getEntity() instanceof Player player&&npc.combat().dueling(player)&&!cn.academy.port.highpower.HighPowerCombat.enabled(player))
             event.setNewDamage(Math.min(event.getNewDamage(),Math.max(0,player.getHealth()-Math.max(2,player.getMaxHealth()*.15f))));
-        if(event.getEntity() instanceof CityNpcEntity npc&&npc.ambient()&&!cn.academy.port.highpower.CityNpcPower.active(npc))event.setNewDamage(Math.min(event.getNewDamage(),Math.max(0,npc.getHealth()-1)));
+        if (event.getEntity() instanceof CityNpcEntity npc && npc.combat().sparringHit(event.getSource())
+                && !cn.academy.port.highpower.CityNpcPower.active(npc)) {
+            float floor = Math.max(1, npc.getMaxHealth() * .15f);
+            event.setNewDamage(Math.min(event.getNewDamage(), Math.max(0, npc.getHealth() - floor)));
+        }
     }
 }

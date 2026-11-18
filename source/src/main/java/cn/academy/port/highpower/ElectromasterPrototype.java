@@ -215,13 +215,33 @@ public final class ElectromasterPrototype {
     }
     private static int growthStatus(net.minecraft.commands.CommandSourceStack source) throws com.mojang.brigadier.exceptions.CommandSyntaxException {
         var p=source.getPlayerOrException();
-        if(!HighPowerCombat.enabled(p)){source.sendFailure(Component.literal("No enrolled high-power ledger."));return 0;}
+        if(!HighPowerCombat.enabled(p)) {
+            var state=AbilityStorage.get(p);
+            String reason=HighPowerCombat.unsupportedReason(p).orElse(HighPowerCategories.active(state)
+                    ? "Use the authorized /aim level command to set the verified rank."
+                    : "Awaken a supported ability category first.");
+            source.sendFailure(Component.literal("No enrolled high-power ledger. "+reason));
+            return 0;
+        }
         var q=HighPowerCombat.earnedGrowthPosition(p);
         if(!HighPowerCategories.active(AbilityStorage.get(p))){
             source.sendSuccess(()->Component.literal("High-power category inactive; retained achieved HP capacity and injury: "+HighPowerCombat.healthText(p)+" / "+HighPowerCombat.maxHealthText(p)+"; earned growth "+q),false);return 1;
         }
         var g=HighPowerGrowth.values(p);
-        source.sendSuccess(()->Component.literal("Effective q="+g.position()+", earned capacity Q="+g.earnedPosition()+", native "+AbilityStorage.get(p).category+" LV"+AbilityStorage.get(p).level+" progress="+AbilityStorage.get(p).levelProgress(cn.academy.port.SkillCatalog.levelSkillCount(AbilityStorage.get(p)))+", damage="+g.damage().toPlainString()+", HP="+HighPowerCombat.healthText(p)+" / "+HighPowerCombat.maxHealthText(p)+", shield="+HighPowerCombat.shieldText(p)+", prototype CP="+HighPowerResources.cp(p)+" / "+g.cpMaximum()+", arc CP="+g.arcCost()+", arc cooldown="+g.arcCooldown()+" native ticks. Category switches rebase observation without refill; earned capacity growth never heals. Paid levels preserve q; native LV5 can still need genuine XP to finish q=5."),false);return 1;
+        var ability=AbilityStorage.get(p);
+        int certified=HighPowerCombat.earnedLevel(p);
+        String verification=certified!=ability.level
+                ? "Native and certified rank differ. An operator may verify the intended rank and reapply /aim level, or run /academyhp reset_growth confirm."
+                : g.position().compareTo(java.math.BigDecimal.valueOf(ability.level))<0
+                ? "Certified rank is ahead of the growth checkpoint. Reconnect to retry automatic migration, or have an operator reapply the verified rank."
+                : "Rank floor satisfied.";
+        source.sendSuccess(()->Component.literal("Effective q="+g.position()+", earned capacity Q="+g.earnedPosition()
+                +", native "+ability.category+" LV"+ability.level+", certified LV"+certified
+                +", progress="+ability.levelProgress(cn.academy.port.SkillCatalog.levelSkillCount(ability))
+                +", damage="+g.damage().toPlainString()+", HP="+HighPowerCombat.healthText(p)+" / "+HighPowerCombat.maxHealthText(p)
+                +", shield="+HighPowerCombat.shieldText(p)+", prototype CP="+HighPowerResources.cp(p)+" / "+g.cpMaximum()
+                +", arc CP="+g.arcCost()+", arc cooldown="+g.arcCooldown()+" native ticks. "+verification),false);
+        return 1;
     }
     private static int resetGrowth(net.minecraft.commands.CommandSourceStack source) throws com.mojang.brigadier.exceptions.CommandSyntaxException {
         var p=source.getPlayerOrException();var state=AbilityStorage.get(p);

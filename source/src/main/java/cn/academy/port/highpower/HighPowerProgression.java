@@ -26,7 +26,8 @@ public final class HighPowerProgression {
             public String id(){return original.id();}
             public int stimulations(){return original.stimulations();}
             public boolean validate(DevelopmentProcess.Developer developer){return original.validate(developer);}
-            public void complete(){HighPowerCombat.completeEarnedLevel(player,original::complete);}
+            public void complete() { tryComplete(); }
+            public boolean tryComplete() { return HighPowerCombat.completeEarnedLevel(player, original::complete); }
         };
     }
 

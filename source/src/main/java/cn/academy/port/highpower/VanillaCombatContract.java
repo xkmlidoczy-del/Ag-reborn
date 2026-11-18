@@ -42,7 +42,7 @@ import net.neoforged.neoforge.gametest.GameTestHooks;
 public final class VanillaCombatContract {
     public static final String ID = "academy:vanilla_protection_cooldown_v2";
     private static final Map<String, String> MODS = Map.of("minecraft", "1.21.1", "neoforge", "21.1.252",
-            "academy", "0.1.0-m41-highpower.0.81.5-city-a3.68");
+            "academy", "0.1.0-m41-highpower.0.81.5-city-a3.71");
     private static final Set<String> PACKS = Set.of("vanilla", "mod_data", "mod/neoforge", "mod/academy", "bundle", "trade_rebalance");
     private static final Map<EntityType<?>, Class<?>> CLASSES = Map.ofEntries(
             Map.entry(EntityType.VILLAGER, Villager.class), Map.entry(EntityType.PIG, Pig.class),
@@ -61,13 +61,13 @@ public final class VanillaCombatContract {
         // This exact issued NPC cancels full-suit hits before entry; all admitted hits use GuardianEntity's native pipeline.
         if(entity.getClass()==cn.academy.port.city.defense.O5OperativeEntity.class&&entity.getType()==cn.academy.port.city.defense.CityDefenseContent.O5.get())return true;
         if(entity.getClass()==cn.academy.port.city.defense.GuardianEntity.class&&entity.getType()==cn.academy.port.city.defense.CityDefenseContent.GUARD.get())return true;
+        if (entity.getClass() == cn.academy.port.titan.TitanEntity.class
+                && cn.academy.port.titan.TitanBlocks.TYPES.values().stream().anyMatch(type -> type.get() == entity.getType())) return true;
         if (entity.getClass() == ServerPlayer.class) return true;
         if (entity.getClass() == FakePlayer.class) return GameTestHooks.isGametestEnabled();
-        // Real city espers use the same exact health/shield ledger. Attack consent is
-        // still enforced by the city adapter, independently of this numeric contract.
+        // City residents use native damage, with an exact ledger only when they have a matching esper profile.
         if (entity.getClass() == cn.academy.port.city.CityNpcEntity.class
-                && entity.getType() == cn.academy.port.city.CityNpcContent.NPC.get())
-            return ((cn.academy.port.city.CityNpcEntity)entity).esper() != cn.academy.port.city.CityEspers.Profile.NONE;
+                && entity.getType() == cn.academy.port.city.CityNpcContent.NPC.get()) return true;
         // This specific ACA boss passes exact hits unchanged into the native IronGolem pipeline;
         // only ordinary player weapon damage is mapped before entry to its high-power pool.
         if (entity.getClass() == cn.academy.port.story.UrbanCalibrator.Boss.class

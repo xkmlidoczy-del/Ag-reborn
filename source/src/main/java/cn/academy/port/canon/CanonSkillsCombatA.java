@@ -34,20 +34,16 @@ import java.util.function.Predicate;
 import java.math.BigDecimal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -88,8 +84,6 @@ public final class CanonSkillsCombatA {
             Set.of(PROBE, DISRUPT, CROWD, JET, LAUNCH, BARRAGE, ARMOR, PUNCH, DOME, BLADE, WINGS, CONSTRUCT).stream(),
             CanonExpansionA.skills().stream().map(SkillCatalog.Skill::id)).collect(java.util.stream.Collectors.toUnmodifiableSet());
     private static final String WINGS_MARK = "academy:dark_wings_owned_flight";
-    private static final TagKey<EntityType<?>> CONTROLLABLE = TagKey.create(Registries.ENTITY_TYPE,
-            ResourceLocation.fromNamespaceAndPath("academy", "mental_controllable"));
     private static final Map<Mob, Lease> LEASES = new IdentityHashMap<>();
     private static final Map<ServerPlayer, Shell> SHELLS = new IdentityHashMap<>();
     private static final Map<ServerPlayer, Dome> DOMES = new IdentityHashMap<>();
@@ -98,7 +92,7 @@ public final class CanonSkillsCombatA {
     private static final Set<ServerPlayer> PERFORMING = java.util.Collections.newSetFromMap(new IdentityHashMap<>());
 
     /** No NoAI or entity NBT writes: unloading, disconnect and restart cannot strand a mob. */
-    private record Lease(ServerPlayer owner, ServerLevel level, Mob mob, Mob target, long expires) {}
+    private record Lease(ServerPlayer owner, ServerLevel level, Mob mob, LivingEntity previous, Mob target, long expires) {}
     private record Shell(ServerPlayer owner, ServerLevel level, long expires) {}
     private record Dome(ServerPlayer owner, ServerLevel level, long expires) {}
     private record Wings(ServerPlayer owner, ServerLevel level, long expires) {}
@@ -150,15 +144,15 @@ public final class CanonSkillsCombatA {
         LivingEntity target = aimed(player, number(PROBE, "reach"));
         if (target == null) return false;
         boolean witness = UrbanStoryClues.canProbe(player, target);
-        boolean monster = target instanceof Mob mob && eligible(player, mob, PROBE);
+        boolean monster = eligible(player, target, PROBE);
         if ((!witness && !monster) || !spend(player, PROBE, 1, 20)) return false;
         if (witness) {
             if (!UrbanStoryClues.probe(player, target)) return false; // A lost race never grants a fabricated clue.
         } else {
-            if (!(target instanceof Mob mob) || !eligible(player, mob, PROBE)) return false;
-            player.sendSystemMessage(Component.translatable(mob.getTarget() == null
+            if (!eligible(player, target, PROBE)) return false;
+            player.sendSystemMessage(Component.translatable(MentalTargeting.observedTarget(target) == null
                     ? "ac.canon.mental_probe.idle" : "ac.canon.mental_probe.alert"));
-            CanonExpansionCombatA.reveal(player, mob, integer(PROBE, "reveal_ticks"), 1, integer(PROBE, "stagger_ticks"));
+            CanonExpansionCombatA.reveal(player, target, integer(PROBE, "reveal_ticks"), 1, integer(PROBE, "stagger_ticks"));
         }
         cue(player.serverLevel(), target.position().add(0, target.getBbHeight() * .7, 0), true);
         visual(player,PROBE,player.getEyePosition(),target.position().add(0,target.getBbHeight()*.5,0),CanonVfx.Phase.HIT,10);
@@ -169,13 +163,13 @@ public final class CanonSkillsCombatA {
     private static boolean disrupt(ServerPlayer player) {
         int duration = integer(DISRUPT, "duration_ticks");
         LivingEntity hit = aimed(player, number(DISRUPT, "reach"));
-        if (!(hit instanceof Mob mob) || !eligible(player, mob, DISRUPT) || LEASES.containsKey(mob) || CanonExpansionCombatA.mentalLeased(mob)) return false;
+        if (!eligible(player, hit, DISRUPT)) return false;
+        if (!(hit instanceof Mob mob)) return MentalTargeting.resisted(player);
+        if (!eligible(player, mob, DISRUPT) || LEASES.containsKey(mob) || CanonExpansionCombatA.mentalLeased(mob)) return false;
         long now = player.serverLevel().getGameTime();
         if (now < 0 || now > Long.MAX_VALUE - duration || !spend(player, DISRUPT, 2, 80)) return false;
         if (!validOwner(player) || !eligible(player, mob, DISRUPT) || LEASES.containsKey(mob) || CanonExpansionCombatA.mentalLeased(mob)) return false;
-        LEASES.put(mob, new Lease(player, player.serverLevel(), mob, null, now + duration));
-        mob.setTarget(null); mob.getNavigation().stop();
-        if (mob.getTarget() != null) { LEASES.remove(mob); return false; }
+        if (!holdTarget(player, mob, null, now + duration)) return MentalTargeting.resisted(player);
         cue(player.serverLevel(), mob.position().add(0, mob.getBbHeight() * .7, 0), true);
         visual(player,DISRUPT,player.getEyePosition(),mob.position(),CanonVfx.Phase.ACTIVE,duration);
         experience(player, DISRUPT, .02);
@@ -202,13 +196,15 @@ public final class CanonSkillsCombatA {
         var world=player.serverLevel();var state=AbilityStorage.get(player);
         cn.academy.port.macro.MacroSettlement.submit(world,selected,()->validOwner(player)&&player.serverLevel()==world&&AbilityStorage.get(player)==state,mob->{
             if (!eligible(player, mob, CROWD) || player.distanceToSqr(mob) > radius * radius || LEASES.containsKey(mob) || CanonExpansionCombatA.mentalLeased(mob) || !mob.hasLineOfSight(victim)) return;
-            LEASES.put(mob, new Lease(player, player.serverLevel(), mob, victim, now + duration));
-            mob.setTarget(victim);
-            if (mob.getTarget() != victim) { LEASES.remove(mob); return; }
+            if (!holdTarget(player, mob, victim, world.getGameTime() + duration)) return;
             cue(player.serverLevel(), mob.position().add(0, mob.getBbHeight() * .7, 0), true);
             CanonVfx.emit(player,CROWD,player.getEyePosition(),mob.position(),CanonVfx.Phase.ACTIVE,duration,applied[0]==0?radius:0);
             applied[0]++;
-        },()->{if(applied[0]>0&&validOwner(player))experience(player,CROWD,.03);});
+        }, () -> {
+            if (!validOwner(player)) return;
+            if (applied[0] > 0) experience(player, CROWD, .03);
+            else MentalTargeting.resisted(player);
+        });
         return true;
     }
 
@@ -405,9 +401,7 @@ public final class CanonSkillsCombatA {
     public static boolean wardDisrupt(ServerPlayer owner, Mob mob, int ticks) {
         if (owner == null || mob == null || ticks <= 0 || LEASES.containsKey(mob) || CanonExpansionCombatA.mentalLeased(mob) || !eligible(owner, mob, DISRUPT)) return false;
         long now = owner.serverLevel().getGameTime();
-        LEASES.put(mob, new Lease(owner, owner.serverLevel(), mob, null, now + ticks));
-        mob.setTarget(null); mob.getNavigation().stop();
-        return true;
+        return holdTarget(owner, mob, null, now + ticks);
     }
     public static boolean mentalTargetLeased(Mob mob) { return mob!=null && LEASES.containsKey(mob); }
     public static boolean ownsNitrogenShell(ServerPlayer p) {
@@ -717,12 +711,16 @@ public final class CanonSkillsCombatA {
         return true;
     }
 
-    private static boolean eligible(ServerPlayer owner, Mob mob, String skill) {
-        double reach = number(skill, "reach");
-        return mob instanceof Monster && mob.getType().is(CONTROLLABLE) && mob.isAlive() && !mob.isRemoved()
-                && !mob.isNoAi() && !mob.isInvulnerable() && mob.level() == owner.level()
-                && owner.serverLevel().getEntity(mob.getId()) == mob && !mob.isAlliedTo(owner) && !owner.isAlliedTo(mob)
-                && owner.distanceToSqr(mob) <= reach * reach && owner.hasLineOfSight(mob);
+    private static boolean eligible(ServerPlayer owner, LivingEntity entity, String skill) {
+        return MentalTargeting.reachable(owner, entity, number(skill, "reach")) && MentalTargeting.hostile(owner, entity);
+    }
+
+    private static boolean holdTarget(ServerPlayer owner, Mob mob, Mob target, long expires) {
+        var previous = MentalTargeting.target(mob);
+        if (!MentalTargeting.assign(mob, target)) return false;
+        if (target == null) MentalTargeting.stopRoute(mob);
+        LEASES.put(mob, new Lease(owner, owner.serverLevel(), mob, previous, target, expires));
+        return true;
     }
     private static boolean validOwner(ServerPlayer p) {
         if (p == null || !p.server.isSameThread() || !p.isAlive() || p.isRemoved() || p.isSpectator() || p.hasDisconnected()) return false;
@@ -766,23 +764,24 @@ public final class CanonSkillsCombatA {
         if (lease == null) return;
         if (mob.level() != lease.level || lease.level.getGameTime() >= lease.expires
                 || !validOwner(lease.owner) || !MENTAL.equals(AbilityStorage.get(lease.owner).category)
-                || !eligible(lease.owner, mob, lease.target == null ? DISRUPT : CROWD)
+                || !MentalTargeting.reachable(lease.owner, mob, number(lease.target == null ? DISRUPT : CROWD, "reach"))
                 || lease.target != null && !eligible(lease.owner, lease.target, CROWD)) {
             release(mob, lease); return;
         }
-        if (lease.target == null) {
-            mob.setTarget(null); mob.getNavigation().stop();
-            if (mob.getTarget() != null) release(mob, lease);
+        if (lease.target != null && !mob.hasLineOfSight(lease.target)) {
+            release(mob, lease);
+            return;
         }
-        else if (mob.hasLineOfSight(lease.target)) {
-            mob.setTarget(lease.target);
-            if (mob.getTarget() != lease.target) release(mob, lease);
+        boolean retained = MentalTargeting.assign(mob, lease.target);
+        if (retained && lease.target == null) retained = MentalTargeting.stopRoute(mob);
+        if (!retained) {
+            release(mob, lease);
+            MentalTargeting.resisted(lease.owner);
         }
-        else release(mob, lease);
     }
     private static void release(Mob mob, Lease lease) {
         if (!LEASES.remove(mob, lease)) return;
-        if (lease.target != null && mob.getTarget() == lease.target) mob.setTarget(null);
+        MentalTargeting.restore(mob, lease.target, lease.previous);
         visual(lease.owner,lease.target==null?DISRUPT:CROWD,lease.owner.position(),lease.owner.position(),CanonVfx.Phase.END,1);
     }
     @SubscribeEvent public static void leave(EntityLeaveLevelEvent event) {
@@ -814,6 +813,7 @@ public final class CanonSkillsCombatA {
         if (event.getEntity() instanceof ServerPlayer player) {
             stopConstruct(player, CONSTRUCTS.get(player));
             finishWings(player, WINGS_ACTIVE.get(player), true);
+            for (Lease lease : List.copyOf(LEASES.values())) if (lease.owner == player) release(lease.mob, lease);
         }
     }
     @SubscribeEvent public static void tickPlayer(PlayerTickEvent.Post event) {

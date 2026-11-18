@@ -3957,5 +3957,7 @@
   "city.elevator.reason.unloaded": "所需区块未加载",
   "city.elevator.reason.exit_blocked": "楼层出口堵塞",
   "city.elevator.reason.shaft_blocked": "井道内有障碍",
-  "city.elevator.reason.shaft_damaged": "井道结构损坏"
+  "city.elevator.reason.shaft_damaged": "井道结构损坏",
+  "academy.mental.resisted": "目标抵抗了控制。",
+  "academy.command.rank_commit_failed": "等级和成长账本未能提交。使用 /academyhp growth 查看账号状态。"
 }
