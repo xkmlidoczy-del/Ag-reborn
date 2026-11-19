@@ -369,6 +369,7 @@ public final class AcademyGameplay {
                                 :cn.academy.port.canon.CanonSkillsCombatA.IMPLEMENTED.contains(skill)
                                 ? cn.academy.port.canon.CanonSkillsCombatA.cast(player,skill)
                                 : cn.academy.port.canon.CanonSkillsCombatB.cast(player,skill);
+                        if(!accepted)accepted=cn.academy.port.canon.CanonDryFire.tryDryFire(player,skill);
                         if(!accepted)cn.academy.port.canon.CanonCastHints.refused(player,skill);
                     }
                     else if(skill.equals(cn.academy.port.highpower.HighPowerSkills.FORKED_ARC)) {accepted=cn.academy.port.highpower.ElectromasterPrototype.castLearned(player);}

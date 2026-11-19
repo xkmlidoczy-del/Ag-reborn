@@ -86,18 +86,21 @@ final class CanonFxPaper {
     }
     private static void fly(Canvas c,View v,double e,double t){
         Vec3 a=v.origin(),b=v.endpoint(),d=b.subtract(a);boolean plane=v.skill().equals("paper_plane");
-        double arr=arrive(v.life()),p=clamp01(v.age()/Math.max(1,arr));if(p>=1)return;
+        double arr=arrive(v.life()),p=clamp01(v.age()/Math.max(1,arr));
+        if(p>=1){
+            if(!plane&&d.lengthSqr()>1e-6)Canon3dMeshKit.slashArc3D(c,b.subtract(d.normalize().scale(.4)),d.normalize(),rightOf(d.normalize()),.95,1.45,life01(v),.18,PAPER,RED,e*.8,false);
+            return;
+        }
         double s=plane?p:easeIn(p);Vec3 side=rightOf(d.normalize());
         Vec3 at=a.add(d.scale(s)).add(0,(plane?.6:.25)*Math.sin(Math.PI*s),0).add(side.scale((plane?.3:.1)*Math.sin(2*Math.PI*s)));
         Vec3 dir=d.normalize(),up=upOf(dir,side);double roll=plane?Math.sin(t*.3)*.4:t*.8;
         Vec3 wing=side.scale(Math.cos(roll)).add(up.scale(Math.sin(roll)));
-        // A plane is two wings on a keel; a blade is a single folded edge spinning on its axis.
-        if(plane){sheet(c,PLANE,at,dir,wing,.5,.28,.15,PAPER,(float)e);sheet(c,PLANE,at,dir,wing.scale(-1),.5,.28,-.15,SHADE,(float)e);}
-        else sheet(c,TRIANGLE,at.subtract(dir.scale(.2)),dir,wing,.42,.16,0,PAPER,(float)e);
-        c.ribbon4(LINE,CanonFx4.Mode.ALPHA,line(at.subtract(d.normalize().scale(.9)),at,3),x->.04*x,x->.35*e*x,SHADE,1,0);
+        if(plane){sheet(c,PLANE,at,dir,wing,.52,.30,.15,PAPER,(float)e);sheet(c,PLANE,at,dir,wing.scale(-1),.52,.30,-.15,SHADE,(float)e);}
+        else sheet(c,TRIANGLE,at.subtract(dir.scale(.2)),dir,wing,.46,.18,0,PAPER,(float)e);
+        c.darkSheathRibbon(line(at.subtract(dir.scale(1.05)),at,4),x->.065*x,x->.68*e*x,PAPER);
+        c.ribbon4(LINE,CanonFx4.Mode.ALPHA,line(at.subtract(dir.scale(.75)),at,3),x->.035*x,x->.52*e*x,RED,1,0);
     }
     private static void build(Canvas c,View v,double e,double t,int tier,boolean retract){
-        // Sheets fly from the hand to the construction point, then unfold flat along their creases one after another.
         Vec3 hand=v.anchor().add(0,1.2,0),site=v.endpoint();if(site.distanceToSqr(hand)<1)site=hand.add(flat(Vec3.directionFromRotation(0,v.yaw())).scale(1.5)).add(0,-1,0);
         int n=Math.min(10,4+tier*2);double stagger=tier>=3?1.2:.6;
         for(int k=0;k<n;k++){
@@ -113,10 +116,11 @@ final class CanonFxPaper {
     }
     private static void armor(Canvas c,View v,double e,double t){
         Vec3 body=v.anchor().add(0,1,0);double lock=easeOutBack(reveal(v,8));
+        AgModernVfx.planarRing(c,v.anchor().add(0,.12,0),new Vec3(1,0,0),new Vec3(0,0,1),.82,t*.06,18,.045,PAPER,e*.58,true);
         for(int k=0;k<10;k++){double ang=k*.628+t*.04*(1-lock),y=(k%3-1)*.45;
-            Vec3 out=new Vec3(Math.cos(ang),0,Math.sin(ang)),home=body.add(out.scale(.55)).add(0,y,0),at=body.add(out.scale(2.2)).add(0,y+1,0);
+            Vec3 out=new Vec3(Math.cos(ang),0,Math.sin(ang)),home=body.add(out.scale(.58)).add(0,y,0),at=body.add(out.scale(2.2)).add(0,y+1,0);
             at=at.add(home.subtract(at).scale(lock));
-            sheet(c,k%2==0?SQUARE:FAN,at.subtract(0,.2,0),rightOf(out),new Vec3(0,1,0),.36,.4,.1*Math.sin(t*.3+k),PAPER,(float)e);}
+            sheet(c,k%2==0?SQUARE:FAN,at.subtract(0,.2,0),rightOf(out),new Vec3(0,1,0),.38,.42,.1*Math.sin(t*.3+k),PAPER,(float)e);}
     }
     private static void wing(Canvas c,View v,double e,double t){
         Vec3 f=flat(Vec3.directionFromRotation(0,v.yaw())),back=f.scale(-1),r=rightOf(f);
@@ -192,12 +196,12 @@ final class CanonFxPaper {
     }
 
     private static void array(Canvas c,View v,double e,double t,int tier){
-        // A storm of sheets circles the caster, then peels off toward the targets.
-        Vec3 centre=v.anchor().add(0,1,0),b=v.endpoint();int n=tier>=5?28:18;double strike=clamp01((life01(v)-.45)/.4);
-        for(int k=0;k<n;k++){double ang=t*.12+k*6.283/n,rad=1.3+.4*Math.sin(k*1.7),y=-.6+1.6*rnd(k);
+        Vec3 centre=v.anchor().add(0,1,0),b=v.endpoint();int n=tier>=5?30:18;double strike=clamp01((life01(v)-.45)/.4);
+        Canon3dMeshKit.dualCalcRings(c,v.anchor().add(0,.10,0),new Vec3(0,1,0),1.8+.35*tier,"paper_psychokinesis",t,e*.66,true);
+        for(int k=0;k<n;k++){double ang=t*.12+k*6.283/n,rad=1.35+.45*Math.sin(k*1.7),y=-.6+1.6*rnd(k);
             Vec3 orbit=centre.add(Math.cos(ang)*rad,y+.2*Math.sin(t*.2+k),Math.sin(ang)*rad);
             double go=k%2==0?easeIn(clamp01(strike*1.3-rnd(k+3)*.3)):0;Vec3 at=orbit.add(b.subtract(orbit).scale(go));
             Vec3 tang=new Vec3(-Math.sin(ang),0,Math.cos(ang));
-            sheet(c,k%4==0?PLANE:k%4==1?TRIANGLE:k%4==2?SQUARE:FAN,at,tang,new Vec3(0,1,0),.24,.22,t*.3+k,PAPER,(float)e);}
+            sheet(c,k%4==0?PLANE:k%4==1?TRIANGLE:k%4==2?SQUARE:FAN,at,tang,new Vec3(0,1,0),.26,.24,t*.3+k,PAPER,(float)e);}
     }
 }

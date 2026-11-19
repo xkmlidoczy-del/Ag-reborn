@@ -680,6 +680,43 @@ public final class CanonExpansionARuntimeTests {
         }
     }
 
+    @GameTest(template="empty",batch="canon_lv5_settlement",timeoutTicks=100)
+    public static void lv5RefundsItsDebitWhenEverythingDisappears(GameTestHelper h) {
+        String skill="mental_conflict_ring";
+        var f=new Fixture(h,"mental_out",skill);
+        var mobs=new java.util.ArrayList<Zombie>();
+        try {
+            f.loadChunks();
+            for (int i=0;i<4;i++) {
+                var mob=h.spawnWithNoFreeWill(EntityType.ZOMBIE,new Vec3(4.5+(i%2)*2,3,5.5+(i/2)*2));
+                mob.setNoGravity(true);
+                mobs.add(mob);
+            }
+            for (int i=0;i<cn.academy.port.macro.MacroSkillRules.TARGETS_PER_TICK;i++) {
+                cn.academy.port.macro.MacroSettlement.reserve(f.p.server);
+            }
+            double before=HighPowerResources.cp(f.p);
+            h.assertTrue(CanonSkillsCombatA.cast(f.p,skill),"LV5 accepted before the roster disappears");
+            double paid=HighPowerResources.cp(f.p);
+            h.assertTrue(paid<before && cn.academy.port.macro.MacroSettlement.pending(f.p.server)>0,"paid settlement queued");
+            mobs.forEach(Zombie::discard);
+            h.runAfterDelay(3,()->{
+                try {
+                    double after=HighPowerResources.cp(f.p);
+                    int cd=AbilityStorage.get(f.p).cooldowns.getOrDefault(skill,0);
+                    h.assertTrue(cn.academy.port.macro.MacroSettlement.pending(f.p.server)==0,"settlement ended");
+                    h.assertTrue(Math.abs(after-before)<1e-9 && cd>0 && cd<=10,"zero-target cast should refund CP and keep only the short protection cooldown");
+                    h.assertTrue(AbilityStorage.get(f.p).cooldownMaximum(skill)==10,"client cooldown dial uses the short maximum");
+                    long persisted=f.p.getPersistentData().getCompound(HighPowerResources.DATA_KEY).getLong("next_"+skill);
+                    h.assertTrue(persisted-f.p.serverLevel().getGameTime()<=10,"persistent cooldown was shortened too");
+                    h.succeed();
+                } finally { f.close(); }
+            });
+        } catch (Throwable error) {
+            mobs.forEach(Zombie::discard); f.close(); throw error;
+        }
+    }
+
     private static final class Fixture {
         final ServerPlayer p;final EmbeddedChannel channel;
         Fixture(GameTestHelper h,String category,String skill) {

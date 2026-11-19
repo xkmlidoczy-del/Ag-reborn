@@ -10,7 +10,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -39,10 +39,10 @@ final class CanonNeedCheck {
             case "dry" -> !p.isInWater();
             case "in_water" -> p.isInWater();
             case "on_fire" -> p.isOnFire();
-            case "water_near" -> waterNear(p, r > 0 ? r : 5);
+            case "water_near" -> waterNear(p, r > 0 ? r : 5) || CanonAuxItems.hasChargedWaterFlask(p);
             case "shell" -> CanonSkillsCombatA.ownsNitrogenShell(p);
             case "wings" -> CanonSkillsCombatA.ownsDarkWings(p);
-            case "survival" -> !p.isCreative() && !p.isSpectator();
+            case "survival" -> !p.isSpectator();
             case "thrown_item" -> !p.serverLevel().getEntitiesOfClass(ItemEntity.class, p.getBoundingBox().inflate(r > 0 ? r : 8),
                     e -> e.getOwner() == p || p.getUUID().equals(thrower(e))).isEmpty();
             case "incoming_arrow" -> !p.serverLevel().getEntitiesOfClass(AbstractArrow.class, p.getBoundingBox().inflate(r > 0 ? r : 6),
@@ -59,7 +59,11 @@ final class CanonNeedCheck {
                 int count = kind.equals("second_hostile") ? 2 : kind.equals("three_hostiles") ? 3 : 4;
                 yield hostiles(p, distance, false).size() >= count;
             }
-            case "paper" -> p.getInventory().countItem(Items.PAPER) >= Math.max(1, (int) r);
+            case "paper" -> {
+                ItemStack held = CanonAuxItems.isSheet(p.getMainHandItem()) ? p.getMainHandItem() : p.getOffhandItem();
+                int needed = CanonAuxItems.sheetCost(held, Math.max(1, (int) r));
+                yield CanonAuxItems.isSheet(held) && held.getCount() >= needed;
+            }
             case "liquid_body" -> CanonLiquidSkills.controlledBody(p) != null;
             default -> null;
         };
@@ -76,8 +80,8 @@ final class CanonNeedCheck {
     }
 
     private static LivingEntity aimed(ServerPlayer p, double range) {
-        var hit = ClassicRaytrace.living(p, range, ClipContext.Fluid.NONE);
-        return hit instanceof EntityHitResult e && e.getEntity() instanceof LivingEntity t && t != p && CanonTargetPolicy.hostile(t) ? t : null;
+        LivingEntity t = CanonSkillsCombatA.aimed(p, range);
+        return t != null && t != p && CanonTargetPolicy.directTarget(p, t) ? t : null;
     }
 
     private static java.util.List<LivingEntity> hostiles(ServerPlayer p, double range, boolean ahead) {

@@ -91,37 +91,35 @@ final class CanonFxMental {
         c.cellSprite(STAR,CanonFx4.Mode.ALPHA,head.add(0,.34+.025*Math.sin(t*.3),0),.54*easeOutBack(clamp01(age/Math.min(4,Math.max(1.5,life*.25)))),0,frame,PALE,(float)e);
     }
     private static void scan(Canvas c,View v,double e,double t,int tier){
-        // A holographic radar sweep: a fan of thin gold rays turns once around the caster and leaves panels over what it found.
         Vec3 h=hand(v);double sweep=reveal(v,10)*Math.PI*2+v.yaw()*Math.PI/180;double R=4+tier;
+        if(tier>=2)Canon3dMeshKit.dualCalcRings(c,v.anchor().add(0,.10,0),new Vec3(0,1,0),1.2+.35*tier,"mental_out",t,e*.58,false);
         for(int k=0;k<6;k++){double a=sweep-k*.07,fade=1-k/6.;Vec3 end=h.add(Math.cos(a)*R,-.6,Math.sin(a)*R);
-            thread(c,line(h,end,4),x->.13*(1-x*.4),x->.8*e*fade*(1-x*.4),GOLD,R/2,-t*.1);}
-        // The 2.5-block association radius is around a server-confirmed endpoint,
-        // not the skill reach (mental_probe can be aimed up to 24 blocks away).
+            thread(c,line(h,end,4),x->.14*(1-x*.4),x->.84*e*fade*(1-x*.4),GOLD,R/2,-t*.1);}
         AABB box=POINT_SCANS.contains(v.skill())?v.targetBox():null;
         if(box!=null&&v.age()>.75){
             if(v.local())brackets(c,box,e*easeOut(reveal(v,2)),t);
             Vec3 top=new Vec3(box.getCenter().x,box.maxY,box.getCenter().z);
             if(v.local()){
                 double panel=e*easeOut(clamp01((v.age()-3)/4));
-                c.cellPlane(PANEL,CanonFx4.Mode.ALPHA,top.add(0,.75,0),c.right.scale(.42),c.up.scale(.42),0,GOLD,(float)(.65*panel));
-                c.cellPlane(PANEL,CanonFx4.Mode.HOLO,top.add(0,.75,0),c.right.scale(.42),c.up.scale(.42),0,PALE,(float)(.75*panel));
+                c.cellPlane(PANEL,CanonFx4.Mode.ALPHA,top.add(0,.75,0),c.right.scale(.44),c.up.scale(.44),0,GOLD,(float)(.68*panel));
+                c.cellPlane(PANEL,CanonFx4.Mode.HOLO,top.add(0,.75,0),c.right.scale(.44),c.up.scale(.44),0,PALE,(float)(.78*panel));
             }
             Vec3 lock=top.add(0,.18,0);
-            thread(c,partial(line(h,lock,8),easeOut(reveal(v,3))),x->.14,x->.8*e,GOLD,2,-t*.06);
+            thread(c,partial(line(h,lock,8),easeOut(reveal(v,3))),x->.145,x->.85*e,GOLD,2,-t*.06);
             star(c,top,v.age()-.75,v.life(),e,t,tier>=5);}
     }
     private static void control(Canvas c,View v,double e,double t,int tier){
         AABB box=v.targetBox();Vec3 h=hand(v),mid=box==null?v.endpoint():box.getCenter();
         Vec3 head=box==null?v.endpoint():new Vec3(mid.x,box.maxY,mid.z);
-        // The gold thread is drawn out segment by segment, with a bead of light running to the target.
         var path=CanonFx.wave(h,head,16,.12,1.5,t*.1,new Vec3(0,1,0));double draw=easeOut(reveal(v,6));
-        thread(c,partial(path,draw),x->.12,x->.9*e,GOLD,4,-t*.08);
-        if(draw>=1){Vec3 bead=path.get((int)Math.round(frac(t*.05)*15));c.cellSprite(STAR,CanonFx4.Mode.ADD,bead,.09,t*.2,5,PALE,(float)(.8*e));}
+        thread(c,partial(path,draw),x->.13,x->.92*e,GOLD,4,-t*.08);
+        if(draw>=1){Vec3 bead=path.get((int)Math.round(frac(t*.05)*15));c.cellSprite(STAR,CanonFx4.Mode.ADD,bead,.11,t*.2,5,PALE,(float)(.85*e));}
         if(v.age()<4)return;
         if(v.local()&&box!=null)brackets(c,box,e,t);
         if(box!=null)star(c,head,v.age()-4,v.life(),e,t,tier>=5);
         if(tier>=3){double left=1-life01(v);Vec3 base=box==null?v.endpoint():new Vec3(mid.x,box.minY+.05,mid.z);
-            c.cellPlane(ARC,CanonFx4.Mode.HOLO,base,new Vec3(.6,0,0),new Vec3(0,0,.6),0,tint(GOLD,PINK,1-left),(float)(.8*e*left));}
+            c.cellPlane(ARC,CanonFx4.Mode.HOLO,base,new Vec3(.68,0,0),new Vec3(0,0,.68),0,tint(GOLD,PINK,1-left),(float)(.82*e*left));
+            if(tier>=4)Canon3dMeshKit.dualCalcRings(c,head.add(0,.28,0),new Vec3(0,1,0),.72+.12*tier,"mental_out",t,e*.62,false);}
     }
     /** One representative or leased target per receipt. Never infer links between members. */
     private static void receiptMark(Canvas c, View v, double e) {
@@ -131,12 +129,10 @@ final class CanonFxMental {
         double signal = e * (1 - clamp01((age - 3) / 5));
         if (signal > .01 && v.origin().distanceToSqr(head) > 1e-6) {
             var path = CanonFx.wave(v.origin(), head, 9, .06, 1, age * .23, new Vec3(0, 1, 0));
-            thread(c, partial(path, connect), x -> .11, x -> .9 * signal, GOLD, 3, -age * .13);
+            thread(c, partial(path, connect), x -> .12, x -> .92 * signal, GOLD, 3, -age * .13);
         }
-        // A packet can arrive before the actor is known, or alongside an
-        // ambiguous overlapping entity. Keep only a brief marker at its point.
         if (box == null) {
-            c.cellSprite(STAR, CanonFx4.Mode.ALPHA, head, .22, 0,
+            c.cellSprite(STAR, CanonFx4.Mode.ALPHA, head, .24, 0,
                     Fx4Atlas.get("mo_star_blink_sheet").frame(connect), PALE, (float) signal);
             return;
         }
@@ -145,17 +141,17 @@ final class CanonFxMental {
     }
 
     private static void field(Canvas c,View v,double e,double t,int tier){
-        // A received target point, not a fresh proximity scan, owns each mark.
-        // Multiple actual crowd receipts naturally make a network of spokes;
-        // a representative-only packet never invents controlled bystanders.
         Vec3 h=hand(v);var grid=Fx4Atlas.get("mo_signal_ring_sheet");
         for(int k=0;k<2;k++){double ph=frac(t*.04+k*.5);
-            c.cellSprite(SIGNAL,CanonFx4.Mode.HOLO,h,.3+.5*ph,0,grid.frame(ph),GOLD,(float)(.5*e*(1-ph)));}
+            c.cellSprite(SIGNAL,CanonFx4.Mode.HOLO,h,.34+.52*ph,0,grid.frame(ph),GOLD,(float)(.55*e*(1-ph)));}
+        if(tier>=4&&v.radius()>0&&v.rangeCentre()!=null){
+            Canon3dMeshKit.dualCalcRings(c,v.rangeCentre().add(0,.10,0),new Vec3(0,1,0),Math.min(v.radius(),14.0),"mental_out",t,e*.58,true);
+        }
         AABB box=v.targetBox();
         if(!targetPointField(v.skill())||box==null)return;
         Vec3 head=new Vec3(box.getCenter().x,box.maxY,box.getCenter().z);
         var path=CanonFx.wave(h,head,10,.08,1.2,t*.07,new Vec3(0,1,0));
-        thread(c,partial(path,easeOut(reveal(v,5))),x->.10,x->.8*e,GOLD,3,-t*.06);
+        thread(c,partial(path,easeOut(reveal(v,5))),x->.11,x->.85*e,GOLD,3,-t*.06);
         double age=v.age()-1.5;if(age<0)return;
         if(v.local())brackets(c,box,e,t);
         star(c,head,age,v.life(),e,t,tier>=5);

@@ -91,7 +91,10 @@ public final class CanonSkillsCombatB {
         int cooldown = skill.equals("float_field") ? 100 : skill.equals("float_rescue") ? 60 : 30;
         long now = world.getGameTime();
         int ticks = integer(skill, "duration_ticks");
-        if (now < 0 || now > Long.MAX_VALUE - ticks || !HighPowerResources.trySpend(player, skill, growth.arcCost() * multiplier, cooldown)) return false;
+        if (now < 0 || now > Long.MAX_VALUE - ticks) return false;
+        boolean area = skill.equals("float_field");
+        var payment = area ? HighPowerResources.spendForSettlement(player, skill, growth.arcCost() * multiplier, cooldown) : null;
+        if (area ? payment == null : !HighPowerResources.trySpend(player, skill, growth.arcCost() * multiplier, cooldown)) return false;
         // Resource hooks can change the target, preset or consent before the lease is installed.
         if (AbilityStorage.get(player) != state || player.serverLevel() != world || !player.isAlive()
                 || player.isRemoved() || player.isSpectator() || player.hasDisconnected() || player.connection == null
@@ -100,25 +103,54 @@ public final class CanonSkillsCombatB {
                 || !state.activated || !state.overloadFine || state.interfering || !state.learned(skill)
                 || !state.presets.currentContains(skill) || !SkillCatalog.enabled(CATEGORY, skill)
                 || LEASES.size() + targets.size() > MAX_LEASES && !skill.equals("float_field")
-                || targets.stream().anyMatch(target -> LEASES.containsKey(target.getUUID()) || CanonFloatExpansion.leased(target))) return false;
+                || targets.stream().anyMatch(target -> LEASES.containsKey(target.getUUID()) || CanonFloatExpansion.leased(target))) {
+            if (payment != null) payment.finish(false);
+            return false;
+        }
         List<LivingEntity> confirmed = switch (skill) {
             case "float_lift" -> targetedHostile(player);
             case "float_rescue" -> rescueTarget(player);
             case "float_field" -> fieldTargets(player);
             default -> List.of();
         };
-        if (!confirmed.containsAll(targets)) return false;
-        double leaseReach=skill.equals("float_field")?fieldRadius(player):32;
-        if(skill.equals("float_field"))cn.academy.port.macro.MacroSettlement.submit(world,targets,
-                ()->player.isAlive()&&!player.hasDisconnected()&&player.serverLevel()==world&&AbilityStorage.get(player)==state,
-                target->{if(eligibleHostile(player,target)&&target.distanceToSqr(player)<=leaseReach*leaseReach&&!LEASES.containsKey(target.getUUID()))LEASES.put(target.getUUID(),new Lease(player,world,target,skill,now+ticks,target.getY(),leaseReach));},()->{});
-        else for (LivingEntity target : targets) LEASES.put(target.getUUID(), new Lease(player, world, target, skill, now + ticks, target.getY(),leaseReach));
-        CanonVfx.emit(player,skill,player.position(),targets.getFirst().position(),CanonVfx.Phase.START,ticks,skill.equals("float_field")?fieldRadius(player):0);
+        if (!confirmed.containsAll(targets)) {
+            if (payment != null) payment.finish(false);
+            return false;
+        }
+        double leaseReach = area ? fieldRadius(player) : 32;
+        if (area) {
+            boolean marker = CanonAuxItems.floatMarker(player) != null;
+            var origin = player.position();
+            var first = new Vec3[]{null};
+            cn.academy.port.macro.MacroSettlement.submit(world, targets,
+                    () -> player.isAlive() && !player.hasDisconnected() && player.serverLevel() == world
+                            && AbilityStorage.get(player) == state && CATEGORY.equals(state.category) && state.activated
+                            && state.overloadFine && !state.interfering && state.presets.currentContains(skill),
+                    target -> {
+                        if (!eligibleHostile(player, target) || target.distanceToSqr(player) > leaseReach * leaseReach
+                                || LEASES.containsKey(target.getUUID()) || CanonFloatExpansion.leased(target)) return;
+                        LEASES.put(target.getUUID(), new Lease(player, world, target, skill, now + ticks, target.getY(), leaseReach));
+                        if (first[0] == null) first[0] = target.position();
+                    }, () -> {
+                        payment.finish(first[0] != null);
+                        if (first[0] != null) {
+                            CanonVfx.emit(player, skill, origin, first[0], CanonVfx.Phase.START, ticks, leaseReach, marker);
+                            experience(player, state, skill);
+                        }
+                    });
+        } else {
+            for (LivingEntity target : targets) LEASES.put(target.getUUID(), new Lease(player, world, target, skill, now + ticks, target.getY(), leaseReach));
+            CanonVfx.emit(player, skill, player.position(), targets.getFirst().position(), CanonVfx.Phase.START, ticks);
+            experience(player, state, skill);
+        }
+        return true;
+    }
+
+    private static void experience(ServerPlayer player, cn.academy.port.core.AbilityProgress state, String skill) {
         if (AbilityStorage.get(player) == state && CATEGORY.equals(state.category) && state.learned(skill)) {
             state.addExperience(skill, .01);
             AbilityStorage.save(player);
         }
-        return true;
     }
 
     private static List<LivingEntity> targetedHostile(ServerPlayer player) {

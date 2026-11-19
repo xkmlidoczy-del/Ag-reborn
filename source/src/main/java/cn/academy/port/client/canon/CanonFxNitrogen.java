@@ -63,48 +63,58 @@ final class CanonFxNitrogen {
     }
     private static void shell(Canvas c,View v,double e,double t,int tier){
         if(has(v,"plate","shield_line","bulwark")){pane(c,v,e,t,tier);return;}
-        // Two shells of compressed air hug the body; the bigger defences (dome, ally guard) push the outer shell out.
         boolean ally="nitrogen_ally_guard".equals(v.skill());
         if (v.phase()==CanonVfx.Phase.END.ordinal() || ally && v.phase()!=CanonVfx.Phase.START.ordinal()) return;
         Vec3 body=(ally?v.endpoint():v.anchor()).add(0,.95,0);
         boolean wide=has(v,"dome");
         double grow=easeOut(reveal(v,6));
-        double rx=(wide?2.2:.62)*grow,ry=(wide?1.6:1.05)*grow;
-        c.shell(RIM,CanonFx4.Mode.ADD,body,rx,ry,9,14,ICE,(float)(.9*e),t*.01);
-        c.shell(RIM,CanonFx4.Mode.ADD,body,rx*.86,ry*.9,8,12,PALE,(float)(.5*e),-t*.013);
+        double rx=(wide?2.2:.68)*grow,ry=(wide?1.65:1.08)*grow;
+        c.shell(RIM,CanonFx4.Mode.ADD,body,rx,ry,9,14,ICE,(float)(.85*e),t*.01);
+        Canon3dMeshKit.hexPressureDome(c,body,rx*1.02,ry*1.02,ICE,t,e*(wide?.72:.58),wide?3:2);
         if(wide&&tier>=3)c.refract("fx4:common_noise_tile",false,body,rx*1.1,(float)(.5*e),ICE);
     }
     /** Frontal screens sit exactly where the server intercept box is: its distance ahead and its half width. */
     private static void pane(Canvas c,View v,double e,double t,int tier){
-        double w=cn.academy.port.canon.CanonExpansionCombatA.barrierHalfWidth(v.skill()),d=cn.academy.port.canon.CanonExpansionCombatA.barrierDistance(v.skill());
+        double w=cn.academy.port.canon.CanonExpansionCombatA.barrierHalfWidth(v.skill());
         Vec3 f=flat(CanonBarrierGeometry.forward(v)),r=rightOf(f),centre=CanonBarrierGeometry.centre(v);double grow=easeOut(reveal(v,6));
-        for(int k=-2;k<=2;k++){Vec3 x=centre.add(r.scale(w*k/2.0*grow));c.refract("fx4:common_noise_tile",false,x,w*.6,(float)(.55*e),ICE);}
+        AgModernVfx.obbForcefield(c,centre,CanonBarrierGeometry.forward(v),v.yaw(),v.skill(),ICE,t,e*.76);
+        for(int k=-2;k<=2;k++){Vec3 x=centre.add(r.scale(w*k/2.0*grow));c.refract("fx4:common_noise_tile",false,x,w*.55,(float)(.52*e),ICE);}
         Vec3 a=centre.add(r.scale(-w*grow)).add(0,w*grow,0),b=centre.add(r.scale(w*grow)).add(0,w*grow,0),cc=centre.add(r.scale(w*grow)).add(0,-w*grow,0),dd=centre.add(r.scale(-w*grow)).add(0,-w*grow,0);
-        c.ribbon4(LINE,CanonFx4.Mode.ADD,java.util.List.of(a,b,cc,dd,a),x->.05,x->.8*e,ICE,1,0);
+        c.darkSheathRibbon(java.util.List.of(a,b,cc,dd,a),x->.06,x->.82*e,ICE);
     }
     private static void strike(Canvas c,View v,double e,double t,int tier){
         Vec3 a=v.origin(),b=v.endpoint();double arr=arrive(v.life()),since=v.age()-arr;Vec3 dir=b.subtract(a);dir=dir.lengthSqr()<1e-6?new Vec3(0,0,1):dir.normalize();
         Vec3 fist=v.anchor().add(0,1.15,0).add(flat(dir).scale(.45));
         if(since<0){
-            // TM1: air is squeezed into the fist; level 3+ makes the squeeze visible as a shrinking shell with streaks pulled inward.
             double squeeze=clamp01(v.age()/Math.max(1,arr));
-            c.shell(RIM,CanonFx4.Mode.ADD,fist,.5*(1-squeeze)+.12,.5*(1-squeeze)+.12,6,10,ICE,(float)(.9*e),t*.03);
+            c.shell(RIM,CanonFx4.Mode.ADD,fist,.52*(1-squeeze)+.14,.52*(1-squeeze)+.14,6,10,ICE,(float)(.9*e),t*.03);
             if(tier>=3)for(int k=0;k<6;k++){double a2=k*1.047+t*.1;Vec3 from=fist.add(Math.cos(a2)*.9*(1-squeeze),Math.sin(a2)*.9*(1-squeeze),0);
-                c.ribbon4(LINE,CanonFx4.Mode.ADD,line(from,fist,2),x->.04,x->.6*e*x,PALE,1,0);}
+                c.darkSheathRibbon(line(from,fist,2),x->.048,x->.68*e*x,PALE);}
             return;
         }
-        // Release: the compressed air bursts at the target as an expanding shell (GM4 from level 4) and a pressure streak.
         double p=clamp01(since/Math.max(4,v.life()-arr));var grid=Fx4Atlas.get("na_compress_sheet");
         c.cellSprite(COMPRESS,CanonFx4.Mode.ADD,b,.9+.3*tier,0,grid.frame(p),ICE,(float)(.9*e));
-        c.ribbon4(LINE,CanonFx4.Mode.ADD,line(fist,b,3),x->.12*(1-p),x->.7*e*(1-p),PALE,1,0);
-        if(tier>=4){double R=.4+2.2*easeOut(p);c.shell(RIM,CanonFx4.Mode.ADD,b,R,R*.8,8,14,ICE,(float)(.7*e*(1-p)),0);
-            c.refract("fx4:common_noise_tile",false,b,R,(float)(.6*e*(1-p)),ICE);}
+        c.darkSheathRibbon(line(fist,b,4),x->.14*(1-p),x->.82*e*(1-p),ICE);
+        if(has(v,"sweep","uppercut","cone")){
+            Vec3 side=v.skill().equals("nitrogen_uppercut")?new Vec3(0,1,0):rightOf(dir);
+            Canon3dMeshKit.slashArc3D(c,v.anchor().add(0,1.05,0),dir,side,Math.max(1.8,a.distanceTo(b)),1.85,p,.28+.04*tier,ICE,DEEP,e*(1-p*.5),false);
+        }
+        if(has(v,"ground_wave","shock_ring","impact")||tier>=4){
+            double R=(v.radius()>0?Math.min(v.radius(),8.0):.6+2.4*easeOut(p));
+            Canon3dMeshKit.shockwaveCrown3D(c,b,R*(.45+.55*easeOut(p)),ICE,since,e*(1-p*.65),28);
+            for(int k=0;k<6;k++){
+                double ang=k*(Math.PI/3)+.25;
+                Vec3 spBase=b.add(Math.cos(ang)*R*.55*easeOut(p),0,Math.sin(ang)*R*.55*easeOut(p));
+                Vec3 spTip=spBase.add(Math.cos(ang)*.35,(.55+.12*tier)*(1-p*.6),Math.sin(ang)*.35);
+                Canon3dMeshKit.facetedPrism(c,spBase,spTip,.11,4,ang,PALE,ICE,e*(1-p),true);
+            }
+            c.refract("fx4:common_noise_tile",false,b,R*.8,(float)(.6*e*(1-p)),ICE);
+        }
     }
     private static void move(Canvas c,View v,double e,double t){
-        // Jets of cold air from the back and feet, leaving a vapour trail along the path.
         Vec3 f=flat(Vec3.directionFromRotation(0,v.yaw())),body=v.anchor();
         for(int k=-1;k<=1;k+=2){Vec3 nozzle=body.add(0,.2+(k>0?.9:0),0).add(f.scale(-.25));
-            c.ribbon4(LINE,CanonFx4.Mode.ADD,line(nozzle,nozzle.add(f.scale(-1.6)).add(0,-.2,0),4),x->.18*(1-x),x->.75*e*(1-x),ICE,1,-t*.2);}
-        c.shell(RIM,CanonFx4.Mode.ADD,body.add(0,.95,0),.6,1.0,8,12,PALE,(float)(.5*e),t*.02);
+            c.darkSheathRibbon(line(nozzle,nozzle.add(f.scale(-1.9)).add(0,-.2,0),5),x->.20*(1-x),x->.82*e*(1-x),ICE);}
+        Canon3dMeshKit.hexPressureDome(c,body.add(0,.95,0),.65,1.05,PALE,t,e*.56,2);
     }
 }

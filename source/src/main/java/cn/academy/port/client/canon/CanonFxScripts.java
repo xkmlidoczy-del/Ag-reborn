@@ -45,6 +45,7 @@ final class CanonFxScripts {
      */
     static double env(View v){
         double life=Math.max(1,v.life()),a=Math.max(0,v.age());
+        if(v.phase()==2&&!CanonReceiptFx.replacesLegacy(v.skill()))return Canon3dMeshKit.nonlinearHitEnvelope(a,life);
         double in=v.phase()==3?1:ss((a+.5)/Math.max(1.5,Math.min(6,life*(v.phase()==2?.1:.15))));
         double start=life*.7,out=a<=start?1:1-ss((a-start)/Math.max(1,life-start));
         if(v.phase()==3)out=Math.min(out,Math.max(0,1-a/Math.max(8,life)));

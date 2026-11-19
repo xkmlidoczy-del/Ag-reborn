@@ -65,19 +65,16 @@ final class CanonFxFloat {
         c.filmShell(SHELL,CanonFx4.Mode.ALPHA,mid,r*grow*w,h*grow/w,10,16,film,(float)(.88*e),5);
     }
     private static void target(Canvas c,View v,double e,double t,int tier,boolean down){
-        // The shared client view binds the server endpoint to one native entity.
-        // Never reacquire a nearby item or creature after that target has moved.
         AABB box=v.targetBox();if(box==null)return;
         double grow=tier>=3?easeOutBack(reveal(v,7)):easeOut(reveal(v,7));wrap(c,box,e,t,grow);
-        // Density slices travel along the target only: up while it rises, down while it is lowered.
         for(int k=0;k<3;k++){double ph=frac(t*.03+k/3.),y=down?box.maxY-ph*box.getYsize():box.minY+ph*box.getYsize();
-            Vec3 mid=new Vec3(box.getCenter().x,y,box.getCenter().z);double r=Math.max(box.getXsize(),box.getZsize())*.8+.2;
-            c.cellPlane(SLICE,CanonFx4.Mode.ADD,mid,new Vec3(r,0,0),new Vec3(0,0,r),0,down?LILAC:BUBBLE,(float)(.30*e*Math.sin(Math.PI*ph)));}
-        // The buoyant column under the target.
+            Vec3 mid=new Vec3(box.getCenter().x,y,box.getCenter().z);double r=Math.max(box.getXsize(),box.getZsize())*.82+.22;
+            c.cellPlane(SLICE,CanonFx4.Mode.ADD,mid,new Vec3(r,0,0),new Vec3(0,0,r),0,down?LILAC:BUBBLE,(float)(.36*e*Math.sin(Math.PI*ph)));}
         Vec3 foot=new Vec3(box.getCenter().x,box.minY,box.getCenter().z);
+        if(tier>=3)AgModernVfx.planarRing(c,foot.add(0,.05,0),new Vec3(1,0,0),new Vec3(0,0,1),Math.max(.55,box.getXsize()*.75),t*(down?-.08:.08),18,.045,down?LILAC:BUBBLE,e*.68,true);
         c.fx4Quad(COLUMN,CanonFx4.Mode.ADD,foot.add(c.right.scale(.35)).add(0,-.2,0),foot.subtract(c.right.scale(.35)).add(0,-.2,0),
                 foot.subtract(c.right.scale(.35)).add(0,1.4,0),foot.add(c.right.scale(.35)).add(0,1.4,0),
-                new float[]{0,(float)(1+t*(down?-.02:.02)),1,(float)(t*(down?-.02:.02))},BUBBLE[0],BUBBLE[1],BUBBLE[2],(float)(.28*e));
+                new float[]{0,(float)(1+t*(down?-.02:.02)),1,(float)(t*(down?-.02:.02))},BUBBLE[0],BUBBLE[1],BUBBLE[2],(float)(.32*e));
         if(tier>=4)swarm(c,box.getCenter(),Math.max(box.getXsize(),box.getYsize())*.9+.4,e,t,8);
         if(life01(v)>.85){var grid=Fx4Atlas.get("fd_pop_sheet");c.cellSprite(POP,CanonFx4.Mode.ADD,box.getCenter(),Math.max(box.getXsize(),box.getYsize())*.7,0,grid.frame((life01(v)-.85)/.15),PALE,(float)(.8*e));}
     }
@@ -90,28 +87,31 @@ final class CanonFxFloat {
     private static void carry(Canvas c,View v,double e,double t){
         AABB box=v.targetBox();Vec3 a=v.origin(),b=box==null?v.endpoint():box.getCenter();
         if(box!=null)wrap(c,box,e,t,easeOut(reveal(v,6)));
+        c.darkSheathRibbon(CanonFx.wave(a,b,10,.10,1.5,-t*.15,new Vec3(0,1,0)),x->.06*Math.sin(Math.PI*x),x->.62*e,BUBBLE);
         for(int k=0;k<10;k++){double s=frac(t*.04+k/10.);Vec3 p=a.add(b.subtract(a).scale(s)).add(0,.25*Math.sin(Math.PI*s)+.08*Math.sin(t*.3+k),0);
-            c.cellSprite("fx4:"+BUBBLES,CanonFx4.Mode.ALPHA,p,.05+.04*rnd(k),0,k,BUBBLE,(float)(.8*e*Math.sin(Math.PI*s)));}
+            c.cellSprite("fx4:"+BUBBLES,CanonFx4.Mode.ALPHA,p,.055+.04*rnd(k),0,k,BUBBLE,(float)(.85*e*Math.sin(Math.PI*s)));}
     }
     private static void field(Canvas c,View v,double e,double t,int tier){
         if (!VisualTierConfig.tier().enhanced()) return;
         if (v.phase() == CanonVfx.Phase.END.ordinal()) {
             if ("float_release_field".equals(v.skill())) {
-                c.cellSprite(POP, CanonFx4.Mode.ALPHA, v.endpoint().add(0, .22, 0), .5, 0,
-                        Fx4Atlas.get("fd_pop_sheet").frame(life01(v)), PALE, (float)(.78 * e));
+                c.cellSprite(POP, CanonFx4.Mode.ALPHA, v.endpoint().add(0, .22, 0), .65, 0,
+                        Fx4Atlas.get("fd_pop_sheet").frame(life01(v)), PALE, (float)(.85 * e));
+                if (v.radius() > 0) Canon3dMeshKit.shockwaveCrown3D(c, v.endpoint(), Math.min(v.radius(), 10.0), LILAC, v.age(), e * .68, 28);
             }
             return;
         }
         Vec3 centre = v.rangeCentre();
         if (centre == null || v.radius() <= 0) return;
         double radius = v.radius();
-        // No target identity accompanies a field packet. Density bands visualize the area;
-        // only the separate single-target receipts can wrap a bound entity.
+        if (tier >= 4) {
+            Canon3dMeshKit.dualCalcRings(c, centre.add(0, .10, 0), new Vec3(0, 1, 0), Math.min(radius, 16.0), "float_dial", t, e * .62, true);
+        }
         for (int layer = 0; layer < 3; layer++) {
             double progress = frac(v.age() * .035 + layer / 3.0);
             double height = radius * (.12 + .36 * progress);
-            double section = Math.sqrt(radius * radius - height * height) * (.43 + .44 * progress);
-            float alpha = (float)(.40 * e * Math.sin(Math.PI * progress));
+            double section = Math.sqrt(Math.max(0.05, radius * radius - height * height)) * (.43 + .44 * progress);
+            float alpha = (float)(.44 * e * Math.sin(Math.PI * progress));
             c.cellPlane(SLICE, CanonFx4.Mode.ALPHA, centre.add(0, height, 0),
                     new Vec3(section, 0, 0), new Vec3(0, 0, section), 0,
                     layer == 1 ? LILAC : BUBBLE, alpha);

@@ -128,21 +128,32 @@ final class CanonFxLiquid {
     }
     private static void strike(Canvas c,View v,double e,double t,int count){
         Vec3 a=v.origin(),b=v.endpoint();double arr=arrive(v.life()),since=v.age()-arr;
-        // Stretch past the target with an overshoot, hold, then the surface tension pulls it back, thinning as it goes.
         double reach=easeOutBack(clamp01(v.age()/Math.max(1,arr))),back=easeIn(clamp01((life01(v)-.6)/.4)),len=Math.max(0,reach*(1-back));
-        for(int k=0;k<count;k++){
-            Vec3 bend=new Vec3(0,1,0).add(rightOf(b.subtract(a).normalize()).scale((k-(count-1)/2.)*.8));
-            var full=CanonFx.wave(a,b.add(b.subtract(a).normalize().scale(.25)),14,.25,1.3,-t*.2+k,bend);
-            tendril(c,partial(full,len),.13,e,t);
+        Vec3 span=b.subtract(a);Vec3 dir=span.lengthSqr()<1e-6?new Vec3(0,0,1):span.normalize();
+        if(v.skill().startsWith("liquid_contact_")){
+            Canon3dMeshKit.slashArc3D(c,a.subtract(dir.scale(.2)),dir,rightOf(dir),Math.max(1.55,span.length()+.3),count>1?2.35:1.75,life01(v),.32,INK,RIM,e*.95,true);
+            if(v.skill().equals("liquid_contact_crush")&&since>=0){
+                double p=clamp01(since/Math.max(4,v.life()-arr));
+                for(int m=0;m<4;m++){
+                    double ang=m*(Math.PI*.5)+.35;
+                    Vec3 sb=b.add(Math.cos(ang)*.55,0,Math.sin(ang)*.55);
+                    Canon3dMeshKit.facetedPrism(c,sb,b.add(0,1.05*(1-p*.5),0),.15,4,ang,INK,RIM,e*(1-p*.4),false);
+                }
+            }
         }
-        if(since>=0&&since<10){var grid=Fx4Atlas.get("ls_ink_sheet");c.cellSprite(INKS,CanonFx4.Mode.ALPHA,b,.8,rnd(3)*6,grid.frame(since/10),INK,(float)(.6*e));}
+        for(int k=0;k<count;k++){
+            Vec3 bend=new Vec3(0,1,0).add(rightOf(dir).scale((k-(count-1)/2.)*.8));
+            var full=CanonFx.wave(a,b.add(dir.scale(.25)),14,.25,1.3,-t*.2+k,bend);
+            tendril(c,partial(full,len),.14,e,t);
+        }
+        if(since>=0&&since<12){var grid=Fx4Atlas.get("ls_ink_sheet");c.cellSprite(INKS,CanonFx4.Mode.ALPHA,b,.9,rnd(3)*6,grid.frame(since/12),INK,(float)(.72*e));}
     }
     private static void wall(Canvas c,View v,double e,double t){
         Vec3 f=flat(Vec3.directionFromRotation(0,v.yaw())),r=rightOf(f),base=v.anchor().add(f.scale(1.0));
         double rise=easeOutBack(reveal(v,7)),out=clamp01((life01(v)-.75)/.25);
         for(int k=0;k<7;k++){double s=k/6.-.5;var col=new ArrayList<Vec3>();
-            for(int i=0;i<9;i++){double h=i/8.;col.add(base.add(r.scale(s*2.2+.05*Math.sin(t*.2+k+h*3))).add(f.scale(.15*Math.sin(h*3+k))).add(0,h*2.0*rise*(1-out),0));}
-            tendril(c,col,.12,e,t);}
+            for(int i=0;i<9;i++){double h=i/8.;col.add(base.add(r.scale(s*2.2+.05*Math.sin(t*.2+k+h*3))).add(f.scale(.15*Math.sin(h*3+k))).add(0,h*2.1*rise*(1-out),0));}
+            tendril(c,col,.13,e,t);}
     }
     /** A target receipt does not grant an area. It paints only a low splash at the accepted hit. */
     static void fieldContact(Canvas c,View v,double opacity){

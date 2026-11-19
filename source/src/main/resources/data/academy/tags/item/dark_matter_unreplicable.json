@@ -1,0 +1,26 @@
+{
+  "replace": false,
+  "values": [
+    "academy:dark_matter_crystal",
+    {
+      "id": "#academy:omnitrix_pointer_items",
+      "required": false
+    },
+    "minecraft:bedrock",
+    "minecraft:barrier",
+    "minecraft:command_block",
+    "minecraft:chain_command_block",
+    "minecraft:repeating_command_block",
+    "minecraft:command_block_minecart",
+    "minecraft:structure_block",
+    "minecraft:structure_void",
+    "minecraft:jigsaw",
+    "minecraft:light",
+    "minecraft:debug_stick",
+    "minecraft:reinforced_deepslate",
+    "minecraft:end_portal_frame",
+    "minecraft:spawner",
+    "minecraft:trial_spawner",
+    "minecraft:vault"
+  ]
+}

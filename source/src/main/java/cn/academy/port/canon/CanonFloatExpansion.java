@@ -87,18 +87,31 @@ public final class CanonFloatExpansion {
             int ticks=integer(id, "duration_ticks");
             long now=world.getGameTime();if(now<0||now>Long.MAX_VALUE-ticks)return false;
             double cost=HighPowerGrowth.values(p).arcCost()*(targets.size()>1?3:1.25);
-            if(!Double.isFinite(cost)||cost<=0||!HighPowerResources.trySpend(p,id,cost,45))return false;
+            if(!Double.isFinite(cost)||cost<=0)return false;
+            boolean ultimate=cn.academy.port.macro.MacroSkillRules.ultimate(id);
+            var payment=ultimate?HighPowerResources.spendForSettlement(p,id,cost,45):null;
+            if(ultimate?payment==null:!HighPowerResources.trySpend(p,id,cost,45))return false;
             if(AbilityStorage.get(p)!=state||p.serverLevel()!=world||world.getGameTime()!=now||!readyAfter(p,id)
                     ||state.presets.current()!=preset||state.presets.revision()!=revision||!p.position().equals(pos)
                     ||!p.getEyePosition().equals(eye)||!ClassicRaytrace.direction(p).equals(look)||!p.getDeltaMovement().equals(velocity)
-                    ||ACTIVE.size()+targets.size()>64&&!cn.academy.port.macro.MacroSkillRules.ultimate(id)||!select(p,id).equals(targets))return false;
-            for(var t:targets)if(occupied(t))return false;
+                    ||ACTIVE.size()+targets.size()>64&&!ultimate||!select(p,id).equals(targets)||targets.stream().anyMatch(CanonFloatExpansion::occupied)){
+                if(payment!=null)payment.finish(false);
+                return false;
+            }
             Mode mode=mode(id);
-            java.util.function.Consumer<LivingEntity> install=t->{if(eligible(p,t,id,true)&&!occupied(t))ACTIVE.put(t.getUUID(),new Lease(p,world,t,id,mode,hostile(id)&&mode==Mode.HOVER?t.getY()+number(id,"rise_limit"):t.getY(),now+ticks,preset,revision));};
-            if(cn.academy.port.macro.MacroSkillRules.ultimate(id))cn.academy.port.macro.MacroSettlement.submit(world,targets,()->readyAfter(p,id)&&p.serverLevel()==world&&AbilityStorage.get(p)==state&&state.presets.current()==preset&&state.presets.revision()==revision,install,()->{});
-            else targets.forEach(install);
-            state.addExperience(id,.01);AbilityStorage.save(p);
-            CanonVfx.emit(p,id,p.position(),targets.getFirst().position(),CanonVfx.Phase.START,15,shownRadius);return true;
+            var first=new Vec3[]{null};
+            java.util.function.Consumer<LivingEntity> install=t->{
+                if(!eligible(p,t,id,true)||occupied(t))return;
+                ACTIVE.put(t.getUUID(),new Lease(p,world,t,id,mode,hostile(id)&&mode==Mode.HOVER?t.getY()+number(id,"rise_limit"):t.getY(),now+ticks,preset,revision));
+                if(first[0]==null)first[0]=t.position();
+            };
+            Runnable complete=()->{
+                if(payment!=null)payment.finish(first[0]!=null);
+                if(first[0]!=null){state.addExperience(id,.01);AbilityStorage.save(p);CanonVfx.emit(p,id,pos,first[0],CanonVfx.Phase.START,15,shownRadius);}
+            };
+            if(ultimate)cn.academy.port.macro.MacroSettlement.submit(world,targets,()->readyAfter(p,id)&&p.serverLevel()==world&&AbilityStorage.get(p)==state&&state.presets.current()==preset&&state.presets.revision()==revision,install,complete);
+            else {targets.forEach(install);complete.run();}
+            return true;
         } finally {BUSY.remove(p);}
     }
     private static boolean ready(ServerPlayer p,String id){return !AbilityConsumption.busy(p)&&HighPowerResources.ready(p)&&readyAfter(p,id)&&AbilityStorage.get(p).canUse(id);}
@@ -125,19 +138,41 @@ public final class CanonFloatExpansion {
         int ticks=integer(id, "duration_ticks");
         long now=world.getGameTime();if(now<0||now>Long.MAX_VALUE-ticks)return false;
         double cost=HighPowerGrowth.values(p).arcCost()*(items.size()>1?3:1.5);
-        if(!Double.isFinite(cost)||cost<=0||!HighPowerResources.trySpend(p,id,cost,50))return false;
+        if(!Double.isFinite(cost)||cost<=0)return false;
+        boolean ultimate=cn.academy.port.macro.MacroSkillRules.ultimate(id);
+        var payment=ultimate?HighPowerResources.spendForSettlement(p,id,cost,50):null;
+        if(ultimate?payment==null:!HighPowerResources.trySpend(p,id,cost,50))return false;
         if(AbilityStorage.get(p)!=state||p.serverLevel()!=world||world.getGameTime()!=now||!readyAfter(p,id)
                 ||state.presets.current()!=preset||state.presets.revision()!=revision||!p.position().equals(pos)
                 ||!p.getEyePosition().equals(eye)||!ClassicRaytrace.direction(p).equals(look)||!p.getDeltaMovement().equals(velocity)
-                ||MagneticItemPull.itemsActive(p)||ITEMS.size()+items.size()>64&&!cn.academy.port.macro.MacroSkillRules.ultimate(id)||!itemTargets(p,id).equals(items))return false;
+                ||MagneticItemPull.itemsActive(p)||ITEMS.size()+items.size()>64&&!ultimate||!itemTargets(p,id).equals(items)){
+            if(payment!=null)payment.finish(false);
+            return false;
+        }
         for(int i=0;i<items.size();i++)if(!items.get(i).position().equals(positions.get(i))
-                ||!items.get(i).getDeltaMovement().equals(speeds.get(i))||!ItemStack.matches(items.get(i).getItem(),snapshots.get(i)))return false;
-        if(cn.academy.port.macro.MacroSkillRules.ultimate(id)){
+                ||!items.get(i).getDeltaMovement().equals(speeds.get(i))||!ItemStack.matches(items.get(i).getItem(),snapshots.get(i))){
+            if(payment!=null)payment.finish(false);
+            return false;
+        }
+        if(ultimate){
+            double radius=cn.academy.port.macro.MacroSkillRules.area(id,state.exp(id),number(id,"radius"));
             var indices=java.util.stream.IntStream.range(0,items.size()).boxed().toList();
+            var first=new Vec3[]{null};
             cn.academy.port.macro.MacroSettlement.submit(world,indices,()->readyAfter(p,id)&&p.serverLevel()==world&&AbilityStorage.get(p)==state&&state.presets.current()==preset&&state.presets.revision()==revision,
-                i->{var item=items.get(i);if(itemEligible(p,item,number(id,"radius"))&&!occupied(item)&&ItemStack.matches(item.getItem(),snapshots.get(i)))ITEMS.put(item.getUUID(),new ItemLease(p,world,item,snapshots.get(i),id,positions.get(i),now+ticks,preset,revision));},()->{});
-        }else for(int i=0;i<items.size();i++)ITEMS.put(items.get(i).getUUID(),new ItemLease(p,world,items.get(i),snapshots.get(i),id,positions.get(i),now+ticks,preset,revision));
-        state.addExperience(id,.01);AbilityStorage.save(p);CanonVfx.emit(p,id,pos,positions.getFirst(),CanonVfx.Phase.START,15,id.equals("float_item_shelf_field")?cn.academy.port.macro.MacroSkillRules.area(id,AbilityStorage.get(p).exp(id),number(id,"radius")):0);return true;
+                i->{
+                    var item=items.get(i);
+                    if(!itemEligible(p,item,radius)||occupied(item)||!ItemStack.matches(item.getItem(),snapshots.get(i)))return;
+                    ITEMS.put(item.getUUID(),new ItemLease(p,world,item,snapshots.get(i),id,positions.get(i),now+ticks,preset,revision));
+                    if(first[0]==null)first[0]=item.position();
+                },()->{
+                    payment.finish(first[0]!=null);
+                    if(first[0]!=null){state.addExperience(id,.01);AbilityStorage.save(p);CanonVfx.emit(p,id,pos,first[0],CanonVfx.Phase.START,15,radius);}
+                });
+        }else {
+            for(int i=0;i<items.size();i++)ITEMS.put(items.get(i).getUUID(),new ItemLease(p,world,items.get(i),snapshots.get(i),id,positions.get(i),now+ticks,preset,revision));
+            state.addExperience(id,.01);AbilityStorage.save(p);CanonVfx.emit(p,id,pos,positions.getFirst(),CanonVfx.Phase.START,15);
+        }
+        return true;
     }
     private static List<ItemEntity> itemTargets(ServerPlayer p,String id){
         Vec3 eye=p.getEyePosition();var w=p.serverLevel();

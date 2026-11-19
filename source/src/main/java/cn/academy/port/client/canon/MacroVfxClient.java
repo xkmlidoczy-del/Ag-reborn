@@ -47,7 +47,7 @@ public final class MacroVfxClient {
                 ||!MacroVfx.finite(v.from())||!MacroVfx.finite(v.to())||v.from().distanceToSqr(v.to())>192*192
                 ||!Float.isFinite(v.actualRadius())||v.actualRadius()<0||v.actualRadius()>64
                 ||!Float.isFinite(v.visualRadius())||v.visualRadius()<0||v.visualRadius()>64||v.shape()!=p.shape()
-                ||MacroVfx.distanceSquared(mc.player.getEyePosition(),v.from(),v.to())>Math.pow(80+v.visualRadius(),2))return;
+                ||MacroVfx.distanceSquared(mc.player.getEyePosition(),v.from(),v.to())>Math.pow((p.level()>=4||p.ultimate()?136:80)+v.visualRadius(),2))return;
         var actor=world.getEntity(v.entity());if(actor!=null&&!actor.getUUID().equals(v.owner()))return;
         double now=world.getGameTime();if(v.tick()>now+100||now>=v.tick()+v.life()||v.phaseStart()>v.tick())return;
         if(VisualTierConfig.tier()!=VisualTier.OFF)CanonPoseClient.accept(v);
@@ -114,19 +114,21 @@ public final class MacroVfxClient {
         float partial=(float)Math.clamp(now-Math.floor(now),0.0,1.0);
         var tier=VisualTierConfig.tier();int detail=Math.min(tier==VisualTier.CINEMATIC?48:tier==VisualTier.STANDARD?32:16,Math.max(8,(allowance-40)/8));
         for(var show:List.copyOf(SHOWS)){
+            if(c.available()==0)break;
             var v=show.event;var profile=MacroSkillRules.find(v.skill());double age=Math.max(0,now-show.start);
             double fade=Math.min(1,(age+1)/4)*Math.min(1,(v.tick()+v.life()-now)/10);
             boolean releasePulse=v.skill().equals("float_release_field")&&v.phase()==MacroVfx.Phase.END;
             if(v.phase()==MacroVfx.Phase.END&&!releasePulse)fade*=.35;
             if(fade<=0)continue;int before=c.left,scope=c.limit(allowance);
             try{
-                if(v.skill().equals("meltdowner"))continue;
                 Vec3 centre=releasePulse?v.to():fieldCentre(v,partial);
                 if(v.skill().equals("plasma_cannon")&&v.phase()==MacroVfx.Phase.ACTIVE)
                     centre=show.previous.lerp(v.from(),Math.clamp((now-v.tick())/4,0,1));
-                if(MacroVfx.distanceSquared(c.cam,v.from(),v.to())>Math.pow(v.visualRadius()+104,2))continue;
+                if(MacroVfx.distanceSquared(c.cam,v.from(),v.to())>Math.pow(v.visualRadius()+140,2))continue;
                 if(v.actualRadius()==0&&v.shape()==MacroSkillRules.Shape.SELF&&v.phase()!=MacroVfx.Phase.HIT&&v.from().distanceToSqr(v.to())<.1){var actor=world.getEntity(v.entity());if(actor!=null&&actor.getUUID().equals(v.owner()))centre=actor.getPosition(partial).add(0,1,0);}
                 float[] color=colour(profile.category());String texture="macro/"+profile.category();
+                CanonUltimateFinales.draw(c, v, profile, centre, color, age, fade, tier, allowance);
+                if(v.skill().equals("meltdowner"))continue;
                 if(profile.category().equals("mental_out")&&v.life()>200&&age>80){
                     c.sprite(texture,false,centre,.5,age*.015,WHITE,(float)(fade*.25));
                     continue;
@@ -140,8 +142,12 @@ public final class MacroVfxClient {
                     case END -> .95;
                     case RELEASE -> 1;
                 };
-                double boundaryFade=v.phase()==MacroVfx.Phase.HIT?fade*Math.clamp((26-age)/10,0,1):fade;
+                double boundaryFade=v.phase()==MacroVfx.Phase.HIT?fade*Math.clamp((32-age)/12,0,1):fade;
                 SkillCinematicFx.boundary(c,v,centre,color,age,boundaryFade);
+                if(profile.ultimate()&&!AgVolumeRenderer.owns(v.cast())&&cn.academy.port.client.ShaderPackState.active()
+                        &&!profile.category().equals("mental_out")&&!profile.category().equals("teleporter")&&!profile.category().equals("paper_psychokinesis")){
+                    CanonIrisFallback.volumeSurrogate(c,new VolumeSample(v,age,centre,radius*grow,fade*.76),color);
+                }
                 if(SkillCinematicFx.centerpiece(c,v,centre,age,fade,detail))continue;
                 SkillCinematicFx.accent(c,v,centre,color,age,fade,detail);
                 if(nativeBodies.contains(new NativeBody(v.owner(),v.skill())))continue;

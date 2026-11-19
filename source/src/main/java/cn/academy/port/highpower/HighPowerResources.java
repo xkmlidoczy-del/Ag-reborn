@@ -324,6 +324,61 @@ public final class HighPowerResources {
         cn.academy.port.macro.MacroVfx.paid(player,skill);
         return true;
     }
+    /** One paid LV5 cast, with authority to return only its own debit on an empty settlement. */
+    public static SettlementPayment spendForSettlement(ServerPlayer player, String skill, double cost, int cooldown) {
+        if (player == null || !player.server.isSameThread() || !cn.academy.port.macro.MacroSkillRules.ultimate(skill)) return null;
+        double before = cp(player);
+        if (!trySpend(player, skill, cost, cooldown)) return null;
+        var data = player.getPersistentData().getCompound(DATA_KEY);
+        String clock = "next_" + skill;
+        return new SettlementPayment(player, AbilityStorage.get(player), data, skill, clock, data.getLong(clock),
+                Math.max(0, before - data.getDouble("cp")), HighPowerGrowth.values(player).cpMaximum());
+    }
+
+    public static final class SettlementPayment {
+        private static final int EMPTY_COOLDOWN = 10;
+        private final ServerPlayer player;
+        private final cn.academy.port.core.AbilityProgress ability;
+        private final CompoundTag data;
+        private final String skill, clock;
+        private final long expiry;
+        private final double debit, originalMaximum;
+        private boolean finished;
+
+        private SettlementPayment(ServerPlayer player, cn.academy.port.core.AbilityProgress ability, CompoundTag data,
+                                  String skill, String clock, long expiry, double debit, double originalMaximum) {
+            this.player = player;
+            this.ability = ability;
+            this.data = data;
+            this.skill = skill;
+            this.clock = clock;
+            this.expiry = expiry;
+            this.debit = debit;
+            this.originalMaximum = originalMaximum;
+        }
+
+        public void finish(boolean applied) {
+            if (!player.server.isSameThread() || finished) return;
+            finished = true;
+            if (applied || player.getPersistentData().getCompound(DATA_KEY) != data || data.getLong(clock) != expiry
+                    || !ledgerWritable(player, data)) return;
+            double maximum = HighPowerGrowth.available(player) ? HighPowerGrowth.values(player).cpMaximum() : originalMaximum;
+            data.putDouble("cp", budget(data.getDouble("cp") + debit, maximum));
+            trackLedgerWrite(player, data);
+            long now = player.serverLevel().getGameTime();
+            long next = Math.min(expiry, now + EMPTY_COOLDOWN);
+            data.putLong(clock, next);
+            var state = AbilityStorage.get(player);
+            if (state == ability && state.learned(skill)) {
+                state.cooldowns.remove(skill);
+                state.cooldownMaxTicks.remove(skill);
+                state.setCooldown(skill, (int) Math.max(0, next - now));
+                AbilityStorage.save(player);
+                if (!player.hasDisconnected()) cn.academy.port.AcademyNetwork.sync(player);
+            }
+        }
+    }
+
     /**
      * NEW222 only: a live deferred pulse may share a tick with its paid upkeep.
      * Its controller has already fenced the physical 15-tick interval and frozen

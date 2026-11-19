@@ -142,12 +142,14 @@ final class CanonFxOffense {
             var visible=start?partial(path,easeOut(p)):path;
             strand(c,"of_ink_filament",visible,.38*(start?.5+.5*p:1-p*.5),INK,e*.98);
             strand(c,"of_mind_thread",visible,.032,WET,e*.5);
+            if(!start)Canon3dMeshKit.slashArc3D(c,v.endpoint().subtract(axis.scale(.35)),axis,side.normalize(),1.05+.12*s.level(),1.65,p,.24,new float[]{.15f,.11f,.26f},WET,e*.88,true);
             Vec3 at=start?v.origin().lerp(v.endpoint(),easeOut(p)*.75):v.endpoint();
             plane(c,"of_ink_blade",at,axis.scale(start?.55:.92),side.normalize().scale(.36),WET,e);
             plane(c,"of_ink_blade",at.add(up.scale(.035)),axis.scale(start?.38:.70),side.normalize().scale(.19),INK,e*.9);
         }
         if(!start){
             impact(c,"of_ink_ripple",v.endpoint(),1.25,v,WET,e*.7);
+            if(s.level()>=4&&v.radius()>0)Canon3dMeshKit.shockwaveCrown3D(c,v.endpoint(),Math.min(v.radius(),8.5),INK,t,e*.66,28);
             for(int k=0;k<7;k++){double a=k*2.39996;Vec3 at=v.endpoint().add(right.scale(Math.cos(a)*p*.9)).add(up.scale(Math.sin(a)*p*.6-p*.3));
                 sprite(c,"of_ink_blade",at,.08*(1-p),a,INK,e*.8);}
         }
@@ -161,6 +163,11 @@ final class CanonFxOffense {
             plane(c,"of_air_crescent",at,rx.scale(r*1.035),uy.scale(r*1.035),DARK_AIR,e*.7);
             plane(c,"of_air_crescent",at.add(axis.scale(-.01)),rx.scale(r),uy.scale(r),AIR,e*.95);
         }
-        if(!start){strand(c,"of_air_streak",line(v.origin(),v.endpoint(),18),.18,AIR,e*.75);impact(c,"of_air_impact",centre,1.25,v,AIR,e*.9);}
+        if(!start){
+            Canon3dMeshKit.slashArc3D(c,centre.subtract(axis.scale(.3)),axis,right,1.15,1.7,p,.22,AIR,WET,e*.82,false);
+            strand(c,"of_air_streak",line(v.origin(),v.endpoint(),18),.18,AIR,e*.75);
+            impact(c,"of_air_impact",centre,1.25,v,AIR,e*.9);
+            if(v.radius()>0)Canon3dMeshKit.shockwaveCrown3D(c,centre,Math.min(v.radius(),8.5),AIR,t,e*.64,28);
+        }
     }
 }

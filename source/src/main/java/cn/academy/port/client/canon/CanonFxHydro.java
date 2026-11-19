@@ -174,16 +174,18 @@ final class CanonFxHydro {
         if (surface != null) splash(c, surface, age, 13, .7, opacity);
     }
 
-    /** GM1 + SH3: a round water tube with a flowing surface, a bright crest line and foam at the leading edge. */
+    /** GM1 + SH3: Dark-Sheath deep-sea backing + round water tube + bright foam crest. */
     private static void water(Canvas c,List<Vec3> path,double thick,double e,double t,double length,boolean head){
         if(path.size()<2)return;
+        c.ribbon("streak_ink",false,path,x->thick*2.15*(.7+.3*Math.sin(Math.PI*Math.max(.15,x))),x->.54*e,new float[]{.05f,.16f,.34f},1,0);
         c.tube(RIBBON,CanonFx4.Mode.FLOW,path,x->thick*(.75+.25*Math.sin(Math.PI*Math.max(.15,x))),x->.95*e,WATER,length*1.1,-t*.06,8);
-        c.ribbon4(LINE,CanonFx4.Mode.ADD,path,x->thick*.45,x->.45*e,FOAM,1,0);
-        if(head)c.cellSprite("fx4:"+DROPS,CanonFx4.Mode.ALPHA,path.get(path.size()-1),thick*1.8,t*.2,3,FOAM,(float)(.9*e));
+        c.ribbon4(LINE,CanonFx4.Mode.ADD,path,x->thick*.48,x->.56*e,FOAM,1,0);
+        if(head)c.cellSprite("fx4:"+DROPS,CanonFx4.Mode.ALPHA,path.get(path.size()-1),thick*1.9,t*.2,3,FOAM,(float)(.92*e));
     }
     private static void splash(Canvas c,Vec3 at,double since,double rest,double size,double e){
         var grid=Fx4Atlas.get("hh_splash_sheet");double p=since/Math.max(4,rest*.9);if(p>=1)return;
         c.cellSprite(SPLASH,CanonFx4.Mode.ALPHA,at.add(0,size*.55,0),size,0,grid.frame(p),FOAM,(float)(.95*e));
+        if(size>=1.05)Canon3dMeshKit.shockwaveCrown3D(c,at,size*.85,WATER,since,e*(1-p)*.65,20);
     }
     /** DC1 companion: ripple rings on the ground under the impact (level 3+). */
     private static void ripple(Canvas c,Vec3 at,double since,double rest,double size,double e){
@@ -194,42 +196,42 @@ final class CanonFxHydro {
     /** SH4 (level 4+): the target is wrapped in a water globe that swells, wobbles and bursts back into droplets. */
     private static void globe(Canvas c,Vec3 at,double since,double rest,double e,double t){
         double p=clamp01(since/Math.max(6,rest));if(p>=.95)return;
-        double grow=easeOutBack(clamp01(since/5)),wob=1+.06*Math.sin(t*.9),r=.85*grow*wob;
+        double grow=easeOutBack(clamp01(since/5)),wob=1+.06*Math.sin(t*.9),r=.88*grow*wob;
         c.shell(RIBBON,p>.7?CanonFx4.Mode.DISSOLVE:CanonFx4.Mode.FLOW,at.add(0,.15,0),r,r*1.15,8,12,tint(WATER,FOAM,.25),p>.7?(float)((p-.7)/.25):(float)(.95*e),t*.01);
+        AgModernVfx.fresnelDome(c,at.add(0,.15,0),r*1.04,r*1.18,WATER,t,e*(1-p)*.52,6,14);
     }
 
     private static void lash(Canvas c,View v,double e,double t){
         Vec3 a=v.origin(),b=v.endpoint();double L=Math.max(1,a.distanceTo(b)),arr=arrive(v.life()),since=v.age()-arr,rest=Math.max(1,v.life()-arr);
-        // TM1: the water first gathers into an orb at the hand.
         double gather=clamp01(v.age()/Math.max(1,arr*.45));
-        if(gather<1||since<1)c.shell(RIBBON,CanonFx4.Mode.FLOW,a,.12+.1*gather,.12+.1*gather,5,8,WATER,(float)(.9*e),t*.02);
-        // Lash with overshoot, then the tail pulls back while the body falls apart into droplets.
-        var full=CanonFx.wave(a,b,24,.16,2.5,-t*.25,new Vec3(0,1,0));
+        if(gather<1||since<1)c.shell(RIBBON,CanonFx4.Mode.FLOW,a,.14+.11*gather,.14+.11*gather,5,8,WATER,(float)(.92*e),t*.02);
+        var full=CanonFx.wave(a,b,24,.18,2.5,-t*.25,new Vec3(0,1,0));
         double out=clamp01(easeOutBack(clamp01((v.age()-arr*.35)/Math.max(1,arr*.65))));
         double back=easeIn(clamp01((life01(v)-.55)/.45));
         var path=partial(full,out);if(back>0&&path.size()>2)path=path.subList((int)Math.min(path.size()-2,Math.floor(back*(path.size()-1))),path.size());
-        water(c,path,.2*(1-.6*back),e,t,L,out<1);
-        if(since>=0)splash(c,b,since,rest,1.3,e);
+        water(c,path,.21*(1-.6*back),e,t,L,out<1);
+        if(since>=0)splash(c,b,since,rest,1.35,e);
     }
     private static void jet(Canvas c,View v,double e,double t){
         Vec3 a=v.origin(),b=v.endpoint();double L=Math.max(1,a.distanceTo(b)),arr=arrive(v.life()),since=v.age()-arr,rest=Math.max(1,v.life()-arr);
         double reach=easeOut(clamp01(v.age()/Math.max(1,arr*.7))),fade=1-easeIn(clamp01((life01(v)-.6)/.4));
         var path=line(a,a.add(b.subtract(a).scale(reach)),12);
-        c.tube(RIBBON,CanonFx4.Mode.FLOW,path,x->.07+.04*x,x->e*fade,FOAM,L*2,-t*.18,6);
-        c.tube(RIBBON,CanonFx4.Mode.FLOW,path,x->.16+.1*x,x->.7*e*fade,WATER,L*1.2,-t*.12,8);
+        c.ribbon("streak_ink",false,path,x->(.28+.14*x),x->.48*e*fade,new float[]{.05f,.16f,.34f},1,0);
+        c.tube(RIBBON,CanonFx4.Mode.FLOW,path,x->.075+.04*x,x->e*fade,FOAM,L*2,-t*.18,6);
+        c.tube(RIBBON,CanonFx4.Mode.FLOW,path,x->.17+.1*x,x->.75*e*fade,WATER,L*1.2,-t*.12,8);
         Vec3 d=b.subtract(a).normalize();var grid=Fx4Atlas.get("hh_ripple_sheet");
-        c.cellPlane(RIPPLE,CanonFx4.Mode.ADD,a.add(d.scale(.15)),rightOf(d).scale(.35),upOf(d,rightOf(d)).scale(.35),grid.frame(frac(t*.06)),FOAM,(float)(.7*e*fade));
-        if(since>=0)splash(c,b,since,rest,1.1,e);
+        c.cellPlane(RIPPLE,CanonFx4.Mode.ADD,a.add(d.scale(.15)),rightOf(d).scale(.38),upOf(d,rightOf(d)).scale(.38),grid.frame(frac(t*.06)),FOAM,(float)(.75*e*fade));
+        if(since>=0)splash(c,b,since,rest,1.15,e);
     }
     private static void fan(Canvas c,View v,double e,double t){
-        // Centred on the caster's chest: the event origin is the water source, which may sit under the surface.
         Vec3 a=v.anchor().add(0,1.0,0),f=flat(forward(v)),r=rightOf(f);double sweep=easeOut(reveal(v,6)),fade=1-easeIn(clamp01((life01(v)-.65)/.35));
+        Canon3dMeshKit.slashArc3D(c,a.subtract(0,.18,0),f,r,2.45,2.1,life01(v),.34,WATER,FOAM,e*fade*.85,false);
         var pts=new ArrayList<Vec3>();int n=18;
         for(int i=0;i<n;i++){double ang=(-1+2*i/(double)(n-1))*1.05*sweep,rad=2.4*(.6+.4*sweep);
             pts.add(a.add(0,-.35+.15*Math.sin(i*.7+t*.3),0).add(f.scale(Math.cos(ang)*rad)).add(r.scale(Math.sin(ang)*rad)));}
         c.tube(RIBBON,CanonFx4.Mode.FLOW,pts,x->.2*Math.sin(Math.PI*x)+.05,x->.95*e*fade,WATER,3,-t*.1,8);
         c.ribbon4(RIBBON,CanonFx4.Mode.FLOW,pts,x->.7*Math.sin(Math.PI*x),x->.55*e*fade,WATER,3,-t*.1);
-        c.ribbon4(LINE,CanonFx4.Mode.ADD,pts,x->.06,x->.5*e*fade,FOAM,1,0);
+        c.ribbon4(LINE,CanonFx4.Mode.ADD,pts,x->.07,x->.58*e*fade,FOAM,1,0);
     }
     private static void current(Canvas c,View v,double e,double t){
         Vec3 a=v.origin(),b=v.endpoint();double arr=arrive(v.life()),since=v.age()-arr;

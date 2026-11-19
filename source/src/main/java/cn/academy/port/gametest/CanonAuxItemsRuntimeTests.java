@@ -432,6 +432,179 @@ public final class CanonAuxItemsRuntimeTests {
         } catch (Throwable failure) { f.close(); puppet.discard(); throw failure; }
     }
 
+    // ------------------------------------------------------------------ Upgrade Plan 2.0 Verification
+    @GameTest(template = "empty", batch = "canon_aux", timeoutTicks = 100)
+    public static void crafting_table_crystal_duplication_copies_stackable_and_unstackable_items(GameTestHelper h) {
+        var level = h.getLevel();
+        var recipes = level.getRecipeManager();
+        var stackInput = net.minecraft.world.item.crafting.CraftingInput.of(2, 1, java.util.List.of(
+                new ItemStack(CanonAuxItems.DARK_MATTER_CRYSTAL.get()),
+                new ItemStack(Items.DIAMOND)));
+        var stackMatch = recipes.getRecipeFor(net.minecraft.world.item.crafting.RecipeType.CRAFTING, stackInput, level);
+        h.assertTrue(stackMatch.isPresent(), "crafting recipe matches 1 crystal + 1 diamond");
+        ItemStack stackOut = stackMatch.get().value().assemble(stackInput, level.registryAccess());
+        h.assertTrue(stackOut.is(Items.DIAMOND) && stackOut.getCount() == 2, "stackable output is 2 diamonds");
+        for (ItemStack rem : stackMatch.get().value().getRemainingItems(stackInput)) {
+            h.assertTrue(rem.isEmpty(), "stackable duplication leaves no remainder");
+        }
+
+        ItemStack sword = new ItemStack(Items.DIAMOND_SWORD);
+        sword.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, net.minecraft.network.chat.Component.literal("Dark Replica"));
+        sword.setDamageValue(42);
+        var toolInput = net.minecraft.world.item.crafting.CraftingInput.of(2, 1, java.util.List.of(
+                new ItemStack(CanonAuxItems.DARK_MATTER_CRYSTAL.get()),
+                sword.copy()));
+        var toolMatch = recipes.getRecipeFor(net.minecraft.world.item.crafting.RecipeType.CRAFTING, toolInput, level);
+        h.assertTrue(toolMatch.isPresent(), "crafting recipe matches 1 crystal + 1 unstackable sword");
+        ItemStack toolOut = toolMatch.get().value().assemble(toolInput, level.registryAccess());
+        var toolRem = toolMatch.get().value().getRemainingItems(toolInput);
+        h.assertTrue(toolOut.getCount() == 1 && ItemStack.matches(toolOut, sword), "crafted sword preserves every component");
+        h.assertTrue(toolRem.get(0).isEmpty() && toolRem.get(1).getCount() == 1 && ItemStack.matches(toolRem.get(1), sword),
+                "remainder slot retains second identical sword while crystal slot is consumed");
+
+        var selfInput = net.minecraft.world.item.crafting.CraftingInput.of(2, 1, java.util.List.of(
+                new ItemStack(CanonAuxItems.DARK_MATTER_CRYSTAL.get()),
+                new ItemStack(CanonAuxItems.DARK_MATTER_CRYSTAL.get())));
+        h.assertTrue(recipes.getRecipeFor(net.minecraft.world.item.crafting.RecipeType.CRAFTING, selfInput, level).isEmpty(),
+                "two crystals cannot duplicate each other");
+        var starInput = net.minecraft.world.item.crafting.CraftingInput.of(2, 1, java.util.List.of(
+                new ItemStack(CanonAuxItems.DARK_MATTER_CRYSTAL.get()),
+                new ItemStack(Items.NETHER_STAR)));
+        var starMatch = recipes.getRecipeFor(net.minecraft.world.item.crafting.RecipeType.CRAFTING, starInput, level);
+        h.assertTrue(starMatch.isPresent() && starMatch.get().value().assemble(starInput, level.registryAccess()).getCount() == 2,
+                "ordinary rare items like nether star duplicate into 2");
+
+        var blockedInput = net.minecraft.world.item.crafting.CraftingInput.of(2, 1, java.util.List.of(
+                new ItemStack(CanonAuxItems.DARK_MATTER_CRYSTAL.get()),
+                new ItemStack(Items.COMMAND_BLOCK)));
+        h.assertTrue(recipes.getRecipeFor(net.minecraft.world.item.crafting.RecipeType.CRAFTING, blockedInput, level).isEmpty(),
+                "tagged unreplicable item (command block) is rejected");
+
+        ItemStack nonEmptyBundle = new ItemStack(Items.BUNDLE);
+        nonEmptyBundle.set(net.minecraft.core.component.DataComponents.BUNDLE_CONTENTS,
+                new net.minecraft.world.item.component.BundleContents(java.util.List.of(new ItemStack(Items.DIAMOND))));
+        var containerInput = net.minecraft.world.item.crafting.CraftingInput.of(2, 1, java.util.List.of(
+                new ItemStack(CanonAuxItems.DARK_MATTER_CRYSTAL.get()),
+                nonEmptyBundle));
+        h.assertTrue(recipes.getRecipeFor(net.minecraft.world.item.crafting.RecipeType.CRAFTING, containerInput, level).isEmpty(),
+                "non-empty container item is rejected by default");
+        h.succeed();
+    }
+
+    @GameTest(template = "empty", batch = "canon_aux", timeoutTicks = 100)
+    public static void crystal_sneak_use_locks_boost_and_creative_wings_work(GameTestHelper h) {
+        var f = new Fixture(h, "dark_matter", "dark_wings");
+        try {
+            f.loadChunks();
+            ItemStack crystal = new ItemStack(CanonAuxItems.DARK_MATTER_CRYSTAL.get(), 2);
+            f.p.setItemInHand(InteractionHand.MAIN_HAND, crystal);
+            f.p.setShiftKeyDown(true);
+            f.p.gameMode.useItem(f.p, f.p.serverLevel(), f.p.getMainHandItem(), InteractionHand.MAIN_HAND);
+            f.p.setShiftKeyDown(false);
+            h.assertTrue(CanonAuxItems.crystalBoostLocked(f.p), "sneak-use locks crystal boost");
+            h.assertTrue(CanonSkillsCombatA.cast(f.p, "dark_wings"), "dark_wings casts with locked crystal");
+            h.assertTrue(countOf(f.p, CanonAuxItems.DARK_MATTER_CRYSTAL.get()) == 2, "locked crystal is not consumed by wings");
+
+            var f2 = new Fixture(h, "dark_matter", "dark_wings");
+            try {
+                f2.loadChunks();
+                f2.p.setGameMode(GameType.CREATIVE);
+                h.assertTrue(f2.p.getAbilities().mayfly, "creative player already has mayfly");
+                h.assertTrue(CanonSkillsCombatA.cast(f2.p, "dark_wings"), "creative player can cast dark_wings");
+            } finally { f2.close(); }
+            h.succeed();
+        } finally { f.close(); }
+    }
+
+    @GameTest(template = "empty", batch = "canon_aux", timeoutTicks = 100)
+    public static void synthesis_succeeds_when_single_main_inventory_crystal_frees_its_own_slot(GameTestHelper h) {
+        var f = new Fixture(h, "dark_matter", "dark_synthesis");
+        try {
+            var inv = f.p.getInventory();
+            for (int i = 0; i < inv.items.size(); i++) inv.items.set(i, new ItemStack(Items.DIAMOND_PICKAXE));
+            inv.items.set(0, new ItemStack(Items.DIAMOND_SWORD));
+            inv.items.set(1, new ItemStack(CanonAuxItems.DARK_MATTER_CRYSTAL.get(), 1));
+            inv.selected = 0;
+            h.assertTrue(CanonSkillsCombatA.cast(f.p, "dark_synthesis"),
+                    "spending a single crystal in main inventory frees a slot for the duplicated sword");
+            int swords = 0;
+            for (int i = 0; i < inv.items.size(); i++) if (inv.items.get(i).is(Items.DIAMOND_SWORD)) swords++;
+            h.assertTrue(swords == 2, "two swords now occupy slots 0 and 1");
+            h.succeed();
+        } finally { f.close(); }
+    }
+
+    @GameTest(template = "empty", batch = "canon_aux", timeoutTicks = 100)
+    public static void water_flask_channels_hydro_whip_without_world_water_and_origami_halves_multi_sheet_cost(GameTestHelper h) {
+        var hydro = new Fixture(h, "hydro_hand", "hydro_whip");
+        Zombie target = h.spawnWithNoFreeWill(EntityType.ZOMBIE, new Vec3(4.5, 3, 6.5));
+        try {
+            target.setNoGravity(true); hydro.loadChunks();
+            h.assertTrue(HighPowerCombat.enroll(target, 5), "target enrolled");
+            h.assertFalse(CanonSkillsCombatB.cast(hydro.p, "hydro_whip"), "dry arena without flask refuses hydro_whip");
+            ItemStack flask = new ItemStack(CanonAuxItems.WATER_FLASK.get());
+            flask.setDamageValue(0);
+            hydro.p.setItemInHand(InteractionHand.OFF_HAND, flask);
+            h.assertTrue(CanonSkillsCombatB.cast(hydro.p, "hydro_whip"), "charged water flask directly channels hydro_whip");
+            h.assertTrue(flask.getDamageValue() == 1, "one charge spent from water flask");
+
+            var paper = new Fixture(h, "paper_psychokinesis", "paper_array");
+            try {
+                paper.loadChunks();
+                AbilityStorage.get(paper.p).learn("paper_armor");
+                AbilityStorage.get(paper.p).learn("paper_array");
+                paper.select("paper_array");
+                paper.p.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(CanonAuxItems.ORIGAMI_PAPER.get(), 6));
+                h.assertTrue(CanonSkillsCombatB.cast(paper.p, "paper_array"), "paper_array casts with origami paper");
+                h.assertTrue(paper.p.getMainHandItem().getCount() == 3, "6-sheet paper_array only spent 3 origami sheets, left " + paper.p.getMainHandItem().getCount());
+            } finally { paper.close(); }
+            h.succeed();
+        } finally { target.discard(); hydro.close(); }
+    }
+
+    @GameTest(template = "empty", batch = "canon_aux", timeoutTicks = 100)
+    public static void wingBoostAccentReflectsTheServerReceiptAndSurvivesEncoding(GameTestHelper h) {
+        var locked = new Fixture(h, "dark_matter", "dark_wings");
+        var enabled = new Fixture(h, "dark_matter", "dark_wings");
+        var visuals = new java.util.HashMap<UUID, cn.academy.port.canon.CanonVfx.Visual>();
+        var previous = cn.academy.port.canon.CanonVfx.serverObserver;
+        cn.academy.port.canon.CanonVfx.serverObserver = v -> {
+            previous.accept(v);
+            if (v.skill().equals("dark_wings") && v.phase() == cn.academy.port.canon.CanonVfx.Phase.START) {
+                visuals.put(v.owner(), v);
+            }
+        };
+        try {
+            locked.loadChunks();
+            for (var fixture : java.util.List.of(locked, enabled)) {
+                fixture.p.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(CanonAuxItems.DARK_MATTER_CRYSTAL.get()));
+            }
+            locked.p.getPersistentData().putBoolean(CanonAuxItems.CRYSTAL_BOOST_LOCKED_KEY, true);
+            h.assertTrue(CanonSkillsCombatA.cast(locked.p, "dark_wings"), "locked crystal permits ordinary wings");
+            h.assertTrue(CanonSkillsCombatA.cast(enabled.p, "dark_wings"), "unlocked crystal permits enhanced wings");
+            var ordinary = visuals.get(locked.p.getUUID());
+            var boosted = visuals.get(enabled.p.getUUID());
+            h.assertTrue(ordinary != null && !ordinary.boosted() && ordinary.radius() == 0
+                    && countOf(locked.p, CanonAuxItems.DARK_MATTER_CRYSTAL.get()) == 1,
+                    "holding a locked crystal cannot signal a boost or a false boundary");
+            h.assertTrue(boosted != null && boosted.boosted() && boosted.duration() > ordinary.duration()
+                    && countOf(enabled.p, CanonAuxItems.DARK_MATTER_CRYSTAL.get()) == 0,
+                    "consuming the last crystal still signals the applied boost");
+            var wire = new net.minecraft.network.RegistryFriendlyByteBuf(io.netty.buffer.Unpooled.buffer(), h.getLevel().registryAccess());
+            try {
+                var codec = cn.academy.port.canon.CanonVfx.Visual.CODEC;
+                codec.encode(wire, ordinary);
+                codec.encode(wire, boosted);
+                h.assertTrue(!codec.decode(wire).boosted() && codec.decode(wire).boosted(), "both clients receive the authoritative flag");
+            } finally { wire.release(); }
+            h.succeed();
+        } finally {
+            cn.academy.port.canon.CanonVfx.serverObserver = previous;
+            enabled.close();
+            locked.close();
+        }
+    }
+
     // ------------------------------------------------------------------ fixture
     private static String describe(ServerPlayer p, net.minecraft.world.phys.HitResult hit) {
         if (hit instanceof BlockHitResult b) return b.getType() + "@" + b.getBlockPos() + "=" + p.serverLevel().getBlockState(b.getBlockPos()) + " eye=" + p.getEyePosition();

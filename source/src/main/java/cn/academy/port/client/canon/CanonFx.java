@@ -28,10 +28,10 @@ final class CanonFx {
     /** anchor: attached body position for this frame; yaw: actor body yaw degrees. */
     /** {@code radius}/{@code rangeCentre}: the server-checked area of the skill, or 0 when it has none. */
     record View(String skill,String category,Motif motif,Vec3 origin,Vec3 endpoint,Vec3 anchor,float yaw,int phase,double age,int life,
-                boolean local,int tier,net.minecraft.world.phys.AABB targetBox,double radius,Vec3 rangeCentre,Vec3 barrierCentre,Vec3 aimAxis,java.util.UUID owner) {
+                boolean local,int tier,net.minecraft.world.phys.AABB targetBox,double radius,Vec3 rangeCentre,Vec3 barrierCentre,Vec3 aimAxis,java.util.UUID owner,boolean boosted) {
         View(String skill,String category,Motif motif,Vec3 origin,Vec3 endpoint,Vec3 anchor,float yaw,int phase,double age,int life,
              boolean local,int tier,net.minecraft.world.phys.AABB targetBox,double radius,Vec3 rangeCentre){
-            this(skill,category,motif,origin,endpoint,anchor,yaw,phase,age,life,local,tier,targetBox,radius,rangeCentre,null,null,null);
+            this(skill,category,motif,origin,endpoint,anchor,yaw,phase,age,life,local,tier,targetBox,radius,rangeCentre,null,null,null,false);
         }
         View(String skill,String category,Motif motif,Vec3 origin,Vec3 endpoint,Vec3 anchor,float yaw,int phase,double age,int life,boolean local,int tier){
             this(skill,category,motif,origin,endpoint,anchor,yaw,phase,age,life,local,tier,null,0,null);
@@ -44,10 +44,18 @@ final class CanonFx {
 
     private static int activeBudget(){
         return switch(cn.academy.port.VisualTierConfig.tier()){
-            case CINEMATIC -> 2600;
-            case STANDARD -> 2200;
-            case LOW -> 1600;
-            case OFF -> 1200;
+            case CINEMATIC -> 5200;
+            case STANDARD -> 3800;
+            case LOW -> 2400;
+            case OFF -> 1500;
+        };
+    }
+    private static int ultimatePoolBudget(){
+        return switch(cn.academy.port.VisualTierConfig.tier()){
+            case CINEMATIC -> 2400;
+            case STANDARD -> 1800;
+            case LOW -> 1000;
+            case OFF -> 600;
         };
     }
     static final boolean QA_BUDGET=Boolean.getBoolean("academy.qa.signatureBudget");
@@ -66,8 +74,8 @@ final class CanonFx {
     static void render(RenderLevelStageEvent event,List<View> views){
         if(AgVolumeRenderer.isShadowPass())return;
         if(views.isEmpty()&&!CanonParticles.any()&&!CanonDecals.any()&&!CanonWarps.any()&&!CanonUltimates.any()&&!ClassicSignatures.any()&&!MacroVfxClient.any()&&!SkillCinematicFx.any())return;
-        if(buffers==null){storage=new ByteBufferBuilder(1<<19);buffers=MultiBufferSource.immediate(storage);
-            lateStorage=new ByteBufferBuilder(1<<16);late=MultiBufferSource.immediate(lateStorage);}
+        if(buffers==null){storage=new ByteBufferBuilder(1<<20);buffers=MultiBufferSource.immediate(storage);
+            lateStorage=new ByteBufferBuilder(1<<17);late=MultiBufferSource.immediate(lateStorage);}
         double partial=net.minecraft.client.Minecraft.getInstance().isPaused()?0:event.getPartialTick().getGameTimeDeltaPartialTick(false);lateUsed=false;
         var camera=event.getCamera();var modelView=RenderSystem.getModelViewStack();float[] color=RenderSystem.getShaderColor().clone();
         modelView.pushMatrix();
@@ -75,31 +83,44 @@ final class CanonFx {
             RenderSystem.setShaderColor(1,1,1,1);modelView.set(event.getModelViewMatrix());RenderSystem.applyModelViewMatrix();
             var left=camera.getLeftVector();var up=camera.getUpVector();
             Canvas c=new Canvas(event.getPoseStack().last().pose(),camera.getPosition(),new Vec3(-left.x(),-left.y(),-left.z()),new Vec3(up.x(),up.y(),up.z()));
-            var visible=views.stream().filter(v->v.anchor.distanceToSqr(c.cam)<=56*56||v.origin.distanceToSqr(c.cam)<=56*56||v.endpoint.distanceToSqr(c.cam)<=56*56||cn.academy.port.macro.MacroVfx.distanceSquared(c.cam,v.origin,v.endpoint)<=Math.pow(56+v.radius,2)).toList();
+            var visible=views.stream().filter(v->{double maxD=v.tier>=4?132:72;return v.anchor.distanceToSqr(c.cam)<=maxD*maxD||v.origin.distanceToSqr(c.cam)<=maxD*maxD||v.endpoint.distanceToSqr(c.cam)<=maxD*maxD||cn.academy.port.macro.MacroVfx.distanceSquared(c.cam,v.origin,v.endpoint)<=Math.pow(maxD+v.radius,2);}).toList();
             int macros=MacroVfxClient.count();
-            int macroBudget=Math.min(1800,macros*640);
-            int groups=visible.size()+ClassicSignatures.count()+CanonUltimates.count();
+            int ultimates=CanonUltimates.count()+ClassicSignatures.count();
+            boolean crowded = macros + ultimates >= 5;
+            int total = c.limit(crowded ? Math.min(c.budget, 3150) : c.budget);
+            int grandEach = crowded ? 250 : Math.max(220, ultimatePoolBudget() / Math.max(1, macros + ultimates));
+            int dedicatedGrand = Math.min(ultimatePoolBudget(), (macros + ultimates) * grandEach);
             var level=net.minecraft.client.Minecraft.getInstance().level;
             if(level!=null)SkillCinematicFx.results(c,level.getGameTime()+partial);
             var nativeBodies=new java.util.HashSet<MacroVfxClient.NativeBody>();
-            int allowance=Math.max(1,(c.left-320-macroBudget)/Math.max(1,groups));
-            for(View v:visible){
-                int before=c.left,scope=c.limit(allowance);
-                try{
-                    // Leave a share for the identifying detail even when a shell/wing uses many faces.
-                    int body=c.limit(allowance*3/4);
+            int viewPool = Math.max(0, c.available() - 420 - dedicatedGrand);
+            int allowance = Math.max(28, viewPool / Math.max(1, visible.size()));
+            int nativeScope = c.limit(viewPool);
+            try {
+                for(View v:visible){
+                    if (c.available() == 0) break;
+                    int perView = crowded ? Math.min(150, allowance) : v.tier >= 4 ? Math.max(allowance, 260) : allowance;
+                    int before=c.left,scope=c.limit(perView);
                     try{
-                        boolean paperBuild=SkillCinematicFx.drawsPaperBuild(v);
-                        if(!paperBuild){CanonFxScripts.draw(c,v);CanonShapes.draw(c,v);}
-                        if(v.owner!=null&&(paperBuild||c.left<before))nativeBodies.add(new MacroVfxClient.NativeBody(v.owner,v.skill));
-                    }finally{c.restore(body);}
-                    CanonBarrierGeometry.boundary(c,v,CanonSignatures.colour(v.category()),CanonFxScripts.env(v));
-                    CanonRangeRing.draw(c,v);CanonSignatures.draw(c,v);
-                }finally{c.restore(scope);c.record("view:"+v.skill,before);}
+                        int body=c.limit(perView*4/5);
+                        try{
+                            boolean paperBuild=SkillCinematicFx.drawsPaperBuild(v);
+                            if(!paperBuild){CanonFxScripts.draw(c,v);CanonShapes.draw(c,v);Canon3dMeshKit.drawAuxBoostAccent(c,v,CanonFxScripts.env(v),CanonFxScripts.time(v));}
+                            if(v.owner!=null&&(paperBuild||c.left<before))nativeBodies.add(new MacroVfxClient.NativeBody(v.owner,v.skill));
+                        }finally{c.restore(body);}
+                        CanonBarrierGeometry.boundary(c,v,CanonSignatures.colour(v.category()),CanonFxScripts.env(v));
+                        CanonRangeRing.draw(c,v);CanonSignatures.draw(c,v);
+                    }finally{c.restore(scope);c.record("view:"+v.skill,before);}
+                }
+            } finally { c.restore(nativeScope); }
+            if(level!=null){
+                MacroVfxClient.draw(c,level.getGameTime()+partial,macros==0?0:grandEach,nativeBodies);
+                CanonUltimates.draw(c,level.getGameTime()+partial,grandEach);
+                ClassicSignatures.draw(c,level.getGameTime()+partial,grandEach);
             }
-            if(level!=null){MacroVfxClient.draw(c,level.getGameTime()+partial,macros==0?0:macroBudget/macros,nativeBodies);CanonUltimates.draw(c,level.getGameTime()+partial,allowance);ClassicSignatures.draw(c,level.getGameTime()+partial,allowance);} // game time: hit freezes must not stretch a finale
-            int residue=c.limit(320);
+            int residue=c.limit(420);
             try{CanonDecals.draw(c,partial);CanonParticles.draw(c,partial);CanonWarps.draw(c,partial);}finally{c.restore(residue);}
+            c.restore(total);
             if(QA_BUDGET)lastStats=new FrameStats(c.budget-c.left,c.dropped,Map.copyOf(c.groups));
             buffers.endBatch();
             // Refraction samples what is already on screen, so it is copied after everything else and drawn last.
@@ -116,16 +137,23 @@ final class CanonFx {
         int limit(int allowance){int previous=floor;floor=Math.max(floor,left-Math.max(0,allowance));return previous;}
         void restore(int previous){floor=previous;}
         void record(String key,int before){if(QA_BUDGET)groups.merge(key,before-left,Integer::sum);}
-        private boolean room(){if(left>floor)return true;if(QA_BUDGET)dropped++;return false;}
+        int available(){return left-floor;}
+        private boolean room(){if(available()>0)return true;if(QA_BUDGET)dropped++;return false;}
 
-        /** One textured quad; corners a,b,c,d map to (u0,v0),(u1,v0),(u1,v1),(u0,v1). Faded when close to the eye. */
+        /** One textured quad; corners a,b,c,d map to (u0,v0),(u1,v0),(u1,v1),(u0,v1). Faded only inside 0.55m of the eye. */
         void quad(String tex,boolean additive,Vec3 a,Vec3 b,Vec3 c,Vec3 d,float u0,float v0,float u1,float v1,float r,float g,float bl,float al){
             if(al<=.003f||!room())return;
-            if(additive)al=Math.min(al*.8f,.6f); // additive light stacks fast on a bright sky; cap each layer
+            if(additive)al=Math.min(al*.92f,.90f);
             Vec3 mid=a.add(b).add(c).add(d).scale(.25);double dist=mid.distanceTo(cam);
-            al*=(float)Math.min(1,Math.max(0,(dist-.45)/1.1));if(al<=.003f)return;
+            al*=(float)Math.min(1,Math.max(0,(dist-.24)/.31));if(al<=.003f)return;
             left--;VertexConsumer out=buffers.getBuffer(type(tex,additive));
             v(out,a,u0,v0,r,g,bl,al);v(out,b,u1,v0,r,g,bl,al);v(out,c,u1,v1,r,g,bl,al);v(out,d,u0,v1,r,g,bl,al);
+        }
+        /** Dual-contrast Dark-Sheath + Bright-Core ribbon helper. */
+        void darkSheathRibbon(List<Vec3> pts,java.util.function.DoubleUnaryOperator width,java.util.function.DoubleUnaryOperator alpha,float[] mainRgb){
+            ribbon("streak_ink",false,pts,u->width.applyAsDouble(u)*1.48,u->alpha.applyAsDouble(u)*.64,Canon3dMeshKit.DARK_SHEATH,1,0);
+            ribbon("streak",true,pts,width,alpha,mainRgb,1,0);
+            ribbon("streak",true,pts,u->width.applyAsDouble(u)*.34,u->alpha.applyAsDouble(u)*.92,Canon3dMeshKit.CEL_IVORY,1,0);
         }
         private void v(VertexConsumer out,Vec3 p,float u,float v,float r,float g,float b,float a){
             out.addVertex(matrix,(float)(p.x-cam.x),(float)(p.y-cam.y),(float)(p.z-cam.z)).setUv(u,v).setColor(r,g,b,a);
@@ -212,13 +240,20 @@ final class CanonFx {
         // ------------------------------------------------------------------ FX4 materials (textures/fx4, shader modes with fallback)
         /** One quad in an FX4 material. For DISSOLVE the alpha argument is the dissolve amount (0 whole, 1 gone). */
         void fx4Quad(String key,CanonFx4.Mode mode,Vec3 a,Vec3 b,Vec3 c,Vec3 d,float[] uv,float r,float g,float bl,float al){
-            if(!room())return;CanonFx4.Mode m=CanonFx4.effective(mode);if(m==null)return;
+            if(!room())return;CanonFx4.Mode m=CanonFx4.effective(mode);
+            if(m==null){
+                if(mode==CanonFx4.Mode.REFRACT||mode==CanonFx4.Mode.DISPERSE){
+                    Vec3 mid=a.add(b).add(c).add(d).scale(.25);
+                    CanonIrisFallback.refractSurrogate(this,mode==CanonFx4.Mode.DISPERSE,mid,Math.max(.18,a.distanceTo(c)*.36),al,new float[]{r,g,bl},mid.x+mid.z);
+                }
+                return;
+            }
             String tex=key.startsWith("fx4:")?key.substring(4):key;
             if(m==CanonFx4.Mode.DISSOLVE){if(al>=.999f)return;al=Math.max(0,al);}
             else{
                 if(mode==CanonFx4.Mode.DISSOLVE)al=1-Math.max(0,al); // fallback: dissolve amount becomes a plain fade
-                if(m==CanonFx4.Mode.ADD||m==CanonFx4.Mode.HOLO)al=Math.min(al*.8f,.6f);
-                Vec3 mid=a.add(b).add(c).add(d).scale(.25);al*=(float)Math.min(1,Math.max(0,(mid.distanceTo(cam)-.45)/1.1));
+                if(m==CanonFx4.Mode.ADD||m==CanonFx4.Mode.HOLO)al=Math.min(al*.92f,.90f);
+                Vec3 mid=a.add(b).add(c).add(d).scale(.25);al*=(float)Math.min(1,Math.max(0,(mid.distanceTo(cam)-.24)/.31));
                 if(al<=.003f)return;
             }
             left--;boolean deferred=CanonFx4.late(m);if(deferred)lateUsed=true;
@@ -230,7 +265,7 @@ final class CanonFx {
         private void filmQuad(String key,CanonFx4.Mode mode,Vec3[] p,float[] uv,float[] rgb,float al){
             if(al<=.003f||!room())return;CanonFx4.Mode m=CanonFx4.effective(mode);if(m==null)return;
             Vec3 mid=p[0].add(p[1]).add(p[2]).add(p[3]).scale(.25);
-            al*=(float)Math.min(1,Math.max(0,(mid.distanceTo(cam)-.45)/1.1));if(al<=.003f)return;
+            al*=(float)Math.min(1,Math.max(0,(mid.distanceTo(cam)-.24)/.31));if(al<=.003f)return;
             left--;String tex=key.startsWith("fx4:")?key.substring(4):key;
             VertexConsumer out=buffers.getBuffer(CanonFx4.type(tex,m));
             for(int i=0;i<4;i++)v(out,p[i],uv[i*2],uv[i*2+1],rgb[0],rgb[1],rgb[2],al);
@@ -347,8 +382,13 @@ final class CanonFx {
             }
         }
         private static Vec3 sph(double th,double ph){return new Vec3(Math.sin(th)*Math.cos(ph),Math.cos(th),Math.sin(th)*Math.sin(ph));}
-        /** SH1/SH5 screen refraction bubble: a camera-facing disc that bends the scene behind it; strength 0..1. */
+        /** SH1/SH5 screen refraction bubble; automatically falls back to 3D prism/lens surrogate under Iris shaders. */
         void refract(String key,boolean dispersion,Vec3 p,double size,float strength,float[] tint){
+            if(CanonFx4.effective(dispersion?CanonFx4.Mode.DISPERSE:CanonFx4.Mode.REFRACT)==null){
+                double clk=net.minecraft.client.Minecraft.getInstance().level==null?0:net.minecraft.client.Minecraft.getInstance().level.getGameTime()*.06;
+                CanonIrisFallback.refractSurrogate(this,dispersion,p,size,strength,tint,clk+(p.x+p.z)*.3);
+                return;
+            }
             Vec3 x=right.scale(size),y=up.scale(size);
             fx4Quad(key,dispersion?CanonFx4.Mode.DISPERSE:CanonFx4.Mode.REFRACT,p.subtract(x).add(y),p.add(x).add(y),p.add(x).subtract(y),p.subtract(x).subtract(y),
                     new float[]{0,0,1,1},tint[0],tint[1],tint[2],strength);

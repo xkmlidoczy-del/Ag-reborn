@@ -84,24 +84,33 @@ final class CanonFxAero {
     }
     private static void blast(Canvas c,View v,double e,double t,int tier){
         Vec3 a=v.anchor().add(0,1.1,0),b=v.endpoint();double arr=arrive(v.life()),p=clamp01(v.age()/Math.max(1,arr)),since=v.age()-arr;
-        // The pressure front travels as a shimmer (SH1) wrapped in converging streams; level 4 shows the front as a shell.
-        Vec3 front=a.add(b.subtract(a).scale(easeOut(p)));
-        if(since<0){c.refract(NOISE,false,front,.5+.4*p,(float)(.9*e),AIR);
-            for(int k=0;k<4;k++){Vec3 off=rightOf(b.subtract(a).normalize()).scale(Math.cos(k*1.57)*.4).add(0,Math.sin(k*1.57)*.4,0);
+        Vec3 span=b.subtract(a);Vec3 d=span.lengthSqr()<1e-6?new Vec3(0,0,1):span.normalize();
+        Vec3 front=a.add(span.scale(easeOut(p)));
+        if(since<0){
+            c.refract(NOISE,false,front,.55+.4*p,(float)(.9*e),AIR);
+            if(v.skill().equals("aero_pressure_lance")){
+                Canon3dMeshKit.facetedPrism(c,front.subtract(d.scale(.85)),front.add(d.scale(.35)),.16,6,t*.25,AIR,MINT,e*.92,true);
+            }else if(has(v,"crosswind","cone","gust")){
+                Canon3dMeshKit.slashArc3D(c,front.subtract(d.scale(.4)),d,rightOf(d),1.4+.25*tier,1.75,p,.22+.03*tier,MINT,AIR,e*.88,false);
+            }
+            for(int k=0;k<4;k++){Vec3 off=rightOf(d).scale(Math.cos(k*1.57)*.4).add(0,Math.sin(k*1.57)*.4,0);
                 stream(c,line(a.add(off.scale(1.6)),front.add(off.scale(.3)),6),.22,e,t);}
-            return;}
-        double q=clamp01(since/Math.max(4,v.life()-arr));double R=.6+2.4*easeOut(q);
-        c.refract(NOISE,false,b,R,(float)(.9*e*(1-q)),AIR);
-        if(tier>=4)c.shell(RIM,CanonFx4.Mode.ADD,b,R,R*.7,8,14,MINT,(float)(.5*e*(1-q)),0);
-        Vec3 d=b.subtract(a).normalize();
-        c.cellPlane("fx4:ah_cone",CanonFx4.Mode.ADD,b,rightOf(d).scale(R*.6),upOf(d,rightOf(d)).scale(R*.6),0,AIR,(float)(.5*e*(1-q)));
+            return;
+        }
+        double q=clamp01(since/Math.max(4,v.life()-arr));double R=(v.radius()>0?Math.min(v.radius(),7.5):.65+2.5*easeOut(q));
+        c.refract(NOISE,false,b,R*.85,(float)(.9*e*(1-q)),AIR);
+        if(has(v,"ring_push","ground_blast")||tier>=4){
+            Canon3dMeshKit.shockwaveCrown3D(c,b,R*(.45+.55*easeOut(q)),MINT,since,e*(1-q*.6),30);
+            c.shell(RIM,CanonFx4.Mode.ADD,b,R*.85,R*.6,8,14,MINT,(float)(.48*e*(1-q)),0);
+        }
+        c.cellPlane("fx4:ah_cone",CanonFx4.Mode.ADD,b,rightOf(d).scale(R*.6),upOf(d,rightOf(d)).scale(R*.6),0,AIR,(float)(.55*e*(1-q)));
     }
-    /** A single pressure streak travels along the accepted hit segment. */
+    /** A curved 3D pressure windblade travels along the accepted hit segment. */
     private static void gust(Canvas c, View v, double opacity) {
         Vec3 from = v.origin();
         Vec3 delta = v.endpoint().subtract(from);
         if (delta.lengthSqr() < 1e-6) return;
-
+        Vec3 dir = delta.normalize();
         double head = easeOut(clamp01((v.age() + .5) / 3));
         double tail = Math.max(0, head - .88 + .58 * easeOut(clamp01((v.age() - 3) / 7)));
         var path = new ArrayList<Vec3>(7);
@@ -110,8 +119,8 @@ final class CanonFxAero {
             Vec3 point = from.add(delta.scale(tail + (head - tail) * along));
             path.add(point.add(0, .16 * Math.sin(Math.PI * along), 0));
         }
-        c.ribbon4(LINE, CanonFx4.Mode.ALPHA, path,
-                along -> .46 * Math.sin(Math.PI * along), along -> .95 * opacity, AIR, 1, 0);
+        c.darkSheathRibbon(path, along -> .32 * Math.sin(Math.PI * along), along -> .90 * opacity, MINT);
+        Canon3dMeshKit.slashArc3D(c, from.add(delta.scale(head * .75)), dir, rightOf(dir), 1.15, 1.55, life01(v), .22, MINT, AIR, opacity * .85, false);
     }
     /** Open pressure foils advance only along this accepted target's ten-tick HIT lane. */
     private static void barrage(Canvas c, View v, double e) {
@@ -128,11 +137,12 @@ final class CanonFxAero {
                 points.add(from.add(delta.scale(progress)).add(side.scale(k * .28 * open))
                         .add(up.scale(.10 * open * Math.sin(age * .9 + k))));
             }
-            stream(c, points, k == 0 ? .19 : .12, e * (k == 0 ? 1 : .78), age * 2);
+            stream(c, points, k == 0 ? .21 : .13, e * (k == 0 ? 1 : .78), age * 2);
+            if (k == 0) c.darkSheathRibbon(points, u -> .11 * Math.sin(Math.PI * u), u -> .78 * e, AIR);
         }
         if (head < 1) return;
         double impact = clamp01((age - Math.min(3, v.life() * .45)) / Math.max(1, v.life() - 3));
-        double lip = .26 + .46 * easeOut(impact);
+        double lip = .30 + .52 * easeOut(impact);
         c.cellPlane("fx4:ah_cone", CanonFx4.Mode.ALPHA, to, side.scale(lip), up.scale(lip * .55),
                 0, FLOW, (float) (.85 * e * (1 - impact)));
         c.refract(NOISE, false, to, lip, (float) (.55 * e * (1 - impact)), AIR);
@@ -140,12 +150,12 @@ final class CanonFxAero {
     private static void wall(Canvas c,View v,double e,double t){
         if(v.phase()==CanonVfx.Phase.HIT.ordinal()){contact(c,v,e,t);return;}
         if(v.phase()==CanonVfx.Phase.END.ordinal())return;
-        if(v.skill().equals("aero_air_curtain"))return; // The box and interception flash describe this stationary barrier.
-        // A curtain of rising air: a row of refraction panels with streams flowing upward through them.
+        if(v.skill().equals("aero_air_curtain"))return;
         Vec3 f=flat(CanonBarrierGeometry.forward(v)),r=rightOf(f);double rise=easeOut(reveal(v,6));
         double w=cn.academy.port.canon.CanonExpansionCombatA.barrierHalfWidth(v.skill());
         if(w<=0)return;
         Vec3 base=CanonBarrierGeometry.centre(v);
+        AgModernVfx.obbForcefield(c,base,CanonBarrierGeometry.forward(v),v.yaw(),v.skill(),MINT,t,e*.68);
         for(int k=0;k<5;k++){Vec3 off=r.scale((k-2)*w*.42);
             Vec3 p=base.add(off);c.refract(NOISE,false,p,.28*rise,(float)(.7*e),AIR);
             var up=new ArrayList<Vec3>();for(int i=0;i<8;i++)up.add(base.add(off).add(r.scale(.04*Math.sin(t*.3+i+k))).add(0,(i/7.0*2-1)*w*rise,0));stream(c,up,.12,e,t);}
@@ -159,12 +169,13 @@ final class CanonFxAero {
         }
     }
     private static void vortex(Canvas c,View v,double e,double t,int tier){
-        Vec3 g=v.endpoint().distanceToSqr(v.origin())<4?v.anchor():v.endpoint();double grow=easeOutBack(reveal(v,8)),H=(1.5+.5*tier)*grow;
+        Vec3 g=v.endpoint().distanceToSqr(v.origin())<4?v.anchor():v.endpoint();double grow=easeOutBack(reveal(v,8)),H=(1.8+.6*tier)*grow;
         for(int k=0;k<4;k++){var spiral=new ArrayList<Vec3>();
-            for(int i=0;i<18;i++){double s=i/17.,ang=t*.25+k*1.57+s*6;spiral.add(g.add(Math.cos(ang)*(.3+.9*s),s*H,Math.sin(ang)*(.3+.9*s)));}
-            stream(c,spiral,.25,e,t);}
+            for(int i=0;i<18;i++){double s=i/17.,ang=t*.28+k*1.57+s*6.4;spiral.add(g.add(Math.cos(ang)*(.3+.95*s),s*H,Math.sin(ang)*(.3+.95*s)));}
+            stream(c,spiral,.26,e,t);}
+        if(tier>=4)Canon3dMeshKit.dualCalcRings(c,g.add(0,.08,0),new Vec3(0,1,0),1.5+.35*tier,"aero_hand",t,e*.66,false);
         var grid=Fx4Atlas.get("ah_vortex_sheet");
-        c.cellPlane(VORTEX,CanonFx4.Mode.ADD,g.add(0,.05,0),new Vec3(1.4*grow,0,0),new Vec3(0,0,1.4*grow),grid.frame(frac(t*.03)),AIR,(float)(.6*e));
+        c.cellPlane(VORTEX,CanonFx4.Mode.ADD,g.add(0,.05,0),new Vec3(1.5*grow,0,0),new Vec3(0,0,1.5*grow),grid.frame(frac(t*.03)),AIR,(float)(.65*e));
         c.refract(NOISE,false,g.add(0,H*.5,0),H*.45,(float)(.7*e),AIR);
     }
 }

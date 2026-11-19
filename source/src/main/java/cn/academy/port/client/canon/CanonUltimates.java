@@ -125,37 +125,53 @@ final class CanonUltimates {
             try{switch(s.skill){
                 case "dark_construct" -> {
                     darkConstruct(c,s,age,e,R);
-                    AgModernVfx.calculationArray(c,s.anchor.add(0,.12,0),new Vec3(0,1,0),R,"dark_matter",age,e*.68,32);
+                    Canon3dMeshKit.dualCalcRings(c,s.anchor.add(0,.12,0),new Vec3(0,1,0),R,"dark_matter",age,e*.76,true);
+                    Canon3dMeshKit.shockwaveCrown3D(c,s.anchor,R,PEARL,age,e*.62,36);
+                    for(int m=0;m<6;m++){
+                        double a=m*(Math.PI/3)+age*.025;
+                        Vec3 base=s.anchor.add(Math.cos(a)*R*.72,.4+.25*Math.sin(age*.1+m),Math.sin(a)*R*.72);
+                        Canon3dMeshKit.facetedPrism(c,base,base.add(0,2.2+.3*Math.sin(age*.12+m),0),.36,6,age*.04+m,PEARL,HALO,e*.88,true);
+                    }
                 }
                 case "nitrogen_dome" -> {
                     nitrogenDome(c,s,age,e,R);
-                    AgModernVfx.fresnelDome(c,s.anchor,R,R,ICE,age,e*.62,8,18);
-                    AgModernVfx.terrainShockCrown(c,s.anchor,R,FROST,age,e*.66,36,true);
+                    Canon3dMeshKit.hexPressureDome(c,s.anchor,R,R,ICE,age,e*.76,4);
+                    Canon3dMeshKit.shockwaveCrown3D(c,s.anchor,R,FROST,age,e*.74,40);
                 }
                 case "aero_barrage" -> {
                     aeroBarrage(c,s,age,e,R);
-                    AgModernVfx.terrainShockCrown(c,s.anchor,R,AIR,age,e*.62,36,true);
+                    Canon3dMeshKit.dualCalcRings(c,s.anchor.add(0,.14,0),new Vec3(0,1,0),Math.min(R,18),"aero_hand",age,e*.68,true);
+                    Canon3dMeshKit.shockwaveCrown3D(c,s.anchor,R,AIR,age,e*.72,40);
                 }
                 case "mental_out_crowd" -> {
                     mentalCrowd(c,s,age,e,R);
-                    AgModernVfx.calculationArray(c,s.anchor.add(0,.12,0),new Vec3(0,1,0),R,"mental_out",age,e*.64,32);
+                    Canon3dMeshKit.dualCalcRings(c,s.anchor.add(0,.12,0),new Vec3(0,1,0),R,"mental_out",age,e*.74,true);
                 }
                 case "hydro_domain" -> {
                     CanonFxHydro.domainSource(c,s.origin,age,e);
-                    AgModernVfx.terrainShockCrown(c,s.origin,R,WATER,age,e*.68,36,true);
+                    Canon3dMeshKit.dualCalcRings(c,s.origin.add(0,.10,0),new Vec3(0,1,0),Math.min(R,24),"hydro_hand",age,e*.66,false);
+                    Canon3dMeshKit.shockwaveCrown3D(c,s.origin,R,WATER,age,e*.76,42);
                 }
                 case "paper_array" -> {
                     paperArray(c,s,age,e,R);
-                    AgModernVfx.calculationArray(c,s.anchor.add(0,3.3,0),new Vec3(0,1,0),Math.min(R,8.5),"paper_psychokinesis",age,e*.72,28);
+                    Canon3dMeshKit.dualCalcRings(c,s.anchor.add(0,3.3,0),new Vec3(0,1,0),Math.min(R,10.5),"paper_psychokinesis",age,e*.78,true);
+                    Canon3dMeshKit.shockwaveCrown3D(c,s.anchor,R,PAPER2,age,e*.58,36);
                 }
                 case CanonFxLiquid.FIELD_SKILL -> {
                     CanonFxLiquid.drawField(c,s.ink,R,p,e);
-                    AgModernVfx.terrainShockCrown(c,s.origin,R,new float[]{.42f,.56f,.88f},age,e*.62,32,false);
+                    Canon3dMeshKit.shockwaveCrown3D(c,s.origin,R,new float[]{.52f,.42f,.92f},age,e*.72,38);
+                    for(int m=0;m<8;m++){
+                        double a=m*(Math.PI/4)+age*.018;
+                        double dist=R*(.38+.48*((m%3)/2.0));
+                        Vec3 base=s.origin.add(Math.cos(a)*dist,.05,Math.sin(a)*dist);
+                        double spireH=(1.4+.5*(m%3))*Math.sin(Math.PI*Math.clamp(p,0,1));
+                        if(spireH>.12)Canon3dMeshKit.facetedPrism(c,base,base.add(0,spireH,0),.22,4,a,new float[]{.16f,.11f,.28f},new float[]{.64f,.48f,.96f},e*.86,false);
+                    }
                 }
                 case "float_field" -> {
                     floatField(c,s,age,e,R);
-                    AgModernVfx.fresnelDome(c,s.origin,R,R*.72,FLOAT,age,e*.54,7,16);
-                    AgModernVfx.calculationArray(c,s.origin.add(0,.14,0),new Vec3(0,1,0),R,"float_dial",age,e*.65,30);
+                    Canon3dMeshKit.hexPressureDome(c,s.origin,R,R*.74,FLOAT,age,e*.68,3);
+                    Canon3dMeshKit.dualCalcRings(c,s.origin.add(0,.14,0),new Vec3(0,1,0),R,"float_dial",age,e*.72,true);
                 }
                 default -> { }
             }}finally{c.restore(scope);c.record("ultimate:"+s.skill,before);}

@@ -80,7 +80,7 @@ public final class CanonEmission {
         Class<?> caller = WALKER.getCallerClass();
         if (!CONTROLLERS.contains(caller.getName()) || caller.getClassLoader() != CanonEmission.class.getClassLoader()
                 || player == null || skill == null || !CanonSkills.IDS.contains(skill) || targets == null || targetGuard == null
-                || targets.isEmpty() || targets.size() > 8 && !cn.academy.port.macro.MacroSkillRules.ultimate(skill) || AbilityConsumption.busy(player)
+                || targets.isEmpty() || targets.size() > 12 && !cn.academy.port.macro.MacroSkillRules.ultimate(skill) || AbilityConsumption.busy(player)
                 || !player.server.isSameThread() || player.connection == null || player.hasDisconnected()
                 || player.server.getPlayerList().getPlayer(player.getUUID()) != player
                 || !HighPowerResources.ready(player) || HighPowerCombat.unsupportedReason(player).isPresent()) return null;
@@ -88,54 +88,68 @@ public final class CanonEmission {
         var definition = CanonSkills.find(skill).orElse(null);
         if (definition == null || !definition.category().equals(state.category) || !state.presets.currentContains(skill)
                 || !HighPowerSkills.eligible(state, skill) || HighPowerResources.effectiveLevel(player) < definition.level()) return null;
-        // Whitelist binds each controller to its own category, rather than granting generic damage.
         if (!(caller.getSimpleName().equals("CanonOffense")
-                    && cn.academy.port.canon.CanonOffenseSkills.find(skill)!=null
+                    && cn.academy.port.canon.CanonOffenseSkills.find(skill) != null
                     && cn.academy.port.canon.CanonOffenseSkills.find(skill).category().equals(state.category)
                 || caller.getSimpleName().equals("CanonWaterSkills") && state.category.equals("hydro_hand")
                 || caller.getSimpleName().equals("CanonWaterExpansion") && state.category.equals("hydro_hand")
-                    && Set.of("hydro_pressure_jet","hydro_fan","hydro_eddy").contains(skill)
+                    && Set.of("hydro_pressure_jet", "hydro_fan", "hydro_eddy").contains(skill)
                 || caller.getSimpleName().equals("CanonPaperSkills") && state.category.equals("paper_psychokinesis")
                 || caller.getSimpleName().equals("CanonLiquidSkills") && state.category.equals("liquid_shadow")
                 || caller.getSimpleName().equals("CanonLiquidCombatExpansion") && state.category.equals("liquid_shadow")
-                    && Set.of("liquid_contact_cut","liquid_contact_sweep","liquid_contact_crush").contains(skill)
+                    && Set.of("liquid_contact_cut", "liquid_contact_sweep", "liquid_contact_crush").contains(skill)
                 || (caller.getSimpleName().equals("CanonSkillsCombatA") || caller.getSimpleName().equals("CanonExpansionCombatA")) && (state.category.equals("dark_matter")
                     || state.category.equals("nitrogen_armor") || state.category.equals("aero_hand")))) return null;
         var unique = new HashSet<UUID>();
-        for (var target : targets) if (!targetAllowed(player, target,skill) || !guard(targetGuard, target)
-                || !targetAllowed(player, target,skill) || !unique.add(target.getUUID())) return null;
+        for (var target : targets) if (!targetAllowed(player, target, skill) || !guard(targetGuard, target)
+                || !targetAllowed(player, target, skill) || !unique.add(target.getUUID())) return null;
         final BigDecimal total;
         try { total = HighPowerGrowth.values(player).damage(); }
         catch (IllegalArgumentException | IllegalStateException invalid) { return null; }
-        BigDecimal share = total.multiply(levelFactor(definition.level())).divide(BigDecimal.valueOf(targets.size()), 40, RoundingMode.DOWN).stripTrailingZeros();
+        BigDecimal base = total.multiply(levelFactor(definition.level()));
+        BigDecimal divided = base.divide(BigDecimal.valueOf(targets.size()), 40, RoundingMode.DOWN);
+        // Preserve exact 1-target and 2-target budget division while preventing LV4/LV5 AoEs from diluting against 4–16 mobs.
+        if (targets.size() >= 4 && definition.level() >= 4) {
+            BigDecimal floor = base.multiply(definition.level() >= 5 ? new BigDecimal("0.42") : new BigDecimal("0.32"));
+            if (divided.compareTo(floor) < 0) divided = floor;
+        }
+        BigDecimal share = divided.stripTrailingZeros();
         if (share.signum() <= 0 || !Double.isFinite(cost) || cost <= 0 || cooldown < 1 || cooldown > 12000) return null;
         int preset = state.presets.current();
         long presetRevision = state.presets.revision();
         int level = state.level;
         long tick = player.serverLevel().getGameTime();
-        if (tick < 0 || tick > Long.MAX_VALUE - cooldown || !HighPowerResources.trySpend(player, skill, cost, cooldown)) return null;
+        if (tick < 0 || tick > Long.MAX_VALUE - cooldown) return null;
+        boolean ultimate = cn.academy.port.macro.MacroSkillRules.ultimate(skill);
+        var payment = ultimate ? HighPowerResources.spendForSettlement(player, skill, cost, cooldown) : null;
+        if (ultimate ? payment == null : !HighPowerResources.trySpend(player, skill, cost, cooldown)) return null;
         if (AbilityStorage.get(player) != state || state.presets.current() != preset
-                || state.presets.revision() != presetRevision || state.level != level) return null;
+                || state.presets.revision() != presetRevision || state.level != level) {
+            if (payment != null) payment.finish(false);
+            return null;
+        }
         var cast = new Cast(player, state, state.category, skill, player.serverLevel(), tick, tick + cooldown,
-                preset, presetRevision, level, List.copyOf(targets), share, targetGuard);
-        // The debit is already final. A changed target or controller condition never grants a permit or a refund.
-        for (var target : targets) if (!cast.valid(target)) return null;
+                preset, presetRevision, level, List.copyOf(targets), share, targetGuard, payment);
+        for (var target : targets) if (!cast.valid(target)) {
+            cast.finish();
+            return null;
+        }
         return cast;
     }
 
-    /** Higher-tier skills hit harder; LV3 keeps the shared growth budget unchanged (it used to be one flat total for every skill). */
+    /** Higher-tier skills hit harder; LV3 keeps the shared growth budget unchanged. */
     public static BigDecimal levelFactor(int skillLevel) {
         return switch (skillLevel) { case 1 -> new BigDecimal("0.6"); case 2 -> new BigDecimal("0.8"); case 4 -> new BigDecimal("1.3");
             case 5 -> new BigDecimal("1.7"); default -> BigDecimal.ONE; };
     }
 
     private static boolean targetAllowed(ServerPlayer player, LivingEntity target) {
-        return targetAllowed(player,target,"");
+        return targetAllowed(player, target, "");
     }
-    private static boolean targetAllowed(ServerPlayer player, LivingEntity target,String skill) {
+    private static boolean targetAllowed(ServerPlayer player, LivingEntity target, String skill) {
         if (target == null || target == player || target.level() != player.level() || !target.isAlive() || target.isRemoved()
                 || !finite(player.position()) || !finite(target.position())
-                || player.serverLevel().getEntity(target.getUUID()) != target || player.distanceToSqr(target) > (cn.academy.port.macro.MacroSkillRules.ultimate(skill)?192*192:96*96)
+                || player.serverLevel().getEntity(target.getUUID()) != target || player.distanceToSqr(target) > (cn.academy.port.macro.MacroSkillRules.ultimate(skill) ? 192 * 192 : 96 * 96)
                 || !player.hasLineOfSight(target) || player.isAlliedTo(target) || target.isAlliedTo(player)
                 || HighPowerCombat.unsupportedReason(target).isPresent()) return false;
         return !(target instanceof Player other) || AcademyConfig.ATTACK_PLAYERS.get()
@@ -161,39 +175,47 @@ public final class CanonEmission {
         private final BigDecimal share;
         private final Predicate<LivingEntity> targetGuard;
         private final Set<UUID> attempted = new HashSet<>();
-        private boolean resolving,deferred,closed;
+        private final HighPowerResources.SettlementPayment payment;
+        private boolean resolving, deferred, closed, applied;
         private Cast(ServerPlayer player, AbilityProgress ability, String category, String skill, ServerLevel world, long tick,
                      long cooldownUntil, int preset, long presetRevision, int level, List<LivingEntity> targets, BigDecimal share,
-                     Predicate<LivingEntity> targetGuard) {
+                     Predicate<LivingEntity> targetGuard, HighPowerResources.SettlementPayment payment) {
             this.player = player; this.ability = ability; this.category = category; this.skill = skill; this.world = world;
             this.tick = tick; this.cooldownUntil = cooldownUntil; this.preset = preset;
-            this.presetRevision = presetRevision; this.level = level; this.targets = targets; this.share = share; this.targetGuard = targetGuard;
+            this.presetRevision = presetRevision; this.level = level; this.targets = targets; this.share = share;
+            this.targetGuard = targetGuard; this.payment = payment;
         }
         /** Each originally selected target consumes its immutable share at most once, even on refusal. */
         public boolean attack(LivingEntity target) {
             if (!valid(target) || !targets.contains(target) || !attempted.add(target.getUUID())) return false;
-            return HighPowerCombat.attackEmission(new Permit(this, target));
+            boolean accepted = HighPowerCombat.attackEmission(new Permit(this, target));
+            applied |= accepted;
+            return accepted;
         }
         /** Preserve the frozen roster and each immutable share while spreading LV5 work over server ticks. */
-        public void forEach(java.util.function.Consumer<LivingEntity> action,Runnable finished) {
-            Class<?> caller=WALKER.getCallerClass();
-            if(!CONTROLLERS.contains(caller.getName())||caller.getClassLoader()!=CanonEmission.class.getClassLoader()||resolving||closed)
+        public void forEach(java.util.function.Consumer<LivingEntity> action, Runnable finished) {
+            Class<?> caller = WALKER.getCallerClass();
+            if (!CONTROLLERS.contains(caller.getName()) || caller.getClassLoader() != CanonEmission.class.getClassLoader() || resolving || closed)
                 throw new IllegalStateException("Emission resolver ownership");
-            resolving=true;
-            if(!cn.academy.port.macro.MacroSkillRules.ultimate(skill)){targets.forEach(action);finished.run();return;}
-            deferred=true;
-            cn.academy.port.macro.MacroSettlement.submit(world,targets,
-                    ()->!closed&&player.isAlive()&&!player.hasDisconnected()&&player.serverLevel()==world,
-                    action,()->{try{finished.run();}finally{closed=true;}});
+            resolving = true;
+            if (!cn.academy.port.macro.MacroSkillRules.ultimate(skill)) { targets.forEach(action); finished.run(); return; }
+            deferred = true;
+            cn.academy.port.macro.MacroSettlement.submit(world, targets,
+                    () -> !closed && player.isAlive() && !player.hasDisconnected() && player.serverLevel() == world,
+                    action, () -> { finish(); finished.run(); });
+        }
+        public void finish() {
+            if (payment != null) payment.finish(applied);
+            closed = true;
         }
         private boolean valid(LivingEntity target) {
             return contextValid(target) && guard(targetGuard, target) && contextValid(target);
         }
         private boolean contextValid(LivingEntity target) {
             if (player.isRemoved() || !player.isAlive() || player.isSpectator() || player.hasDisconnected()
-                    || !player.server.isSameThread() || player.serverLevel() != world || closed || (deferred?world.getGameTime()<tick:world.getGameTime()!=tick)
+                    || !player.server.isSameThread() || player.serverLevel() != world || closed || (deferred ? world.getGameTime() < tick : world.getGameTime() != tick)
                     || player.server.getPlayerList().getPlayer(player.getUUID()) != player
-                    || !HighPowerResources.ready(player) || !targetAllowed(player, target,skill)) return false;
+                    || !HighPowerResources.ready(player) || !targetAllowed(player, target, skill)) return false;
             var state = AbilityStorage.get(player);
             var budget = player.getPersistentData().getCompound(HighPowerResources.DATA_KEY);
             return state == ability && state.level == level && state.presets.current() == preset

@@ -115,17 +115,29 @@ public final class CanonFloatItems {
         var selected=List.copyOf(found.subList(0,Math.min(integer(id, "target_cap"),found.size())));
         long now=p.serverLevel().getGameTime();if(now>Long.MAX_VALUE-ticks)return false;
         var snapshots=new ArrayList<ItemStack>();for(var item:selected)snapshots.add(item.getItem().copy());
-        if(!HighPowerResources.trySpend(p,id,HighPowerGrowth.values(p).arcCost()*2,60))return false;
+        var payment=HighPowerResources.spendForSettlement(p,id,HighPowerGrowth.values(p).arcCost()*2,60);
+        if(payment==null)return false;
         for(int i=0;i<selected.size();i++)if(!eligible(p,selected.get(i),radius)
-                ||ACTIVE.containsKey(selected.get(i).getUUID())||CanonFloatExpansion.leased(selected.get(i))||!ItemStack.matches(selected.get(i).getItem(),snapshots.get(i)))return false;
+                ||ACTIVE.containsKey(selected.get(i).getUUID())||CanonFloatExpansion.leased(selected.get(i))||!ItemStack.matches(selected.get(i).getItem(),snapshots.get(i))){
+            payment.finish(false);
+            return false;
+        }
 
         long generation=FIELD_GENERATION.merge(p,1L,Long::sum);PENDING_FIELDS.add(p);
         var world=p.serverLevel();var ownerState=AbilityStorage.get(p);
+        var first=new Vec3[]{null};var origin=p.position();
         cn.academy.port.macro.MacroSettlement.submit(world,selected,
                 ()->p.isAlive()&&!p.hasDisconnected()&&p.serverLevel()==world&&AbilityStorage.get(p)==ownerState&&CATEGORY.equals(ownerState.category)&&ownerState.learned(id)&&FIELD_GENERATION.getOrDefault(p,0L)==generation,
-                item->{if(eligible(p,item,radius)&&!ACTIVE.containsKey(item.getUUID())&&!CanonFloatExpansion.leased(item))ACTIVE.put(item.getUUID(),new Lease(p,item,now+ticks,id));},
-                ()->{if(FIELD_GENERATION.getOrDefault(p,0L)==generation)PENDING_FIELDS.remove(p);});
-        CanonVfx.emit(p,id,p.position(),selected.getFirst().position(),CanonVfx.Phase.START,18,radius);return true;
+                item->{
+                    if(!eligible(p,item,radius)||ACTIVE.containsKey(item.getUUID())||CanonFloatExpansion.leased(item))return;
+                    ACTIVE.put(item.getUUID(),new Lease(p,item,now+ticks,id));
+                    if(first[0]==null)first[0]=item.position();
+                }, ()->{
+                    if(FIELD_GENERATION.getOrDefault(p,0L)==generation)PENDING_FIELDS.remove(p);
+                    payment.finish(first[0]!=null);
+                    if(first[0]!=null)CanonVfx.emit(p,id,origin,first[0],CanonVfx.Phase.START,18,radius,marker!=null);
+                });
+        return true;
     }
     private static boolean releaseField(ServerPlayer p,String id) {
         var owned=ACTIVE.values().stream().filter(l->l.owner==p&&valid(l)).toList();if(owned.isEmpty()&&!PENDING_FIELDS.contains(p))return false;

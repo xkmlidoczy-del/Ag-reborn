@@ -1,5 +1,11 @@
 # 状态 / Status
 
+## 2026-11-19 a3.78 终极演出与结算
+
+- LV5 无生效结果时返还当次 CP，冷却最多 10 刻。强化提示依据服务端结算。
+- 12 系 56 个 LV5 接入终极演出。162 项 GameTest、12 系 Iris 样本、本机双客户端旁观通过。
+- 五个 LV5 同屏最长帧 39.17 ms，四巨兽施法最长服务刻 20.43 ms。[GitHub Release](https://github.com/xkmlidoczy-del/Ag-reborn/releases/tag/v0.81.5-city-a3.78)
+
 ## 2026-11-19 a3.77 全模组一体整合（Omnitrix 0.8.0 + Infinity 0.5.1）
 
 - 在 a3.75 伤害破限基线上同步升级内置 **ACA Omnitrix 0.8.0**，并正式内置 **ACA Infinity 0.5.1**（无限手套、六颗无限原石、圣殿二号旗舰），由 `source/build.gradle` 一键编译打包为单一整合 JAR。

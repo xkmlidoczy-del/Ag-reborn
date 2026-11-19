@@ -1,6 +1,6 @@
 # Source snapshot and privacy handling
 
-This snapshot follows the verified Academy generation reborn / Ag:reborn `0.1.0-m41-highpower.0.81.5-city-a3.77` source. Earlier public snapshots remain under their original tags. The original work is [AcademyCraft by Lambda Innovation](https://github.com/LambdaInnovation/AcademyCraft), with the classic reference at tag 1.0.7 (commit `00d19ec0cf538f61c1095c9292f5ee6863db4521`).
+This snapshot follows the verified Academy generation reborn / Ag:reborn `0.1.0-m41-highpower.0.81.5-city-a3.78` source. Earlier public snapshots remain under their original tags. The original work is [AcademyCraft by Lambda Innovation](https://github.com/LambdaInnovation/AcademyCraft), with the classic reference at tag 1.0.7 (commit `00d19ec0cf538f61c1095c9292f5ee6863db4521`).
 
 This repository starts with the privacy-reviewed a3.61 export. Its build inputs and assets follow the public source layout. Local machine paths were replaced with relative paths where needed. Local fields were removed from the editable train model; the model's geometry and materials were compared before and after. Non-rendering text or EXIF chunks were removed from selected generated PNGs, and their decoded pixels were compared. Some original upstream PNG metadata remains where existing runtime or test checks verify the original upstream file hash; it was checked for local usernames, paths and contact details. See `source/docs/ASSET_METADATA_NOTICE.md`.
 
@@ -21,3 +21,5 @@ The a3.72 snapshot changes client resource preparation, render-state caches and 
 The a3.75 backup adds the city map, HUD and terminal item art, real entity attributes and shields, Fauna spawn updates, and damage cap compatibility. The runtime sources and assets follow the tested local a3.75 build. Older published PNGs with identical decoded pixels retain the previously sanitized files. The editable models, third-party notices and portable build layout from a3.72 are retained.
 
 The a3.77 snapshot upgrades the embedded ACA Omnitrix module to 0.8.0 (`source/src/omnitrix`) and integrates ACA Infinity 0.5.1 (`source/src/infinity`, `source/integration/aca-infinity`) into the unified Gradle Jar-in-Jar build, including the zero-obstruction micro-arc HUD, LUT/flow-map/Voronoi shader pipeline, 4-layer modded AI control, and context-isolated key mappings. Newly added PNG textures were stripped of non-rendering metadata and verified for RGBA pixel identity.
+
+The a3.78 snapshot combines the local skill presentation overhaul with deferred LV5 settlement refunds, authoritative auxiliary boost visuals, and bounded finales for the twelve categories. A clean rebuild matches the acceptance JAR entry by entry, including the contents of all nested modules.

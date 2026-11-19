@@ -41,6 +41,10 @@ public final class CanonVfx {
      * draw the real reach instead of a motif-sized guess. Zero means no area.
      */
     public static void emit(ServerPlayer player,String skill,Vec3 origin,Vec3 endpoint,Phase phase,int durationTicks,double radius) {
+        emit(player,skill,origin,endpoint,phase,durationTicks,radius,false);
+    }
+    public static void emit(ServerPlayer player,String skill,Vec3 origin,Vec3 endpoint,Phase phase,int durationTicks,
+                            double radius,boolean boosted) {
         if(!Double.isFinite(radius) || radius<0 || radius>maximumRadius(skill)) return;
         if(player==null || skill==null || skill.length()>64 || phase==null || durationTicks<1 || durationTicks>maximumDuration(skill)
                 || !finite(origin) || !finite(endpoint) || !player.server.isSameThread() || player.connection==null
@@ -58,7 +62,7 @@ public final class CanonVfx {
         PLAYERS.put(player,new Quota(tick,pc+1));SERVERS.put(player.server,new Quota(tick,sc+1));
         Vec3 axis=player.getLookAngle().normalize();if(!finite(axis)||axis.lengthSqr()<.99)return;
         var centre=effectCentre(skill,origin,endpoint,player.position(),player.getEyePosition());
-        var visual=new Visual(player.getId(),player.getUUID(),player.serverLevel().dimension().location(),skill,origin,endpoint,phase,durationTicks,(float)radius,axis,centre);
+        var visual=new Visual(player.getId(),player.getUUID(),player.serverLevel().dimension().location(),skill,origin,endpoint,phase,durationTicks,(float)radius,axis,centre,boosted);
         serverObserver.accept(visual);
         cn.academy.port.macro.MacroVfx.emit(player,skill,cn.academy.port.macro.MacroVfx.Phase.values()[phase.ordinal()],origin,radius>0?centre:endpoint,durationTicks,radius);
         broadcast(player.serverLevel(),visual);
@@ -72,14 +76,19 @@ public final class CanonVfx {
     }
     public static double maximumRadius(String skill){return cn.academy.port.macro.MacroSkillRules.ultimate(skill)?64:cn.academy.port.core.RangedSkillRanges.MAX_CANON_AREA_RADIUS;}
     public static double maximumSpan(String skill){return cn.academy.port.macro.MacroSkillRules.ultimate(skill)?192:cn.academy.port.core.RangedSkillRanges.MAX_CANON_VISUAL_SPAN;}
+    private static boolean highTierOrUltimate(String skill){
+        if(cn.academy.port.macro.MacroSkillRules.ultimate(skill))return true;
+        var d=CanonVfxDesign.find(skill);
+        return d!=null&&SkillCatalog.find(d.category(),skill).map(s->s.level()>=4).orElse(false);
+    }
     private static void broadcast(net.minecraft.server.level.ServerLevel world,Visual visual){
-        double distance=64+visual.radius();
+        double distance=(highTierOrUltimate(visual.skill())?128:64)+visual.radius();
         for(var viewer:world.players())if(!viewer.hasDisconnected()&&(cn.academy.port.macro.MacroVfx.distanceSquared(viewer.getEyePosition(),visual.origin(),visual.endpoint())<=distance*distance
                 ||visual.radius()>0&&viewer.getEyePosition().distanceToSqr(visual.areaCentre())<=distance*distance))
             PacketDistributor.sendToPlayer(viewer,visual);
     }
-    /** Long mental control marks follow their real leases; other effects keep the original bound. */
-    public static int maximumDuration(String skill){var d=CanonVfxDesign.find(skill);return d!=null&&d.category().equals("mental_out")?2400:200;}
+    /** Registered canon skills support boosted and sustained leases up to 2400 ticks. */
+    public static int maximumDuration(String skill){return CanonVfxDesign.find(skill)!=null?2400:200;}
     private static boolean finite(Vec3 v){return v!=null&&Double.isFinite(v.x)&&Double.isFinite(v.y)&&Double.isFinite(v.z);}
     /** Non-player native controllers use the identical canon packet, identity and renderer. */
     public static void emitEntity(net.minecraft.world.entity.LivingEntity caster,cn.academy.port.core.AbilityProgress state,
@@ -90,12 +99,15 @@ public final class CanonVfx {
         var design=CanonVfxDesign.find(skill);
         if(design==null||!design.category().equals(state.category)) return;
         var axis=endpoint.subtract(origin);if(axis.lengthSqr()<1e-6)axis=caster.getLookAngle();
-        var visual=new Visual(caster.getId(),caster.getUUID(),world.dimension().location(),skill,origin,endpoint,phase,Math.max(1,Math.min(200,ticks)),0,axis.normalize());
+        var visual=new Visual(caster.getId(),caster.getUUID(),world.dimension().location(),skill,origin,endpoint,phase,Math.max(1,Math.min(maximumDuration(skill),ticks)),0,axis.normalize());
         serverObserver.accept(visual);
         cn.academy.port.macro.MacroVfx.emit(caster,skill,cn.academy.port.macro.MacroVfx.Phase.values()[phase.ordinal()],origin,endpoint,ticks,0);
         broadcast(world,visual);
     }
-    public record Visual(int entity,UUID owner,ResourceLocation dimension,String skill,Vec3 origin,Vec3 endpoint,Phase phase,int duration,float radius,Vec3 axis,Vec3 areaCentre) implements CustomPacketPayload {
+    public record Visual(int entity,UUID owner,ResourceLocation dimension,String skill,Vec3 origin,Vec3 endpoint,Phase phase,int duration,float radius,Vec3 axis,Vec3 areaCentre,boolean boosted) implements CustomPacketPayload {
+        public Visual(int entity,UUID owner,ResourceLocation dimension,String skill,Vec3 origin,Vec3 endpoint,Phase phase,int duration,float radius,Vec3 axis,Vec3 areaCentre){
+            this(entity,owner,dimension,skill,origin,endpoint,phase,duration,radius,axis,areaCentre,false);
+        }
         public Visual(int entity,UUID owner,ResourceLocation dimension,String skill,Vec3 origin,Vec3 endpoint,Phase phase,int duration,float radius,Vec3 axis){
             this(entity,owner,dimension,skill,origin,endpoint,phase,duration,radius,axis,origin);
         }
@@ -108,8 +120,8 @@ public final class CanonVfx {
         public static final Type<Visual> TYPE=new Type<>(ResourceLocation.fromNamespaceAndPath("academy","canon_visual"));
         public static final StreamCodec<RegistryFriendlyByteBuf,Visual> CODEC=StreamCodec.of((b,v)->{
             b.writeVarInt(v.entity);b.writeUUID(v.owner);b.writeResourceLocation(v.dimension);b.writeUtf(v.skill,64);
-            vec(b,v.origin);vec(b,v.endpoint);b.writeEnum(v.phase);b.writeVarInt(v.duration);b.writeFloat(v.radius);vec(b,v.axis);vec(b,v.areaCentre);
-        },b->new Visual(b.readVarInt(),b.readUUID(),b.readResourceLocation(),b.readUtf(64),vec(b),vec(b),b.readEnum(Phase.class),b.readVarInt(),b.readFloat(),vec(b),vec(b)));
+            vec(b,v.origin);vec(b,v.endpoint);b.writeEnum(v.phase);b.writeVarInt(v.duration);b.writeFloat(v.radius);vec(b,v.axis);vec(b,v.areaCentre);b.writeBoolean(v.boosted);
+        },b->new Visual(b.readVarInt(),b.readUUID(),b.readResourceLocation(),b.readUtf(64),vec(b),vec(b),b.readEnum(Phase.class),b.readVarInt(),b.readFloat(),vec(b),vec(b),b.readBoolean()));
         public Type<? extends CustomPacketPayload> type(){return TYPE;}
     }
     private static void vec(RegistryFriendlyByteBuf b,Vec3 v){b.writeDouble(v.x);b.writeDouble(v.y);b.writeDouble(v.z);}
@@ -117,7 +129,7 @@ public final class CanonVfx {
     @EventBusSubscriber(modid="academy",bus=EventBusSubscriber.Bus.MOD)
     public static final class Network {
         @SubscribeEvent public static void register(RegisterPayloadHandlersEvent event){
-            event.registrar("4").playToClient(Visual.TYPE,Visual.CODEC,(packet,context)->context.enqueueWork(()->clientReceiver.accept(packet)));
+            event.registrar("5").playToClient(Visual.TYPE,Visual.CODEC,(packet,context)->context.enqueueWork(()->clientReceiver.accept(packet)));
         }
     }
     @SubscribeEvent public static void stop(ServerStoppedEvent e){SERVERS.remove(e.getServer()); PLAYERS.keySet().removeIf(p->p.server==e.getServer());}

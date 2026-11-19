@@ -42,7 +42,7 @@ import net.neoforged.neoforge.gametest.GameTestHooks;
 public final class VanillaCombatContract {
     public static final String ID = "academy:vanilla_protection_cooldown_v2";
     private static final Map<String, String> MODS = Map.of("minecraft", "1.21.1", "neoforge", "21.1.252",
-            "academy", "0.1.0-m41-highpower.0.81.5-city-a3.77");
+            "academy", "0.1.0-m41-highpower.0.81.5-city-a3.78");
     private static final Set<String> PACKS = Set.of("vanilla", "mod_data", "mod/neoforge", "mod/academy", "bundle", "trade_rebalance");
     private static final Map<EntityType<?>, Class<?>> CLASSES = Map.ofEntries(
             Map.entry(EntityType.VILLAGER, Villager.class), Map.entry(EntityType.PIG, Pig.class),
@@ -191,9 +191,9 @@ public final class VanillaCombatContract {
             if (LightShield.active(player) || VecDeviation.active(player) || VecReflection.active(player)) {
                 return Optional.of("Active legacy damage defenses need an explicit high-power adapter");
             }
-            // These two classic handlers affect ANY player, not only the hold owner.
+            // LightShield is owner-scoped; only VecDeviation still applies across players.
             for (ServerPlayer other : server.getPlayerList().getPlayers()) {
-                if (LightShield.active(other) || VecDeviation.active(other)) {
+                if (other != player && VecDeviation.active(other)) {
                     return Optional.of("A server-wide legacy defense is active; high-power player damage is unsupported");
                 }
             }

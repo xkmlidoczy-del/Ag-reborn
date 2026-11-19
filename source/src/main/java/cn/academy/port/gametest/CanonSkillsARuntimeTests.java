@@ -571,7 +571,13 @@ public final class CanonSkillsARuntimeTests {
             h.assertTrue(CanonSkillsCombatA.cast(f.player, skill), "cast paid before target movement");
             h.assertTrue(hook.moved, "actual current target attack callback moved the entity");
             h.assertTrue(total(target).compareTo(before) == 0, "moved target receives no exact damage");
-            h.assertTrue(HighPowerResources.cp(f.player) < cp, "already paid cost is retained");
+            if (cn.academy.port.macro.MacroSkillRules.ultimate(skill)) {
+                h.assertTrue(HighPowerResources.cp(f.player) == cp, "empty LV5 settlement returns its own payment");
+                h.assertTrue(AbilityStorage.get(f.player).cooldowns.getOrDefault(skill, 0) <= 10,
+                        "only the short LV5 protection cooldown remains");
+            } else {
+                h.assertTrue(HighPowerResources.cp(f.player) < cp, "ordinary skill settlement keeps its existing payment");
+            }
             h.succeed();
         } finally { NeoForge.EVENT_BUS.unregister(hook); target.discard(); f.close(); }
     }

@@ -30,7 +30,7 @@ import org.joml.Vector3f;
 /** Client-only bounded particle geometry for server-confirmed canon skill events. */
 @EventBusSubscriber(modid="academy",value=Dist.CLIENT)
 public final class CanonVfxClient {
-    private static final int MAX_EFFECTS=24, MAX_PARTICLES_PER_TICK=48;
+    private static final int MAX_EFFECTS=64, MAX_PARTICLES_PER_TICK=96;
     private static final List<Effect> EFFECTS=new ArrayList<>();
     private static ClientLevel world;
     /** Persistent areas and enhanced receipt clocks track game time through any impact freeze. */
@@ -48,9 +48,11 @@ public final class CanonVfxClient {
         if(level==null||mc.player==null||v==null||v.owner()==null||v.dimension()==null||v.phase()==null
                 ||!level.dimension().location().equals(v.dimension())||v.duration()<1||v.duration()>CanonVfx.maximumDuration(v.skill())
                 ||!finite(v.origin())||!finite(v.endpoint())||!finite(v.axis())||!finite(v.areaCentre())||Math.abs(v.axis().lengthSqr()-1)>.01||!Float.isFinite(v.radius())||v.radius()<0||v.radius()>CanonVfx.maximumRadius(v.skill())||v.origin().distanceToSqr(v.endpoint())>CanonVfx.maximumSpan(v.skill())*CanonVfx.maximumSpan(v.skill())
-                ||v.origin().distanceToSqr(v.areaCentre())>CanonVfx.maximumSpan(v.skill())*CanonVfx.maximumSpan(v.skill())
-                ||Math.min(cn.academy.port.macro.MacroVfx.distanceSquared(mc.player.getEyePosition(),v.origin(),v.endpoint()),v.radius()>0?mc.player.getEyePosition().distanceToSqr(v.areaCentre()):Double.POSITIVE_INFINITY)>Math.pow(72+v.radius(),2))return;
+                ||v.origin().distanceToSqr(v.areaCentre())>CanonVfx.maximumSpan(v.skill())*CanonVfx.maximumSpan(v.skill()))return;
         var design=CanonVfxDesign.find(v.skill());if(design==null)return;
+        int skillTier=tier(design.category(),v.skill());
+        double maxView=(skillTier>=4||cn.academy.port.macro.MacroSkillRules.ultimate(v.skill())?136:72)+v.radius();
+        if(Math.min(cn.academy.port.macro.MacroVfx.distanceSquared(mc.player.getEyePosition(),v.origin(),v.endpoint()),v.radius()>0?mc.player.getEyePosition().distanceToSqr(v.areaCentre()):Double.POSITIVE_INFINITY)>maxView*maxView)return;
         Vec3 direction=v.axis();
         var entity=level.getEntity(v.entity());
         if(entity!=null&&!entity.getUUID().equals(v.owner()))return;
@@ -62,7 +64,9 @@ public final class CanonVfxClient {
         EFFECTS.removeIf(e->e.visual.owner().equals(v.owner()) && e.visual.skill().equals(v.skill())
                 && (v.phase()==CanonVfx.Phase.START || v.phase()==CanonVfx.Phase.END));
         if(EFFECTS.size()>=MAX_EFFECTS)EFFECTS.remove(0);
-        int life=v.phase()==CanonVfx.Phase.END?Math.max(8,v.duration()):v.duration();
+        int life=v.phase()==CanonVfx.Phase.END?Math.max(8,v.duration())
+                :v.phase()==CanonVfx.Phase.HIT&&!CanonReceiptFx.replacesLegacy(v.skill())?Math.max(v.duration(),skillTier>=4?24:18)
+                :v.duration();
         boolean gameTime = design.category().equals("mental_out")&&(v.phase()==CanonVfx.Phase.ACTIVE||v.duration()>200) || "hydro_domain".equals(v.skill()) || CanonFxLiquid.FIELD_SKILL.equals(v.skill())
                 || design.category().equals("float_dial") && CanonFxFloat.role(v.skill()) == CanonFxFloat.Role.FIELD
                 || CanonReceiptFx.replacesLegacy(v.skill());
@@ -73,8 +77,8 @@ public final class CanonVfxClient {
                 &&(v.phase()==CanonVfx.Phase.START||v.phase()==CanonVfx.Phase.HIT)&&trackedFloatCandidates(level,v).isEmpty())
             PENDING_FLOAT_BINDINGS.put(effect,3);
         if(serverConfirmed)CanonPoseClient.accept(v);
-        CanonFxForms.onReceive(v,design.category(),tier(design.category(),v.skill()),entity!=null&&entity==mc.player,life);
-        CanonEnvironment.canon(v,design.category(),tier(design.category(),v.skill()),entity==null?null:entity.position());
+        CanonFxForms.onReceive(v,design.category(),skillTier,entity!=null&&entity==mc.player,life);
+        CanonEnvironment.canon(v,design.category(),skillTier,entity==null?null:entity.position());
         if(CanonUltimates.ultimate(v.skill()))CanonUltimates.receive(v,entity!=null&&entity==mc.player,level.getGameTime());
         if(v.phase()==CanonVfx.Phase.START||v.phase()==CanonVfx.Phase.HIT)
             level.playLocalSound(v.origin().x,v.origin().y,v.origin().z,sound(design.category(),v.phase()==CanonVfx.Phase.HIT),SoundSource.PLAYERS,
@@ -244,7 +248,7 @@ public final class CanonVfxClient {
             boolean self=!targetAnchored&&(currentEndpoint.distanceToSqr(feet)<2.5*2.5||currentEndpoint.distanceToSqr(e.visual.origin())<1.5*1.5);
             fx.add(new CanonFx.View(e.visual.skill(),e.design.category(),motif,self?feet.add(0,1.2,0):offense!=null?origin:e.visual.origin(),self?feet:currentEndpoint,feet,yaw,
                     e.visual.phase().ordinal(),age,e.life,actor==mc.player,tier(e.design.category(),e.visual.skill()),targetBox,
-                    e.visual.radius(),rangeCentre(e.visual,feet),barrierCentre,barrierAxis!=null?barrierAxis:e.visual.axis(),e.visual.owner()));
+                    e.visual.radius(),rangeCentre(e.visual,feet),barrierCentre,barrierAxis!=null?barrierAxis:e.visual.axis(),e.visual.owner(),e.visual.boosted()));
         }
         CanonMeshRenderer.render(event,views);CanonFx.render(event,fx);
     }

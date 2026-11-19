@@ -23,6 +23,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -42,11 +44,10 @@ import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
 /**
- * Explicit local water-medium physics. Water remains a real, protected source block and is
- * never copied into the world. Currents affect only bounded, visible vanilla hostile mobs;
- * the one-shot shield diverts one supported hostile arrow and spends the exact base shield.
+ * Explicit local water-medium physics, with fallback direct channeling from a carried Water Flask
+ * when no world water block is within reach.
  */
-@EventBusSubscriber(modid="academy")
+@EventBusSubscriber(modid = "academy")
 public final class CanonWaterSkills {
     public static final Set<String> IMPLEMENTED = Set.of("hydro_whip", "hydro_shield", "hydro_domain", "hydro_transfer", "hydro_irrigate", "hydro_extinguish", "hydro_current", "hydro_lift", "hydro_brake", "hydro_repel", "hydro_rescue");
     private static final String CATEGORY = "hydro_hand";
@@ -59,55 +60,66 @@ public final class CanonWaterSkills {
     private static final Map<UUID, Shield> SHIELDS = new HashMap<>();
     private static final Map<UUID, Flow> FLOWS = new HashMap<>();
     private static final Map<UUID, Selection> SELECTIONS = new HashMap<>();
-    private record Shield(ServerPlayer owner, ServerLevel world, BlockPos source, long expires) {}
-    private record Flow(ServerPlayer owner, ServerLevel world, BlockPos source, List<UUID> targets, Vec3 direction, long expires) {}
+    private record Shield(ServerPlayer owner, ServerLevel world, BlockPos source, boolean flaskBacked, long expires) {}
+    private record Flow(ServerPlayer owner, ServerLevel world, BlockPos source, boolean flaskBacked, List<UUID> targets, Vec3 direction, long expires) {}
     private record Selection(ServerPlayer owner, ServerLevel world, BlockPos source, long expires) {}
     private CanonWaterSkills() {}
 
-    /** The client supplies only its already-mapped skill, never a target, medium or coordinates. */
     public static boolean cast(ServerPlayer p, String id) {
-        if ("hydro_transfer".equals(id)) return CanonWaterTransfer.cast(p,id);
-        if (CanonWaterExtra.IMPLEMENTED.contains(id)) return CanonWaterExtra.cast(p,id);
-        if (CanonWaterMotion.IMPLEMENTED.contains(id)) return CanonWaterMotion.cast(p,id);
+        if ("hydro_transfer".equals(id)) return CanonWaterTransfer.cast(p, id);
+        if (CanonWaterExtra.IMPLEMENTED.contains(id)) return CanonWaterExtra.cast(p, id);
+        if (CanonWaterMotion.IMPLEMENTED.contains(id)) return CanonWaterMotion.cast(p, id);
         if (id == null || !IMPLEMENTED.contains(id) || !ready(p, id)) return false;
         if (id.equals("hydro_whip") && p.isShiftKeyDown()) return selectSource(p);
         var world = p.serverLevel(); Vec3 eye = p.getEyePosition(), direction = ClassicRaytrace.direction(p);
         if (!finite(eye) || !finite(direction) || !chunksLoaded(world, eye, eye.add(direction.scale(ATTACK_RANGE)))) return false;
-        BlockPos source = source(p); if (source == null) return false;
+        BlockPos worldSource = source(p);
+        boolean flaskBacked = worldSource == null && CanonAuxItems.hasChargedWaterFlask(p);
+        BlockPos source = flaskBacked ? p.blockPosition().above() : worldSource;
+        if (source == null) return false;
         List<LivingEntity> targets = id.equals("hydro_whip") ? whipTarget(p)
-                : id.equals("hydro_domain") ? domainTargets(p) : List.of();
+                : id.equals("hydro_domain") ? domainTargets(p, flaskBacked) : List.of();
         if (!id.equals("hydro_shield") && targets.isEmpty()) return false;
         if (id.equals("hydro_shield") && (SHIELDS.containsKey(p.getUUID()) || SHIELDS.size() >= MAX_SHIELDS)) return false;
         if (id.equals("hydro_domain") && (FLOWS.containsKey(p.getUUID()) || FLOWS.size() >= MAX_FLOWS)) return false;
         Vec3 horizontal = new Vec3(direction.x, 0, direction.z);
         if (id.equals("hydro_domain") && horizontal.lengthSqr() < 1e-8) return false;
         long now = world.getGameTime(); int ticks = id.equals("hydro_whip") ? 0 : integer(id, "duration_ticks");
-        if (now < 0 || now > Long.MAX_VALUE - ticks || !validSource(p, source)) return false;
+        if (now < 0 || now > Long.MAX_VALUE - ticks || (!flaskBacked && !validSource(p, source))) return false;
         var growth = HighPowerGrowth.values(p);
         double cost = growth.arcCost() * (id.equals("hydro_domain") ? 4 : id.equals("hydro_shield") ? 2 : 1);
         int cooldown = id.equals("hydro_domain") ? 100 : id.equals("hydro_shield") ? 80 : 30;
-        CanonEmission.Cast emission = id.equals("hydro_whip") ? CanonEmission.begin(p, id, cost, cooldown, targets, target -> validSource(p, source)
-                && eligible(p, target) && p.hasLineOfSight(target) && whipTarget(p).contains(target)) : null;
+        boolean[] flaskPaid = {false};
+        CanonEmission.Cast emission = id.equals("hydro_whip") ? CanonEmission.begin(p, id, cost, cooldown, targets,
+                target -> (flaskBacked ? (flaskPaid[0] || CanonAuxItems.hasChargedWaterFlask(p)) : validSource(p, source))
+                        && directEligible(p, target) && p.hasLineOfSight(target) && whipTarget(p).contains(target)) : null;
         if (id.equals("hydro_whip") ? emission == null : !HighPowerResources.trySpend(p, id, cost, cooldown)) return false;
-        boolean successful = true;
-        if (id.equals("hydro_shield")) {
-            SHIELDS.put(p.getUUID(), new Shield(p, world, source, now + ticks));
-            CanonVfx.emit(p,id,source.getCenter(),p.position(),CanonVfx.Phase.START,ticks);
+        if (flaskBacked) {
+            if (!CanonAuxItems.spendWaterFlaskCharge(p)) return false;
+            flaskPaid[0] = true;
         }
-        else if (id.equals("hydro_domain")) {
-            FLOWS.put(p.getUUID(), new Flow(p, world, source, targets.stream().map(Entity::getUUID).toList(), horizontal.normalize(), now + ticks));
-            CanonVfx.emit(p,id,source.getCenter(),targets.getFirst().position(),CanonVfx.Phase.START,ticks,id.equals("hydro_domain")?domainRadius(p):0);
+        boolean successful = true;
+        Vec3 visualOrigin = flaskBacked ? p.getEyePosition().add(0, -0.25, 0) : source.getCenter();
+        if (id.equals("hydro_shield")) {
+            SHIELDS.put(p.getUUID(), new Shield(p, world, source, flaskBacked, now + ticks));
+            CanonVfx.emit(p, id, visualOrigin, p.position(), CanonVfx.Phase.START, ticks, 0, flaskBacked);
+        } else if (id.equals("hydro_domain")) {
+            FLOWS.put(p.getUUID(), new Flow(p, world, source, flaskBacked, targets.stream().map(Entity::getUUID).toList(), horizontal.normalize(), now + ticks));
+            p.clearFire();
+            CanonVfx.emit(p, id, visualOrigin, targets.getFirst().position(), CanonVfx.Phase.START, ticks, domainRadius(p), flaskBacked);
         } else {
             LivingEntity target = targets.getFirst();
             Vec3 push = target.position().subtract(p.position()); push = new Vec3(push.x, 0, push.z);
             boolean hit = emission.attack(target); successful = hit;
-            if(hit) CanonVfx.emit(p,id,source.getCenter(),target.getBoundingBox().getCenter(),CanonVfx.Phase.HIT,12);
-            if (hit && push.lengthSqr() > 1e-8 && validSource(p, source) && eligible(p, target) && p.hasLineOfSight(target)) {
+            if (hit) CanonVfx.emit(p, id, visualOrigin, target.getBoundingBox().getCenter(), CanonVfx.Phase.HIT, 18, 0, flaskBacked);
+            if (hit && push.lengthSqr() > 1e-8 && (flaskBacked || validSource(p, source)) && directEligible(p, target)
+                    && p.hasLineOfSight(target) && !cn.academy.port.highpower.PlayerShieldArmor.holding(target)) {
                 push = push.normalize().scale(number(id, "horizontal_speed")); Vec3 previous = target.getDeltaMovement();
                 target.setDeltaMovement(push.x, Math.max(previous.y, .18), push.z);
                 target.hasImpulse = true; target.hurtMarked = true;
+                target.clearFire();
             }
-            waterLine(world, Vec3.atCenterOf(source), p.getEyePosition(), target.getBoundingBox().getCenter());
+            waterLine(world, visualOrigin, p.getEyePosition(), target.getBoundingBox().getCenter());
         }
         var state = AbilityStorage.get(p);
         if (successful && CATEGORY.equals(state.category) && state.learned(id)) { state.addExperience(id, .01); AbilityStorage.save(p); }
@@ -147,7 +159,6 @@ public final class CanonWaterSkills {
         return best;
     }
 
-    /** Select a real source using the server's own ray; no world block is removed or placed. */
     private static boolean selectSource(ServerPlayer p) {
         ServerLevel world = p.serverLevel(); Vec3 eye = p.getEyePosition(), look = ClassicRaytrace.direction(p);
         if (!finite(eye) || !finite(look) || !chunksLoaded(world, eye, eye.add(look.scale(SOURCE_RANGE)))
@@ -185,25 +196,34 @@ public final class CanonWaterSkills {
     }
 
     private static List<LivingEntity> whipTarget(ServerPlayer p) {
-        var hit = ClassicRaytrace.living(p, ATTACK_RANGE, ClipContext.Fluid.NONE);
-        if (!(hit instanceof EntityHitResult entityHit) || !(entityHit.getEntity() instanceof LivingEntity target)
-                || !eligible(p, target) || !p.hasLineOfSight(target)) return List.of();
+        LivingEntity target = CanonSkillsCombatA.aimed(p, ATTACK_RANGE);
+        if (target == null || !directEligible(p, target) || !p.hasLineOfSight(target)) return List.of();
         return List.of(target);
     }
 
-    private static double domainRadius(ServerPlayer p){return cn.academy.port.macro.MacroSkillRules.area("hydro_domain",AbilityStorage.get(p).exp("hydro_domain"),DOMAIN_RANGE);}
-    private static List<LivingEntity> domainTargets(ServerPlayer p) {
-        var world = p.serverLevel(); var at = p.position();
+    private static double domainRadius(ServerPlayer p) {
+        return cn.academy.port.macro.MacroSkillRules.area("hydro_domain", AbilityStorage.get(p).exp("hydro_domain"), DOMAIN_RANGE);
+    }
 
-        var candidates = world.getEntitiesOfClass(Mob.class, p.getBoundingBox().inflate(domainRadius(p)),
-                mob -> eligible(p, mob) && mob.isInWaterOrBubble());
-
-        candidates.sort(Comparator.comparing(Mob::getUUID)); var result = new ArrayList<LivingEntity>();
+    private static List<LivingEntity> domainTargets(ServerPlayer p, boolean flaskBacked) {
+        var world = p.serverLevel();
+        double r = domainRadius(p);
+        var candidates = world.getEntitiesOfClass(Mob.class, p.getBoundingBox().inflate(r),
+                mob -> eligible(p, mob) && (flaskBacked || mob.isInWaterOrBubble()));
+        candidates.sort(Comparator.comparing(Mob::getUUID));
+        var result = new ArrayList<LivingEntity>();
         for (Mob mob : candidates) {
             if (result.size() == MAX_TARGETS) break;
-            if (mob.distanceToSqr(p) <= domainRadius(p) * domainRadius(p) && p.hasLineOfSight(mob)) result.add(mob);
+            if (mob.distanceToSqr(p) <= r * r && p.hasLineOfSight(mob)) result.add(mob);
         }
         return List.copyOf(result);
+    }
+
+    private static boolean directEligible(ServerPlayer owner, LivingEntity target) {
+        if (target == null || !CanonTargetPolicy.directTarget(owner, target) || !target.isAlive() || target.isRemoved()
+                || target.isPassenger() || target.isVehicle() || target.isAlliedTo(owner) || owner.isAlliedTo(target)
+                || !finite(target.position()) || !finite(target.getDeltaMovement())) return false;
+        return HighPowerCombat.unsupportedReason(target).isEmpty();
     }
 
     private static boolean eligible(ServerPlayer owner, LivingEntity target) {
@@ -227,26 +247,32 @@ public final class CanonWaterSkills {
         }
         for (Shield shield : List.copyOf(SHIELDS.values())) {
             if (shield.owner.server != event.getServer()) continue;
-            if (!ongoing(shield.owner, shield.world, shield.source, "hydro_shield", shield.expires)) {
+            if (!ongoing(shield.owner, shield.world, shield.source, shield.flaskBacked, "hydro_shield", shield.expires)) {
                 endShield(shield); continue;
             }
             intercept(shield);
         }
         for (Flow flow : List.copyOf(FLOWS.values())) {
             if (flow.owner.server != event.getServer()) continue;
-            if (!ongoing(flow.owner, flow.world, flow.source, "hydro_domain", flow.expires)) {
+            if (!ongoing(flow.owner, flow.world, flow.source, flow.flaskBacked, "hydro_domain", flow.expires)) {
                 endFlow(flow); continue;
             }
+            long now = flow.world.getGameTime();
+            double r = domainRadius(flow.owner);
             for (UUID id : flow.targets) {
                 Entity entity = flow.world.getEntity(id);
                 if (!(entity instanceof LivingEntity target) || !eligible(flow.owner, target)
-                        || !target.isInWaterOrBubble() || target.distanceToSqr(flow.owner) > domainRadius(flow.owner) * domainRadius(flow.owner)
+                        || (!flow.flaskBacked && !target.isInWaterOrBubble()) || target.distanceToSqr(flow.owner) > r * r
                         || !flow.owner.hasLineOfSight(target)) continue;
                 Vec3 previous = target.getDeltaMovement();
                 double speed = number("hydro_domain", "horizontal_speed");
                 target.setDeltaMovement(flow.direction.x * speed, previous.y, flow.direction.z * speed);
                 target.hasImpulse = true; target.hurtMarked = true;
-                if (flow.world.getGameTime() % 5 == 0)
+                target.clearFire();
+                if (now % 15 == 0) {
+                    target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 35, 1, false, true), flow.owner);
+                }
+                if (now % 5 == 0)
                     flow.world.sendParticles(ParticleTypes.SPLASH, target.getX(), target.getY() + .4, target.getZ(), 4, .2, .1, .2, 0);
             }
         }
@@ -258,14 +284,14 @@ public final class CanonWaterSkills {
         if (arrows.size() > MAX_CANDIDATES) return;
         arrows.sort(Comparator.comparingDouble(arrow -> arrow.distanceToSqr(p)));
         if (arrows.isEmpty()) return; AbstractArrow arrow = arrows.getFirst(); Vec3 before = arrow.getDeltaMovement();
-        if (!ongoing(p, shield.world, shield.source, "hydro_shield", shield.expires) || !arrowEligible(p, arrow, center)
+        if (!ongoing(p, shield.world, shield.source, shield.flaskBacked, "hydro_shield", shield.expires) || !arrowEligible(p, arrow, center)
                 || !HighPowerCombat.spendShieldFraction(p, SHIELD_SHARE)) return;
-        // A paid interception is never retried or refunded if another callback changed the arrow.
         endShield(shield);
         if (!arrowEligible(p, arrow, center) || !arrow.getDeltaMovement().equals(before)) return;
         Vec3 away = arrow.position().subtract(center).normalize().scale(Math.min(3, Math.max(.35, before.length())));
         arrow.setDeltaMovement(away); arrow.hasImpulse = true; arrow.hurtMarked = true;
-        CanonVfx.emit(p,"hydro_shield",shield.source.getCenter(),arrow.position(),CanonVfx.Phase.HIT,10);
+        Vec3 from = shield.flaskBacked ? p.getEyePosition() : shield.source.getCenter();
+        CanonVfx.emit(p, "hydro_shield", from, arrow.position(), CanonVfx.Phase.HIT, 16, 0, shield.flaskBacked);
         shield.world.sendParticles(ParticleTypes.SPLASH, arrow.getX(), arrow.getY(), arrow.getZ(), 12, .2, .2, .2, 0);
     }
 
@@ -282,43 +308,48 @@ public final class CanonWaterSkills {
                 && velocity.lengthSqr() >= .001 && velocity.dot(radial) < 0;
     }
 
-    private static boolean ongoing(ServerPlayer p, ServerLevel world, BlockPos source, String skill, long expires) {
+    private static boolean ongoing(ServerPlayer p, ServerLevel world, BlockPos source, boolean flaskBacked, String skill, long expires) {
         if (p == null || p.connection == null || p.hasDisconnected() || p.isRemoved() || !p.isAlive() || p.isSpectator()
                 || !p.server.isSameThread() || p.server.getPlayerList().getPlayer(p.getUUID()) != p || p.serverLevel() != world
-                || world.getGameTime() >= expires || !validSource(p, source) || HighPowerCombat.unsupportedReason(p).isPresent()) return false;
+                || world.getGameTime() >= expires || (!flaskBacked && !validSource(p, source)) || HighPowerCombat.unsupportedReason(p).isPresent()) return false;
         var state = AbilityStorage.get(p);
         return CATEGORY.equals(state.category) && state.activated && state.overloadFine && !state.interfering
                 && state.learned(skill) && SkillCatalog.enabled(CATEGORY, skill);
     }
+
     private static void waterLine(ServerLevel world, Vec3 from, Vec3 hand, Vec3 to) {
         for (Vec3[] segment : new Vec3[][]{{from, hand}, {hand, to}}) {
-            Vec3 delta = segment[1].subtract(segment[0]); int count = Math.min(24, Math.max(1, (int)Math.ceil(delta.length() * 2)));
-            for (int i = 0; i <= count; i++) { Vec3 at = segment[0].add(delta.scale((double)i / count));
-                world.sendParticles(ParticleTypes.SPLASH, at.x, at.y, at.z, 1, .03, .03, .03, 0); }
+            Vec3 delta = segment[1].subtract(segment[0]); int count = Math.min(24, Math.max(1, (int) Math.ceil(delta.length() * 2)));
+            for (int i = 0; i <= count; i++) {
+                Vec3 at = segment[0].add(delta.scale((double) i / count));
+                world.sendParticles(ParticleTypes.SPLASH, at.x, at.y, at.z, 1, .03, .03, .03, 0);
+            }
         }
     }
     private static boolean finite(Vec3 p) { return p != null && Double.isFinite(p.x) && Double.isFinite(p.y) && Double.isFinite(p.z); }
     private static boolean chunksLoaded(ServerLevel level, Vec3 a, Vec3 b) {
         if (!finite(a) || !finite(b)) return false;
-        int minX = Math.floorDiv((int)Math.floor(Math.min(a.x,b.x)),16), maxX = Math.floorDiv((int)Math.floor(Math.max(a.x,b.x)),16);
-        int minZ = Math.floorDiv((int)Math.floor(Math.min(a.z,b.z)),16), maxZ = Math.floorDiv((int)Math.floor(Math.max(a.z,b.z)),16);
-        if ((long)maxX-minX > 8 || (long)maxZ-minZ > 8) return false;
-        for (int x=minX;x<=maxX;x++) for (int z=minZ;z<=maxZ;z++) if (!level.hasChunk(x,z)) return false;
+        int minX = Math.floorDiv((int) Math.floor(Math.min(a.x, b.x)), 16), maxX = Math.floorDiv((int) Math.floor(Math.max(a.x, b.x)), 16);
+        int minZ = Math.floorDiv((int) Math.floor(Math.min(a.z, b.z)), 16), maxZ = Math.floorDiv((int) Math.floor(Math.max(a.z, b.z)), 16);
+        if ((long) maxX - minX > 8 || (long) maxZ - minZ > 8) return false;
+        for (int x = minX; x <= maxX; x++) for (int z = minZ; z <= maxZ; z++) if (!level.hasChunk(x, z)) return false;
         return true;
     }
     private static void endShield(Shield shield) {
-        if(SHIELDS.remove(shield.owner.getUUID(),shield)) CanonVfx.emit(shield.owner,"hydro_shield",shield.source.getCenter(),shield.owner.position(),CanonVfx.Phase.END,8);
+        if (SHIELDS.remove(shield.owner.getUUID(), shield))
+            CanonVfx.emit(shield.owner, "hydro_shield", shield.flaskBacked ? shield.owner.getEyePosition() : shield.source.getCenter(), shield.owner.position(), CanonVfx.Phase.END, 8);
     }
     private static void endFlow(Flow flow) {
-        if(FLOWS.remove(flow.owner.getUUID(),flow)) CanonVfx.emit(flow.owner,"hydro_domain",flow.source.getCenter(),flow.owner.position(),CanonVfx.Phase.END,8);
+        if (FLOWS.remove(flow.owner.getUUID(), flow))
+            CanonVfx.emit(flow.owner, "hydro_domain", flow.flaskBacked ? flow.owner.getEyePosition() : flow.source.getCenter(), flow.owner.position(), CanonVfx.Phase.END, 8);
     }
-    private static void remove(ServerPlayer p) { var s=SHIELDS.get(p.getUUID());if(s!=null)endShield(s);var f=FLOWS.get(p.getUUID());if(f!=null)endFlow(f);SELECTIONS.remove(p.getUUID()); }
+    private static void remove(ServerPlayer p) { var s = SHIELDS.get(p.getUUID()); if (s != null) endShield(s); var f = FLOWS.get(p.getUUID()); if (f != null) endFlow(f); SELECTIONS.remove(p.getUUID()); }
     @SubscribeEvent public static void logout(PlayerEvent.PlayerLoggedOutEvent e) { if (e.getEntity() instanceof ServerPlayer p) remove(p); }
     @SubscribeEvent public static void clone(PlayerEvent.Clone e) { if (e.getOriginal() instanceof ServerPlayer p) remove(p); }
     @SubscribeEvent public static void dimension(PlayerEvent.PlayerChangedDimensionEvent e) { if (e.getEntity() instanceof ServerPlayer p) remove(p); }
     @SubscribeEvent public static void stop(ServerStoppedEvent e) {
-        for(var s:List.copyOf(SHIELDS.values()))if(s.owner.server==e.getServer())endShield(s);
-        for(var f:List.copyOf(FLOWS.values()))if(f.owner.server==e.getServer())endFlow(f);
+        for (var s : List.copyOf(SHIELDS.values())) if (s.owner.server == e.getServer()) endShield(s);
+        for (var f : List.copyOf(FLOWS.values())) if (f.owner.server == e.getServer()) endFlow(f);
         SELECTIONS.values().removeIf(s -> s.owner.server == e.getServer());
     }
 }
