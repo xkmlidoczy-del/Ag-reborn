@@ -341,7 +341,7 @@ public final class AscalonService {
             e.setCanceled(true);
             p.deathTime = 0;
             p.hurtTime = 0;
-            p.setHealth(p.getMaxHealth());
+            WristService.reviveAtFullHealth(p);
         }
     }
 
@@ -418,7 +418,6 @@ public final class AscalonService {
         state.siphonCharge = Math.max(state.siphonCharge, 100f);
         state.revision++;
         applyAttributes(player, true);
-        player.setHealth(player.getMaxHealth());
         player.setAbsorptionAmount(Math.max(player.getAbsorptionAmount(), 40f));
         player.clearFire();
         player.resetFallDistance();
@@ -573,7 +572,7 @@ public final class AscalonService {
         p.resetFallDistance();
         p.deathTime = 0;
         p.hurtTime = 0;
-        if (p.getHealth() < p.getMaxHealth()) p.setHealth(p.getMaxHealth());
+        if (p.getHealth() < p.getMaxHealth()) p.heal(p.getMaxHealth() - p.getHealth());
         if (state.armored && p.getAbsorptionAmount() < 40f && now % 20 == 0) {
             p.setAbsorptionAmount(40f);
         }
@@ -749,7 +748,7 @@ public final class AscalonService {
 
                 for (LivingEntity target : trapped) {
                     double d = target.position().distanceTo(c);
-                    if (d > r * .68) {
+                    if (d > r * .68 && !cn.academy.port.highpower.PlayerShieldArmor.holding(target)) {
                         Vec3 pullIn = c.add(0, .25, 0).subtract(target.position()).normalize().scale(.68);
                         target.setDeltaMovement(pullIn);
                         target.hurtMarked = true;
@@ -774,20 +773,9 @@ public final class AscalonService {
                     p.getEyePosition(), target.getEyePosition());
             return false;
         }
-        int previousImmunity = target.invulnerableTime;
-        target.invulnerableTime = 0;
-        float hpBefore = target.getHealth();
-        float absorptionBefore = target.getAbsorptionAmount();
-        if (!target.hurt(p.damageSources().playerAttack(p), amount)) {
-            target.invulnerableTime = previousImmunity;
-            return false;
-        }
+        if (!OmnitrixDamage.hit(p, target, amount, executeAuthority)) return false;
         var state = Omnitrix.ascalon(p);
         float drained = 0f;
-        if (absorptionBefore > 0f) {
-            target.setAbsorptionAmount(0f);
-            drained += 10f;
-        }
         for (var eff : List.copyOf(target.getActiveEffects())) {
             if (eff.getEffect().value().isBeneficial()) {
                 target.removeEffect(eff.getEffect());
@@ -799,22 +787,6 @@ public final class AscalonService {
         target.hurtTime = 0;
         if (knock > 0 && knockDir.lengthSqr() > 1e-6) {
             target.knockback(knock, -knockDir.x, -knockDir.z);
-        }
-        if (target.isAlive() && target.getHealth() > 0f) {
-            target.invulnerableTime = 0;
-            target.hurt(p.damageSources().fellOutOfWorld(), amount);
-        }
-        if (target.isAlive() && target.getHealth() > 0f) {
-            float sever = executeAuthority ? target.getHealth() + target.getMaxHealth()
-                    : Math.max(amount * .25f, target.getMaxHealth() * .38f);
-            if (hpBefore - target.getHealth() < sever * .5f) {
-                target.setLastHurtByPlayer(p);
-                float nextHp = Math.max(0f, target.getHealth() - sever);
-                target.setHealth(nextHp);
-                if (nextHp <= 0f && target.isAlive()) {
-                    target.die(p.damageSources().playerAttack(p));
-                }
-            }
         }
         return true;
     }
@@ -1130,8 +1102,10 @@ public final class AscalonService {
             Vec3 pushOut = target.position().subtract(center);
             if (fundamentalCleave(p, target, 115_000_000f, false, pushOut, 2.25)) {
                 hitAny = true;
-                target.push(0, .55, 0);
-                target.hurtMarked = true;
+                if (!cn.academy.port.highpower.PlayerShieldArmor.holding(target)) {
+                    target.push(0, .55, 0);
+                    target.hurtMarked = true;
+                }
             }
         }
         if (hitAny) state.addCharge(18f);
@@ -1232,7 +1206,7 @@ public final class AscalonService {
             for (var eff : List.copyOf(ally.getActiveEffects())) {
                 if (!eff.getEffect().value().isBeneficial()) ally.removeEffect(eff.getEffect());
             }
-            ally.setHealth(ally.getMaxHealth());
+            ally.heal(ally.getMaxHealth() - ally.getHealth());
             ally.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 300, 3, false, false));
             ally.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 600, 9, false, false));
         }

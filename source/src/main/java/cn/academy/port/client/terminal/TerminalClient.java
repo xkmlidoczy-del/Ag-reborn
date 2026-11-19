@@ -65,16 +65,18 @@ public final class TerminalClient {
             case "skill_tree" -> mc.setScreen(new ClassicDeveloperScreen(true));
             case "media_player" -> cn.academy.port.client.terminal.media.ClassicMediaClient.openScreen();
             case "urban_communication" -> mc.setScreen(new UrbanStoryScreen(data));
+            case "city_map" -> {if(terminal!=null){terminal.release();terminal=null;} CityMap.open();}
             case "freq_transmitter" -> {if(terminal!=null){terminal.release();terminal=null;}frequency=new FrequencyTransmitter();}
             default -> {}
         }
     }
-    public static void clear(){if(terminal!=null)terminal.release();terminal=null;if(frequency!=null)frequency.close();frequency=null;installation=-1;if(installDrawing!=null)installDrawing.release();installDrawing=null;state=new TerminalState();KEY.replace(physicalDown());}
+    public static void clear(){CityMap.clear();if(terminal!=null)terminal.release();terminal=null;if(frequency!=null)frequency.close();frequency=null;installation=-1;if(installDrawing!=null)installDrawing.release();installDrawing=null;state=new TerminalState();KEY.replace(physicalDown());}
     private static void session(){Minecraft mc=Minecraft.getInstance();if(SESSION.synchronize(mc.level,mc.player))clear();}
     static long gameTime(){return CLOCK.update(Util.getMillis(),Minecraft.getInstance().isPaused());}
     @SubscribeEvent public static void tick(ClientTickEvent.Post event){
         session();Minecraft mc=Minecraft.getInstance();boolean allowed=mc.player!=null&&mc.level!=null&&mc.screen==null&&frequency==null;
         if(KEY.update(physicalDown(),allowed))openTerminal();while(OPEN.consumeClick()){}
+        CityMap.tick(mc);
         long now=gameTime();if(frequency!=null&&frequency.tick(now)){frequency.close();frequency=null;}
     }
     private static boolean physicalDown(){var mc=Minecraft.getInstance();var key=OPEN.getKey();if(key.getType()==com.mojang.blaze3d.platform.InputConstants.Type.MOUSE)return key.getValue()>=0&&GLFW.glfwGetMouseButton(mc.getWindow().getWindow(),key.getValue())==GLFW.GLFW_PRESS;if(key.getType()==com.mojang.blaze3d.platform.InputConstants.Type.KEYSYM)return key.getValue()>=0&&com.mojang.blaze3d.platform.InputConstants.isKeyDown(mc.getWindow().getWindow(),key.getValue());return OPEN.isDown();}
@@ -95,6 +97,7 @@ public final class TerminalClient {
     @SubscribeEvent public static void interaction(InputEvent.InteractionKeyMappingTriggered event){if((terminal!=null&&event.isAttack())||frequency!=null){event.setCanceled(true);event.setSwingHand(false);}}
     @SubscribeEvent public static void render(RenderGuiEvent.Post event){
         session();Minecraft mc=Minecraft.getInstance();if(mc.player==null||mc.level==null)return;
+        CityMap.renderHud(event.getGuiGraphics(), mc);
         if(terminal!=null)terminal.render(event.getGuiGraphics());
         if(frequency!=null)frequency.render(event.getGuiGraphics());
         if(installation>=0||installation==-2)renderInstall(event.getGuiGraphics());

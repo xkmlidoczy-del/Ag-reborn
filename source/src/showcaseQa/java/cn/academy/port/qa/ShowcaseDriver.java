@@ -139,6 +139,22 @@ public final class ShowcaseDriver {
         int colon = step.indexOf(':');
         String op = colon < 0 ? step : step.substring(0, colon), arg = colon < 0 ? "" : step.substring(colon + 1);
         switch (op) {
+            case "citymap-install" -> {
+                var server=mc.getSingleplayerServer(); var id=mc.player.getUUID();
+                server.submit(() -> {var p=server.getPlayerList().getPlayer(id); var state=cn.academy.port.terminal.TerminalStorage.get(p);
+                    state.installTerminal(); cn.academy.port.terminal.TerminalStorage.save(p);
+                    cn.academy.port.terminal.TerminalNetwork.sync(p); }).join(); wait=20;
+            }
+            case "citymap-colors" -> {
+                try { var c=Class.forName("cn.academy.port.client.terminal.CityMap"); var f=c.getDeclaredField("colors");f.setAccessible(true);
+                    int[] colors=(int[])f.get(null); long known=java.util.Arrays.stream(colors).filter(v->v!=0xff1b2930).count();
+                    var en=c.getDeclaredField("enabled"); en.setAccessible(true); var in=c.getDeclaredField("initialized");in.setAccessible(true);var cur=c.getDeclaredField("cursor");cur.setAccessible(true);
+                    var p=mc.player.blockPosition(); var y=mc.level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,p.getX(),p.getZ());
+                    LOG.info("QA_CITY_MAP_KNOWN {} enabled={} initialized={} cursor={} paused={} chunk={} motionY={} surfaceY={} pos={} below={} color={}",known,en.get(null),in.get(null),cur.get(null),mc.isPaused(),mc.level.hasChunk(p.getX()>>4,p.getZ()>>4),y,mc.level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.WORLD_SURFACE,p.getX(),p.getZ()),p,mc.level.getBlockState(p.below()),mc.level.getBlockState(p.below()).getMapColor(mc.level,p.below()).col);
+                } catch (ReflectiveOperationException e){throw new IllegalStateException(e);}
+            }
+            case "citymap-open" -> { cn.academy.port.terminal.TerminalNetwork.requestApp("city_map"); wait=30; }
+            case "citymap-check" -> { if(mc.screen==null || !mc.screen.getClass().getName().endsWith("CityMap$MapScreen"))throw new IllegalStateException("City map did not open through network"); LOG.info("QA_CITY_MAP_OPENED"); }
             case "urban-install" -> {
                 var server=mc.getSingleplayerServer(); var id=mc.player.getUUID();
                 if(server==null)throw new IllegalStateException("Urban UI fixture needs integrated server");

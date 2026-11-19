@@ -457,5 +457,9 @@ public class FaunaAnimal extends Animal implements GeoEntity {
     }
     public static final class Swimmer extends FaunaAnimal {
         public Swimmer(EntityType<? extends FaunaAnimal> t,Level l){super(t,l);}
+        @Override public boolean checkSpawnObstruction(LevelReader world) {
+            // The placement predicate already requires a clear, sufficiently deep water volume.
+            return world.isUnobstructed(this);
+        }
     }
 }

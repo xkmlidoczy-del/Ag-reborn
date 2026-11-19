@@ -12,6 +12,8 @@ import net.minecraft.gametest.framework.GameTestGenerator;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.gametest.framework.TestFunction;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.GameRules;
@@ -61,17 +63,23 @@ public final class TitanImportRuntimeTests {
         }
         return result;
     }
+    private static void provisionTarget(LivingEntity target) {
+        target.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20_000_000);
+        target.setHealth(target.getMaxHealth());
+    }
+
     private static void profileAndAbilities(GameTestHelper helper,String id) {
         TitanEntity titan=helper.spawn(TitanBlocks.TYPES.get(id).get(),20,3,40);
         titan.setNoAi(true);titan.setNoGravity(true);
         IronGolem victim=helper.spawn(EntityType.IRON_GOLEM,40,3,40);
         victim.setNoAi(true);victim.setNoGravity(true);
+        provisionTarget(victim);
         var profile=TitanProfiles.get(id);
-        helper.assertTrue(titan.getMaxHealth()==profile.health(),id+" has wrong health");
+        helper.assertTrue(titan.getMaxHealth()==profile.encounterHealth().floatValue(),id+" has wrong health");
         helper.assertTrue(titan.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ARMOR)==profile.armor(),id+" has wrong armor");
         helper.assertTrue(cn.academy.port.highpower.HighPowerCombat.level(titan)==profile.tier(),"fixed species tier");
-        helper.assertTrue(new java.math.BigDecimal(cn.academy.port.highpower.HighPowerCombat.maxHealthText(titan))
-                .compareTo(profile.encounterHealth())==0,"fixed species pool");
+        helper.assertTrue(Float.parseFloat(cn.academy.port.highpower.HighPowerCombat.maxHealthText(titan))
+                ==titan.getMaxHealth(),"boss attributes report the actual native float pool");
         for(boolean second:new boolean[]{false,true}) {
             var ability=second?profile.second():profile.first();
             Vec3 aim=titan.position().add(0,1,23);
@@ -82,7 +90,7 @@ public final class TitanImportRuntimeTests {
             int hits=TitanCombat.resolve(helper.getLevel(),titan,ability,titan.position(),aim);
             helper.assertTrue(hits>0 && victim.getHealth()<victim.getMaxHealth(),id+" skill contact "+ability.name()+" "+zone);
         }
-        helper.assertTrue(titan.hurt(helper.getLevel().damageSources().genericKill(),5000),id+" lethal damage rejected");
+        helper.assertTrue(titan.hurt(helper.getLevel().damageSources().genericKill(),titan.getMaxHealth()),id+" lethal damage rejected");
         helper.assertTrue(!helper.getLevel().getEntitiesOfClass(ItemEntity.class,titan.getBoundingBox().inflate(3)).isEmpty(),id+" loot produced no items");
         titan.discard();victim.discard();helper.succeed();
     }
@@ -113,6 +121,7 @@ public final class TitanImportRuntimeTests {
         titan.setNoGravity(true);titan.setPersistenceRequired();
         IronGolem victim=helper.spawn(EntityType.IRON_GOLEM,38,3,40);
         victim.setNoAi(true);victim.setNoGravity(true);
+        provisionTarget(victim);
         titan.setTarget(victim);
         helper.runAtTickTime(120,()-> {
             helper.assertTrue(victim.getHealth()<victim.getMaxHealth(),"server AI never damaged target");
@@ -205,7 +214,7 @@ public final class TitanImportRuntimeTests {
         titan.setNoGravity(true);titan.setPersistenceRequired();
         double distance=id.equals("ironback")?22:id.equals("dune_scorpion")?23:Math.max(7,titan.getBbWidth()*.5+3);
         IronGolem target=helper.spawn(EntityType.IRON_GOLEM,(float)(20+distance),20f,40f);
-        target.setNoAi(true);target.setNoGravity(true);target.setHealth(target.getMaxHealth());
+        target.setNoAi(true);target.setNoGravity(true);provisionTarget(target);
         try {
             for(String name:new String[]{"firstCooldown","secondCooldown"}) {
                 var field=TitanEntity.class.getDeclaredField(name);field.setAccessible(true);field.setInt(titan,1000);
@@ -213,7 +222,7 @@ public final class TitanImportRuntimeTests {
             var cooldown=TitanEntity.class.getDeclaredField("meleeCooldown");cooldown.setAccessible(true);cooldown.setInt(titan,0);
         } catch(ReflectiveOperationException e){throw new IllegalStateException(e);}
         Vec3 start=titan.position();titan.setTarget(target);
-        var contact=helper.spawn(EntityType.IRON_GOLEM,52,30,55);contact.setNoAi(true);contact.setNoGravity(true);
+        var contact=helper.spawn(EntityType.IRON_GOLEM,52,30,55);contact.setNoAi(true);contact.setNoGravity(true);provisionTarget(contact);
         double secondDistance=switch(id) {
             case "lava_rex" -> 18;
             case "frost_bastion" -> 14;
@@ -252,7 +261,7 @@ public final class TitanImportRuntimeTests {
         TitanEntity titan=helper.spawn(TitanBlocks.TYPES.get(id).get(),20,20,40);
         titan.setNoGravity(true);titan.setPersistenceRequired();
         IronGolem target=helper.spawn(EntityType.IRON_GOLEM,(float)(20+distance),20f,40f);
-        target.setNoAi(true);target.setNoGravity(true);target.setHealth(target.getMaxHealth());
+        target.setNoAi(true);target.setNoGravity(true);provisionTarget(target);
         try {
             for(String name:new String[]{"firstCooldown","secondCooldown"}) {
                 var field=TitanEntity.class.getDeclaredField(name);field.setAccessible(true);field.setInt(titan,1000);
@@ -429,7 +438,7 @@ public final class TitanImportRuntimeTests {
     public static void lootActuallyDrops(GameTestHelper helper) {
         TitanEntity titan=helper.spawn(TitanBlocks.TYPES.get("lava_rex").get(),20,12,40);
         titan.setNoAi(true);titan.setNoGravity(true);
-        helper.assertTrue(titan.hurt(helper.getLevel().damageSources().genericKill(),5000),"lethal damage rejected");
+        helper.assertTrue(titan.hurt(helper.getLevel().damageSources().genericKill(),titan.getMaxHealth()),"lethal damage rejected");
         helper.assertTrue(!helper.getLevel().getEntitiesOfClass(ItemEntity.class,titan.getBoundingBox().inflate(3)).isEmpty(),"loot table yielded no items");
         titan.discard();helper.succeed();
     }

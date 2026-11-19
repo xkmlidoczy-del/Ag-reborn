@@ -772,6 +772,7 @@ public final class CanonExpansionCombatA {
         return true;
     }
     private static boolean safeLivingMotion(Context c,LivingEntity target,Vec3 impulse) {
+        if (cn.academy.port.highpower.PlayerShieldArmor.holding(target)) return false;
         AABB moved=target.getBoundingBox().move(impulse.scale(.5)).deflate(1e-7);
         if(!c.world.getWorldBorder().isWithinBounds(moved) || !c.world.noCollision(target,moved))return false;
         for(BlockPos at:BlockPos.betweenClosed(BlockPos.containing(moved.minX,moved.minY,moved.minZ),

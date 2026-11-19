@@ -1,8 +1,8 @@
 package cn.academy.port.highpower.mixin;
 
 import cn.academy.port.highpower.HighPowerCombat;
+import cn.academy.port.highpower.CapBreak;
 import cn.academy.port.highpower.NativeCooldownAccess;
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -11,7 +11,6 @@ import java.util.Stack;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.common.damagesource.DamageContainer;
-import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -30,7 +29,7 @@ abstract class LivingEntityCooldownMixin implements NativeCooldownAccess {
         HighPowerCombat.beginNativeHurt(entity, source, lastHurt);
         boolean completed = false;
         try {
-            boolean accepted = nativeHurt.call(source, amount);
+            boolean accepted = nativeHurt.call(source, CapBreak.atNativeEntry(entity, source, amount));
             completed = true;
             return accepted;
         } finally {
@@ -46,13 +45,6 @@ abstract class LivingEntityCooldownMixin implements NativeCooldownAccess {
         AnchorDamagePostProof.nativePost(entity, container, original);
     }
 
-    @ModifyExpressionValue(method = "hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z",
-            at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/LivingEntity;lastHurt:F", opcode = Opcodes.GETFIELD, ordinal = 0), require = 1, expect = 1, allow = 1)
-    private float academy$compareLogicalCooldown(float nativePrevious, DamageSource source, float current) {
-        return HighPowerCombat.nativeCooldownComparison((LivingEntity)(Object)this, source, current, nativePrevious,
-                damageContainers.isEmpty() ? null : damageContainers.peek());
-    }
-
     @Inject(method = "actuallyHurt(Lnet/minecraft/world/damagesource/DamageSource;F)V",
             at = @At(value = "INVOKE", target = "Lnet/neoforged/neoforge/common/damagesource/DamageContainer;setReduction(Lnet/neoforged/neoforge/common/damagesource/DamageContainer$Reduction;F)V",
                     ordinal = 1, shift = At.Shift.AFTER), cancellable = true, require = 1, expect = 1, allow = 1)
@@ -62,7 +54,7 @@ abstract class LivingEntityCooldownMixin implements NativeCooldownAccess {
 
     @Override
     public boolean academy$vetoClosedDamageCommit(DamageSource source) {
-        return HighPowerCombat.vetoClosedDamageCommit((LivingEntity)(Object)this, source,
+        return HighPowerCombat.settleNativeDamage((LivingEntity)(Object)this, source,
                 damageContainers.isEmpty() ? null : damageContainers.peek());
     }
     @Override

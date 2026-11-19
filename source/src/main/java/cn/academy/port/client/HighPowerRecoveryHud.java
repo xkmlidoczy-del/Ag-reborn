@@ -138,9 +138,16 @@ public final class HighPowerRecoveryHud {
         return chosen == null ? null : chosen.box();
     }
     /** Read-only bounds for the relay panel. Reserve the normal position even while its snapshot is absent. */
-    static HighPowerRecoveryHudModel.Box relayReservedBox(int width, int height) {
+    public static HighPowerRecoveryHudModel.Box relayReservedBox(int width, int height) {
         return layout(Minecraft.getInstance(), width, height);
     }
+    public static String compactNativeHealth(float health) {
+        if (!Float.isFinite(health) || health <= 0) return "0";
+        var decimal = new java.math.BigDecimal(Float.toString(health))
+                .min(cn.academy.port.highpower.core.CombatAmounts.CAP);
+        return HighPowerRecoveryHudModel.compact(decimal.stripTrailingZeros().toPlainString());
+    }
+
     /** Queried only by the pinned client renderHearts adapter. Never hides absorption, air, armor or vehicle layers. */
     public static boolean replacesNativeHearts(Player cameraPlayer) {
         Minecraft mc = Minecraft.getInstance();
@@ -176,7 +183,7 @@ public final class HighPowerRecoveryHud {
             var rows = budgetRows.rows();
             int panelHeight = rows.height();
             // Read-only instrument: one quiet dark surface and a thin category accent.
-            panel(graphics, box.width(), panelHeight, accent.edge());
+            panel(graphics, paintWidth, panelHeight, accent.edge());
             boolean zeroGap = values.zeroGapVisible();
             boolean curtain = values.curtainVisible();
             boolean domain = values.domainVisible() || curtain || zeroGap;
@@ -307,9 +314,9 @@ public final class HighPowerRecoveryHud {
         }
     }
     private static void panel(GuiGraphics graphics, int width, int height, int accent) {
-        graphics.fill(0, 0, width, height, 0xb0081016);
+        graphics.fill(0, 0, width, height, 0xd00b151c);
         graphics.fill(0, 0, 1, height, accent);
-        graphics.fill(1, 0, width, 1, 0x305e7684);
+        graphics.fill(1, 0, width, 1, 0x705e7684);
     }
     private static void bar(GuiGraphics graphics, int x, int y, int width, int filled, int color) {
         graphics.fill(x, y, x + width, y + 1, 0x60495660);

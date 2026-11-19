@@ -27,7 +27,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import org.joml.Vector3f;
 
@@ -95,11 +94,6 @@ public final class EsperShields {
             if(h.player()==player&&h.source()==source)
                 PENDING.set(i,new Hit(h.player(),h.level(),h.category(),h.attacker(),h.direct(),h.broke(),h.source(),true));
         }
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void knockback(LivingKnockBackEvent event) {
-        if (!event.isCanceled() && holding(event.getEntity())) event.setCanceled(true);
     }
 
     /** Electromasters drink lightning into the barrier. */

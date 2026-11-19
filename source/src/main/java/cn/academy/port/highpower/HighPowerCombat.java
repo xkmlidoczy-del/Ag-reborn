@@ -60,37 +60,14 @@ import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 
-/**
- * Server-owned exact HP, under the named reviewed VanillaCombatContract only.
- * Native hurt runs once for acceptance, shield/cooldown, durability, absorption and
- * death/totems. Known vanilla armor/toughness, Resistance and basic Protection are
- * computed on the exact raw residual; arbitrary native fractions are NEVER scaled.
- * Our Pre substitutes a bounded already-mitigated witness before native absorption,
- * allowing its real pool to be consumed once even after a tiny cooldown residual.
- *
- * Cancellation and zero protection remain authoritative. Unknown positive incoming,
- * Pre or reduction changes refuse this exact transaction, not ordinary combat.
- * A locked runtime/data/handler contract is required: matching observed values does
- * not prove absence of invisible, compensating or injected handlers. Unsupported
- * scopes need a separately reviewed adapter; bosses are not integrated.
- * A pinned comparison-only native seam orders active cooldown hits by logical raw
- * amounts; its existing reduction stage installs the true residual before armor.
- * No cooldown timer/lastHurt field reset, rank proxy or fake hit is used.
- * Durability/statistics remain bounded native
- * witnesses, not exact raw-scale simulation. Nonterminating armor math uses the
- * core's documented 80-digit precision. Native side effects cannot be rolled back.
- *
- * Post is after native HP subtraction but before the enclosing totem/death check.
- * Only the enrolled entity's normalized health adapter is synchronized here. No
- * global max-health edit, bypass source, synthetic death or generic forcefield.
- */
+/** Academy growth and shield ownership. Minecraft owns the current health and damage transaction. */
 @EventBusSubscriber(modid = "academy")
 public final class HighPowerCombat {
     public static final String DATA_KEY = "academy:highpower_combat_v1";
     public static final float MAX_NATIVE_WITNESS = 1_000_000F;
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final MathContext RATIO_CONTEXT = MathContext.DECIMAL128;
-    private static final String PENDING_LETHAL_HEALTH = "pendingLethalHealth";
+    private static final String NATIVE_VITALS = "nativeVitals";
     private static final String CONTRACT = "adapterContract";
     private static final String GROWTH_CURVE = "growthCurve";
     private static final String GROWTH_POSITION = "growthPosition";
@@ -114,15 +91,13 @@ public final class HighPowerCombat {
     private static final Map<ServerPlayer, RemoteScatterRelay.EmissionPermit> REMOTE_SCATTER_RELAY_ATTACKS = new IdentityHashMap<>();
     /** NEW431's empty-snapshot hammer never borrows another vector emission's entrance. */
     private static final Map<ServerPlayer, TrajectoryReturn.AirHammerPermit> TRAJECTORY_RETURN_AIR_ATTACKS = new IdentityHashMap<>();
-    private static final String[] FIELDS = {"version", "health", "maxHealth", "shield", "maxShield", "shieldEnabled"};
-    private static final Map<LivingEntity, ExactCombatState> LETHAL = new IdentityHashMap<>();
-    private static final Map<LivingEntity, LivingDeathEvent> DEATHS = new IdentityHashMap<>();
-    private static final Map<LivingEntity, List<LivingHealEvent>> HEALS = new IdentityHashMap<>();
 
     private HighPowerCombat() {}
 
-    /** Exact class checks also refuse subclasses that replace vanilla damage methods. */
-    public static boolean supported(LivingEntity entity) { return VanillaCombatContract.supportedClass(entity); }
+    public static boolean supported(LivingEntity entity) {
+        return entity != null && entity.getAttribute(Attributes.MAX_HEALTH) != null;
+    }
+
     /** Hostile targets for the classic controllers and their damage permits: any mod's hostile mob (vanilla Monster is an Enemy too),
      * or a tagged training dummy. Used to be Monster only, which refused slimes, ghasts, phantoms, modded Enemy mobs and dummies. */
     public static boolean hostileTarget(LivingEntity entity) {
@@ -131,25 +106,15 @@ public final class HighPowerCombat {
     }
 
     public static boolean needsContractApproval(LivingEntity entity) {
-        return enabled(entity) && !VanillaCombatContract.ID.equals(tag(entity).getString(CONTRACT));
+        return false;
     }
 
-    /** Fresh entities can be enrolled; old ledgers need explicit approval without refilling. */
     public static Optional<String> unsupportedReason(LivingEntity entity) {
-        var reason = VanillaCombatContract.unsupportedReason(entity);
-        if (reason.isPresent()) return reason;
-        if (entity instanceof net.minecraft.world.entity.player.Player
-                && !(entity instanceof NativeCooldownAccess.PlayerDamageCommit))
-            return Optional.of("The reviewed Player damage-commit seam is unavailable; ordinary combat remains active");
-        if (entity.getPersistentData().contains(DATA_KEY) && !enabled(entity)) return Optional.of("The saved high-power ledger is invalid");
-        return needsContractApproval(entity) ? Optional.of("This older ledger needs explicit vanilla damage-contract approval") : Optional.empty();
+        return supported(entity) ? Optional.empty() : Optional.of("Missing health attribute");
     }
 
     public static boolean approveVanillaContract(LivingEntity entity) {
-        if (!serverThread(entity) || !enabled(entity) || VanillaCombatContract.unsupportedReason(entity).isPresent()) return false;
-        tag(entity).putString(CONTRACT, VanillaCombatContract.ID);
-        HISTORY.remove(entity); // No history is invented for a pre-approval cooldown.
-        return true;
+        return serverThread(entity) && enabled(entity);
     }
 
     /** Highest server-certified capacity coordinate; legacy ledgers retain their exact integer anchor. */
@@ -276,7 +241,6 @@ public final class HighPowerCombat {
         var ability = AbilityStorage.get(player);
         if (!enabled(player)) return enrollRank(player, level, completion);
         if (!canChangeGrowth(player)) return false;
-        flushRecovery(player);
         var before = read(player).orElseThrow();
         if (before.isDead()) return false;
         BigDecimal floor = BigDecimal.valueOf(level);
@@ -312,8 +276,7 @@ public final class HighPowerCombat {
         GROWTH_VALIDATION.remove(player);
         PENDING_GROWTH.remove(player);
         completion.run();
-        HighPowerNaturalRecovery.capacityChanged(player, before, after);
-        synchronizeAdapter(player, after);
+        applyNativeVitals(player, after);
         HighPowerGrowth.invalidate(player);
         notifications.run();
         return true;
@@ -328,7 +291,7 @@ public final class HighPowerCombat {
         write(player, initial);
         completion.run();
         HighPowerActiveGrowth.reset(player, BigDecimal.valueOf(level));
-        synchronizeAdapter(player, initial);
+        applyNativeVitals(player, initial);
         HighPowerGrowth.invalidate(player);
         HighPowerResources.initializeBudget(player);
         return true;
@@ -342,7 +305,9 @@ public final class HighPowerCombat {
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void repairAuthenticatedRank(PlayerEvent.PlayerLoggedInEvent event) {
-        if (!(event.getEntity() instanceof ServerPlayer player) || !enabled(player)) return;
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        HighPowerCurveMigration.migrate(player);
+        if (!enabled(player)) return;
         var ability = AbilityStorage.get(player);
         if (!HighPowerCategories.active(ability) || ability.level != earnedLevel(player)) return;
         BigDecimal floor = BigDecimal.valueOf(ability.level);
@@ -364,7 +329,6 @@ public final class HighPowerCombat {
         if (!HighPowerCategories.active(ability)) return false;
         double progress = ability.levelProgress(SkillCatalog.levelSkillCount(ability));
         if (!Double.isFinite(progress) || progress < 0) return false;
-        flushRecovery(player);
         var previous = read(player);
         if (previous.isEmpty() || previous.get().isDead()) return false;
         var capacity = ContinuousHighPowerGrowth.sample(ability.level, progress);
@@ -381,8 +345,7 @@ public final class HighPowerCombat {
         } catch (IllegalArgumentException | IllegalStateException invalid) { return false; }
         GROWTH_VALIDATION.remove(player);
         PENDING_GROWTH.remove(player);
-        HighPowerNaturalRecovery.capacityChanged(player, before, next);
-        synchronizeAdapter(player, next);
+        applyNativeVitals(player, next);
         HighPowerGrowth.invalidate(player);
         return true;
     }
@@ -409,7 +372,6 @@ public final class HighPowerCombat {
 
     private static boolean applyEarnedPosition(ServerPlayer player, BigDecimal requested) {
         if (!canChangeGrowth(player)) return false;
-        flushRecovery(player);
         var previous = read(player);
         if (previous.isEmpty() || previous.get().isDead()) return false;
         BigDecimal position = ContinuousHighPowerGrowth.requirePosition(requested);
@@ -430,8 +392,7 @@ public final class HighPowerCombat {
                     GrowthKind.EARNED, position);
             commitResources(player, next, null, null, growth);
         } catch (IllegalArgumentException | IllegalStateException invalid) { return false; }
-        HighPowerNaturalRecovery.capacityChanged(player, before, next);
-        synchronizeAdapter(player, next);
+        applyNativeVitals(player, next);
         return true;
     }
 
@@ -453,33 +414,15 @@ public final class HighPowerCombat {
         entity.getPersistentData().put(DATA_KEY, tag);
         ExactCombatState state = ExactCombatState.full(preset).withShieldEnabled(false);
         write(entity, state);
-        synchronizeAdapter(entity, state);
+        applyNativeVitals(entity, state);
         if (entity instanceof ServerPlayer player) HighPowerActiveGrowth.enrolled(player, level);
         return true;
     }
 
-    /** Called after vanilla loads native health and persisted NeoForge data. */
     public static void initializeTitan(cn.academy.port.titan.TitanEntity titan) {
-        if (!serverThread(titan) || !supported(titan) || !titan.isAlive()) return;
-        if (titan.species().equals(titan.getPersistentData().getCompound(DATA_KEY).getString("titanSpecies"))) {
-            var existing = read(titan);
-            if (existing.isPresent()) {
-                synchronizeAdapter(titan, existing.get());
-                return;
-            }
+        if (serverThread(titan) && titan.getPersistentData().contains(DATA_KEY, Tag.TAG_COMPOUND)) {
+            read(titan);
         }
-        var profile = titan.profile();
-        BigDecimal maximum = profile.encounterHealth();
-        BigDecimal current = maximum.multiply(decimal(titan.getHealth()))
-                .divide(decimal(titan.getMaxHealth()), RATIO_CONTEXT).min(maximum);
-        CompoundTag data = new CompoundTag();
-        data.putString("titanSpecies", profile.id());
-        data.putInt("level", profile.tier());
-        data.putString(CONTRACT, VanillaCombatContract.ID);
-        titan.getPersistentData().put(DATA_KEY, data);
-        ExactCombatState state = new ExactCombatState(current, maximum, BigDecimal.ZERO, BigDecimal.ZERO, false);
-        write(titan, state);
-        synchronizeAdapter(titan, state);
     }
 
     public static boolean enabled(LivingEntity entity) { return read(entity).isPresent(); }
@@ -494,17 +437,11 @@ public final class HighPowerCombat {
         ExactCombatState before = read(npc).orElse(null);
         if (saved != null && saved.isEmpty()) before = null; // one-time classic-save migration
         if (saved != null && !saved.isEmpty()) {
-            try {
-                Map<String, String> values = new HashMap<>();
-                for (String field : FIELDS) {
-                    if (!saved.contains(field, Tag.TAG_STRING)) return false;
-                    values.put(field, saved.getString(field));
-                }
-                before = ExactCombatState.fromDecimalMap(values);
-                var old = ContinuousHighPowerGrowth.sample(new BigDecimal(saved.getString(GROWTH_POSITION)));
-                if (before.shieldEnabled() || before.maxHealth().compareTo(old.maxHealth()) != 0
-                        || before.maxShield().compareTo(old.maxShield()) != 0) return false;
-            } catch (IllegalArgumentException invalid) { return false; }
+            // "player_power" is the local city NPC checkpoint during older save loads.
+            // Current saves already contain native Health and preserve it on reload.
+            npc.getPersistentData().put(DATA_KEY, saved.copy());
+            before = read(npc).orElse(null);
+            if (before == null) return false;
         }
         ExactCombatState next;
         if (before == null) {
@@ -519,7 +456,7 @@ public final class HighPowerCombat {
         data.putString(CONTRACT, VanillaCombatContract.ID);
         if (!data.contains("lastShieldSpend")) data.putLong("lastShieldSpend", npc.level().getGameTime());
         npc.getPersistentData().put(DATA_KEY, data);
-        GROWTH_VALIDATION.remove(npc); write(npc, next); synchronizeAdapter(npc, next);
+        GROWTH_VALIDATION.remove(npc); write(npc, next); applyNativeVitals(npc, next);
         return true;
     }
 
@@ -530,30 +467,25 @@ public final class HighPowerCombat {
     /** A city heal is expressed in the same exact health units as every other heal. */
     public static void healCityNpc(cn.academy.port.city.CityNpcEntity npc, BigDecimal amount) {
         if (!serverThread(npc) || amount == null || amount.signum() <= 0) return;
-        var before = read(npc).orElse(null); if (before == null || before.isDead()) return;
-        var next = new ExactCombatState(before.health().add(amount).min(before.maxHealth()), before.maxHealth(),
-                before.shield(), before.maxShield(), false);
-        write(npc, next); synchronizeAdapter(npc, next);
+        if (npc.isAlive()) npc.heal(amount.floatValue());
     }
 
-    /** Bounded field medical supply; uses the existing exact pool, never grants shield or capacity. */
+    /** Bounded field medical supply with ordinary healing events. */
     public static void healGuardian(cn.academy.port.city.defense.GuardianEntity guardian, BigDecimal fraction) {
-        if(!serverThread(guardian)||fraction==null||fraction.signum()<=0||fraction.compareTo(new BigDecimal("0.12"))>0)return;
-        var before=read(guardian).orElse(null);if(before==null||before.isDead())return;
-        var next=new ExactCombatState(before.health().add(before.maxHealth().multiply(fraction)).min(before.maxHealth()),before.maxHealth(),before.shield(),before.maxShield(),false);
-        write(guardian,next);synchronizeAdapter(guardian,next);
+        if (!serverThread(guardian) || !guardian.isAlive() || fraction == null || fraction.signum() <= 0
+                || fraction.compareTo(new BigDecimal("0.12")) > 0) return;
+        guardian.heal(guardian.getMaxHealth() * fraction.floatValue());
     }
 
     /** Only the validated one-time curve converter owns this cache/adapter reset. */
     static void curveMigrated(LivingEntity entity, ExactCombatState state) {
         GROWTH_VALIDATION.remove(entity); HISTORY.remove(entity);
         FRAMES.remove(entity); TRACES.remove(entity); ACTIVE.remove(entity);
-        HEALS.remove(entity); LETHAL.remove(entity); DEATHS.remove(entity);
         if (entity instanceof ServerPlayer player) {
             PENDING_GROWTH.remove(player);
             HighPowerGrowth.invalidate(player);
         }
-        synchronizeAdapter(entity, state);
+        applyNativeVitals(entity, state);
     }
     /** True for the closed, server-created skill hits that carry their own exact accounting (read-only; no capability is exposed). */
     public static boolean isExactSkillSource(DamageSource source) { return source instanceof ExactSkillDamageSource; }
@@ -562,26 +494,22 @@ public final class HighPowerCombat {
     /** Identical ledger validation for observer-only geometry, without populating mutable caches. */
     static Optional<ExactCombatState> exactStateSnapshot(LivingEntity entity) { return read(entity, false); }
     /** Finish native events before checking exact missing HP; never awards a new budget. */
-    static void settleRecovery(LivingEntity entity) { if (serverThread(entity)) { flushRecovery(entity); flushEarnedGrowth(entity); } }
-    static void resynchronizeExact(LivingEntity entity) { if (serverThread(entity)) read(entity).ifPresent(state -> synchronizeAdapter(entity, state)); }
+    static void settleRecovery(LivingEntity entity) { if (serverThread(entity)) { flushEarnedGrowth(entity); } }
+    static void resynchronizeExact(LivingEntity entity) { if (serverThread(entity)) read(entity); }
     /** Final, source-proven FoodData recovery. Other heal events retain their existing 1:1 units. */
-    static boolean applyNaturalHealing(ServerPlayer player, BigDecimal amount) {
-        if (!serverThread(player) || amount == null || amount.signum() <= 0) return false;
-        var optional = read(player);
-        if (optional.isEmpty() || optional.get().isDead()) return false;
-        ExactCombatState state = optional.get();
-        BigDecimal healed = amount.min(state.maxHealth().subtract(state.health()));
-        if (healed.signum() <= 0) { synchronizeAdapter(player, state); return false; }
-        var next = new ExactCombatState(state.health().add(healed), state.maxHealth(), state.shield(), state.maxShield(), false);
-        write(player, next); synchronizeAdapter(player, next); return true;
+    public static int level(LivingEntity entity) {
+        if (entity instanceof cn.academy.port.titan.TitanEntity titan) return titan.profile().tier();
+        return enabled(entity) ? tag(entity).getInt("level") : 0;
     }
-    public static int level(LivingEntity entity) { return enabled(entity) ? tag(entity).getInt("level") : 0; }
+
     public static String healthText(LivingEntity entity) {
-        return read(entity).map(s -> CombatAmounts.decimalString(s.health())).orElse("unavailable");
+        return CombatAmounts.decimalString(CombatAmounts.overkillClamp(decimal(entity.getHealth())));
     }
+
     public static String maxHealthText(LivingEntity entity) {
-        return read(entity).map(s -> CombatAmounts.decimalString(s.maxHealth())).orElse("unavailable");
+        return CombatAmounts.decimalString(CombatAmounts.overkillClamp(decimal(entity.getMaxHealth())));
     }
+
     public static BigDecimal shield(LivingEntity entity) {
         return read(entity).map(ExactCombatState::shield).orElse(BigDecimal.ZERO);
     }
@@ -600,6 +528,19 @@ public final class HighPowerCombat {
         if (!enabled(entity)) return false;
         return EsperShields.holding(entity) || CityNpcPower.holding(entity) || abilityShieldActive(entity);
     }
+    static boolean hasArmorShield(ServerPlayer player) {
+        if (!enabled(player)) return false;
+        if (EsperShields.holding(player)) return true;
+        if (!abilityShieldActive(player)) return false;
+        return shield(player).signum() > 0 || MagneticDomainReserve.reserve(player).signum() > 0
+                || curtainReserve(player).signum() > 0 || zeroGapReserve(player).signum() > 0;
+    }
+
+    static boolean armoredOnContact(LivingEntity entity) {
+        var frame = FRAMES.get(entity);
+        return frame != null && frame.armoredOnContact;
+    }
+
     /** Explicit paid defense activity blocks recovery; the passive category shield does not. */
     private static boolean abilityShieldActive(LivingEntity entity) {
         if (autonomousVectorCircleBenefitsActive(entity) && entity instanceof ServerPlayer player && AutonomousVectorCircle.protecting(player)) return true;
@@ -628,7 +569,6 @@ public final class HighPowerCombat {
         var next = state.get().spendShield(cost);
         tag(entity).putLong("lastShieldSpend", entity.level().getGameTime());
         write(entity, next);
-        synchronizeAdapter(entity, next);
         return true;
     }
 
@@ -639,7 +579,6 @@ public final class HighPowerCombat {
         if (state.isEmpty() || state.get().isDead()) return;
         var next = state.get().regenerateShield(state.get().maxShield().multiply(fraction));
         write(entity, next);
-        synchronizeAdapter(entity, next);
     }
 
     /** Category swaps suspend EM benefits while retaining exact HP accounting and all saved balances. */
@@ -1580,12 +1519,7 @@ public final class HighPowerCombat {
                 // A matching Post alone never authorizes the temporary HP0 continuation.
                 float before = entity.getHealth(), damage = container.getNewDamage();
                 exact.yawCommitAuthorized = Float.isFinite(before) && before > 0 && Float.isFinite(damage) && damage >= 0;
-                if (enabled(entity)) {
-                    var prior = read(entity);
-                    BigDecimal residual = exact.exactBeforeAbsorption.subtract(decimal(exact.expectedAbsorption)).max(BigDecimal.ZERO);
-                    exact.yawExpectedDeath = exact.yawCommitAuthorized && prior.isPresent() && !prior.get().isDead()
-                            && residual.compareTo(prior.get().health()) >= 0;
-                } else exact.yawExpectedDeath = exact.yawCommitAuthorized && damage >= before;
+                exact.yawExpectedDeath = exact.yawCommitAuthorized && damage >= before;
             }
             return false;
         }
@@ -1605,10 +1539,7 @@ public final class HighPowerCombat {
     /** Closed contact budgets also refuse a rewrite after their ABSORPTION observer, before any native HP write. */
     private static boolean validNeedleCommit(ExactSkillDamageSource source, DamageContainer container) {
         float damage = container.getNewDamage();
-        return source.absorptionObserved && source.prepared != source.ordinaryPrepared
-                && Float.isFinite(damage) && damage >= 0
-                && container.getReduction(DamageContainer.Reduction.ABSORPTION) == source.expectedAbsorption
-                && damage == source.beforeAbsorption - source.expectedAbsorption;
+        return source.absorptionObserved && source.prepared && Float.isFinite(damage) && damage >= 0;
     }
     private static boolean attackWithOrigin(ServerPlayer player, String skill, LivingEntity target, BigDecimal rawDamage,
                                            net.minecraft.world.phys.Vec3 projectileOrigin) {
@@ -1889,8 +1820,7 @@ public final class HighPowerCombat {
                 || deflectionStrikePermit != null || shearWindbladePermit != null || yawPalmPermit != null || vectorCagePermit != null || trajectoryReturnAirHammerPermit != null || remoteScatterRelayPermit != null || abilityEmission != null) && raw.compareTo(rawDamage) > 0) return false;
         try { raw = CombatAmounts.requirePositiveAmount(CombatAmounts.overkillClamp(raw.stripTrailingZeros()), "scaled raw damage"); }
         catch (IllegalArgumentException invalid) { return false; }
-        flushRecovery(target);
-        float witness = raw.min(BigDecimal.valueOf(MAX_NATIVE_WITNESS)).floatValue();
+        float witness = raw.floatValue();
         if (!(witness > 0) || !Float.isFinite(witness)) return false;
         var source = new ExactSkillDamageSource(player, skill, target, raw, witness, projectileOrigin, stillValid,
                 dualPointBeam, thermalShellPulse, foldedMirrorBeam, disintegrationSweepBeam, particleLaminateBeam, multicoreCanopyBeam, certifiedBeamEndpoint,
@@ -1919,7 +1849,7 @@ public final class HighPowerCombat {
             if (vectorCagePermit != null) {
                 BigDecimal after = read(target).map(ExactCombatState::health).orElseGet(() -> decimal(target.getHealth()));
                 return accepted && !source.rejected && source.yawCommitAuthorized && source.absorptionObserved
-                        && source.beforeAbsorption > 0 && (source.accounted || source.ordinaryPrepared)
+                        && source.beforeAbsorption > 0 && source.accounted
                         && (after.compareTo(cageHealthBefore) < 0 || target.getAbsorptionAmount() < cageAbsorptionBefore);
             }
             if (remoteScatterRelayPermit != null)
@@ -1935,7 +1865,6 @@ public final class HighPowerCombat {
                 if (abandoned.parent == null) FRAMES.remove(target); else FRAMES.put(target, abandoned.parent);
                 HISTORY.remove(target);
             }
-            flushRecovery(target);
             flushEarnedGrowth(target);
             DamageAudit.finish(audit, skill, rawDamage, raw, accepted, source.rejected ? "exact_rejected" : null);
         }
@@ -1954,9 +1883,8 @@ public final class HighPowerCombat {
         BigDecimal raw;
         try { raw = CombatAmounts.requirePositiveAmount(permit.rawDamage(), "NEW331 frozen native arrow amount"); }
         catch (IllegalArgumentException | NullPointerException invalid) { return original.call(target, contact.original, originalAmount); }
-        flushRecovery(target);
         if (!validInterceptionContact(contact)) return original.call(target, contact.original, originalAmount);
-        float witness = raw.min(BigDecimal.valueOf(MAX_NATIVE_WITNESS)).floatValue();
+        float witness = raw.floatValue();
         if (!(witness > 0) || !Float.isFinite(witness)) return original.call(target, contact.original, originalAmount);
         var source = new ExactSkillDamageSource(contact, raw, witness);
         if (!standardSource(source)) return original.call(target, contact.original, originalAmount);
@@ -1966,7 +1894,7 @@ public final class HighPowerCombat {
             boolean accepted = original.call(target, source, witness);
             contact.confirmed = accepted && !source.rejected && source.absorptionObserved
                     && source.beforeAbsorption > source.expectedAbsorption
-                    && (source.accounted || source.ordinaryPrepared);
+                    && source.accounted;
             return accepted;
         } finally {
             ACTIVE.remove(target, source);
@@ -1976,7 +1904,6 @@ public final class HighPowerCombat {
                 if (abandoned.parent == null) FRAMES.remove(target); else FRAMES.put(target, abandoned.parent);
                 HISTORY.remove(target);
             }
-            flushRecovery(target);
             flushEarnedGrowth(target);
         }
     }
@@ -1991,9 +1918,8 @@ public final class HighPowerCombat {
         BigDecimal raw;
         try { raw = CombatAmounts.requirePositiveAmount(permit.rawDamage(), "NEW431 frozen native arrow amount"); }
         catch (IllegalArgumentException | NullPointerException invalid) { return original.call(target, contact.original, originalAmount); }
-        flushRecovery(target);
         if (!validTrajectoryReturnContact(contact)) return original.call(target, contact.original, originalAmount);
-        float witness = raw.min(BigDecimal.valueOf(MAX_NATIVE_WITNESS)).floatValue();
+        float witness = raw.floatValue();
         if (!(witness > 0) || !Float.isFinite(witness)) return original.call(target, contact.original, originalAmount);
         var source = new ExactSkillDamageSource(contact, raw, witness);
         if (!standardSource(source)) return original.call(target, contact.original, originalAmount);
@@ -2004,7 +1930,7 @@ public final class HighPowerCombat {
             contact.confirmed = accepted && !source.rejected && source.trajectoryReturnCommitAuthorized
                     && source.absorptionObserved && source.beforeAbsorption > 0
                     && source.beforeAbsorption >= source.expectedAbsorption
-                    && (source.accounted || source.ordinaryPrepared);
+                    && source.accounted;
             return accepted;
         } finally {
             ACTIVE.remove(target, source);
@@ -2014,7 +1940,6 @@ public final class HighPowerCombat {
                 if (abandoned.parent == null) FRAMES.remove(target); else FRAMES.put(target, abandoned.parent);
                 HISTORY.remove(target);
             }
-            flushRecovery(target);
             flushEarnedGrowth(target);
         }
     }
@@ -2043,7 +1968,7 @@ public final class HighPowerCombat {
 
     /** Called by the verified native seam, including ordinary hits on an enrolled entity. */
     public static void beginNativeHurt(LivingEntity entity, DamageSource source, float previousNative) {
-        if (!serverThread(entity) || !enabled(entity)
+        if (!serverThread(entity) || !(entity instanceof ServerPlayer) && !enabled(entity)
                 && !(source instanceof ExactSkillDamageSource exact && (exact.shortInterceptionContact != null
                     || exact.deflectionStrikePermit != null || exact.shearWindbladePermit != null || exact.yawPalmPermit != null || exact.vectorCagePermit != null
                     || exact.trajectoryReturnContact != null || exact.trajectoryReturnAirHammerPermit != null || exact.remoteScatterRelayPermit != null))
@@ -2156,8 +2081,7 @@ public final class HighPowerCombat {
         if (source == null || source.yawPalmPermit == null || source.rejected || !source.yawCommitAuthorized
                 || !source.yawExpectedDeath || ACTIVE.get(source.target) != source || source.target.isAlive()
                 || source.target.getHealth() != 0 || source.target.isRemoved()) return false;
-        return enabled(source.target) ? source.accounted && read(source.target).filter(ExactCombatState::isDead).isPresent()
-                : source.ordinaryPrepared && source.absorptionObserved;
+        return source.accounted && source.absorptionObserved;
     }
 
     static YawPalm.EmissionPermit yawPalmNativePermit(LivingEntity target) {
@@ -2197,8 +2121,7 @@ public final class HighPowerCombat {
         if (source == null || source.vectorCagePermit == null || source.rejected || !source.yawCommitAuthorized
                 || !source.yawExpectedDeath || ACTIVE.get(source.target) != source || source.target.isAlive()
                 || source.target.getHealth() != 0 || source.target.isRemoved()) return false;
-        return enabled(source.target) ? source.accounted && read(source.target).filter(ExactCombatState::isDead).isPresent()
-                : source.ordinaryPrepared && source.absorptionObserved;
+        return source.accounted && source.absorptionObserved;
     }
 
     static VectorCage.EmissionPermit vectorCageNativePermit(LivingEntity target) {
@@ -2255,59 +2178,6 @@ public final class HighPowerCombat {
     /** Read-only deferred-emission fence; never bypasses an active native hurt frame. */
     static boolean nativeHurtInProgress(LivingEntity entity) { return FRAMES.containsKey(entity); }
 
-    /**
-     * Only the first comparison operand is replaced. Returning current encodes FALSE
-     * for current > previous; returning zero encodes TRUE for a verified positive
-     * current. Neither value is stored in lastHurt or used as damage/reduction.
-     * The native timer branch, shield ordering and later lastHurt writes are intact.
-     */
-    public static float nativeCooldownComparison(LivingEntity entity, DamageSource damageSource, float current,
-                                                 float previousNative, DamageContainer container) {
-        NativeHurtFrame frame = FRAMES.get(entity);
-        if (frame == null || frame.source != damageSource) return previousNative;
-        if (!enabled(entity)) return previousNative;
-        frame.compared = true;
-        frame.nativeIncoming = current;
-        frame.nativePrevious = previousNative;
-        frame.comparisonAccepted = current > previousNative;
-        ExactSkillDamageSource exact = damageSource instanceof ExactSkillDamageSource candidate && candidate.target == entity ? candidate : null;
-        HitHistory previous = frame.previousHistory;
-        if (!Float.isFinite(current) || current < 0 || !Float.isFinite(previousNative) || previousNative < 0
-                || frame.poisoned || previous == null || previous.nativeIncoming != previousNative) {
-            if (exact != null) { exact.rejected = true; frame.comparisonAccepted = false; return current; }
-            return previousNative; // Unknown ordinary history keeps ordinary native behavior.
-        }
-        if (exact == null && !previous.exactBridge) return previousNative;
-        if (exact != null) {
-            float blocked = container == null ? Float.NaN : container.getBlockedDamage();
-            if (container == null || container.getSource() != exact || container.getOriginalDamage() != exact.witness
-                    || !guardedStandardSource(exact) || unsupportedReason(entity).isPresent() || unsupportedReason(exact.player).isPresent()
-                    || blocked != 0 && blocked != exact.witness || current != exact.witness - blocked) {
-                exact.rejected = true; frame.comparisonAccepted = false; return current;
-            }
-            frame.logicalIncoming = blocked == exact.witness ? BigDecimal.ZERO : exact.raw;
-        } else {
-            // This float has already passed ordinary incoming hooks, shield, freezing
-            // and helmet transforms. It is in native raw units, not a scaled witness.
-            frame.logicalIncoming = decimal(current);
-        }
-        if (frame.logicalIncoming.compareTo(previous.rawIncoming) <= 0) {
-            frame.comparisonAccepted = false;
-            return current;
-        }
-        frame.logicalResidual = frame.logicalIncoming.subtract(previous.rawIncoming);
-        frame.residualWitness = exact == null ? frame.logicalResidual.floatValue()
-                : frame.logicalResidual.min(BigDecimal.valueOf(MAX_NATIVE_WITNESS)).floatValue();
-        if (!Float.isFinite(frame.residualWitness) || exact != null && !(frame.residualWitness > 0)) {
-            if (exact != null) exact.rejected = true;
-            frame.comparisonAccepted = false;
-            return current; // Explicit native residual representability limit, never a guessed rank.
-        }
-        frame.adaptCooldown = true;
-        frame.comparisonAccepted = true;
-        return 0; // Verified current > 0; branch-only encoding of the exact comparison.
-    }
-
     /** Commit mapping only after native lastHurt writes, including the differential branch after Post. */
     public static void endNativeHurt(LivingEntity entity, DamageSource source, float nativeLastHurt, boolean completed) {
         NativeHurtFrame frame = FRAMES.get(entity);
@@ -2329,13 +2199,6 @@ public final class HighPowerCombat {
                 EmergencyReturn.sealAfterHurt(player, frame.emergencyReturn, false);
             return;
         }
-        if (!frame.poisoned && frame.pendingHistory != null && frame.pendingHistory.nativeIncoming == nativeLastHurt) {
-            HISTORY.put(entity, frame.pendingHistory);
-        } else if (frame.poisoned || frame.pendingHistory != null || frame.sawArmor
-                || frame.incoming != null && !frame.incoming.isCanceled() && (!frame.compared || frame.comparisonAccepted)) {
-            HISTORY.remove(entity);
-        }
-        flushRecovery(entity);
         flushEarnedGrowth(entity);
         if (entity instanceof ServerPlayer player)
             EmergencyReturn.sealAfterHurt(player, frame.emergencyReturn,
@@ -2381,21 +2244,12 @@ public final class HighPowerCombat {
                 ? CirculationRelief.capture(player, event.getSource()) : null;
         AutonomousVectorCircle.Capture circleCapture = entity instanceof ServerPlayer player
                 ? AutonomousVectorCircle.capture(player, event.getSource()) : null;
-        var activeBefore = ACTIVE.get(entity);
-        if (activeBefore != null && event.getSource() != activeBefore) activeBefore.rejected = true;
-        if (!enabled(entity)) {
-            NativeHurtFrame ordinaryFrame = FRAMES.get(entity);
-            if (ordinaryFrame != null && ordinaryFrame.source == event.getSource()) ordinaryFrame.incoming = event;
-            if (event.getSource() instanceof ExactSkillDamageSource source && boundedClosedBudget(source) && source.target == entity)
-                observeOrdinaryFoldedDamage(event, source);
-            return;
-        }
-        flushRecovery(entity);
         var active = ACTIVE.get(entity);
         if (active != null && event.getSource() != active) active.rejected = true;
         NativeHurtFrame frame = FRAMES.get(entity);
         if (frame != null && frame.source == event.getSource()) {
             frame.incoming = event;
+            frame.armoredOnContact = !event.isCanceled() && PlayerShieldArmor.holding(entity);
             // NEW452's one native Post identity belongs to the hurt stack even when
             // inactive, rear-facing, unsupported, exhausted, or inside a nested hurt.
             // Refusing defense must not expose ordinary HP to same-source Post replay.
@@ -2442,118 +2296,13 @@ public final class HighPowerCombat {
                     && reviewedMagneticDomainSource(entity, event.getSource()))
                 frame.magneticDomain = MagneticDomain.capture(player, event.getSource().getSourcePosition(), player.getLookAngle());
         } else frame = null;
-        NativeTrace trace = new NativeTrace(event.getSource(), HISTORY.get(entity), frame);
-        // This callback is reached only after native comparison accepted. NeoForge's
-        // patched actuallyHurt reads this container rather than its obsolete float arg.
-        event.addReductionModifier(DamageContainer.Reduction.INVULNERABILITY, (container, reduction) -> {
-            NativeHurtFrame transaction = trace.frame;
-            if (transaction == null || !transaction.adaptCooldown) return reduction;
-            if (reduction != transaction.nativePrevious || transaction.poisoned) {
-                transaction.poisoned = true;
-                if (event.getSource() instanceof ExactSkillDamageSource exact) exact.rejected = true;
-                return reduction;
-            }
-            container.setNewDamage(transaction.residualWitness);
-            transaction.residualInstalled = true;
-            return 0; // Transport reset only for this reduction; lastHurt/timer fields are untouched.
-        });
-        // The observer runs after actual armor wear, before the recorded ARMOR reduction.
-        // Ordinary hits also need a mapping: originalDamage is wrong after incoming edits.
-        event.addReductionModifier(DamageContainer.Reduction.ARMOR, (container, reduction) -> {
-            trace.beforeArmor = container.getNewDamage();
-            trace.invulnerability = container.getReduction(DamageContainer.Reduction.INVULNERABILITY);
-            if (trace.frame != null) trace.frame.sawArmor = true;
-            if (event.getSource() instanceof ExactSkillDamageSource exact) exact.nativeStageReached = true;
-            trace.previousTrace = TRACES.put(entity, trace);
-            return reduction;
-        });
         if (event.getSource() instanceof ExactSkillDamageSource source && source.target == entity) {
-            event.addReductionModifier(DamageContainer.Reduction.ABSORPTION, (container, reduction) -> {
-                source.absorptionObserved = true;
-                source.beforeAbsorption = container.getNewDamage();
-                source.absorptionPool = entity.getAbsorptionAmount();
-                if (!source.prepared || source.rejected || !Float.isFinite(source.beforeAbsorption)
-                        || source.beforeAbsorption < 0 || !Float.isFinite(source.absorptionPool)
-                        || source.absorptionPool < 0 || source.absorptionPool > 2048
-                        || source.beforeAbsorption != 0 && source.beforeAbsorption != source.nativePrepared
-                        || reduction != Math.min(source.absorptionPool, source.beforeAbsorption)) {
-                    source.rejected = true;
-                    source.beforeAbsorption = 0;
-                    container.setNewDamage(0);
-                    return 0; // setReduction subtracts our result after this callback.
-                }
-                if (source.beforeAbsorption == 0) source.exactBeforeAbsorption = BigDecimal.ZERO; // Final late veto.
-                source.expectedAbsorption = reduction;
-                return reduction;
-            });
+            source.nativeStageReached = true;
         }
     }
 
-    /** Bounded closed attempts on ordinary native targets are observed without enrolling those targets. */
-    private static void observeOrdinaryFoldedDamage(LivingIncomingDamageEvent event, ExactSkillDamageSource source) {
-        event.addReductionModifier(DamageContainer.Reduction.ARMOR, (container, reduction) -> {
-            source.ordinaryBeforeArmor = container.getNewDamage();
-            source.ordinaryArmorObserved = true;
-            return reduction;
-        });
-        event.addReductionModifier(DamageContainer.Reduction.ABSORPTION, (container, reduction) -> {
-            float before = container.getNewDamage(), pool = event.getEntity().getAbsorptionAmount();
-            if (source.rejected || !source.ordinaryPrepared || !Float.isFinite(before) || before < 0
-                    || before > source.ordinaryPreLimit || !Float.isFinite(pool) || pool < 0 || pool > 2048
-                    || reduction != Math.min(pool, before)) {
-                source.rejected = true; container.setNewDamage(0); return 0;
-            }
-            if (source.displacedProjectionPermit != null || source.crossSubstitutionPermit != null || source.shortInterceptionFallbackPermit != null
-                    || source.spatialPincerCorridorPermit != null || source.multidimensionalLandingArrayPermit != null
-                    || source.deflectionStrikePermit != null || source.shearWindbladePermit != null || source.yawPalmPermit != null || source.vectorCagePermit != null || source.shortInterceptionContact != null
-                    || source.trajectoryReturnContact != null || source.trajectoryReturnAirHammerPermit != null || source.remoteScatterRelayPermit != null) {
-                source.absorptionObserved = true;
-                source.beforeAbsorption = before;
-                source.expectedAbsorption = reduction;
-            }
-            return reduction;
-        });
-    }
-    /** Validate pure native reductions, never replay armor wear, effect callbacks or enchantment hooks. */
-    private static void prepareOrdinaryFoldedDamage(LivingDamageEvent.Pre event, ExactSkillDamageSource source) {
-        LivingEntity entity = event.getEntity();
-        try {
-            float input = source.ordinaryBeforeArmor, pre = event.getNewDamage();
-            if (source.rejected || source.ordinaryPrepared || !source.ordinaryArmorObserved
-                    || !guardedStandardSource(source) || unsupportedReason(entity).isPresent()
-                    || !Float.isFinite(input) || input < 0 || input > source.witness
-                    || !Float.isFinite(pre) || pre < 0) throw new IllegalArgumentException("unsupported native folded stage");
-            int armor = entity.getArmorValue();
-            float toughness = (float)entity.getAttributeValue(Attributes.ARMOR_TOUGHNESS);
-            int resistance = entity.hasEffect(MobEffects.DAMAGE_RESISTANCE) ? entity.getEffect(MobEffects.DAMAGE_RESISTANCE).getAmplifier() + 1 : 0;
-            int protection = VanillaCombatContract.protectionPoints(entity);
-            float afterArmor = input * (1F - Mth.clamp(armor - input / (2F + toughness / 4F), armor * .2F, 20F) / 25F);
-            float armorReduction = input - afterArmor, afterArmorRecorded = input - armorReduction;
-            float afterResistance = resistance == 0 ? afterArmorRecorded : Math.max(afterArmorRecorded * (25 - resistance * 5) / 25F, 0);
-            float resistanceReduction = afterArmorRecorded - afterResistance, afterResistanceRecorded = afterArmorRecorded - resistanceReduction;
-            float enchantReduction = protection == 0 || afterResistance <= 0 ? 0
-                    : afterResistanceRecorded - afterResistance * (1F - Math.min(protection, 20) / 25F);
-            float expected = afterResistanceRecorded - enchantReduction;
-            var container = event.getContainer();
-            if (container.getReduction(DamageContainer.Reduction.ARMOR) != armorReduction
-                    || container.getReduction(DamageContainer.Reduction.MOB_EFFECTS) != resistanceReduction
-                    || container.getReduction(DamageContainer.Reduction.ENCHANTMENTS) != enchantReduction
-                    || container.getReduction(DamageContainer.Reduction.INNATE_RESISTANCE) != 0 || pre > expected)
-                throw new IllegalArgumentException("positive native folded rewrite");
-            source.ordinaryPreLimit = pre;
-            source.ordinaryPrepared = true;
-        } catch (IllegalArgumentException | ArithmeticException invalid) {
-            source.rejected = true; event.setNewDamage(0);
-        }
-    }
-
-    /** Reviewed controller geometry/context veto, including ordinary un-enrolled mobs. */
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void guardThunderNetIncoming(LivingIncomingDamageEvent event) {
-        if (event.getSource() instanceof ExactSkillDamageSource source && boundedClosedBudget(source) && source.target == event.getEntity()
-                && (!Float.isFinite(event.getAmount()) || event.getAmount() < 0 || event.getAmount() > source.witness)) {
-            source.rejected = true; event.setCanceled(true); return;
-        }
         if (event.getSource() instanceof ExactSkillDamageSource source && source.target == event.getEntity()
                 && guardedControllerSkill(source) && source.attackGuard != null
                 && !validAttackGuard(source.attackGuard)) {
@@ -2564,100 +2313,11 @@ public final class HighPowerCombat {
     /** Final pre-HP veto; native side effects already completed are never replayed or refunded. */
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void guardThunderNetPre(LivingDamageEvent.Pre event) {
-        if (event.getSource() instanceof ExactSkillDamageSource source && boundedClosedBudget(source) && source.target == event.getEntity()
-                && !enabled(event.getEntity()) && (source.rejected || !source.ordinaryPrepared
-                    || !Float.isFinite(event.getNewDamage()) || event.getNewDamage() < 0 || event.getNewDamage() > source.ordinaryPreLimit)) {
-            source.rejected = true; event.setNewDamage(0); return;
-        }
         if (event.getSource() instanceof ExactSkillDamageSource source && source.target == event.getEntity()
                 && guardedControllerSkill(source) && source.attackGuard != null
                 && !validAttackGuard(source.attackGuard)) {
             source.rejected = true;
             event.setNewDamage(0);
-        }
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void prepareExactDamage(LivingDamageEvent.Pre event) {
-        LivingEntity entity = event.getEntity();
-        if (!(event.getSource() instanceof ExactSkillDamageSource source) || source.target != entity) return;
-        if (!enabled(entity)) {
-            if (boundedClosedBudget(source)) prepareOrdinaryFoldedDamage(event, source);
-            return;
-        }
-        NativeTrace trace = TRACES.get(entity);
-        try {
-            if (source.rejected || source.prepared || trace == null || trace.source != source
-                    || event.getOriginalDamage() != source.witness || unsupportedReason(entity).isPresent()
-                    || unsupportedReason(source.player).isPresent() || !guardedStandardSource(source)) throw new IllegalArgumentException("unsupported stage");
-            var container = event.getContainer();
-            float blocked = container.getBlockedDamage(), cooldown = trace.invulnerability;
-            if (!Float.isFinite(blocked) || blocked < 0 || blocked != 0 && blocked != source.witness
-                    || !Float.isFinite(cooldown) || cooldown < 0 || !Float.isFinite(trace.beforeArmor) || trace.beforeArmor < 0) {
-                throw new IllegalArgumentException("unsupported block/cooldown");
-            }
-            NativeHurtFrame frame = trace.frame;
-            if (frame == null || frame.poisoned) throw new IllegalArgumentException("missing native transaction");
-            boolean adapted = frame.adaptCooldown;
-            float expectedInput;
-            BigDecimal residual = source.raw;
-            if (adapted) {
-                if (!frame.residualInstalled || cooldown != 0 || !frame.comparisonAccepted
-                        || frame.logicalIncoming == null || frame.logicalResidual == null) throw new IllegalArgumentException("invalid native residual seam");
-                source.nativeIncoming = frame.nativeIncoming;
-                source.rawForHistory = frame.logicalIncoming;
-                expectedInput = frame.residualWitness;
-                residual = frame.logicalResidual;
-                source.historyValidated = trace.beforeArmor == expectedInput;
-            } else {
-                source.nativeIncoming = trace.beforeArmor + cooldown;
-                source.rawForHistory = source.nativeIncoming == 0 ? BigDecimal.ZERO : source.raw;
-                expectedInput = (source.witness - blocked) - cooldown;
-                // Exact differential hits must have passed the admitted comparator seam.
-                source.historyValidated = trace.beforeArmor == expectedInput && cooldown == 0;
-                if (cooldown != 0) throw new IllegalArgumentException("unadapted exact cooldown");
-                if (blocked != 0) residual = BigDecimal.ZERO;
-            }
-            float pre = event.getNewDamage();
-            if (pre == 0) {
-                source.exactBeforeAbsorption = BigDecimal.ZERO;
-                source.nativePrepared = 0;
-                source.prepared = true;
-                return; // Complete native resistance or an earlier zero protection remains final.
-            }
-            if (trace.beforeArmor != expectedInput || !Float.isFinite(pre) || pre < 0) throw new IllegalArgumentException("incoming rewrite");
-            int armor = entity.getArmorValue();
-            float toughness = (float)entity.getAttributeValue(Attributes.ARMOR_TOUGHNESS);
-            int resistance = entity.hasEffect(MobEffects.DAMAGE_RESISTANCE) ? entity.getEffect(MobEffects.DAMAGE_RESISTANCE).getAmplifier() + 1 : 0;
-            int protection = VanillaCombatContract.protectionPoints(entity);
-            // Replay only pure float arithmetic to validate native observations, never a
-            // mutable EnchantmentHelper, reduction callback or damage hook a second time.
-            float afterArmor = expectedInput * (1F - Mth.clamp(armor - expectedInput / (2F + toughness / 4F), armor * .2F, 20F) / 25F);
-            float armorReduction = expectedInput - afterArmor;
-            float afterArmorRecorded = expectedInput - armorReduction;
-            float afterResistance = resistance == 0 ? afterArmorRecorded : Math.max(afterArmorRecorded * (25 - resistance * 5) / 25F, 0);
-            float resistanceReduction = afterArmorRecorded - afterResistance;
-            float afterResistanceRecorded = afterArmorRecorded - resistanceReduction;
-            float enchantReduction = protection == 0 || afterResistance <= 0 ? 0
-                    : afterResistanceRecorded - afterResistance * (1F - Math.min(protection, 20) / 25F);
-            float expectedPre = afterResistanceRecorded - enchantReduction;
-            if (container.getReduction(DamageContainer.Reduction.ARMOR) != armorReduction
-                    || container.getReduction(DamageContainer.Reduction.MOB_EFFECTS) != resistanceReduction
-                    || container.getReduction(DamageContainer.Reduction.ENCHANTMENTS) != enchantReduction
-                    || container.getReduction(DamageContainer.Reduction.INNATE_RESISTANCE) != 0 || pre != expectedPre) {
-                throw new IllegalArgumentException("positive native rewrite");
-            }
-            source.exactBeforeAbsorption = DamageMitigation.mitigate(residual,
-                    new DefenseProfile(BigDecimal.valueOf(armor), decimal(toughness).stripTrailingZeros(), resistance, protection));
-            source.nativePrepared = source.exactBeforeAbsorption.min(BigDecimal.valueOf(MAX_NATIVE_WITNESS)).floatValue();
-            if (source.exactBeforeAbsorption.signum() > 0 && !(source.nativePrepared > 0)) throw new IllegalArgumentException("witness underflow");
-            source.prepared = true;
-            event.setNewDamage(source.nativePrepared);
-        } catch (IllegalArgumentException | ArithmeticException invalid) {
-            if(Boolean.getBoolean("academy.qa.tpContactTrace")&&(source.spatialPincerCorridorPermit!=null||source.multidimensionalLandingArrayPermit!=null))
-                tpContactDiagnostic(source.skill,"exact_pre_refused reason="+invalid.getMessage()+" priorRejected="+source.rejected+" prepared="+source.prepared+" trace="+(trace!=null)+" traceSource="+(trace!=null&&trace.source==source)+" frame="+(trace!=null&&trace.frame!=null)+" poisoned="+(trace!=null&&trace.frame!=null&&trace.frame.poisoned)+" beforeArmor="+(trace==null?Float.NaN:trace.beforeArmor)+" witness="+source.witness+" pre="+event.getNewDamage()+" armorReduction="+event.getContainer().getReduction(DamageContainer.Reduction.ARMOR),false);
-            source.rejected = true;
-            event.setNewDamage(0); // Refuse only this exact skill attempt before native absorption.
         }
     }
 
@@ -3094,72 +2754,44 @@ public final class HighPowerCombat {
                 && !source.is(DamageTypeTags.IS_FREEZING) && !source.is(DamageTypeTags.DAMAGES_HELMET);
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void afterDamage(LivingDamageEvent.Post event) {
-        LivingEntity entity = event.getEntity();
-        if (!serverThread(entity)) return;
-        boolean relayPost = event.getSource() instanceof ExactSkillDamageSource relay && relay.remoteScatterRelayPermit != null;
-        if (relayPost) {
-            ExactSkillDamageSource relay = (ExactSkillDamageSource)event.getSource();
-            NativeHurtFrame frame = FRAMES.get(entity);
-            if (!relay.remoteScatterRelayCommitAuthorized || !relay.remoteScatterRelayPermit.paid()
-                    || relay.remoteScatterRelayPostObserved || relay.rejected || relay.target != entity
-                    || ACTIVE.get(entity) != relay || frame == null || frame.source != relay
-                    || frame.parent != null || frame.poisoned || !frame.anchorPostGuard
-                    || frame.incoming == null || frame.incoming.isCanceled()
-                    || !AnchorDamagePostProof.matches(event)) return;
-            relay.remoteScatterRelayPostObserved = true;
+    /**
+     * Called once from Player/LivingEntity.actuallyHurt after native reductions,
+     * before the original absorption and health writes. Only this call can debit shields.
+     */
+    public static boolean settleNativeDamage(LivingEntity entity, DamageSource source, DamageContainer container) {
+        if (!serverThread(entity) || container == null || container.getSource() != source) return false;
+        float damage = container.getNewDamage();
+        if (!Float.isFinite(damage) || damage < 0) {
+            container.setNewDamage(0);
+            return true;
         }
-        // NEW431 may settle only after the authenticated native pre-HP commit seam.
-        // Ignore premature notifications before touching healing, traces, or resource balances.
-        if (event.getSource() instanceof ExactSkillDamageSource exact
-                && (exact.trajectoryReturnContact != null || exact.trajectoryReturnAirHammerPermit != null)
-                && !exact.trajectoryReturnCommitAuthorized) return;
-        // Learned NEW432 scopes this additional entry proof independently of toggle/UI state.
-        // Every legitimate enrolled hurt (including unsupported source types) owns a real frame.
-        // Late or fabricated notifications outside that stack cannot revive a spent receipt.
-        if (circulationReliefBenefitsActive(entity) || autonomousVectorCircleBenefitsActive(entity)) {
-            NativeHurtFrame current = FRAMES.get(entity);
-            if (current == null || current.source != event.getSource()) return;
-        }
-        // A synthetic same-source Post must neither spend this landing receipt nor consume its trace.
-        if (!relayPost && anchorPostGuardPending(entity) && !AnchorDamagePostProof.matches(event) && anchorPostGuardPending(entity)) return;
-        flushHealing(entity);
-        var optional = read(entity);
-        if (optional.isEmpty()) return;
-        ExactCombatState previous = optional.get();
-        float nativeDamage = event.getNewDamage();
-        NativeTrace trace = TRACES.get(entity);
-        if (trace != null && trace.source == event.getSource()) {
-            if (trace.previousTrace == null) TRACES.remove(entity); else TRACES.put(entity, trace.previousTrace);
-        } else trace = null;
-        // An unbounded hit is an overkill (held at the ceiling below); only NaN and negative amounts are not damage at all.
-        if (Float.isNaN(nativeDamage) || nativeDamage < 0) { rejectPostDamage(entity, event, previous); return; }
-        BigDecimal exactDamage = Float.isInfinite(nativeDamage) ? CombatAmounts.CAP : decimal(nativeDamage);
-        if (event.getSource() instanceof ExactSkillDamageSource source && source.target == entity) {
-            float absorbed = event.getReduction(DamageContainer.Reduction.ABSORPTION);
-            if (!source.prepared || !source.absorptionObserved || source.accounted || source.rejected
-                    || !Float.isFinite(absorbed) || absorbed != source.expectedAbsorption
-                    || nativeDamage != source.beforeAbsorption - absorbed) {
-                rejectPostDamage(entity, event, previous); return;
+        ExactSkillDamageSource skill = source instanceof ExactSkillDamageSource exact ? exact : null;
+        if (skill != null) {
+            skill.expectedAbsorption = container.getReduction(DamageContainer.Reduction.ABSORPTION);
+            skill.beforeAbsorption = damage + skill.expectedAbsorption;
+            skill.absorptionObserved = true;
+            skill.prepared = true;
+            if (skill.rejected || skill.target != entity || ACTIVE.get(entity) != skill || vetoClosedDamageCommit(entity, source, container)) {
+                skill.rejected = true;
+                container.setNewDamage(0);
+                return true;
             }
-            source.accounted = true;
-            exactDamage = source.exactBeforeAbsorption.subtract(decimal(absorbed)).max(BigDecimal.ZERO);
+            skill.accounted = true;
         }
-        // Armor, blocking, absorption and the native cooldown have already settled this hit.
-        if (entity instanceof cn.academy.port.titan.TitanEntity titan && tag(entity).contains("titanSpecies")
-                && !(event.getSource() instanceof ExactSkillDamageSource)
-                && !(event.getSource() instanceof AbilityDamage.SkillDamageSource)
-                && !(event.getSource() instanceof AbilityDamage.EntitySkillDamageSource))
-            exactDamage = exactDamage.multiply(titan.profile().nativeHealthUnit());
-        // Native /kill explicitly requests death, rather than a scalable combat amount.
-        // Its vanilla GENERIC_KILL source still goes through native cancellation and death hooks.
-        if (event.getSource().is(DamageTypes.GENERIC_KILL) && nativeDamage > 0) exactDamage = previous.health();
-        // Reject rather than silently truncate an amplification beyond the per-hit cap.
-        // Native armor/absorption/stat side effects have already happened and cannot be rolled back.
-        // Beyond the ceiling is overkill, not an invalid hit: hold it at the ceiling, which defeats any unprotected health pool.
-        try { exactDamage = CombatAmounts.requireAmount(CombatAmounts.overkillClamp(exactDamage.stripTrailingZeros()), "native adapted damage"); }
-        catch (IllegalArgumentException invalid) { rejectPostDamage(entity, event, previous); return; }
+        if (damage > 0) {
+            BigDecimal remaining = settleShields(entity, source, CombatAmounts.overkillClamp(decimal(damage)));
+            container.setNewDamage(remaining.floatValue());
+        }
+        if (skill != null && skill.yawCommitAuthorized)
+            skill.yawExpectedDeath = container.getNewDamage() >= entity.getHealth();
+        return false;
+    }
+
+    private static BigDecimal settleShields(LivingEntity entity, DamageSource source, BigDecimal exactDamage) {
+        if (source.is(DamageTypes.GENERIC_KILL) || source.is(DamageTypes.FELL_OUT_OF_WORLD)) return exactDamage;
+        var optional = read(entity);
+        if (optional.isEmpty()) return absorbExternalShield(entity, source, exactDamage);
+        ExactCombatState previous = optional.get();
         GroundingReturnRules.Result grounding = null;
         PotentialBufferRules.Result potentialBuffer = null;
         MagneticDomainShieldRules.Result magneticDomain = null;
@@ -3176,46 +2808,46 @@ public final class HighPowerCombat {
         DissipationCurtainShieldRules.Result curtain = null;
         ZeroGapArmorShares.Contact zeroGap = null;
         ZeroGapArmorStorage.Capture zeroGapStorage = null;
-        NativeHurtFrame groundedFrame = trace == null ? null : trace.frame;
+        NativeHurtFrame groundedFrame = FRAMES.get(entity);
         if (entity instanceof ServerPlayer player && electromasterBenefitsActive(player)
                 && groundedFrame != null && !groundedFrame.poisoned
-                && groundedFrame.source == event.getSource() && groundedFrame.incoming != null
-                && !groundedFrame.incoming.isCanceled() && reviewedElectricalSource(entity, event.getSource())) {
+                && groundedFrame.source == source && groundedFrame.incoming != null
+                && !groundedFrame.incoming.isCanceled() && reviewedElectricalSource(entity, source)) {
             grounding = GroundingReturn.plan(player, groundedFrame.grounding, previous, exactDamage);
         }
         // Grounding has sole precedence. A hit never debits the shared pool twice.
         if (grounding == null && entity instanceof ServerPlayer player && electromasterBenefitsActive(player)
                 && groundedFrame != null && !groundedFrame.poisoned
-                && groundedFrame.source == event.getSource() && groundedFrame.incoming != null
+                && groundedFrame.source == source && groundedFrame.incoming != null
                 && !groundedFrame.incoming.isCanceled())
             potentialBuffer = PotentialBuffer.plan(player, groundedFrame.potentialBuffer, previous, exactDamage);
         // Grounding > Potential Buffer > Domain. A higher defense's partial exhaustion never falls through.
         if (grounding == null && potentialBuffer == null && entity instanceof ServerPlayer player && electromasterBenefitsActive(player)
-                && groundedFrame != null && !groundedFrame.poisoned && groundedFrame.source == event.getSource()
+                && groundedFrame != null && !groundedFrame.poisoned && groundedFrame.source == source
                 && groundedFrame.incoming != null && !groundedFrame.incoming.isCanceled()
-                && reviewedMagneticDomainSource(entity, event.getSource())
+                && reviewedMagneticDomainSource(entity, source)
                 && MagneticDomain.matches(player, groundedFrame.magneticDomain))
             magneticDomain = MagneticDomainReserve.plan(player, previous, exactDamage);
         boolean armorOwnsHit = groundedFrame != null && groundedFrame.zeroGapOwnsHit;
         if (grounding == null && potentialBuffer == null && magneticDomain == null
                 && entity instanceof ServerPlayer player && zeroGapBenefitsActive(player)
-                && groundedFrame != null && !groundedFrame.poisoned && groundedFrame.source == event.getSource()
+                && groundedFrame != null && !groundedFrame.poisoned && groundedFrame.source == source
                 && groundedFrame.incoming != null && !groundedFrame.incoming.isCanceled()
-                && reviewedZeroGapSource(player, event.getSource()) && ZeroGapArmor.matches(player, groundedFrame.zeroGap)) {
+                && reviewedZeroGapSource(player, source) && ZeroGapArmor.matches(player, groundedFrame.zeroGap)) {
             zeroGapStorage = ZeroGapArmorStorage.capture(player).orElse(null);
             if (zeroGapStorage != null) zeroGap = ZeroGapArmor.plan(player, groundedFrame.zeroGap, zeroGapStorage, exactDamage);
         }
         // A genuine NEW242 crossing owns this hit; exhausted remainder never falls through.
         if (!armorOwnsHit && zeroGap == null && grounding == null && potentialBuffer == null && magneticDomain == null
                 && entity instanceof ServerPlayer player && curtainBenefitsActive(player)
-                && groundedFrame != null && !groundedFrame.poisoned && groundedFrame.source == event.getSource()
+                && groundedFrame != null && !groundedFrame.poisoned && groundedFrame.source == source
                 && groundedFrame.incoming != null && !groundedFrame.incoming.isCanceled()
                 && DissipationCurtain.matches(player, groundedFrame.curtain))
             curtain = DissipationCurtain.plan(player, groundedFrame.curtain, previous, exactDamage);
         // NEW212 is MD-only. Its contacted share is the entire shield allowance for this transaction.
         if (!armorOwnsHit && zeroGap == null && grounding == null && potentialBuffer == null && magneticDomain == null && curtain == null
                 && entity instanceof ServerPlayer player && scatterPlateBenefitsActive(player)
-                && groundedFrame != null && !groundedFrame.poisoned && groundedFrame.source == event.getSource()
+                && groundedFrame != null && !groundedFrame.poisoned && groundedFrame.source == source
                 && groundedFrame.incoming != null && !groundedFrame.incoming.isCanceled()
                 && ScatterPlates.matches(player, groundedFrame.scatterPlates))
             scatterPlates = ScatterPlateStorage.plan(player, previous, groundedFrame.scatterPlates.plateIndex(),
@@ -3224,26 +2856,26 @@ public final class HighPowerCombat {
         // prevents any future overlap from debiting the shared base S a second time.
         if (!armorOwnsHit && zeroGap == null && grounding == null && potentialBuffer == null && magneticDomain == null && curtain == null && scatterPlates == null
                 && entity instanceof ServerPlayer player && thermalShellBenefitsActive(player)
-                && groundedFrame != null && !groundedFrame.poisoned && groundedFrame.source == event.getSource()
+                && groundedFrame != null && !groundedFrame.poisoned && groundedFrame.source == source
                 && groundedFrame.incoming != null && !groundedFrame.incoming.isCanceled()
                 && ThermalShell.matches(player, groundedFrame.thermalShell))
             thermalShell = ThermalShell.plan(player, groundedFrame.thermalShell, previous, exactDamage);
         // NEW412 is vector-only and cannot fall through to another category's shield layer.
         if (entity instanceof ServerPlayer player && vectorParryBenefitsActive(player)
                 && groundedFrame != null && !groundedFrame.poisoned && groundedFrame.parent == null
-                && groundedFrame.source == event.getSource() && groundedFrame.incoming != null
+                && groundedFrame.source == source && groundedFrame.incoming != null
                 && !groundedFrame.incoming.isCanceled() && VectorParry.matches(player, groundedFrame.vectorParry))
             vectorParry = VectorParry.plan(player, groundedFrame.vectorParry, previous, exactDamage);
         if (entity instanceof ServerPlayer player && inertialAnchorBenefitsActive(player)
                 && groundedFrame != null && groundedFrame.parent == null && !groundedFrame.poisoned
-                && groundedFrame.source == event.getSource() && groundedFrame.incoming != null
+                && groundedFrame.source == source && groundedFrame.incoming != null
                 && !groundedFrame.incoming.isCanceled() && groundedFrame.anchorFall != null
-                && groundedFrame.anchorFall.valid(player, event.getSource()) && groundedFrame.anchorFall.claim())
+                && groundedFrame.anchorFall.valid(player, source) && groundedFrame.anchorFall.claim())
             inertialAnchor = InertialAnchor.planFall(player, previous, exactDamage);
         if (vectorParry == null && inertialAnchor == null
                 && entity instanceof ServerPlayer player && circulationReliefBenefitsActive(player)
                 && groundedFrame != null && groundedFrame.parent == null && !groundedFrame.poisoned
-                && groundedFrame.source == event.getSource() && groundedFrame.incoming != null
+                && groundedFrame.source == source && groundedFrame.incoming != null
                 && !groundedFrame.incoming.isCanceled() && CirculationRelief.matches(player, groundedFrame.circulationRelief))
             circulationRelief = CirculationRelief.plan(player, groundedFrame.circulationRelief, previous, exactDamage);
         if (!armorOwnsHit && grounding == null && potentialBuffer == null && magneticDomain == null
@@ -3251,7 +2883,7 @@ public final class HighPowerCombat {
                 && vectorParry == null && inertialAnchor == null && circulationRelief == null
                 && entity instanceof ServerPlayer player && autonomousVectorCircleBenefitsActive(player)
                 && groundedFrame != null && groundedFrame.parent == null && !groundedFrame.poisoned
-                && groundedFrame.source == event.getSource() && groundedFrame.incoming != null
+                && groundedFrame.source == source && groundedFrame.incoming != null
                 && !groundedFrame.incoming.isCanceled()) {
             circleAttempted = true;
             autonomousCircle = AutonomousVectorCircle.plan(player, groundedFrame.autonomousVectorCircle, previous, exactDamage);
@@ -3259,7 +2891,7 @@ public final class HighPowerCombat {
                 // Visibility callbacks may settle nested damage or revoke the capture. Never
                 // republish the earlier ledger over those already committed native changes.
                 var current = read(entity);
-                if (current.isEmpty()) return;
+                if (current.isEmpty()) return exactDamage;
                 previous = current.get();
             }
         }
@@ -3273,7 +2905,7 @@ public final class HighPowerCombat {
                 : circulationRelief != null ? circulationRelief.state()
                 : inertialAnchor != null ? inertialAnchor.state()
                 : vectorParry != null ? vectorParry.state()
-                : plainSettlement(entity, previous, exactDamage, event.getSource());
+                : previous;
         // Specialized defenses retain their direction/type/quota and reserve benefits. Their remainder is then
         // caught by the category's base shield as well; no ordinary hit can remove HP while base S remains.
         BigDecimal specialAbsorbed = grounding != null ? grounding.absorbed() : potentialBuffer != null ? potentialBuffer.absorbed()
@@ -3285,9 +2917,18 @@ public final class HighPowerCombat {
         BigDecimal specialistPrevented = circulationRelief != null ? circulationRelief.prevented()
                 : inertialAnchor != null ? inertialAnchor.prevented()
                 : vectorParry != null ? vectorParry.prevented() : BigDecimal.ZERO;
-        if (EsperShields.eligible(entity) && specialAbsorbed != null && grounding == null)
-            next = cn.academy.port.highpower.core.CategoryShieldRules.finish(previous, next,
-                    exactDamage.subtract(specialistPrevented).subtract(specialAbsorbed).max(BigDecimal.ZERO));
+        // Contact-specific shields may consume shares of the base pool. Apply the
+        // remaining independent layers only once on the value left by that contact.
+        BigDecimal residual = exactDamage.subtract(specialistPrevented)
+                .subtract(specialAbsorbed == null ? BigDecimal.ZERO : specialAbsorbed).max(BigDecimal.ZERO);
+        residual = absorbExternalShield(entity, source, residual);
+        BigDecimal shieldAfterContact = next.shield();
+        var afterContact = new ExactCombatState(previous.health(), previous.maxHealth(), shieldAfterContact, next.maxShield(), false);
+        if (grounding == null) next = plainSettlement(entity, afterContact, residual, source);
+        else next = afterContact.applyMitigatedDamage(residual).state();
+        BigDecimal basePaid = shieldAfterContact.subtract(next.shield()).max(BigDecimal.ZERO);
+        BigDecimal nativeRemainder = residual.subtract(basePaid).max(BigDecimal.ZERO);
+        if (!next.isDead()) nativeRemainder = nativeRemainder.min(previous.health().subtract(next.health()).max(BigDecimal.ZERO));
         // Parents, optional children and break debt commit before any observer or controller callback.
         SharedShieldReserveShares nextReserve = curtain != null ? curtain.shares()
                 : magneticDomain != null ? MagneticDomainReserve.savedShares(entity, previous).orElseThrow()
@@ -3313,15 +2954,13 @@ public final class HighPowerCombat {
             // A refused circle still settles ordinary damage, preserving current partitions
             // and deferring observers until outer HP and lethal bookkeeping are complete.
             circleNotifications = publishResources(entity, next, null, null, null);
-        } else commitResources(entity, next, scatterPlates == null ? null : scatterPlates.shares().afterBaseSpend(next.shield()), nextReserve);
-        if (!(event.getSource() instanceof ExactSkillDamageSource)
-                && !(event.getSource() instanceof AbilityDamage.SkillDamageSource)
-                && !(event.getSource() instanceof AbilityDamage.EntitySkillDamageSource))
-            DamageAudit.nativeLedger(event, previous, next);
+        } else if (specialAbsorbed != null || previous.shield().compareTo(next.shield()) != 0) {
+            commitResources(entity, next, scatterPlates == null ? null : scatterPlates.shares().afterBaseSpend(next.shield()), nextReserve);
+        }
         if (EsperShields.eligible(entity) && (previous.shield().compareTo(next.shield()) > 0
                 || specialAbsorbed != null && specialAbsorbed.signum() > 0)) {
             tag(entity).putLong("lastShieldSpend", entity.level().getGameTime());
-            EsperShields.absorbed((ServerPlayer)entity, event.getSource(), next.shield().signum() == 0);
+            EsperShields.absorbed((ServerPlayer)entity, source, next.shield().signum() == 0);
         }
         if (inertialAnchor != null && inertialAnchor.absorbed().signum() > 0)
             tag(entity).putLong("lastShieldSpend", entity.level().getGameTime());
@@ -3348,26 +2987,6 @@ public final class HighPowerCombat {
         if (autonomousCircle != null && autonomousCircle.absorbed().signum() > 0)
             tag(entity).putLong("lastShieldSpend", entity.level().getGameTime());
         if (exactDamage.signum() > 0) HighPowerNaturalRecovery.damageTaken(entity);
-        if (trace != null && trace.frame != null) {
-            NativeHurtFrame frame = trace.frame;
-            float nativeIncoming = frame.compared ? frame.nativeIncoming : trace.beforeArmor + trace.invulnerability;
-            if (Float.isFinite(nativeIncoming) && nativeIncoming >= 0 && !frame.poisoned
-                    && (!(event.getSource() instanceof ExactSkillDamageSource exact) || exact.historyValidated)) {
-                boolean exactBridge = event.getSource() instanceof ExactSkillDamageSource;
-                BigDecimal rawIncoming = exactBridge ? ((ExactSkillDamageSource)event.getSource()).rawForHistory : decimal(nativeIncoming);
-                frame.pendingHistory = new HitHistory(nativeIncoming, rawIncoming, exactBridge);
-            }
-        }
-        if (!previous.isDead() && next.isDead()) {
-            // Native death veto restores HP, not resources already consumed by this defense.
-            // The persisted fallback below likewise retains the committed current shield.
-            LETHAL.put(entity, new ExactCombatState(previous.health(), previous.maxHealth(),
-                    next.shield(), next.maxShield(), false));
-            // Entity saving can happen after vanilla restores a totem but before our
-            // next callback. Persist the marker alongside the exact zero ledger.
-            tag(entity).putString(PENDING_LETHAL_HEALTH, CombatAmounts.decimalString(previous.health()));
-        }
-        synchronizeAdapter(entity, next);
         // NEW422 optional notifications cannot interrupt already committed HP/lethal/recovery bookkeeping.
         if (anchorNotifications != null) {
             try { anchorNotifications.run(); }
@@ -3414,9 +3033,22 @@ public final class HighPowerCombat {
         // handling remains authoritative and never creates an emergency-return receipt.
         if (groundedFrame != null && !groundedFrame.poisoned && groundedFrame.parent == null
                 && groundedFrame.incoming != null && !groundedFrame.incoming.isCanceled()
-                && nativeDamage > 0 && exactDamage.signum() > 0)
+                && exactDamage.signum() > 0)
             EmergencyReturn.settled(groundedFrame.emergencyReturn,
                     previous.health().subtract(next.health()).add(previous.shield().subtract(next.shield())).max(BigDecimal.ZERO), !next.isDead());
+        return nativeRemainder;
+    }
+
+    private static BigDecimal absorbExternalShield(LivingEntity entity, DamageSource source, BigDecimal damage) {
+        if (!(entity instanceof ServerPlayer player) || damage.signum() <= 0) return damage;
+        return NeoForge.EVENT_BUS.post(new cn.academy.port.api.NativeShieldEvent(player, source, damage)).remaining();
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void afterDamage(LivingDamageEvent.Post event) {
+        if (!(event.getSource() instanceof ExactSkillDamageSource relay) || relay.remoteScatterRelayPermit == null) return;
+        if (relay.remoteScatterRelayCommitAuthorized && !relay.rejected && ACTIVE.get(event.getEntity()) == relay
+                && AnchorDamagePostProof.matches(event)) relay.remoteScatterRelayPostObserved = true;
     }
 
     private static boolean reviewedZeroGapSource(ServerPlayer defender, DamageSource source) {
@@ -3569,48 +3201,27 @@ public final class HighPowerCombat {
             event.setStrength((float)(strength * frame.groundingKnockbackFactor));
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
-    public static void death(LivingDeathEvent event) {
-        if (serverThread(event.getEntity()) && enabled(event.getEntity())) DEATHS.put(event.getEntity(), event);
-    }
-
-    /** Capture a preceding totem's one native HP before native healing can increase it. */
-    @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
-    public static void beforeHealing(LivingHealEvent event) {
-        LivingEntity entity = event.getEntity();
-        if (serverThread(entity) && enabled(entity)) {
-            flushRecovery(entity);
-            HighPowerNaturalRecovery.capture(event);
-        }
-    }
-
-    /** Inspect the final event later so a subsequent cancellation never grants healing. */
-    @SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
-    public static void healing(LivingHealEvent event) {
-        if (serverThread(event.getEntity()) && enabled(event.getEntity()) && event.getEntity().getHealth() > 0
-                && !HighPowerNaturalRecovery.owns(event)) {
-            HEALS.computeIfAbsent(event.getEntity(), ignored -> new ArrayList<>()).add(event);
-        }
-    }
-
     @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
     public static void beforeTick(EntityTickEvent.Pre event) {
-        if (event.getEntity() instanceof LivingEntity entity) HighPowerCurveMigration.migrate(entity);
-        if (event.getEntity() instanceof LivingEntity entity && serverThread(entity) && enabled(entity)) { flushRecovery(entity); flushEarnedGrowth(entity); }
+        if (event.getEntity() instanceof LivingEntity entity && serverThread(entity)) {
+            HighPowerCurveMigration.migrate(entity);
+        }
+        if (event.getEntity() instanceof LivingEntity entity && serverThread(entity) && enabled(entity)) { flushEarnedGrowth(entity); }
     }
 
     @SubscribeEvent
     public static void tick(EntityTickEvent.Post event) {
-        if (event.getEntity() instanceof LivingEntity entity && serverThread(entity) && enabled(entity)) { flushRecovery(entity); flushEarnedGrowth(entity); }
+        if (event.getEntity() instanceof LivingEntity entity && serverThread(entity) && enabled(entity)) { flushEarnedGrowth(entity); }
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void clonePlayer(PlayerEvent.Clone event) {
         if (!(event.getEntity() instanceof ServerPlayer replacement) || !serverThread(replacement)) return;
-        flushRecovery(event.getOriginal());
         flushEarnedGrowth(event.getOriginal());
         var previous = read(event.getOriginal());
         if (previous.isEmpty()) return;
+        double baseMaximum = event.getOriginal().getAttributeBaseValue(Attributes.MAX_HEALTH);
+        replacement.getAttribute(Attributes.MAX_HEALTH).setBaseValue(baseMaximum);
         replacement.getPersistentData().put(DATA_KEY, tag(event.getOriginal()).copy());
         ExactCombatState achieved = previous.get();
         BigDecimal clonedActive = null;
@@ -3623,6 +3234,7 @@ public final class HighPowerCombat {
                 if (pending.position().compareTo(earnedGrowthPosition(original)) > 0) {
                     var capacity = ContinuousHighPowerGrowth.sample(pending.position());
                     achieved = achieved.withMaximums(capacity.maxHealth(), capacity.maxShield());
+                    baseMaximum = capacity.maxHealth().doubleValue();
                     clonedCapacity = pending.position();
                 }
                 // A rollback may leave q below Q; genuine pending active progress still survives death.
@@ -3634,79 +3246,21 @@ public final class HighPowerCombat {
                 : achieved.withShieldEnabled(false);
         // Base death policy is unchanged. Copied reserve currents receive no death refill.
         ZeroGapArmorStorage.guardParentWrite(replacement);
-        GrowthChange growth = new GrowthChange(replacement, previous.get(), state, clonedCapacity,
+        GrowthChange growth = new GrowthChange(replacement, read(replacement).orElseThrow(), state, clonedCapacity,
                 tag(replacement).getInt("level"), GrowthKind.CLONE, clonedActive);
         commitResources(replacement, state, null, null, growth);
-        synchronizeAdapter(replacement, state);
+        replacement.getAttribute(Attributes.MAX_HEALTH).setBaseValue(baseMaximum);
+        replacement.setHealth(event.isWasDeath() ? replacement.getMaxHealth()
+                : Math.min(state.health().floatValue(), replacement.getMaxHealth()));
         clearTransient(event.getOriginal());
     }
 
     @SubscribeEvent
     public static void leave(EntityLeaveLevelEvent event) {
         if (event.getEntity() instanceof LivingEntity entity) {
-            if (serverThread(entity)) { flushRecovery(entity); flushEarnedGrowth(entity); }
+            if (serverThread(entity)) { flushEarnedGrowth(entity); }
             clearTransient(entity);
         }
-    }
-
-    private static void flushRecovery(LivingEntity entity) {
-        var optional = read(entity);
-        if (optional.isEmpty()) { clearTransient(entity); return; }
-        ExactCombatState state = optional.get();
-        LivingDeathEvent death = DEATHS.get(entity);
-        ExactCombatState beforeLethal = LETHAL.get(entity);
-        if (beforeLethal == null && tag(entity).contains(PENDING_LETHAL_HEALTH, Tag.TAG_STRING)) {
-            // read() has already validated this bounded persisted amount.
-            beforeLethal = new ExactCombatState(CombatAmounts.parse(tag(entity).getString(PENDING_LETHAL_HEALTH), "pending lethal health"),
-                    state.maxHealth(), state.shield(), state.maxShield(), false);
-        }
-        boolean resolved = beforeLethal == null;
-        if (death != null && death.isCanceled() && beforeLethal != null) {
-            // Preserve a native death veto. No drops/death call is fabricated by this bridge.
-            write(entity, beforeLethal);
-            synchronizeAdapter(entity, beforeLethal);
-            resolved = true;
-        } else if (beforeLethal != null && state.isDead() && entity.getHealth() > 0) {
-            // Vanilla totem (or an explicit native resurrection) already restored adapter HP.
-            BigDecimal restored = state.maxHealth().multiply(decimal(entity.getHealth()))
-                    .divide(decimal(entity.getMaxHealth()), RATIO_CONTEXT).min(state.maxHealth());
-            state = new ExactCombatState(restored, state.maxHealth(), state.shield(), state.maxShield(), false);
-            write(entity, state);
-            synchronizeAdapter(entity, state);
-            resolved = true;
-        } else if (!state.isDead() || death != null) {
-            resolved = true;
-        }
-        // If native HP is still zero and no final death event has happened, a
-        // reentrant callback may be inside hurt before the totem/death decision.
-        // Keep the marker instead of consuming the only recovery evidence early.
-        if (resolved) {
-            DEATHS.remove(entity);
-            LETHAL.remove(entity);
-            tag(entity).remove(PENDING_LETHAL_HEALTH);
-        }
-        flushHealing(entity);
-    }
-
-    private static void flushHealing(LivingEntity entity) {
-        List<LivingHealEvent> heals = HEALS.remove(entity);
-        if (heals == null) return;
-        var optional = read(entity);
-        if (optional.isEmpty()) return;
-        ExactCombatState state = optional.get();
-        if (state.isDead()) return;
-        BigDecimal hp = state.health();
-        for (LivingHealEvent heal : heals) {
-            if (!heal.isCanceled() && Float.isFinite(heal.getAmount()) && heal.getAmount() > 0) {
-                BigDecimal restored = decimal(heal.getAmount());
-                if (entity instanceof cn.academy.port.titan.TitanEntity titan && tag(entity).contains("titanSpecies"))
-                    restored = restored.multiply(titan.profile().nativeHealthUnit());
-                hp = hp.add(restored).min(state.maxHealth());
-            }
-        }
-        state = new ExactCombatState(hp, state.maxHealth(), state.shield(), state.maxShield(), false);
-        write(entity, state);
-        synchronizeAdapter(entity, state);
     }
 
     /**
@@ -3738,58 +3292,50 @@ public final class HighPowerCombat {
         return previous.withShieldEnabled(false).applyMitigatedDamage(damage).state();
     }
 
-    private static void rejectPostDamage(LivingEntity entity, LivingDamageEvent.Post event, ExactCombatState previous) {
-        HISTORY.remove(entity);
-        if (event.getSource() instanceof ExactSkillDamageSource source) source.rejected = true;
-        tag(entity).putString("lastRejected", "Invalid native stage or exact amount outside supported bounds; native side effects may already have occurred");
-        LOGGER.warn("Rejected high-power damage for {}: unsupported native stage or exact amount; native pipeline side effects are not reversible",
-                BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()));
-        synchronizeAdapter(entity, previous);
-    }
-
     private static Optional<ExactCombatState> read(LivingEntity entity) {
         return read(entity, true);
     }
+
+    /** Shield and growth metadata are persisted. HP is always read from the living entity. */
     private static Optional<ExactCombatState> read(LivingEntity entity, boolean memoizeGrowth) {
         if (!supported(entity) || !entity.getPersistentData().contains(DATA_KEY, Tag.TAG_COMPOUND)) return Optional.empty();
-        CompoundTag tag = tag(entity);
+        CompoundTag data = tag(entity);
         try {
-            HighPowerLevel level = HighPowerLevel.forLevel(tag.getInt("level"));
-            Map<String, String> strings = new HashMap<>();
-            for (String key : FIELDS) {
-                if (!tag.contains(key, Tag.TAG_STRING)) return Optional.empty();
-                strings.put(key, tag.getString(key));
+            var maximumShield = CombatAmounts.parse(data.getString("maxShield"), "maximum shield");
+            var shield = CombatAmounts.parse(data.getString("shield"), "shield");
+            if (!data.getBoolean(NATIVE_VITALS)) {
+                if (!serverThread(entity)) return Optional.empty();
+                migrateNativeVitals(entity, data);
             }
-            ExactCombatState state = ExactCombatState.fromDecimalMap(strings);
-            if (state.shieldEnabled()) return Optional.empty();
-            if (tag.contains("titanSpecies")) {
-                if (!(entity instanceof cn.academy.port.titan.TitanEntity titan)
-                        || !titan.species().equals(tag.getString("titanSpecies")) || level.level() != titan.profile().tier()
-                        || state.maxHealth().compareTo(titan.profile().encounterHealth()) != 0 || state.maxShield().signum() != 0) return Optional.empty();
-            } else if (tag.contains(GROWTH_CURVE) || tag.contains(GROWTH_POSITION) || tag.contains(EARNED_LEVEL)) {
-                if (!tag.contains(GROWTH_CURVE, Tag.TAG_INT) || tag.getInt(GROWTH_CURVE) != ContinuousHighPowerGrowth.CURVE_VERSION
-                        || !tag.contains(EARNED_LEVEL, Tag.TAG_INT) || tag.getInt(EARNED_LEVEL) != level.level()
-                        || !tag.contains(GROWTH_POSITION, Tag.TAG_STRING)) return Optional.empty();
-                String encodedPosition = tag.getString(GROWTH_POSITION);
-                if (encodedPosition.length() > 96) return Optional.empty();
-                BigDecimal position = ContinuousHighPowerGrowth.requirePosition(new BigDecimal(encodedPosition));
-                if (!position.stripTrailingZeros().toPlainString().equals(encodedPosition)
-                        || position.compareTo(BigDecimal.valueOf(Math.min(5, level.level() + 1))) > 0) return Optional.empty();
-                GrowthValidation cached = GROWTH_VALIDATION.get(entity);
-                if (cached == null || !cached.position().equals(encodedPosition)) {
-                    cached = new GrowthValidation(encodedPosition, ContinuousHighPowerGrowth.sample(position));
-                    if (memoizeGrowth) GROWTH_VALIDATION.put(entity, cached);
-                }
-                var capacity = cached.sample();
-                if (state.maxHealth().compareTo(capacity.maxHealth()) != 0 || state.maxShield().compareTo(capacity.maxShield()) != 0) return Optional.empty();
-            } else if (state.maxHealth().compareTo(level.maxHealth()) != 0 || state.maxShield().compareTo(level.maxShield()) != 0) return Optional.empty();
-            if (tag.contains(PENDING_LETHAL_HEALTH)) {
-                if (!tag.contains(PENDING_LETHAL_HEALTH, Tag.TAG_STRING)) return Optional.empty();
-                BigDecimal pending = CombatAmounts.parse(tag.getString(PENDING_LETHAL_HEALTH), "pending lethal health");
-                if (pending.signum() <= 0 || pending.compareTo(state.maxHealth()) > 0) return Optional.empty();
-            }
-            return Optional.of(state);
-        } catch (IllegalArgumentException invalid) { return Optional.empty(); }
+            BigDecimal maxHealth = CombatAmounts.overkillClamp(decimal(entity.getMaxHealth()));
+            BigDecimal health = CombatAmounts.overkillClamp(decimal(entity.getHealth())).min(maxHealth);
+            return Optional.of(new ExactCombatState(health, maxHealth, shield, maximumShield, false));
+        } catch (IllegalArgumentException invalid) {
+            return Optional.empty();
+        }
+    }
+
+    /** All reads after this first server load use vanilla's persisted Health and Attributes. */
+    private static void migrateNativeVitals(LivingEntity entity, CompoundTag data) {
+        BigDecimal maximum = CombatAmounts.parse(data.getString("maxHealth"), "legacy maximum health");
+        if (maximum.signum() <= 0) throw new IllegalArgumentException("Missing legacy health maximum");
+        BigDecimal current = CombatAmounts.parse(data.getString("health"), "legacy health");
+        float oldNativeMaximum = entity.getMaxHealth();
+        float oldNativeHealth = entity.getHealth();
+        var attribute = entity.getAttribute(Attributes.MAX_HEALTH);
+        attribute.setBaseValue(maximum.doubleValue());
+        // A save made immediately after a totem can contain a zero legacy balance and positive native HP.
+        double fraction = current.signum() == 0 && oldNativeHealth > 0 ? oldNativeHealth / oldNativeMaximum
+                : current.divide(maximum, RATIO_CONTEXT).doubleValue();
+        entity.setHealth((float)(entity.getMaxHealth() * Math.max(0, Math.min(1, fraction))));
+        data.putBoolean(NATIVE_VITALS, true);
+        removeLegacyHealth(data);
+    }
+
+    static void removeLegacyHealth(CompoundTag data) {
+        data.remove("health");
+        data.remove("maxHealth");
+        data.remove("pendingLethalHealth");
     }
 
     private enum GrowthKind { EARNED, RESET, RANK, CLONE }
@@ -3918,6 +3464,7 @@ public final class HighPowerCombat {
             // still finish detached before the first parent write; optional corruption cannot block HP.
             CompoundTag live = tag(entity), base = new CompoundTag();
             state.toDecimalMap().forEach(base::putString);
+            removeLegacyHealth(base);
             ExactCombatState before = read(entity, false).orElse(null);
             if (growth != null) growth.validate(entity, before, state);
             boolean scatterInvalid = false;
@@ -3986,16 +3533,19 @@ public final class HighPowerCombat {
     private static void clearTransient(LivingEntity entity) {
         GROWTH_VALIDATION.remove(entity);
         if (entity instanceof ServerPlayer player) PENDING_GROWTH.remove(player);
-        LETHAL.remove(entity); DEATHS.remove(entity); HEALS.remove(entity);
         HISTORY.remove(entity); TRACES.remove(entity); ACTIVE.remove(entity); FRAMES.remove(entity);
     }
 
-    /** This assignment is solely the opted-in float adapter; all damage arithmetic above is BigDecimal. */
-    private static void synchronizeAdapter(LivingEntity entity, ExactCombatState state) {
-        float normalized = state.isDead() ? 0 : state.health().divide(state.maxHealth(), RATIO_CONTEXT)
-                .multiply(decimal(entity.getMaxHealth())).floatValue();
-        if (!state.isDead()) normalized = Math.max(Float.MIN_NORMAL, normalized);
-        entity.setHealth(Math.min(entity.getMaxHealth(), normalized));
+    /** Used only at enrollment, growth changes, lifecycle restore and explicit recovery. */
+    private static void applyNativeVitals(LivingEntity entity, ExactCombatState state) {
+        var data = tag(entity);
+        if (!data.getBoolean(NATIVE_VITALS) || state.maxHealth().compareTo(decimal(entity.getMaxHealth())) != 0
+                && entity.getAttributeBaseValue(Attributes.MAX_HEALTH) != state.maxHealth().doubleValue()) {
+            entity.getAttribute(Attributes.MAX_HEALTH).setBaseValue(state.maxHealth().doubleValue());
+        }
+        entity.setHealth(Math.min(state.health().floatValue(), entity.getMaxHealth()));
+        data.putBoolean(NATIVE_VITALS, true);
+        removeLegacyHealth(data);
     }
 
     private record HitHistory(float nativeIncoming, BigDecimal rawIncoming, boolean exactBridge) {}
@@ -4024,7 +3574,7 @@ public final class HighPowerCombat {
         boolean anchorPostGuard;
         EmergencyReturn.Capture emergencyReturn;
         double groundingKnockbackFactor = 1;
-        boolean groundingKnockbackUsed;
+        boolean groundingKnockbackUsed, armoredOnContact;
         NativeHurtFrame(DamageSource source, HitHistory previousHistory, NativeHurtFrame parent) {
             this.source = source; this.previousHistory = previousHistory; this.parent = parent;
         }

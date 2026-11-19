@@ -43,6 +43,7 @@ public final class TitanCombat {
         victim.addEffect(new MobEffectInstance(effect,ticks,amplifier),source);
     }
     private static void impulse(LivingEntity victim,Vec3 center,boolean pull,double strength) {
+        if (cn.academy.port.highpower.PlayerShieldArmor.holding(victim)) return;
         double dx=victim.getX()-center.x,dz=victim.getZ()-center.z;
         double length=Math.sqrt(dx*dx+dz*dz);if(length<.001){dx=.01;length=.01;}
         double sign=pull?-1:1;victim.push(sign*dx/length*strength,.16,sign*dz/length*strength);victim.hurtMarked=true;
@@ -58,16 +59,10 @@ public final class TitanCombat {
             case GRAVITY -> {impulse(victim,center,true,1.2);status(victim,MobEffects.MOVEMENT_SLOWDOWN,70,1,caster);}
             case VENOM -> {status(victim,MobEffects.POISON,140,1,caster);}
             case SLASH -> {status(victim,MobEffects.WEAKNESS,80,0,caster);impulse(victim,center,false,.7);}
-            case DRAIN -> {status(victim,MobEffects.WITHER,90,0,caster);caster.heal(3);}
+            case DRAIN -> {status(victim,MobEffects.WITHER,90,0,caster);caster.heal((float)(3 * caster.profile().encounterHealth().doubleValue() / caster.profile().health()));}
             case BLIND -> {status(victim,MobEffects.BLINDNESS,80,0,caster);status(victim,MobEffects.MOVEMENT_SLOWDOWN,60,0,caster);}
             case RADIANCE -> {status(victim,MobEffects.GLOWING,120,0,caster);status(victim,MobEffects.LEVITATION,35,0,caster);}
         }
-    }
-    /** Shared ordinary and esper outputs. Damage is admitted by native hurt exactly once. */
-    private static float outgoing(TitanEntity caster,LivingEntity victim,double ordinary,boolean skill) {
-        if(cn.academy.port.highpower.HighPowerCombat.enabled(victim))
-            ordinary *= caster.profile().damageUnit().doubleValue()/(skill?4:6);
-        return (float)ordinary;
     }
     static int strike(ServerLevel level,TitanEntity caster,TitanProfiles.Ability ability,
                       List<TitanPattern.Zone> zones,java.util.Set<java.util.UUID> struck,int portions) {
@@ -77,15 +72,15 @@ public final class TitanCombat {
         var victims=level.getEntitiesOfClass(LivingEntity.class,area.inflate(1),v->eligible(caster,v)&&!struck.contains(v.getUUID()));
         if(victims.isEmpty())return 0;
         victims.sort(Comparator.<LivingEntity>comparingInt(e->e==caster.getTarget()?0:1).thenComparingDouble(caster::distanceToSqr));
-        double base=ability.damage()*TitanConfig.DAMAGE_MULTIPLIER.get()*(TitanEnvironment.empowered(level,caster)?1.15:1)*(caster.enraged()?1.20:1)/portions;
+        double base=ability.damage()*caster.getAttributeValue(cn.academy.port.highpower.CombatAttributes.ABILITY_POWER)/4*TitanConfig.DAMAGE_MULTIPLIER.get()*(TitanEnvironment.empowered(level,caster)?1.15:1)*(caster.enraged()?1.20:1)/portions;
         int hits=0;
         for(var v:victims) {
             for(var z:zones) {
                 if(!z.touches(v.getBoundingBox()))continue;
                 if(z.kind()==TitanPattern.Kind.RAY && level.clip(new ClipContext(z.a(),v.getBoundingBox().getCenter(),
                         ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,caster)).getType()==HitResult.Type.BLOCK)continue;
-                float damage=outgoing(caster,v,base*(ability.effect()==TitanProfiles.Effect.SHOCK && v.isInWaterOrBubble()?1.15:1),true);
-                if(v.hurt(level.damageSources().mobAttack(caster),damage)){
+                float damage=(float)(base*(ability.effect()==TitanProfiles.Effect.SHOCK && v.isInWaterOrBubble()?1.15:1));
+                if(cn.academy.port.highpower.CapBreak.hurt(v, level.damageSources().mobAttack(caster), damage)){
                     secondary(caster,v,ability.effect(),z.a());struck.add(v.getUUID());hits++;
                 }
                 break;
@@ -120,17 +115,21 @@ public final class TitanCombat {
             double extra=victim.getBbWidth()*.5;
             if(dx*dx+dz*dz>(sweep+extra)*(sweep+extra))continue;
             if(caster.distanceToSqr(victim)>(reach+sweep)*(reach+sweep))continue;
-            if(victim.hurt(level.damageSources().mobAttack(caster),outgoing(caster,victim,caster.profile().attack()*TitanConfig.DAMAGE_MULTIPLIER.get()*(caster.enraged()?1.20:1.0),false))) {
+            if(cn.academy.port.highpower.CapBreak.hurt(victim, level.damageSources().mobAttack(caster), meleeDamage(caster))) {
                 impulse(victim,caster.position(),false,.7);hits++;
             }
         }
         if(hits>0){TitanVfx.melee(level,caster.species(),center);caster.meleeImpactSound(center);}
         return hits>0;
     }
+    private static float meleeDamage(TitanEntity caster) {
+        return (float)(caster.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE)
+                * TitanConfig.DAMAGE_MULTIPLIER.get() * (caster.enraged() ? 1.20 : 1.0));
+    }
+
     /** Apply one hit only after the server's limb cuboid actually intersects. */
     public static boolean limbHit(ServerLevel level,TitanEntity caster,LivingEntity victim) {
-        float damage=(float)(caster.profile().attack()*TitanConfig.DAMAGE_MULTIPLIER.get()*(caster.enraged()?1.20:1.0));
-        if(!victim.hurt(level.damageSources().mobAttack(caster),outgoing(caster,victim,damage,false)))return false;
+        if(!cn.academy.port.highpower.CapBreak.hurt(victim, level.damageSources().mobAttack(caster), meleeDamage(caster)))return false;
         impulse(victim,caster.position(),false,.7);
         TitanVfx.melee(level,caster.species(),victim.position());
         caster.meleeImpactSound(victim.position());

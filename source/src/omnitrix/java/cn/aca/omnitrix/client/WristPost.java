@@ -27,7 +27,7 @@ import org.lwjgl.opengl.GL30;
 final class WristPost {
     private record Field(UUID actor, Vec3 center, long until) {}
     private static long shakeTick = Long.MIN_VALUE;
-    private static float shakeStrength;
+    private static float shakeTrauma;
     private static long syzygyFlashTick = Long.MIN_VALUE;
     private static float syzygyFlashPeak;
 
@@ -39,6 +39,7 @@ final class WristPost {
     private static long sakugaTick = Long.MIN_VALUE;
     private static float sakugaPeak;
     private static float smoothedFovBoost;
+    private static long lastArmingRefractBegan = Long.MIN_VALUE;
 
     private static PostChain chain;
     private static RenderTarget target;
@@ -54,11 +55,17 @@ final class WristPost {
         refractWorldFocus = worldFocus;
     }
 
+    private static void addTrauma(long now, float impulse) {
+        float decayed = currentTrauma(now, 0f);
+        shakeTick = now;
+        shakeTrauma = Math.min(1.55f, Math.max(decayed + impulse * .65f, impulse));
+    }
+
     static void effect(WristNetwork.Cue cue, Player viewer, long now) {
         double distSqr = cue.to().distanceToSqr(viewer.position());
         boolean selfCast = cue.actor().equals(viewer.getUUID());
 
-        // VFX 2.0 Ascalon Sakuga Impact Frames + Screen-Space Air-Density Shockwave Refraction!
+        // 1. Ascalon Sakuga Impact Frames + Screen-Space Air-Density Shockwave Refraction
         if (!ClientState.reduced() && (selfCast || distSqr < 56 * 56)) {
             float falloff = selfCast ? 1f : (float) Math.max(0.0, 1.0 - Math.sqrt(distSqr) / 56.0);
             switch (cue.action()) {
@@ -68,8 +75,7 @@ final class WristPost {
                     sakugaTick = now;
                     sakugaPeak = 1.0f * falloff;
                     triggerShockRefraction(now, cue.from().add(0, 1.4, 0), 1.0f * falloff, 26f);
-                    shakeTick = now;
-                    shakeStrength = Math.max(shakeStrength * .5f, 2.35f * falloff);
+                    addTrauma(now, 1.45f * falloff);
                     return;
                 }
                 case WristNetwork.ASCALON_MACH_CUE -> {
@@ -81,20 +87,17 @@ final class WristPost {
                         syzygyFlashTick = now;
                         syzygyFlashPeak = Math.max(syzygyFlashPeak * .5f, 0.44f);
                     }
-                    shakeTick = now;
-                    shakeStrength = Math.max(shakeStrength * .5f, (.26f + tier * .24f) * falloff);
+                    addTrauma(now, (.32f + tier * .22f) * falloff);
                     return;
                 }
                 case WristNetwork.ASCALON_SWING_CUE -> {
-                    // Beat 4 = Parry Counter-Flash, Beat 5 = Charged Astral Iaido, Beat 3 = Finisher
                     if (cue.beat() == 4 || cue.beat() == 5) {
                         sakugaTick = now;
                         sakugaPeak = (cue.beat() == 5 ? 0.92f : 0.86f) * falloff;
                         triggerShockRefraction(now, cue.from().lerp(cue.to(), 0.35), 0.88f * falloff, 16f);
                         syzygyFlashTick = now;
                         syzygyFlashPeak = Math.max(syzygyFlashPeak * .5f, 0.48f * falloff);
-                        shakeTick = now;
-                        shakeStrength = Math.max(shakeStrength * .5f, 1.35f * falloff);
+                        addTrauma(now, 1.12f * falloff);
                         return;
                     } else if (cue.beat() == 3 || cue.hitEntity()) {
                         triggerShockRefraction(now, cue.to(), 0.42f * falloff, 10f);
@@ -110,15 +113,13 @@ final class WristPost {
                     }
                     syzygyFlashTick = now;
                     syzygyFlashPeak = Math.max(syzygyFlashPeak * .5f, (stage2 ? .48f : .30f) * falloff);
-                    shakeTick = now;
-                    shakeStrength = Math.max(shakeStrength * .5f, (stage2 ? 1.25f : .78f) * falloff);
+                    addTrauma(now, (stage2 ? 1.08f : .76f) * falloff);
                     return;
                 }
                 case WristNetwork.ASCALON_ARMOR_CUE -> {
                     if (cue.beat() == 1) {
                         triggerShockRefraction(now, cue.from().add(0, 1.1, 0), 0.62f * falloff, 15f);
-                        shakeTick = now;
-                        shakeStrength = Math.max(shakeStrength * .5f, 0.95f * falloff);
+                        addTrauma(now, .88f * falloff);
                         return;
                     }
                 }
@@ -129,31 +130,69 @@ final class WristPost {
                         sakugaPeak = 0.68f;
                     }
                 }
+                case WristNetwork.SINGULARITY_CUE, WristNetwork.EXTINCTION_CUE, WristNetwork.REWRITE_CUE -> {
+                    sakugaTick = now;
+                    sakugaPeak = .88f * falloff;
+                    syzygyFlashTick = now;
+                    syzygyFlashPeak = Math.max(syzygyFlashPeak * .5f, .55f * falloff);
+                    triggerShockRefraction(now, cue.to(), .92f * falloff, 20f);
+                    addTrauma(now, 1.42f * falloff);
+                    return;
+                }
+                case WristNetwork.CRYSTAL_SHELL_BREAK_CUE -> {
+                    triggerShockRefraction(now, cue.from().add(0, 1.0, 0), .52f * falloff, 12f);
+                    addTrauma(now, .68f * falloff);
+                    return;
+                }
                 default -> {}
             }
         }
 
-        // Damped hit-confirm camera punch ONLY on confirmed server hits / ground slams
+        // 2. Omnitrix Heavy Skill Air-Density Shockwave Refraction & Squared-Trauma Camera Punch
+        if (!ClientState.reduced() && (selfCast || distSqr < 32 * 32)) {
+            float falloff = selfCast ? 1f : (float) Math.max(0.0, 1.0 - Math.sqrt(distSqr) / 32.0);
+            int rawAction = cue.action();
+            Form form = rawAction < WristNetwork.FAILSAFE_CUE ? Form.at(rawAction % 32) : null;
+            boolean secondary = rawAction >= Abilities.SECONDARY && rawAction < Abilities.AUTOMATED;
+
+            if (form == Form.ALIEN_X) {
+                triggerShockRefraction(now, cue.to(), (secondary ? .88f : .68f) * falloff, secondary ? 18f : 15f);
+                if (secondary) {
+                    sakugaTick = now;
+                    sakugaPeak = .76f * falloff;
+                }
+            } else if (form == Form.FOUR_ARMS && (secondary || cue.beat() >= 2)) {
+                triggerShockRefraction(now, cue.to(), (secondary ? .74f : .50f) * falloff, secondary ? 15f : 11f);
+                if (secondary && cue.hitEntity() && selfCast) {
+                    sakugaTick = now;
+                    sakugaPeak = .56f;
+                }
+            } else if (form == Form.HEATBLAST && secondary && cue.linked()) {
+                triggerShockRefraction(now, cue.to(), .52f * falloff, 12f);
+            } else if (form == Form.XLR8 && !secondary && selfCast) {
+                triggerShockRefraction(now, cue.from().lerp(cue.to(), .6), .38f, 9f);
+            }
+        }
+
+        // 3. Damped squared-trauma hit-confirm camera punch ONLY on confirmed server hits / ground slams
         if (!ClientState.reduced() && (cue.hitEntity() || cue.hitGround())) {
-            if (selfCast || distSqr < 22 * 22) {
-                float falloff = selfCast ? 1f : (float) Math.max(0, 1.0 - Math.sqrt(distSqr) / 22.0);
+            if (selfCast || distSqr < 24 * 24) {
+                float falloff = selfCast ? 1f : (float) Math.max(0, 1.0 - Math.sqrt(distSqr) / 24.0);
                 int rawForm = cue.action() % 32;
-                float base = (cue.action() == Abilities.SECONDARY + Form.ALIEN_X.ordinal()
-                        || cue.action() == WristNetwork.SINGULARITY_CUE
-                        || cue.action() == WristNetwork.EXTINCTION_CUE) ? 2.35f
+                float traumaImpulse = (cue.action() == Abilities.SECONDARY + Form.ALIEN_X.ordinal()) ? 1.38f
                         : cue.action() == WristNetwork.ASCALON_CLEAVE_HIT_CUE ? .82f
-                        : cue.action() == Abilities.SECONDARY + Form.FOUR_ARMS.ordinal() ? 1.35f
-                        : rawForm == Form.FOUR_ARMS.ordinal() ? .62f
-                        : .35f;
-                shakeTick = now;
-                shakeStrength = Math.max(shakeStrength * .5f, base * falloff);
+                        : cue.action() == Abilities.SECONDARY + Form.FOUR_ARMS.ordinal() ? 1.12f
+                        : rawForm == Form.FOUR_ARMS.ordinal() ? (cue.beat() >= 2 ? .88f : .68f)
+                        : rawForm == Form.RIPJAWS.ordinal() || rawForm == Form.WILDMUTT.ordinal() ? .62f
+                        : .46f;
+                addTrauma(now, traumaImpulse * falloff);
             }
         }
     }
 
     static void reset() {
         shakeTick = Long.MIN_VALUE;
-        shakeStrength = 0;
+        shakeTrauma = 0;
         syzygyFlashTick = Long.MIN_VALUE;
         syzygyFlashPeak = 0;
         refractTick = Long.MIN_VALUE;
@@ -162,6 +201,7 @@ final class WristPost {
         sakugaTick = Long.MIN_VALUE;
         sakugaPeak = 0;
         smoothedFovBoost = 0f;
+        lastArmingRefractBegan = Long.MIN_VALUE;
     }
 
     static void reload() {
@@ -195,19 +235,28 @@ final class WristPost {
     static float impact(ClientState.View view, float partial) {
         if (view.s().phase() != Stage.ARMING) return 0;
         float key = switch (view.s().watch()) {
-            case CLASSIC -> 6;
-            case CARNITRIX -> 8;
-            case CELESTIAL -> 38;
+            case CLASSIC -> 5.8f;
+            case CARNITRIX -> 8f;
+            case CELESTIAL -> 38f;
         };
         float t = view.age(partial) - key;
-        return t < 0 || t > 4 ? 0 : (float) Math.sin(t * Math.PI / 4);
+        return t < 0 || t > 4.4f ? 0 : (float) Math.sin(t * Math.PI / 4.4f);
     }
 
-    private static float hitShake(long now, float partial) {
-        if (shakeTick == Long.MIN_VALUE) return 0;
+    private static float currentTrauma(long now, float partial) {
+        if (shakeTick == Long.MIN_VALUE) return 0f;
         float elapsed = (now - shakeTick) + partial;
-        if (elapsed < 0 || elapsed > 5.0f) return 0;
-        return shakeStrength * (1f - elapsed / 5.0f) * Mth.sin(elapsed * 2.6f);
+        if (elapsed < 0 || elapsed > 7.5f) return 0f;
+        return Math.max(0f, shakeTrauma * (1f - elapsed / 7.5f));
+    }
+
+    /** Non-linear squared-trauma camera shake: sharp crisp punch at t=0, silky organic settle! */
+    private static float hitShake(long now, float partial) {
+        float tr = currentTrauma(now, partial);
+        if (tr <= .005f) return 0f;
+        float elapsed = (now - shakeTick) + partial;
+        float mag = tr * tr;
+        return mag * (Mth.sin(elapsed * 2.9f) * .72f + Mth.cos(elapsed * 4.7f) * .28f);
     }
 
     private static float syzygyWave(long now, float partial) {
@@ -218,7 +267,6 @@ final class WristPost {
         return syzygyFlashPeak * (1f - elapsed / dur);
     }
 
-    /** Sakuga pulse: brief 0.45-tick vacuum dip -> razor 1.4-tick positive impact frame (~38ms)! */
     private static float sakugaPulse(long now, float partial, ClientState.AscalonView asc) {
         float chargeImplosion = 0f;
         if (asc != null) {
@@ -249,18 +297,26 @@ final class WristPost {
         float bump = view == null ? 0 : impact(view, partial);
         if (bump > 0 && view != null) {
             boolean carni = view.s().watch() == Kind.CARNITRIX;
-            event.setPitch(event.getPitch() + bump * (carni ? 2.4f : 1.55f) * scale);
-            event.setRoll(event.getRoll() + Mth.sin(view.age(partial) * 2) * bump * (carni ? 2.1f : 1.05f) * scale);
+            event.setPitch(event.getPitch() + bump * (carni ? 2.4f : 1.75f) * scale);
+            event.setRoll(event.getRoll() + Mth.sin(view.age(partial) * 2.2f) * bump * (carni ? 2.1f : 1.15f) * scale);
         }
-        float combatShake = hitShake(mc.level.getGameTime(), partial);
-        if (Math.abs(combatShake) > .01f) {
-            event.setPitch(event.getPitch() + combatShake * scale);
-            event.setRoll(event.getRoll() + combatShake * .58f * scale);
+        long now = mc.level.getGameTime();
+        float combatShake = hitShake(now, partial);
+        if (Math.abs(combatShake) > .008f) {
+            float elapsed = (now - shakeTick) + partial;
+            event.setPitch(event.getPitch() + combatShake * 1.15f * scale);
+            event.setYaw(event.getYaw() + combatShake * Mth.sin(elapsed * 3.7f) * .45f * scale);
+            event.setRoll(event.getRoll() + combatShake * .68f * scale);
         }
         if (mc.player != null) {
             float flightBank = AscalonRenderer.cameraBankRoll(mc.player, partial);
             if (Math.abs(flightBank) > .02f) {
                 event.setRoll(event.getRoll() + flightBank * .28f * scale);
+            }
+            // Subtle aerodynamic bank roll for XLR8 high-speed turns!
+            if (view != null && view.s().morphed() && view.s().chosen() == Form.XLR8 && mc.player.isSprinting()) {
+                float yawDelta = Mth.wrapDegrees(mc.player.getViewYRot(partial) - mc.player.yRotO);
+                event.setRoll(event.getRoll() + Mth.clamp(-yawDelta * .24f, -3.5f, 3.5f) * scale);
             }
         }
     }
@@ -272,7 +328,7 @@ final class WristPost {
         float fovScale = mc.options.fovEffectScale().get().floatValue();
         float targetDelta = 0f;
 
-        // Pre-burst Sakuga tension zoom-in during Iaido sheath charge!
+        // 1. Ascalon Iaido tension & Viltrumite flight FOV
         var asc = ClientState.selfAscalon();
         if (asc != null) {
             float iaido = asc.iaidoChargeProgress(partial);
@@ -285,7 +341,53 @@ final class WristPost {
             float machRatio = Mth.clamp((mult - 1.0f) / 8.0f, 0f, 1f);
             targetDelta += machRatio * 12.0f * fovScale;
         }
-        smoothedFovBoost = Mth.lerp(.18f, smoothedFovBoost, targetDelta);
+
+        // 2. Omnitrix Transformation Slam Compression -> Burst & Alien Speed/Skill FOV Juice!
+        var view = ClientState.self();
+        if (view != null) {
+            Stage phase = view.s().phase();
+            float age = view.age(partial);
+            if (phase == Stage.ARMING) {
+                float key = view.s().watch() == Kind.CELESTIAL ? 38f : 5.8f;
+                if (age >= key - 3.2f && age < key) {
+                    // Pre-slam anticipation zoom-in tension
+                    float c = (age - (key - 3.2f)) / 3.2f;
+                    targetDelta -= c * 3.0f * fovScale;
+                } else if (age >= key && age < key + 8.5f) {
+                    // Transformation DNA burst FOV kick!
+                    float p = (age - key) / 8.5f;
+                    targetDelta += (float) Math.sin(p * Math.PI) * 6.2f * fovScale;
+                }
+            } else if (view.s().morphed()) {
+                Form form = view.s().chosen();
+                boolean star = view.s().watch() == Kind.CELESTIAL;
+                double horizSpd = mc.player.getDeltaMovement().horizontalDistance();
+                var perf = view.performance(partial);
+
+                if (form == Form.XLR8) {
+                    float spdRatio = Mth.clamp((float) ((horizSpd - .18) / (star ? 1.45 : 1.15)), 0f, 1f);
+                    targetDelta += spdRatio * (star ? 10.5f : 8.2f) * fovScale;
+                    if (perf != null && perf.action() >= Abilities.SECONDARY) {
+                        // Instant drift-brake G-force FOV snap!
+                        targetDelta -= 3.6f * fovScale;
+                    }
+                } else if (form == Form.STINKFLY || form == Form.WILDMUTT || form == Form.RIPJAWS) {
+                    float lungeRatio = Mth.clamp((float) ((horizSpd - .24) / .85), 0f, 1f);
+                    targetDelta += lungeRatio * 5.8f * fovScale;
+                } else if ((form == Form.FOUR_ARMS || form == Form.ALIEN_X) && perf != null) {
+                    double now = view.now(partial);
+                    if (perf.action() >= Abilities.SECONDARY && now < perf.impact()) {
+                        // Heavy slam / supernova windup tension!
+                        float gather = (float) Mth.clamp((now - perf.start()) / Math.max(1.0, perf.impact() - perf.start()), 0.0, 1.0);
+                        targetDelta -= gather * 3.2f * fovScale;
+                    } else if (now >= perf.impact() && now < perf.impact() + 5.0) {
+                        targetDelta += (float) (1.0 - (now - perf.impact()) / 5.0) * 4.5f * fovScale;
+                    }
+                }
+            }
+        }
+
+        smoothedFovBoost = Mth.lerp(.22f, smoothedFovBoost, targetDelta);
         if (Math.abs(smoothedFovBoost) > .04f) {
             event.setFOV(event.getFOV() + smoothedFovBoost);
         }
@@ -325,8 +427,20 @@ final class WristPost {
         float partial = event.getPartialTick().getGameTimeDeltaPartialTick(false);
         float screenScale = mc.options.screenEffectScale().get().floatValue();
         float hit = view == null || ClientState.reduced() ? 0 : impact(view, partial);
+
+        // Trigger crisp screen-space shockwave refraction right at the watch-slam transformation flash!
+        if (view != null && !ClientState.reduced() && view.s().phase() == Stage.ARMING) {
+            float key = view.s().watch() == Kind.CELESTIAL ? 38f : 5.8f;
+            float age = view.age(partial);
+            if (age >= key && age < key + 2f && lastArmingRefractBegan != view.s().began()) {
+                lastArmingRefractBegan = view.s().began();
+                triggerShockRefraction(now, mc.player.getEyePosition().add(mc.player.getLookAngle().scale(1.2)),
+                        view.s().watch() == Kind.CELESTIAL ? .72f : .48f, 13f);
+            }
+        }
+
         if (!ClientState.reduced()) {
-            hit = Math.max(hit, Math.min(.32f, Math.abs(hitShake(now, partial)) * .16f));
+            hit = Math.max(hit, Math.min(.34f, Math.abs(hitShake(now, partial)) * .18f));
         }
         float red = 0;
         if (view != null && view.s().watch() == Kind.CARNITRIX) {
@@ -362,7 +476,6 @@ final class WristPost {
                 if (machRatio > .02f) {
                     ascalonAura = Math.max(ascalonAura, machRatio * .46f);
                     bloomBoost = Math.max(bloomBoost, 0.55f + machRatio * 0.40f);
-                    // Continuous subtle Prandtl-Glauert air-density slipstream refraction ring around Paladin at >= 4.2x speed!
                     if (mult >= 4.2f) {
                         refractStrength = (mult - 4.2f) / 4.8f * 0.28f;
                         refractRing = 0.22f + 0.04f * Mth.sin((now + partial) * 0.45f);
@@ -374,7 +487,6 @@ final class WristPost {
                 float elapsed = (now - refractTick) + partial;
                 if (elapsed >= 0f && elapsed <= refractDuration) {
                     float p = elapsed / refractDuration;
-                    // Fast Ease-Out Quart shockwave ring expansion
                     float ease = 1f - (1f - p) * (1f - p) * (1f - p);
                     float transientStr = refractPeak * (1f - p);
                     if (transientStr > refractStrength) {

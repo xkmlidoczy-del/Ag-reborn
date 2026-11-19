@@ -31,7 +31,7 @@ public final class HighPowerCurveMigration {
         CompoundTag parent = entity.getPersistentData();
         CompoundTag old = parent.getCompound(HighPowerCombat.DATA_KEY);
         // A previously converted save can never replay the old checkpoint to refill resources.
-        if (parent.contains(BACKUP_KEY)) return false;
+        if (parent.contains(BACKUP_KEY) || old.getBoolean("nativeVitals")) return false;
         boolean continuous = old.contains("growthCurve") || old.contains("growthPosition") || old.contains("earnedLevel");
         if (continuous && (!old.contains("growthCurve", Tag.TAG_INT) || old.getInt("growthCurve") != 1)) return false;
         final ExactCombatState converted;

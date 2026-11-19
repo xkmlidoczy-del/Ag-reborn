@@ -3,6 +3,10 @@ package cn.academy.port.client.highpower.mixin;
 import cn.academy.port.client.HighPowerRecoveryHud;
 import cn.academy.port.client.highpower.RecoveryHudHeartsAccess;
 import cn.academy.port.highpower.HighPowerRecoveryHudModel;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.util.Mth;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,11 +27,37 @@ abstract class RecoveryHudHeartMixin implements RecoveryHudHeartsAccess {
         return HighPowerRecoveryHud.compactActionBar(input);
     }
 
+    // Bound vanilla's layout before it computes heart rows or moves the armor layer.
+    @ModifyExpressionValue(method = "renderHealthLevel",
+            at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(FF)F"), require = 1)
+    private float academy$boundHeartLayout(float measured) {
+        return measured > 80 ? 20 : measured;
+    }
+
+    @ModifyExpressionValue(method = "renderHealthLevel",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;getHealth()F"), require = 1)
+    private float academy$boundHeartBlink(float health) {
+        return Math.min(health, 80);
+    }
+
     @ModifyArgs(method = "renderHealthLevel(Lnet/minecraft/client/gui/GuiGraphics;)V", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/gui/Gui;renderHearts(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/entity/player/Player;IIIIFIIIZ)V"),
             require = 1, expect = 1, allow = 1)
     private void academy$replaceOnlyNativeHp(Args args) {
-        if (!HighPowerRecoveryHud.replacesNativeHearts((Player)args.get(1))) return;
+        Player player = args.get(1);
+        boolean academyHud = HighPowerRecoveryHud.replacesNativeHearts(player);
+        if (!academyHud && player.getMaxHealth() <= 80) return;
+        if (!academyHud) {
+            GuiGraphics graphics = args.get(0);
+            int x = args.get(2), y = args.get(3);
+            float ratio = Mth.clamp(player.getHealth() / player.getMaxHealth(), 0, 1);
+            int width = 81;
+            graphics.fill(x, y + 1, x + width, y + 9, 0xdc101b22);
+            graphics.fill(x, y + 8, x + Math.round(width * ratio), y + 9, 0xffb0e5ff);
+            var font = Minecraft.getInstance().font;
+            String hp = HighPowerRecoveryHud.compactNativeHealth(player.getHealth());
+            graphics.drawString(font, hp, x + 2, y, 0xffe4edf2, false);
+        }
         args.set(5, -1); // No native regeneration-bounce index.
         args.set(6, 0F); // No native maximum HP containers.
         args.set(7, 0);  // No current native proxy HP fill.

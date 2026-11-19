@@ -6,6 +6,7 @@
   "plugin": "cn.aca.omnitrix.mixin.OptionalAcademy",
   "mixins": [
     "AcademyRequest",
+    "EmpoweredMelee",
     "FormPhysics",
     "WakeSurface",
     "PowderRunning",

@@ -6,7 +6,7 @@ plugins {
 // with the default pure/server check outputs without rewriting their classpath.
 if (providers.gradleProperty('qaBuildDirectory').isPresent())
     layout.buildDirectory.set(layout.projectDirectory.dir(providers.gradleProperty('qaBuildDirectory').get()))
-version = '0.1.0-m41-highpower.0.81.5-city-a3.72'
+version = '0.1.0-m41-highpower.0.81.5-city-a3.75'
 group = 'cn.academy'
 base { archivesName = 'academy-generation-reborn' }
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
@@ -16,7 +16,7 @@ sourceSets {
     mech
     fauna
     hum
-    omnitrix
+    omnitrix { compileClasspath += main.output }
     mechQa {
         compileClasspath += mech.output
         runtimeClasspath += mech.output
@@ -97,7 +97,7 @@ def mechJar = tasks.register('mechJar', Jar) {
     from sourceSets.mech.output
     into('META-INF') { from('integration/aca-mech/LICENSE', 'integration/aca-mech/NOTICE.md', 'integration/aca-mech/CC0-1.0.txt', 'integration/aca-mech/ASSET-LICENSE.md') }
 }
-def faunaVersion = '0.1.17'
+def faunaVersion = '0.1.18'
 tasks.named('processFaunaResources') {
     inputs.property 'faunaVersion', faunaVersion
     filesMatching('META-INF/neoforge.mods.toml') { expand(mod_version: faunaVersion) }
@@ -162,6 +162,7 @@ repositories {
 dependencies {
     jarJar files(mechJar)
     jarJar files(faunaJar)
+    compileOnly sourceSets.fauna.output
     jarJar files(humJar)
     jarJar files(omnitrixJar)
     implementation 'software.bernie.geckolib:geckolib-neoforge-1.21.1:4.7'

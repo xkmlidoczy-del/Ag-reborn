@@ -3,10 +3,13 @@ package dev.acafauna.core;
 import java.util.*;
 import dev.acafauna.entity.FaunaAnimal;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
+import net.minecraft.util.Mth;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.GameRules;
@@ -62,27 +65,37 @@ public final class FaunaCore {
                 if(!FaunaConfig.NATURAL.get() || !Level.OVERWORLD.equals(level.dimension())
                         || !level.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)
                         || !world.getBiome(pos).is(habitat)) return false;
-                float clearance=Math.max(p.width(),p.clearance());
-                var box=new AABB(pos.getX()+.5-clearance*.5,pos.getY(),pos.getZ()+.5-clearance*.5,
-                    pos.getX()+.5+clearance*.5,pos.getY()+p.height(),pos.getZ()+.5+clearance*.5);
-                if(box.minY<=world.getMinBuildHeight()||box.maxY>=world.getMaxBuildHeight())return false;
-                int half=(int)Math.ceil(clearance*.5);
-                for(int x=-half;x<=half;x++)for(int z=-half;z<=half;z++)
-                    if(!world.hasChunkAt(pos.offset(x,0,z)))return false;
-                if(!world.getWorldBorder().isWithinBounds(box)||!world.noCollision(box))return false;
-                if(reason==MobSpawnType.NATURAL && level.getEntitiesOfClass(FaunaAnimal.class,
-                        new AABB(pos).inflate(32)).size()>=FaunaConfig.LOCAL_CAP.get()) return false;
-                if(p.aquatic()) {
-                    int depth=Math.max((int)Math.ceil(p.height()),p.id().equals("orca")?4:2);
-                    for(int x=(int)Math.floor(box.minX);x<=Math.floor(box.maxX-.0001);x++)
-                        for(int z=(int)Math.floor(box.minZ);z<=Math.floor(box.maxZ-.0001);z++)
-                            for(int y=0;y<depth;y++)if(!world.getFluidState(new BlockPos(x,pos.getY()+y,z)).is(FluidTags.WATER))return false;
-                    return world.getFluidState(pos.below()).is(FluidTags.WATER);
-                }
-                return world.getRawBrightness(pos,0)>7&&world.getBlockState(pos.below()).isSolid()
-                    &&world.getFluidState(pos).isEmpty();
+                return fitsSpawnSite(p, world, pos)
+                        && (reason!=MobSpawnType.NATURAL || level.getEntitiesOfClass(FaunaAnimal.class,
+                            new AABB(pos).inflate(32)).size()<FaunaConfig.LOCAL_CAP.get());
             },RegisterSpawnPlacementsEvent.Operation.REPLACE);
         }
     }
+    /** Shared physical placement for vanilla groups and Academy's bounded replenishment. */
+    public static boolean fitsSpawnSite(Species species, ServerLevelAccessor world, BlockPos feet) {
+        float clearance = Math.max(species.width(), species.clearance());
+        double half = clearance * .5;
+        AABB box = new AABB(feet.getX() + .5 - half, feet.getY(), feet.getZ() + .5 - half,
+                feet.getX() + .5 + half, feet.getY() + species.height(), feet.getZ() + .5 + half);
+        int depth = species.aquatic() ? Math.max(Mth.ceil(species.height()), species.id().equals("orca") ? 4 : 2) : 0;
+        if (box.minY <= world.getMinBuildHeight() || feet.getY() + Math.max(species.height(), depth) >= world.getMaxBuildHeight())
+            return false;
+        int minX = Mth.floor(box.minX), maxX = Mth.ceil(box.maxX) - 1;
+        int minZ = Mth.floor(box.minZ), maxZ = Mth.ceil(box.maxZ) - 1;
+        for (int x = SectionPos.blockToSectionCoord(minX); x <= SectionPos.blockToSectionCoord(maxX); x++)
+            for (int z = SectionPos.blockToSectionCoord(minZ); z <= SectionPos.blockToSectionCoord(maxZ); z++)
+                if (!world.hasChunk(x, z)) return false;
+        if (!world.getWorldBorder().isWithinBounds(box) || !world.noCollision(box)) return false;
+        if (!species.aquatic()) {
+            return world.getRawBrightness(feet, 0) > 7 && world.getBlockState(feet.below()).isSolid()
+                    && world.getFluidState(feet).isEmpty();
+        }
+        if (!world.getFluidState(feet.below()).is(FluidTags.WATER)) return false;
+        for (int x = minX; x <= maxX; x++) for (int z = minZ; z <= maxZ; z++)
+            for (int y = 0; y < depth; y++)
+                if (!world.getFluidState(new BlockPos(x, feet.getY() + y, z)).is(FluidTags.WATER)) return false;
+        return true;
+    }
+
     private FaunaCore(){}
 }

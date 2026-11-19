@@ -79,8 +79,9 @@ public final class HighPowerNaturalRecovery {
                     status = saturated ? "saturated" : "slow";
                     int timer = ((NativeFoodRecoveryAccess) food).academy$naturalRecoveryTimer();
                     next = Math.max(1, interval - Math.max(0, Math.min(timer, interval - 1)));
-                    float reference = referenceHealth(player, state, player.getMaxHealth());
-                    rate = attributableBudget(reference, player.getMaxHealth(), pulse, state)
+                    float before = player.getHealth();
+                    float after = Math.min(player.getMaxHealth(), before + pulse);
+                    rate = BigDecimal.valueOf((double)(after - before))
                             .multiply(BigDecimal.valueOf(20)).divide(BigDecimal.valueOf(interval), PRECISION);
                 }
             }
@@ -91,22 +92,6 @@ public final class HighPowerNaturalRecovery {
 
     /** Growth must not mutate the denominator inside an attributed native heal transaction. */
     static boolean healingInProgress(ServerPlayer player) { return ACTIVE.containsKey(player); }
-
-    /**
-     * Transport the admitted float-rounding shadow once when capacity really grows.
-     * This does not heal, touch FoodData's timer/exhaustion, or reset combat pause.
-     * Equal-cap level boundaries remain an exact no-op, including the saved shadow.
-     */
-    static void capacityChanged(ServerPlayer player, ExactCombatState before, ExactCombatState after) {
-        if (!server(player) || before.maxHealth().compareTo(after.maxHealth()) == 0) return;
-        float nativeMaximum = player.getMaxHealth();
-        if (!Float.isFinite(nativeMaximum) || nativeMaximum <= 0) return;
-        float reference = referenceHealth(player, before, nativeMaximum);
-        float transported = new BigDecimal(Float.toString(reference)).multiply(before.maxHealth())
-                .divide(after.maxHealth(), PRECISION).floatValue();
-        transported = Math.max(0, Math.min(nativeMaximum, transported));
-        rememberReference(player, after, nativeMaximum, transported);
-    }
 
     /** A real offensive action, including a paid cast that misses, postpones rest. */
     public static void offensiveAction(ServerPlayer player) { combatActivity(player); }
@@ -193,45 +178,13 @@ public final class HighPowerNaturalRecovery {
 
     /** One native heal, one final observation. This source marker is never carried into a nested heal. */
     public static void foodHeal(FoodData food, Player player, float amount, Runnable vanillaHeal) {
-        if (!(player instanceof ServerPlayer owner) || !server(owner)) { vanillaHeal.run(); return; }
         FoodFrame frame = FOOD.get(food);
-        if (frame == null || frame.player != player || !frame.managed || !(player instanceof ServerPlayer server)) {
-            vanillaHeal.run(); return;
-        }
-        if (!eligible(server) || pauseTicksRemaining(server) > 0 || !Float.isFinite(amount) || amount <= 0) return;
-        var state = HighPowerCombat.exactState(server).orElse(null);
-        if (state == null || state.isDead() || state.health().compareTo(state.maxHealth()) >= 0) return;
-        HealFrame source = new HealFrame(server, state.health(), state.maxHealth(), server.getMaxHealth(), referenceHealth(server, state, server.getMaxHealth()));
-        HealFrame previous = ACTIVE.put(server, source);
-        try {
+        if (!(player instanceof ServerPlayer server) || frame == null || frame.player != player || !frame.managed) {
             vanillaHeal.run();
-            if (source.event != null) {
-                HighPowerCombat.settleRecovery(server);
-                LivingHealEvent event = source.event;
-                if (!event.isCanceled() && Float.isFinite(event.getAmount()) && event.getAmount() > 0) {
-                    var current = HighPowerCombat.exactState(server).orElse(null);
-                    float nativeMaximum = server.getMaxHealth();
-                    if (current != null && Float.isFinite(nativeMaximum) && nativeMaximum > 0) {
-                        // Nested ordinary healing is already reconciled in exact units. If it
-                        // changed that baseline, remap before the attributable OUTER pulse;
-                        // never attribute the total temporary native before/after HP to it.
-                        boolean unchanged = current.health().compareTo(source.initialHealth) == 0
-                                && current.maxHealth().compareTo(source.exactMaximum) == 0
-                                && Float.compare(nativeMaximum, source.nativeMaximum) == 0;
-                        float reference = unchanged ? source.referenceHealth : referenceHealth(server, current, nativeMaximum);
-                        float nextReference = Math.min(nativeMaximum, reference + event.getAmount());
-                        BigDecimal scaled = attributableBudget(reference, nativeMaximum, event.getAmount(), current);
-                        HighPowerCombat.applyNaturalHealing(server, scaled);
-                        HighPowerCombat.exactState(server).ifPresent(after -> rememberReference(server, after, nativeMaximum, nextReference));
-                    }
-                }
-            }
-        } finally {
-            if (source.event != null) OWNED.remove(source.event);
-            if (previous == null) ACTIVE.remove(server); else ACTIVE.put(server, previous);
-            HighPowerCombat.settleRecovery(server);
-            HighPowerCombat.resynchronizeExact(server); // Invalid/nonpositive final event never poisons the float adapter.
+            return;
         }
+        if (eligible(server) && pauseTicksRemaining(server) == 0 && Float.isFinite(amount) && amount > 0)
+            vanillaHeal.run();
     }
 
     /** Scoped at native heal entry, before any event subscriber can cause reentrant healing. */

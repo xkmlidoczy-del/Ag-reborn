@@ -3959,5 +3959,12 @@
   "city.elevator.reason.shaft_blocked": "井道内有障碍",
   "city.elevator.reason.shaft_damaged": "井道结构损坏",
   "academy.mental.resisted": "目标抵抗了控制。",
-  "academy.command.rank_commit_failed": "等级和成长账本未能提交。使用 /academyhp growth 查看账号状态。"
+  "academy.command.rank_commit_failed": "等级和成长账本未能提交。使用 /academyhp growth 查看账号状态。",
+  "ac.app.city_map.name": "都市地图",
+  "item.academy.app_city_map": "都市地图安装器",
+  "academy.city_map.north": "北向上 · 每格 2 方块",
+  "academy.city_map.position": "当前位置",
+  "academy.city_map.surface": "显示已加载区域的地表；室内和地下可能被遮挡。",
+  "academy.city_map.hide": "隐藏地图",
+  "attribute.name.academy.ability_power": "技能强度"
 }

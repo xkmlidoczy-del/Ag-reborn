@@ -189,6 +189,7 @@ public final class CanonOffense {
         }
     }
     private static void affect(Cast c,LivingEntity t){
+        if (cn.academy.port.highpower.PlayerShieldArmor.holding(t)) return;
         String id=c.spec.id();
         if(c.spec.category().equals("mental_out")){
             int time=cn.academy.port.core.SkillTuning.fields(id).containsKey("control_ticks")?cn.academy.port.core.SkillTuning.integer(id,"control_ticks"):0;

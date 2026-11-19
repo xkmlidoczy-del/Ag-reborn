@@ -32,7 +32,11 @@ public final class TitanProfiles {
         public java.math.BigDecimal damageUnit() {
             return cn.academy.port.highpower.core.HighPowerLevel.forLevel(tier()).damage();
         }
-        public java.math.BigDecimal nativeHealthUnit() {
+        public double meleeAttack() {
+            return attack() * damageUnit().doubleValue() / 6;
+        }
+
+        private java.math.BigDecimal encounterHealthUnit() {
             // The same encounter factor applies to ordinary post-armor damage and healing.
             // A sword therefore removes the same fraction of the bar as in legacy worlds.
             int percent = switch (id) {
@@ -47,7 +51,7 @@ public final class TitanProfiles {
             return damageUnit().multiply(java.math.BigDecimal.valueOf(percent,2)).divide(java.math.BigDecimal.valueOf(20));
         }
         public java.math.BigDecimal encounterHealth() {
-            return nativeHealthUnit().multiply(java.math.BigDecimal.valueOf(health));
+            return encounterHealthUnit().multiply(java.math.BigDecimal.valueOf(health));
         }
         public Profile {
             if (id.isBlank() || health < 1 || health > 1024 || armor < 0 || armor > 30 || attack <= 0 || speed <= 0)

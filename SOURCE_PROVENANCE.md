@@ -1,6 +1,6 @@
 # Source snapshot and privacy handling
 
-This snapshot follows the verified Academy generation reborn / Ag:reborn `0.1.0-m41-highpower.0.81.5-city-a3.72` source. Earlier public snapshots remain under their original tags. The original work is [AcademyCraft by Lambda Innovation](https://github.com/LambdaInnovation/AcademyCraft), with the classic reference at tag 1.0.7 (commit `00d19ec0cf538f61c1095c9292f5ee6863db4521`).
+This snapshot follows the verified Academy generation reborn / Ag:reborn `0.1.0-m41-highpower.0.81.5-city-a3.75` source. Earlier public snapshots remain under their original tags. The original work is [AcademyCraft by Lambda Innovation](https://github.com/LambdaInnovation/AcademyCraft), with the classic reference at tag 1.0.7 (commit `00d19ec0cf538f61c1095c9292f5ee6863db4521`).
 
 This repository starts with the privacy-reviewed a3.61 export. Its build inputs and assets follow the public source layout. Local machine paths were replaced with relative paths where needed. Local fields were removed from the editable train model; the model's geometry and materials were compared before and after. Non-rendering text or EXIF chunks were removed from selected generated PNGs, and their decoded pixels were compared. Some original upstream PNG metadata remains where existing runtime or test checks verify the original upstream file hash; it was checked for local usernames, paths and contact details. See `source/docs/ASSET_METADATA_NOTICE.md`.
 
@@ -17,3 +17,5 @@ The a3.68 export adds the embedded ACA bio HUM 0.9.1 Java sources, runtime asset
 The a3.71 export includes the a3.69 combat and resource-loading fixes, the a3.70 Titan revision, the integrated Fauna habitat rules, and the Omnitrix 0.7.0 runtime sources and assets from the verified donor source archive. Omnitrix retains its module ID, registry entries, protocol and upstream credits. The embedded control mapping and the main mod's equipment input routing are the integration changes. Selected PNGs were stripped of non-rendering metadata and compared by decoded pixels. Local test instances and logs stayed in the workspace.
 
 The a3.72 snapshot changes client resource preparation, render-state caches and Titan rig initialization. The released JAR retains the packaged runtime textures, animations and data from a3.71.
+
+The a3.75 backup adds the city map, HUD and terminal item art, real entity attributes and shields, Fauna spawn updates, and damage cap compatibility. The runtime sources and assets follow the tested local a3.75 build. Older published PNGs with identical decoded pixels retain the previously sanitized files. The editable models, third-party notices and portable build layout from a3.72 are retained.

@@ -45,6 +45,8 @@ public final class Abilities {
     static void register(IEventBus bus) {
         bus.addListener(EventPriority.LOWEST, Abilities::reduceDamage);
         bus.addListener(Abilities::breathe);
+        bus.addListener(Abilities::absorbShield);
+        cn.academy.port.highpower.PlayerShieldArmor.registerWristShield(Abilities::hasWristShield);
         TemporalEffects.register(bus);
     }
 
@@ -73,31 +75,38 @@ public final class Abilities {
             }
             return;
         }
-        // Preserve Classic Ripjaws physiological dry-out penalty on land
-        if (w.kind() == Kind.CLASSIC && w.form() == Form.RIPJAWS && e.getSource().is(DamageTypes.DRY_OUT)) {
-            return;
+        if (w.form() == Form.ALIEN_X) e.setAmount(e.getAmount() * .18f);
+    }
+
+    private static boolean hasWristShield(ServerPlayer player) {
+        if (player.hasData(Omnitrix.WRIST)) {
+            var wrist = Omnitrix.wrist(player);
+            if (wrist.hasForm() && (wrist.barrier > 0 || wrist.form() == Form.DIAMONDHEAD
+                    && wrist.crystalShellUntil > WristService.time(player))) return true;
         }
-        if (w.form() == Form.DIAMONDHEAD && w.crystalShellUntil > WristService.time(p)
-                && e.getAmount() > 0 && Float.isFinite(e.getAmount())) {
-            w.crystalShellUntil = 0;
-            e.setCanceled(true);
+        return AscalonService.isArmored(player) && player.getAbsorptionAmount() > 0;
+    }
+
+    private static void absorbShield(cn.academy.port.api.NativeShieldEvent event) {
+        var p = event.player();
+        if (!p.hasData(Omnitrix.WRIST) || WristService.absoluteDamage(event.source())) return;
+        var wrist = Omnitrix.wrist(p);
+        if (!wrist.hasForm() || wrist.kind() == Kind.CLASSIC && wrist.form() == Form.RIPJAWS
+                && event.source().is(DamageTypes.DRY_OUT)) return;
+
+        long now = WristService.time(p);
+        if (wrist.form() == Form.DIAMONDHEAD && wrist.crystalShellUntil > now) {
+            wrist.crystalShellUntil = 0;
+            event.absorb(event.remaining());
             WristNetwork.cue(p, WristNetwork.CRYSTAL_SHELL_BREAK_CUE, p.position(), p.getEyePosition());
             WristNetwork.sync(p);
-            return;
-        }
-        // ACA Level 3-5 DNA / Astral / Corrupted Barrier Absorption (cancels incoming hit cleanly for HighPowerCombat compatibility)
-        if (w.barrier > 0 && e.getAmount() > 0 && Float.isFinite(e.getAmount())) {
-            double deflection = w.kind() == Kind.CELESTIAL ? .35
-                    : (w.form() == Form.ALIEN_X ? .18 : w.kind() == Kind.CARNITRIX ? .65 : .75);
-            double debit = e.getAmount() * deflection;
-            w.barrier = Math.max(0, w.barrier - debit);
-            w.lastDamageAt = WristService.time(p);
-            e.setCanceled(true);
-            WristNetwork.sync(p);
-            return;
-        }
-        if (w.form() == Form.ALIEN_X) {
-            e.setAmount(e.getAmount() * .18f);
+        } else if (wrist.barrier > 0) {
+            var paid = event.absorb(java.math.BigDecimal.valueOf(wrist.barrier));
+            if (paid.signum() > 0) {
+                wrist.barrier = Math.max(0, wrist.barrier - paid.doubleValue());
+                wrist.lastDamageAt = now;
+                WristNetwork.sync(p);
+            }
         }
     }
 
@@ -118,7 +127,7 @@ public final class Abilities {
         if (kind == Kind.CELESTIAL && w.form == Form.ALIEN_X) {
             p.clearFire();
             p.resetFallDistance();
-            if (p.getHealth() < p.getMaxHealth()) p.setHealth(p.getMaxHealth());
+            if (p.getHealth() < p.getMaxHealth()) p.heal(p.getMaxHealth() - p.getHealth());
             if (p.getFoodData().getFoodLevel() < 20) p.getFoodData().setFoodLevel(20);
             for (var inst : List.copyOf(p.getActiveEffects())) {
                 if (!inst.getEffect().value().isBeneficial()) p.removeEffect(inst.getEffect());
@@ -285,7 +294,8 @@ public final class Abilities {
         if (current == null || current.nextBeat >= current.beats.length) return true;
         return secondary && current.motion.action() == PRIMARY + w.form.ordinal()
                 && (w.form == Form.XLR8 && w.brakeUntil >= now
-                    || w.form == Form.GREY_MATTER && w.gripUntil > now);
+                    || w.form == Form.GREY_MATTER && w.gripUntil > now
+                    || w.form == Form.FOUR_ARMS && current.nextBeat >= 1);
     }
 
     private static void beginCast(ServerPlayer p, Wrist w, boolean secondary, boolean alternate, long now) {
@@ -477,7 +487,16 @@ public final class Abilities {
             case FOUR_ARMS -> fourArmsComboBeat(p, w, skill, beat, star, now);
             case STINKFLY -> launch(p, Pulse.Variant.SLIME, eye, face, star ? 1.48 : 1.28, 1, w.primaryStarted);
             case RIPJAWS -> {
-                double biteReach = star ? 4.6 : 3.9;
+                double biteReach = star ? 4.7 : 4.0;
+                if (!p.isCrouching()) {
+                    Vec3 lungeDir = p.isInWater() ? face : face.multiply(1, 0, 1);
+                    if (lungeDir.lengthSqr() > 1e-4) {
+                        Vec3 step = lungeDir.normalize().scale(p.isInWater() ? .38 : .28);
+                        Vec3 cur = p.getDeltaMovement();
+                        p.setDeltaMovement(cur.x * .4 + step.x, p.isInWater() ? cur.y * .4 + step.y : cur.y, cur.z * .4 + step.z);
+                        p.hurtMarked = true;
+                    }
+                }
                 var target = enemyOnRay(p, eye, face, biteReach);
                 float biteDmg = p.isInWater() ? (star ? 230_000f : 4_600f) : (star ? 140_000f : 2_800f);
                 if (target != null && damage(p, target, biteDmg, face, .55, 0, 0)) {
@@ -544,6 +563,12 @@ public final class Abilities {
         Vec3 along = skill.direction.multiply(1, 0, 1);
         if (along.lengthSqr() < 1e-4) along = p.getLookAngle().multiply(1, 0, 1);
         along = along.lengthSqr() < 1e-4 ? new Vec3(0, 0, 1) : along.normalize();
+        if (!p.isCrouching() && p.onGround()) {
+            double stepSpd = beat >= 2 ? .32 : .22;
+            Vec3 cur = p.getDeltaMovement();
+            p.setDeltaMovement(cur.x * .35 + along.x * stepSpd, cur.y, cur.z * .35 + along.z * stepSpd);
+            p.hurtMarked = true;
+        }
 
         Vec3 hitFocus = null;
         double minY = p.getY() - .55;
@@ -939,26 +964,10 @@ public final class Abilities {
         return v < min ? min : (v > max ? max : v);
     }
 
-    /**
-     * Multi-layer Celestial Annihilation: deals full playerAttack damage (integrating with ACA HighPowerCombat exact ledger
-     * and player kill attribution), and if a heavily-armored modded target still survives above 0 HP, follows up with
-     * armor-bypassing indirectMagic reality-erasure. Respects event cancellation & protection plugins 100%.
-     */
     private static boolean cosmicAnnihilate(ServerPlayer p, LivingEntity enemy, float amount, Vec3 direction, double knock) {
-        if (!validTarget(p, enemy, false)) return false;
-        int immunity = enemy.invulnerableTime;
-        enemy.invulnerableTime = 0;
-        boolean hit = enemy.hurt(p.damageSources().playerAttack(p), amount);
-        if (!hit) {
-            enemy.invulnerableTime = immunity;
-            return false;
-        }
+        if (!validTarget(p, enemy, false) || !OmnitrixDamage.hit(p, enemy, amount, true)) return false;
         if (knock > 0 && direction.lengthSqr() > 1e-6) {
             enemy.knockback(knock, -direction.x, -direction.z);
-        }
-        if (enemy.isAlive() && enemy.getHealth() > 0) {
-            enemy.invulnerableTime = 0;
-            enemy.hurt(p.damageSources().indirectMagic(p, p), amount);
         }
         return true;
     }
@@ -1015,7 +1024,7 @@ public final class Abilities {
             boolean toss = linked(w, target, now);
             if (damage(p, target, (float) (cap * intensity), delta, toss ? 0 : 1.45 * intensity, 0, 0)) {
                 skill.lastFlags |= WristNetwork.FLAG_HIT_ENTITY;
-                if (toss) {
+                if (toss && !cn.academy.port.highpower.PlayerShieldArmor.holding(target)) {
                     target.push(0, .52, 0);
                     target.hurtMarked = true;
                     if (star) w.landings.put(target.getUUID(), new Wrist.Landing(now + 3, now + 100));
@@ -1040,6 +1049,7 @@ public final class Abilities {
     }
 
     private static void pull(LivingEntity target, Vec3 center, double strength) {
+        if (cn.academy.port.highpower.PlayerShieldArmor.holding(target)) return;
         Vec3 delta = center.subtract(target.position());
         Vec3 pull = delta.lengthSqr() < 1e-6 ? Vec3.ZERO : delta.normalize().scale(strength);
         target.push(pull.x, pull.y, pull.z);
@@ -1323,7 +1333,7 @@ public final class Abilities {
     }
 
     static boolean damage(ServerPlayer p, LivingEntity enemy, float amount, Vec3 direction, double knock, int fire, int slow) {
-        if (!validTarget(p, enemy, true) || !enemy.hurt(p.damageSources().playerAttack(p), amount)) return false;
+        if (!validTarget(p, enemy, true) || !OmnitrixDamage.hit(p, enemy, amount, false)) return false;
         if (fire > 0) enemy.igniteForTicks(fire);
         if (slow > 0) enemy.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, slow, 1), p);
         if (knock > 0) enemy.knockback(knock, -direction.x, -direction.z);

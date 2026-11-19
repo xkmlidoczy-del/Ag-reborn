@@ -2785,5 +2785,12 @@
   "city.elevator.reason.unloaded": "所需区块未加载",
   "city.elevator.reason.exit_blocked": "楼层出口堵塞",
   "city.elevator.reason.shaft_blocked": "井道内有障碍",
-  "city.elevator.reason.shaft_damaged": "井道结构损坏"
+  "city.elevator.reason.shaft_damaged": "井道结构损坏",
+  "ac.app.city_map.name": "都市地圖",
+  "item.academy.app_city_map": "都市地圖安裝器",
+  "academy.city_map.north": "北向上 · 每格 2 方塊",
+  "academy.city_map.position": "目前位置",
+  "academy.city_map.surface": "顯示已載入區域的地表；室內及地下可能被遮擋。",
+  "academy.city_map.hide": "隱藏地圖",
+  "attribute.name.academy.ability_power": "技能強度"
 }

@@ -3964,5 +3964,12 @@
   "city.elevator.reason.shaft_blocked": "Obstacle in the shaft",
   "city.elevator.reason.shaft_damaged": "Shaft enclosure is damaged",
   "academy.mental.resisted": "The target resisted control.",
-  "academy.command.rank_commit_failed": "The rank and growth ledger could not be committed. Check /academyhp growth."
+  "academy.command.rank_commit_failed": "The rank and growth ledger could not be committed. Check /academyhp growth.",
+  "ac.app.city_map.name": "City Map",
+  "item.academy.app_city_map": "City Map Installer",
+  "academy.city_map.north": "North up · 2 blocks / cell",
+  "academy.city_map.position": "Position",
+  "academy.city_map.surface": "Surface view of loaded terrain; indoors and underground may be obscured.",
+  "academy.city_map.hide": "Hide map",
+  "attribute.name.academy.ability_power": "Skill Power"
 }

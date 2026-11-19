@@ -2,6 +2,7 @@ package cn.academy.port.gametest;
 
 import cn.academy.port.city.CityFaunaSpawns;
 import cn.academy.port.city.portal.CityPortalTravel;
+import cn.academy.port.highpower.CompatMode;
 import cn.academy.port.highpower.VanillaCombatContract;
 import cn.academy.port.highpower.VanillaMiningContract;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.item.SpawnEggItem;
@@ -60,12 +62,14 @@ public final class FaunaIntegrationRuntimeTests {
                 "all 53 animals have their original registry ID and spawn egg");
         var mods = ModList.get().getMods().stream().collect(Collectors.toMap(m -> m.getModId(), m -> m.getVersion().toString()));
         var packs = h.getLevel().getServer().getResourceManager().listPacks().map(p -> p.packId()).collect(Collectors.toSet());
-        h.assertTrue("0.1.17".equals(mods.get(FAUNA)) && "4.7".equals(mods.get("geckolib")) && "0.4.5".equals(mods.get("acamech")),
+        h.assertTrue("0.1.18".equals(mods.get(FAUNA)) && "4.7".equals(mods.get("geckolib")) && "0.4.5".equals(mods.get("acamech")),
                 "embedded fauna, GeckoLib and mech versions match the reviewed artifact");
-        h.assertTrue(VanillaCombatContract.runtimeReason(mods, packs).isEmpty()
-                && VanillaMiningContract.runtimeReason(mods, packs).isEmpty(), "the exact combined package admits the existing strict rules");
+        if (!CompatMode.open()) {
+            h.assertTrue(VanillaCombatContract.runtimeReason(mods, packs).isEmpty()
+                    && VanillaMiningContract.runtimeReason(mods, packs).isEmpty(), "strict mode accepts the reviewed package");
+        }
         var unknown = new HashMap<>(mods);
-        unknown.put(FAUNA, "0.1.18");
+        unknown.put(FAUNA, "0.1.19");
         h.assertTrue(VanillaCombatContract.runtimeReason(unknown, packs).isPresent()
                 && VanillaMiningContract.runtimeReason(unknown, packs).isPresent(), "unreviewed versions remain refused");
         h.succeed();
@@ -136,6 +140,13 @@ public final class FaunaIntegrationRuntimeTests {
                                 :cell.getY()<at.getY()?Blocks.GRASS_BLOCK.defaultBlockState():Blocks.AIR.defaultBlockState(),2);
                     h.assertTrue(SpawnPlacements.checkSpawnRules(type,world,MobSpawnType.NATURAL,at,world.random),
                             id+" admits matching habitat and position");
+                    if (aquatic) {
+                        var swimmer = (Mob) type.create(world);
+                        h.assertTrue(swimmer != null, id + " aquatic entity factory");
+                        swimmer.moveTo(at.getX() + .5, at.getY(), at.getZ() + .5);
+                        h.assertTrue(net.neoforged.neoforge.event.EventHooks.checkSpawnPosition(swimmer, world, MobSpawnType.NATURAL),
+                                id + " water volume passes the native post-placement obstruction check");
+                    }
                     var invalid=biomes.holders().filter(b->!b.is(habitat)).findFirst().orElseThrow();
                     chunk.fillBiomesFromNoise((x,y,z,sampler)->invalid,noise);
                     h.assertFalse(SpawnPlacements.checkSpawnRules(type,world,MobSpawnType.NATURAL,at,world.random),id+" refuses wrong biome");

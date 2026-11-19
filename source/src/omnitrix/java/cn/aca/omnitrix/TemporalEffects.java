@@ -47,6 +47,7 @@ public final class TemporalEffects {
     }
 
     static void freezeSingle(ServerLevel level, Entity target, long expiry) {
+        if (cn.academy.port.highpower.PlayerShieldArmor.holding(target)) return;
         Freeze previous = FROZEN.get(target);
         if (previous != null && previous.expiry >= expiry) return;
         FROZEN.put(target, new Freeze(expiry, previous == null ? target.getDeltaMovement() : previous.velocity));
@@ -99,7 +100,8 @@ public final class TemporalEffects {
     }
 
     private static void pause(EntityTickEvent.Pre e) {
-        if (!e.getEntity().level().isClientSide && FROZEN.containsKey(e.getEntity())) e.setCanceled(true);
+        if (!e.getEntity().level().isClientSide && FROZEN.containsKey(e.getEntity())
+                && !cn.academy.port.highpower.PlayerShieldArmor.holding(e.getEntity())) e.setCanceled(true);
     }
 
     private static void tracking(net.neoforged.neoforge.event.entity.player.PlayerEvent.StartTracking event) {
@@ -131,7 +133,7 @@ public final class TemporalEffects {
             Entity entity = entry.getKey();
             if (entity.isRemoved()) { iterator.remove(); continue; }
             if (!(entity.level() instanceof ServerLevel world) || world.getServer() != event.getServer()) continue;
-            if (now >= entry.getValue().expiry) {
+            if (now >= entry.getValue().expiry || cn.academy.port.highpower.PlayerShieldArmor.holding(entity)) {
                 entity.setDeltaMovement(entry.getValue().velocity);
                 entity.hurtMarked = true;
                 WristNetwork.freeze(entity, 0);

@@ -8,7 +8,7 @@ import java.util.Set;
 
 /** Common-safe persistent ledger. Defaults do not acquire saved bits, as in classic TerminalData. */
 public final class TerminalState {
-    public static final List<String> APPS=List.of("settings","tutorial","skill_tree","freq_transmitter","media_player","urban_communication");
+    public static final List<String> APPS=List.of("settings","tutorial","skill_tree","freq_transmitter","media_player","urban_communication","city_map");
     public static final Set<String> PREINSTALLED=Set.of("settings","tutorial");
     private final Set<String> installed=new LinkedHashSet<>();
     private boolean terminal;

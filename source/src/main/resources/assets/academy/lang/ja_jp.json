@@ -2714,5 +2714,12 @@
   "city.elevator.reason.unloaded": "Required chunks are unloaded",
   "city.elevator.reason.exit_blocked": "Landing exit is blocked",
   "city.elevator.reason.shaft_blocked": "Obstacle in the shaft",
-  "city.elevator.reason.shaft_damaged": "Shaft enclosure is damaged"
+  "city.elevator.reason.shaft_damaged": "Shaft enclosure is damaged",
+  "ac.app.city_map.name": "都市マップ",
+  "item.academy.app_city_map": "都市マップインストーラー",
+  "academy.city_map.north": "北が上 · 1マス 2ブロック",
+  "academy.city_map.position": "現在地",
+  "academy.city_map.surface": "読み込み済みの地表を表示。屋内や地下は隠れる場合があります。",
+  "academy.city_map.hide": "マップを隠す",
+  "attribute.name.academy.ability_power": "スキル威力"
 }

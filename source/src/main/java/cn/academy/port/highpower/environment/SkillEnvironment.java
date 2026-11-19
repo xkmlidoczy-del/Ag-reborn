@@ -283,7 +283,7 @@ public final class SkillEnvironment {
             budget.entityCandidates++;
             if (target == owner || !target.isAlive() || target.level() != world || target.isInvulnerable()
                     || target.isSpectator() || target.isPassenger() || target.isVehicle()
-                    || owner.isAlliedTo(target) || target.isAlliedTo(owner) || EsperShields.holding(target)
+                    || owner.isAlliedTo(target) || target.isAlliedTo(owner) || cn.academy.port.highpower.PlayerShieldArmor.holding(target)
                     || target.getPersistentData().getBoolean("academy:protected")
                     || residentChunk(world, target.blockPosition()) == null
                     || !world.mayInteract(owner, target.blockPosition())) return false;

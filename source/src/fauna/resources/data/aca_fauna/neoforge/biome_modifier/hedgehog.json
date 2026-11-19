@@ -3,7 +3,7 @@
   "biomes": "#aca_fauna:hedgehog",
   "spawners": {
     "type": "aca_fauna:hedgehog",
-    "weight": 6,
+    "weight": 10,
     "minCount": 1,
     "maxCount": 1
   }

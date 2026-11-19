@@ -253,7 +253,7 @@ public final class ZeroGapArmorStorage {
             throw new IllegalArgumentException("Serialized NEW252 timing differs from proposal");
 
         List<Write> writes = new ArrayList<>();
-        for (String key : BASE_FIELDS) writes.add(new Write(key, base.get(key)));
+        for (String key : BASE_FIELDS) if (!key.equals("health") && !key.equals("maxHealth")) writes.add(new Write(key, base.get(key)));
         writes.add(new Write(ScatterPlateStorage.KEY, scatter));
         writes.add(new Write(MagneticDomainReserve.KEY, reserve));
         writes.add(new Write(KEY, children));

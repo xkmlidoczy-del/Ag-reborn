@@ -27,7 +27,7 @@ final class CityNpcAbilityData {
     private long resourceTick=Long.MIN_VALUE;
     private BigDecimal lastPosition;
     private double skillMaximum,skillRecovery,baseSkillCost;
-    private BigDecimal damageUnit=BigDecimal.ZERO;
+
     CityNpcAbilityData(CityNpcEntity npc){this.npc=npc;fresh();}
     static String category(CityEspers.Profile p){return switch(p){
         case ELECTRO->"electromaster";case MELT->"meltdowner";case TELEPORT->"teleporter";case VECTOR->"vecmanip";
@@ -53,22 +53,24 @@ final class CityNpcAbilityData {
         ability.experience.put(id,ClassicRules.clamp(.18+.17*(ability.level-definition.level()),.1,.85));
     }
     void stats(boolean fill) {
-        double max=20; // normalized native adapter; true amounts live in the player's exact ledger
-        var attribute=npc.getAttribute(Attributes.MAX_HEALTH);if(attribute!=null)attribute.setBaseValue(max);
-        if(fill)npc.setHealth((float)max);else npc.setHealth(Math.min(npc.getHealth(),(float)max));
-        if(!npc.level().isClientSide&&npc.esper()!=CityEspers.Profile.NONE) {
-            HighPowerCombat.synchronizeCityNpc(npc,position(),null,fill?1:npc.getHealth()/npc.getMaxHealth());
+        if (npc.esper() == CityEspers.Profile.NONE) {
+            if (fill) npc.setHealth(npc.getMaxHealth());
+            return;
+        }
+        if (!npc.level().isClientSide && fill) {
+            HighPowerCombat.synchronizeCityNpc(npc, position(), null, 1);
             cachePosition(position());
         }
     }
     BigDecimal position(){return ContinuousHighPowerGrowth.position(ability.level,ability.levelProgress(SkillCatalog.levelSkillCount(ability)));}
     double skillMaximum(){return skillMaximum;}
     double baseSkillCost(){return baseSkillCost;}
-    BigDecimal damageUnit(){return damageUnit;}
+    BigDecimal damageUnit(){return cn.academy.port.highpower.CombatAttributes.skillPower(npc);}
     private void cachePosition(BigDecimal q) {
         lastPosition=q;skillMaximum=HighPowerGrowth.cpMaximumAt(q);skillRecovery=HighPowerGrowth.cpRecoveryAt(q);
         baseSkillCost=HighPowerGrowth.arcCostAt(q);
-        damageUnit=HighPowerGrowth.categoryDamage(ability.category,ContinuousHighPowerGrowth.sample(q).damage());
+        cn.academy.port.highpower.CombatAttributes.installSkillPower(npc,
+                HighPowerGrowth.categoryDamage(ability.category, ContinuousHighPowerGrowth.sample(q).damage()));
     }
     void tick() {
         ability.tick();if(npc.esper()==CityEspers.Profile.NONE)return;
@@ -94,7 +96,7 @@ final class CityNpcAbilityData {
     }
     CompoundTag save() {
         var tag=new CompoundTag();tag.put("ability",AbilityStorage.encode(ability));tag.putInt("paper",paper);tag.putInt("needles",needles);tag.putInt("medium",medium);
-        tag.putInt("level",npc.esperLevel());tag.putString("profile",npc.esper().id());tag.putFloat("health",npc.getHealth());
+        tag.putInt("level",npc.esperLevel());tag.putString("profile",npc.esper().id());
         tag.putDouble("skill_cp",skillCp);tag.put("player_power",HighPowerCombat.cityNpcCheckpoint(npc));
         tag.putLong("supply_day",supplyDay);tag.putLong("saved_tick",npc.level().getGameTime());return tag;
     }
@@ -105,7 +107,9 @@ final class CityNpcAbilityData {
         paper=Math.max(0,Math.min(64,tag.getInt("paper")));needles=Math.max(0,Math.min(64,tag.getInt("needles")));medium=Math.max(0,Math.min(16,tag.getInt("medium")));
         supplyDay=tag.getLong("supply_day");
         if(npc.esper()!=CityEspers.Profile.NONE) {
-            double fraction=tag.contains("player_power")?1:Math.clamp(tag.getFloat("health")/(20+10.0*npc.esperLevel()),0,1);
+            double fraction = tag.contains("health") && !tag.contains("player_power")
+                    ? Math.clamp(tag.getFloat("health") / (20 + 10.0 * npc.esperLevel()), 0, 1)
+                    : npc.getHealth() / npc.getMaxHealth();
             if(!HighPowerCombat.synchronizeCityNpc(npc,position(),tag.getCompound("player_power"),fraction))
                 throw new IllegalArgumentException("Invalid saved city esper combat state");
             cachePosition(position());

@@ -2,25 +2,35 @@ package cn.academy.port.highpower;
 
 import cn.academy.port.AcademyConfig;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.neoforged.bus.api.EventPriority;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import cn.academy.port.city.CityNpcEntity;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.entity.Entity;
+import java.util.function.BooleanSupplier;
 
 /** Adapts an observed per-hit cap before the original native damage commits. */
 public final class CapBreak {
     private static final ThreadLocal<Hit> HIT = new ThreadLocal<>();
-    private record Hit(LivingEntity target, DamageSource source, float amount) {}
+    private static final class Hit {
+        private final LivingEntity target;
+        private final DamageSource source;
+        private final float amount;
+        private boolean entered;
+
+        private Hit(LivingEntity target, DamageSource source, float amount) {
+            this.target = target;
+            this.source = source;
+            this.amount = amount;
+        }
+    }
+
     private CapBreak() {}
 
     private static boolean enabled() {
@@ -30,27 +40,48 @@ public final class CapBreak {
 
     public static boolean hurt(LivingEntity target, DamageSource source, float amount) {
         if (!Float.isFinite(amount) || amount <= 0) return false;
-        if (target instanceof Player || target.level().isClientSide || HighPowerCombat.enabled(target) || !enabled())
-            return target.hurt(source, amount);
-        var parent = HIT.get();
-        HIT.set(new Hit(target, source, amount));
+        float requested = Math.min(amount, (float) CombatAttributes.LIMIT);
+        return aroundHurt(target, source, requested, () -> target.hurt(source, requested));
+    }
+
+    /** Also wraps the original invocation inside Player.attack to retain its modifiers and attack bookkeeping. */
+    public static boolean aroundHurt(Entity target, DamageSource source, float amount, BooleanSupplier original) {
+        if (!(target instanceof LivingEntity living) || target instanceof Player || target.level().isClientSide
+                || target.getServer() == null || !target.getServer().isSameThread() || !Float.isFinite(amount) || amount <= 0 || !enabled()) {
+            return original.getAsBoolean();
+        }
+        Hit parent = HIT.get();
+        HIT.set(new Hit(living, source, amount));
         try {
-            return target.hurt(source, amount);
+            return original.getAsBoolean();
         } finally {
             if (parent == null) HIT.remove();
             else HIT.set(parent);
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void incoming(LivingIncomingDamageEvent event) {
-        var hit = HIT.get();
-        if (hit == null || hit.target != event.getEntity() || hit.source != event.getSource()) return;
-        HIT.remove();
-        float nativeAmount = event.getContainer().getOriginalDamage();
-        if (nativeAmount > 0 && nativeAmount < hit.amount - Math.max(1e-3F, hit.amount * 1e-4F)
-                && event.getAmount() == nativeAmount)
-            event.setAmount(hit.amount);
+    private static Hit pending(Entity target, DamageSource source) {
+        Hit hit = HIT.get();
+        return hit != null && !hit.entered && hit.target == target && hit.source == source ? hit : null;
+    }
+
+    /** Checked at Cataclysm's two specific cap instructions while its own hurt method is still running. */
+    public static boolean bypassKnownCap(Entity target, DamageSource source) {
+        return pending(target, source) != null;
+    }
+
+    /** Before the native DamageContainer is created so every observer sees the same starting damage. */
+    public static float atNativeEntry(LivingEntity target, DamageSource source, float amount) {
+        Hit hit = pending(target, source);
+        if (hit == null) return amount;
+        hit.entered = true;
+        // The dedicated Cataclysm adapter preserves its distance multiplier. City NPCs can spend a
+        // legacy local shield before entering this method, and that debit is already authoritative.
+        if (target instanceof CityNpcEntity || BuiltInRegistries.ENTITY_TYPE.getKey(target.getType()).getNamespace().equals("cataclysm")) {
+            return amount;
+        }
+        float tolerance = Math.max(1e-3F, hit.amount * 1e-4F);
+        return amount > 0 && amount < hit.amount - tolerance ? hit.amount : amount;
     }
 
     /** What the vanilla pipeline removes from {@code amount} on this target for this source. */

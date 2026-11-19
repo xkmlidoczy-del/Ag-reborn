@@ -245,7 +245,7 @@ public final class WristService {
             player.resetFallDistance();
             player.clearFire();
             player.removeAllEffects();
-            player.setHealth(player.getMaxHealth());
+            reviveAtFullHealth(player);
             wrist.maxBarrier = Form.ALIEN_X.maxBarrier(Kind.CELESTIAL);
             wrist.barrier = wrist.maxBarrier;
             Abilities.triggerExistentialRewrite(player, wrist, now);
@@ -264,7 +264,7 @@ public final class WristService {
             if (player.containerMenu != player.inventoryMenu) player.closeContainer();
             prepare(player, wrist, Form.ALIEN_X, -1);
             activate(player, now);
-            player.setHealth(player.getMaxHealth());
+            reviveAtFullHealth(player);
             announce(player, Omnitrix.ALIEN_X_REWRITE.get(), 1.0f);
             WristNetwork.cue(player, WristNetwork.REWRITE_CUE, player.position(), player.getEyePosition());
             return;
@@ -313,7 +313,6 @@ public final class WristService {
         var food = player.getFoodData();
         food.setFoodLevel(Math.max(0, food.getFoodLevel() - 8));
         food.setSaturation(Math.min(food.getSaturationLevel(), food.getFoodLevel()));
-        drainNonlethal(player, 1);
         wrist.resistance = 0;
         wrist.targetId = -1;
         wrist.enter(Stage.COOLING, now, now + RESIST_COOLDOWN_TICKS);
@@ -323,9 +322,11 @@ public final class WristService {
         tell(player, "resisted");
     }
 
-    private static void drainNonlethal(ServerPlayer player, float amount) {
-        float health = player.getHealth();
-        if (health > 1) player.setHealth(Math.max(1, health - amount));
+    static void reviveAtFullHealth(Player player) {
+        // A death-cancelled entity must be alive before vanilla healing can run.
+        if (player.getHealth() <= 0) player.setHealth(1);
+        float missing = player.getMaxHealth() - player.getHealth();
+        if (missing > 0) player.heal(missing);
     }
 
     static boolean humanFits(ServerPlayer player, Vec3 pos) {
@@ -428,9 +429,6 @@ public final class WristService {
         wrist.barrier = wrist.maxBarrier;
         if (kind == Kind.CARNITRIX) PursuitBody.ensure(player, wrist);
         applyForm(player, wrist);
-        if (kind == Kind.CELESTIAL && wrist.form == Form.ALIEN_X) {
-            player.setHealth(player.getMaxHealth());
-        }
         WristNetwork.sync(player);
     }
 
@@ -470,7 +468,6 @@ public final class WristService {
         if (needsSpace && player.isAlive()) relocate(player, wrist.lastHumanClear);
         applyForm(player, wrist);
         if (toll) {
-            drainNonlethal(player, 3);
             player.removeEffect(Omnitrix.NERVE_EXHAUSTION);
             player.addEffect(new MobEffectInstance(Omnitrix.NERVE_EXHAUSTION, 100));
             announce(player, Omnitrix.EXHAUSTED.get(), 1f);

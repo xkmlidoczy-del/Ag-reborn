@@ -31,7 +31,7 @@ public final class AbilityDamage {
         var before=BeamImpactVfx.before(caster,skill,target);
         var source=new EntitySkillDamageSource(caster,skill,ignoreArmor);
         var audit=DamageAudit.begin(target,source);
-        boolean hit=CapBreak.hurt(target,source,(float)amount);
+        boolean hit=CapBreak.hurt(target, source, (float)Math.min(amount, cn.academy.port.highpower.CombatAttributes.LIMIT));
         DamageAudit.finish(audit,skill,rawDamage,amount,hit,null);
         BeamImpactVfx.after(caster,skill,target,before,hit,null,null);
         return hit;
@@ -70,7 +70,7 @@ public final class AbilityDamage {
         if (!(target instanceof LivingEntity living)) return target.hurt(source,(float)amount);
         var before=BeamImpactVfx.before(player,skill,living);
         var audit=DamageAudit.begin(living,source);
-        boolean accepted=CapBreak.hurt(living,source,(float)amount);
+        boolean accepted=CapBreak.hurt(living, source, (float)Math.min(amount, cn.academy.port.highpower.CombatAttributes.LIMIT));
         DamageAudit.finish(audit,skill,rawDamage,amount,accepted,null);
         BeamImpactVfx.after(player,skill,living,before,accepted,origin,point);
         return accepted;

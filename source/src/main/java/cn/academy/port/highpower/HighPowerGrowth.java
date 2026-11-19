@@ -35,8 +35,14 @@ public final class HighPowerGrowth {
         BigDecimal current=HighPowerActiveGrowth.position(player);
         Cached cached=CACHE.get(player);
         if(cached!=null&&cached.category.equals(state.category)&&cached.values.position.compareTo(current)==0
-                &&cached.values.earnedPosition.compareTo(earned)==0)return cached.values;
-        Values next=new Values(current,earned,categoryDamage(state.category,ContinuousHighPowerGrowth.sample(current).damage()),
+                &&cached.values.earnedPosition.compareTo(earned)==0) {
+            BigDecimal applied = CombatAttributes.skillPower(player);
+            Values v = cached.values;
+            return applied.compareTo(v.damage()) == 0 ? v : new Values(v.position(), v.earnedPosition(), applied,
+                    v.cpMaximum(), v.cpRecovery(), v.arcCost(), v.arcCooldown(), v.tetherCost(), v.lv2Cost(), v.groundingCooldown());
+        }
+        BigDecimal base = categoryDamage(state.category, ContinuousHighPowerGrowth.sample(current).damage());
+        Values next=new Values(current,earned,CombatAttributes.installSkillPower(player, base),
                 CP_MAX.value(earned).doubleValue(),CP_REGEN.value(current).doubleValue(),ARC_COST.value(current).doubleValue(),
                 ContinuousHighPowerGrowth.ceilCooldownTicks(ARC_CD.value(current)),TETHER_COST.value(current).doubleValue(),
                 LV2_COST.value(current).doubleValue(),ContinuousHighPowerGrowth.ceilCooldownTicks(GROUND_CD.value(current)));

@@ -3,7 +3,7 @@
   "biomes": "#aca_fauna:pukeko",
   "spawners": {
     "type": "aca_fauna:pukeko",
-    "weight": 6,
+    "weight": 8,
     "minCount": 2,
     "maxCount": 3
   }

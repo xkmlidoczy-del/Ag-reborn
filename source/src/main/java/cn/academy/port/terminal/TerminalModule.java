@@ -10,9 +10,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public final class TerminalModule {
     private static final DeferredRegister.Items ITEMS=DeferredRegister.createItems("academy");
     public static final DeferredItem<TerminalInstallerItem> INSTALLER=ITEMS.register("terminal_installer",()->new TerminalInstallerItem(new Item.Properties()));
-    public static final DeferredItem<TerminalAppItem> SKILL_TREE=app("skill_tree"),FREQUENCY_TRANSMITTER=app("freq_transmitter"),MEDIA_PLAYER=app("media_player"),URBAN_COMMUNICATION=app("urban_communication");
+    public static final DeferredItem<TerminalAppItem> SKILL_TREE=app("skill_tree"),FREQUENCY_TRANSMITTER=app("freq_transmitter"),MEDIA_PLAYER=app("media_player"),URBAN_COMMUNICATION=app("urban_communication"),CITY_MAP=app("city_map");
     private static DeferredItem<TerminalAppItem> app(String name){return ITEMS.register("app_"+name,()->new TerminalAppItem(new Item.Properties(),name));}
     public static void register(IEventBus bus){ITEMS.register(bus);bus.addListener(TerminalModule::creative);bus.addListener(TerminalNetwork::register);NeoForge.EVENT_BUS.register(TerminalEvents.class);}
-    private static void creative(BuildCreativeModeTabContentsEvent event){if(event.getTabKey()==CreativeModeTabs.TOOLS_AND_UTILITIES){event.accept(INSTALLER);event.accept(SKILL_TREE);event.accept(FREQUENCY_TRANSMITTER);event.accept(MEDIA_PLAYER);event.accept(URBAN_COMMUNICATION);}}
+    private static void creative(BuildCreativeModeTabContentsEvent event){if(event.getTabKey()==CreativeModeTabs.TOOLS_AND_UTILITIES){event.accept(INSTALLER);event.accept(SKILL_TREE);event.accept(FREQUENCY_TRANSMITTER);event.accept(MEDIA_PLAYER);event.accept(URBAN_COMMUNICATION);event.accept(CITY_MAP);}}
     private TerminalModule(){}
 }

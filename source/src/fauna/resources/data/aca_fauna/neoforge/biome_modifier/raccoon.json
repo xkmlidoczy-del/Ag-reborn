@@ -3,7 +3,7 @@
   "biomes": "#aca_fauna:raccoon",
   "spawners": {
     "type": "aca_fauna:raccoon",
-    "weight": 6,
+    "weight": 8,
     "minCount": 2,
     "maxCount": 3
   }

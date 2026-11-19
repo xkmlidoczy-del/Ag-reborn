@@ -110,8 +110,8 @@ public class TitanEntity extends Monster implements GeoEntity {
         }
     }
     public static AttributeSupplier.Builder attributes(TitanProfiles.Profile p) {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH,p.health())
-            .add(Attributes.ARMOR,p.armor()).add(Attributes.ATTACK_DAMAGE,p.attack())
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH,p.encounterHealth().doubleValue())
+            .add(Attributes.ARMOR,p.armor()).add(Attributes.ATTACK_DAMAGE,p.meleeAttack())
             .add(Attributes.MOVEMENT_SPEED,p.speed()).add(Attributes.FLYING_SPEED,p.speed())
             .add(Attributes.FOLLOW_RANGE,112).add(Attributes.STEP_HEIGHT,1.0)
             .add(Attributes.KNOCKBACK_RESISTANCE,.95);
