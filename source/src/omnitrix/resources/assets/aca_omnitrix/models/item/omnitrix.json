@@ -1,6 +1,14 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "minecraft:builtin/entity",
+  "gui_light": "front",
   "textures": {
-    "layer0": "aca_omnitrix:item/omnitrix"
+    "particle": "aca_omnitrix:item/omnitrix"
+  },
+  "display": {
+    "gui": { "rotation": [12, 18, 0], "translation": [0, 0, 0], "scale": [1.0, 1.0, 1.0] },
+    "ground": { "rotation": [0, 0, 0], "translation": [0, 3.0, 0], "scale": [0.72, 0.72, 0.72] },
+    "fixed": { "rotation": [0, 0, 0], "translation": [0, 0, 0], "scale": [1.0, 1.0, 1.0] },
+    "thirdperson_righthand": { "rotation": [45, 0, 0], "translation": [0, 2.2, 1.0], "scale": [0.7, 0.7, 0.7] },
+    "firstperson_righthand": { "rotation": [12, -20, 6], "translation": [1.0, 2.2, 0], "scale": [0.72, 0.72, 0.72] }
   }
 }

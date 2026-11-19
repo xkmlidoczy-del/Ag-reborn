@@ -2,13 +2,15 @@
 
 Ag:reborn（Ag重生）是基于 **Lambda Innovation** 开源项目 [AcademyCraft](https://github.com/LambdaInnovation/AcademyCraft) 移植、修改和扩展的非官方 Minecraft 模组。原作者及原项目的署名、许可和附加声明予以保留；本项目不代表原作者的官方发布或背书。
 
-本分支备份 **0.81.5-city-a3.75** 源码，适用于 **Minecraft 1.21.1、NeoForge 21.1.252 和 Java 21**。本版在 a3.70 十二巨兽重制的基础上，内置 **ACA Omnitrix 0.7.0**，包含三只变身腕表及阿斯卡隆。主模组能力开关为 `V`，阿斯卡隆覆甲键为 `M`。[腕表与圣剑安装说明](source/integration/aca-omnitrix/README.md)
+当前公开源码版本为 **0.81.5-city-a3.77**，适用于 **Minecraft 1.21.1、NeoForge 21.1.252 和 Java 21**。本版在 a3.75 真实实体属性、都市地图、Fauna 0.1.18 刷新优化与统一伤害破限的基础上，同步内置升级版 **ACA Omnitrix 0.8.0**（三只变身腕表与阿斯卡隆圣剑）及 **ACA Infinity 0.5.1**（乌鲁无限手套、六颗无限原石与圣殿二号旗舰）。
 
-a3.75 汇总真实实体属性、自定义 HUD、都市地图、Fauna 刷新优化和伤害破限。此分支用于备份和后续物品模型与特效修改。公开整合包仍为 a3.72。[下载 a3.72 整合 JAR](https://github.com/xkmlidoczy-del/Ag-reborn/releases/download/v0.81.5-city-a3.72/Ag-reborn-a3.72.jar)
+- **全模组一体破限与四层模组 AI 接管**：Academy 能力者、十二巨兽、Omnitrix、阿斯卡隆与无限原石共用 `NativeCombatDamage` 原生单次结算破限管线（含灾变 3.33 单击与 DPS 桶适配）；鬼影支配、X 天神定格与心灵/时间/灵魂原石均实装四层通用模组 AI 接管与傀儡代打兜底。
+- **零遮挡 U1 微弧 HUD 与 V1 次世代特效**：腕表与无限手套统一升级为准星发丝微弧 HUD 与无黑框全息选角/选石交互，接入三色阶 LUT、双相位流场、Voronoi 镜面空间碎裂与三维多股曲线能量鞭渲染。
+- **全模组零键位冲突**：主模组能力开关为 `V`；腕表轮盘 `Y`、圣剑覆甲 `M`、副技能 `N`；无限手套选石 `[`、原石技能 `H`、响指 `J`（圣殿二号 `G`/`B`/`V` 仅乘船激活）。[腕表与圣剑说明](source/integration/aca-omnitrix/README.md) · [无限手套与旗舰说明](source/integration/aca-infinity/README.md)
 
-整合 JAR 同时包含 **ACA Mech 0.4.5**、**ACA Fauna 0.1.18**、**ACA bio HUM 0.9.1** 和 **GeckoLib 4.7**。升级时从 `mods/` 移出旧 Ag 重生及四个配套模组的独立 JAR，再在客户端和服务端安装本仓库构建的整合 JAR。
+整合 JAR 同时包含 **ACA Mech 0.4.5**、**ACA Fauna 0.1.18**、**ACA bio HUM 0.9.1**、**ACA Omnitrix 0.8.0**、**ACA Infinity 0.5.1** 和 **GeckoLib 4.7**。升级时请从 `mods/` 移出旧版 Ag 重生及上述五个配套模组的独立 JAR，再在客户端和服务端安装同一份整合 JAR。（注：GitHub Releases 最新预编译包仍可参见 [a3.72 Release](https://github.com/xkmlidoczy-del/Ag-reborn/releases/tag/v0.81.5-city-a3.72)，a3.77 可直接由本仓库源码构建。）
 
-自动生成人物只有主城第七学区无窗之楼的一名亚雷斯塔。首次靠近时，在原始塔体内安装倒悬维生舱，生成记录随世界保存。塔东侧约 `-134 0 -152`，可用 `/biohum windowless enter` 进楼及 `/biohum windowless exit` 返回。100 枚人物刷怪蛋位于「学园都市人物 NPC」。动物在原版主世界按生境生成，机甲可在「ACA 学园机库」部署。[人物整合说明](source/integration/aca-hum/README.md)
+自动生成人物只有主城第七学区无窗之楼的一名亚雷斯塔。首次靠近时，在原始塔体内安装倒悬维生舱，生成记录随世界保存。塔东侧约 `-134 0 -152`，可用 `/biohum windowless enter` 进楼及 `/biohum windowless exit` 返回。100 枚人物刷怪蛋位于「学园都市人物 NPC」。动物在原版主世界及规划公园/湖岸按生境生成，机甲可在「ACA 学园机库」部署。[人物整合说明](source/integration/aca-hum/README.md)
 
 ## 构建
 
@@ -19,11 +21,13 @@ cd source
 ./gradlew jar
 ```
 
-Windows 可使用 `gradlew.bat jar`。首次构建需要联网获取 Gradle、NeoForge、Minecraft 开发依赖和 GeckoLib 等依赖；成品位于 `source/build/libs/`。GeckoLib 4.7 随构建的模组打包。客户端和服务器应使用相同版本。
+Windows 可使用 `gradlew.bat jar`。首次构建需要联网获取 Gradle、NeoForge、Minecraft 开发依赖和 GeckoLib 等依赖；成品位于 `source/build/libs/`。所有内嵌子模组与 GeckoLib 4.7 随构建自动打包进单一模组 JAR。客户端和服务器应使用相同版本。
 
 ## 目录
 
-- `source/src/main/` 为本体源码和资产，`source/src/hum/`、`source/src/fauna/`、`source/src/mech/` 和 `source/src/omnitrix/` 分别为内置人物、动物、机甲和腕表模块。
+- `source/src/main/` 为本体源码和资产，`source/src/hum/`、`source/src/fauna/`、`source/src/mech/`、`source/src/omnitrix/` 和 `source/src/infinity/` 分别为内置人物、动物、机甲、腕表和无限手套模块。
+- `source/integration/aca-infinity/` 为无限手套与圣殿二号模块整合说明及声明。
+- `source/integration/aca-omnitrix/` 为变身腕表与阿斯卡隆整合说明、来源及第三方许可。
 - `source/integration/aca-hum/` 为人物整合说明和来源及权利声明。
 - `source/integration/aca-fauna/` 记录动物整合版本；随动物模块提供素材出处和许可。
 - `source/integration/aca-mech/`：机甲许可、来源、可编辑 Blockbench 方盒模型与导出工具；`source/src/mechQa/` 为独立测试驱动。

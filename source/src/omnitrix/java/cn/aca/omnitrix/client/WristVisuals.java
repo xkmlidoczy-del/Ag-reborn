@@ -25,7 +25,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
@@ -67,7 +66,6 @@ final class WristVisuals {
             Kind kind = view.s().watch();
             Form form = view.s().chosen();
 
-            // XLR8 & X-XLR8 sprinting / dashing slipstream & afterimages
             if (form == Form.XLR8 && (kind == Kind.CLASSIC || kind == Kind.CELESTIAL)
                     && (player.isSprinting() || player.getDeltaMovement().horizontalDistanceSqr() > .09) && now % 2 == 0) {
                 var trail = TRAILS.computeIfAbsent(player.getUUID(), key -> new ArrayDeque<>());
@@ -77,7 +75,6 @@ final class WristVisuals {
                 }
             }
 
-            // X-Grey Matter slow-falling cosmic wake
             if (form == Form.GREY_MATTER && kind == Kind.CELESTIAL && player.hasEffect(MobEffects.SLOW_FALLING)) {
                 var wake = FEATHER_WAKES.computeIfAbsent(player.getUUID(), key -> new ArrayDeque<>());
                 Vec3 pos = player.position().add(0, .24, 0);
@@ -93,6 +90,11 @@ final class WristVisuals {
         FEATHER_WAKES.values().removeIf(ArrayDeque::isEmpty);
     }
 
+    /**
+     * U1 Zero-Obstruction Starlight Hairline Micro-Arc HUD:
+     * Symmetrically hugs the bottom-left of the crosshair (16..20px radius, 0.56*PI..0.94*PI),
+     * pairing seamlessly with Infinity Gauntlet's bottom-right micro-arcs with ZERO black boxes or overlap!
+     */
     static void hud(GuiGraphics g, DeltaTracker tracker) {
         var mc = Minecraft.getInstance();
         if (mc.player == null || mc.options.hideGui || mc.player.isSpectator() || WristScreen.isOpen()) return;
@@ -101,6 +103,7 @@ final class WristVisuals {
         if (view == null) return;
         var snapshot = view.s();
         var phase = snapshot.phase();
+        float partial = tracker.getGameTimeDeltaPartialTick(false);
         if (phase == Stage.LOCKING) resistance(g, view, tracker);
         feedback(g);
         if (phase == Stage.ARMING) {
@@ -110,68 +113,105 @@ final class WristVisuals {
                 case CLASSIC -> classicShift(g, view, tracker);
             }
         }
-        boolean left = mc.player.getMainArm() == HumanoidArm.RIGHT;
+
+        double now = view.now(partial);
         boolean warning = WatchRender.timeout(view);
-        int tint = warning || phase == Stage.LOCKING ? 0xffff6764 : phase == Stage.COOLING ? 0xffffb78a : DialDraw.glow(snapshot.watch());
-        Component name = phase == Stage.ACTIVE || phase == Stage.REVERTING
-                ? Component.translatable(snapshot.chosen().translationKey(snapshot.watch()))
-                : Component.translatable("watch.aca_omnitrix." + phase.name().toLowerCase(Locale.ROOT));
-        String time = phase == Stage.ACTIVE || phase == Stage.COOLING ? seconds(view.ticksLeft()) : "";
-        int width = 35 + mc.font.width(name) + mc.font.width(time) + (time.isEmpty() ? 0 : 8);
-        width = Math.min(g.guiWidth() - 20, width);
-        int x = left ? Math.max(8, g.guiWidth() / 2 - 93 - width - 11) : Math.min(g.guiWidth() - width - 8, g.guiWidth() / 2 + 105);
-        int y = g.guiHeight() - 63;
-        if (g.guiWidth() < 470) {
-            x = left ? 8 : g.guiWidth() - width - 8;
-            y = g.guiHeight() - 79;
+        boolean alienX = snapshot.chosen() == Form.ALIEN_X && snapshot.watch() == Kind.CELESTIAL;
+        boolean cdActive = phase == Stage.ACTIVE && (snapshot.primaryAt() > now || snapshot.secondaryAt() > now
+                || snapshot.linkUntil() > now || snapshot.skillHintUntil() > now
+                || (alienX && (mc.player.isShiftKeyDown() || snapshot.flickAt() > now)));
+        boolean combatOrBusy = phase != Stage.IDLE || warning || snapshot.controlled() || cdActive;
+
+        long idleTicks = ClientState.ticksSinceHudActivity();
+        float breathe = 0.115f + 0.025f * Mth.sin((ClientState.clientTicks() + partial) * 0.08f);
+        float hudAlpha;
+        if (combatOrBusy || idleTicks <= 50L) {
+            hudAlpha = 0.92f;
+        } else {
+            float fade = Mth.clamp((idleTicks - 50f) / 30f, 0f, 1f);
+            hudAlpha = Mth.lerp(fade, 0.88f, breathe);
         }
-        if (snapshot.controlled() || warning) y -= 17;
-        g.fill(x, y, x + width, y + 22, 0xdc1d2530);
-        g.fill(x, y, x + width, y + 1, DialDraw.alpha(tint, .40f));
-        float fill = phase == Stage.ACTIVE ? 1 - view.progress(0) : phase == Stage.COOLING ? view.progress(0) : 1;
-        for (int notch = 0; notch < 12; notch++) {
-            float opacity = notch / 12f < fill ? .88f : .17f;
-            int a = x + 2 + notch * (width - 4) / 12, b = x + 2 + (notch + 1) * (width - 4) / 12 - 1;
-            g.fill(a, y + 19, b, y + 21, DialDraw.alpha(tint, opacity));
+
+        int tint = warning || phase == Stage.LOCKING ? 0xffff6764
+                : phase == Stage.COOLING ? 0xffffb78a
+                : DialDraw.glow(snapshot.watch());
+        float cx = g.guiWidth() * 0.5f;
+        float cy = g.guiHeight() * 0.5f;
+        float ax = cx - 5.5f;
+        float ay = cy + 5.5f;
+
+        float arcStart = (float) (Math.PI * 0.56);
+        float arcEnd = (float) (Math.PI * 0.94);
+        float fill = phase == Stage.ACTIVE ? (1f - view.progress(partial))
+                : phase == Stage.COOLING ? view.progress(partial) : 1f;
+        fill = Mth.clamp(fill, 0f, 1f);
+
+        // 1. Outer 1.2px Hairline Morph / Recharge Micro-Arc (bottom-left of reticle)
+        DialDraw.arc(g, ax, ay, 18.8f, 20.0f, arcStart, arcEnd, DialDraw.alpha(0xffdce8f4, hudAlpha * 0.22f));
+        if (fill > 0.01f) {
+            float litStart = arcEnd - (arcEnd - arcStart) * fill;
+            DialDraw.arc(g, ax, ay, 18.8f, 20.0f, litStart, arcEnd, DialDraw.alpha(tint, hudAlpha));
         }
-        icon(g, x + 4, y + 5, tint, phase);
-        g.drawString(mc.font, name, x + 23, y + 5, 0xffe4eaed, false);
-        if (!time.isEmpty()) g.drawString(mc.font, time, x + width - mc.font.width(time) - 4, y + 5, tint, false);
+
+        // 2. Inner 0.9px Hairline Barrier Micro-Arc (when morphed)
         if (phase == Stage.ACTIVE && snapshot.chosen() != null && snapshot.maxBarrier() > 0) {
             float barFrac = (float) Math.clamp(snapshot.barrier() / snapshot.maxBarrier(), 0.0, 1.0);
-            int barCol = snapshot.chosen() == Form.ALIEN_X && snapshot.watch() == Kind.CELESTIAL
-                    ? 0xffcbb6ff : tint;
-            g.fill(x + 2, y - 4, x + width - 2, y - 1, 0xa010161e);
-            int fillW = Math.max(2, Math.round((width - 4) * barFrac));
-            g.fill(x + 2, y - 4, x + 2 + fillW, y - 1, DialDraw.alpha(barCol, .92f));
+            int barCol = alienX ? 0xffd6c2ff : 0xffe8f6ff;
+            DialDraw.arc(g, ax, ay, 16.2f, 17.1f, arcStart + 0.04f, arcEnd - 0.04f,
+                    DialDraw.alpha(0xffa8bfd6, hudAlpha * 0.18f));
+            if (barFrac > 0.01f) {
+                float bStart = (arcEnd - 0.04f) - (arcEnd - arcStart - 0.08f) * barFrac;
+                DialDraw.arc(g, ax, ay, 16.2f, 17.1f, bStart, arcEnd - 0.04f, DialDraw.alpha(barCol, hudAlpha * 0.92f));
+            }
         }
-        if (snapshot.controlled()) {
-            Component takeover = Component.translatable("watch.aca_omnitrix.possessed");
-            g.drawString(mc.font, takeover, x + 4, y + 24, GOLD, true);
-        } else if (warning) {
-            g.drawString(mc.font, Component.translatable("watch.aca_omnitrix.timeout"), x + 4, y + 24, tint, true);
-        }
-        double now = view.now(0);
-        boolean alien = snapshot.chosen() == Form.ALIEN_X && snapshot.watch() == Kind.CELESTIAL;
-        if (phase == Stage.ACTIVE && !snapshot.controlled()
-                && (snapshot.skillHintUntil() > now || snapshot.linkUntil() > now
-                    || alien && (mc.player.isShiftKeyDown() || snapshot.flickAt() > now))) {
-            var leftKey = OmnitrixClient.PRIMARY.getTranslatedKeyMessage().getString();
-            var rightKey = OmnitrixClient.SECONDARY.getTranslatedKeyMessage().getString();
-            boolean alternate = alien && mc.player.isShiftKeyDown();
-            long leftAt = alternate ? snapshot.shiftPrimaryAt() : snapshot.primaryAt();
-            long rightAt = alternate ? snapshot.shiftSecondaryAt() : snapshot.secondaryAt();
-            var hint = Component.translatable("watch.aca_omnitrix.skills",
-                    (alternate ? "⇧" : "") + leftKey, skillTime(leftAt - now),
-                    (alternate ? "⇧" : "") + rightKey, skillTime(rightAt - now));
-            if (alien) hint.append("  ").append(OmnitrixClient.FLICK.getTranslatedKeyMessage()).append(" ")
-                    .append(skillTime(snapshot.flickAt() - now));
-            if (snapshot.linkUntil() > now) hint.append(" · ").append(Component.translatable("watch.aca_omnitrix.link_ready"));
-            int hintWidth = mc.font.width(hint);
-            int skillX = Math.max(8, Math.min(left ? x + width - hintWidth : x, g.guiWidth() - hintWidth - 10));
-            int skillY = g.guiWidth() < 470 ? y - 26 : y - 15;
-            g.fill(skillX - 2, skillY - 2, skillX + hintWidth + 3, skillY + 10, 0xde1d2530);
-            g.drawString(mc.font, hint, skillX, skillY, 0xffe4eaed, false);
+
+        // 3. Faceted Omnitrix Hourglass Micro-Crest Pip at lower-left tip
+        float pipAngle = (float) (Math.PI * 0.75);
+        float px = ax + Mth.cos(pipAngle) * 23.2f;
+        float py = ay + Mth.sin(pipAngle) * 23.2f;
+        DialDraw.diamond(g, px, py - 1.5f, 1.7f, 1.4f, DialDraw.alpha(tint, hudAlpha));
+        DialDraw.diamond(g, px, py + 1.5f, 1.7f, 1.4f, DialDraw.alpha(tint, hudAlpha));
+
+        // 4. Airy Frameless Micro-Telemetry (only visible when morphed, recharging, or warned — zero black boxes!)
+        if (hudAlpha > 0.28f && (phase != Stage.IDLE || warning || snapshot.controlled())) {
+            var pose = g.pose();
+            pose.pushPose();
+            pose.translate(px - 4.0f, py + 2.5f, 0f);
+            pose.scale(0.58f, 0.58f, 1f);
+
+            String statusStr;
+            if (snapshot.controlled()) {
+                statusStr = Component.translatable("watch.aca_omnitrix.possessed").getString();
+            } else if (warning) {
+                statusStr = Component.translatable("watch.aca_omnitrix.timeout").getString() + " " + seconds(view.ticksLeft());
+            } else if (phase == Stage.ACTIVE && snapshot.chosen() != null) {
+                boolean alternate = alienX && mc.player.isShiftKeyDown();
+                long leftAt = alternate ? snapshot.shiftPrimaryAt() : snapshot.primaryAt();
+                long rightAt = alternate ? snapshot.shiftSecondaryAt() : snapshot.secondaryAt();
+                String uKey = OmnitrixClient.PRIMARY.getTranslatedKeyMessage().getString();
+                String iKey = OmnitrixClient.SECONDARY.getTranslatedKeyMessage().getString();
+                StringBuilder sb = new StringBuilder();
+                if (snapshot.watch() != Kind.CELESTIAL) {
+                    sb.append(seconds(view.ticksLeft())).append(" · ");
+                }
+                sb.append(alternate ? "⇧" : "").append(uKey).append(' ').append(skillTime(leftAt - now))
+                  .append("  ").append(alternate ? "⇧" : "").append(iKey).append(' ').append(skillTime(rightAt - now));
+                if (alienX) {
+                    sb.append("  ").append(OmnitrixClient.FLICK.getTranslatedKeyMessage().getString())
+                      .append(' ').append(skillTime(snapshot.flickAt() - now));
+                }
+                if (snapshot.linkUntil() > now) sb.append(" ✦");
+                statusStr = sb.toString();
+            } else if (phase == Stage.COOLING) {
+                statusStr = seconds(view.ticksLeft());
+            } else {
+                statusStr = Component.translatable("watch.aca_omnitrix." + phase.name().toLowerCase(Locale.ROOT)).getString();
+            }
+
+            int sw = mc.font.width(statusStr);
+            int textCol = DialDraw.alpha(warning ? 0xffff8680 : snapshot.controlled() ? GOLD : 0xffeef6fa, hudAlpha);
+            g.drawString(mc.font, statusStr, -sw, 0, textCol, true);
+            pose.popPose();
         }
     }
 
@@ -185,28 +225,12 @@ final class WristVisuals {
         return "%d:%02d".formatted(sec / 60, sec % 60);
     }
 
-    private static void icon(GuiGraphics g, int x, int y, int color, Stage stage) {
-        if (stage == Stage.COOLING) {
-            g.fill(x + 4, y + 2, x + 14, y + 5, color);
-            g.fill(x + 5, y + 5, x + 13, y + 9, DialDraw.alpha(color, .5f));
-            g.fill(x + 4, y + 9, x + 14, y + 11, color);
-        } else if (stage == Stage.ACTIVE || stage == Stage.REVERTING) {
-            g.fill(x + 2, y + 5, x + 14, y + 7, color);
-            g.fill(x + 7, y + 1, x + 10, y + 11, color);
-        } else {
-            g.fill(x + 2, y + 2, x + 14, y + 4, color);
-            g.fill(x + 5, y + 5, x + 11, y + 7, color);
-            g.fill(x + 2, y + 8, x + 14, y + 10, color);
-        }
-    }
-
     private static void classicShift(GuiGraphics g, ClientState.View view, DeltaTracker tracker) {
         float t = view.age(tracker.getGameTimeDeltaPartialTick(false));
         int pulseColor = view.s().misfire() && t < 14 ? 0xffff4f46 : DialDraw.glow(Kind.CLASSIC);
         int coreGreen = view.s().misfire() && t < 14 ? 0xffff382e : 0xff46df62;
         int x = g.guiWidth() / 2, y = g.guiHeight() - 112;
 
-        // 1. Seamless Hologram Implosion Ring (t = 0..5.6): bridges WristScreen closing directly into palm SLAM!
         if (!ClientState.reduced() && t < 5.6f) {
             float collapse = 1f - Motion.part(t, 0f, 5.5f);
             float implosionR = 8f + collapse * 46f;
@@ -219,20 +243,19 @@ final class WristVisuals {
         if (!ClientState.reduced()) {
             for (int i = 0; i < 4; i++) {
                 float rIn = 12 + i * 9 + t * 1.75f;
-                DialDraw.arc(g, x, y, rIn, rIn + 1.8f, -2.8f + i * .12f, -.34f - i * .12f,
+                DialDraw.arc(g, x, y, rIn, rIn + 1.5f, -2.8f + i * .12f, -.34f - i * .12f,
                         DialDraw.alpha(pulseColor, open * (.88f - i * .16f)));
             }
-            // Canonical Omnitrix Hourglass Ignition Flash at palm slam contact (t = 5.2..12.5)
             float flash = Motion.part(t, 5.0f, 6.6f) * (1 - Motion.part(t, 6.8f, 12.8f));
             if (flash > .02f) {
-                g.fill(0, 0, g.guiWidth(), g.guiHeight(), DialDraw.alpha(coreGreen, flash * .22f));
+                g.fill(0, 0, g.guiWidth(), g.guiHeight(), DialDraw.alpha(coreGreen, flash * .18f));
                 float hg = 18f + (1f - flash) * 28f;
-                DialDraw.diamond(g, x, y - hg * .45f, hg * .55f, hg * .45f, DialDraw.alpha(pulseColor, flash * .65f));
-                DialDraw.diamond(g, x, y + hg * .45f, hg * .55f, hg * .45f, DialDraw.alpha(pulseColor, flash * .65f));
+                DialDraw.diamond(g, x, y - hg * .45f, hg * .55f, hg * .45f, DialDraw.alpha(pulseColor, flash * .62f));
+                DialDraw.diamond(g, x, y + hg * .45f, hg * .55f, hg * .45f, DialDraw.alpha(pulseColor, flash * .62f));
             }
         }
         caption(g, view.s().misfire() && t < 14 ? "watch.aca_omnitrix.misfire" : view.s().chosen().translationKey(Kind.CLASSIC),
-                g.guiWidth() / 2, g.guiHeight() - 105, pulseColor);
+                g.guiWidth() / 2, g.guiHeight() - 96, pulseColor);
     }
 
     private static void resistance(GuiGraphics g, ClientState.View view, DeltaTracker tracker) {
@@ -243,16 +266,15 @@ final class WristVisuals {
         float jitter = ClientState.reduced() ? 0 : Mth.sin(time * 1.8f) * .23f;
         float angle = (float) Math.toRadians(ClientState.bearing(mc.player, view, 0)) - TAU / 4 + jitter;
         DialDraw.tick(g, x, y - 25, 10, 23, angle, red);
-        DialDraw.arc(g, x, y - 25, 25, 26.5f, -TAU / 4, -TAU / 4 + TAU * (1 - view.progress(0)), red);
+        DialDraw.arc(g, x, y - 25, 25, 26.2f, -TAU / 4, -TAU / 4 + TAU * (1 - view.progress(0)), red);
         Component message = Component.translatable("watch.aca_omnitrix.resist", mc.options.keyShift.getTranslatedKeyMessage());
         int width = Math.max(112, mc.font.width(message) + 18);
         int left = x - width / 2;
-        g.fill(left, y + 4, left + width, y + 28, 0xe52d1821);
-        g.drawCenteredString(mc.font, message, x, y + 8, 0xffffe3d7);
+        g.drawCenteredString(mc.font, message, x, y + 6, 0xffffe3d7);
         for (int i = 0; i < WristService.RESIST_PRESSES; i++) {
             int from = left + 8 + i * (width - 16) / WristService.RESIST_PRESSES;
             int to = left + 6 + (i + 1) * (width - 16) / WristService.RESIST_PRESSES;
-            g.fill(from, y + 21, to, y + 24, i < view.s().resistance() ? red : 0xff69404a);
+            g.fill(from, y + 18, to, y + 20, i < view.s().resistance() ? red : 0x5569404a);
         }
     }
 
@@ -263,7 +285,7 @@ final class WristVisuals {
         long age = mc.level.getGameTime() - effect.tick();
         int action = effect.cue().action();
         if (age < 25 && action == WristNetwork.FAILSAFE_CUE) {
-            caption(g, "watch.aca_omnitrix.failsafe", g.guiWidth() / 2, g.guiHeight() - 106, 0xffc3fa89);
+            caption(g, "watch.aca_omnitrix.failsafe", g.guiWidth() / 2, g.guiHeight() - 96, 0xffc3fa89);
         } else if (age < 14 && (action == Form.ALIEN_X.ordinal()
                 || action == Abilities.SECONDARY + Form.ALIEN_X.ordinal()
                 || action == WristNetwork.SINGULARITY_CUE
@@ -271,8 +293,8 @@ final class WristVisuals {
                 || action == WristNetwork.REWRITE_CUE)) {
             float x = g.guiWidth() * .5f, y = g.guiHeight() * .43f;
             float opacity = ClientState.reduced() ? .4f : Math.min(1, 1.25f - age / 15f);
-            float size = Math.min(55f, g.guiHeight() * .19f);
-            float spread = Math.min(g.guiWidth() * .23f, 96f);
+            float size = Math.min(50f, g.guiHeight() * .17f);
+            float spread = Math.min(g.guiWidth() * .25f, 108f);
             boolean stasis = action == Form.ALIEN_X.ordinal() || action == WristNetwork.SINGULARITY_CUE;
             int color = action == WristNetwork.REWRITE_CUE ? SILVER : stasis ? VIOLET : GOLD;
             persona(g, stasis ? "serena" : "bellicus", x + (stasis ? -spread : spread), y,
@@ -282,7 +304,7 @@ final class WristVisuals {
                     : action == WristNetwork.REWRITE_CUE ? "motion_rewrite"
                     : stasis ? "motion_stasis" : "motion_starburst";
             caption(g, "watch.aca_omnitrix." + capKey,
-                    (int) x, (int) (y + size * .65f), SILVER);
+                    (int) x, (int) (y + size * .72f), SILVER);
         }
     }
 
@@ -294,12 +316,12 @@ final class WristVisuals {
         int color = DialDraw.alpha(GOLD, .80f);
         for (int i = 0; i < 4; i++) {
             float angle = TAU * i / 4f + (ClientState.reduced() ? 0 : t * .059f);
-            DialDraw.arc(g, x, y, radius, radius + 1.8f, angle + .12f, angle + .65f, color);
+            DialDraw.arc(g, x, y, radius, radius + 1.5f, angle + .12f, angle + .65f, color);
             DialDraw.tick(g, x, y, radius - 12, radius, angle, color);
         }
         float bearing = ClientState.bearing(Minecraft.getInstance().player, view, tracker.getGameTimeDeltaPartialTick(false));
         float aim = (float) Math.toRadians(bearing) - TAU / 4;
-        DialDraw.arc(g, x, y, radius + 5, radius + 8, aim - .12f, aim + .12f, GOLD);
+        DialDraw.arc(g, x, y, radius + 5, radius + 7.2f, aim - .12f, aim + .12f, GOLD);
         DialDraw.tick(g, x, y, radius - 15, radius - 4, aim, GOLD);
         caption(g, "watch.aca_omnitrix.forced_shift", g.guiWidth() / 2, (int) y + 39, GOLD);
         if (t < 14) {
@@ -313,7 +335,7 @@ final class WristVisuals {
         float x = g.guiWidth() * .50f, y = g.guiHeight() * .465f;
         float meter = Math.min(g.guiWidth() / 430f, g.guiHeight() / 250f);
         float s = Math.clamp(meter, .64f, 1.45f);
-        float spread = 105 * s;
+        float spread = 112 * s;
         float press = Motion.part(t, 1, 9);
         float split = Motion.part(t, 9, 15);
         float second = Motion.part(t, 15, 21);
@@ -321,35 +343,34 @@ final class WristVisuals {
         float fade = 1 - Motion.part(t, 38, 47);
         float left = (ClientState.reduced() ? 0 : split * 12 * (1 - cut));
         float right = (ClientState.reduced() ? 0 : second * 12 * (1 - cut));
-        int background = DialDraw.alpha(0xd5111825, press * fade * .72f);
-        g.fillGradient(0, (int) (y - 104 * s), g.guiWidth(), (int) (y + 83 * s), DialDraw.alpha(background, .22f), background);
-        g.fillGradient(0, (int) (y + 83 * s), g.guiWidth(), g.guiHeight(), background, DialDraw.alpha(background, .83f));
+        int background = DialDraw.alpha(0x880b1220, press * fade * .48f);
+        g.fillGradient(0, (int) (y - 96 * s), g.guiWidth(), (int) (y + 84 * s), DialDraw.alpha(background, .08f), background);
         for (int rail = 0; rail < 3; rail++) {
             float turn = -1.57f + rail * TAU / 3 + (ClientState.reduced() ? 0 : t * (.024f + rail * .008f));
             float radius = (25 + rail * 8 + cut * 36) * s;
-            DialDraw.arc(g, x, y, radius, radius + (rail == 2 ? 2.4f : 1.3f) * s, turn, turn + 1.31f + cut * .25f,
+            DialDraw.arc(g, x, y, radius, radius + (rail == 2 ? 2.0f : 1.1f) * s, turn, turn + 1.31f + cut * .25f,
                     DialDraw.alpha(rail == 0 ? SILVER : rail == 1 ? VIOLET : GOLD, fade * press * (rail == 0 ? 1 : 1 - cut)));
         }
         if (t >= 31 && t < 44 && !ClientState.reduced()) {
             float burstR = (16 + cut * 72) * s;
-            DialDraw.arc(g, x, y, burstR, burstR + 2.8f * s, 0, TAU, DialDraw.alpha(SILVER, fade * (1 - cut * .6f) * .65f));
+            DialDraw.arc(g, x, y, burstR, burstR + 2.4f * s, 0, TAU, DialDraw.alpha(SILVER, fade * (1 - cut * .6f) * .65f));
         }
         if (split > .01f && cut < 1) {
             float own = x - spread + left * s;
-            DialDraw.edge(g, own + 17 * s, y + 10 * s, x - 34 * s, y + 2 * s, 2 * s, DialDraw.alpha(VIOLET, split * (1 - cut)));
-            persona(g, "serena", own, y - 8 * s, 74 * s * split, 11 - right * .69f,
+            DialDraw.edge(g, own + 17 * s, y + 10 * s, x - 34 * s, y + 2 * s, 1.5f * s, DialDraw.alpha(VIOLET, split * (1 - cut)));
+            persona(g, "serena", own, y - 8 * s, 72 * s * split, 11 - right * .69f,
                     DialDraw.alpha(VIOLET, split * (1 - cut)), t);
         }
         if (second > .01f && cut < 1) {
             float own = x + spread - right * s;
-            DialDraw.edge(g, own - 17 * s, y + 10 * s, x + 34 * s, y + 2 * s, 2 * s, DialDraw.alpha(GOLD, second * (1 - cut)));
-            persona(g, "bellicus", own, y - 8 * s, 78 * s * second, -13 + left * .72f,
+            DialDraw.edge(g, own - 17 * s, y + 10 * s, x + 34 * s, y + 2 * s, 1.5f * s, DialDraw.alpha(GOLD, second * (1 - cut)));
+            persona(g, "bellicus", own, y - 8 * s, 76 * s * second, -13 + left * .72f,
                     DialDraw.alpha(GOLD, second * (1 - cut)), t);
         }
         if (t >= 28) {
             for (int i = -1; i <= 1; i += 2) {
                 float gap = 10 + cut * 15;
-                DialDraw.edge(g, x - gap * s, y - i * gap * s, x + gap * s, y + i * gap * s, 1.7f * s, DialDraw.alpha(SILVER, fade * cut));
+                DialDraw.edge(g, x - gap * s, y - i * gap * s, x + gap * s, y + i * gap * s, 1.4f * s, DialDraw.alpha(SILVER, fade * cut));
             }
         }
         if (t < 36) {
@@ -383,11 +404,14 @@ final class WristVisuals {
         return rig.animate(Rig.STILL, "idle", tick, ClientState.reduced() ? .25f : 1);
     }
 
+    /** U1 Frameless Luminous Hairline Caption (replaces opaque dark rectangle box!). */
     private static void caption(GuiGraphics g, String key, int x, int y, int color, Object... arguments) {
         var font = Minecraft.getInstance().font;
         var text = Component.translatable(key, arguments);
-        int half = font.width(text) / 2;
-        g.fill(x - half - 7, y - 4, x + half + 8, y + 13, 0xd91c2433);
+        int half = Math.max(24, font.width(text) / 2 + 8);
+        g.fill(x - half, y + 10, x + half, y + 11, DialDraw.alpha(color, 0.34f));
+        g.fill(x - half / 2, y + 10, x + half / 2, y + 11, DialDraw.alpha(color, 0.78f));
+        DialDraw.diamond(g, x, y + 10.5f, 2.2f, 1.4f, color);
         g.drawCenteredString(font, text, x, y, color);
     }
 
@@ -403,11 +427,12 @@ final class WristVisuals {
         PoseStack pose = e.getPoseStack();
         var buffers = mc.renderBuffers().bufferSource();
         long now = mc.level.getGameTime();
+        float animTicks = ClientState.clientTicks() + partial;
 
         pose.pushPose();
         pose.translate(-camera.x, -camera.y, -camera.z);
 
-        // 1. XLR8 & X-XLR8 afterimages + dark-sheathed twin wheel ground speed streams (BOTH Classic & Celestial!)
+        // 1. XLR8 & X-XLR8 afterimages + dark-sheathed twin wheel ground speed streams
         if (!TRAILS.isEmpty()) {
             Rig rig = Rig.get("xlr8");
             for (var entry : TRAILS.entrySet()) {
@@ -452,15 +477,27 @@ final class WristVisuals {
             }
         }
 
+        // 3. Alien X Stasis Field + Voronoi Mirror Shatter Rim
         for (var active : ClientState.scenes()) {
             var scene = active.scene();
             if (scene.effect() != WristNetwork.STASIS_SCENE || active.until() <= now
                     || scene.center().distanceToSqr(camera) > 84 * 84) continue;
-            drawStasisField(pose, buffers, camera, scene.center(), now - active.began() + partial,
+            drawStasisField(pose, buffers, camera, scene.center(), animTicks,
                     Mth.clamp((active.until() - now) / 14f, 0, 1));
         }
 
-        // 4. Windup anticipation gathering, crystal shell & transformation transitions
+        // 3b. Active 4-Layer Puppet & Soul-Terror Floating Crowns
+        long cNow = ClientState.clientTicks();
+        for (var marker : ClientState.controlMarkers()) {
+            if (marker.pos().distanceToSqr(camera) > 64 * 64) continue;
+            float rem = (marker.until() - cNow - partial);
+            if (rem <= 0) continue;
+            float mAlpha = Mth.clamp(rem / 16f, 0f, 1f) * Mth.clamp((cNow + partial - marker.startTick()) / 4f, 0.25f, 1f);
+            VfxPrimitives.controlCrown(pose, buffers, marker.pos(), camera, animTicks,
+                    marker.galvanic(), marker.terror(), marker.celestial(), mAlpha);
+        }
+
+        // 4. Windup anticipation gathering, 3D hexagonal crystal shell & transformation transitions
         for (Player p : mc.level.players()) {
             var view = ClientState.get(p);
             if (view == null || p.distanceToSqr(camera) > 68 * 68) continue;
@@ -500,40 +537,56 @@ final class WristVisuals {
     private static void drawStasisField(PoseStack pose, MultiBufferSource buffers, Vec3 camera,
                                         Vec3 center, float elapsed, float opacity) {
         float turn = ClientState.reduced() ? 0 : elapsed * .013f;
-        int tint = DialDraw.alpha(0xff6c7bde, opacity * .77f);
+        int tint = DialDraw.alpha(0xff7c8eff, opacity * .82f);
         VfxPrimitives.astrolabeRingEroded(pose, buffers, center.add(0, .07, 0), TemporalEffects.RANGE,
                 .52, turn, turn + TAU, 64, tint, .08f);
+        VfxPrimitives.voronoiShatterCrown(pose, buffers, center.add(0, .10, 0), new Vec3(0, 1, 0), camera,
+                Math.min(12.5, TemporalEffects.RANGE * .32), 1.45, -turn * 1.4f, tint, .22f);
         if (ClientState.reduced()) return;
         for (int i = 0; i < 8; i++) {
             float azimuth = i * TAU / 8 + turn;
             Vec3 base = center.add(Math.cos(azimuth) * 39.8, .08, Math.sin(azimuth) * 39.8);
             if (base.distanceToSqr(camera) > 64 * 64) continue;
-            VfxPrimitives.materialRibbon(pose, buffers, base, base.add(0, 4.9, 0), camera, .56, .12,
-                    DialDraw.alpha(0xff677cdb, opacity * .70f), VfxPrimitives.CRYSTAL, .08f);
+            VfxPrimitives.hexCrystalSpire(pose, buffers, base, new Vec3(0, 1, 0), .42, 4.4,
+                    DialDraw.alpha(0xff778eff, opacity * .74f), .12f);
         }
     }
 
     private static void drawCrystalShell(PoseStack pose, MultiBufferSource buffers, Player player, float partial, Vec3 camera) {
-        Vec3 center = player.getPosition(partial).add(0, player.getBbHeight() * .52, 0);
-        float spin = (player.tickCount + partial) * .045f;
+        Vec3 center = player.getPosition(partial).add(0, player.getBbHeight() * .20, 0);
+        float spin = (ClientState.clientTicks() + partial) * .045f;
         for (int i = 0; i < 6; i++) {
             double angle = spin + i * TAU / 6;
-            Vec3 base = center.add(Math.cos(angle) * .78, -.64, Math.sin(angle) * .78);
-            VfxPrimitives.lusterRibbonEroded(pose, buffers, base, base.add(0, 1.38, 0), camera, .16, .28,
-                    0xc468f2df, 1.0f, .06f, true);
+            Vec3 radial = new Vec3(Math.cos(angle), 0, Math.sin(angle));
+            Vec3 base = center.add(radial.scale(.72));
+            Vec3 tiltUp = new Vec3(radial.x * .24, 1.0, radial.z * .24);
+            VfxPrimitives.hexCrystalSpire(pose, buffers, base, tiltUp, .18, 1.32, 0xc868f5e2, .08f);
         }
     }
 
     private static void renderCueEffect(PoseStack pose, MultiBufferSource buffers, WristNetwork.Cue cue,
                                         float age, float partial, Vec3 camera) {
         if (AscalonRenderer.renderCue(pose, buffers, cue, age, camera)) return;
+        if (cue.action() == WristNetwork.PUPPET_CUE || cue.action() == WristNetwork.TERROR_CUE) {
+            if (age > 18f) return;
+            float p = age / 18f;
+            boolean terror = cue.action() == WristNetwork.TERROR_CUE;
+            boolean galvanic = cue.linked();
+            int c1 = DialDraw.alpha(terror ? 0xffd288ff : galvanic ? 0xff62f89c : 0xffb894ff, 1f - p);
+            int c2 = DialDraw.alpha(galvanic ? 0xffe0fff2 : 0xfff4e8ff, (1f - p) * .88f);
+            VfxPrimitives.curvedEnergyWhip(pose, buffers, cue.from(), cue.to(), camera,
+                    .14 * (1f - p * .4f), .045, .48, age * .35f, c1, c2, p * .62f);
+            VfxPrimitives.voronoiShatterCrown(pose, buffers, cue.to().add(0, -.35, 0), new Vec3(0, 1, 0), camera,
+                    .38 + p * 1.15, .45 * (1f - p), age * .24f, c1, p * .55f);
+            return;
+        }
         if (cue.action() == WristNetwork.CRYSTAL_SHELL_BREAK_CUE) {
-            if (age < 13) {
-                float p = age / 13f;
+            if (age < 15) {
+                float p = age / 15f;
                 int col = DialDraw.alpha(0xff72f5dc, 1 - p);
+                VfxPrimitives.voronoiShatterCrown(pose, buffers, cue.from().add(0, .85, 0), new Vec3(0, 1, 0), camera,
+                        .55 + p * 1.85, .75 * (1f - p), age * .22f, col, p * .58f);
                 VfxPrimitives.lusterImpactBurst(pose, buffers, cue.from().add(0, 1.10, 0), camera, 1.9, p, col);
-                VfxPrimitives.lusterRingEroded(pose, buffers, cue.from().add(0, .95, 0), .45 + p * 1.65,
-                        .26, .18 * (1 - p), 0, TAU, 28, col, p * .45f);
             }
             return;
         }
@@ -545,14 +598,18 @@ final class WristVisuals {
             int col = DialDraw.alpha(thaw ? SILVER : 0xffc3fa89, 1 - p);
             VfxPrimitives.lusterRingEroded(pose, buffers, cue.from().add(0, .18, 0), .6 + age * (thaw ? 1.25 : .30),
                     .30, .24 * (1 - p), 0, TAU, 44, col, p * .4f);
+            if (thaw) {
+                VfxPrimitives.voronoiShatterCrown(pose, buffers, cue.from().add(0, .25, 0), new Vec3(0, 1, 0), camera,
+                        .8 + p * 6.5, .95 * (1f - p), age * .15f, col, p * .65f);
+            }
             return;
         }
         if (cue.action() == WristNetwork.AEGIS_CUE) {
             if (age > 14) return;
             float p = age / 14f;
             int col = DialDraw.alpha(SILVER, (1f - p) * .92f);
-            VfxPrimitives.orientedAstrolabeRingEroded(pose, buffers, cue.to(), cue.to().subtract(cue.from()), camera,
-                    .45 + p * 1.55, .24, age * .25, 28, col, p * .35f);
+            VfxPrimitives.voronoiShatterCrown(pose, buffers, cue.to(), cue.to().subtract(cue.from()), camera,
+                    .45 + p * 1.55, .42 * (1f - p), age * .25f, col, p * .45f);
             VfxPrimitives.lusterImpactBurst(pose, buffers, cue.to(), camera, 1.45, p, col);
             return;
         }
@@ -561,11 +618,11 @@ final class WristVisuals {
             float p = age / 16f;
             int col = DialDraw.alpha(0xffc978ff, 1f - p);
             Vec3 start = attached(cue, "grip_r", partial);
-            VfxPrimitives.lusterRibbonEroded(pose, buffers, start, cue.to(), camera,
-                    .12 * (1 - p * .45f), .03, col, 1.6f, p * .65f, true);
-            VfxPrimitives.orientedAstrolabeRingEroded(pose, buffers, cue.to(), cue.to().subtract(start), camera,
-                    Math.max(.22, 2.7 * (1 - p * .72)), .38, age * .35, 30, DialDraw.alpha(GOLD, 1f - p), p * .35f);
-            if (cue.hitEntity()) VfxPrimitives.lusterImpactBurst(pose, buffers, cue.to(), camera, 2.0, p, col);
+            VfxPrimitives.curvedEnergyWhip(pose, buffers, start, cue.to(), camera,
+                    .14 * (1 - p * .45f), .035, .36, age * .42f, col, DialDraw.alpha(GOLD, 1f - p), p * .65f);
+            VfxPrimitives.voronoiShatterCrown(pose, buffers, cue.to(), cue.to().subtract(start), camera,
+                    .35 + p * 2.1, .65 * (1f - p), age * .32f, DialDraw.alpha(GOLD, 1f - p), p * .48f);
+            if (cue.hitEntity()) VfxPrimitives.lusterImpactBurst(pose, buffers, cue.to(), camera, 2.2, p, col);
             return;
         }
         if (cue.action() == WristNetwork.SINGULARITY_CUE) {
@@ -575,6 +632,8 @@ final class WristVisuals {
             float fade = (1f - p) * .88f;
             VfxPrimitives.celestialPlanet(pose, buffers, core, .20 + 1.95 * (1 - p), age * .038f,
                     DialDraw.alpha(0xff382057, (1f - p) * .99f), DialDraw.alpha(VIOLET, fade), true);
+            VfxPrimitives.voronoiShatterCrown(pose, buffers, core, new Vec3(.18, 1, -.14), camera,
+                    1.2 + 5.6 * (1 - p * .72), 1.35 * (1 - p), -age * .16f, DialDraw.alpha(VIOLET, fade), p * .45f);
             inwardArcs(pose, buffers, camera, core, age, 9.2 * (1 - p * .86), fade, false);
             return;
         }
@@ -584,22 +643,19 @@ final class WristVisuals {
             float fade = 1f - p;
             Vec3 start = attached(cue, "grip_r", partial);
             Vec3 end = cue.to();
-            VfxPrimitives.materialRibbon(pose, buffers, start, end, camera, 1.08 * fade, .78 * fade,
-                    DialDraw.alpha(0xff261b45, fade * .92f), VfxPrimitives.VOID, p * .30f);
-            VfxPrimitives.lusterRibbonEroded(pose, buffers, start, end, camera, .66 * fade, .48 * fade,
-                    DialDraw.alpha(0xff9c72ff, fade * .96f), 2.4f, p * .55f, true);
-            VfxPrimitives.flowRibbon(pose, buffers, start, end, camera, .16 * fade, .08 * fade,
-                    DialDraw.alpha(0xffffe6fa, fade * .90f), false, true, 1f);
-            VfxPrimitives.orientedAstrolabeRingEroded(pose, buffers, end, end.subtract(start), camera,
-                    .92 + p * 2.5, .36, age * .05f, 32, DialDraw.alpha(0xffb48cff, fade), p * .52f);
+            VfxPrimitives.curvedEnergyWhip(pose, buffers, start, end, camera, .72 * fade, .46 * fade,
+                    .58, age * .36f, DialDraw.alpha(0xffa676ff, fade * .96f),
+                    DialDraw.alpha(0xffffd89a, fade * .90f), p * .52f);
+            VfxPrimitives.voronoiShatterCrown(pose, buffers, end, end.subtract(start), camera,
+                    .95 + p * 3.2, 1.1 * fade, age * .18f, DialDraw.alpha(0xffb48cff, fade), p * .52f);
             return;
         }
         if (cue.action() == WristNetwork.REWRITE_CUE) {
             if (age > 32) return;
             float p = age / 32f;
             float fade = 1f - p;
-            VfxPrimitives.lusterRingEroded(pose, buffers, cue.from().add(0, .15, 0), 1.5 + p * 16.5, 1.1, .9 * fade,
-                    age * .14, age * .14 + TAU, 56, DialDraw.alpha(GOLD, fade), p * .45f);
+            VfxPrimitives.voronoiShatterCrown(pose, buffers, cue.from().add(0, .20, 0), new Vec3(0, 1, 0), camera,
+                    1.6 + p * 15.8, 2.2 * fade, age * .14f, DialDraw.alpha(GOLD, fade), p * .48f);
             VfxPrimitives.astrolabeRingEroded(pose, buffers, cue.from().add(0, 1.1, 0), 1.0 + p * 12.0, .75,
                     -age * .18, -age * .18 + TAU, 44, DialDraw.alpha(SILVER, fade), p * .35f);
             VfxPrimitives.lusterImpactBurst(pose, buffers, cue.to(), camera, 4.8, p, DialDraw.alpha(VIOLET, fade));
@@ -622,7 +678,6 @@ final class WristVisuals {
         boolean star = watch == Kind.CELESTIAL;
         boolean carni = watch == Kind.CARNITRIX || automated;
 
-        // High-contrast projectile collision bursts (Fireball star-sparks, Crystal shatter, Slime acid ring)
         if (cue.projectile()) {
             if (age > 16) return;
             float p = age / 16f;
@@ -636,9 +691,14 @@ final class WristVisuals {
                 default -> 0xff98f66c;
             }, 1f - p);
             VfxPrimitives.lusterImpactBurst(pose, buffers, cue.to(), camera, star ? 1.65 : 1.25, p, col);
-            VfxPrimitives.lusterRingEroded(pose, buffers, cue.to().add(0, .05, 0),
-                    .28 + p * (form == Form.STINKFLY ? (star ? 1.75 : 1.25) : (star ? 1.25 : .92)),
-                    form == Form.STINKFLY ? .34 : .22, .12 * (1 - p), 0, TAU, 28, col, p * .55f);
+            if (form == Form.DIAMONDHEAD) {
+                VfxPrimitives.voronoiShatterCrown(pose, buffers, cue.to(), new Vec3(0, 1, 0), camera,
+                        .32 + p * (star ? 1.45 : 1.05), .48 * (1f - p), age * .25f, col, p * .55f);
+            } else {
+                VfxPrimitives.lusterRingEroded(pose, buffers, cue.to().add(0, .05, 0),
+                        .28 + p * (form == Form.STINKFLY ? (star ? 1.75 : 1.25) : (star ? 1.25 : .92)),
+                        form == Form.STINKFLY ? .34 : .22, .12 * (1 - p), 0, TAU, 28, col, p * .55f);
+            }
             return;
         }
 
@@ -702,7 +762,6 @@ final class WristVisuals {
                     VfxPrimitives.lusterSlashArcEroded(pose, buffers, from.add(0, -.35, 0), dir,
                             3.5, .82, tilt, -1.05f, 2.10f, color, progress * .55f);
                 } else if (!secondary) {
-                    // High-contrast 3-beat Tetramand combo with dark void sheath & FBM blade wake!
                     double reach = star ? 5.3 : 4.7;
                     double radius = Math.min(reach, Math.max(2.1, dir.horizontalDistance() * (.80 + .20 * progress)));
                     int beat = cue.beat();
@@ -715,25 +774,23 @@ final class WristVisuals {
                     } else if (beat == 1) {
                         VfxPrimitives.lusterSlashArcEroded(pose, buffers, from.add(0, .06, 0), dir,
                                 radius * 1.04, star ? .98 : .76, -18f, -.74f, 1.78f, color, er);
-                        VfxPrimitives.lusterRibbonEroded(pose, buffers, from, to, camera,
-                                star ? .28 : .20, .045, color, 1.5f, er, true);
+                        VfxPrimitives.curvedEnergyWhip(pose, buffers, from, to, camera,
+                                star ? .26 : .19, .045, .28, age * .35f, color, DialDraw.alpha(GOLD, alpha * .85f), er);
                     } else {
-                        // Beat 3 Finisher: Converging Double-X Sonic Smash + Supersonic Bow Shock + Astrolabe Ring!
                         VfxPrimitives.lusterSlashArcEroded(pose, buffers, from, dir,
                                 radius * 1.05, star ? 1.08 : .82, 22f, -1.18f, 2.36f, color, er);
                         VfxPrimitives.lusterSlashArcEroded(pose, buffers, from, dir,
                                 radius * .97, star ? .92 : .70, -22f, -1.18f, 2.36f, color, er);
                         VfxPrimitives.bowShockWave(pose, buffers, to, fwd, right, camera,
                                 star ? 1.45 : 1.15, .42, color);
-                        VfxPrimitives.orientedAstrolabeRingEroded(pose, buffers, to, fwd, camera,
-                                .55 + progress * 1.85, .30, age * .18, 28, color, er);
+                        VfxPrimitives.voronoiShatterCrown(pose, buffers, to, fwd, camera,
+                                .55 + progress * 1.95, .62 * (1f - progress), age * .22f, color, er);
                     }
                 } else {
-                    // Ground Slam: Dual-pass tectonic shockwave + astrolabe fracture ring + upward impact burst!
-                    double maxR = (star ? 5.2 : 4.4) * (cue.hitGround() ? 1.0 : .78);
+                    double maxR = (star ? 5.4 : 4.5) * (cue.hitGround() ? 1.0 : .78);
                     double r = .45 + (maxR - .45) * Math.pow(progress, .64);
-                    VfxPrimitives.lusterRingEroded(pose, buffers, to, r, star ? .72 : .50,
-                            (star ? .58 : .34) * (1 - progress), 0, TAU, 44, color, progress * .50f);
+                    VfxPrimitives.voronoiShatterCrown(pose, buffers, to, new Vec3(0, 1, 0), camera,
+                            r, (star ? .95 : .68) * (1f - progress), age * .14f, color, progress * .52f);
                     VfxPrimitives.astrolabeRingEroded(pose, buffers, to.add(0, .03, 0), r * .72, .32,
                             age * .12, age * .12 + TAU, 36, DialDraw.alpha(star ? SILVER : 0xffffd6a8, alpha * .82f), progress * .4f);
                     if (age < 10) {
@@ -746,29 +803,28 @@ final class WristVisuals {
                 if (carni) {
                     VfxPrimitives.nebulaCone(pose, buffers, from, to, .22, 1.42, age * .16f,
                             DialDraw.alpha(0xff4e2529, alpha * .78f), false);
-                    VfxPrimitives.lusterRibbonEroded(pose, buffers, from, to, camera, .34, 1.05, color, 1.6f, progress * .5f, true);
+                    VfxPrimitives.curvedEnergyWhip(pose, buffers, from, to, camera, .28, .65, .36, age * .35f,
+                            color, DialDraw.alpha(0xffffca7a, alpha), progress * .5f);
                 } else if (!secondary) {
                     Vec3 palm = attached(cue, "grip_r", partial);
-                    VfxPrimitives.lusterRibbonEroded(pose, buffers, palm, to,
-                            camera, star ? .24 : .17, .04, color, 1.4f, progress * .55f, true);
+                    VfxPrimitives.curvedEnergyWhip(pose, buffers, palm, to, camera,
+                            star ? .22 : .16, .04, .26, age * .4f, color, DialDraw.alpha(0xffffe29e, alpha), progress * .55f);
                     VfxPrimitives.orientedAstrolabeRingEroded(pose, buffers, palm.add(fwd.scale(.25)), fwd, camera,
                             .24 + progress * .38, .12, age * .22, 20, color, progress * .5f);
                 } else if (cue.beat() > 0 && cue.linked()) {
-                    Vec3 mid = from.lerp(to, .5).add(0, .55, 0);
-                    VfxPrimitives.lusterRibbonEroded(pose, buffers, from, mid, camera, .18, .15, color, 1.2f, progress * .45f, true);
-                    VfxPrimitives.lusterRibbonEroded(pose, buffers, mid, to, camera, .15, .06, color, 1.2f, progress * .45f, true);
+                    VfxPrimitives.curvedEnergyWhip(pose, buffers, from, to, camera, .18, .06, .48, age * .38f,
+                            color, DialDraw.alpha(0xffffdc92, alpha), progress * .45f);
                 } else {
-                    // Pyrokinetic Fire Cone: Swirling thermal vortex cone + twin dark-sheathed plasma jets + muzzle shock ring!
                     Vec3 rPalm = attached(cue, "grip_r", partial);
                     Vec3 lPalm = attached(cue, "grip_l", partial);
                     Vec3 originMid = rPalm.lerp(lPalm, .5);
                     Vec3 spread = right.scale(star ? .68 : .46);
                     VfxPrimitives.nebulaCone(pose, buffers, originMid, to, .20, star ? 1.45 : 1.08, age * .22f,
                             DialDraw.alpha(star ? 0xffa658d8 : 0xffcc4822, alpha * .62f), star);
-                    VfxPrimitives.lusterRibbonEroded(pose, buffers, rPalm, to.add(spread), camera,
-                            .26, .78, color, 1.8f, progress * .48f, true);
-                    VfxPrimitives.lusterRibbonEroded(pose, buffers, lPalm, to.subtract(spread), camera,
-                            .26, .74, DialDraw.alpha(0xffffc878, alpha * .86f), 1.8f, progress * .48f, true);
+                    VfxPrimitives.curvedEnergyWhip(pose, buffers, rPalm, to.add(spread), camera,
+                            .24, .58, .38, age * .38f, color, DialDraw.alpha(0xffffda8c, alpha * .92f), progress * .48f);
+                    VfxPrimitives.curvedEnergyWhip(pose, buffers, lPalm, to.subtract(spread), camera,
+                            .24, .54, -.38, -age * .36f, DialDraw.alpha(0xffffc878, alpha * .88f), color, progress * .48f);
                     VfxPrimitives.orientedAstrolabeRingEroded(pose, buffers, originMid.add(fwd.scale(.35)), fwd, camera,
                             .35 + progress * .55, .18, -age * .24, 24, color, progress * .45f);
                 }
@@ -780,11 +836,12 @@ final class WristVisuals {
                         VfxPrimitives.lusterRingEroded(pose, buffers, from.add(0, .06, 0),
                                 .8 + progress * maxR, star ? .64 : .42, .16 * (1 - progress), 0, TAU, 56, color, progress * .45f);
                     } else {
-                        VfxPrimitives.lusterRibbonEroded(pose, buffers, to, from, camera, .11, .045, color, 2.0f, progress * .4f, true);
+                        VfxPrimitives.curvedEnergyWhip(pose, buffers, to, from, camera, .10, .04, .32, age * .32f,
+                                color, DialDraw.alpha(0xffffe6b2, alpha), progress * .4f);
                     }
                 } else {
-                    VfxPrimitives.lusterRibbonEroded(pose, buffers, from.add(0, -.35, 0), to, camera,
-                            star ? .28 : .21, .06, color, 1.5f, progress * .5f, true);
+                    VfxPrimitives.curvedEnergyWhip(pose, buffers, from.add(0, -.35, 0), to, camera,
+                            star ? .26 : .19, .06, .24, age * .35f, color, DialDraw.alpha(GOLD, alpha * .86f), progress * .5f);
                     for (int claw = -1; claw <= 1; claw++) {
                         VfxPrimitives.lusterSlashArcEroded(pose, buffers, to.add(0, claw * .16, 0), dir,
                                 cue.hitEntity() ? .96 : .72, .22, 34f + claw * 9f, -.78f, 1.56f, color, progress * .52f);
@@ -793,21 +850,24 @@ final class WristVisuals {
             }
             case DIAMONDHEAD -> {
                 if (!secondary && !carni && cue.fallback()) {
-                    VfxPrimitives.orientedAstrolabeRingEroded(pose, buffers, to, new Vec3(0, 1, 0), camera,
-                            .65 + progress * .42, .22, age * .12, 26, color, progress * .35f);
+                    VfxPrimitives.voronoiShatterCrown(pose, buffers, to, new Vec3(0, 1, 0), camera,
+                            .65 + progress * .45, .52 * (1f - progress * .4f), age * .14f, color, progress * .35f);
                 } else if (!secondary && !carni) {
-                    for (int pillar = -1; pillar <= 1; pillar++) {
-                        Vec3 base = to.add(right.scale(pillar * .65)).add(0, -.45, 0);
-                        Vec3 peak = base.add(0, (pillar == 0 ? 2.25 : 1.45) * Math.min(1f, progress * 1.9f), 0);
-                        VfxPrimitives.lusterRibbonEroded(pose, buffers, base, peak, camera, .24, .035,
-                                color, 1.2f, progress * .38f, true);
+                    // 3D Faceted Hexagonal Crystal Spire Cluster!
+                    float grow = Math.min(1f, progress * 2.1f);
+                    for (int pillar = -2; pillar <= 2; pillar++) {
+                        Vec3 base = to.add(right.scale(pillar * .48)).add(0, -.48, 0);
+                        Vec3 tilt = new Vec3(right.x * pillar * .14, 1.0, right.z * pillar * .14);
+                        double h = (pillar == 0 ? 2.45 : Math.abs(pillar) == 1 ? 1.85 : 1.25) * grow;
+                        VfxPrimitives.hexCrystalSpire(pose, buffers, base, tilt, pillar == 0 ? .34 : .25, h,
+                                color, progress * .42f);
                     }
-                    VfxPrimitives.astrolabeRingEroded(pose, buffers, to.add(0, -.42, 0), .58 + progress * 1.55,
-                            .28, age * .08, age * .08 + TAU, 28, color, progress * .4f);
+                    VfxPrimitives.voronoiShatterCrown(pose, buffers, to.add(0, -.42, 0), new Vec3(0, 1, 0), camera,
+                            .62 + progress * 1.65, .42 * (1f - progress), age * .10f, color, progress * .42f);
                 } else {
                     Vec3 rPalm = attached(cue, "grip_r", partial);
-                    VfxPrimitives.lusterRibbonEroded(pose, buffers, rPalm, to, camera, .19, .04,
-                            color, 1.4f, progress * .5f, true);
+                    VfxPrimitives.curvedEnergyWhip(pose, buffers, rPalm, to, camera, .18, .04, .22, age * .4f,
+                            color, DialDraw.alpha(0xffe8ffff, alpha), progress * .5f);
                     if (age < 8) {
                         VfxPrimitives.lusterImpactBurst(pose, buffers, rPalm.add(fwd.scale(.3)), camera, .65, age / 8f, color);
                     }
@@ -823,12 +883,12 @@ final class WristVisuals {
                     VfxPrimitives.bowShockWave(pose, buffers, to.add(0, -.45, 0), fwd, right, camera,
                             star ? 1.25 : .98, .45, color);
                 } else if (cue.fallback()) {
-                    VfxPrimitives.lusterRibbonEroded(pose, buffers, from.add(0, -1, 0), to.add(0, .15, 0), camera,
-                            .20, .04, color, 1.2f, progress * .5f, true);
+                    VfxPrimitives.curvedEnergyWhip(pose, buffers, from.add(0, -1, 0), to.add(0, .15, 0), camera,
+                            .18, .04, .24, age * .35f, color, DialDraw.alpha(SILVER, alpha), progress * .5f);
                 } else {
                     double slowRadius = cue.linked() ? (star ? 3.1 : 2.1) : (star ? 2.1 : 1.4);
-                    VfxPrimitives.lusterRingEroded(pose, buffers, to.add(0, .06, 0), .4 + progress * slowRadius,
-                            star ? .48 : .30, .22 * (1 - progress), age * .28, age * .28 + TAU * .86, 32, color, progress * .45f);
+                    VfxPrimitives.voronoiShatterCrown(pose, buffers, to.add(0, .06, 0), new Vec3(0, 1, 0), camera,
+                            .4 + progress * slowRadius, .36 * (1 - progress), age * .28f, color, progress * .45f);
                 }
             }
             case GREY_MATTER -> {
@@ -842,42 +902,41 @@ final class WristVisuals {
                         VfxPrimitives.lusterRibbonEroded(pose, buffers, start, top, camera, .08, .025, color, 1.2f, progress * .4f, true);
                     }
                 } else {
-                    VfxPrimitives.lusterRibbonEroded(pose, buffers, from, to, camera, .17, .045,
-                            color, 1.4f, progress * .45f, true);
+                    // Galvanic Acupressure Nerve-Pin Whip + Neural Fracture Ring!
+                    VfxPrimitives.curvedEnergyWhip(pose, buffers, from, to, camera, .15, .04, .32, age * .44f,
+                            color, DialDraw.alpha(0xffe8fff6, alpha), progress * .45f);
+                    if (cue.hitEntity()) {
+                        VfxPrimitives.orientedAstrolabeRingEroded(pose, buffers, to, fwd, camera,
+                                .28 + progress * .72, .16, -age * .28, 24, color, progress * .45f);
+                    }
                 }
             }
             case STINKFLY -> {
                 if (secondary || carni) {
                     Vec3 wingSpan = right.scale(.60);
-                    VfxPrimitives.lusterRibbonEroded(pose, buffers, from.add(wingSpan), to.add(wingSpan.scale(.32)),
-                            camera, .22, .045, color, 1.5f, progress * .48f, true);
-                    VfxPrimitives.lusterRibbonEroded(pose, buffers, from.subtract(wingSpan), to.subtract(wingSpan.scale(.32)),
-                            camera, .22, .045, color, 1.5f, progress * .48f, true);
+                    VfxPrimitives.curvedEnergyWhip(pose, buffers, from.add(wingSpan), to.add(wingSpan.scale(.32)),
+                            camera, .20, .045, .25, age * .35f, color, DialDraw.alpha(0xffe8ffbe, alpha), progress * .48f);
+                    VfxPrimitives.curvedEnergyWhip(pose, buffers, from.subtract(wingSpan), to.subtract(wingSpan.scale(.32)),
+                            camera, .20, .045, -.25, -age * .35f, color, DialDraw.alpha(0xffe8ffbe, alpha), progress * .48f);
                     VfxPrimitives.bowShockWave(pose, buffers, to, fwd, right, camera, .95, .36, color);
-                    if (cue.linked() && star) {
-                        VfxPrimitives.lusterRingEroded(pose, buffers, to, .45 + progress * 1.15, .30, .42 * (1 - progress),
-                                -age * .3, -age * .3 + TAU, 26, color, progress * .4f);
-                    }
                 }
             }
             case RIPJAWS -> {
                 if (!secondary) {
-                    // Upper & lower dark-sheathed hydro-fang crescents snapping shut onto target!
                     VfxPrimitives.lusterSlashArcEroded(pose, buffers, to, dir.scale(-1), 1.20, .38, 72f, -.88f, 1.76f, color, progress * .45f);
                     VfxPrimitives.lusterSlashArcEroded(pose, buffers, to, dir.scale(-1), 1.20, .38, -72f, -.88f, 1.76f, color, progress * .45f);
                     if (age < 9) {
                         VfxPrimitives.lusterImpactBurst(pose, buffers, to, camera, 1.15, age / 9f, color);
                     }
                 } else if (cue.beat() == 1 && cue.linked()) {
-                    VfxPrimitives.lusterRibbonEroded(pose, buffers, from, to, camera, .20, .065, color, 1.5f, progress * .45f, true);
-                    VfxPrimitives.lusterRingEroded(pose, buffers, from, .60 * (1 - progress * .5), .24, .18 * (1 - progress),
-                            age * .35, age * .35 + TAU, 22, color, progress * .4f);
+                    VfxPrimitives.curvedEnergyWhip(pose, buffers, from, to, camera, .18, .06, .36, age * .38f,
+                            color, DialDraw.alpha(0xffe0fbff, alpha), progress * .45f);
                 } else {
                     Vec3 ortho = right.scale(.34);
-                    VfxPrimitives.lusterRibbonEroded(pose, buffers, from.add(ortho), to.subtract(ortho.scale(.4)),
-                            camera, .24, .065, color, 1.6f, progress * .45f, true);
-                    VfxPrimitives.lusterRibbonEroded(pose, buffers, from.subtract(ortho), to.add(ortho.scale(.4)),
-                            camera, .24, .065, color, 1.6f, progress * .45f, true);
+                    VfxPrimitives.curvedEnergyWhip(pose, buffers, from.add(ortho), to.subtract(ortho.scale(.4)),
+                            camera, .22, .065, .32, age * .38f, color, DialDraw.alpha(0xffe0fbff, alpha), progress * .45f);
+                    VfxPrimitives.curvedEnergyWhip(pose, buffers, from.subtract(ortho), to.add(ortho.scale(.4)),
+                            camera, .22, .065, -.32, -age * .38f, color, DialDraw.alpha(0xffe0fbff, alpha), progress * .45f);
                     VfxPrimitives.orientedAstrolabeRingEroded(pose, buffers, from.lerp(to, .65), fwd, camera,
                             .55 + progress * .45, .20, age * .28, 22, color, progress * .45f);
                 }
@@ -888,37 +947,44 @@ final class WristVisuals {
                     VfxPrimitives.orientedAstrolabeRingEroded(pose, buffers, lens, from.subtract(to), camera,
                             .32 + progress * .36, .14, age * .08f, 24, color, progress * .35f);
                 } else if (!secondary && !carni) {
-                    VfxPrimitives.circuitTrace(pose, buffers, from.add(0, -.32, 0), to, camera, color, star);
+                    // Galvanic Construct Neural Hijack / Lever Link Multi-Strand Whip!
+                    Vec3 lens = attached(cue, "optic", partial);
+                    VfxPrimitives.curvedEnergyWhip(pose, buffers, lens, to, camera,
+                            star ? .18 : .13, .045, .44, age * .42f, color, DialDraw.alpha(0xffe6fff4, alpha), progress * .45f);
+                    VfxPrimitives.orientedAstrolabeRingEroded(pose, buffers, to, fwd, camera,
+                            .28 + progress * .68, .16, age * .26, 24, color, progress * .42f);
                 } else {
                     Vec3 lens = attached(cue, "optic", partial);
-                    VfxPrimitives.materialRibbon(pose, buffers, lens, to, camera,
-                            star ? .30 : .21, .11, DialDraw.alpha(0xff0b2922, alpha * .92f),
-                            VfxPrimitives.VOID, progress * .52f);
-                    VfxPrimitives.materialRibbon(pose, buffers, lens, to, camera,
-                            star ? .20 : .14, .05, color, VfxPrimitives.CIRCUIT, progress * .72f);
-                    VfxPrimitives.lusterRibbonEroded(pose, buffers, lens, to, camera,
-                            star ? .11 : .075, .03, DialDraw.alpha(0xffe8fff4, alpha * .95f), 2.2f, progress * .45f, false);
+                    VfxPrimitives.curvedEnergyWhip(pose, buffers, lens, to, camera,
+                            star ? .28 : .19, .055, .36, age * .48f, color,
+                            DialDraw.alpha(0xffeafff6, alpha * .96f), progress * .48f);
                     VfxPrimitives.orientedAstrolabeRingEroded(pose, buffers, lens.add(fwd.scale(.18)), fwd, camera,
                             .22 + progress * .26, .10, age * .25, 20, color, progress * .4f);
                     if (cue.hitEntity()) {
-                        VfxPrimitives.lusterImpactBurst(pose, buffers, to, camera, star ? 1.25 : .95, progress, color);
+                        VfxPrimitives.voronoiShatterCrown(pose, buffers, to, fwd, camera,
+                                .35 + progress * (star ? 1.35 : .95), .45 * (1f - progress), age * .24f, color, progress * .5f);
                     }
                 }
             }
             case GHOSTFREAK -> {
                 if (!secondary && !carni) {
+                    if (cue.hitEntity()) {
+                        // Ectonurite Possession Curved Tendrils!
+                        VfxPrimitives.curvedEnergyWhip(pose, buffers, from.add(0, -.22, 0), to, camera,
+                                .20, .05, .52, age * .36f, color, DialDraw.alpha(0xfff2dcff, alpha), progress * .45f);
+                    }
                     for (int ringIdx = 0; ringIdx < 3; ringIdx++) {
                         double h = -.9 + ringIdx * .55 + progress * .45;
                         VfxPrimitives.lusterRingEroded(pose, buffers, from.add(0, h, 0), .35 + progress * .78,
                                 .26, .18 * (1 - progress), age * .16 + ringIdx, age * .16 + ringIdx + 4.4, 24, color, progress * .45f);
                     }
                 } else if (cue.beat() == 1) {
-                    VfxPrimitives.orientedAstrolabeRingEroded(pose, buffers, from, fwd, camera,
-                            Math.max(.14, .98 * (1 - progress)), .28, -age * .32, 24, color, progress * .4f);
-                    VfxPrimitives.orientedAstrolabeRingEroded(pose, buffers, to, fwd, camera,
-                            .22 + progress * 1.28, .32, age * .32, 26, color, progress * .4f);
-                    VfxPrimitives.lusterRibbonEroded(pose, buffers, from, to, camera, .18, .24,
-                            color, 1.5f, progress * .55f, true);
+                    VfxPrimitives.voronoiShatterCrown(pose, buffers, from, fwd, camera,
+                            Math.max(.18, .98 * (1 - progress)), .36 * (1 - progress), -age * .32f, color, progress * .45f);
+                    VfxPrimitives.voronoiShatterCrown(pose, buffers, to, fwd, camera,
+                            .26 + progress * 1.35, .48 * (1 - progress), age * .32f, color, progress * .45f);
+                    VfxPrimitives.curvedEnergyWhip(pose, buffers, from, to, camera, .20, .24, .46, age * .34f,
+                            color, DialDraw.alpha(0xfff4e0ff, alpha), progress * .52f);
                 } else if (cue.fallback() || carni && cue.hitEntity()) {
                     VfxPrimitives.lusterSlashArcEroded(pose, buffers, to, dir, .78 + progress * .62,
                             .28, -34, -.72f, 1.56f, color, progress * .48f);
@@ -928,8 +994,8 @@ final class WristVisuals {
                 if (!secondary && !carni) {
                     double maxR = TemporalEffects.RANGE;
                     double r = 1.2 + (maxR - 1.2) * Math.pow(progress, .62);
-                    VfxPrimitives.lusterRingEroded(pose, buffers, to.add(0, .12, 0), r, .88, .55 * (1 - progress * .5),
-                            age * .08, age * .08 + TAU, 64, color, progress * .35f);
+                    VfxPrimitives.voronoiShatterCrown(pose, buffers, to.add(0, .12, 0), new Vec3(0, 1, 0), camera,
+                            Math.min(18.0, r), 1.45 * (1 - progress * .55), age * .09f, color, progress * .38f);
                     VfxPrimitives.astrolabeRingEroded(pose, buffers, to.add(0, .55, 0), r * .68, .55,
                             -age * .11, -age * .11 + TAU, 48, DialDraw.alpha(SILVER, alpha * .85f), progress * .3f);
                 } else if (carni && cue.beat() == 0) {
@@ -937,13 +1003,14 @@ final class WristVisuals {
                 } else {
                     double maxR = carni ? 8.0 : 16.0;
                     double r = .65 + (maxR - .65) * Math.pow(progress, .58);
-                    VfxPrimitives.lusterRingEroded(pose, buffers, to.add(0, .08, 0), r, carni ? .58 : .96,
-                            (carni ? .45 : .88) * (1 - progress), 0, TAU, 52, color, progress * .42f);
+                    VfxPrimitives.voronoiShatterCrown(pose, buffers, to.add(0, .08, 0), new Vec3(0, 1, 0), camera,
+                            r, (carni ? .65 : 1.35) * (1 - progress), age * .14f, color, progress * .44f);
                     if (!carni) {
                         VfxPrimitives.astrolabeRingEroded(pose, buffers, to.add(0, .35, 0), r * .72, .62,
                                 age * .16, age * .16 + TAU, 42, DialDraw.alpha(VIOLET, alpha * .9f), progress * .35f);
-                        VfxPrimitives.lusterRibbonEroded(pose, buffers, to, to.add(0, 4.1 * (1 - progress), 0), camera,
-                                1.02 * (1 - progress), .14, DialDraw.alpha(0xfff59e56, alpha * .94f), 1.8f, progress * .45f, true);
+                        VfxPrimitives.curvedEnergyWhip(pose, buffers, to, to.add(0, 4.6 * (1 - progress * .4f), 0), camera,
+                                .92 * (1 - progress), .14, .42, age * .35f,
+                                DialDraw.alpha(0xfff59e56, alpha * .94f), DialDraw.alpha(VIOLET, alpha), progress * .45f);
                         VfxPrimitives.lusterImpactBurst(pose, buffers, to.add(0, .4, 0), camera, 4.4, progress,
                                 DialDraw.alpha(0xffffca78, alpha));
                     } else {
@@ -954,7 +1021,6 @@ final class WristVisuals {
             }
         }
 
-        // Universal server-confirmed entity hit impact feedback (high-contrast Sakuga star-cross burst!)
         if (cue.hitEntity() && age <= 10 && to.distanceToSqr(camera) <= 48 * 48) {
             VfxPrimitives.lusterImpactBurst(pose, buffers, to, camera, star ? 1.35 : 1.02, age / 10f,
                     DialDraw.alpha(baseTint, .94f * (1f - age / 10f)));
@@ -1026,7 +1092,6 @@ final class WristVisuals {
             return;
         }
 
-        // Universal readable anticipation gathering cues across Classic & Celestial forms!
         if (form == Form.HEATBLAST) {
             float gather = Motion.part((float) age, 0, 4);
             int fireCol = DialDraw.alpha(star ? 0xffe894ff : 0xffff9e44, .86f);
@@ -1090,8 +1155,9 @@ final class WristVisuals {
         Vec3 at = motion.focus().add(0, .12, 0);
         if (extinction) {
             Vec3 palm = WatchRender.skillAnchor(caster, view, "grip_r", partial, motion.origin());
-            VfxPrimitives.lusterRibbonEroded(pose, buffers, palm, motion.focus(), camera,
-                    .085, .05, DialDraw.alpha(0xffb472e8, fade * .75f), 1.4f, .08f, true);
+            VfxPrimitives.curvedEnergyWhip(pose, buffers, palm, motion.focus(), camera,
+                    .085, .05, .24, (float) age * .35f, DialDraw.alpha(0xffb472e8, fade * .75f),
+                    DialDraw.alpha(SILVER, fade * .6f), .08f);
             return;
         }
         double advance = ClientState.reduced() ? 0 : age * .11;
@@ -1102,15 +1168,15 @@ final class WristVisuals {
         }
         if (!stasis) {
             float gather = Motion.part((float) age, 0, 12);
-            VfxPrimitives.lusterRingEroded(pose, buffers, at, Math.max(.35, 2.2 * (1 - gather * .65)),
-                    .36, .44 * (1 - gather * .3), -advance * 1.5, -advance * 1.5 + TAU, 28, color, .12f);
+            VfxPrimitives.voronoiShatterCrown(pose, buffers, at, new Vec3(0, 1, 0), camera,
+                    Math.max(.35, 2.4 * (1 - gather * .65)), .52 * (1 - gather * .3), (float) (-advance * 1.5), color, .12f);
             if (!corrupted) {
                 for (int i = 0; i < 4; i++) {
                     double a = TAU * i / 4 - advance * 1.4;
                     Vec3 outer = at.add(Math.cos(a) * (4.8 * (1 - gather * .72)), 1.6 * (1 - gather * .6),
                             Math.sin(a) * (4.8 * (1 - gather * .72)));
-                    VfxPrimitives.lusterRibbonEroded(pose, buffers, outer, at.add(0, .25, 0), camera, .18, .05,
-                            DialDraw.alpha(GOLD, .86f), 1.4f, .1f, true);
+                    VfxPrimitives.curvedEnergyWhip(pose, buffers, outer, at.add(0, .25, 0), camera, .16, .045, .32,
+                            (float) (age * .35 + i), DialDraw.alpha(GOLD, .86f), DialDraw.alpha(VIOLET, .75f), .1f);
                 }
             }
         }
@@ -1127,7 +1193,6 @@ final class WristVisuals {
         int color = DialDraw.alpha(baseColor, .32f + .64f * pulse);
         boolean star = kind == Kind.CELESTIAL;
 
-        // 1. High-contrast concentric orbital/shock rings
         int rings = ClientState.reduced() ? 1 : 3;
         for (int i = 0; i < rings; i++) {
             double radius = (star ? .62 : .46) + .24 * i + .56 * pulse;
@@ -1137,13 +1202,13 @@ final class WristVisuals {
                     a, a + (kind == Kind.CARNITRIX ? 2.9 : star ? 5.2 : 4.6), 26, color, .14f);
         }
 
-        // 2. Upgraded High-Contrast Transformation VFX: DNA Double-Helix / Celestial Pillar / Carnitrix Collapse
         if (!ClientState.reduced() && view.s().phase() == Stage.ARMING) {
             if (kind == Kind.CLASSIC && time >= 5) {
                 float beamLife = Mth.sin(Motion.part(time, 5, 18) * (float) Math.PI);
                 int beamCol = DialDraw.alpha(baseColor, beamLife * .90f);
-                VfxPrimitives.lusterRibbonEroded(pose, buffers, at.add(0, .05, 0), at.add(0, 2.85, 0), camera,
-                        .36 * beamLife, .16 * beamLife, DialDraw.alpha(0xff52ef6c, beamLife * .72f), 1.6f, .12f, true);
+                VfxPrimitives.curvedEnergyWhip(pose, buffers, at.add(0, .05, 0), at.add(0, 2.85, 0), camera,
+                        .32 * beamLife, .14 * beamLife, .22, time * .45f,
+                        DialDraw.alpha(0xff52ef6c, beamLife * .82f), beamCol, .12f);
                 for (int strand = 0; strand < 2; strand++) {
                     var helix = new ArrayList<Vec3>(10);
                     double phase = strand * Math.PI + time * .48;
@@ -1158,18 +1223,19 @@ final class WristVisuals {
             } else if (kind == Kind.CELESTIAL) {
                 float cosmicAlpha = pulse * .90f;
                 int starCol = DialDraw.alpha(0xffbaa8ff, cosmicAlpha);
-                VfxPrimitives.astrolabeRingEroded(pose, buffers, at.add(0, .06, 0), .85 + 1.65 * pulse,
-                        .50, -time * .09, -time * .09 + TAU, 38, starCol, .08f);
+                VfxPrimitives.voronoiShatterCrown(pose, buffers, at.add(0, .06, 0), new Vec3(0, 1, 0), camera,
+                        .85 + 1.65 * pulse, .68 * pulse, -time * .09f, starCol, .12f);
                 if (time >= 31) {
                     float surge = Motion.part(time, 31, 40) * (1 - Motion.part(time, 40, 48));
-                    VfxPrimitives.lusterRibbonEroded(pose, buffers, at.add(0, .05, 0), at.add(0, 3.4, 0), camera,
-                            .58 * surge, .24 * surge, DialDraw.alpha(SILVER, surge * .94f), 1.8f, .10f, true);
+                    VfxPrimitives.curvedEnergyWhip(pose, buffers, at.add(0, .05, 0), at.add(0, 3.6, 0), camera,
+                            .52 * surge, .22 * surge, .26, time * .42f,
+                            DialDraw.alpha(SILVER, surge * .94f), DialDraw.alpha(GOLD, surge * .86f), .10f);
                 }
             } else if (kind == Kind.CARNITRIX && time >= 6) {
                 float inward = 1f - Motion.part(time, 6, 24);
                 int redCol = DialDraw.alpha(0xffff4848, pulse * .88f);
-                VfxPrimitives.lusterRingEroded(pose, buffers, at.add(0, .12, 0), .35 + 1.45 * inward,
-                        .30, .42 * pulse, time * .32, time * .32 + TAU, 26, redCol, .16f);
+                VfxPrimitives.voronoiShatterCrown(pose, buffers, at.add(0, .12, 0), new Vec3(0, 1, 0), camera,
+                        .35 + 1.45 * inward, .42 * pulse, time * .32f, redCol, .18f);
             }
         }
 

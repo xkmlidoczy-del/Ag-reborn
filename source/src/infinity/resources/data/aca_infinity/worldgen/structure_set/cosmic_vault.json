@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "aca_infinity:cosmic_vault",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 88,
+    "separation": 40,
+    "salt": 20261118
+  }
+}

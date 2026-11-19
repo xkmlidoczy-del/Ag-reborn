@@ -748,7 +748,7 @@ public final class AscalonService {
 
                 for (LivingEntity target : trapped) {
                     double d = target.position().distanceTo(c);
-                    if (d > r * .68 && !cn.academy.port.highpower.PlayerShieldArmor.holding(target)) {
+                    if (d > r * .68 && !AcademyInterop.holdingShieldArmor(target)) {
                         Vec3 pullIn = c.add(0, .25, 0).subtract(target.position()).normalize().scale(.68);
                         target.setDeltaMovement(pullIn);
                         target.hurtMarked = true;
@@ -1102,7 +1102,7 @@ public final class AscalonService {
             Vec3 pushOut = target.position().subtract(center);
             if (fundamentalCleave(p, target, 115_000_000f, false, pushOut, 2.25)) {
                 hitAny = true;
-                if (!cn.academy.port.highpower.PlayerShieldArmor.holding(target)) {
+                if (!AcademyInterop.holdingShieldArmor(target)) {
                     target.push(0, .55, 0);
                     target.hurtMarked = true;
                 }

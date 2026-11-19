@@ -6,7 +6,7 @@ plugins {
 // with the default pure/server check outputs without rewriting their classpath.
 if (providers.gradleProperty('qaBuildDirectory').isPresent())
     layout.buildDirectory.set(layout.projectDirectory.dir(providers.gradleProperty('qaBuildDirectory').get()))
-version = '0.1.0-m41-highpower.0.81.5-city-a3.75'
+version = '0.1.0-m41-highpower.0.81.5-city-a3.77'
 group = 'cn.academy'
 base { archivesName = 'academy-generation-reborn' }
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
@@ -17,6 +17,7 @@ sourceSets {
     fauna
     hum
     omnitrix { compileClasspath += main.output }
+    infinity { compileClasspath += main.output }
     mechQa {
         compileClasspath += mech.output
         runtimeClasspath += mech.output
@@ -29,6 +30,7 @@ neoForge {
     addModdingDependenciesTo sourceSets.fauna
     addModdingDependenciesTo sourceSets.hum
     addModdingDependenciesTo sourceSets.omnitrix
+    addModdingDependenciesTo sourceSets.infinity
     runs {
         client { client(); if(providers.gradleProperty('canonExperimental').getOrElse('false').toBoolean())systemProperty 'academy.canon.experimental','true'; gameDirectory = layout.projectDirectory.dir(providers.gradleProperty('clientDirectory').getOrElse('run-client')); if(providers.gradleProperty('visualQA').getOrElse('false').toBoolean())systemProperty 'academy.visual.qa','true'; if(providers.gradleProperty('wirelessQA').getOrElse('false').toBoolean())systemProperty 'academy.wireless.qa','true' }
         server { server(); gameDirectory = layout.projectDirectory.dir(providers.gradleProperty('serverDirectory').getOrElse('run-server')); if (providers.gradleProperty('urbanWorldgenProbe').isPresent()) systemProperty 'academy.urban.worldgenProbe', providers.gradleProperty('urbanWorldgenProbe').get(); if (providers.gradleProperty('canonExperimental').getOrElse('false').toBoolean()) systemProperty 'academy.canon.experimental','true'; programArgument '--nogui' }
@@ -82,6 +84,7 @@ neoForge {
         aca_fauna { sourceSet(sourceSets.fauna) }
         acabiohum { sourceSet(sourceSets.hum) }
         aca_omnitrix { sourceSet(sourceSets.omnitrix) }
+        aca_infinity { sourceSet(sourceSets.infinity) }
     }
 }
 
@@ -117,7 +120,7 @@ def humJar = tasks.register('humJar', Jar) {
     from sourceSets.hum.output
     into('META-INF') { from('integration/aca-hum/NOTICE.md') }
 }
-def omnitrixVersion = '0.7.0'
+def omnitrixVersion = '0.8.0'
 tasks.named('processOmnitrixResources') {
     inputs.property 'omnitrixVersion', omnitrixVersion
     filesMatching('META-INF/neoforge.mods.toml') { expand(modVersion: omnitrixVersion) }
@@ -130,6 +133,19 @@ def omnitrixJar = tasks.register('omnitrixJar', Jar) {
     from sourceSets.omnitrix.output
     into('META-INF') { from('integration/aca-omnitrix/NOTICE.md') }
     into('META-INF/licenses') { from('integration/aca-omnitrix/licenses') }
+}
+def infinityVersion = '0.5.1'
+tasks.named('processInfinityResources') {
+    inputs.property 'infinityVersion', infinityVersion
+    filesMatching('META-INF/neoforge.mods.toml') { expand(modVersion: infinityVersion) }
+}
+def infinityJar = tasks.register('infinityJar', Jar) {
+    archiveBaseName = 'aca-infinity-neoforge-1.21.1'
+    archiveVersion = infinityVersion
+    archiveClassifier = 'embedded'
+    manifest { attributes('Automatic-Module-Name': 'cn.aca.infinity') }
+    from sourceSets.infinity.output
+    into('META-INF') { from('integration/aca-infinity/NOTICE.md') }
 }
 tasks.register('mechQaJar', Jar) {
     archiveBaseName = 'aca-mech-integration-qa'
@@ -165,6 +181,7 @@ dependencies {
     compileOnly sourceSets.fauna.output
     jarJar files(humJar)
     jarJar files(omnitrixJar)
+    jarJar files(infinityJar)
     implementation 'software.bernie.geckolib:geckolib-neoforge-1.21.1:4.7'
     faunaImplementation 'software.bernie.geckolib:geckolib-neoforge-1.21.1:4.7'
     jarJar('software.bernie.geckolib:geckolib-neoforge-1.21.1') {

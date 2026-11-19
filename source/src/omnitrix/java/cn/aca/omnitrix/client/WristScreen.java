@@ -28,10 +28,10 @@ final class WristScreen extends Screen {
     private static int lastCelestial = 10;
     private static final float TAU = (float) Math.PI * 2;
     private static final float TOP = -TAU / 4;
-    private static final int BACK = 0xe0111924;
-    private static final int BACK_INNER = 0xd61a2736;
-    private static final int INK = 0xffedf5ee;
-    private static final int MUTED = 0xffb2c7cc;
+    private static final int LENS_VEIL_INNER = 0x34111d2a;
+    private static final int LENS_VEIL_OUTER = 0x060a121c;
+    private static final int INK = 0xfff2f8f4;
+    private static final int MUTED = 0xffc0d4dc;
 
     WristScreen(Kind kind, boolean equipment) {
         super(Component.translatable("item.aca_omnitrix." + kind.id));
@@ -96,7 +96,6 @@ final class WristScreen extends Screen {
     public void tick() {
         age++;
         previous = rotation;
-        // Tactile spring-detent solver: crisp snap with subtle mechanical settle into notch
         float delta = selection - rotation;
         angularVel = angularVel * .42f + delta * .44f;
         rotation += angularVel;
@@ -209,6 +208,11 @@ final class WristScreen extends Screen {
     private float centerY(float scale) { return height - Math.min(106 * scale, height * .38f); }
 
     @Override
+    public void renderBackground(GuiGraphics g, int mouseX, int mouseY, float partial) {
+        // U1 Zero-Obstruction UI: Never darken the 3D world with vanilla's full-screen black tint!
+    }
+
+    @Override
     public void render(GuiGraphics g, int mouseX, int mouseY, float partial) {
         var view = ClientState.self();
         if (view == null) return;
@@ -228,63 +232,63 @@ final class WristScreen extends Screen {
         int color = DialDraw.glow(kind);
         int coreTint = DialDraw.coreTint(kind);
 
-        // Diegetic holographic projection cone anchored directly to the 3D wrist watch lens!
         if (minecraft.options.getCameraType().isFirstPerson()) {
             float dir = left() ? -1f : 1f;
             float wristX = 56f * dir;
             float wristY = 52f;
-            DialDraw.taperedBeam(g, wristX, wristY, 6f, 0f, 10f, 52f,
-                    DialDraw.alpha(coreTint, .34f * reveal), DialDraw.alpha(color, .04f * reveal));
-            DialDraw.edge(g, wristX - 4f * dir, wristY, -26f * dir, 38f, 1.1f, DialDraw.alpha(color, .46f * reveal));
-            DialDraw.edge(g, wristX + 4f * dir, wristY - 2f, 36f * dir, 26f, 1.1f, DialDraw.alpha(color, .38f * reveal));
-            DialDraw.arc(g, wristX, wristY, 0f, 3.2f, 0f, TAU, color);
-            DialDraw.gradientArc(g, wristX, wristY, 3.2f, 9.5f, 0f, TAU,
-                    DialDraw.alpha(coreTint, .45f), DialDraw.alpha(coreTint, 0f));
+            DialDraw.taperedBeam(g, wristX, wristY, 5f, 0f, 12f, 46f,
+                    DialDraw.alpha(coreTint, .24f * reveal), DialDraw.alpha(color, .02f * reveal));
+            DialDraw.edge(g, wristX - 4f * dir, wristY, -24f * dir, 36f, .9f, DialDraw.alpha(color, .42f * reveal));
+            DialDraw.edge(g, wristX + 4f * dir, wristY - 2f, 34f * dir, 24f, .9f, DialDraw.alpha(color, .34f * reveal));
+            DialDraw.arc(g, wristX, wristY, 0f, 2.8f, 0f, TAU, color);
+            DialDraw.gradientArc(g, wristX, wristY, 2.8f, 8.5f, 0f, TAU,
+                    DialDraw.alpha(coreTint, .38f), DialDraw.alpha(coreTint, 0f));
         }
 
-        // Soft outer radial aura + high-contrast abyssal dial disc
-        DialDraw.gradientArc(g, 0, 0, 53f, 64f, 0, TAU,
-                DialDraw.alpha(coreTint, .24f + .14f * switchWave), DialDraw.alpha(coreTint, 0f));
-        DialDraw.gradientArc(g, 0, 0, 0, 53.5f, 0, TAU, BACK_INNER, BACK);
-        DialDraw.arc(g, 0, 0, 52.0f, 53.6f, 0, TAU, DialDraw.alpha(color, .72f));
-        DialDraw.arc(g, 0, 0, 45.2f, 46.2f, 0, TAU, DialDraw.alpha(color, .28f));
+        // U1 Frameless Optical Astrolabe Projection (no opaque dark disc blocking center vision!)
+        DialDraw.gradientArc(g, 0, 0, 50f, 62f, 0, TAU,
+                DialDraw.alpha(coreTint, .18f + .12f * switchWave), DialDraw.alpha(coreTint, 0f));
+        DialDraw.gradientArc(g, 0, 0, 0, 48.0f, 0, TAU, LENS_VEIL_INNER, LENS_VEIL_OUTER);
+        DialDraw.arc(g, 0, 0, 51.6f, 52.8f, 0, TAU, DialDraw.alpha(color, .68f));
+        DialDraw.arc(g, 0, 0, 45.4f, 46.1f, 0, TAU, DialDraw.alpha(color, .26f));
 
-        // Canonical Omnitrix hourglass / chevron bezel framing arcs
         float bezelSpin = ClientState.reduced() ? 0f : dialYaw(partial) * ((float) Math.PI / 180f) * .25f;
         for (int q = 0; q < 4; q++) {
             float qa = q * (TAU / 4f) + bezelSpin;
-            DialDraw.arc(g, 0, 0, 53.8f, 55.8f, qa - .22f, qa + .22f, DialDraw.alpha(color, .86f));
+            DialDraw.arc(g, 0, 0, 53.2f, 54.8f, qa - .20f, qa + .20f, DialDraw.alpha(color, .86f));
         }
-        // Top active selection reticle chevron
-        DialDraw.diamond(g, 0, -49.2f, 3.2f, 4.4f, color);
+        DialDraw.diamond(g, 0, -49.0f, 3.0f, 4.2f, color);
 
         if (popRing > .02f) {
             float pr = 50 + (1 - reveal) * 16;
-            DialDraw.arc(g, 0, 0, pr, pr + 2.6f, 0, TAU, DialDraw.alpha(color, popRing * .78f));
+            DialDraw.arc(g, 0, 0, pr, pr + 2.2f, 0, TAU, DialDraw.alpha(color, popRing * .74f));
         }
         if (switchWave > .02f) {
             float sr = 16 + (1 - switchWave) * 35;
-            DialDraw.arc(g, 0, 0, sr, sr + 1.9f, 0, TAU, DialDraw.alpha(color, switchWave * .82f));
+            DialDraw.arc(g, 0, 0, sr, sr + 1.6f, 0, TAU, DialDraw.alpha(color, switchWave * .80f));
         }
 
-        // Holographic projection emitter pedestal beneath the 3D alien model
+        // Holographic projection emitter pedestal + live DNA double-helix scan beneath the 3D alien model
         if (!equipment && kind != Kind.CARNITRIX) {
-            DialDraw.gradientArc(g, 0, 22, 0, 18.5f, 0, TAU,
-                    DialDraw.alpha(coreTint, .28f + .15f * switchWave), DialDraw.alpha(color, .05f));
-            DialDraw.arc(g, 0, 22, 16.0f, 17.5f, 0, TAU, DialDraw.alpha(color, .58f));
-            DialDraw.taperedBeam(g, 0, 22, 30f, 0, -14, 38f,
-                    DialDraw.alpha(coreTint, .16f + .10f * switchWave), DialDraw.alpha(color, 0f));
+            DialDraw.gradientArc(g, 0, 22, 0, 17.5f, 0, TAU,
+                    DialDraw.alpha(coreTint, .24f + .14f * switchWave), DialDraw.alpha(color, .02f));
+            DialDraw.arc(g, 0, 22, 15.6f, 16.8f, 0, TAU, DialDraw.alpha(color, .54f));
+            DialDraw.taperedBeam(g, 0, 22, 28f, 0, -14, 36f,
+                    DialDraw.alpha(coreTint, .13f + .09f * switchWave), DialDraw.alpha(color, 0f));
+            if (!ClientState.reduced()) {
+                drawDnaHelix(g, time, color, coreTint, 0.44f + 0.36f * switchWave);
+            }
         }
 
         for (int notch = 0; notch < 40; notch++) {
             float angle = notch * TAU / 40 + (ClientState.reduced() ? 0 : time * .005f - bezelSpin * .4f);
-            DialDraw.tick(g, 0, 0, notch % 4 == 0 ? 47.8f : 49.8f, 52f, angle,
-                    DialDraw.alpha(color, notch % 4 == 0 ? .82f : .30f));
+            DialDraw.tick(g, 0, 0, notch % 4 == 0 ? 48.0f : 49.8f, 51.6f, angle,
+                    DialDraw.alpha(color, notch % 4 == 0 ? .80f : .26f));
         }
 
         if (equipment || kind == Kind.CARNITRIX) {
             float end = kind == Kind.CARNITRIX ? (ClientState.reduced() ? 1 : time * .038f) : TOP;
-            DialDraw.arc(g, 0, 0, 40, 43, end, end + .77f, color);
+            DialDraw.arc(g, 0, 0, 40, 42.4f, end, end + .77f, color);
             g.flush();
             drawModel(g, Rig.get(kind.id), Rig.STILL, 0, -2, 82, 6, -(ClientState.reduced() ? 0 : time * .45f), -35);
         } else if (kind == Kind.CLASSIC) {
@@ -292,15 +296,16 @@ final class WristScreen extends Screen {
         } else {
             for (int i = 0; i < 3; i++) {
                 float turnRing = TOP + i * TAU / 3f + (ClientState.reduced() ? 0 : time * (.015f + i * .005f));
-                DialDraw.arc(g, 0, 0, 31 + i * 2.4f, 32 + i * 2.4f, turnRing, turnRing + 1.45f,
+                DialDraw.arc(g, 0, 0, 31 + i * 2.4f, 31.9f + i * 2.4f, turnRing, turnRing + 1.45f,
                         DialDraw.alpha(color, .82f - .18f * i));
             }
             StarfieldShader.clock(Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false));
             renderRingAndHologram(g, partial, time, color, coreTint, switchWave, 11, true);
         }
 
+        // U1 Frameless Floating Holographic Readout (zero opaque dark box!)
         g.flush();
-        int labelX = left() ? -60 : 61;
+        int labelX = left() ? -62 : 62;
         Component title = equipment ? Component.translatable("watch.aca_omnitrix.slot")
                 : kind == Kind.CARNITRIX ? getTitle() : Component.translatable(chosen().translationKey(kind));
         Component description = equipment ? getTitle()
@@ -315,13 +320,15 @@ final class WristScreen extends Screen {
             textX = -length / 2;
             labelX = 0;
         }
-        int top = labelX == 0 ? 60 : -18;
-        g.fill(textX - 6, top - 6, textX + length + 6, top + 33, 0xe4131c27);
-        g.fill(textX - 6, top - 6, textX + length + 6, top - 5, DialDraw.alpha(color, .38f));
-        g.fill(textX - 6, top - 6, textX + Math.min(28, length), top - 4, color);
-        g.drawString(font, title, textX, top, INK, false);
-        g.drawString(font, description, textX, top + 12, MUTED, false);
-        g.drawString(font, hint, textX, top + 23, color, false);
+        int top = labelX == 0 ? 58 : -16;
+        // Subtle 1px holographic underline + diamond pip instead of dark box
+        int accentStart = left() && labelX != 0 ? textX + length - Math.min(34, length) : textX;
+        g.fill(textX, top + 10, textX + length, top + 11, DialDraw.alpha(color, .30f));
+        g.fill(accentStart, top + 10, accentStart + Math.min(34, length), top + 11, DialDraw.alpha(color, .92f));
+        DialDraw.diamond(g, left() && labelX != 0 ? textX + length + 3.5f : textX - 3.5f, top + 4.5f, 1.8f, 2.4f, color);
+        g.drawString(font, title, textX, top, INK, true);
+        g.drawString(font, description, textX, top + 13, MUTED, true);
+        g.drawString(font, hint, textX, top + 24, color, true);
         pose.popPose();
     }
 
@@ -338,17 +345,17 @@ final class WristScreen extends Screen {
             float x = Mth.cos(angle) * radius;
             float y = Mth.sin(angle) * radius;
             if (selected) {
-                DialDraw.arc(g, 0, 0, 43.0f, 46.8f, angle - .26f, angle + .26f, color);
-                DialDraw.gradientArc(g, x, y, 7.6f, 11.8f, 0, TAU,
-                        DialDraw.alpha(coreTint, .46f), DialDraw.alpha(coreTint, 0f));
+                DialDraw.arc(g, 0, 0, 43.2f, 46.4f, angle - .25f, angle + .25f, color);
+                DialDraw.gradientArc(g, x, y, 7.2f, 12.2f, 0, TAU,
+                        DialDraw.alpha(coreTint, .50f), DialDraw.alpha(coreTint, 0f));
             }
-            float nodeR = selected ? 8.3f : 6.4f + focusProx * 1.1f;
+            float nodeR = selected ? 8.2f : 6.2f + focusProx * 1.0f;
             int nodeBg = selected
-                    ? (celestial ? 0xff22344c : 0xff243d34)
-                    : (celestial ? 0xff151e2c : 0xff1d2732);
+                    ? DialDraw.alpha(celestial ? 0xff223856 : 0xff204234, .62f)
+                    : DialDraw.alpha(0xff101824, .34f);
             DialDraw.arc(g, x, y, 0, nodeR, 0, TAU, nodeBg);
-            DialDraw.arc(g, x, y, nodeR - .9f, nodeR, 0, TAU,
-                    DialDraw.alpha(color, selected ? .92f : .22f + focusProx * .28f));
+            DialDraw.arc(g, x, y, nodeR - .85f, nodeR, 0, TAU,
+                    DialDraw.alpha(color, selected ? .94f : .24f + focusProx * .28f));
             g.flush();
             pose.pushPose();
             pose.translate(0, 0, 6);
@@ -363,7 +370,6 @@ final class WristScreen extends Screen {
         Rig.Motion previewMotion = Rig.STILL;
         if (!ClientState.reduced()) {
             previewMotion = previewRig.animate(Rig.STILL, "idle", time, 1f);
-            // Subtle heroic pose accent right on selection & slow breathing showcase
             float poseAccent = switchWave * .52f + (.12f + .10f * Mth.sin(time * .075f));
             previewMotion = previewRig.animate(previewMotion, "u", 1.8f + Mth.sin(time * .06f) * .6f, poseAccent);
         }
@@ -378,6 +384,31 @@ final class WristScreen extends Screen {
         drawModel(g, previewRig, previewMotion, 0, 4 + hover, (celestial ? 35.5f : 34.5f) * popScale,
                 5, yaw, -4f);
         scan(g, time, switchWave, color);
+    }
+
+    private static void drawDnaHelix(GuiGraphics g, float time, int color, int coreTint, float alpha) {
+        int rungs = 12;
+        float prevAx = 0f, prevBx = 0f, prevY = 20f;
+        for (int i = 0; i <= rungs; i++) {
+            float t = i / (float) rungs;
+            float y = 20f - t * 38f;
+            float phase = t * TAU * 1.35f - time * 0.14f;
+            float amp = 14.5f * (1f - t * 0.18f);
+            float ax = Mth.sin(phase) * amp;
+            float bx = Mth.sin(phase + (float) Math.PI) * amp;
+            float depthA = 0.55f + 0.45f * Mth.cos(phase);
+            float depthB = 0.55f + 0.45f * Mth.cos(phase + (float) Math.PI);
+            if (i > 0) {
+                DialDraw.edge(g, prevAx, prevY, ax, y, 1.15f, DialDraw.alpha(color, alpha * depthA));
+                DialDraw.edge(g, prevBx, prevY, bx, y, 1.15f, DialDraw.alpha(coreTint, alpha * depthB));
+            }
+            if (i % 2 == 1) {
+                DialDraw.edge(g, ax, y, bx, y, 0.75f, DialDraw.alpha(color, alpha * 0.42f));
+            }
+            prevAx = ax;
+            prevBx = bx;
+            prevY = y;
+        }
     }
 
     private static void drawModel(GuiGraphics g, Rig rig, Rig.Motion motion, float x, float y,

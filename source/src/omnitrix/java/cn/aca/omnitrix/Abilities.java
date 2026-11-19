@@ -10,13 +10,14 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -45,8 +46,8 @@ public final class Abilities {
     static void register(IEventBus bus) {
         bus.addListener(EventPriority.LOWEST, Abilities::reduceDamage);
         bus.addListener(Abilities::breathe);
-        bus.addListener(Abilities::absorbShield);
-        cn.academy.port.highpower.PlayerShieldArmor.registerWristShield(Abilities::hasWristShield);
+        AcademyInterop.registerShieldBridge(bus);
+        OmnitrixAiControl.register(bus);
         TemporalEffects.register(bus);
     }
 
@@ -76,38 +77,6 @@ public final class Abilities {
             return;
         }
         if (w.form() == Form.ALIEN_X) e.setAmount(e.getAmount() * .18f);
-    }
-
-    private static boolean hasWristShield(ServerPlayer player) {
-        if (player.hasData(Omnitrix.WRIST)) {
-            var wrist = Omnitrix.wrist(player);
-            if (wrist.hasForm() && (wrist.barrier > 0 || wrist.form() == Form.DIAMONDHEAD
-                    && wrist.crystalShellUntil > WristService.time(player))) return true;
-        }
-        return AscalonService.isArmored(player) && player.getAbsorptionAmount() > 0;
-    }
-
-    private static void absorbShield(cn.academy.port.api.NativeShieldEvent event) {
-        var p = event.player();
-        if (!p.hasData(Omnitrix.WRIST) || WristService.absoluteDamage(event.source())) return;
-        var wrist = Omnitrix.wrist(p);
-        if (!wrist.hasForm() || wrist.kind() == Kind.CLASSIC && wrist.form() == Form.RIPJAWS
-                && event.source().is(DamageTypes.DRY_OUT)) return;
-
-        long now = WristService.time(p);
-        if (wrist.form() == Form.DIAMONDHEAD && wrist.crystalShellUntil > now) {
-            wrist.crystalShellUntil = 0;
-            event.absorb(event.remaining());
-            WristNetwork.cue(p, WristNetwork.CRYSTAL_SHELL_BREAK_CUE, p.position(), p.getEyePosition());
-            WristNetwork.sync(p);
-        } else if (wrist.barrier > 0) {
-            var paid = event.absorb(java.math.BigDecimal.valueOf(wrist.barrier));
-            if (paid.signum() > 0) {
-                wrist.barrier = Math.max(0, wrist.barrier - paid.doubleValue());
-                wrist.lastDamageAt = now;
-                WristNetwork.sync(p);
-            }
-        }
     }
 
     private static void breathe(LivingBreatheEvent e) {
@@ -330,11 +299,21 @@ public final class Abilities {
             }
         } else if (form == Form.UPGRADE && !secondary) {
             var block = aimedLever(p, eye, face, star ? 10.0 : 6.0);
-            if (block == null) {
-                style = STYLE_FALLBACK;
-                focus = p.position();
-            } else {
+            if (block != null) {
                 focus = Vec3.atCenterOf(block.getBlockPos());
+            } else {
+                LivingEntity hackTarget = findHackTarget(p, eye, face, star ? 22.0 : 14.0);
+                if (hackTarget != null) {
+                    focus = hackTarget.getEyePosition();
+                } else {
+                    style = STYLE_FALLBACK;
+                    focus = p.position();
+                }
+            }
+        } else if (form == Form.GHOSTFREAK && !secondary) {
+            LivingEntity possessTarget = enemyOnRay(p, eye, face, star ? 20.0 : 13.5);
+            if (possessTarget != null) {
+                focus = possessTarget.getEyePosition();
             }
         } else if (form == Form.GHOSTFREAK && secondary) {
             focus = phaseDestination(p, face);
@@ -401,6 +380,22 @@ public final class Abilities {
             mark(w, e, WristService.time(p));
             WristNetwork.sync(p);
         }
+    }
+
+    private static LivingEntity findHackTarget(ServerPlayer p, Vec3 eye, Vec3 face, double range) {
+        LivingEntity direct = enemyOnRay(p, eye, face, range);
+        if (direct != null) return direct;
+        return p.serverLevel().getEntitiesOfClass(LivingEntity.class,
+                AABB.ofSize(p.position().add(face.scale(range * .45)), range * 1.4, range, range * 1.4),
+                e -> e != p && e.isAlive() && !OmnitrixAiControl.isPuppetOf(e, p.getUUID())
+                        && (e instanceof AbstractGolem || validTarget(p, e, false)))
+                .stream()
+                .filter(e -> {
+                    Vec3 delta = e.getEyePosition().subtract(eye);
+                    return delta.lengthSqr() <= range * range && delta.normalize().dot(face) >= .76 && clear(p, eye, e.getEyePosition());
+                })
+                .min(Comparator.comparingDouble(e -> e.distanceToSqr(p)))
+                .orElse(null);
     }
 
     private static Vec3 primary(ServerPlayer p, Wrist w, SkillCast skill, int beat, long now) {
@@ -512,8 +507,27 @@ public final class Abilities {
                     w.circuitUntil = 0;
                     w.linkUntil = now + LINK_TICKS;
                     skill.lastFlags |= WristNetwork.FLAG_HIT_GROUND;
+                    yield point;
                 }
-                if (point != null) yield point;
+                // Galvanic Construct / Armed-Mob Neural Hijack & Bio-Electric Overload!
+                LivingEntity hackTarget = findHackTarget(p, eye, face, star ? 22.0 : 14.0);
+                if (hackTarget != null) {
+                    boolean mechanicalOrArmed = hackTarget instanceof AbstractGolem
+                            || !hackTarget.getMainHandItem().isEmpty()
+                            || hackTarget.getArmorValue() >= 4
+                            || star;
+                    OmnitrixAiControl.commandPuppetsFocus(p, hackTarget);
+                    if (mechanicalOrArmed) {
+                        OmnitrixAiControl.hijackOrSubjugate(p, hackTarget, star ? 260 : 180, star, true);
+                    } else {
+                        OmnitrixAiControl.inflictParalysis(p, hackTarget, star ? 90 : 60, true);
+                        damage(p, hackTarget, star ? 135_000f : 3_200f, face, .20, 0, 40);
+                    }
+                    mark(w, hackTarget, now);
+                    w.circuitUntil = now + LINK_TICKS;
+                    skill.lastFlags |= WristNetwork.FLAG_HIT_ENTITY | WristNetwork.FLAG_LINKED;
+                    yield hackTarget.getEyePosition();
+                }
                 w.circuitUntil = now + LINK_TICKS;
                 skill.lastFlags |= WristNetwork.FLAG_FALLBACK;
                 yield p.position().add(0, p.getBbHeight() * .58, 0);
@@ -523,7 +537,20 @@ public final class Abilities {
                 if (star) {
                     p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 75, 1, false, false), p);
                 }
+                // 1. Wipe existing aggro & Brain anger from nearby mobs on cloak!
+                OmnitrixAiControl.wipeNearbyAggro(p, star ? 22.0 : 15.0);
                 w.linkUntil = now + LINK_TICKS;
+
+                // 2. Ectonurite Possession Hijack when aiming at an enemy!
+                LivingEntity possessTarget = enemyOnRay(p, eye, face, star ? 20.0 : 13.5);
+                if (possessTarget != null) {
+                    OmnitrixAiControl.commandPuppetsFocus(p, possessTarget);
+                    if (OmnitrixAiControl.hijackOrSubjugate(p, possessTarget, star ? 280 : 200, star, false)) {
+                        mark(w, possessTarget, now);
+                        skill.lastFlags |= WristNetwork.FLAG_HIT_ENTITY | WristNetwork.FLAG_LINKED;
+                        yield possessTarget.getEyePosition();
+                    }
+                }
                 yield eye.add(face);
             }
             case ALIEN_X -> {
@@ -532,7 +559,6 @@ public final class Abilities {
                     for (LivingEntity enemy : nearby(p, core, 32.0, false)) {
                         if (!clear(p, core.add(0, .24, 0), enemy.getEyePosition())
                                 && !clear(p, eye, enemy.getEyePosition())) continue;
-                        // Targets previously received the frozen multiplier on this same beat.
                         if (cosmicAnnihilate(p, enemy, 72_000_000f, Vec3.ZERO, 0)) {
                             if (enemy.isAlive()) {
                                 pull(enemy, core.add(0, .6, 0), 1.65);
@@ -747,23 +773,27 @@ public final class Abilities {
                 w.gripWall = null;
                 w.springUntil = 0;
                 double horiz = kick ? (star ? .55 : .44) : (star ? .35 : .28);
+                LivingEntity nerveTarget = enemyOnRay(p, eye, direction, star ? 16.0 : 5.5);
                 Vec3 result = dash(p, skill, direction, horiz + (spring ? .04 : 0),
                         star ? 85_000f : 1_800f, kick ? .43 : spring ? .38 : .30);
                 if (spring) {
                     w.clearLink();
                     skill.lastFlags |= WristNetwork.FLAG_FALLBACK;
                 }
-                if (star) {
-                    // X-Grey Matter Omniscient Neural Orbital Discharge onto analyzed enemy!
-                    LivingEntity neural = enemyOnRay(p, eye, face, 16.0);
-                    if (neural == null) {
-                        neural = nearby(p, p.position(), 12.0, false).stream()
-                                .filter(e -> clear(p, eye, e.getEyePosition())).findFirst().orElse(null);
-                    }
-                    if (neural != null && damage(p, neural, kick ? 150_000f : 95_000f, face, .25, 0, 35)) {
+                if (nerveTarget == null) {
+                    nerveTarget = nearby(p, p.position().add(direction.scale(2.0)), star ? 10.0 : 3.8, false)
+                            .stream().filter(e -> clear(p, eye, e.getEyePosition())).findFirst().orElse(null);
+                }
+                if (nerveTarget != null) {
+                    // Galvanic Acupressure Nerve-Pin: hard 4-layer paralysis + armor shred on both Classic & Celestial!
+                    OmnitrixAiControl.inflictParalysis(p, nerveTarget, star ? 90 : 58, true);
+                    if (star && damage(p, nerveTarget, kick ? 150_000f : 95_000f, face, .25, 0, 35)) {
                         skill.lastFlags |= WristNetwork.FLAG_HIT_ENTITY;
-                        result = neural.getEyePosition();
+                    } else if (!star) {
+                        damage(p, nerveTarget, kick ? 2_800f : 1_800f, face, .15, 0, 35);
+                        skill.lastFlags |= WristNetwork.FLAG_HIT_ENTITY;
                     }
+                    result = nerveTarget.getEyePosition();
                 }
                 if (kick) {
                     skill.lastFlags |= WristNetwork.FLAG_LINKED;
@@ -837,12 +867,14 @@ public final class Abilities {
                 if (charged) skill.lastFlags |= WristNetwork.FLAG_FALLBACK;
                 var target = enemyOnRay(p, eye, face, beamRange);
                 if (target != null) {
+                    OmnitrixAiControl.commandPuppetsFocus(p, target);
                     boolean isLinked = linked(w, now);
                     float total = isLinked && star ? beamDmg + 90_000f : charged ? beamDmg * 1.25f : beamDmg;
                     if (damage(p, target, total, face, .28, 0, 0)) {
                         skill.lastFlags |= WristNetwork.FLAG_HIT_ENTITY;
                         if (isLinked) {
                             slow(p, target, 35);
+                            OmnitrixAiControl.inflictParalysis(p, target, star ? 55 : 35, false);
                             skill.lastFlags |= WristNetwork.FLAG_LINKED;
                             if (star) w.secondaryAt = Math.max(now, w.secondaryAt - 10);
                             w.clearLink();
@@ -858,28 +890,37 @@ public final class Abilities {
                     exit = shadowStep(p, face);
                     if (exit == null) {
                         p.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 20, 0, false, false), p);
+                        for (LivingEntity near : nearby(p, p.position(), star ? 6.0 : 4.5, false)) {
+                            OmnitrixAiControl.inflictTerror(p, near, star ? 95 : 65);
+                        }
                         yield eye;
                     }
                 }
                 Vec3 entry = p.position().add(0, .95, 0);
                 boolean isLinked = linked(w, now) && p.hasEffect(MobEffects.INVISIBILITY);
-                if (star) {
-                    Vec3 tip = exit.add(0, .95, 0);
-                    Vec3 path = tip.subtract(entry);
-                    Vec3 mid = entry.lerp(tip, .5);
-                    float slashDmg = isLinked ? 280_000f : 175_000f;
-                    for (LivingEntity soul : nearby(p, mid, 4.7, false)) {
+                Vec3 tip = exit.add(0, .95, 0);
+                Vec3 path = tip.subtract(entry);
+                Vec3 mid = entry.lerp(tip, .5);
+                if (path.lengthSqr() > 1e-4) {
+                    float slashDmg = star ? (isLinked ? 280_000f : 175_000f) : (isLinked ? 4_200f : 2_600f);
+                    for (LivingEntity soul : nearby(p, mid, 4.8, false)) {
                         Vec3 point = soul.getBoundingBox().getCenter();
                         double along = Math.clamp(point.subtract(entry).dot(path) / path.lengthSqr(), 0, 1);
-                        if (!soul.getBoundingBox().inflate(2.0).contains(entry.add(path.scale(along)))
+                        if (!soul.getBoundingBox().inflate(2.2).contains(entry.add(path.scale(along)))
                                 || !clear(p, entry, point) && !clear(p, tip, point)) continue;
                         if (damage(p, soul, slashDmg, path, .35, 0, 30)) {
                             skill.lastFlags |= WristNetwork.FLAG_HIT_ENTITY;
                         }
+                        OmnitrixAiControl.inflictTerror(p, soul, star ? 95 : 65);
                     }
                 }
-                p.connection.teleport(exit.x, exit.y, exit.z, p.getYRot(), p.getXRot());
+                p.moveTo(exit.x, exit.y, exit.z, p.getYRot(), p.getXRot());
+                if (p.connection != null) p.connection.teleport(exit.x, exit.y, exit.z, p.getYRot(), p.getXRot());
                 p.resetFallDistance();
+                // Ectonurite Soul-Terror at exit point forces nearby modded mobs to drop contact damage & flee!
+                for (LivingEntity nearExit : nearby(p, exit, star ? 6.2 : 4.6, false)) {
+                    OmnitrixAiControl.inflictTerror(p, nearExit, star ? 95 : 65);
+                }
                 if (isLinked) {
                     p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, star ? 40 : 20, star ? 1 : 0));
                     skill.lastFlags |= WristNetwork.FLAG_LINKED;
@@ -1024,7 +1065,7 @@ public final class Abilities {
             boolean toss = linked(w, target, now);
             if (damage(p, target, (float) (cap * intensity), delta, toss ? 0 : 1.45 * intensity, 0, 0)) {
                 skill.lastFlags |= WristNetwork.FLAG_HIT_ENTITY;
-                if (toss && !cn.academy.port.highpower.PlayerShieldArmor.holding(target)) {
+                if (toss && !AcademyInterop.holdingShieldArmor(target)) {
                     target.push(0, .52, 0);
                     target.hurtMarked = true;
                     if (star) w.landings.put(target.getUUID(), new Wrist.Landing(now + 3, now + 100));
@@ -1049,7 +1090,7 @@ public final class Abilities {
     }
 
     private static void pull(LivingEntity target, Vec3 center, double strength) {
-        if (cn.academy.port.highpower.PlayerShieldArmor.holding(target)) return;
+        if (AcademyInterop.holdingShieldArmor(target)) return;
         Vec3 delta = center.subtract(target.position());
         Vec3 pull = delta.lengthSqr() < 1e-6 ? Vec3.ZERO : delta.normalize().scale(strength);
         target.push(pull.x, pull.y, pull.z);
@@ -1329,7 +1370,14 @@ public final class Abilities {
     }
 
     static boolean validTarget(ServerPlayer p, LivingEntity e, boolean broad) {
-        return PursuitBody.permitted(p, e) && (broad || e instanceof Enemy || e instanceof Player);
+        if (!PursuitBody.permitted(p, e) || OmnitrixAiControl.isPuppetOf(e, p.getUUID())) return false;
+        if (broad || e instanceof Enemy || e instanceof Player) return true;
+        if (e instanceof Mob mob) {
+            return mob.getType().getCategory() == MobCategory.MONSTER
+                    || mob.getTarget() == p
+                    || mob.getLastHurtByMob() == p;
+        }
+        return false;
     }
 
     static boolean damage(ServerPlayer p, LivingEntity enemy, float amount, Vec3 direction, double knock, int fire, int slow) {

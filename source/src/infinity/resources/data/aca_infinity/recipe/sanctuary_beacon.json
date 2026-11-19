@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "OGO",
+    "ENE",
+    "OIO"
+  ],
+  "key": {
+    "O": { "item": "minecraft:obsidian" },
+    "G": { "item": "minecraft:gold_block" },
+    "E": { "item": "minecraft:ender_eye" },
+    "N": { "item": "minecraft:nether_star" },
+    "I": { "item": "minecraft:iron_block" }
+  },
+  "result": {
+    "id": "aca_infinity:sanctuary_beacon",
+    "count": 1
+  }
+}

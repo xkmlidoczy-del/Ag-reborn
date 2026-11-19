@@ -518,7 +518,7 @@ final class WristPost {
             prepare(mc, main);
             chain.setUniform("Impact", hit * screenScale);
             chain.setUniform("Blood", red);
-            float seconds = (now % 480 + partial) / 20f;
+            float seconds = (ClientState.clientTicks() % 480 + partial) / 20f;
             chain.setUniform("PulseTime", ClientState.reduced() ? 0 : seconds);
             chain.setUniform("Freeze", field == null ? 0
                     : Mth.clamp((field.until - now) / 9f, 0, 1));

@@ -9,19 +9,23 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
 public final class TemporalEffects {
     public static final int RANGE = 40;
     public static final int DURATION = 240;
-    private record Freeze(long expiry, Vec3 velocity) {}
+    private record Freeze(long expiry, Vec3 velocity, Vec3 lockedPos) {}
     private record Field(ServerPlayer caster, Vec3 center, long expiry) {}
     private static final Map<Entity, Freeze> FROZEN = new WeakHashMap<>();
     private static final Map<ServerLevel, Map<java.util.UUID, Field>> FIELDS = new WeakHashMap<>();
@@ -30,6 +34,8 @@ public final class TemporalEffects {
 
     static void register(IEventBus bus) {
         bus.addListener(TemporalEffects::pause);
+        bus.addListener(TemporalEffects::pausePost);
+        bus.addListener(TemporalEffects::onAttackFrozenProjectile);
         bus.addListener(TemporalEffects::thaw);
         bus.addListener(TemporalEffects::tracking);
     }
@@ -47,15 +53,41 @@ public final class TemporalEffects {
     }
 
     static void freezeSingle(ServerLevel level, Entity target, long expiry) {
-        if (cn.academy.port.highpower.PlayerShieldArmor.holding(target)) return;
+        if (AcademyInterop.holdingShieldArmor(target)) return;
+        if (target instanceof Mob mob && OmnitrixAiControl.isAnyPuppet(mob)) return;
         Freeze previous = FROZEN.get(target);
         if (previous != null && previous.expiry >= expiry) return;
-        FROZEN.put(target, new Freeze(expiry, previous == null ? target.getDeltaMovement() : previous.velocity));
+        Vec3 storedVel = previous == null ? target.getDeltaMovement() : previous.velocity;
+        FROZEN.put(target, new Freeze(expiry, storedVel, target.position()));
         target.setDeltaMovement(Vec3.ZERO);
         target.hurtMarked = true;
+        if (target instanceof Mob mob) {
+            mob.getNavigation().stop();
+            OmnitrixAiControl.clearBrainCombatMemories(mob);
+        }
         WristNetwork.freeze(target, (int) (expiry - level.getServer().overworld().getGameTime()));
         level.sendParticles(ParticleTypes.END_ROD, target.getX(), target.getY() + target.getBbHeight() * .54,
                 target.getZ(), 9, .31, .48, .31, .009);
+    }
+
+    /** Left-clicking a frozen projectile redirects its thaw launch vector 1.6x along the player's crosshair! */
+    private static void onAttackFrozenProjectile(AttackEntityEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer sp) || sp.level().isClientSide) return;
+        if (!(event.getTarget() instanceof Projectile proj)) return;
+        Freeze cur = FROZEN.get(proj);
+        if (cur == null) return;
+        Vec3 aim = sp.getLookAngle().normalize();
+        double speed = Math.max(2.8, cur.velocity.length() * 1.6);
+        proj.setOwner(sp);
+        if (proj instanceof AbstractArrow arrow) {
+            arrow.setBaseDamage(Math.max(arrow.getBaseDamage() * 3.5, 45_000.0));
+        }
+        FROZEN.put(proj, new Freeze(Math.min(cur.expiry, WristService.time(sp) + 6), aim.scale(speed), cur.lockedPos));
+        WristNetwork.cue(sp, WristNetwork.AEGIS_CUE, 0, WristNetwork.FLAG_PROJECTILE,
+                sp.getEyePosition(), proj.position());
+        sp.level().playSound(null, proj.blockPosition(), Omnitrix.ALIEN_X_AEGIS.get(),
+                net.minecraft.sounds.SoundSource.PLAYERS, .85f, 1.32f);
+        event.setCanceled(true);
     }
 
     static void deflectNearbyProjectiles(ServerPlayer p, double radius) {
@@ -81,6 +113,7 @@ public final class TemporalEffects {
         ServerPlayer p = field.caster;
         var targets = level.getEntities(p, AABB.ofSize(field.center, RANGE * 2 + 4, RANGE * 2 + 4, RANGE * 2 + 4),
                 e -> e.distanceToSqr(field.center) <= RANGE * RANGE
+                && !OmnitrixAiControl.isPuppetOf(e, p.getUUID())
                 && (e instanceof LivingEntity living && Abilities.validTarget(p, living, false)
                 || e instanceof Projectile projectile && hostileProjectile(p, projectile) || e instanceof FallingBlockEntity))
                 .stream().sorted(Comparator.comparingDouble(entity -> entity.distanceToSqr(field.center))).limit(128).toList();
@@ -93,18 +126,36 @@ public final class TemporalEffects {
     }
 
     private static boolean hostileProjectile(ServerPlayer p, Projectile projectile) {
+        if (projectile instanceof Pulse || projectile instanceof AscalonSlash) return false;
         var owner = projectile.getOwner();
-        return owner == null ? projectile instanceof net.minecraft.world.entity.projectile.AbstractArrow
-                : owner instanceof LivingEntity living
-                && (owner instanceof Enemy || owner instanceof ServerPlayer) && PursuitBody.permitted(p, living);
+        if (owner == p) return false;
+        if (owner == null) return true;
+        return owner instanceof LivingEntity living
+                && (owner instanceof Enemy || owner instanceof ServerPlayer
+                || (owner instanceof Mob mob && Abilities.validTarget(p, mob, false)))
+                && PursuitBody.permitted(p, living);
     }
 
     private static void pause(EntityTickEvent.Pre e) {
         if (!e.getEntity().level().isClientSide && FROZEN.containsKey(e.getEntity())
-                && !cn.academy.port.highpower.PlayerShieldArmor.holding(e.getEntity())) e.setCanceled(true);
+                && !AcademyInterop.holdingShieldArmor(e.getEntity())) {
+            e.setCanceled(true);
+        }
     }
 
-    private static void tracking(net.neoforged.neoforge.event.entity.player.PlayerEvent.StartTracking event) {
+    private static void pausePost(EntityTickEvent.Post e) {
+        Entity ent = e.getEntity();
+        if (ent.level().isClientSide) return;
+        Freeze fr = FROZEN.get(ent);
+        if (fr != null && !AcademyInterop.holdingShieldArmor(ent)) {
+            ent.setDeltaMovement(Vec3.ZERO);
+            if (fr.lockedPos != null && ent.position().distanceToSqr(fr.lockedPos) > 0.04) {
+                ent.setPos(fr.lockedPos.x, fr.lockedPos.y, fr.lockedPos.z);
+            }
+        }
+    }
+
+    private static void tracking(PlayerEvent.StartTracking event) {
         if (!(event.getEntity() instanceof ServerPlayer viewer)) return;
         var freeze = FROZEN.get(event.getTarget());
         if (freeze != null) WristNetwork.freezeFor(viewer, event.getTarget(), (int) (freeze.expiry - WristService.time(viewer)));
@@ -133,7 +184,7 @@ public final class TemporalEffects {
             Entity entity = entry.getKey();
             if (entity.isRemoved()) { iterator.remove(); continue; }
             if (!(entity.level() instanceof ServerLevel world) || world.getServer() != event.getServer()) continue;
-            if (now >= entry.getValue().expiry || cn.academy.port.highpower.PlayerShieldArmor.holding(entity)) {
+            if (now >= entry.getValue().expiry || AcademyInterop.holdingShieldArmor(entity)) {
                 entity.setDeltaMovement(entry.getValue().velocity);
                 entity.hurtMarked = true;
                 WristNetwork.freeze(entity, 0);

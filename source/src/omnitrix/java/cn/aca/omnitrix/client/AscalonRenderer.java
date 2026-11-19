@@ -815,7 +815,7 @@ public final class AscalonRenderer {
         boolean arrayStage2 = asc != null && asc.phantomArrayActive(partial);
 
         int baseRightX = g.guiWidth() - 16;
-        int baseY = g.guiHeight() - (wristView != null ? 54 : 24);
+        int baseY = g.guiHeight() - 22;
 
         drawSwordResonanceGauge(g, baseRightX, baseY - 12, Mth.clamp(charge / 100f, 0f, 1f), syzygyReady, gameTime + partial);
 
@@ -932,7 +932,7 @@ public final class AscalonRenderer {
         for (int dy = -r; dy <= r; dy++) {
             int span = r - Math.abs(dy);
             boolean filled = dy >= splitDy;
-            int col = !filled ? 0xc80b101a : (highlighted ? 0xd82b261b : 0xd4132034);
+            int col = !filled ? 0x1e0b101a : (highlighted ? 0x52342c1c : 0x34132238);
             g.fill(cx - span, cy + dy, cx + span + 1, cy + dy + 1, col);
         }
 

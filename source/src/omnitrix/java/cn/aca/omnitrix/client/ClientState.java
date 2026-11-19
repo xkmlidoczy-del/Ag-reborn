@@ -18,6 +18,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 
 final class ClientState implements WristNetwork.Receiver {
     record View(Snapshot s, long localReceived) {
@@ -74,6 +75,7 @@ final class ClientState implements WristNetwork.Receiver {
     }
 
     record Effect(WristNetwork.Cue cue, long tick) {}
+    record ControlMarker(Vec3 pos, boolean galvanic, boolean terror, boolean celestial, long startTick, long until) {}
     record SceneView(WristNetwork.Scene scene, long localReceived) {
         long began() { return localReceived - (scene.now() - scene.began()); }
         long until() { return localReceived + (scene.until() - scene.now()); }
@@ -85,17 +87,39 @@ final class ClientState implements WristNetwork.Receiver {
     private static final Map<UUID, AscalonView> ASCALONS = new HashMap<>();
     private static final Map<UUID, Effect> LATEST = new HashMap<>();
     private static final ArrayDeque<Effect> EVENTS = new ArrayDeque<>();
+    private static final ArrayDeque<ControlMarker> CONTROL_MARKERS = new ArrayDeque<>();
     private static final Map<SceneKey, SceneView> SCENES = new HashMap<>();
     private static final Map<Integer, Long> FROZEN = new HashMap<>();
     private static net.minecraft.client.multiplayer.ClientLevel visualLevel;
+    private static long monotonicClientTicks;
+    private static long lastActiveHudTick = -200L;
+
+    static long clientTicks() {
+        return monotonicClientTicks;
+    }
+
+    static void noteHudActivity() {
+        lastActiveHudTick = monotonicClientTicks;
+    }
+
+    static long ticksSinceHudActivity() {
+        return Math.max(0L, monotonicClientTicks - lastActiveHudTick);
+    }
 
     @Override
     public void snapshot(Snapshot s, Player viewer) {
         var level = Minecraft.getInstance().level;
         if (level == null) return;
         levelChanged(level);
+        View prev = WRISTS.get(s.actor());
         if (s.watch() == null) WRISTS.remove(s.actor());
         else WRISTS.put(s.actor(), new View(s, level.getGameTime()));
+        if (s.actor().equals(viewer.getUUID())) {
+            if (prev == null || prev.s().phase() != s.phase() || prev.s().chosen() != s.chosen()
+                    || s.performance() != null || s.controlled()) {
+                noteHudActivity();
+            }
+        }
         var actor = level.getPlayerByUUID(s.actor());
         if (actor != null) actor.refreshDimensions();
         if (s.actor().equals(viewer.getUUID()) && (s.controlled() || s.phase() == Stage.LOCKING) && Minecraft.getInstance().screen != null
@@ -124,6 +148,7 @@ final class ClientState implements WristNetwork.Receiver {
         if (level == null) return;
         levelChanged(level);
         ASCALONS.put(s.actor(), new AscalonView(s, level.getGameTime()));
+        if (s.actor().equals(viewer.getUUID())) noteHudActivity();
     }
 
     @Override
@@ -156,6 +181,17 @@ final class ClientState implements WristNetwork.Receiver {
             Effect effect = new Effect(cue, playedAt);
             if (!cue.projectile()) {
                 LATEST.put(cue.actor(), effect);
+            }
+            if (cue.actor().equals(viewer.getUUID())) {
+                noteHudActivity();
+            }
+            if (cue.action() == WristNetwork.PUPPET_CUE || cue.action() == WristNetwork.TERROR_CUE) {
+                boolean terror = cue.action() == WristNetwork.TERROR_CUE;
+                boolean galvanic = cue.linked();
+                boolean star = cue.watch() == Kind.CELESTIAL;
+                long dur = terror ? 60L : (cue.hitEntity() ? 22L : 140L);
+                CONTROL_MARKERS.addLast(new ControlMarker(cue.to(), galvanic, terror, star, monotonicClientTicks, monotonicClientTicks + dur));
+                while (CONTROL_MARKERS.size() > 36) CONTROL_MARKERS.removeFirst();
             }
             EVENTS.addLast(effect);
             while (EVENTS.size() > MAX_CUE_EVENTS) {
@@ -221,6 +257,7 @@ final class ClientState implements WristNetwork.Receiver {
 
     static Effect effect(Entity p) { return p == null ? null : LATEST.get(p.getUUID()); }
     static Iterable<Effect> effects() { return EVENTS; }
+    static Iterable<ControlMarker> controlMarkers() { return CONTROL_MARKERS; }
     static Iterable<SceneView> scenes() { return SCENES.values(); }
     static boolean reduced() { return Minecraft.getInstance().options.screenEffectScale().get() <= .25; }
 
@@ -230,20 +267,29 @@ final class ClientState implements WristNetwork.Receiver {
         SCENES.clear();
         LATEST.clear();
         EVENTS.clear();
+        CONTROL_MARKERS.clear();
         FROZEN.clear();
         visualLevel = null;
+        monotonicClientTicks = 0L;
+        lastActiveHudTick = -200L;
         WristPost.reset();
         WristVisuals.clear();
         AscalonRenderer.clear();
     }
 
     static void tick() {
-        var level = Minecraft.getInstance().level;
+        monotonicClientTicks++;
+        var mc = Minecraft.getInstance();
+        var level = mc.level;
         levelChanged(level);
         if (level != null) {
+            if (mc.player != null && (mc.player.hurtTime > 0 || mc.player.swinging)) {
+                noteHudActivity();
+            }
             long now = level.getGameTime();
             LATEST.entrySet().removeIf(e -> now - e.getValue().tick > 44);
             EVENTS.removeIf(e -> now - e.tick > 56);
+            CONTROL_MARKERS.removeIf(m -> monotonicClientTicks >= m.until);
             SCENES.values().removeIf(scene -> scene.until() <= now);
             FROZEN.values().removeIf(until -> until <= now);
             AscalonRenderer.tick(now);
@@ -258,6 +304,7 @@ final class ClientState implements WristNetwork.Receiver {
         SCENES.clear();
         LATEST.clear();
         EVENTS.clear();
+        CONTROL_MARKERS.clear();
         FROZEN.clear();
         WristPost.reset();
         WristVisuals.clear();

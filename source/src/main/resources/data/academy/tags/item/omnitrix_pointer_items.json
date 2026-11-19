@@ -1,8 +1,56 @@
 {
   "values": [
-    {"id": "aca_omnitrix:ascalon", "required": false},
-    {"id": "aca_omnitrix:omnitrix", "required": false},
-    {"id": "aca_omnitrix:alien_x_watch", "required": false},
-    {"id": "aca_omnitrix:carnitrix", "required": false}
+    {
+      "id": "aca_omnitrix:ascalon",
+      "required": false
+    },
+    {
+      "id": "aca_omnitrix:omnitrix",
+      "required": false
+    },
+    {
+      "id": "aca_omnitrix:alien_x_watch",
+      "required": false
+    },
+    {
+      "id": "aca_omnitrix:carnitrix",
+      "required": false
+    },
+    {
+      "id": "aca_infinity:infinity_gauntlet",
+      "required": false
+    },
+    {
+      "id": "aca_infinity:space_stone",
+      "required": false
+    },
+    {
+      "id": "aca_infinity:mind_stone",
+      "required": false
+    },
+    {
+      "id": "aca_infinity:reality_stone",
+      "required": false
+    },
+    {
+      "id": "aca_infinity:power_stone",
+      "required": false
+    },
+    {
+      "id": "aca_infinity:time_stone",
+      "required": false
+    },
+    {
+      "id": "aca_infinity:soul_stone",
+      "required": false
+    },
+    {
+      "id": "aca_infinity:sanctuary_beacon",
+      "required": false
+    },
+    {
+      "id": "aca_infinity:hostile_sanctuary_beacon",
+      "required": false
+    }
   ]
 }

@@ -48,8 +48,52 @@ public final class WatchRender {
     private static final java.util.Map<Player, TravelPose> TRAVEL = new java.util.WeakHashMap<>();
     private static final FpKinematics FP = new FpKinematics();
     private static long dialSlamClientTick = Long.MIN_VALUE;
+    private static net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer watchItemRenderer;
 
     private WatchRender() {}
+
+    static net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer watchItemRenderer() {
+        if (watchItemRenderer == null) {
+            var mc = Minecraft.getInstance();
+            watchItemRenderer = new net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer(
+                    mc.getBlockEntityRenderDispatcher(), mc.getEntityModels()) {
+                @Override
+                public void renderByItem(net.minecraft.world.item.ItemStack stack, ItemDisplayContext ctx,
+                                         PoseStack pose, MultiBufferSource buffers, int light, int overlay) {
+                    Kind kind = Kind.CLASSIC;
+                    if (stack.getItem() instanceof cn.aca.omnitrix.WatchItem wi) {
+                        kind = wi.kind();
+                    }
+                    float time = (mc.level != null ? mc.level.getGameTime() : 0L)
+                            + mc.getTimer().getGameTimeDeltaPartialTick(false);
+                    boolean isGui = ctx == ItemDisplayContext.GUI;
+                    boolean isGround = ctx == ItemDisplayContext.GROUND;
+                    boolean isFixed = ctx == ItemDisplayContext.FIXED;
+                    int renderLight = isGui ? LightTexture.FULL_BRIGHT : light;
+
+                    pose.pushPose();
+                    float bob = isGround ? Mth.sin(time * 0.10f) * 0.08f : 0f;
+                    pose.translate(0.5, 0.44 + bob, 0.5);
+                    if (isGui) {
+                        Rig.rotate(pose, 32f, -34f + Mth.sin(time * 0.05f) * 14f, 0f);
+                    } else if (isGround) {
+                        Rig.rotate(pose, 16f, time * 1.9f, 0f);
+                    } else if (isFixed) {
+                        Rig.rotate(pose, 24f, 180f + Mth.sin(time * 0.04f) * 12f, 0f);
+                    } else {
+                        Rig.rotate(pose, 14f, 0f, 0f);
+                    }
+                    float scale = isGui ? 2.05f : (isFixed ? 1.85f : 1.45f);
+                    float openPulse = 0.28f + 0.14f * Mth.sin(time * 0.12f);
+                    Rig.get(kind.id).draw(pose, buffers,
+                            Motion.watch(kind, openPulse, 1f, 0f, time, time * 5f, time * 0.8f),
+                            scale, -1, renderLight, overlay);
+                    pose.popPose();
+                }
+            };
+        }
+        return watchItemRenderer;
+    }
 
     static void notifyDialSlam() {
         var level = Minecraft.getInstance().level;
@@ -716,6 +760,8 @@ public final class WatchRender {
     private static Rig.Motion redCore(Rig.Motion motion) { return name -> motion.at(name).tint(0xffff4038); }
 
     public static void idleWrist(LocalPlayer player, PoseStack pose, MultiBufferSource.BufferSource buffers, int light, float partial) {
+        var curScreen = Minecraft.getInstance().screen;
+        if (curScreen != null && curScreen.getClass().getName().startsWith("cn.aca.infinity.")) return;
         if (!player.isInvisible() && !player.isSpectator()) {
             AscalonRenderer.renderFirstPersonOverlay(player, pose, buffers, light, partial);
         }

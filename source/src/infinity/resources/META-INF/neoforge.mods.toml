@@ -1,0 +1,26 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="All rights reserved; see NOTICE.md"
+[[mods]]
+modId="aca_infinity"
+version="${modVersion}"
+displayName="ACA Infinity"
+description='''Cosmic Infinity Stones, Uru Infinity Gauntlet with Star-Dial Selection & One-Key Snap, MJ-Campus Soul Hukou Inspection, and Drivable Sanctuary II Flagship for Minecraft 1.21.1.'''
+[[dependencies.aca_infinity]]
+modId="minecraft"
+type="required"
+versionRange="[1.21.1]"
+ordering="NONE"
+side="BOTH"
+[[dependencies.aca_infinity]]
+modId="neoforge"
+type="required"
+versionRange="[21.1.252,21.2)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.aca_infinity]]
+modId="academy"
+type="optional"
+versionRange="[0,)"
+ordering="AFTER"
+side="BOTH"

@@ -1,0 +1,7 @@
+{
+  "type": "aca_infinity:cosmic_vault",
+  "biomes": "#aca_infinity:has_cosmic_vault",
+  "step": "surface_structures",
+  "terrain_adaptation": "none",
+  "spawn_overrides": {}
+}

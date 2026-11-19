@@ -36,11 +36,15 @@ import org.lwjgl.glfw.GLFW;
 @Mod(value=Omnitrix.ID,dist=Dist.CLIENT)
 public final class OmnitrixClient {
     private static final String CATEGORY="key.categories.aca_omnitrix";
+    private static int defaultArmorKey(){
+        var list=net.neoforged.fml.loading.LoadingModList.get();
+        return list!=null&&list.getModFileById("academy")!=null?GLFW.GLFW_KEY_M:GLFW.GLFW_KEY_V;
+    }
     public static final KeyMapping WRIST=key("raise",GLFW.GLFW_KEY_Y);
     public static final KeyMapping PRIMARY=key("primary",GLFW.GLFW_KEY_U);
     public static final KeyMapping SECONDARY=key("secondary",GLFW.GLFW_KEY_I);
     public static final KeyMapping FLICK=key("flick",GLFW.GLFW_KEY_O);
-    public static final KeyMapping ASCALON_ARMOR=key("armor_toggle",GLFW.GLFW_KEY_M);
+    public static final KeyMapping ASCALON_ARMOR=key("armor_toggle",defaultArmorKey());
     private static int held;
     private static int ascalonPrimaryHeld;
 
@@ -87,6 +91,15 @@ public final class OmnitrixClient {
                 return AscalonRenderer.itemRenderer();
             }
         }, Omnitrix.ASCALON.get());
+        IClientItemExtensions watchExt = new IClientItemExtensions() {
+            @Override
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                return WatchRender.watchItemRenderer();
+            }
+        };
+        for (var kind : cn.aca.omnitrix.Kind.values()) {
+            e.registerItem(watchExt, Omnitrix.watch(kind));
+        }
     }
 
     private static void entities(EntityRenderersEvent.RegisterRenderers e){

@@ -1,0 +1,13 @@
+{
+  "targets": ["infinity_color"],
+  "passes": [
+    {
+      "name": "aca_infinity:infinity_post",
+      "intarget": "minecraft:main",
+      "outtarget": "infinity_color",
+      "auxtargets": [
+        {"name": "DepthSampler", "id": "minecraft:main:depth"}
+      ]
+    }
+  ]
+}

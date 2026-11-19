@@ -9,7 +9,10 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
 public final class OptionalAcademy implements IMixinConfigPlugin {
     @Override public boolean shouldApplyMixin(String target, String mixin) {
-        return !mixin.endsWith(".AcademyRequest") || LoadingModList.get().getModFileById("academy") != null;
+        if (mixin.endsWith(".AcademyRequest") || mixin.endsWith(".EmpoweredMelee")) {
+            return LoadingModList.get().getModFileById("academy") != null;
+        }
+        return true;
     }
     @Override public void onLoad(String mixinPackage) {}
     @Override public String getRefMapperConfig() { return null; }

@@ -35,6 +35,9 @@ public final class CompatMode {
         for (var info : ModList.get().getMods()) {
             if ("acamech".equals(info.getModId()) && "0.4.5".equals(info.getVersion().toString())) continue;
             if ("acabiohum".equals(info.getModId()) && "0.9.1".equals(info.getVersion().toString())) continue;
+            if ("aca_fauna".equals(info.getModId()) && "0.1.18".equals(info.getVersion().toString())) continue;
+            if ("aca_omnitrix".equals(info.getModId()) && "0.8.0".equals(info.getVersion().toString())) continue;
+            if ("aca_infinity".equals(info.getModId()) && "0.5.1".equals(info.getVersion().toString())) continue;
             if (!KNOWN.contains(info.getModId())) out.add(info.getModId());
         }
         return out;

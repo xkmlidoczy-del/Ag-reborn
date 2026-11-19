@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "GGG",
+    "GNG",
+    "OBO"
+  ],
+  "key": {
+    "G": { "item": "minecraft:gold_block" },
+    "N": { "item": "minecraft:netherite_ingot" },
+    "O": { "item": "minecraft:crying_obsidian" },
+    "B": { "item": "minecraft:blaze_rod" }
+  },
+  "result": {
+    "id": "aca_infinity:infinity_gauntlet",
+    "count": 1
+  }
+}

@@ -94,8 +94,7 @@ public final class CosmicVfxShader {
     static RenderType material() { return shader != null ? MATERIAL : FALLBACK; }
 
     static void clock(float partial) {
-        var level = Minecraft.getInstance().level;
-        long tick = level == null ? 0 : Math.floorMod(level.getGameTime(), PHASE_TICKS);
+        long tick = Math.floorMod(ClientState.clientTicks(), PHASE_TICKS);
         float seconds = (tick + partial) / TICKS_PER_SECOND;
         if (shader != null) {
             var timeUniform = shader.getUniform("StarfieldSeconds");

@@ -63,6 +63,66 @@ vec3 flowTexture(vec2 p, float halfIndex) {
     return texture(Sampler0, vec2((uv.x + halfIndex) * 0.5, uv.y)).rgb;
 }
 
+/**
+ * V1 Dual-Phase Seamless Flow-Map UV Distortion:
+ * Eliminates repetition & pop artifacts by blending two half-cycle offset flow samples!
+ */
+vec2 dualPhaseFlow(vec2 uv, float time, float strength) {
+    float p0 = fract(time * 0.36);
+    float p1 = fract(time * 0.36 + 0.5);
+    float blend = abs(0.5 - p0) * 2.0;
+    vec2 flowDir = (flowTexture(uv * 0.55, 0.0).rg - 0.5) * 2.0;
+    vec2 uv0 = uv - flowDir * p0 * strength;
+    vec2 uv1 = uv - flowDir * p1 * strength;
+    return mix(uv0, uv1, blend);
+}
+
+/**
+ * V1 HSR/Destiny-2 3-Stop Heterogeneous Color-Ramp LUT:
+ * Maps scalar intensity [0..1] across shifted deep chromatic tail -> saturated mid -> incandescent star-core!
+ */
+vec3 stylizedLut(vec3 baseHue, float energy) {
+    float e = clamp(energy, 0.0, 1.0);
+    // Chromatic hue-shift in shadows (warm->crimson-violet, green->deep-teal-indigo, blue/violet->abyssal-cobalt)
+    vec3 deepTail = clamp(vec3(
+        baseHue.r * 0.34 + baseHue.b * 0.24,
+        baseHue.g * 0.30 + baseHue.r * 0.08,
+        baseHue.b * 0.52 + baseHue.g * 0.26 + 0.10
+    ), 0.0, 1.0);
+    vec3 richMid = clamp(mix(baseHue, pow(max(baseHue, vec3(0.02)), vec3(0.84)) * 1.12, 0.65), 0.0, 1.0);
+    vec3 starCore = mix(vec3(1.0, 0.985, 0.94), clamp(baseHue * 0.35 + vec3(0.72), 0.0, 1.0), 0.35);
+    if (e < 0.55) {
+        return mix(deepTail, richMid, smoothstep(0.0, 0.55, e));
+    }
+    return mix(richMid, starCore, smoothstep(0.55, 0.97, e));
+}
+
+/** Voronoi cell distance & fracture edge metric for Mode-17 Mirror Space-Shatter! */
+vec3 voronoiShatter(vec2 x) {
+    vec2 n = floor(x);
+    vec2 f = fract(x);
+    float md1 = 8.0;
+    float md2 = 8.0;
+    float cellId = 0.0;
+    for (int j = -1; j <= 1; j++) {
+        for (int i = -1; i <= 1; i++) {
+            vec2 g = vec2(float(i), float(j));
+            vec2 o = hash22(n + g);
+            vec2 r = g + 0.15 + 0.70 * o - f;
+            float d = dot(r, r);
+            if (d < md1) {
+                md2 = md1;
+                md1 = d;
+                cellId = hash12(n + g + 13.7);
+            } else if (d < md2) {
+                md2 = d;
+            }
+        }
+    }
+    float edgeDist = sqrt(md2) - sqrt(md1);
+    return vec3(edgeDist, cellId, sqrt(md1));
+}
+
 void main() {
     float v = clamp(texCoord0.y, 0.0, 1.0);
     if (vertexColor.a <= 0.006) {
@@ -72,6 +132,25 @@ void main() {
     float speed = (ReducedMotion > 0.5) ? 0.22 : 1.0;
     float t = StarfieldSeconds * speed;
     float u = texCoord0.x;
+
+    // Mode 17: Voronoi Mirror Space-Shatter Crown & Dimensional Fracture Shards (VFX 4.0)
+    if (vfxMode > 16.5) {
+        float profile = sin(v * PI);
+        if (profile <= 0.01) discard;
+        vec3 vor = voronoiShatter(vec2(u * 9.0, v * 3.4) + vec2(t * 0.08, -t * 0.04));
+        float crack = 1.0 - smoothstep(0.018, 0.085, vor.x);
+        float facetGlint = 0.45 + 0.55 * sin(vor.y * TAU + t * 2.4 + u * 5.0);
+        float shardKeep = step(vfxErosion * 0.92, vor.y + crack * 0.32);
+        if (shardKeep <= 0.01) discard;
+
+        vec3 glassTint = stylizedLut(vertexColor.rgb, 0.35 + 0.52 * facetGlint + 0.42 * crack);
+        vec3 specularRim = vec3(0.98, 0.99, 1.0) * crack * 0.95;
+        vec3 rgb = clamp(glassTint * (0.62 + 0.48 * facetGlint) + specularRim, 0.0, 1.0);
+        float alpha = vertexColor.a * shardKeep * pow(profile, 0.55) * clamp(0.36 * facetGlint + crack * 0.96, 0.0, 1.0);
+        if (alpha <= 0.012) discard;
+        fragColor = linear_fog(vec4(rgb, alpha) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
+        return;
+    }
 
     if (vfxMode > 15.5) {
         vec2 position = vec2(cos(u * TAU), sin(u * TAU)) * v;
@@ -114,9 +193,7 @@ void main() {
         vec3 grain = texture(Sampler0, uv).rgb;
         float edge = smoothstep(0.0, 0.27, sin(v * PI));
         float breakUp = smoothstep(vfxErosion * 0.78 - 0.16, vfxErosion * 0.78 + 0.13, grain.b);
-        vec3 hue = vertexColor.rgb;
-        vec3 rgb = mix(hue * vec3(0.23, 0.26, 0.34), hue, grain.r * 0.8 + 0.15);
-        rgb += min(vec3(0.12, 0.12, 0.15), hue * 0.24) * grain.g;
+        vec3 rgb = stylizedLut(vertexColor.rgb, grain.r * 0.76 + grain.g * 0.24);
         float alpha = vertexColor.a * edge * breakUp * (0.69 + grain.r * 0.3);
         if (alpha <= 0.012) discard;
         fragColor = linear_fog(vec4(rgb, alpha) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
@@ -131,39 +208,33 @@ void main() {
         float crossGlint = exp(-dx * dx * 28.0) * exp(-dy * dy * 3.2) * 0.55;
         float alpha = vertexColor.a * clamp(core + crossGlint, 0.0, 1.0) * (1.0 - vfxErosion * 0.85);
         if (alpha <= 0.012) discard;
-        vec3 rgb = mix(vertexColor.rgb, min(vec3(1.0), vertexColor.rgb * 1.25), core * 0.65);
+        vec3 rgb = stylizedLut(vertexColor.rgb, clamp(0.42 + core * 0.58 + crossGlint * 0.35, 0.0, 1.0));
         fragColor = linear_fog(vec4(rgb, alpha) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
         return;
     }
 
-    // Mode 5: Asymmetric Razor Blade Arc / Crescent Wave (v -> 1.0 = 2% razor cutting edge, v -> 0.0 = eroded dark-cobalt wake)
+    // Mode 5: Asymmetric Razor Blade Arc / Crescent Wave (3-Stop LUT + Dual-Phase Flow Shredding!)
     if (vfxMode > 4.5) {
         float leadRazor = smoothstep(0.84, 0.965, v) * smoothstep(1.0, 0.972, v);
         float bodySweep = smoothstep(0.03, 0.88, v) * smoothstep(1.0, 0.89, v);
 
-        // Anisotropic slash striations + FBM erosion tearing the trailing wake into fine filaments
-        float streakNoise = silkFbm(vec2(u * 4.2 - t * 2.6, v * 11.5 - u * 1.6));
+        vec2 flowUv = dualPhaseFlow(vec2(u * 4.2 - t * 2.2, v * 11.5 - u * 1.6), t, 0.34);
+        float streakNoise = silkFbm(flowUv);
         float fineStrand = valueNoise(vec2(u * 9.5 - t * 4.2, v * 26.0));
         float compositeNoise = streakNoise * 0.70 + fineStrand * 0.30;
 
-        // Trailing back (low v) erodes heavily into wisps; leading blade edge (high v) stays unbroken!
         float erodeThresh = mix(0.68, -0.08, pow(v, 1.45)) + vfxErosion * 0.62;
         float erodedMask = smoothstep(erodeThresh - 0.09, erodeThresh + 0.09, compositeNoise);
 
-        // Floating micro-sparks sheared off in the wake
         vec2 sparkUv = vec2(u * 14.0 - t * 3.8, v * 9.0);
         vec2 sparkCell = floor(sparkUv);
         vec2 sparkLocal = fract(sparkUv) - 0.5 - (hash22(sparkCell) - 0.5) * 0.52;
         float spark = (1.0 - smoothstep(0.02, 0.09, length(sparkLocal * vec2(0.45, 1.6))))
                     * step(0.62, hash12(sparkCell + 7.1)) * smoothstep(0.05, 0.65, v) * (1.0 - vfxErosion);
 
-        vec3 deepCobalt = vec3(0.24, 0.38, 0.64);
-        vec3 brushedSilver = vec3(0.82, 0.90, 0.99);
-        vec3 incandescentEdge = vec3(1.0, 0.99, 0.96);
-
-        vec3 wakeRgb = mix(deepCobalt, mix(brushedSilver, vertexColor.rgb, 0.55), pow(v, 1.35));
-        vec3 rgb = mix(wakeRgb, incandescentEdge, clamp(leadRazor * 1.15 + spark * 0.9, 0.0, 1.0));
-        float alpha = vertexColor.a * clamp(bodySweep * erodedMask * 0.78 + leadRazor * (1.0 - vfxErosion * 0.65) + spark * 0.85, 0.0, 1.0);
+        float lutEnergy = clamp(pow(v, 1.25) * 0.72 + compositeNoise * 0.22 + leadRazor * 0.65 + spark * 0.6, 0.0, 1.0);
+        vec3 rgb = stylizedLut(vertexColor.rgb, lutEnergy);
+        float alpha = vertexColor.a * clamp(bodySweep * erodedMask * 0.80 + leadRazor * (1.0 - vfxErosion * 0.65) + spark * 0.85, 0.0, 1.0);
         if (alpha <= 0.012) discard;
         fragColor = linear_fog(vec4(rgb, alpha) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
         return;
@@ -178,7 +249,6 @@ void main() {
         float thresh = 0.24 + vfxErosion * 0.66 - spineHold * 0.22;
         float mask = smoothstep(thresh - 0.12, thresh + 0.14, wisp);
 
-        // Subtle deep-space micro-stars embedded inside the dark obsidian rift sheath
         vec2 stUv = vec2(u * 8.5 - t * 1.1, v * 5.2);
         vec2 stCell = floor(stUv);
         float stDist = length(fract(stUv) - 0.5 - (hash22(stCell) - 0.5) * 0.56);
@@ -200,7 +270,6 @@ void main() {
 
     // Mode 3: Non-Uniform Azmuth Armillary Astrolabe (70% breathable arc gaps, 25% hairline tracks, 5% cardinal diamond glints)
     if (vfxMode > 2.5) {
-        // Broken armillary sectors so rings never look like solid neon bicycle tires
         float sectorGap = smoothstep(-0.18, 0.22, sin(u * TAU * 3.0 + 0.4) + 0.35 * cos(u * TAU * 2.0 - t * 0.6));
         float outerHair = smoothstep(0.048, 0.008, abs(v - 0.84)) * (0.35 + 0.65 * sectorGap);
         float innerHair = smoothstep(0.042, 0.008, abs(v - 0.22)) * (0.55 + 0.45 * sectorGap);
@@ -222,14 +291,14 @@ void main() {
         return;
     }
 
-    // Mode 2: Eroded Galvanic Star-Silk Filament & Multi-Strand Slipstream (splits cleanly into calligraphic threads!)
+    // Mode 2: V1 Dual-Phase Flow + 3-Stop LUT Multi-Strand Silk & Energy Whip Filament!
     if (vfxMode > 1.5) {
-        vec3 silverFlow = flowTexture(vec2(u * 0.68 - t * 0.38, v * 0.85 + t * 0.04), 0.0);
+        vec2 warpedUv = dualPhaseFlow(vec2(u * 0.68 - t * 0.34, v * 0.85 + t * 0.04), t, 0.28);
+        vec3 silverFlow = flowTexture(warpedUv, 0.0);
         float flowLuma = dot(silverFlow, vec3(0.2126, 0.7152, 0.0722));
 
-        // Multi-strand longitudinal silk groove + FBM erosion so ribbon tails shred into 4-5 delicate filaments!
         float strandGrooves = 0.55 + 0.45 * sin(v * PI * 5.0 + sin(u * 2.6 - t * 1.9) * 0.85);
-        float fbm = silkFbm(vec2(u * 2.8 - t * 2.3, v * 8.5));
+        float fbm = silkFbm(dualPhaseFlow(vec2(u * 2.8 - t * 2.1, v * 8.5), t, 0.32));
         float spine = smoothstep(0.42, 0.0, abs(v - 0.5));
         float razorFilament = smoothstep(0.095, 0.0, abs(v - 0.5));
 
@@ -237,27 +306,21 @@ void main() {
         float thresh = 0.28 + vfxErosion * 0.74;
         float erodedSilk = smoothstep(thresh - 0.10, thresh + 0.12, silkField);
 
-        // Keep the needle-thin central core cohesive slightly longer than the outer silk veil
         float coreHold = razorFilament * smoothstep(1.02, 0.45, vfxErosion + (1.0 - fbm) * 0.28);
-
-        vec3 slateCobalt = vec3(0.36, 0.50, 0.74);
-        vec3 coolPlatinum = vec3(0.84, 0.91, 0.99);
-        vec3 ivoryGold = mix(vec3(0.98, 0.99, 1.0), vec3(0.98, 0.91, 0.76), clamp(vfxErosion * 0.45, 0.0, 1.0));
-
-        vec3 veilRgb = mix(slateCobalt, mix(coolPlatinum, vertexColor.rgb, 0.55), clamp(spine * 0.72 + flowLuma * 0.35, 0.0, 1.0));
-        vec3 rgb = mix(veilRgb, ivoryGold, clamp(coreHold * 0.92, 0.0, 1.0));
-        float alpha = vertexColor.a * clamp(pow(profile, 0.85) * erodedSilk * 0.68 + coreHold * 0.92, 0.0, 1.0);
+        float lutEnergy = clamp(spine * 0.56 + flowLuma * 0.24 + coreHold * 0.58 + strandGrooves * 0.12, 0.0, 1.0);
+        vec3 rgb = stylizedLut(vertexColor.rgb, lutEnergy);
+        float alpha = vertexColor.a * clamp(pow(profile, 0.85) * erodedSilk * 0.72 + coreHold * 0.94, 0.0, 1.0);
         if (alpha <= 0.010) discard;
         fragColor = linear_fog(vec4(clamp(rgb, 0.0, 1.0), alpha) * ColorModulator,
                                vertexDistance, FogStart, FogEnd, FogColor);
         return;
     }
 
-    // Mode 1: Crisp classic shockwave / elemental ribbon
+    // Mode 1: Crisp 3-Stop LUT Shockwave / Elemental Ribbon
     if (vfxMode > 0.5) {
         float wave = 0.82 + 0.18 * sin(u * 10.0 - t * 9.0 + sin(v * 6.0));
         float spine = smoothstep(0.42, 0.0, abs(v - 0.5));
-        vec3 col = mix(vertexColor.rgb * vec3(0.42, 0.47, 0.57), vertexColor.rgb, spine * 0.77 + 0.16) * wave;
+        vec3 col = stylizedLut(vertexColor.rgb, clamp(0.24 + spine * 0.68, 0.0, 1.0)) * wave;
         float alpha = vertexColor.a * pow(profile, 0.72) * (0.72 + 0.28 * spine);
         fragColor = linear_fog(vec4(col, clamp(alpha, 0.0, 1.0)) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
         return;

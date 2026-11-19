@@ -2,6 +2,7 @@ package cn.aca.omnitrix.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -22,6 +23,7 @@ final class VfxPrimitives {
     private static final int MODE_MATERIAL = 7;
     private static final int MODE_PLANET = 15;
     private static final int MODE_ECLIPSE = 16;
+    static final int MODE_VORONOI_SHATTER = 17;
 
     private VfxPrimitives() {}
 
@@ -94,6 +96,208 @@ final class VfxPrimitives {
                 color, MODE_ASCALON_LUSTER, true, uScale, erosion);
     }
 
+    /**
+     * V1 Stylized Next-Gen Curved Multi-Strand Energy Whip (HSR / Destiny-2 style):
+     * Replaces stiff single straight beams with a 3D organic curved spine + 2 counter-spiraling twisted filaments!
+     */
+    static void curvedEnergyWhip(PoseStack pose, MultiBufferSource buffers, Vec3 from, Vec3 to, Vec3 camera,
+                                 double widthStart, double widthEnd, double arcAmp, float phase,
+                                 int primaryColor, int secondaryColor, float erosion) {
+        Vec3 delta = to.subtract(from);
+        double len = delta.length();
+        if (len < 0.08) return;
+        Vec3 dir = delta.scale(1.0 / len);
+        Vec3 ref = Math.abs(dir.y) > 0.92 ? new Vec3(1, 0, 0) : new Vec3(0, 1, 0);
+        Vec3 sideAxis = dir.cross(ref).normalize();
+        Vec3 upAxis = sideAxis.cross(dir).normalize();
+
+        int steps = from.lerp(to, 0.5).distanceToSqr(camera) > 52 * 52 ? 10 : 18;
+        var mainSpine = new ArrayList<Vec3>(steps + 1);
+        var strandA = new ArrayList<Vec3>(steps + 1);
+        var strandB = new ArrayList<Vec3>(steps + 1);
+
+        double effAmp = Math.min(len * 0.16, arcAmp);
+        double helixR = Math.max(widthStart, widthEnd) * 1.35 + effAmp * 0.25;
+        for (int i = 0; i <= steps; i++) {
+            float t = (float) i / steps;
+            double env = Math.sin(t * Math.PI);
+            double bendA = Math.sin(t * Math.PI * 1.35 + phase) * effAmp * env;
+            double bendB = Math.cos(t * Math.PI * 1.15 - phase * 0.7f) * effAmp * 0.55 * env;
+            Vec3 base = from.lerp(to, t).add(sideAxis.scale(bendA)).add(upAxis.scale(bendB));
+            mainSpine.add(base);
+
+            double twist = t * TAU * Math.clamp(len * 0.28, 1.4, 4.2) - phase * 2.2;
+            Vec3 radialA = sideAxis.scale(Math.cos(twist) * helixR * env).add(upAxis.scale(Math.sin(twist) * helixR * env));
+            Vec3 radialB = sideAxis.scale(Math.cos(twist + Math.PI * 0.85) * helixR * 0.85 * env)
+                    .add(upAxis.scale(Math.sin(twist + Math.PI * 0.85) * helixR * 0.85 * env));
+            strandA.add(base.add(radialA));
+            strandB.add(base.add(radialB));
+        }
+
+        float baseA = (primaryColor >>> 24) / 255f;
+        if (baseA > 0.14f) {
+            taperedPolylineMode(pose, buffers, mainSpine, camera, widthStart * 1.52, widthEnd * 1.45,
+                    DialDraw.alpha(0xff081126, Math.min(0.76f, baseA * 0.68f)), MODE_VOID_SHEATH, false, erosion * 0.82f);
+        }
+        taperedPolylineMode(pose, buffers, mainSpine, camera, widthStart, widthEnd,
+                primaryColor, MODE_ASCALON_LUSTER, true, erosion);
+        taperedPolylineMode(pose, buffers, strandA, camera, widthStart * 0.44, widthEnd * 0.34,
+                secondaryColor, MODE_ASCALON_LUSTER, true, Math.min(1f, erosion + 0.12f));
+        taperedPolylineMode(pose, buffers, strandB, camera, widthStart * 0.36, widthEnd * 0.28,
+                DialDraw.alpha(0xfffafcff, baseA * 0.82f), MODE_ASCALON_LUSTER, true, Math.min(1f, erosion + 0.18f));
+    }
+
+    private static void taperedPolylineMode(PoseStack pose, MultiBufferSource buffers, List<Vec3> pts, Vec3 camera,
+                                            double wStart, double wEnd, int color, int mode, boolean additive, float erosion) {
+        int n = pts.size();
+        if (n < 2) return;
+        PoseStack.Pose last = pose.last();
+        VertexConsumer sink = buffers.getBuffer(additive ? CosmicVfxShader.glow() : CosmicVfxShader.voidSheath());
+        float uScale = (float) Math.clamp(pts.getFirst().distanceTo(pts.getLast()) * 0.45, 1.0, 8.0);
+        for (int i = 0; i < n - 1; i++) {
+            float t0 = (float) i / (n - 1);
+            float t1 = (float) (i + 1) / (n - 1);
+            Vec3 a = pts.get(i);
+            Vec3 b = pts.get(i + 1);
+            Vec3 seg = b.subtract(a);
+            if (seg.lengthSqr() < 1e-6) continue;
+            double w0 = Mth.lerp(t0, wStart, wEnd) * Math.sin(Math.PI * Math.clamp(t0 * 0.90 + 0.05, 0.05, 0.95));
+            double w1 = Mth.lerp(t1, wStart, wEnd) * Math.sin(Math.PI * Math.clamp(t1 * 0.90 + 0.05, 0.05, 0.95));
+            Vec3 s0 = seg.cross(camera.subtract(a));
+            s0 = s0.lengthSqr() < 1e-6 ? new Vec3(0, w0, 0) : s0.normalize().scale(w0);
+            Vec3 s1 = seg.cross(camera.subtract(b));
+            s1 = s1.lengthSqr() < 1e-6 ? new Vec3(0, w1, 0) : s1.normalize().scale(w1);
+            emitMode(sink, last, a.subtract(s0), t0 * uScale, 0f, color, mode, erosion);
+            emitMode(sink, last, a.add(s0), t0 * uScale, 1f, color, mode, erosion);
+            emitMode(sink, last, b.add(s1), t1 * uScale, 1f, color, mode, erosion);
+            emitMode(sink, last, b.subtract(s1), t1 * uScale, 0f, color, mode, erosion);
+        }
+    }
+
+    /**
+     * V1 Mode-17 Voronoi Mirror Space-Shatter Crown:
+     * Renders tilted dimensional fracture rings & faceted crystalline space shards!
+     */
+    static void voronoiShatterCrown(PoseStack pose, MultiBufferSource buffers, Vec3 center, Vec3 axisDir,
+                                    Vec3 camera, double radius, double crownHeight, float spin,
+                                    int color, float erosion) {
+        if (radius <= 0.08) return;
+        float clear = camera == null ? 1f : cameraClearance(center, camera, 1.25, 3.0);
+        if (clear <= 0.02f) return;
+        Vec3 n = axisDir.lengthSqr() < 1e-5 ? new Vec3(0, 1, 0) : axisDir.normalize();
+        Vec3 ref = Math.abs(n.y) > 0.92 ? new Vec3(1, 0, 0) : new Vec3(0, 1, 0);
+        Vec3 u = n.cross(ref).normalize();
+        Vec3 v = n.cross(u).normalize();
+
+        PoseStack.Pose last = pose.last();
+        int effCol = DialDraw.alpha(color, ((color >>> 24) / 255f) * clear);
+        int darkCol = DialDraw.alpha(0xff070f24, ((color >>> 24) / 255f) * clear * 0.58f);
+        int steps = 28;
+
+        VertexConsumer voidSink = buffers.getBuffer(CosmicVfxShader.voidSheath());
+        VertexConsumer glowSink = buffers.getBuffer(CosmicVfxShader.glow());
+        for (int i = 0; i < steps; i++) {
+            float f0 = (float) i / steps;
+            float f1 = (float) (i + 1) / steps;
+            double a0 = spin + TAU * f0;
+            double a1 = spin + TAU * f1;
+            double jag0 = 0.55 + 0.45 * Math.sin(a0 * 5.0 - spin * 1.7);
+            double jag1 = 0.55 + 0.45 * Math.sin(a1 * 5.0 - spin * 1.7);
+
+            Vec3 radial0 = u.scale(Math.cos(a0)).add(v.scale(Math.sin(a0)));
+            Vec3 radial1 = u.scale(Math.cos(a1)).add(v.scale(Math.sin(a1)));
+            Vec3 bot0 = center.add(radial0.scale(radius * 0.88));
+            Vec3 bot1 = center.add(radial1.scale(radius * 0.88));
+            Vec3 top0 = center.add(radial0.scale(radius * (1.04 + 0.12 * jag0))).add(n.scale(crownHeight * jag0));
+            Vec3 top1 = center.add(radial1.scale(radius * (1.04 + 0.12 * jag1))).add(n.scale(crownHeight * jag1));
+
+            emitMode(voidSink, last, bot0, f0 * 3f, 0f, darkCol, MODE_VOID_SHEATH, erosion * 0.85f);
+            emitMode(voidSink, last, top0, f0 * 3f, 1f, darkCol, MODE_VOID_SHEATH, erosion * 0.85f);
+            emitMode(voidSink, last, top1, f1 * 3f, 1f, darkCol, MODE_VOID_SHEATH, erosion * 0.85f);
+            emitMode(voidSink, last, bot1, f1 * 3f, 0f, darkCol, MODE_VOID_SHEATH, erosion * 0.85f);
+
+            emitMode(glowSink, last, bot0, f0 * 3f, 0f, effCol, MODE_VORONOI_SHATTER, erosion);
+            emitMode(glowSink, last, top0, f0 * 3f, 1f, effCol, MODE_VORONOI_SHATTER, erosion);
+            emitMode(glowSink, last, top1, f1 * 3f, 1f, effCol, MODE_VORONOI_SHATTER, erosion);
+            emitMode(glowSink, last, bot1, f1 * 3f, 0f, effCol, MODE_VORONOI_SHATTER, erosion);
+        }
+    }
+
+    /**
+     * V1 3D Faceted Hexagonal Crystal Spire (for Diamondhead surge & crystalline constructs):
+     * True 6-sided prism + pyramidal crystal tip + internal dark refraction core!
+     */
+    static void hexCrystalSpire(PoseStack pose, MultiBufferSource buffers, Vec3 base, Vec3 upDir,
+                                double radius, double height, int color, float erosion) {
+        if (height <= 0.05 || radius <= 0.02) return;
+        Vec3 up = upDir.lengthSqr() < 1e-5 ? new Vec3(0, 1, 0) : upDir.normalize();
+        Vec3 ref = Math.abs(up.y) > 0.92 ? new Vec3(1, 0, 0) : new Vec3(0, 1, 0);
+        Vec3 u = up.cross(ref).normalize();
+        Vec3 v = up.cross(u).normalize();
+
+        PoseStack.Pose last = pose.last();
+        float baseA = (color >>> 24) / 255f;
+        int darkCore = DialDraw.alpha(0xff091a28, Math.min(0.78f, baseA * 0.72f));
+        int apexCol = DialDraw.alpha(0xfff2ffff, Math.min(0.98f, baseA * 1.05f));
+
+        Vec3 shoulderCenter = base.add(up.scale(height * 0.72));
+        Vec3 apex = base.add(up.scale(height));
+
+        VertexConsumer voidSink = buffers.getBuffer(CosmicVfxShader.voidSheath());
+        VertexConsumer glowSink = buffers.getBuffer(CosmicVfxShader.glow());
+        for (int i = 0; i < 6; i++) {
+            double a0 = TAU * i / 6.0;
+            double a1 = TAU * (i + 1) / 6.0;
+            Vec3 r0 = u.scale(Math.cos(a0)).add(v.scale(Math.sin(a0)));
+            Vec3 r1 = u.scale(Math.cos(a1)).add(v.scale(Math.sin(a1)));
+
+            Vec3 b0 = base.add(r0.scale(radius * 0.82));
+            Vec3 b1 = base.add(r1.scale(radius * 0.82));
+            Vec3 m0 = shoulderCenter.add(r0.scale(radius * 0.58));
+            Vec3 m1 = shoulderCenter.add(r1.scale(radius * 0.58));
+
+            emitMode(voidSink, last, base.add(r0.scale(radius * 0.55)), i / 6f, 0f, darkCore, MODE_VOID_SHEATH, erosion * 0.7f);
+            emitMode(voidSink, last, shoulderCenter.add(r0.scale(radius * 0.35)), i / 6f, 0.8f, darkCore, MODE_VOID_SHEATH, erosion * 0.7f);
+            emitMode(voidSink, last, shoulderCenter.add(r1.scale(radius * 0.35)), (i + 1) / 6f, 0.8f, darkCore, MODE_VOID_SHEATH, erosion * 0.7f);
+            emitMode(voidSink, last, base.add(r1.scale(radius * 0.55)), (i + 1) / 6f, 0f, darkCore, MODE_VOID_SHEATH, erosion * 0.7f);
+
+            int facetCol = (i & 1) == 0 ? color : DialDraw.alpha(color, baseA * 0.80f);
+            emitMode(glowSink, last, b0, i / 6f, 0.1f, facetCol, MODE_ASCALON_LUSTER, erosion * 0.65f);
+            emitMode(glowSink, last, m0, i / 6f, 0.75f, facetCol, MODE_ASCALON_LUSTER, erosion * 0.65f);
+            emitMode(glowSink, last, m1, (i + 1) / 6f, 0.75f, facetCol, MODE_ASCALON_LUSTER, erosion * 0.65f);
+            emitMode(glowSink, last, b1, (i + 1) / 6f, 0.1f, facetCol, MODE_ASCALON_LUSTER, erosion * 0.65f);
+
+            emitMode(glowSink, last, m0, i / 6f, 0.75f, facetCol, MODE_BLADE_ASYM, erosion * 0.5f);
+            emitMode(glowSink, last, apex, (i + 0.5f) / 6f, 0.98f, apexCol, MODE_BLADE_ASYM, erosion * 0.5f);
+            emitMode(glowSink, last, apex, (i + 0.5f) / 6f, 0.98f, apexCol, MODE_BLADE_ASYM, erosion * 0.5f);
+            emitMode(glowSink, last, m1, (i + 1) / 6f, 0.75f, facetCol, MODE_BLADE_ASYM, erosion * 0.5f);
+        }
+    }
+
+    /**
+     * V1 Floating 3D Control Crown (Galvanic Construct Hijack / Ectonurite Possession / Soul-Terror):
+     */
+    static void controlCrown(PoseStack pose, MultiBufferSource buffers, Vec3 headPos, Vec3 camera,
+                             float time, boolean galvanic, boolean terror, boolean celestial, float alpha) {
+        if (alpha <= 0.02f) return;
+        int tint = terror ? (celestial ? 0xffe49eff : 0xffcc7eff)
+                : galvanic ? (celestial ? 0xff92ffdc : 0xff62f89c)
+                : (celestial ? 0xffd6b2ff : 0xffb292ff);
+        int col = DialDraw.alpha(tint, alpha * 0.92f);
+        if (terror) {
+            voronoiShatterCrown(pose, buffers, headPos, new Vec3(0, 1, 0), camera,
+                    0.46, 0.32, -time * 0.16f, col, 0.18f);
+            return;
+        }
+        astrolabeRingEroded(pose, buffers, headPos, 0.52, 0.16, time * 0.12, time * 0.12 + TAU, 28, col, 0.08f);
+        for (int i = 0; i < 4; i++) {
+            double ang = time * 0.12 + i * TAU / 4.0;
+            Vec3 top = headPos.add(Math.cos(ang) * 0.46, 0.04, Math.sin(ang) * 0.46);
+            Vec3 bot = headPos.add(Math.cos(ang) * 0.18, -0.58, Math.sin(ang) * 0.18);
+            speedStreak(pose, buffers, bot, top, camera, 0.024, col, 0.12f);
+        }
+    }
+
     private static void ribbonMode(PoseStack pose, MultiBufferSource buffers, Vec3 from, Vec3 to, Vec3 camera,
                                    double widthStart, double widthEnd, int color, int mode,
                                    boolean additive, float uScale, float erosion) {
@@ -103,7 +307,8 @@ final class VfxPrimitives {
         int limit = from.lerp(to, .5).distanceToSqr(camera) > 48 * 48 ? 8 : 20;
         int steps = Math.max(4, Math.min(limit, (int) Math.ceil(len * 2.5)));
         PoseStack.Pose last = pose.last();
-        VertexConsumer sink = buffers.getBuffer(mode >= MODE_MATERIAL ? CosmicVfxShader.material()
+        VertexConsumer sink = buffers.getBuffer(mode >= MODE_MATERIAL && mode < MODE_VORONOI_SHATTER
+                ? CosmicVfxShader.material()
                 : additive ? CosmicVfxShader.glow() : CosmicVfxShader.voidSheath());
 
         for (int i = 0; i < steps; i++) {
@@ -189,12 +394,6 @@ final class VfxPrimitives {
         }
     }
 
-    /**
-     * VFX 2.0 Aerodynamic Overflowing Star-Silk Flight Ribbon (ordered tail=0 -> live shoulder=n-1):
-     * 1) Camera-lens clearance envelope (zero 3rd-person camera clipping / whiteout!)
-     * 2) Pass 1: Abyssal Star-Void Dark Contrast Sheath (Mode 4 TRANSLUCENT) so daytime sky never washes out!
-     * 3) Pass 2: FBM-Eroded Multi-Strand Silk + Razor Champagne/Ivory Filament (Mode 2 GLOW) shredding into 4-5 wisps at tail!
-     */
     static void overflowingSilkRibbon(PoseStack pose, MultiBufferSource buffers, List<Vec3> points, List<Vec3> wingAxes,
                                       Vec3 camera, double maxHalfWidth, float uScroll, int veilColor, int spineColor) {
         int n = points.size();
@@ -210,7 +409,7 @@ final class VfxPrimitives {
         float cumDist = 0f;
 
         for (int i = 0; i < n; i++) {
-            float t = (float) i / (n - 1); // 0 = shredded tail tip, 1 = live shoulder clasp
+            float t = (float) i / (n - 1);
             Vec3 p = points.get(i);
             if (i > 0) {
                 cumDist += (float) Math.min(2.6, p.distanceTo(points.get(i - 1)));
@@ -230,16 +429,13 @@ final class VfxPrimitives {
             Vec3 hybridSide = camSide.scale(.58).add(wingSide.scale(.42));
             hybridSide = hybridSide.lengthSqr() < 1e-6 ? camSide : hybridSide.normalize();
 
-            // Lens clearance guarantees ribbons passing near THIRD_PERSON_BACK camera never blow up on screen!
             float camClear = cameraClearance(p, camera, 1.55, 4.10);
             double envelope = (0.28 + 0.72 * Math.sin(Math.min(1.0, t * 1.08 + .06) * Math.PI * .84)) * (0.22 + 0.78 * camClear);
             widths[i] = hybridSide.scale(maxHalfWidth * envelope);
             alphas[i] = camClear * (0.38f + 0.62f * (float) Math.pow(t, .55));
-            // Tail (t -> 0) erodes up to 0.90 so FBM shader shreds it into razor-thin silk strands instead of fading muddy!
             erosions[i] = Mth.clamp((float) Math.pow(1.0 - t, 0.82) * 0.90f + 0.04f, 0.04f, 0.94f);
         }
 
-        // Pass 1: Abyssal Star-Void Contrast Sheath (TRANSLUCENT) — guarantees deep cosmic contrast even in bright noon sky!
         VertexConsumer voidSink = buffers.getBuffer(CosmicVfxShader.voidSheath());
         for (int i = 0; i < n - 1; i++) {
             if (alphas[i] < 0.02f && alphas[i + 1] < 0.02f) continue;
@@ -255,7 +451,6 @@ final class VfxPrimitives {
             emitMode(voidSink, last, b.subtract(vw1), uCoords[i + 1], 0f, d1, MODE_VOID_SHEATH, erosions[i + 1] * .86f);
         }
 
-        // Pass 2: Eroded Multi-Strand Silk Veil + Razor Ivory/Champagne Spine (ADDITIVE)
         VertexConsumer glowSink = buffers.getBuffer(CosmicVfxShader.glow());
         for (int i = 0; i < n - 1; i++) {
             if (alphas[i] < 0.02f && alphas[i + 1] < 0.02f) continue;
@@ -284,7 +479,6 @@ final class VfxPrimitives {
         }
     }
 
-    /** 3D Flight-Aligned Broken Armillary Vernier Ring (with lens clearance + erosion support). */
     static void orientedAstrolabeRing(PoseStack pose, MultiBufferSource buffers, Vec3 center, Vec3 axisDir,
                                       double radius, double bandWidth, double spin, int steps, int color) {
         orientedAstrolabeRingEroded(pose, buffers, center, axisDir, null, radius, bandWidth, spin, steps, color, 0f);
@@ -307,7 +501,6 @@ final class VfxPrimitives {
         double rInner = Math.max(.02, radius - bandWidth * .55);
         double rOuter = radius + bandWidth * .45;
 
-        // Subtle dark backing ring so astrolabe ticks pop sharply against bright daytime sky!
         float baseA = (effCol >>> 24) / 255f;
         if (baseA > 0.16f) {
             VertexConsumer voidSink = buffers.getBuffer(CosmicVfxShader.voidSheath());
@@ -339,9 +532,6 @@ final class VfxPrimitives {
         }
     }
 
-    /**
-     * Crisp Supersonic Bow-Shock Leading Crescent (5% razor focal highlight ahead of chest/helmet, never blocking rear camera!).
-     */
     static void bowShockWave(PoseStack pose, MultiBufferSource buffers, Vec3 apex, Vec3 flightDir, Vec3 wingRight,
                              Vec3 camera, double spanRadius, double sweepBack, int color) {
         float clear = cameraClearance(apex, camera, 1.15, 2.8);
@@ -354,7 +544,6 @@ final class VfxPrimitives {
         float baseA = ((color >>> 24) / 255f) * clear;
         int steps = 20;
 
-        // Pass 1: Abyssal Contrast Sheath
         VertexConsumer voidSink = buffers.getBuffer(CosmicVfxShader.voidSheath());
         for (int plane = 0; plane < 2; plane++) {
             Vec3 lat = plane == 0 ? right : up.scale(.68);
@@ -378,7 +567,6 @@ final class VfxPrimitives {
             }
         }
 
-        // Pass 2: Asymmetric Razor Leading Crescent
         VertexConsumer glowSink = buffers.getBuffer(CosmicVfxShader.glow());
         for (int plane = 0; plane < 2; plane++) {
             Vec3 lat = plane == 0 ? right : up.scale(.68);
@@ -410,7 +598,6 @@ final class VfxPrimitives {
                 starfield ? MODE_STARFIELD : MODE_ELEMENTAL, !starfield, 0f);
     }
 
-    /** VFX 2.0 Asymmetric Blade Slash Arc: Abyssal Dark Underlay + Mode-5 Razor Leading Edge + Eroded Wake! */
     static void lusterSlashArc(PoseStack pose, MultiBufferSource buffers, Vec3 center, Vec3 forward,
                                double radius, double bladeWidth, float tiltDeg, float startAngle, float sweepAngle,
                                int color) {
@@ -428,7 +615,6 @@ final class VfxPrimitives {
                 startAngle, sweepAngle, color, MODE_BLADE_ASYM, true, erosion);
     }
 
-    /** VFX 2.0 Asymmetric Crescent Projectile Wave: Dark Void Sheath + Razor Cutting Rim + FBM Shredded Wake! */
     static void lusterCrescent(PoseStack pose, MultiBufferSource buffers, Vec3 center, Vec3 forward,
                                double radius, double bladeWidth, float rollDeg, float start, float sweep, int color) {
         lusterCrescentEroded(pose, buffers, center, forward, radius, bladeWidth, rollDeg, start, sweep, color, 0.14f);
@@ -449,7 +635,6 @@ final class VfxPrimitives {
         int darkCol = DialDraw.alpha(0xff071024, Math.min(0.82f, baseA * 0.78f));
         int steps = 32;
 
-        // Pass 1: Abyssal Contrast Sheath
         VertexConsumer voidSink = buffers.getBuffer(CosmicVfxShader.voidSheath());
         for (int i = 0; i < steps; i++) {
             float f0 = (float) i / steps, f1 = (float) (i + 1) / steps;
@@ -472,7 +657,6 @@ final class VfxPrimitives {
             emitMode(voidSink, last, inner1, f1 * 1.6f, 0f, darkCol, MODE_VOID_SHEATH, tipErode1);
         }
 
-        // Pass 2: Asymmetric Razor Leading Edge (v=1 at outer bowed blade rim!) + Eroded Wake (v=0)
         VertexConsumer glowSink = buffers.getBuffer(CosmicVfxShader.glow());
         for (int i = 0; i < steps; i++) {
             float f0 = (float) i / steps, f1 = (float) (i + 1) / steps;
@@ -610,7 +794,6 @@ final class VfxPrimitives {
         double innerR = radius * .22;
         int darkBacking = DialDraw.alpha(0xff09142b, 0.52f);
 
-        // Pass 1: Abyssal Backing
         VertexConsumer voidSink = buffers.getBuffer(CosmicVfxShader.voidSheath());
         for (int i = 0; i < 6; i++) {
             double a0 = i * TAU / 6.0 + Math.PI / 6.0;
@@ -625,7 +808,6 @@ final class VfxPrimitives {
             emitMode(voidSink, last, pIn1, (i + 1) / 6f, .1f, darkBacking, MODE_VOID_SHEATH, 0.12f);
         }
 
-        // Pass 2: Luminous Plate & Astrolabe Trim
         VertexConsumer glow = buffers.getBuffer(CosmicVfxShader.glow());
         for (int i = 0; i < 6; i++) {
             double a0 = i * TAU / 6.0 + Math.PI / 6.0;
@@ -809,33 +991,12 @@ final class VfxPrimitives {
 
     static void circuitTrace(PoseStack pose, MultiBufferSource buffers, Vec3 from, Vec3 to, Vec3 camera,
                              int color, boolean starfield) {
-        Vec3 mid1 = new Vec3(Mth.lerp(.55, from.x, to.x), from.y, from.z);
-        Vec3 mid2 = new Vec3(mid1.x, to.y, from.z);
-        Vec3 mid3 = new Vec3(mid1.x, to.y, to.z);
-        List<Vec3> path = List.of(from, mid1, mid2, mid3, to);
-        for (int i = 0; i < path.size() - 1; i++) {
-            Vec3 a = path.get(i), b = path.get(i + 1);
-            if (a.distanceToSqr(b) > 1e-4) {
-                flowRibbon(pose, buffers, a, b, camera, .065, .065, color, starfield, false, 1.2f);
-                flowRibbon(pose, buffers, a, b, camera, .022, .022, 0xe8e4fff5, false, true, 1.0f);
-            }
-        }
+        curvedEnergyWhip(pose, buffers, from, to, camera, .085, .042, .42, .8f, color, 0xe8e4fff5, .12f);
     }
 
     static void impactBurst(PoseStack pose, MultiBufferSource buffers, Vec3 at, Vec3 camera,
                             double radius, float progress, int color, boolean starfield) {
-        int rays = 6;
-        double ease = 1.0 - Math.pow(1.0 - progress, 3.8);
-        double len = radius * (.25 + .95 * ease);
-        double width = Math.max(.02, .11 * (1 - progress));
-        for (int i = 0; i < rays; i++) {
-            double yaw = TAU * i / rays + .42;
-            double pitch = (i % 2 == 0 ? .38 : -.34);
-            Vec3 dir = new Vec3(Math.cos(yaw) * Math.cos(pitch), Math.sin(pitch), Math.sin(yaw) * Math.cos(pitch));
-            Vec3 inner = at.add(dir.scale(radius * .22 * ease));
-            Vec3 outer = at.add(dir.scale(len));
-            flowRibbon(pose, buffers, inner, outer, camera, width, .008, color, starfield, true, 1.0f);
-        }
+        lusterImpactBurst(pose, buffers, at, camera, radius, progress, color);
     }
 
     /** Asymmetric Sakuga Star-Cross Impact Burst (fast exponential snap + 2 primary anamorphic spikes + 6 fine sparks). */
@@ -843,7 +1004,6 @@ final class VfxPrimitives {
                                   double radius, float progress, int color) {
         double snap = 1.0 - Math.pow(1.0 - Mth.clamp(progress, 0f, 1f), 4.2);
         float fade = 1f - progress;
-        // 2 primary long anamorphic cross-cuts (5% sharp focal highlight)
         for (int k = 0; k < 2; k++) {
             double yaw = k * Math.PI * .52 + .28;
             double pitch = k == 0 ? .18 : -.22;
@@ -852,7 +1012,6 @@ final class VfxPrimitives {
             speedStreak(pose, buffers, at.subtract(dir.scale(span)), at.add(dir.scale(span)), camera,
                     Math.max(.025, .13 * fade), color, progress * .75f);
         }
-        // 6 secondary discrete sheared sparks
         for (int i = 0; i < 6; i++) {
             double yaw = TAU * i / 6 + .48;
             double pitch = i % 2 == 0 ? .42 : -.36;
