@@ -63,6 +63,7 @@ public final class Wrist implements INBTSerializable<CompoundTag> {
     }
     public Stage stage() { return stage; }
     public long until() { return until; }
+    boolean formExpired(long now) { return kind() != Kind.CELESTIAL && now >= until; }
 
     void enter(Stage next, long now, long deadline) {
         if (next != Stage.ACTIVE || stage != Stage.ACTIVE) clearSkills();
@@ -95,13 +96,17 @@ public final class Wrist implements INBTSerializable<CompoundTag> {
     @Override
     public CompoundTag serializeNBT(HolderLookup.Provider provider) {
         CompoundTag data = new CompoundTag();
-        data.putInt("version", 1);
+        data.putInt("version", 2);
         data.put("watch", stack.saveOptional(provider));
         data.putString("stage", stage.name());
         data.putInt("form", form == null ? -1 : form.ordinal());
         data.putLong("began", began);
         data.putLong("until", until);
         data.putLong("equipReadyAt", equipReadyAt);
+        if (kind() == Kind.CELESTIAL && hasForm()) {
+            data.putDouble("dnaShield", barrier);
+            data.putLong("dnaLastHit", lastDamageAt);
+        }
         data.putInt("cycle", carniCursor);
         data.putBoolean("bonded", carniLocked);
         data.putBoolean("civilianOverride", civilianOverride);
@@ -139,6 +144,16 @@ public final class Wrist implements INBTSerializable<CompoundTag> {
                 && (form == null || !form.canUse(kind()))) {
             stage = Stage.IDLE;
             form = null;
+        }
+        if (kind() == Kind.CELESTIAL) {
+            if (data.getInt("version") < 2) equipReadyAt = 0;
+            if (stage == Stage.COOLING) stage = Stage.IDLE;
+            if (stage == Stage.ACTIVE || stage == Stage.IDLE) until = 0;
+            if (hasForm()) {
+                maxBarrier = form.maxBarrier(Kind.CELESTIAL);
+                barrier = data.contains("dnaShield") ? Math.clamp(data.getDouble("dnaShield"), 0, maxBarrier) : maxBarrier;
+                lastDamageAt = data.contains("dnaLastHit") ? data.getLong("dnaLastHit") : Long.MIN_VALUE;
+            }
         }
     }
 }

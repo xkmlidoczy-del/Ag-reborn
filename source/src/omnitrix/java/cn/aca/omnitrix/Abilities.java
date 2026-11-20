@@ -233,7 +233,7 @@ public final class Abilities {
 
     public static boolean cast(ServerPlayer p, Wrist w, boolean secondary, boolean shifted, long now) {
         if (w.stage != Wrist.Stage.ACTIVE || w.controlled() || !WristService.eligible(p) || w.form() == null
-                || now >= w.until) return false;
+                || w.formExpired(now)) return false;
         boolean alternate = w.form == Form.ALIEN_X && w.kind() == Kind.CELESTIAL
                 && (shifted || p.isShiftKeyDown());
         long ready = readyAt(w, secondary, alternate);
@@ -383,7 +383,7 @@ public final class Abilities {
     }
 
     private static LivingEntity findHackTarget(ServerPlayer p, Vec3 eye, Vec3 face, double range) {
-        LivingEntity direct = enemyOnRay(p, eye, face, range);
+        LivingEntity direct = controlOnRay(p, eye, face, range);
         if (direct != null) return direct;
         return p.serverLevel().getEntitiesOfClass(LivingEntity.class,
                 AABB.ofSize(p.position().add(face.scale(range * .45)), range * 1.4, range, range * 1.4),
@@ -542,7 +542,7 @@ public final class Abilities {
                 w.linkUntil = now + LINK_TICKS;
 
                 // 2. Ectonurite Possession Hijack when aiming at an enemy!
-                LivingEntity possessTarget = enemyOnRay(p, eye, face, star ? 20.0 : 13.5);
+                LivingEntity possessTarget = controlOnRay(p, eye, face, star ? 20.0 : 13.5);
                 if (possessTarget != null) {
                     OmnitrixAiControl.commandPuppetsFocus(p, possessTarget);
                     if (OmnitrixAiControl.hijackOrSubjugate(p, possessTarget, star ? 280 : 200, star, false)) {
@@ -1243,7 +1243,7 @@ public final class Abilities {
         SkillCast skill = w.skill;
         if (skill == null) return false;
         if (target == null || !target.getUUID().equals(skill.target) || !visible || distance > reach
-                || !validTarget(p, target, true) || now >= w.until) {
+                || !validTarget(p, target, true) || w.formExpired(now)) {
             finishSkill(p, w);
             return false;
         }
@@ -1456,6 +1456,19 @@ public final class Abilities {
     private static LivingEntity enemyOnRay(ServerPlayer p, Vec3 start, Vec3 aim, double range) {
         var hit = rayTarget(p, start, rayEnd(p, start, aim, range));
         return hit != null && hit.getEntity() instanceof LivingEntity e ? e : null;
+    }
+
+    private static LivingEntity controlOnRay(ServerPlayer player, Vec3 start, Vec3 aim, double range) {
+        Vec3 end = rayEnd(player, start, aim, range);
+        var hit = ProjectileUtil.getEntityHitResult(player.level(), player, start, end, new AABB(start,end).inflate(1),
+                entity -> {
+                    Entity body = entity instanceof net.neoforged.neoforge.entity.PartEntity<?> part ? part.getParent() : entity;
+                    return body instanceof Mob mob && OmnitrixAiControl.canPossess(player, mob);
+                }, .16f);
+        if (hit == null) return null;
+        Entity target = hit.getEntity();
+        if (target instanceof net.neoforged.neoforge.entity.PartEntity<?> part) target = part.getParent();
+        return target instanceof Mob mob ? mob : null;
     }
 
     private static Vec3 dash(ServerPlayer p, SkillCast skill, Vec3 face, double force, float damage, double lift) {

@@ -4,21 +4,18 @@ import static cn.academy.port.core.SkillTuning.number;
 
 import cn.academy.port.AbilityStorage;
 import cn.academy.port.SkillCatalog;
-import cn.academy.port.skill.ClassicRaytrace;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.boss.EnderDragonPart;
-import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.InteractionHand;
+import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -49,11 +46,9 @@ public final class CanonPuppets {
     /** The non-player creature the caster is looking at, or null. Players are never eligible; everything else with AI is. */
     public static Mob pick(ServerPlayer p){
         if(p==null)return null;
-        var hit=ClassicRaytrace.living(p,RANGE,ClipContext.Fluid.NONE);
-        if(!(hit instanceof EntityHitResult e))return null;
-        Entity entity=e.getEntity();if(entity instanceof EnderDragonPart part)entity=part.parentMob;
-        if(!(entity instanceof Mob mob))return null; // a Player is never a Mob, so players are excluded by type
-        if (!MentalTargeting.reachable(p,mob,RANGE) || BY_MOB.containsKey(mob)) return null;
+        if (!(MentalTargeting.aimed(p,RANGE) instanceof Mob mob)) return null;
+        if (!MentalTargeting.reachable(p,mob,RANGE) || !CanonTargetPolicy.directTarget(p,mob)
+                || !MentalTargeting.controllable(mob) || BY_MOB.containsKey(mob)) return null;
         return mob;
     }
 
@@ -61,6 +56,7 @@ public final class CanonPuppets {
         if(p==null||mob==null||BY_OWNER.containsKey(p)||BY_MOB.containsKey(mob)||BY_OWNER.size()>=MAX)return false;
         var puppet=new Puppet(p,mob,expires);
         if (!MentalTargeting.assign(mob,null)) return false;
+        puppet.nextAttack = puppet.world.getGameTime() + ATTACK_EVERY;
         BY_OWNER.put(p,puppet);BY_MOB.put(mob,puppet);
         return true;
     }
@@ -99,6 +95,23 @@ public final class CanonPuppets {
     }
     @SubscribeEvent public static void stop(ServerStoppedEvent event){BY_OWNER.clear();BY_MOB.clear();}
 
+    @SubscribeEvent public static void retarget(LivingChangeTargetEvent event) {
+        Puppet puppet = BY_MOB.get(event.getEntity());
+        if (puppet != null && event.getNewAboutToBeSetTarget() != puppet.victim)
+            event.setNewAboutToBeSetTarget(puppet.victim);
+    }
+
+    @SubscribeEvent public static void protectAllies(LivingIncomingDamageEvent event) {
+        Puppet puppet = BY_MOB.get(event.getSource().getEntity());
+        if (puppet != null && !enemy(puppet,event.getEntity())) event.setCanceled(true);
+    }
+
+    @SubscribeEvent public static void observeStrike(LivingDamageEvent.Post event) {
+        Puppet puppet = BY_MOB.get(event.getSource().getEntity());
+        if (puppet != null && event.getEntity() == puppet.victim && event.getNewDamage() > 0)
+            puppet.nextAttack = puppet.world.getGameTime() + ATTACK_EVERY;
+    }
+
     // ------------------------------------------------------------------ behaviour
     private static boolean enemy(Puppet z,LivingEntity e){
         return e!=z.mob&&e!=z.owner&&!(e instanceof Player)&&MentalTargeting.hostile(z.owner,e)&&e.isAlive()&&!e.isRemoved()&&!e.isSpectator()
@@ -106,19 +119,20 @@ public final class CanonPuppets {
     }
     private static boolean steer(Puppet z,long now){
         var mob=z.mob;
-        if(now>=z.nextPick||z.victim==null||!z.victim.isAlive()||z.victim.isRemoved()){
+        if(now>=z.nextPick || z.victim != null && !enemy(z,z.victim)){
             z.nextPick=now+PICK_EVERY;
-            z.victim=z.world.getEntitiesOfClass(LivingEntity.class,mob.getBoundingBox().inflate(FIGHT_RANGE),e->enemy(z,e)&&mob.hasLineOfSight(e))
+            z.victim=z.world.getEntitiesOfClass(LivingEntity.class,mob.getBoundingBox().inflate(FIGHT_RANGE),e->enemy(z,e)&&MentalTargeting.visible(mob,e))
                     .stream().min(java.util.Comparator.comparingDouble(mob::distanceToSqr)).orElse(null);
         }
         LivingEntity victim=z.victim;
         if(victim!=null){
             if (!MentalTargeting.assign(mob,victim)) return false;
-            if(!(mob instanceof Enemy)&&!hasMeleeGoal(mob)&&mob.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE)){
-                // Creatures with a bite but no attack AI: walk to the victim and strike with their own damage.
-                mob.getNavigation().moveTo(victim,1.15);
-                double reach=mob.getBbWidth()*2.0+victim.getBbWidth();
-                if(now>=z.nextAttack&&mob.distanceToSqr(victim)<=reach*reach){z.nextAttack=now+ATTACK_EVERY;mob.doHurtTarget(victim);}
+            if (mob.getNavigation().isDone() && now % PICK_EVERY == 0) mob.getNavigation().moveTo(victim,1.15);
+            if (now >= z.nextAttack && mob.isWithinMeleeAttackRange(victim) && MentalTargeting.visible(mob,victim)) {
+                z.nextAttack = now + ATTACK_EVERY;
+                var attack = mob.getAttribute(Attributes.ATTACK_DAMAGE);
+                mob.swing(InteractionHand.MAIN_HAND);
+                victim.hurt(mob.damageSources().mobAttack(mob), attack == null ? 2f : (float)attack.getValue());
             }
         }else{
             if (!MentalTargeting.assign(mob,null)) return false;
@@ -126,9 +140,6 @@ public final class CanonPuppets {
             else if(mob.distanceToSqr(z.owner)<6.25)mob.getNavigation().stop();
         }
         return true;
-    }
-    private static boolean hasMeleeGoal(Mob mob){
-        return mob.goalSelector.getAvailableGoals().stream().anyMatch(w->w.getGoal() instanceof MeleeAttackGoal);
     }
     static Vec3 center(Mob m){return m.position().add(0,m.getBbHeight()*.5,0);}
 }

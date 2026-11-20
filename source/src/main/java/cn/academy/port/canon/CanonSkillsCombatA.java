@@ -148,7 +148,8 @@ public final class CanonSkillsCombatA {
 
     private static boolean probe(ServerPlayer player) {
         double reach = mentalReach(player, PROBE);
-        LivingEntity target = aimed(player, reach);
+        LivingEntity target = MentalTargeting.aimed(player, reach);
+        if (target == null) target = aimed(player, reach);
         if (target == null) return false;
         boolean witness = UrbanStoryClues.canProbe(player, target);
         boolean monster = eligible(player, target, PROBE);
@@ -171,7 +172,8 @@ public final class CanonSkillsCombatA {
     private static boolean disrupt(ServerPlayer player) {
         int duration = integer(DISRUPT, "duration_ticks");
         double reach = mentalReach(player, DISRUPT);
-        LivingEntity hit = aimed(player, reach);
+        LivingEntity hit = MentalTargeting.aimed(player, reach);
+        if (hit == null) hit = aimed(player, reach);
         if (!eligible(player, hit, DISRUPT)) return false;
         if (!(hit instanceof Mob mob)) return MentalTargeting.resisted(player);
         if (!eligible(player, mob, DISRUPT) || LEASES.containsKey(mob) || CanonExpansionCombatA.mentalLeased(mob)) return false;
@@ -742,7 +744,8 @@ public final class CanonSkillsCombatA {
                 p.serverLevel(), p.getEyePosition(), p.getEyePosition().add(ClassicRaytrace.direction(p).scale(range))));
         else if (!loadedAlong(p, range)) return null;
         var hit = ClassicRaytrace.living(p, available, ClipContext.Fluid.NONE);
-        if (hit instanceof EntityHitResult entity && entity.getEntity() instanceof LivingEntity living) return living;
+        LivingEntity living = MentalTargeting.hitBody(hit);
+        if (living != null) return living;
         return softAim(p, available);
     }
 
@@ -782,7 +785,8 @@ public final class CanonSkillsCombatA {
     }
 
     private static boolean eligible(ServerPlayer owner, LivingEntity entity, String skill) {
-        return MentalTargeting.reachable(owner, entity, mentalReach(owner, skill)) && MentalTargeting.hostile(owner, entity);
+        return MentalTargeting.reachable(owner, entity, mentalReach(owner, skill)) && (MentalTargeting.hostile(owner, entity)
+                || (PROBE.equals(skill) || DISRUPT.equals(skill)) && entity instanceof Mob && CanonTargetPolicy.directTarget(owner, entity));
     }
 
     private static boolean holdTarget(ServerPlayer owner, Mob mob, Mob target, long expires) {

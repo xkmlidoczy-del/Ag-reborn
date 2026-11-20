@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +61,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
@@ -187,18 +189,25 @@ public final class StoneAbilities {
             brain.eraseMemory(MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE);
         } catch (Exception ignored) {}
 
-        if (lockFlags) {
-            for (Goal.Flag f : EnumSet.of(Goal.Flag.MOVE, Goal.Flag.JUMP, Goal.Flag.LOOK, Goal.Flag.TARGET)) {
-                mob.goalSelector.disableControlFlag(f);
-                mob.targetSelector.disableControlFlag(f);
-            }
+        if (lockFlags && !MIND_LOCKS.containsKey(mob)) {
+            Goal lock = new Goal() {
+                { setFlags(EnumSet.allOf(Goal.Flag.class)); }
+                @Override public boolean canUse() { return true; }
+                @Override public boolean isInterruptable() { return false; }
+            };
+            MIND_LOCKS.put(mob, lock);
+            mob.goalSelector.addGoal(Integer.MIN_VALUE, lock);
+            mob.targetSelector.addGoal(Integer.MIN_VALUE, lock);
         }
     }
 
+    private static final Map<Mob, Goal> MIND_LOCKS = new WeakHashMap<>();
+
     private static void unlockGoalFlags(Mob mob) {
-        for (Goal.Flag f : EnumSet.of(Goal.Flag.MOVE, Goal.Flag.JUMP, Goal.Flag.LOOK, Goal.Flag.TARGET)) {
-            mob.goalSelector.enableControlFlag(f);
-            mob.targetSelector.enableControlFlag(f);
+        Goal lock = MIND_LOCKS.remove(mob);
+        if (lock != null) {
+            mob.goalSelector.removeGoal(lock);
+            mob.targetSelector.removeGoal(lock);
         }
     }
 
@@ -556,7 +565,7 @@ public final class StoneAbilities {
     private static void castMindBeam(ServerPlayer player, ServerLevel level, long now) {
         Vec3 eye = player.getEyePosition();
         Vec3 look = player.getLookAngle();
-        Vec3 end = eye.add(look.scale(28.0));
+        Vec3 end = level.clip(new ClipContext(eye, eye.add(look.scale(28)), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player)).getLocation();
         List<LivingEntity> hitFoes = findHostilesAlongRay(level, player, eye, end, 2.3);
         List<LivingEntity> nearbyPool = findHostilesNear(level, player, player.position(), 28.0);
 
@@ -573,7 +582,7 @@ public final class StoneAbilities {
             for (Mob p : existingPuppets) {
                 if (p == commandedFocus) continue;
                 EntityStatusData pst = AcaInfinity.status(p);
-                pst.mindFocusTargetId = commandedFocus.getId();
+                pst.mindFocus = commandedFocus.getUUID();
                 forceAssignAttackTarget(p, commandedFocus);
             }
             // If commandedFocus is the last non-puppet enemy left, deal psionic disruption instead of converting the sole target!
@@ -593,13 +602,14 @@ public final class StoneAbilities {
         int converted = 0;
         for (LivingEntity foe : hitFoes) {
             applyTrueNameSuppressionIfHukou(player, level, foe, now, Stone.MIND);
-            if (foe instanceof Mob mob && !isBossEntity(mob) && converted < maxConvert) {
+            if (foe instanceof Mob mob && converted < maxConvert) {
                 converted++;
                 EntityStatusData st = AcaInfinity.status(mob);
                 st.mindStandUntil = 0L;
                 st.shameUntil = 0L;
                 st.mindMaster = player.getUUID();
                 st.mindControlUntil = now + 300L; // 15s full Mind Subjugation!
+                st.mindFocus = null;
                 st.lastPuppetSwingTick = now - 20L; // Ready to swing immediately on first contact tick!
                 syncTransientModifier(mob, Attributes.ATTACK_DAMAGE, MOD_PUPPET_DMG, 0.35, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, true);
                 syncTransientModifier(mob, Attributes.MOVEMENT_SPEED, MOD_PUPPET_SPD, 0.25, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, true);
@@ -610,20 +620,12 @@ public final class StoneAbilities {
                         .min(Comparator.comparingDouble(mob::distanceToSqr))
                         .orElse(null);
                 if (initialVictim != null) {
-                    st.mindFocusTargetId = initialVictim.getId();
+                    st.mindFocus = initialVictim.getUUID();
                     forceAssignAttackTarget(mob, initialVictim);
                 } else {
                     forceClearBrainAndGoals(mob, false);
                 }
                 InfinityNetwork.syncEntityMark(mob);
-            } else if (isBossEntity(foe)) {
-                // Boss Mind Disruption: interrupts active cast + staggers + 3s slow!
-                if (foe instanceof Mob bossMob) {
-                    bossMob.stopUsingItem();
-                    bossMob.getNavigation().stop();
-                }
-                foe.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 1));
-                AcademyCompat.hurt(foe, level.damageSources().indirectMagic(player, player), 38.0f, false);
             }
         }
 
@@ -636,16 +638,18 @@ public final class StoneAbilities {
     private static void castMindRollCall(ServerPlayer player, ServerLevel level, long now) {
         Vec3 center = player.position();
         List<LivingEntity> foes = findHostilesNear(level, player, center, 14.0);
+        foes.addAll(level.getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(14),
+                mob -> mob.isAlive() && mob.distanceToSqr(center) <= 14 * 14 && mob.hasData(AcaInfinity.ENTITY_STATUS)
+                        && AcaInfinity.status(mob).isMindControlled(now) && player.getUUID().equals(AcaInfinity.status(mob).mindMaster)));
         int count = 0;
         for (LivingEntity foe : foes) {
-            if (isBossEntity(foe)) {
-                if (foe instanceof Mob bossMob) bossMob.stopUsingItem();
-                foe.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 1));
-                AcademyCompat.hurt(foe, level.damageSources().indirectMagic(player, player), 28.0f, false);
-                continue;
-            }
+            if (!(foe instanceof Mob)) continue;
             EntityStatusData st = AcaInfinity.status(foe);
             st.mindControlUntil = 0L;
+            st.mindMaster = null;
+            st.mindFocus = null;
+            syncTransientModifier(foe, Attributes.ATTACK_DAMAGE, MOD_PUPPET_DMG, 0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, false);
+            syncTransientModifier(foe, Attributes.MOVEMENT_SPEED, MOD_PUPPET_SPD, 0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, false);
             st.mindStandUntil = now + 180L;
             foe.setDeltaMovement(Vec3.ZERO);
             foe.setXRot(0f);
@@ -1010,17 +1014,23 @@ public final class StoneAbilities {
     }
 
     private static LivingEntity findPuppetTarget(ServerLevel sl, Mob puppet, EntityStatusData st, Player master, long now) {
-        if (st.mindFocusTargetId >= 0 && sl.getEntity(st.mindFocusTargetId) instanceof LivingEntity focused
-                && focused.isAlive() && focused != puppet && (master == null || !isFriendlyTo(master, focused))) {
+        if (master == null) return null;
+        if (st.mindFocus != null && sl.getEntity(st.mindFocus) instanceof LivingEntity focused
+                && focused.isAlive() && focused != puppet && !isFriendlyTo(master, focused)) {
             return focused;
         }
-        return sl.getEntitiesOfClass(LivingEntity.class, puppet.getBoundingBox().inflate(28.0), e -> {
+        st.mindFocus = null;
+        if (now < st.nextMindSearch) return null;
+        st.nextMindSearch = now + 10;
+        LivingEntity selected = sl.getEntitiesOfClass(LivingEntity.class, puppet.getBoundingBox().inflate(28.0), e -> {
             if (!e.isAlive() || e == puppet || e instanceof ArmorStand) return false;
-            if (master != null && isFriendlyTo(master, e)) return false;
+            if (isFriendlyTo(master, e)) return false;
             if (e.hasData(AcaInfinity.ENTITY_STATUS) && AcaInfinity.status(e).isMindControlled(now)
                     && st.mindMaster.equals(AcaInfinity.status(e).mindMaster)) return false;
             return e instanceof Enemy || e instanceof Mob;
         }).stream().min(Comparator.comparingDouble(puppet::distanceToSqr)).orElse(null);
+        if (selected != null) st.mindFocus = selected.getUUID();
+        return selected;
     }
 
     // ==================== TICK & DAMAGE HOOKS ====================
@@ -1123,7 +1133,7 @@ public final class StoneAbilities {
 
         boolean pacified = st.isStandingAttention(now) || st.isAshamed(now);
         syncTransientModifier(mob, Attributes.ATTACK_DAMAGE, MOD_SILENCE_DMG, -1.0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, pacified);
-        if (!pacified && !st.isMindControlled(now)) {
+        if (!pacified && !st.isParentSlowed(now) && !st.isMindControlled(now)) {
             unlockGoalFlags(mob);
         }
 
@@ -1132,7 +1142,7 @@ public final class StoneAbilities {
             if (st.mindControlUntil <= now) {
                 st.mindControlUntil = 0L;
                 st.mindMaster = null;
-                st.mindFocusTargetId = -1;
+                st.mindFocus = null;
                 syncTransientModifier(mob, Attributes.ATTACK_DAMAGE, MOD_PUPPET_DMG, 0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, false);
                 syncTransientModifier(mob, Attributes.MOVEMENT_SPEED, MOD_PUPPET_SPD, 0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, false);
                 forceClearBrainAndGoals(mob, false);
@@ -1162,11 +1172,9 @@ public final class StoneAbilities {
                     } else if (now - st.lastPuppetSwingTick >= 16L) {
                         st.lastPuppetSwingTick = now;
                         mob.swing(InteractionHand.MAIN_HAND);
-                        boolean hit = mob.doHurtTarget(victim);
-                        if (!hit) {
-                            float fallbackDmg = (float) Math.max(8.0, mob.getAttributeValue(Attributes.ATTACK_DAMAGE));
-                            AcademyCompat.hurt(victim, sl.damageSources().mobAttack(mob), fallbackDmg, true);
-                        }
+                        var attack = mob.getAttribute(Attributes.ATTACK_DAMAGE);
+                        float strike = attack == null ? 8f : (float) Math.max(1, attack.getValue());
+                        victim.hurt(sl.damageSources().mobAttack(mob), strike);
                         sl.sendParticles(ParticleTypes.CRIT, victim.getX(), victim.getY() + victim.getBbHeight() * 0.5, victim.getZ(),
                                 8, 0.25, 0.25, 0.25, 0.12);
                     }
@@ -1184,8 +1192,10 @@ public final class StoneAbilities {
         // 4. Mind Stone Classroom Roll-Call ("真·全域静默罚站")
         if (st.isStandingAttention(now)) {
             forceClearBrainAndGoals(mob, true);
-            mob.setDeltaMovement(0, Math.min(0, mob.getDeltaMovement().y), 0);
+            mob.setDeltaMovement(Vec3.ZERO);
             mob.setXRot(0f);
+            // Animation-driven bosses run attacks outside goals. Hold their tick until the world-time deadline.
+            event.setCanceled(true);
             return;
         }
 
@@ -1329,7 +1339,7 @@ public final class StoneAbilities {
             }
             if (ast.isMindControlled(now) && victim.level() instanceof ServerLevel sl) {
                 Player master = sl.getPlayerByUUID(ast.mindMaster);
-                if (master != null && isFriendlyTo(master, victim)) {
+                if (victim.getUUID().equals(ast.mindMaster) || master != null && isFriendlyTo(master, victim)) {
                     event.setCanceled(true);
                     return;
                 }
@@ -1431,26 +1441,20 @@ public final class StoneAbilities {
 
     private static List<LivingEntity> findHostilesAlongRay(ServerLevel level, ServerPlayer player, Vec3 from, Vec3 to, double thickness) {
         AABB box = new AABB(from, to).inflate(thickness);
-        List<LivingEntity> out = new ArrayList<>();
-        Vec3 seg = to.subtract(from);
-        double segLenSqr = Math.max(0.001, seg.lengthSqr());
-        for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, box, LivingEntity::isAlive)) {
-            if (e instanceof ArmorStand) continue;
-            if (isFriendlyTo(player, e)) continue;
-            Vec3 p = e.getBoundingBox().getCenter();
-            double t = Mth.clamp(p.subtract(from).dot(seg) / segLenSqr, 0.0, 1.0);
-            Vec3 closest = from.add(seg.scale(t));
-            double r = thickness + e.getBbWidth() * 0.5;
-            if (p.distanceToSqr(closest) <= r * r) {
-                out.add(e);
-            }
+        Map<LivingEntity, Double> hits = new HashMap<>();
+        for (Entity hit : level.getEntities(player, box, Entity::isAlive)) {
+            Entity body = hit instanceof PartEntity<?> part ? part.getParent() : hit;
+            if (!(body instanceof LivingEntity living) || living instanceof ArmorStand || !living.isAlive()
+                    || isFriendlyTo(player, living)) continue;
+            var bounds = hit.getBoundingBox().inflate(thickness);
+            var contact = bounds.contains(from) ? from : bounds.clip(from, to).orElse(null);
+            if (contact != null) hits.merge(living, from.distanceToSqr(contact), Math::min);
         }
-        out.sort(Comparator.comparingDouble(e -> e.distanceToSqr(from)));
-        return out;
+        return hits.entrySet().stream().sorted(Map.Entry.comparingByValue()).map(Map.Entry::getKey).toList();
     }
 
     public static boolean isFriendlyTo(Player player, Entity entity) {
-        if (entity == player) return true;
+        if (entity == player || player.isAlliedTo(entity) || entity.isAlliedTo(player)) return true;
         if (entity instanceof Player other) return player.isAlliedTo(other) || !player.canHarmPlayer(other);
         if (entity instanceof TamableAnimal pet && pet.isTame() && player.getUUID().equals(pet.getOwnerUUID())) return true;
         if (entity instanceof SanctuaryShipEntity ship && !ship.isHostileShip()) return true;

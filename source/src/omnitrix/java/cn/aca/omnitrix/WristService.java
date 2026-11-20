@@ -71,7 +71,7 @@ public final class WristService {
         if (!(stack.getItem() instanceof WatchItem watch) || !eligible(player)) return false;
         if (wrist.kind() != null) return tell(player, "full");
         long now = time(player);
-        if (now < wrist.equipReadyAt) return tell(player, "charging");
+        if (watch.kind() != Kind.CELESTIAL && now < wrist.equipReadyAt) return tell(player, "charging");
         wrist.stack = stack.split(1);
         wrist.carniLocked = watch.kind() == Kind.CARNITRIX;
         wrist.lastHumanClear = null;
@@ -197,7 +197,7 @@ public final class WristService {
         Kind kind = wrist.kind();
         long now = time(player);
         if (kind == null || !(kind == Kind.CARNITRIX ? mobile(player) : eligible(player))
-                || wrist.stage != Stage.IDLE || now < wrist.equipReadyAt) {
+                || wrist.stage != Stage.IDLE || (kind != Kind.CELESTIAL && now < wrist.equipReadyAt)) {
             return tell(player, "charging");
         }
         if (form == null || !form.canUse(kind) || (kind == Kind.CARNITRIX && targetId < 0)) return false;
@@ -255,7 +255,7 @@ public final class WristService {
         }
 
         // 2. X-Watch (Celestial) Emergency Failsafe from human IDLE -> instant zero-windup Alien X!
-        if (wrist.kind() == Kind.CELESTIAL && wrist.stage == Stage.IDLE && now >= wrist.equipReadyAt
+        if (wrist.kind() == Kind.CELESTIAL && wrist.stage == Stage.IDLE
                 && fits(player, Form.ALIEN_X.dimensions(Kind.CELESTIAL), player.position())) {
             event.setCanceled(true);
             player.resetFallDistance();
@@ -379,7 +379,7 @@ public final class WristService {
             }
             case ACTIVE -> {
                 if (humanFits(player, player.position())) wrist.lastHumanClear = player.position();
-                if (now >= wrist.until) {
+                if (wrist.formExpired(now)) {
                     revert(player, now);
                 } else if (wrist.kind() == Kind.CARNITRIX) {
                     Abilities.tickBarrier(player, wrist, now);
@@ -422,7 +422,7 @@ public final class WristService {
             finish(player, now);
             return;
         }
-        wrist.enter(Stage.ACTIVE, now, now + kind.duration);
+        wrist.enter(Stage.ACTIVE, now, kind.duration == 0 ? 0 : now + kind.duration);
         AscalonService.onOmnitrixTransformStart(player);
         wrist.attackCueAt = now + 6;
         wrist.maxBarrier = wrist.form.maxBarrier(kind);
@@ -459,8 +459,12 @@ public final class WristService {
         wrist.civilianOverride = false;
         wrist.misfire = false;
         wrist.resistance = 0;
-        wrist.enter(Stage.COOLING, now, now + kind.recharge);
-        wrist.equipReadyAt = wrist.until;
+        if (kind.recharge == 0) {
+            wrist.enter(Stage.IDLE, now, 0);
+        } else {
+            wrist.enter(Stage.COOLING, now, now + kind.recharge);
+            wrist.equipReadyAt = wrist.until;
+        }
         if (body != null) {
             player.stopRiding();
             body.discard();
@@ -533,7 +537,13 @@ public final class WristService {
         var instance = player.getAttribute(attribute);
         if (instance == null) return;
         instance.removeModifier(MODIFIER);
-        if (amount != 0) instance.addTransientModifier(new AttributeModifier(MODIFIER, amount, operation));
+        if (amount != 0) {
+            var modifier = new AttributeModifier(MODIFIER, amount, operation);
+            // Vanilla restores saved HP before login. The active X form's maximum must already be available then.
+            if (attribute.equals(Attributes.MAX_HEALTH) && Omnitrix.wrist(player).kind() == Kind.CELESTIAL)
+                instance.addPermanentModifier(modifier);
+            else instance.addTransientModifier(modifier);
+        }
     }
 
     private static void login(PlayerEvent.PlayerLoggedInEvent event) {
@@ -542,8 +552,8 @@ public final class WristService {
         long now = time(p);
         w.clearSkills();
         boolean inTransform = w.hasForm() || w.stage == Stage.ARMING;
-        if (inTransform && w.kind() != Kind.CARNITRIX) finish(p, now);
-        else if (inTransform && now >= w.until) {
+        if (inTransform && w.kind() == Kind.CLASSIC) finish(p, now);
+        else if (inTransform && w.kind() == Kind.CARNITRIX && now >= w.until) {
             if (w.stage == Stage.ARMING && now < w.until + Kind.CARNITRIX.duration && !p.isSpectator()) {
                 long ready = w.until;
                 activate(p, now);
@@ -573,7 +583,7 @@ public final class WristService {
         w.panelUp = false;
         w.clearSkills();
         if (w.stage == Stage.LOCKING) w.enter(Stage.IDLE, time(p), 0);
-        if (w.kind() != Kind.CARNITRIX && (w.hasForm() || w.stage == Stage.ARMING)) finish(p, time(p));
+        if (w.kind() == Kind.CLASSIC && (w.hasForm() || w.stage == Stage.ARMING)) finish(p, time(p));
         if (p.getVehicle() instanceof PursuitBody body) body.release();
     }
 
@@ -594,7 +604,7 @@ public final class WristService {
         w.targetId = -1;
         if (w.stage == Stage.LOCKING) w.enter(Stage.IDLE, time(p), 0);
         w.revision++;
-        if (w.kind() != Kind.CARNITRIX && (w.hasForm() || w.stage == Stage.ARMING)) finish(p, time(p));
+        if (w.kind() == Kind.CLASSIC && (w.hasForm() || w.stage == Stage.ARMING)) finish(p, time(p));
         else WristNetwork.sync(p);
     }
 
@@ -614,20 +624,30 @@ public final class WristService {
         if (!(event.getEntity() instanceof ServerPlayer p) || !event.getOriginal().hasData(Omnitrix.WRIST)) return;
         var prior = Omnitrix.wrist(event.getOriginal());
         var next = Omnitrix.wrist(p);
+        if (!event.isWasDeath() && prior.kind() == Kind.CELESTIAL) {
+            next.deserializeNBT(p.registryAccess(), prior.serializeNBT(p.registryAccess()));
+            next.revision = prior.revision + 1;
+            return;
+        }
         next.equipReadyAt = prior.equipReadyAt;
         if (!event.isWasDeath() || p.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
             next.stack = prior.stack.copy();
             next.carniLocked = prior.carniLocked;
-            if (prior.hasForm() || prior.stage == Stage.ARMING) {
+            if (prior.kind() != Kind.CELESTIAL && (prior.hasForm() || prior.stage == Stage.ARMING)) {
                 next.equipReadyAt = Math.max(next.equipReadyAt, time(p) + prior.kind().recharge);
             }
-            if (!next.stack.isEmpty() && time(p) < next.equipReadyAt) next.enter(Stage.COOLING, time(p), next.equipReadyAt);
+            if (!next.stack.isEmpty() && prior.kind() != Kind.CELESTIAL && time(p) < next.equipReadyAt)
+                next.enter(Stage.COOLING, time(p), next.equipReadyAt);
         }
         next.revision = prior.revision + 1;
     }
 
     private static void respawn(PlayerEvent.PlayerRespawnEvent e) {
-        if (e.getEntity() instanceof ServerPlayer p && p.hasData(Omnitrix.WRIST)) WristNetwork.sync(p);
+        if (e.getEntity() instanceof ServerPlayer p && p.hasData(Omnitrix.WRIST)) {
+            var w = Omnitrix.wrist(p);
+            if (w.kind() == Kind.CELESTIAL && w.hasForm()) applyForm(p, w);
+            WristNetwork.sync(p);
+        }
     }
 
     private static void mounting(EntityMountEvent e) {

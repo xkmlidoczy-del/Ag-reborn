@@ -237,16 +237,20 @@ public final class CanonExpansionCombatA {
         CanonVfx.emit(c.p, c.skill, c.pos, end, CanonVfx.Phase.HIT, vfxTicks, area(c), boosted);
     }
 
+    private static final Set<String> DIRECT_MENTAL = Set.of("mental_intent_scan", "mental_target_sense",
+            "mental_focus_break", "mental_route_interrupt", "mental_disengage");
+
     private static boolean eligible(Context c, LivingEntity entity) {
         return MentalTargeting.reachable(c.p, entity, reach(c))
-                && (MentalTargeting.hostile(c.p, entity) || entity instanceof Mob mob && mentalLeased(mob));
+                && (MentalTargeting.hostile(c.p, entity) || entity instanceof Mob mob
+                        && (mentalLeased(mob) || DIRECT_MENTAL.contains(c.skill) && CanonTargetPolicy.directTarget(c.p, mob)));
     }
 
     private static LivingEntity aimedMind(Context c) {
         double r = reach(c);
         if (!chunks(c.world, c.eye, c.eye.add(c.look.scale(r)))) return null;
-        var hit = ClassicRaytrace.living(c.p, r, ClipContext.Fluid.NONE);
-        if (hit instanceof EntityHitResult e && e.getEntity() instanceof LivingEntity mind && eligible(c, mind)) return mind;
+        LivingEntity mind = MentalTargeting.aimed(c.p, r);
+        if (mind != null && eligible(c, mind)) return mind;
         if (REMOTE_SCANS.contains(c.skill)) return null;
         LivingEntity soft = CanonSkillsCombatA.softAim(c.p, r);
         return soft != null && eligible(c, soft) ? soft : null;
@@ -421,7 +425,7 @@ public final class CanonExpansionCombatA {
                 var group = List.copyOf(nearby.subList(0, Math.min(cap, nearby.size())));
                 for (int i = 0; i < group.size(); i++) {
                     Mob actor = group.get(i); Mob victim = group.get(c.skill.equals("mental_conflict_ring") ? (i + 1) % group.size() : (i + group.size() / 2) % group.size());
-                    if (MentalTargeting.target(actor) == victim || !actor.hasLineOfSight(victim) || actor.distanceToSqr(victim) > pairReachSquared(c)
+                    if (MentalTargeting.target(actor) == victim || !MentalTargeting.visible(actor, victim) || actor.distanceToSqr(victim) > pairReachSquared(c)
                             || actor.isAlliedTo(victim) || victim.isAlliedTo(actor)) continue;
                     changes.add(new Assignment(actor, MentalTargeting.target(actor), victim));
                 }
@@ -585,7 +589,7 @@ public final class CanonExpansionCombatA {
                 && (lease.written == null || lease.written.isAlive()
                     && !lease.written.isRemoved() && lease.written.level() == c.world)
                 && (!(lease.written instanceof Mob other) || eligible(c, other) && m.distanceToSqr(other) <= pairReachSquared(c)
-                    && m.hasLineOfSight(other) && !m.isAlliedTo(other) && !other.isAlliedTo(m));
+                    && MentalTargeting.visible(m, other) && !m.isAlliedTo(other) && !other.isAlliedTo(m));
     }
 
     private static void release(MindLease lease) {

@@ -2,7 +2,7 @@ package cn.aca.omnitrix;
 
 public enum Kind {
     CLASSIC("omnitrix", 18, 2400, 900),
-    CELESTIAL("alien_x_watch", 48, 3600, 1200),
+    CELESTIAL("alien_x_watch", 48, 0, 0),
     CARNITRIX("carnitrix", 26, 1200, 1800);
 
     public final String id;

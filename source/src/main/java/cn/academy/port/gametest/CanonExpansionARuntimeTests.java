@@ -717,15 +717,18 @@ public final class CanonExpansionARuntimeTests {
         }
     }
 
-    private static final class Fixture {
+    static final class Fixture {
         final ServerPlayer p;final EmbeddedChannel channel;
-        Fixture(GameTestHelper h,String category,String skill) {
+        Fixture(GameTestHelper h) {
             var level=h.getLevel();UUID uuid=UUID.randomUUID();
             var cookie=CommonListenerCookie.createInitial(new GameProfile(uuid,"EX"+uuid.toString().substring(0,8)),false);
             p=new ServerPlayer(level.getServer(),level,cookie.gameProfile(),cookie.clientInformation());
             var connection=new Connection(PacketFlow.SERVERBOUND);channel=new EmbeddedChannel(connection);
             NetworkRegistry.configureMockConnection(connection);level.getServer().getPlayerList().placeNewPlayer(connection,p,cookie);
             p.setGameMode(GameType.SURVIVAL);p.moveTo(h.absoluteVec(new Vec3(4.5,3,2.5)),0,0);p.setYHeadRot(0);
+        }
+        Fixture(GameTestHelper h,String category,String skill) {
+            this(h);
             var state=AbilityStorage.get(p);state.changeCategoryClassic(category);state.setLevel(5);
             switch(category) {
                 case "mental_out" -> {state.learn("mental_probe");state.learn("mental_disrupt");}

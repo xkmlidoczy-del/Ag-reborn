@@ -47,6 +47,8 @@ public final class OmnitrixAiControl {
     private static final class ControlState {
         UUID masterId;
         UUID forcedVictimId;
+        UUID previousTarget;
+        long nextSearch;
         long puppetUntil = -1L;
         boolean celestialPuppet;
         boolean galvanicPuppet;
@@ -134,14 +136,11 @@ public final class OmnitrixAiControl {
         return count;
     }
 
-    /**
-     * Hijacks a modded/vanilla Mob as an Ectonurite or Galvanic Puppet if other hostiles exist nearby;
-     * if it is a solo enemy/boss with no other rivals to fight, applies Soul-Terror (Ghostfreak) or
-     * Galvanic Actuator Overload Paralysis (Upgrade) so the skill is ALWAYS 100% impactful!
-     */
+    /** A possessed mob guards its owner until a rival becomes available. */
     public static boolean hijackOrSubjugate(ServerPlayer master, LivingEntity target, int durationTicks,
                                             boolean celestial, boolean galvanic) {
         if (target == null || !target.isAlive() || target == master || target instanceof ServerPlayer) return false;
+        if (target instanceof Mob mob && !canPossess(master, mob)) return false;
         long now = worldTime(target);
         ServerLevel level = master.serverLevel();
 
@@ -152,8 +151,9 @@ public final class OmnitrixAiControl {
                         && !isPuppetOf(e, master.getUUID())
                         && Abilities.validTarget(master, e, false));
 
-        if (target instanceof Mob mob && !rivals.isEmpty()) {
+        if (target instanceof Mob mob) {
             ControlState st = state(mob, true);
+            st.previousTarget = mob.getTarget() == null ? null : mob.getTarget().getUUID();
             st.masterId = master.getUUID();
             st.puppetUntil = now + durationTicks;
             st.celestialPuppet = celestial;
@@ -184,7 +184,7 @@ public final class OmnitrixAiControl {
             return true;
         }
 
-        // Solo enemy / boss fallback: guaranteed crowd-control + true damage!
+        // Living targets without a mob AI can still receive the form's disruption.
         if (galvanic) {
             inflictParalysis(master, target, celestial ? 95 : 70, true);
             OmnitrixDamage.hit(master, target, celestial ? 145_000f : 3_400f, true);
@@ -197,7 +197,7 @@ public final class OmnitrixAiControl {
 
     /** Commands all active puppets of `master` to focus-fire `focusTarget`! */
     public static int commandPuppetsFocus(ServerPlayer master, LivingEntity focusTarget) {
-        if (focusTarget == null || !focusTarget.isAlive() || isPuppetOf(focusTarget, master.getUUID())) return 0;
+        if (focusTarget == null || !Abilities.validTarget(master, focusTarget, true)) return 0;
         long now = worldTime(master);
         int commanded = 0;
         for (Mob puppet : master.serverLevel().getEntitiesOfClass(Mob.class,
@@ -281,10 +281,8 @@ public final class OmnitrixAiControl {
 
         if (st.masterId != null && st.puppetUntil > now) {
             LivingEntity proposed = event.getNewAboutToBeSetTarget();
-            if (proposed == null || proposed.getUUID().equals(st.masterId) || isPuppetOf(proposed, st.masterId)) {
-                LivingEntity rival = findBestRival(mob, st);
-                event.setNewAboutToBeSetTarget(rival);
-            }
+            LivingEntity rival = findBestRival(mob, st);
+            if (proposed != rival) event.setNewAboutToBeSetTarget(rival);
         }
     }
 
@@ -304,7 +302,10 @@ public final class OmnitrixAiControl {
                 }
                 // Puppets never hurt their master or fellow puppets!
                 if (atkState.masterId != null && atkState.puppetUntil > now) {
-                    if (victim.getUUID().equals(atkState.masterId) || isPuppetOf(victim, atkState.masterId)) {
+                    var master = victim.level().getPlayerByUUID(atkState.masterId);
+                    if (victim.getUUID().equals(atkState.masterId) || isPuppetOf(victim, atkState.masterId)
+                            || master != null && (master.isAlliedTo(victim) || victim.isAlliedTo(master)
+                            || victim instanceof net.minecraft.world.entity.TamableAnimal pet && master.getUUID().equals(pet.getOwnerUUID()))) {
                         event.setCanceled(true);
                         return;
                     }
@@ -325,6 +326,12 @@ public final class OmnitrixAiControl {
 
         // Clean up expired modifiers
         if (st.puppetUntil > 0 && now >= st.puppetUntil) {
+            if (le instanceof Mob mob) {
+                var previous = st.previousTarget == null ? null : sl.getEntity(st.previousTarget);
+                var restored = previous instanceof LivingEntity living && living.isAlive() ? living : null;
+                mob.setTarget(restored);
+                overrideBrainTarget(mob, restored);
+            }
             st.puppetUntil = -1L;
             st.masterId = null;
             st.forcedVictimId = null;
@@ -404,7 +411,8 @@ public final class OmnitrixAiControl {
                 if (dist <= reach && now - st.lastPuppetSwingTick >= 14L) {
                     st.lastPuppetSwingTick = now;
                     mob.swing(InteractionHand.MAIN_HAND);
-                    double baseAtk = mob.getAttributeValue(Attributes.ATTACK_DAMAGE);
+                    var attribute = mob.getAttribute(Attributes.ATTACK_DAMAGE);
+                    double baseAtk = attribute == null ? 0 : attribute.getValue();
                     if (baseAtk <= 1.0) baseAtk = 6.0;
                     float strikeDmg = (float) Math.max(baseAtk * (st.celestialPuppet ? 3.5 : 1.55),
                             st.celestialPuppet ? 85_000f : 3_200f);
@@ -425,6 +433,8 @@ public final class OmnitrixAiControl {
             } else {
                 if (mob.getTarget() != null) mob.setTarget(null);
                 clearBrainCombatMemories(mob);
+                if (master != null && mob.distanceToSqr(master) > 36 && now % 10 == 0)
+                    mob.getNavigation().moveTo(master, 1.15);
             }
         }
     }
@@ -461,24 +471,32 @@ public final class OmnitrixAiControl {
 
     private static LivingEntity findBestRival(Mob puppet, ControlState st) {
         if (!(puppet.level() instanceof ServerLevel sl)) return null;
+        if (!(sl.getEntity(st.masterId) instanceof ServerPlayer master)) return null;
         if (st.forcedVictimId != null) {
             Entity forced = sl.getEntity(st.forcedVictimId);
-            if (forced instanceof LivingEntity le && le.isAlive() && !isPuppetOf(le, st.masterId)) {
+            if (forced instanceof LivingEntity le && le != puppet && Abilities.validTarget(master, le, true)) {
                 return le;
             }
             st.forcedVictimId = null;
         }
-        Entity masterEnt = st.masterId != null ? sl.getEntity(st.masterId) : null;
-        ServerPlayer master = masterEnt instanceof ServerPlayer sp ? sp : null;
-        return sl.getEntitiesOfClass(LivingEntity.class, AABB.ofSize(puppet.position(), 52.0, 28.0, 52.0),
-                e -> e != puppet && e.isAlive()
-                        && (st.masterId == null || !e.getUUID().equals(st.masterId))
-                        && !isPuppetOf(e, st.masterId)
-                        && (master != null ? Abilities.validTarget(master, e, false)
-                                : e instanceof net.minecraft.world.entity.monster.Enemy))
+        long now = worldTime(puppet);
+        if (now < st.nextSearch) return null;
+        st.nextSearch = now + 10;
+        LivingEntity rival = sl.getEntitiesOfClass(LivingEntity.class, AABB.ofSize(puppet.position(), 52.0, 28.0, 52.0),
+                e -> e != puppet && Abilities.validTarget(master, e, false))
                 .stream()
                 .min(Comparator.comparingDouble(puppet::distanceToSqr))
                 .orElse(null);
+        if (rival != null) st.forcedVictimId = rival.getUUID();
+        return rival;
+    }
+
+    static boolean canPossess(ServerPlayer master, Mob mob) {
+        return mob.isAlive() && !mob.isRemoved() && !mob.isSpectator() && !mob.isNoAi()
+                && mob.level() == master.level() && !mob.getType().is(PursuitBody.PROTECTED)
+                && !(mob instanceof PursuitBody) && !isAnyPuppet(mob)
+                && !master.isAlliedTo(mob) && !mob.isAlliedTo(master)
+                && !(mob instanceof net.minecraft.world.entity.TamableAnimal pet && master.getUUID().equals(pet.getOwnerUUID()));
     }
 
     static void clearBrainCombatMemories(Mob mob) {

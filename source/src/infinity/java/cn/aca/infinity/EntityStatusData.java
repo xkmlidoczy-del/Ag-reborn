@@ -41,7 +41,8 @@ public final class EntityStatusData implements INBTSerializable<CompoundTag> {
     public long mindStandUntil = 0L;
     public UUID mindMaster = null;
     public long mindControlUntil = 0L;
-    public int mindFocusTargetId = -1;
+    public UUID mindFocus;
+    public long nextMindSearch;
     public long lastPuppetSwingTick = -100L;
 
     // Reality Stone: Law-Grade Confiscation & Unarmed Shrink/Weaken + Crimson Crystal Snare
@@ -122,7 +123,7 @@ public final class EntityStatusData implements INBTSerializable<CompoundTag> {
         tag.putLong("MindStandUntil", mindStandUntil);
         if (mindMaster != null) tag.putUUID("MindMaster", mindMaster);
         tag.putLong("MindControlUntil", mindControlUntil);
-        tag.putInt("MindFocusId", mindFocusTargetId);
+        if (mindFocus != null) tag.putUUID("MindFocus", mindFocus);
         tag.putLong("DisarmedUntil", disarmedUntil);
         tag.putLong("CrystalSnareUntil", crystalSnareUntil);
         if (!confiscatedMain.isEmpty()) tag.put("ConfiscatedMain", confiscatedMain.save(provider));
@@ -149,7 +150,7 @@ public final class EntityStatusData implements INBTSerializable<CompoundTag> {
         mindStandUntil = tag.getLong("MindStandUntil");
         mindMaster = tag.hasUUID("MindMaster") ? tag.getUUID("MindMaster") : null;
         mindControlUntil = tag.getLong("MindControlUntil");
-        mindFocusTargetId = tag.contains("MindFocusId") ? tag.getInt("MindFocusId") : -1;
+        mindFocus = tag.hasUUID("MindFocus") ? tag.getUUID("MindFocus") : null;
         disarmedUntil = tag.getLong("DisarmedUntil");
         crystalSnareUntil = tag.getLong("CrystalSnareUntil");
         confiscatedMain = tag.contains("ConfiscatedMain") ? ItemStack.parseOptional(provider, tag.getCompound("ConfiscatedMain")) : ItemStack.EMPTY;

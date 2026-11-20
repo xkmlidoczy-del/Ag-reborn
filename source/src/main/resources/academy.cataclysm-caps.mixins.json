@@ -4,5 +4,5 @@
   "package": "cn.academy.port.highpower.mixin.cataclysm",
   "compatibilityLevel": "JAVA_21",
   "plugin": "cn.academy.port.highpower.mixin.cataclysm.CataclysmCapPlugin",
-  "mixins": ["CataclysmDamageCaps"]
+  "mixins": ["CataclysmDamageCaps", "IgnisAttackHealth", "IgnisFireballHealth", "IgnisFlameHealth"]
 }
