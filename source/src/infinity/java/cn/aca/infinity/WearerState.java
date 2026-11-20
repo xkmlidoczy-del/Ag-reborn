@@ -55,6 +55,14 @@ public final class WearerState implements INBTSerializable<CompoundTag> {
         return history.peekFirst();
     }
 
+    void clampCastCooldowns(long now) {
+        for (int i = 0; i < primaryReadyAt.length; i++) {
+            primaryReadyAt[i] = Math.min(primaryReadyAt[i], now + Stone.PRIMARY_COOLDOWN_TICKS);
+            secondaryReadyAt[i] = Math.min(secondaryReadyAt[i], now + Stone.SECONDARY_COOLDOWN_TICKS);
+        }
+        snapReadyAt = Math.min(snapReadyAt, now + InfinityConfig.snapCooldownTicks());
+    }
+
     @Override
     public CompoundTag serializeNBT(HolderLookup.Provider provider) {
         CompoundTag tag = new CompoundTag();

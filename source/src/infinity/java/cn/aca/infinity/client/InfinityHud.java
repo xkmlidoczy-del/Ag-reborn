@@ -77,8 +77,8 @@ public final class InfinityHud {
         float arcStart = 16.0f * DEG_TO_RAD;
         float arcSweep = 58.0f * DEG_TO_RAD;
 
-        float pRatio = 1f - Mth.clamp(pRem / (float) Math.max(1, active.primaryCooldown), 0f, 1f);
-        float sRatio = 1f - Mth.clamp(sRem / (float) Math.max(1, active.secondaryCooldown), 0f, 1f);
+        float pRatio = 1f - Mth.clamp(pRem / (float) active.primaryCooldown, 0f, 1f);
+        float sRatio = 1f - Mth.clamp(sRem / (float) active.secondaryCooldown, 0f, 1f);
 
         // Inner 1.25px micro-arc: [J] Primary Skill
         StarDialDraw.ring(g, cx, cy, 19.4f, 20.65f, arcStart, arcStart + arcSweep,

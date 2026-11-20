@@ -3,6 +3,7 @@ package cn.aca.infinity;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 public final class InfinityConfig {
+    private static final int DEFAULT_SNAP_REPEAT_TICKS = 10;
     public static final ModConfigSpec SPEC;
 
     public static final ModConfigSpec.IntValue HUKOU_TAG_TICKS;
@@ -33,8 +34,8 @@ public final class InfinityConfig {
                 .defineInRange("timeStopTicks", 200, 40, 2400);
         SNAP_RADIUS = b.comment("Radius (in blocks) of the Six-Stone Infinity Snap wave (default 48.0)")
                 .defineInRange("snapRadius", 48.0, 12.0, 128.0);
-        SNAP_COOLDOWN_TICKS = b.comment("Cooldown (in ticks) after performing the Six-Stone Snap (default 400 = 20s)")
-                .defineInRange("snapCooldownTicks", 400, 20, 12000);
+        SNAP_COOLDOWN_TICKS = b.comment("Ticks between Six-Stone Snaps (default 10 = 0.5s). Replaces snapCooldownTicks.")
+                .defineInRange("snapRepeatTicks", DEFAULT_SNAP_REPEAT_TICKS, 1, 12000);
         SOUL_SAVE_COOLDOWN_TICKS = b.comment("Cooldown (in ticks) of the Soul Stone fatal-damage protection passive (default 1200 = 60s)")
                 .defineInRange("soulSaveCooldownTicks", 1200, 100, 24000);
         b.pop();
@@ -78,7 +79,7 @@ public final class InfinityConfig {
     }
 
     public static int snapCooldownTicks() {
-        return getOrDefault(SNAP_COOLDOWN_TICKS, 400);
+        return getOrDefault(SNAP_COOLDOWN_TICKS, DEFAULT_SNAP_REPEAT_TICKS);
     }
 
     public static int soulSaveCooldownTicks() {

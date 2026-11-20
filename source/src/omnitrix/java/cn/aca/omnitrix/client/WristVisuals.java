@@ -20,7 +20,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -38,6 +37,7 @@ final class WristVisuals {
     private record Afterimage(Vec3 at, float yaw, long tick, boolean starfield) {}
     private static final Map<UUID, ArrayDeque<Afterimage>> TRAILS = new HashMap<>();
     private static final Map<UUID, ArrayDeque<Vec3>> FEATHER_WAKES = new HashMap<>();
+    private static MultiBufferSource.BufferSource worldBuffers;
 
     private WristVisuals() {}
 
@@ -425,7 +425,8 @@ final class WristVisuals {
 
         Vec3 camera = e.getCamera().getPosition();
         PoseStack pose = e.getPoseStack();
-        var buffers = mc.renderBuffers().bufferSource();
+        if (worldBuffers == null) worldBuffers = CosmicVfxShader.createWorldBuffers();
+        var buffers = worldBuffers;
         long now = mc.level.getGameTime();
         float animTicks = ClientState.clientTicks() + partial;
 
@@ -526,11 +527,7 @@ final class WristVisuals {
             renderCueEffect(pose, buffers, cue, age, partial, camera);
         }
 
-        buffers.endBatch(CosmicVfxShader.voidSheath());
-        buffers.endBatch(CosmicVfxShader.nebula());
-        buffers.endBatch(CosmicVfxShader.material());
-        buffers.endBatch(CosmicVfxShader.glow());
-        buffers.endBatch(RenderType.lightning());
+        buffers.endBatch();
         pose.popPose();
     }
 

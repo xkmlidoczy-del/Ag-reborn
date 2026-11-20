@@ -215,6 +215,7 @@ public final class GauntletService {
 
     private static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getEntity() instanceof ServerPlayer sp) {
+            AcaInfinity.wearer(sp).clampCastCooldowns(sp.level().getGameTime());
             InfinityNetwork.syncWearer(sp);
         }
     }

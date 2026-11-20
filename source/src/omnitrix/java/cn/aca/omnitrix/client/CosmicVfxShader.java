@@ -3,10 +3,13 @@ package cn.aca.omnitrix.client;
 import cn.aca.omnitrix.Omnitrix;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
@@ -71,6 +74,17 @@ public final class CosmicVfxShader {
                     .createCompositeState(false));
 
     private CosmicVfxShader() {}
+
+    static MultiBufferSource.BufferSource createWorldBuffers() {
+        // Layered meshes interleave sheath and glow vertices. Each layer needs its own
+        // storage so requesting another layer cannot finish a consumer still in use.
+        var layers = new LinkedHashMap<RenderType, ByteBufferBuilder>();
+        layers.put(NEBULA, new ByteBufferBuilder(64 * 1024));
+        layers.put(MATERIAL, new ByteBufferBuilder(32 * 1024));
+        layers.put(GLOW, new ByteBufferBuilder(128 * 1024));
+        layers.put(FALLBACK, new ByteBufferBuilder(64 * 1024));
+        return MultiBufferSource.immediateWithBuffers(layers, new ByteBufferBuilder(64 * 1024));
+    }
 
     static boolean available() { return shader != null; }
 

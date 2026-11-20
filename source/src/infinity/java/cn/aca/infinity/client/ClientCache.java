@@ -156,6 +156,12 @@ public final class ClientCache implements InfinityNetwork.ClientReceiver {
     @Override
     public void onVfxCue(VfxCuePayload cue, Player viewer) {
         long cNow = clientTickCounter;
+        if (cue.cueId() == InfinityNetwork.CUE_TIME_DOME) {
+            // A recast in the same spot renews the dome without stacking its render passes.
+            CUES.removeIf(active -> active.cue().cueId() == InfinityNetwork.CUE_TIME_DOME
+                    && active.cue().actor().equals(cue.actor())
+                    && active.cue().from().distanceToSqr(cue.from()) <= 4.0);
+        }
         int dur = switch (cue.cueId()) {
             case InfinityNetwork.CUE_TIME_DOME -> Math.max(60, cue.extra());
             case InfinityNetwork.CUE_SNAP, InfinityNetwork.CUE_SHIP_SNAP_COLLAPSE -> 46;
