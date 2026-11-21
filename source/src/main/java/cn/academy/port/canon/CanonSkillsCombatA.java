@@ -21,6 +21,7 @@ import cn.academy.port.highpower.HighPowerGrowth;
 import cn.academy.port.highpower.HighPowerResources;
 import cn.academy.port.highpower.MagneticItemProvenance;
 import cn.academy.port.highpower.CanonEmission;
+import cn.academy.port.api.CombatTargeting;
 import cn.academy.port.skill.ClassicRaytrace;
 import cn.academy.port.story.UrbanStoryClues;
 import java.util.ArrayList;
@@ -409,7 +410,7 @@ public final class CanonSkillsCombatA {
     private static boolean directAttackCandidate(ServerPlayer player, LivingEntity target) {
         if (target == null || target == player || !target.isAlive() || target.isRemoved() || target.isSpectator()
                 || target.level() != player.level() || player.isAlliedTo(target) || target.isAlliedTo(player)
-                || !player.hasLineOfSight(target) || HighPowerCombat.unsupportedReason(target).isPresent()) return false;
+                || !CombatTargeting.visibleWithin(player,target,Double.POSITIVE_INFINITY) || HighPowerCombat.unsupportedReason(target).isPresent()) return false;
         return CanonTargetPolicy.directTarget(player, target);
     }
 
@@ -744,6 +745,9 @@ public final class CanonSkillsCombatA {
                 p.serverLevel(), p.getEyePosition(), p.getEyePosition().add(ClassicRaytrace.direction(p).scale(range))));
         else if (!loadedAlong(p, range)) return null;
         var hit = ClassicRaytrace.living(p, available, ClipContext.Fluid.NONE);
+        var large = CombatTargeting.largeOnAim(p.serverLevel(), p,
+                p.getEyePosition().add(ClassicRaytrace.direction(p).scale(available)), hit);
+        if (large != null) return large;
         LivingEntity living = MentalTargeting.hitBody(hit);
         if (living != null) return living;
         return softAim(p, available);

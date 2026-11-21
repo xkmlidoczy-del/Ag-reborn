@@ -336,6 +336,8 @@ public final class CombatContractAcceptance {
         helper.assertTrue(
                 CombatTargeting.ray(level, observer, eye, to, 0, e -> e == giant).contains(giant),
                 "near surface beyond normal center search");
+        helper.assertTrue(CombatTargeting.visibleWithin(observer, giant, 12),
+                "committing a cast accepts the same in-range body surface");
         var stone = BlockPos.containing(eye.add(0, 0, 4));
         var saved = level.getBlockState(stone);
         level.setBlockAndUpdate(

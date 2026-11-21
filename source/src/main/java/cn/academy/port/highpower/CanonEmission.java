@@ -149,8 +149,9 @@ public final class CanonEmission {
     private static boolean targetAllowed(ServerPlayer player, LivingEntity target, String skill) {
         if (target == null || target == player || target.level() != player.level() || !target.isAlive() || target.isRemoved()
                 || !finite(player.position()) || !finite(target.position())
-                || player.serverLevel().getEntity(target.getUUID()) != target || player.distanceToSqr(target) > (cn.academy.port.macro.MacroSkillRules.ultimate(skill) ? 192 * 192 : 96 * 96)
-                || !player.hasLineOfSight(target) || player.isAlliedTo(target) || target.isAlliedTo(player)
+                || player.serverLevel().getEntity(target.getUUID()) != target
+                || !cn.academy.port.api.CombatTargeting.visibleWithin(player, target,
+                    cn.academy.port.macro.MacroSkillRules.ultimate(skill) ? 192 : 96) || player.isAlliedTo(target) || target.isAlliedTo(player)
                 || HighPowerCombat.unsupportedReason(target).isPresent()) return false;
         return !(target instanceof Player other) || AcademyConfig.ATTACK_PLAYERS.get()
                 && player.server.isPvpAllowed() && player.canHarmPlayer(other);

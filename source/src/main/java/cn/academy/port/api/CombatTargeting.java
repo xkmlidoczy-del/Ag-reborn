@@ -23,12 +23,14 @@ public final class CombatTargeting {
 
     private CombatTargeting() {}
 
+    private static boolean large(Entity body) {
+        return body.getBbWidth() > 4 || body.getBbHeight() > 4 || body.isMultipartEntity();
+    }
+
     public static void resize(Entity entity) {
         if (!(entity instanceof LivingEntity living)
                 || !(entity.level() instanceof ServerLevel level)) return;
-        boolean large =
-                entity.getBbWidth() > 4 || entity.getBbHeight() > 4 || entity.isMultipartEntity();
-        if (large)
+        if (large(entity))
             LARGE.computeIfAbsent(
                             level, ignored -> Collections.newSetFromMap(new IdentityHashMap<>()))
                     .add(living);
@@ -86,6 +88,39 @@ public final class CombatTargeting {
                 .orElse(Double.POSITIVE_INFINITY);
     }
 
+    /** Range and obstruction at the surface also apply when the owner revalidates a short cast. */
+    public static boolean visibleWithin(LivingEntity observer, LivingEntity target, double range) {
+        double limit = range * range;
+        if (!large(target)) return observer.distanceToSqr(target) <= limit && observer.hasLineOfSight(target);
+        Vec3 eye = observer.getEyePosition();
+        for (AABB box : bounds(target)) {
+            if (box.distanceToSqr(eye) > limit) continue;
+            Vec3 surface = closest(eye, box);
+            if (observer.level().clip(new ClipContext(eye, surface, ClipContext.Block.COLLIDER,
+                    ClipContext.Fluid.NONE, observer)).getType() == HitResult.Type.MISS) return true;
+        }
+        return false;
+    }
+
+    private static Vec3 closest(Vec3 point, AABB box) {
+        return new Vec3(Math.clamp(point.x, box.minX, box.maxX), Math.clamp(point.y, box.minY, box.maxY),
+                Math.clamp(point.z, box.minZ, box.maxZ));
+    }
+
+    /** Look for the nearer giant body before a classic ray's first ordinary hit. */
+    public static LivingEntity largeOnAim(ServerLevel level, LivingEntity observer, Vec3 end, HitResult classic) {
+        var bodies = LARGE.get(level);
+        if (bodies == null || bodies.isEmpty()) return null;
+        var eye = observer.getEyePosition();
+        if (classic instanceof EntityHitResult hit && !large(hit.getEntity())) {
+            var box = hit.getEntity().getBoundingBox().inflate(hit.getEntity().getPickRadius());
+            end = box.contains(eye) ? eye : box.clip(eye, end).orElse(end);
+        }
+        var hits = ray(level, observer, eye, end, 0,
+                body -> large(body) && !body.isSpectator() && (body.isPickable() || body.isMultipartEntity()));
+        return hits.isEmpty() ? null : hits.getFirst();
+    }
+
     public static List<LivingEntity> ray(
             ServerLevel level,
             LivingEntity observer,
@@ -112,11 +147,7 @@ public final class CombatTargeting {
                 var expanded = box.inflate(padding);
                 Vec3 at = expanded.contains(from) ? from : expanded.clip(from, end).orElse(null);
                 if (at == null) continue;
-                Vec3 surface =
-                        new Vec3(
-                                Math.clamp(at.x, box.minX, box.maxX),
-                                Math.clamp(at.y, box.minY, box.maxY),
-                                Math.clamp(at.z, box.minZ, box.maxZ));
+                Vec3 surface = closest(at, box);
                 if (level.clip(
                                         new ClipContext(
                                                 from,

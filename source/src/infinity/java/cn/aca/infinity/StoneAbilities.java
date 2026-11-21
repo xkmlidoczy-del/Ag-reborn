@@ -639,9 +639,10 @@ public final class StoneAbilities {
     private static void castMindRollCall(ServerPlayer player, ServerLevel level, long now) {
         Vec3 center = player.position();
         List<LivingEntity> foes = findHostilesNear(level, player, center, 14.0);
-        foes.addAll(level.getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(14),
-                mob -> mob.isAlive() && mob.distanceToSqr(center) <= 14 * 14 && mob.hasData(AcaInfinity.ENTITY_STATUS)
-                        && AcaInfinity.status(mob).isMindControlled(now) && player.getUUID().equals(AcaInfinity.status(mob).mindMaster)));
+        foes.addAll(livingNear(level, center, 14,
+                mob -> mob instanceof Mob && mob.hasData(AcaInfinity.ENTITY_STATUS)
+                        && AcaInfinity.status(mob).isMindControlled(now)
+                        && player.getUUID().equals(AcaInfinity.status(mob).mindMaster)));
         int count = 0;
         for (LivingEntity foe : foes) {
             if (!(foe instanceof Mob)) continue;
@@ -1435,19 +1436,18 @@ public final class StoneAbilities {
     }
 
     private static List<LivingEntity> findHostilesNear(ServerLevel level, ServerPlayer player, Vec3 center, double radius) {
-        AABB box = new AABB(center.x - radius, center.y - radius, center.z - radius,
-                center.x + radius, center.y + radius, center.z + radius);
-        if (AcademyCompat.contracts()) return new ArrayList<>(cn.academy.port.api.CombatTargeting.candidates(level, box,
-                e -> e.isAlive() && !(e instanceof ArmorStand) && !isFriendlyTo(player, e)
-                        && cn.academy.port.api.CombatTargeting.distanceSquared(e, center) <= radius * radius));
-        List<LivingEntity> out = new ArrayList<>();
-        for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, box, LivingEntity::isAlive)) {
-            if (e instanceof ArmorStand) continue;
-            if (e.distanceToSqr(center) > radius * radius) continue;
-            if (isFriendlyTo(player, e)) continue;
-            out.add(e);
-        }
-        return out;
+        return livingNear(level, center, radius, e -> !(e instanceof ArmorStand) && !isFriendlyTo(player, e));
+    }
+
+    private static List<LivingEntity> livingNear(ServerLevel level, Vec3 center, double radius,
+                                                  java.util.function.Predicate<LivingEntity> eligible) {
+        AABB box = new AABB(center, center).inflate(radius);
+        double limit = radius * radius;
+        if (AcademyCompat.contracts()) return new ArrayList<>(cn.academy.port.api.CombatTargeting.candidates(
+                level, box, e -> e.isAlive() && eligible.test(e)
+                        && cn.academy.port.api.CombatTargeting.distanceSquared(e, center) <= limit));
+        return new ArrayList<>(level.getEntitiesOfClass(LivingEntity.class, box, e -> e.isAlive()
+                && eligible.test(e) && e.getBoundingBox().distanceToSqr(center) <= limit));
     }
 
     private static List<LivingEntity> findHostilesAlongRay(ServerLevel level, ServerPlayer player, Vec3 from, Vec3 to, double thickness) {
