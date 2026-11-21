@@ -77,7 +77,7 @@
   "msg.aca_infinity.combo_public_exec": "✦ 双石共鸣【全班公开处刑】！查户口社死已传染 %s 名围观群众！",
   "msg.aca_infinity.combo_singularity": "✦ 双石共鸣【奇点引力坍缩】！空间锚定触发紫金星爆聚杀！",
   "msg.aca_infinity.combo_temporal_reckoning": "✦ 因果总清算！时停累积伤害 1.35× 集中引爆！",
-  "msg.aca_infinity.snap_executed": "✦ 无限响指！已将 %s 名非保护目标遣返去上晚自习（瓦解敌舰 %s 艘）！",
+  "msg.aca_infinity.snap_executed": "无限响指  放逐 %s · 重创 %s · 击杀 %s · 获救 %s · 抵抗 %s · 瓦解敌舰 %s",
   "msg.aca_infinity.city_map_granted": "已从学园都市公告板兑换「宇宙原石秘境」星图",
   "msg.aca_infinity.city_map_missing": "附近星域未检索到未探索的宇宙原石秘境",
   "map.aca_infinity.cosmic_vault": "宇宙原石陨星秘境图",

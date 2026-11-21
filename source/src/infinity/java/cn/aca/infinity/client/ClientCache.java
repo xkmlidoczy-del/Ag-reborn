@@ -120,6 +120,10 @@ public final class ClientCache implements InfinityNetwork.ClientReceiver {
         return entity == null ? null : MARKS.get(entity.getId());
     }
 
+    static boolean hasWorldEffects() {
+        return !CUES.isEmpty() || !MARKS.isEmpty();
+    }
+
     public static List<ActiveCue> activeCues() {
         return CUES;
     }

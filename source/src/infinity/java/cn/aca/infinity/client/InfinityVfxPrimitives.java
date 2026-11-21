@@ -100,10 +100,10 @@ public final class InfinityVfxPrimitives {
             Vec3 p3 = b.add(axis.scale(len * 0.15));
 
             float strandW = (s == 0) ? baseHalfW * 1.18f : baseHalfW * (0.62f + 0.16f * (s % 2));
-            if (s == 0 && custom) {
+            if (s == 0) {
                 emitSplineTubeOrCrossRibbon(pose, buffers.getBuffer(InfinityCosmicShader.voidSheath()),
                         p0, a, p1, p2, b, p3, segs, strandW * 1.95f, darkCol,
-                        InfinityCosmicShader.MODE_DARK_SHEATH, erosion * 0.78f, true);
+                        InfinityCosmicShader.MODE_DARK_SHEATH, erosion * 0.78f, custom);
             }
             emitSplineTubeOrCrossRibbon(pose, buffers.getBuffer(InfinityCosmicShader.additiveGlow()),
                     p0, a, p1, p2, b, p3, segs, strandW, glowCol,

@@ -77,7 +77,7 @@
   "msg.aca_infinity.combo_public_exec": "✦ RESONANCE [Public Roll-Call]! Hukou Shame spread to %s bystanders!",
   "msg.aca_infinity.combo_singularity": "✦ RESONANCE [Singularity Implosion]! Spatial Tether detonated!",
   "msg.aca_infinity.combo_temporal_reckoning": "✦ TEMPORAL RECKONING! Stored stasis damage detonated at 1.35x!",
-  "msg.aca_infinity.snap_executed": "✦ INFINITY SNAP! Sent %s non-protected targets to evening study (collapsed %s enemy ships)!",
+  "msg.aca_infinity.snap_executed": "Infinity Snap · Banished %s / Wounded %s / Killed %s / Saved %s / Resisted %s / Ships collapsed %s",
   "msg.aca_infinity.city_map_granted": "Exchanged compass for Cosmic Vault Star-Map",
   "msg.aca_infinity.city_map_missing": "No unexplored Cosmic Vault detected nearby",
   "map.aca_infinity.cosmic_vault": "Cosmic Stone Crater Map",

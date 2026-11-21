@@ -21,6 +21,18 @@ public final class AcademyInterop {
     private static final MethodHandle NATIVE_HURT = resolveNativeHurt();
     private static final MethodHandle HOLDING_SHIELD = resolveHoldingShield();
 
+    static boolean contracts() { return Contracts.PRESENT; }
+    private static final class Contracts {
+        static final boolean PRESENT = available();
+        private static boolean available() {
+            if (!net.neoforged.fml.ModList.get().isLoaded("academy")) return false;
+            try {
+                Class.forName("cn.academy.port.api.ControlRelations", false, AcademyInterop.class.getClassLoader());
+                return true;
+            } catch (ClassNotFoundException missing) { return false; }
+        }
+    }
+
     private AcademyInterop() {}
 
     private static boolean academyLoaded() {

@@ -71,10 +71,9 @@ final class MentalTargeting {
     static LivingEntity aimed(ServerPlayer caster, double reach) {
         var start = caster.getEyePosition();
         var end = start.add(cn.academy.port.skill.ClassicRaytrace.direction(caster).scale(reach));
-        end = caster.level().clip(new ClipContext(start,end,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,caster)).getLocation();
-        var hit = ProjectileUtil.getEntityHitResult(caster.level(),caster,start,end,new AABB(start,end).inflate(1),
-                e -> e.isAlive() && !e.isSpectator() && (e instanceof LivingEntity || e instanceof PartEntity<?>), .3f);
-        return hitBody(hit);
+        return cn.academy.port.api.CombatTargeting.ray(caster.serverLevel(), caster, start, end, .3,
+                entity -> !entity.isSpectator() && !cn.academy.port.api.ControlRelations.allied(caster, entity))
+                .stream().findFirst().orElse(null);
     }
 
     private static boolean brainTargets(Mob mob) {

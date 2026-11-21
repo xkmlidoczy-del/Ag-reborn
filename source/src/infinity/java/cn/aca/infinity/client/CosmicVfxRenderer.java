@@ -4,6 +4,8 @@ import cn.aca.infinity.InfinityNetwork;
 import cn.aca.infinity.SanctuaryShipEntity;
 import cn.aca.infinity.Stone;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.ByteBufferBuilder;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import java.util.ArrayList;
@@ -34,6 +36,8 @@ public final class CosmicVfxRenderer {
             return Math.abs(cx - ox) < (halfW + ow) && Math.abs(cy - oy) < (halfH + oh);
         }
     }
+
+    private static MultiBufferSource.BufferSource effectBuffers;
 
     private CosmicVfxRenderer() {}
 
@@ -92,8 +96,28 @@ public final class CosmicVfxRenderer {
     public static void onRenderLevel(RenderLevelStageEvent event) {
         if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES) return;
         var mc = Minecraft.getInstance();
-        if (mc.level == null || mc.player == null) return;
+        if (mc.level == null || mc.player == null || !ClientCache.hasWorldEffects()) return;
+        if (effectBuffers == null) effectBuffers = MultiBufferSource.immediate(new ByteBufferBuilder(65536));
+        var modelView = RenderSystem.getModelViewStack();
+        float[] color = RenderSystem.getShaderColor().clone();
+        modelView.pushMatrix();
+        try {
+            modelView.set(event.getModelViewMatrix());
+            RenderSystem.applyModelViewMatrix();
+            RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+            renderEffects(mc, event, effectBuffers);
+        } finally {
+            try {
+                effectBuffers.endBatch();
+            } finally {
+                modelView.popMatrix();
+                RenderSystem.applyModelViewMatrix();
+                RenderSystem.setShaderColor(color[0], color[1], color[2], color[3]);
+            }
+        }
+    }
 
+    private static void renderEffects(Minecraft mc, RenderLevelStageEvent event, MultiBufferSource.BufferSource buffers) {
         long now = mc.level.getGameTime();
         float partial = event.getPartialTick().getGameTimeDeltaPartialTick(false);
         float time = now + partial;
@@ -102,7 +126,6 @@ public final class CosmicVfxRenderer {
         Vec3 cam = event.getCamera().getPosition();
         Vec3 camLook = new Vec3(event.getCamera().getLookVector());
         PoseStack pose = event.getPoseStack();
-        MultiBufferSource.BufferSource buffers = mc.renderBuffers().bufferSource();
 
         List<HukouCandidate> hukouList = new ArrayList<>();
         List<HukouCandidate> gawkList = new ArrayList<>();
@@ -194,7 +217,6 @@ public final class CosmicVfxRenderer {
             renderCueVfx4(pose, buffers, cam, cue, age, p);
         }
 
-        buffers.endBatch();
     }
 
     private static Entity selectPrimaryFocus(List<HukouCandidate> list) {

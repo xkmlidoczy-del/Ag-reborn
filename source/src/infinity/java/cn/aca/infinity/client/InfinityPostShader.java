@@ -268,6 +268,8 @@ public final class InfinityPostShader {
             return;
         }
 
+        // Iris composites the world into its own buffers and performs bloom there.
+        if (InfinityCosmicShader.shaderPackActive()) return;
         RenderTarget main = mc.getMainRenderTarget();
         try {
             ensureChain(mc, main);

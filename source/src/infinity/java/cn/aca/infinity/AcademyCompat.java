@@ -35,6 +35,18 @@ public final class AcademyCompat {
     private static boolean checkedDispose;
     private static Method disposeMethod;
 
+    static boolean contracts() { return Contracts.PRESENT; }
+    private static final class Contracts {
+        static final boolean PRESENT = available();
+        private static boolean available() {
+            if (!net.neoforged.fml.ModList.get().isLoaded("academy")) return false;
+            try {
+                Class.forName("cn.academy.port.api.ControlRelations", false, AcademyCompat.class.getClassLoader());
+                return true;
+            } catch (ClassNotFoundException missing) { return false; }
+        }
+    }
+
     private AcademyCompat() {}
 
     private static final class CombatBridge {

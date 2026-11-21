@@ -80,8 +80,10 @@ public final class TitanCombat {
                 if(z.kind()==TitanPattern.Kind.RAY && level.clip(new ClipContext(z.a(),v.getBoundingBox().getCenter(),
                         ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,caster)).getType()==HitResult.Type.BLOCK)continue;
                 float damage=(float)(base*(ability.effect()==TitanProfiles.Effect.SHOCK && v.isInWaterOrBubble()?1.15:1));
+                boolean shielded = cn.academy.port.highpower.PlayerShieldArmor.holding(v);
                 if(cn.academy.port.highpower.CapBreak.hurt(v, level.damageSources().mobAttack(caster), damage)){
-                    secondary(caster,v,ability.effect(),z.a());struck.add(v.getUUID());hits++;
+                    if (!shielded) secondary(caster,v,ability.effect(),z.a());
+                    struck.add(v.getUUID());hits++;
                 }
                 break;
             }
@@ -115,8 +117,10 @@ public final class TitanCombat {
             double extra=victim.getBbWidth()*.5;
             if(dx*dx+dz*dz>(sweep+extra)*(sweep+extra))continue;
             if(caster.distanceToSqr(victim)>(reach+sweep)*(reach+sweep))continue;
+            boolean shielded = cn.academy.port.highpower.PlayerShieldArmor.holding(victim);
             if(cn.academy.port.highpower.CapBreak.hurt(victim, level.damageSources().mobAttack(caster), meleeDamage(caster))) {
-                impulse(victim,caster.position(),false,.7);hits++;
+                if (!shielded) impulse(victim,caster.position(),false,.7);
+                hits++;
             }
         }
         if(hits>0){TitanVfx.melee(level,caster.species(),center);caster.meleeImpactSound(center);}
@@ -129,8 +133,9 @@ public final class TitanCombat {
 
     /** Apply one hit only after the server's limb cuboid actually intersects. */
     public static boolean limbHit(ServerLevel level,TitanEntity caster,LivingEntity victim) {
+        boolean shielded = cn.academy.port.highpower.PlayerShieldArmor.holding(victim);
         if(!cn.academy.port.highpower.CapBreak.hurt(victim, level.damageSources().mobAttack(caster), meleeDamage(caster)))return false;
-        impulse(victim,caster.position(),false,.7);
+        if (!shielded) impulse(victim,caster.position(),false,.7);
         TitanVfx.melee(level,caster.species(),victim.position());
         caster.meleeImpactSound(victim.position());
         return true;

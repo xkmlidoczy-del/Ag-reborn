@@ -516,7 +516,10 @@ public final class Abilities {
                             || !hackTarget.getMainHandItem().isEmpty()
                             || hackTarget.getArmorValue() >= 4
                             || star;
-                    OmnitrixAiControl.commandPuppetsFocus(p, hackTarget);
+                    if (OmnitrixAiControl.commandPuppetsFocus(p, hackTarget) > 0) {
+                        skill.lastFlags |= WristNetwork.FLAG_LINKED;
+                        yield hackTarget.getEyePosition();
+                    }
                     if (mechanicalOrArmed) {
                         OmnitrixAiControl.hijackOrSubjugate(p, hackTarget, star ? 260 : 180, star, true);
                     } else {
@@ -544,8 +547,7 @@ public final class Abilities {
                 // 2. Ectonurite Possession Hijack when aiming at an enemy!
                 LivingEntity possessTarget = controlOnRay(p, eye, face, star ? 20.0 : 13.5);
                 if (possessTarget != null) {
-                    OmnitrixAiControl.commandPuppetsFocus(p, possessTarget);
-                    if (OmnitrixAiControl.hijackOrSubjugate(p, possessTarget, star ? 280 : 200, star, false)) {
+                    if (OmnitrixAiControl.commandPuppetsFocus(p, possessTarget) > 0 || OmnitrixAiControl.hijackOrSubjugate(p, possessTarget, star ? 280 : 200, star, false)) {
                         mark(w, possessTarget, now);
                         skill.lastFlags |= WristNetwork.FLAG_HIT_ENTITY | WristNetwork.FLAG_LINKED;
                         yield possessTarget.getEyePosition();
@@ -1370,6 +1372,7 @@ public final class Abilities {
     }
 
     static boolean validTarget(ServerPlayer p, LivingEntity e, boolean broad) {
+        if (e != null && AcademyInterop.contracts() && cn.academy.port.api.ControlRelations.allied(p,e)) return false;
         if (!PursuitBody.permitted(p, e) || OmnitrixAiControl.isPuppetOf(e, p.getUUID())) return false;
         if (broad || e instanceof Enemy || e instanceof Player) return true;
         if (e instanceof Mob mob) {
@@ -1460,6 +1463,8 @@ public final class Abilities {
 
     private static LivingEntity controlOnRay(ServerPlayer player, Vec3 start, Vec3 aim, double range) {
         Vec3 end = rayEnd(player, start, aim, range);
+        if (AcademyInterop.contracts()) return cn.academy.port.api.CombatTargeting.ray(player.serverLevel(), player, start, end, .16,
+                e -> e instanceof Mob mob && !cn.academy.port.api.ControlRelations.allied(player, e) && OmnitrixAiControl.canPossess(player, mob)).stream().findFirst().orElse(null);
         var hit = ProjectileUtil.getEntityHitResult(player.level(), player, start, end, new AABB(start,end).inflate(1),
                 entity -> {
                     Entity body = entity instanceof net.neoforged.neoforge.entity.PartEntity<?> part ? part.getParent() : entity;

@@ -27,13 +27,21 @@ abstract class LivingEntityCooldownMixin implements NativeCooldownAccess {
     private boolean academy$frameHurt(DamageSource source, float amount, Operation<Boolean> nativeHurt) {
         LivingEntity entity = (LivingEntity)(Object)this;
         HighPowerCombat.beginNativeHurt(entity, source, lastHurt);
+        var restoreActor = cn.academy.port.api.ControlRelations.enterDamage(entity, source);
+        var nestedReceipt = cn.academy.port.api.CombatReceipt.enterDamage(entity, source);
         boolean completed = false;
         try {
             boolean accepted = nativeHurt.call(source, CapBreak.atNativeEntry(entity, source, amount));
             completed = true;
+            cn.academy.port.highpower.PlayerShieldArmor.finishContact(entity, source);
             return accepted;
         } finally {
-            HighPowerCombat.endNativeHurt(entity, source, lastHurt, completed);
+            try {
+                HighPowerCombat.endNativeHurt(entity, source, lastHurt, completed);
+            } finally {
+                if (nestedReceipt != null) nestedReceipt.run();
+                if (restoreActor != null) restoreActor.run();
+            }
         }
     }
 

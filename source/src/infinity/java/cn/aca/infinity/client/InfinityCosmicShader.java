@@ -10,6 +10,9 @@ import java.io.IOException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.GameRenderer;
+import java.lang.invoke.MethodHandles;
+import java.util.function.BooleanSupplier;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
@@ -26,7 +29,37 @@ public final class InfinityCosmicShader {
     private static final ResourceLocation FLOW_TEX = AcaInfinity.id("textures/vfx/cosmic_flow.png");
     private static ShaderInstance shader;
 
-    private static final RenderType FALLBACK_TRANSLUCENT = RenderType.entityTranslucent(FLOW_TEX);
+    private static final BooleanSupplier PACK = shaderPackQuery();
+    private static boolean plainGeometry;
+    private static final RenderType PACK_GLOW = RenderType.create("aca_infinity:pack_glow",
+            DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 4096, false, true,
+            RenderType.CompositeState.builder()
+                    .setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getPositionColorShader))
+                    .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+                    .setCullState(RenderStateShard.NO_CULL)
+                    .setDepthTestState(RenderStateShard.LEQUAL_DEPTH_TEST)
+                    .setWriteMaskState(RenderStateShard.COLOR_WRITE)
+                    .setOutputState(RenderStateShard.PARTICLES_TARGET).createCompositeState(false));
+
+    private static BooleanSupplier shaderPackQuery() {
+        try {
+            var api = Class.forName("net.irisshaders.iris.api.v0.IrisApi");
+            Object iris = api.getMethod("getInstance").invoke(null);
+            var query = MethodHandles.publicLookup().unreflect(api.getMethod("isShaderPackInUse")).bindTo(iris);
+            return () -> {
+                try { return (boolean) query.invokeExact(); }
+                catch (Throwable unavailable) { return true; }
+            };
+        } catch (ClassNotFoundException absent) {
+            return () -> false;
+        } catch (ReflectiveOperationException | LinkageError unavailable) {
+            return () -> true;
+        }
+    }
+
+    static boolean shaderPackActive() {
+        return PACK.getAsBoolean();
+    }
 
     private static final RenderStateShard.TransparencyStateShard ADDITIVE_ALPHA = new RenderStateShard.TransparencyStateShard(
             "aca_infinity_additive", () -> {
@@ -78,19 +111,20 @@ public final class InfinityCosmicShader {
     private InfinityCosmicShader() {}
 
     public static boolean available() {
-        return shader != null;
+        return shader != null && !plainGeometry;
     }
 
     public static RenderType voidSheath() {
-        return shader != null ? VOID_SHEATH : FALLBACK_TRANSLUCENT;
+        return available() ? VOID_SHEATH : PACK_GLOW;
     }
 
     public static RenderType additiveGlow() {
-        return shader != null ? ADDITIVE_GLOW : RenderType.lightning();
+        return available() ? ADDITIVE_GLOW : PACK_GLOW;
     }
 
     public static void updateUniforms(float partial) {
-        if (shader == null) return;
+        plainGeometry = shaderPackActive();
+        if (!available()) return;
         var mc = Minecraft.getInstance();
         long tick = mc.level == null ? 0L : Math.floorMod(mc.level.getGameTime(), PHASE_TICKS);
         float seconds = (tick + partial) / 20.0f;

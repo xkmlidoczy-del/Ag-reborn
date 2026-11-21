@@ -1838,10 +1838,12 @@ public final class HighPowerCombat {
         var audit = DamageAudit.begin(target, source);
         try {
             var visualBefore=cn.academy.port.macro.BeamImpactVfx.before(player,skill,target);
-            accepted = CapBreak.hurt(target, source, witness);
+            var receipt = cn.academy.port.api.NativeCombatDamage.hurtDetailed(target, source, witness);
+            accepted = receipt.admitted();
+            boolean effective = receipt.affected();
             cn.academy.port.macro.BeamImpactVfx.after(player,skill,target,visualBefore,accepted&&!source.rejected,
                     projectileOrigin,certifiedBeamEndpoint);
-            if (accepted && !source.rejected) TrainingTargetReadout.hit(player, skill, target, raw);
+            if (effective && !source.rejected) TrainingTargetReadout.hit(player, skill, target, raw);
             if(source.spatialPincerCorridorPermit!=null||source.multidimensionalLandingArrayPermit!=null)
                 tpContactDiagnostic(source.skill,"native_hurt accepted="+accepted+" rejected="+source.rejected+" ordinaryPrepared="+source.ordinaryPrepared+" armorObserved="+source.ordinaryArmorObserved+" beforeArmor="+source.ordinaryBeforeArmor+" preLimit="+source.ordinaryPreLimit,!source.rejected&&accepted);
             if (source.yawPalmPermit != null && yawPalmSettledDeath(source)) source.yawPalmPermit.completedLethal();
@@ -1855,7 +1857,7 @@ public final class HighPowerCombat {
             if (remoteScatterRelayPermit != null)
                 return accepted && !source.rejected && source.remoteScatterRelayCommitAuthorized
                         && source.remoteScatterRelayPostObserved && remoteScatterRelayPermit.paid();
-            return accepted && !source.rejected;
+            return !source.rejected && effective;
         }
         finally {
             ACTIVE.remove(target, source);
@@ -2927,6 +2929,8 @@ public final class HighPowerCombat {
         if (grounding == null) next = plainSettlement(entity, afterContact, residual, source);
         else next = afterContact.applyMitigatedDamage(residual).state();
         BigDecimal basePaid = shieldAfterContact.subtract(next.shield()).max(BigDecimal.ZERO);
+        cn.academy.port.api.CombatReceipt.shields(entity, source, specialAbsorbed == null ? BigDecimal.ZERO : specialAbsorbed,
+                BigDecimal.ZERO, basePaid);
         BigDecimal nativeRemainder = residual.subtract(basePaid).max(BigDecimal.ZERO);
         if (!next.isDead()) nativeRemainder = nativeRemainder.min(previous.health().subtract(next.health()).max(BigDecimal.ZERO));
         // Parents, optional children and break debt commit before any observer or controller callback.
@@ -3041,7 +3045,9 @@ public final class HighPowerCombat {
 
     private static BigDecimal absorbExternalShield(LivingEntity entity, DamageSource source, BigDecimal damage) {
         if (!(entity instanceof ServerPlayer player) || damage.signum() <= 0) return damage;
-        return NeoForge.EVENT_BUS.post(new cn.academy.port.api.NativeShieldEvent(player, source, damage)).remaining();
+        BigDecimal remaining = NeoForge.EVENT_BUS.post(new cn.academy.port.api.NativeShieldEvent(player, source, damage)).remaining();
+        cn.academy.port.api.CombatReceipt.shields(entity, source, BigDecimal.ZERO, damage.subtract(remaining), BigDecimal.ZERO);
+        return remaining;
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)

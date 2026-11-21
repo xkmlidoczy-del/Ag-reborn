@@ -152,6 +152,7 @@ public final class OmnitrixAiControl {
                         && Abilities.validTarget(master, e, false));
 
         if (target instanceof Mob mob) {
+            if (AcademyInterop.contracts() && !cn.academy.port.api.ControlRelations.bind(master, mob, now + durationTicks, "omnitrix")) return false;
             ControlState st = state(mob, true);
             st.previousTarget = mob.getTarget() == null ? null : mob.getTarget().getUUID();
             st.masterId = master.getUUID();
@@ -207,6 +208,7 @@ public final class OmnitrixAiControl {
             if (st == null) continue;
             st.forcedVictimId = focusTarget.getUUID();
             st.puppetUntil = Math.max(st.puppetUntil, now + 100);
+            if (AcademyInterop.contracts()) cn.academy.port.api.ControlRelations.bind(master, puppet, st.puppetUntil, "omnitrix");
             puppet.setTarget(focusTarget);
             overrideBrainTarget(puppet, focusTarget);
             puppet.getNavigation().moveTo(focusTarget, 1.35);
@@ -325,13 +327,14 @@ public final class OmnitrixAiControl {
         long now = worldTime(le);
 
         // Clean up expired modifiers
-        if (st.puppetUntil > 0 && now >= st.puppetUntil) {
+        if (st.puppetUntil > 0 && (now >= st.puppetUntil || sl.getPlayerByUUID(st.masterId) == null)) {
             if (le instanceof Mob mob) {
                 var previous = st.previousTarget == null ? null : sl.getEntity(st.previousTarget);
                 var restored = previous instanceof LivingEntity living && living.isAlive() ? living : null;
                 mob.setTarget(restored);
                 overrideBrainTarget(mob, restored);
             }
+            if (AcademyInterop.contracts()) cn.academy.port.api.ControlRelations.release(le, "omnitrix");
             st.puppetUntil = -1L;
             st.masterId = null;
             st.forcedVictimId = null;

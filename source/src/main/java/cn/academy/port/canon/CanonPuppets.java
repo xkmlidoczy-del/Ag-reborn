@@ -55,7 +55,11 @@ public final class CanonPuppets {
     public static boolean begin(ServerPlayer p,Mob mob,long expires){
         if(p==null||mob==null||BY_OWNER.containsKey(p)||BY_MOB.containsKey(mob)||BY_OWNER.size()>=MAX)return false;
         var puppet=new Puppet(p,mob,expires);
-        if (!MentalTargeting.assign(mob,null)) return false;
+        if (!cn.academy.port.api.ControlRelations.bind(p, mob, expires, SKILL)) return false;
+        if (!MentalTargeting.assign(mob,null)) {
+            cn.academy.port.api.ControlRelations.release(mob, SKILL);
+            return false;
+        }
         puppet.nextAttack = puppet.world.getGameTime() + ATTACK_EVERY;
         BY_OWNER.put(p,puppet);BY_MOB.put(mob,puppet);
         return true;
@@ -71,6 +75,7 @@ public final class CanonPuppets {
                 &&z.world.hasChunkAt(z.mob.blockPosition());
     }
     private static void end(Puppet z){
+        cn.academy.port.api.ControlRelations.release(z.mob, SKILL);
         BY_OWNER.remove(z.owner,z);BY_MOB.remove(z.mob,z);
         var mob=z.mob;
         if(mob.isAlive()&&!mob.isRemoved()){
