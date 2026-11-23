@@ -64,7 +64,34 @@ public final class CanonFloatExpansion {
     private static final Set<ServerPlayer> BUSY=Collections.newSetFromMap(new IdentityHashMap<>());
     private enum Mode { HOVER, ASCEND, DESCEND, BRAKE }
     private record Lease(ServerPlayer owner,ServerLevel world,LivingEntity target,String skill,Mode mode,double height,
-                         long expires,int preset,long revision) {}
+                         long expires,int preset,long revision,BrakedDescent descent) {}
+
+    /** A braking player can descend slowly enough for vanilla to classify the movement as floating. */
+    static final class BrakedDescent {
+        private double lowestY;
+        private long lastDescent = -4;
+
+        BrakedDescent(double initialY) { lowestY = initialY; }
+
+        void observe(double height, long tick) {
+            if (height <= lowestY - 1.0 / 16.0) {
+                lowestY = height;
+                lastDescent = tick;
+            }
+        }
+
+        boolean descending(double height, long tick) {
+            return tick >= lastDescent && tick - lastDescent <= 2 && height <= lowestY + 1.0 / 32.0;
+        }
+    }
+
+    public static boolean isDescendingUnderAirBrake(ServerPlayer player) {
+        var lease = ACTIVE.get(player.getUUID());
+        if (lease == null || lease.descent == null || lease.target != player || player.serverLevel() != lease.world
+                || player.onGround() || player.isPassenger() || !player.isAlive()) return false;
+        long now = lease.world.getGameTime();
+        return now < lease.expires && lease.descent.descending(player.getY(), now);
+    }
     private record ItemLease(ServerPlayer owner,ServerLevel world,ItemEntity target,ItemStack stack,String skill,
                              Vec3 anchor,long expires,int preset,long revision) {}
     private CanonFloatExpansion() {}
@@ -102,7 +129,8 @@ public final class CanonFloatExpansion {
             var first=new Vec3[]{null};
             java.util.function.Consumer<LivingEntity> install=t->{
                 if(!eligible(p,t,id,true)||occupied(t))return;
-                ACTIVE.put(t.getUUID(),new Lease(p,world,t,id,mode,hostile(id)&&mode==Mode.HOVER?t.getY()+number(id,"rise_limit"):t.getY(),now+ticks,preset,revision));
+                var descent = t instanceof ServerPlayer && mode == Mode.BRAKE ? new BrakedDescent(t.getY()) : null;
+                ACTIVE.put(t.getUUID(),new Lease(p,world,t,id,mode,hostile(id)&&mode==Mode.HOVER?t.getY()+number(id,"rise_limit"):t.getY(),now+ticks,preset,revision,descent));
                 if(first[0]==null)first[0]=t.position();
             };
             Runnable complete=()->{
@@ -262,6 +290,8 @@ public final class CanonFloatExpansion {
             }
             if(!permitted(lease,next)){end(lease);continue;}
             t.setDeltaMovement(next);t.hasImpulse=true;t.hurtMarked=true;t.fallDistance=0;
+            if (lease.descent != null && next.y <= 0 && !t.onGround())
+                lease.descent.observe(t.getY(), lease.world.getGameTime());
         }
         for(ItemLease lease:List.copyOf(ITEMS.values())){
             if(lease.owner.server!=event.getServer())continue;
