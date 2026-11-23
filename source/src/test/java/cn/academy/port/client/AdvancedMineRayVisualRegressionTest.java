@@ -20,7 +20,7 @@ public final class AdvancedMineRayVisualRegressionTest {
             var inner=luck?LUCK_INNER:EXPERT_INNER;var outer=luck?LUCK_OUTER:EXPERT_OUTER;
             check(inner.equals(luck?new Color(241,229,247,230):new Color(216,248,216,180))&&outer.equals(luck?new Color(205,166,232,50):new Color(106,242,106,50)),"original variant colors, actual Expert alpha180");
             check(startup(id).equals(luck?"md.mine_luck_startup":"md.mine_expert_startup"),"source postfix startup media");
-            for(String suffix:List.of("_start","_end","_particles"))check(skill(id+suffix).equals(id),"all exact acknowledged packet kinds route to own skill");
+            for(String suffix:List.of("_start","_end","_particles","_trace"))check(skill(id+suffix).equals(id),"all exact acknowledged packet kinds route to own skill");
             for(long age=0;age<=spec.lifeMillis();age+=997) {
                 near(lengthScale(spec,age),age<200?age/200D:1,"source blend ramp");
                 double alpha=age>spec.lifeMillis()-400?1-(age+400-spec.lifeMillis())/400D:1;

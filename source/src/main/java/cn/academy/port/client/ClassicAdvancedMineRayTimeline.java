@@ -15,8 +15,8 @@ public final class ClassicAdvancedMineRayTimeline {
     public record Color(int r,int g,int b,int a) {}
     public static final Color EXPERT_INNER=new Color(216,248,216,180),EXPERT_OUTER=new Color(106,242,106,50),
             LUCK_INNER=new Color(241,229,247,230),LUCK_OUTER=new Color(205,166,232,50);
-    public static final List<String> KINDS=List.of("mine_ray_expert_start","mine_ray_expert_end","mine_ray_expert_particles",
-            "mine_ray_luck_start","mine_ray_luck_end","mine_ray_luck_particles");
+    public static final List<String> KINDS=List.of("mine_ray_expert_start","mine_ray_expert_end","mine_ray_expert_particles","mine_ray_expert_trace",
+            "mine_ray_luck_start","mine_ray_luck_end","mine_ray_luck_particles","mine_ray_luck_trace");
     private ClassicAdvancedMineRayTimeline(){}
     public static boolean owns(String id){return EXPERT_ID.equals(id)||LUCK_ID.equals(id);}
     public static String skill(String kind){if(kind==null||!KINDS.contains(kind))return "";return kind.startsWith(EXPERT_ID)?EXPERT_ID:LUCK_ID;}

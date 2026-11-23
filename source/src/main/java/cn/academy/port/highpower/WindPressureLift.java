@@ -234,7 +234,8 @@ public final class WindPressureLift {
                 || p.getPose() != Pose.STANDING && p.getPose() != Pose.CROUCHING
                 || !finite(p.position()) || !finite(p.getDeltaMovement()) || !Float.isFinite(p.getYRot()) || !Float.isFinite(p.getXRot())) return false;
         // Chunk access precedes the native climbable query; the controller never loads chunks.
-        if (!loaded(p.serverLevel(), p.getBoundingBox()) || p.onClimbable()) return false;
+        if (!loaded(p.serverLevel(), p.getBoundingBox()) || p.onClimbable()
+                || p.serverLevel().getBlockState(p.blockPosition()).is(net.minecraft.world.level.block.Blocks.POWDER_SNOW)) return false;
         var state = AbilityStorage.peek(p);
         return state != null && "vecmanip".equals(state.category) && state.level >= 4 && state.level <= 5
                 && state.activated && state.overloadFine && !state.interfering && state.learned(ID)

@@ -43,7 +43,10 @@ public final class AcademyNetwork {
                                    boolean witnessedRailgun,cn.academy.port.skill.RailgunVisualContact contact) {
         var tag=new CompoundTag();tag.putString("kind",effect);tag.putInt("entity",player.getId());tag.putDouble("length",length);
         tag.putDouble("x",origin.x);tag.putDouble("y",origin.y);tag.putDouble("z",origin.z);tag.putDouble("dx",direction.x);tag.putDouble("dy",direction.y);tag.putDouble("dz",direction.z);
-        if(witnessedRailgun)tag.putString("shot_dimension",player.serverLevel().dimension().location().toString());
+        if (witnessedRailgun) {
+            tag.putString("shot_dimension", player.serverLevel().dimension().location().toString());
+            tag.putUUID("entity_uuid", player.getUUID());
+        }
         if(contact!=null){
             tag.putDouble("block_contact",contact.distance());
             tag.putInt("block_face",contact.face().get3DDataValue());

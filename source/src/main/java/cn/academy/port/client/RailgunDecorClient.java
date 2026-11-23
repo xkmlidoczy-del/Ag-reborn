@@ -15,6 +15,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
@@ -48,15 +49,15 @@ final class RailgunDecorClient {
             CHARGES.put(casterId, new Charge(caster, level.getGameTime()));
     }
 
-    static void shot(CompoundTag tag, Vec3 origin, Vec3 direction) {
+    static void shot(CompoundTag tag, Vec3 eye, Vec3 direction) {
         var mc = Minecraft.getInstance();
         synchronize(mc);
         double length = tag.getDouble("length");
-        if (level == null || !mc.isSameThread() || !sameDimension(level, tag) || !finite(origin)
+        if (level == null || !mc.isSameThread() || !sameDimension(level, tag) || !finite(eye)
                 || !finite(direction) || direction.lengthSqr() < 1e-12 || !Double.isFinite(length)
                 || length <= 0 || length > RangedSkillRanges.fixed("railgun")) return;
         Vec3 axis = direction.normalize();
-        if (!RailThunderArrayGeometry.validEndpoints(point(origin), point(origin.add(axis.scale(length))))) return;
+        if (!RailThunderArrayGeometry.validEndpoints(point(eye), point(eye.add(axis.scale(length))))) return;
         Point face = null;
         if (tag.contains("shot_dimension", Tag.TAG_STRING) && tag.contains("block_contact", Tag.TAG_DOUBLE)
                 && tag.contains("block_face", Tag.TAG_INT)) {
@@ -72,14 +73,33 @@ final class RailgunDecorClient {
             }
         }
         int caster = tag.contains("entity", Tag.TAG_INT) ? tag.getInt("entity") : -1;
+        Vec3 end = eye.add(axis.scale(length));
+        Vec3 origin = eye;
+        boolean attached = false;
+        // A reflected packet is emitted at the reflector and must keep that origin.
+        if (tag.contains("shot_dimension", Tag.TAG_STRING) && level.getEntity(caster) instanceof Player player
+                && (!tag.hasUUID("entity_uuid") || player.getUUID().equals(tag.getUUID("entity_uuid")))
+                && player.getEyePosition().distanceToSqr(eye) < 4) {
+            Vec3 wrist = CastPoseClient.railgunLaunch(player);
+            boolean firstPerson = player == mc.player && mc.getCameraEntity() == player && mc.options.getCameraType().isFirstPerson();
+            if (!firstPerson && finite(wrist) && wrist.distanceToSqr(eye) < 4 && end.subtract(wrist).dot(axis) > 1e-4) {
+                origin = wrist;
+                attached = true;
+            }
+        }
+        Vec3 segment = end.subtract(origin);
+        length = segment.length();
+        axis = segment.normalize();
         CHARGES.remove(caster);
         var shot = new Shot(origin, axis, length, face, caster, level.getGameTime());
         if (SHOTS.contains(shot)) return;
         if (SHOTS.size() >= MAX_SHOTS) SHOTS.removeFirst();
         SHOTS.add(shot);
+        // The core, optional materials and contact decoration share a frozen visible segment.
+        ClassicEffects.addRailgun(origin, axis, length, caster);
         if (QA_BUDGET) com.mojang.logging.LogUtils.getLogger().info(
-                "QA_A2_RAILGUN caster={} origin={} axis={} beamLength={} decorLength={} blockFace={}",
-                caster, origin, axis, tag.getDouble("length"), length, face);
+                "QA_A2_RAILGUN caster={} origin={} axis={} beamLength={} decorLength={} blockFace={} eye={} end={} handAttached={}",
+                caster, origin, axis, tag.getDouble("length"), length, face, eye, end, attached);
     }
 
     static void render(RenderLevelStageEvent event, VisualTier tier) {

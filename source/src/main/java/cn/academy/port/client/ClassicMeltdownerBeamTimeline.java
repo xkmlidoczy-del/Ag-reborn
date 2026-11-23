@@ -121,12 +121,22 @@ public final class ClassicMeltdownerBeamTimeline {
         // Texture heads remain source base width long, even at short/zero blend-in length.
         return new Glow(from, from.add(look.scale(textureLength)), to.subtract(look.scale(textureLength)), to, up);
     }
+    public static Glow alignedGlow(Point from, Point to, boolean firstPerson, double textureLength) {
+        Point span = to.subtract(from);
+        Point look = span.normalize();
+        Point up = firstPerson ? new Point(0, 1, -.5).normalize() : from.cross(look).normalize();
+        double cap = Math.min(textureLength, span.length() * .5);
+        return new Glow(from, from.add(look.scale(cap)), to.subtract(look.scale(cap)), to, up);
+    }
     public static CylinderFrame cylinderFrame(Point origin, Point rawDirection, double length, boolean firstPerson) {
         return cylinderFrame(origin, rawDirection, length, firstPerson, true);
     }
     public static CylinderFrame cylinderFrame(Point origin, Point rawDirection, double length, boolean firstPerson, boolean applyViewFix) {
         Point dir = entityDirection(rawDirection), start = applyViewFix ? origin.add(viewFix(rawDirection, firstPerson)) : origin;
-        Point delta = origin.add(dir.scale(length)).subtract(start);
+        return alignedCylinderFrame(start, origin.add(dir.scale(length)));
+    }
+    public static CylinderFrame alignedCylinderFrame(Point start, Point end) {
+        Point delta = end.subtract(start);
         double yaw = -Math.PI / 2 + Math.atan2(delta.x, delta.z), pitch = Math.atan2(delta.y, Math.sqrt(delta.x * delta.x + delta.z * delta.z));
         return new CylinderFrame(start, new Point(Math.cos(yaw) * Math.cos(pitch), Math.sin(pitch), -Math.sin(yaw) * Math.cos(pitch)),
                 new Point(-Math.cos(yaw) * Math.sin(pitch), Math.cos(pitch), Math.sin(yaw) * Math.sin(pitch)), new Point(Math.sin(yaw), 0, Math.cos(yaw)));

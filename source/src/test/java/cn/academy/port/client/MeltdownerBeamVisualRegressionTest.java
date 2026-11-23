@@ -62,6 +62,18 @@ public final class MeltdownerBeamVisualRegressionTest {
     }
     private static void coordinates() {
         Point feet = new Point(12, 64, -8), eye = feet.add(new Point(0, 1.62, 0)), camera = new Point(3, 72, 4);
+        Point wrist = feet.add(new Point(-.42, 1.21, .62));
+        for (Point hit : List.of(new Point(12, 65.62, 6), new Point(-8, 65.62, -8), wrist.add(new Point(-.01, 0, .03)))) {
+            Glow clipped = alignedGlow(wrist, hit, false, BASIC.glowWidth());
+            near(clipped.from(), wrist, 0, "mining glow starts at the presented wrist");
+            near(clipped.to(), hit, 0, "mining glow ends on the server collision");
+            Point span = hit.subtract(wrist);
+            ok(clipped.mid1().subtract(wrist).length() <= span.length() * .5 + 1e-13,
+                    "short mining clips do not invert the glow middle");
+            var frame = alignedCylinderFrame(wrist, hit);
+            near(frame.apply(new ClassicMeltdownerStarterTimeline.Point(span.length(), 0, 0)), hit, 1e-13,
+                    "mining fallback cylinder shares the clipped end");
+        }
         for (int yaw = -720; yaw <= 720; yaw += 7) for (int pitch = -90; pitch <= 90; pitch += 5) {
             Point dir = originalDirection(yaw, pitch);
             near(direction(yaw, pitch), dir, 3E-16, "Motion3D float sine look");

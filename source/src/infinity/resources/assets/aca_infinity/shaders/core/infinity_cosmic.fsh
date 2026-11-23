@@ -87,7 +87,8 @@ vec2 sampleDualFlowRG(vec2 uv, float t, float strength) {
     return mix(rg0, rg1, blend);
 }
 
-void main() {
+// Keep all exit values explicit for Veil's GLSL processor.
+vec4 shadeFragment() {
     if (vertexColor.a <= 0.006) {
         discard;
     }
@@ -109,8 +110,7 @@ void main() {
         float hollowFill = 0.10 + 0.88 * pow(edgeGlow, 1.35);
         float alpha = vertexColor.a * hollowFill * dissolve;
         if (alpha <= 0.012) discard;
-        fragColor = linear_fog(vec4(rgb, clamp(alpha, 0.0, 1.0)) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
-        return;
+        return linear_fog(vec4(rgb, clamp(alpha, 0.0, 1.0)) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
     }
 
     // Mode 4: Voronoi Mirror Space-Shatter Shards & Fracture Planes (HSR / Mirror Dimension glass cracks!)
@@ -131,8 +131,7 @@ void main() {
         rgb += vec3(0.10, 0.16, 0.24) * prismGlint * fresnel * (1.0 - shardEdge);
         float alpha = vertexColor.a * erodeMask * clamp(0.24 + shardEdge * 0.76 + fresnel * 0.48, 0.0, 1.0);
         if (alpha <= 0.012) discard;
-        fragColor = linear_fog(vec4(clamp(rgb, 0.0, 1.0), alpha) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
-        return;
+        return linear_fog(vec4(clamp(rgb, 0.0, 1.0), alpha) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
     }
 
     // Mode 3: Asymmetric Razor Crescent Shockwave / Arc + Dual-Phase Flow Wake +LUT
@@ -157,8 +156,7 @@ void main() {
         vec3 rgb = stylizedLut(vertexColor.rgb, lutPos);
         float alpha = vertexColor.a * clamp(bodySweep * erodedMask * 0.82 + leadRazor * (1.0 - vfxErosion * 0.65) + spark * 0.88, 0.0, 1.0);
         if (alpha <= 0.012) discard;
-        fragColor = linear_fog(vec4(rgb, alpha) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
-        return;
+        return linear_fog(vec4(rgb, alpha) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
     }
 
     float profile = sin(v * PI);
@@ -183,8 +181,7 @@ void main() {
         vec3 rgb = stylizedLut(vertexColor.rgb, clamp(0.48 + cardinal6 * 0.52 + outerHair * 0.25, 0.0, 1.0));
         float alpha = vertexColor.a * clamp(geom * 0.95 + whisperVeil, 0.0, 1.0);
         if (alpha <= 0.012) discard;
-        fragColor = linear_fog(vec4(rgb, alpha) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
-        return;
+        return linear_fog(vec4(rgb, alpha) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
     }
 
     // Mode 1: Dual-Phase Flowmap Silk Whip / Ribbon + 3-Stop Heterogeneous LUT + Fresnel Rim
@@ -204,8 +201,7 @@ void main() {
         vec3 rgb = stylizedLut(vertexColor.rgb, lutEnergy);
         float alpha = vertexColor.a * clamp(pow(profile, 0.80) * erodedSilk * 0.76 + coreHold * 0.96, 0.0, 1.0);
         if (alpha <= 0.010) discard;
-        fragColor = linear_fog(vec4(clamp(rgb, 0.0, 1.0), alpha) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
-        return;
+        return linear_fog(vec4(clamp(rgb, 0.0, 1.0), alpha) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
     }
 
     // Mode 0: Abyssal Cosmic Dark Contrast Sheath (TRANSLUCENT pass — frames bright whips against bright sky/terrain!)
@@ -224,5 +220,9 @@ void main() {
     vec3 rgb = mix(rimTint, obsidian, spineHold * 0.78) + vec3(0.92, 0.95, 1.0) * microStar * 0.54;
     float alpha = vertexColor.a * pow(profile, 0.66) * mask;
     if (alpha <= 0.012) discard;
-    fragColor = linear_fog(vec4(rgb, clamp(alpha, 0.0, 0.90)) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
+    return linear_fog(vec4(rgb, clamp(alpha, 0.0, 0.90)) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
+}
+
+void main() {
+    fragColor = shadeFragment();
 }

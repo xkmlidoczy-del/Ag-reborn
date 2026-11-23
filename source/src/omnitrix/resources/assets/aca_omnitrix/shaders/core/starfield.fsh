@@ -29,7 +29,8 @@ vec3 hash33(vec3 p3) {
     return fract((p3.xxy + p3.yxx) * p3.zyx);
 }
 
-void main() {
+// Keep all exit values explicit for Veil's GLSL processor.
+vec4 shadeFragment() {
     vec4 texColor = texture(Sampler0, texCoord0);
     if (texColor.a < 0.02) {
         discard;
@@ -40,8 +41,7 @@ void main() {
         vec4 color = texColor * ColorModulator;
         color.rgb = mix(overlayColor.rgb, color.rgb, overlayColor.a);
         color *= lightMapColor;
-        fragColor = linear_fog(color, vertexDistance, FogStart, FogEnd, FogColor);
-        return;
+        return linear_fog(color, vertexDistance, FogStart, FogEnd, FogColor);
     }
 
     // Bind-pose model coordinates decoded from vertexColor.rgb
@@ -107,5 +107,9 @@ void main() {
     vec4 finalColor = vec4(litStar, texColor.a * ColorModulator.a);
     finalColor.rgb = mix(overlayColor.rgb, finalColor.rgb, overlayColor.a);
 
-    fragColor = linear_fog(finalColor, vertexDistance, FogStart, FogEnd, FogColor);
+    return linear_fog(finalColor, vertexDistance, FogStart, FogEnd, FogColor);
+}
+
+void main() {
+    fragColor = shadeFragment();
 }

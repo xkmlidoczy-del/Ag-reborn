@@ -166,7 +166,9 @@ public final class WindPressureLiftClientMotion {
                 && !p.noPhysics && !p.horizontalCollision && !p.isPassenger() && !p.isVehicle() && !p.isSleeping()
                 && !p.isFallFlying() && !p.isAutoSpinAttack() && !p.getAbilities().flying && !p.getAbilities().mayfly
                 && !p.isInWaterOrBubble() && !p.isInLava() && p.getMaxHeightFluidType().isAir() && !p.onClimbable()
-                && !p.isInPowderSnow && !p.isSwimming() && p.getActiveEffects().isEmpty() && !p.isNoGravity()
+                && !p.isInPowderSnow && world.hasChunkAt(p.blockPosition())
+                && !world.getBlockState(p.blockPosition()).is(net.minecraft.world.level.block.Blocks.POWDER_SNOW)
+                && !p.isSwimming() && p.getActiveEffects().isEmpty() && !p.isNoGravity()
                 && p.getGravity() == .08 && p.hurtTime == 0 && !p.isUsingItem()
                 && Float.isFinite(i.forwardImpulse) && Math.abs(i.forwardImpulse) <= 1
                 && Float.isFinite(i.leftImpulse) && Math.abs(i.leftImpulse) <= 1 && Float.isFinite(p.getYRot())

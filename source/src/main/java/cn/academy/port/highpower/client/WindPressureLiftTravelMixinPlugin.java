@@ -297,8 +297,10 @@ public final class WindPressureLiftTravelMixinPlugin implements IMixinConfigPlug
 
     /** The full native classes are raw-pinned; final dependency methods must remain exact. */
     public static boolean finalDependencySupported(ClassNode raw, ClassNode transformed) {
+        if (!classSupported(raw)) return false;
+        transformed = WindPressureLiftBundledProjection.project(raw, transformed);
         transformed=WindPressureLiftSableProjection.project(raw,transformed);
-        if (!classSupported(raw) || transformed == null || !raw.name.equals(transformed.name)
+        if (transformed == null || !raw.name.equals(transformed.name)
                 || raw.access != transformed.access || !Objects.equals(raw.superName, transformed.superName)) return false;
         if (ABSTRACT_CLIENT_PLAYER.equals(raw.name) && method(transformed, TRAVEL, TRAVEL_DESC) != null) return false;
         if (Set.of(LOCAL_PLAYER, ABSTRACT_CLIENT_PLAYER, PLAYER, LIVING_ENTITY).contains(raw.name)

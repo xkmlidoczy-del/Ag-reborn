@@ -792,7 +792,10 @@ public final class CanonExpansionCombatA {
             Vec3 visualFrom = c.skill.equals("dark_rain") ? target.getBoundingBox().getCenter().add(0, number(c.skill, "origin_height"), 0) :
                     c.skill.equals("dark_shard_ring") ? shardOrigin(c, target) : c.eye;
             int vfxLife = skillLevel >= 5 ? 26 : skillLevel == 4 ? 22 : 16;
-            if (visualFrom != null) CanonVfx.emit(c.p, c.skill, visualFrom, target.position().add(0, target.getBbHeight() * .5, 0), CanonVfx.Phase.HIT, vfxLife, hits[0] == 1 ? shape.radius : 0, canisterBoost || chipBoost);
+            // A line strike has a reach, not a radius. Sending the reach as the area both
+            // loses the hit endpoint and can exceed the visual packet's area limit.
+            double visualRadius = hits[0] == 1 && !shape.line ? shape.radius : 0;
+            if (visualFrom != null) CanonVfx.emit(c.p, c.skill, visualFrom, target.position().add(0, target.getBbHeight() * .5, 0), CanonVfx.Phase.HIT, vfxLife, visualRadius, canisterBoost || chipBoost);
         }, () -> {
             if (hits[0] > 0 && sessionContext(c) && (c.skill.equals("dark_wing_charge") || c.skill.equals("nitrogen_ram") || c.skill.equals("nitrogen_impact"))) {
                 Vec3 next = strikeMotion(c);

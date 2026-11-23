@@ -39,7 +39,6 @@ public final class CastPoseClient {
     private static final Map<Integer, Cast> CASTS = new HashMap<>();
     private static Object world, owner, connection;
     private static final Map<Integer, long[]> CONSTRUCT_PHASES = new HashMap<>();
-    private static double lastRailgun = -1;
     private static final CastVisualReceipts RELEASES = new CastVisualReceipts();
     private record PendingTap(long serial, double began, long epoch) {}
     private static final Map<String, PendingTap> PENDING_TAPS = new HashMap<>();
@@ -60,7 +59,7 @@ public final class CastPoseClient {
 
     private static void sync(Minecraft mc) {
         if (world != mc.level || owner != mc.player || connection != mc.getConnection()) {
-            CASTS.clear(); TAILS.clear(); CONSTRUCT_PHASES.clear(); PENDING_TAPS.clear(); RELEASES.clear(); lastRailgun = -1; lastHandStack = null; CameraMotion.clear();
+            CASTS.clear(); TAILS.clear(); CONSTRUCT_PHASES.clear(); PENDING_TAPS.clear(); RELEASES.clear(); lastHandStack = null; CameraMotion.clear();
             world = mc.level; owner = mc.player; connection = mc.getConnection();
         }
     }
@@ -154,7 +153,6 @@ public final class CastPoseClient {
         if (mc.level == null || mc.player == null) { CameraMotion.clear(); return; }
         double now = now(mc, 0);
         constructSignatures(mc, now);
-        railgunRelease(mc, now);
         var it = CASTS.entrySet().iterator();
         while (it.hasNext()) {
             var e = it.next(); Cast c = e.getValue();
@@ -269,18 +267,18 @@ public final class CastPoseClient {
         if (CONSTRUCT_PHASES.size() > 64) CONSTRUCT_PHASES.keySet().removeIf(id -> mc.level.getEntity(id) == null);
     }
 
-    /** Both coin QTE and iron charging converge on an accepted local beam; rejected QTEs never kick the camera. */
-    private static void railgunRelease(Minecraft mc, double now) {
-        for (double[] beam : ClassicDecorSnapshots.beams()) {
-            if (beam.length < 10 || beam[8] < .5 || beam[9] <= lastRailgun) continue;
-            lastRailgun = beam[9];
-            if (beam[7] > 150) continue; // Do not replay historical beams on an ownership/session reset.
-            Cast c = new Cast("railgun", CastPose.Archetype.AIM, now, true);
-            c.release = now + CastPose.minTicks(c.archetype);
-            chain(mc.player.getId(), c);
-            relay(c.archetype, CastPoseNet.TAP);
-            CameraMotion.cast("railgun", false);
-        }
+    /** Use the same accepted release pose for the model and the one-time wrist sample. */
+    static net.minecraft.world.phys.Vec3 railgunLaunch(Player caster) {
+        var mc = Minecraft.getInstance();
+        sync(mc);
+        double now = now(mc, 0);
+        var aim = CastPose.Archetype.AIM;
+        int rise = CastPose.minTicks(aim);
+        Cast cast = new Cast("railgun", aim, now - rise, caster == mc.player);
+        cast.release = now + rise;
+        chain(caster.getId(), cast);
+        if (caster == mc.player) CameraMotion.cast("railgun", false);
+        return worldHandAnchor(caster, now, 1);
     }
 
     /** A refusal that arrives right after the press cancels the gesture: the caster must not keep casting something that never started. */

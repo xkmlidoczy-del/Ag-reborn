@@ -8,6 +8,7 @@ import cn.academy.port.client.canon.AgEnergyBeam;
 import cn.academy.port.client.vfx2.MdNearEyeClient;
 import cn.academy.port.client.vfx2.MdNearEyeMaterial;
 import cn.academy.port.client.vfx2.MdNearEyeVisibility;
+import cn.academy.port.core.SkillTuning;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -30,6 +31,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -132,14 +134,21 @@ public final class ClassicMeltdownerBeamEffects {
         if (data == null) return;
         CompoundTag tag = data.copy(); String kind = tag.getString("kind");
         if (!List.of("meltdowner_start", "meltdowner_end", "meltdowner_ray", "meltdowner_reflection",
-                "mine_ray_basic_start", "mine_ray_basic_end", "mine_ray_basic_particles",
-                "mine_ray_expert_start", "mine_ray_expert_end", "mine_ray_expert_particles",
-                "mine_ray_luck_start", "mine_ray_luck_end", "mine_ray_luck_particles").contains(kind)
+                "mine_ray_basic_start", "mine_ray_basic_end", "mine_ray_basic_particles", "mine_ray_basic_trace",
+                "mine_ray_expert_start", "mine_ray_expert_end", "mine_ray_expert_particles", "mine_ray_expert_trace",
+                "mine_ray_luck_start", "mine_ray_luck_end", "mine_ray_luck_particles", "mine_ray_luck_trace").contains(kind)
                 || !tag.contains("entity", Tag.TAG_INT) || !tag.hasUUID("entity_uuid")
                 || !tag.contains("token", Tag.TAG_LONG) || tag.getLong("token") <= 0
                 || !tag.contains("input", Tag.TAG_LONG) || tag.getLong("input") < 0) return;
         boolean start = kind.endsWith("_start"), end = kind.endsWith("_end"), particles = kind.endsWith("_particles");
         boolean ray = kind.equals("meltdowner_ray"), reflection = kind.equals("meltdowner_reflection");
+        boolean trace = kind.endsWith("_trace");
+        String skill = kind.startsWith("meltdowner_") ? MELTDOWNER : ClassicAdvancedMineRayTimeline.KINDS.contains(kind) ? ClassicAdvancedMineRayTimeline.skill(kind) : MINE;
+        boolean hasBeam = trace || start && !MELTDOWNER.equals(skill) && tag.contains("end_x");
+        Vec3 mineOrigin = hasBeam ? vector(tag, "x", "y", "z") : Vec3.ZERO;
+        Vec3 mineEnd = hasBeam ? vector(tag, "end_x", "end_y", "end_z") : Vec3.ZERO;
+        if (hasBeam && (!vectorTags(tag, "x", "y", "z") || !vectorTags(tag, "end_x", "end_y", "end_z")
+                || mineOrigin.distanceToSqr(mineEnd) > Math.pow(SkillTuning.number(skill, "reach") + 1e-4, 2))) return;
         if (ray || reflection) {
             if (!tag.contains("index", Tag.TAG_INT) || tag.getInt("index") != (ray ? 0 : 1)
                     || !vectorTags(tag, "x", "y", "z") || !vectorTags(tag, "dx", "dy", "dz")
@@ -159,7 +168,6 @@ public final class ClassicMeltdownerBeamEffects {
             if (level == null || local == null || mc.level != level || mc.player != local
                     || mc.getConnection() != connection || callbackEpoch != epoch) return;
             synchronizeSession(mc); updateClock(mc);
-            String skill = kind.startsWith("meltdowner_") ? MELTDOWNER : ClassicAdvancedMineRayTimeline.KINDS.contains(kind) ? ClassicAdvancedMineRayTimeline.skill(kind) : MINE;
             int id = tag.getInt("entity"); long token = tag.getLong("token"), nonce = tag.getLong("input");
             Caster key = new Caster(id, uuid); boolean localPacket = id == local.getId();
             // A stale nonce/UUID cannot alter a newer local context or its replay history.
@@ -187,8 +195,9 @@ public final class ClassicMeltdownerBeamEffects {
                     if (MELTDOWNER.equals(skill)) {
                         next.sound = new FollowingSound(next.caster, level, connection, CHARGE_SOUND, CHARGE_VOLUME, false, next);
                     } else {
-                        next.ray = new Ray(next.caster, level, connection, ClassicAdvancedMineRayTimeline.spec(skill), Vec3.ZERO, new Vec3(0, 0, 1), 15, CLOCK.elapsed());
-                        next.updateMineRay(local);
+                        next.ray = new Ray(next.caster, level, connection, ClassicAdvancedMineRayTimeline.spec(skill), Vec3.ZERO, new Vec3(0, 0, 1), 0, CLOCK.elapsed());
+                        if (hasBeam) next.setMinePath(mineOrigin, mineEnd);
+                        else next.updateLegacyMineRay();
                         if (MINE.equals(skill)) playOneShot(next.caster, level, connection, MINE_START_SOUND, MINE_START_VOLUME);
                         else playOneShot(next.caster, level, connection, ClassicAdvancedMineRayTimeline.startup(skill), MINE_START_VOLUME);
                         next.sound = new FollowingSound(next.caster, level, connection, MINE_LOOP_SOUND, MINE_LOOP_VOLUME, true, next);
@@ -198,6 +207,10 @@ public final class ClassicMeltdownerBeamEffects {
                 return;
             }
             if (current == null || current.token != token || current.nonce != nonce || !history.active(key, token) || !current.valid(mc)) return;
+            if (trace) {
+                if (current.shown && current.ray != null) current.setMinePath(mineOrigin, mineEnd);
+                return;
+            }
             int index = tag.getInt("index");
             if (particles) {
                 if (!current.shown || !current.particleSequence.accept(index)) return;
@@ -260,7 +273,7 @@ public final class ClassicMeltdownerBeamEffects {
                                     new Vec3(random(-.03, .03), random(.01, .05), random(-.03, .03)), false);
                         }
                     } else if (c.ray != null) {
-                        c.updateMineRay(mc.player);
+                        if (!c.authoritativeMinePath) c.updateLegacyMineRay();
                         if (!tickRay(c.ray)) c.ray = null;
                     }
                 }
@@ -272,8 +285,10 @@ public final class ClassicMeltdownerBeamEffects {
     private static boolean tickRay(Ray ray) {
         ray.ticks++;
         if (RANDOM.nextDouble() < ray.spec.particleChance()) {
-            // Motion3D(ray,true) uses default non-player entity eye height, then moves[0,10).
-            Vec3 at = ray.origin.add(0, RAY_EYE_HEIGHT, 0).add(vec(entityDirection(point(ray.direction))).scale(random(0, 10)));
+            // The mining ray already starts at eye height and ends at the sampled collision.
+            Vec3 at = ray.spec == MD
+                    ? ray.origin.add(0, RAY_EYE_HEIGHT, 0).add(vec(entityDirection(point(ray.direction))).scale(random(0, 10)))
+                    : ray.origin.add(ray.direction.scale(random(0, Math.min(10, ray.length))));
             addParticle(at, new Vec3(random(-.03, .03), random(-.03, .03), random(-.03, .03)), false,
                     ray.spec == ClassicAdvancedMineRayTimeline.LUCK ? LUCK_PARTICLE : MD_PARTICLE);
         }
@@ -292,7 +307,11 @@ public final class ClassicMeltdownerBeamEffects {
                         && c.token > 0 && c.caster.position().subtract(mc.player.position()).lengthSqr() <= 96 * 96)
                 .sorted(java.util.Comparator.comparingDouble(c -> c.local ? -1 : c.caster.position().subtract(mc.player.position()).lengthSqr()))
                 .limit(MAX_EXPERT_DECOR_CASTS)
-                .map(c -> new ExpertDecorRay(c.skill, c.token, c.ray.origin, c.ray.direction, c.ray.length, c.ticks)).toList();
+                .map(c -> {
+                    Vec3 start = mineVisualOrigin(c.ray, mc, 0);
+                    Vec3 axis = c.ray.origin.add(c.ray.direction.scale(c.ray.length)).subtract(start);
+                    return new ExpertDecorRay(c.skill, c.token, start, axis.normalize(), axis.length(), c.ticks);
+                }).toList();
     }
     @SubscribeEvent public static void render(RenderLevelStageEvent event) {
         if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES || cn.academy.port.client.canon.AgVolumeRenderer.isShadowPass()) return;
@@ -348,25 +367,24 @@ public final class ClassicMeltdownerBeamEffects {
             Vec3 delta=end.subtract(visualOrigin);visualDirection=delta.normalize();length=delta.length()*lengthScale(ray.spec,age);
         }
         Point origin = point(visualOrigin.subtract(camera));
-        if(ray.spec!=MD&&cn.academy.port.client.canon.AgEnergyBeam.replacesClassic()){
-            Vec3 start=visualOrigin,end=ray.origin.add(ray.direction.scale(length));
-            if(ray.caster instanceof Player player){
-                if(firstPerson&&currentCamera){
-                    Vec3 offset=vec(viewFix(point(ray.direction),true));
-                    if(player.getMainArm()==net.minecraft.world.entity.HumanoidArm.LEFT){
-                        Vec3 right=ray.direction.cross(new Vec3(0,1,0));
-                        if(right.lengthSqr()<1e-10){double yaw=Math.toRadians(player.getYHeadRot());right=new Vec3(-Math.cos(yaw),0,-Math.sin(yaw));}else right=right.normalize();
-                        offset=offset.subtract(right.scale(2*offset.dot(right)));
-                    }
-                    start=ray.origin.add(offset);
-                }else start=CastPoseClient.worldHandAnchor(player,mc.level.getGameTime(),0);
-            }
+        boolean mining = ray.spec != MD;
+        Vec3 end = Vec3.ZERO;
+        if (mining) {
+            if (ray.length < 1e-5) return;
+            Vec3 start = mineVisualOrigin(ray, mc, 0);
+            end = start.lerp(ray.origin.add(ray.direction.scale(ray.length)), lengthScale(ray.spec, age));
+            origin = point(start.subtract(camera));
+            length = start.distanceTo(end);
+            if (length < 1e-5) return;
             float[] tint=ray.spec==ClassicAdvancedMineRayTimeline.LUCK?new float[]{1,.78f,.25f}:new float[]{.32f,1,.23f};
-            if(cn.academy.port.client.canon.AgNativeBeams.draw(buffers,matrix,Vec3.ZERO,start.subtract(camera),end.subtract(camera),ray.spec.outer()*width,alpha,tint))return;
+            if (AgEnergyBeam.replacesClassic() && cn.academy.port.client.canon.AgNativeBeams.draw(buffers,matrix,Vec3.ZERO,start.subtract(camera),end.subtract(camera),ray.spec.outer()*width,alpha,tint)) return;
         }
         boolean applyViewFix=!ray.entityAligned && !playerMain;
-        Glow geometry = glow(origin, point(visualDirection), length, point(Vec3.ZERO), firstPerson, ray.spec.glowWidth(), applyViewFix);
-        CylinderFrame frame = cylinderFrame(origin, point(visualDirection), length, firstPerson, applyViewFix);
+        Point endRelative = point(end.subtract(camera));
+        Glow geometry = mining ? alignedGlow(origin, endRelative, firstPerson, ray.spec.glowWidth())
+                : glow(origin, point(visualDirection), length, point(Vec3.ZERO), firstPerson, ray.spec.glowWidth(), applyViewFix);
+        CylinderFrame frame = mining ? alignedCylinderFrame(origin, endRelative)
+                : cylinderFrame(origin, point(visualDirection), length, firstPerson, applyViewFix);
         boolean upgraded = ray.spec == MD && VisualTierConfig.tier() != VisualTier.OFF;
         if (upgraded && !AgEnergyBeam.replacesClassic()) {
             renderMeltdownerFallback(matrix, geometry, frame, length, width, alpha, glowAlpha, firstPerson && currentCamera);
@@ -390,6 +408,19 @@ public final class ClassicMeltdownerBeamEffects {
             if(upgraded)cylinder(frame, matrix, length, ray.spec.outer() * width, 1, 106, 242, 106, .07 * alpha, nearEye);
             else cylinder(frame, matrix, length, ray.spec.outer() * width, 1, 106, 242, 106, 50 / 255.0 * alpha, nearEye);
         }
+    }
+
+    private static Vec3 mineVisualOrigin(Ray ray, Minecraft mc, float partial) {
+        if (!(ray.caster instanceof Player player)) return ray.origin;
+        if (player != mc.player || !mc.options.getCameraType().isFirstPerson() || mc.getCameraEntity() != player)
+            return CastPoseClient.worldHandAnchor(player, mc.level.getGameTime() + partial, partial);
+        Vec3 offset = vec(viewFix(point(ray.direction), true));
+        if (player.getMainArm() == net.minecraft.world.entity.HumanoidArm.LEFT) {
+            double yaw = Math.toRadians(player.getYHeadRot());
+            Vec3 right = new Vec3(-Math.cos(yaw), 0, -Math.sin(yaw));
+            offset = offset.subtract(right.scale(2 * offset.dot(right)));
+        }
+        return ray.origin.add(offset);
     }
     private static void renderMeltdownerFallback(Matrix4f matrix, Glow glow, CylinderFrame frame, double length,
                                                   double width, double alpha, double glowAlpha, boolean localFirstPerson) {
@@ -458,7 +489,7 @@ public final class ClassicMeltdownerBeamEffects {
     private static final class Context {
         final Player caster; final ClientLevel level; final Object connection; final String skill; final long token, nonce;
         final Caster key; final boolean local; final BitSet rayIndices = new BitSet(2); final ParticleSequence particleSequence = new ParticleSequence();
-        boolean shown; int ticks; Ray ray; FollowingSound sound;
+        boolean shown, authoritativeMinePath; int ticks; Ray ray; FollowingSound sound;
         Context(Player caster, ClientLevel level, Object connection, String skill, long token, long nonce, boolean shown, boolean local) {
             this.caster = caster; this.level = level; this.connection = connection; this.skill = skill; this.token = token;
             this.nonce = nonce; this.shown = shown; this.local = local; key = new Caster(caster.getId(), caster.getUUID());
@@ -469,9 +500,16 @@ public final class ClassicMeltdownerBeamEffects {
             shown = false; ray = null; // MRContextC.setDead: immediate termination, no new release fade.
             if (sound != null) { sound.finish(); mc.getSoundManager().stop(sound); sound = null; }
         }
-        void updateMineRay(Player localPlayer) {
-            Endpoints p = mineEndpoints(point(caster.position()), caster.getEyeHeight(), caster.getYHeadRot(), caster.getXRot(), caster == localPlayer);
-            ray.origin = vec(p.from()); Point delta = p.to().subtract(p.from()); ray.length = delta.length(); ray.direction = vec(delta.normalize());
+        void setMinePath(Vec3 from, Vec3 end) {
+            authoritativeMinePath = true;
+            ray.setSegment(from, end);
+        }
+        void updateLegacyMineRay() {
+            Vec3 eye = caster.getEyePosition();
+            Vec3 aim = vec(direction(caster.getYHeadRot(), caster.getXRot()));
+            Vec3 end = eye.add(aim.scale(SkillTuning.number(skill, "reach")));
+            var hit = level.clip(new ClipContext(eye, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, caster));
+            ray.setSegment(eye, hit.getLocation());
         }
     }
     private static final class Ray {
@@ -494,6 +532,12 @@ public final class ClassicMeltdownerBeamEffects {
             handOrigin=caster instanceof Player && directMain ? null : origin;
         }
         boolean valid(Minecraft mc) { return level == mc.level && connection == mc.getConnection() && validCaster(mc, caster) && caster.getUUID().equals(uuid); }
+        void setSegment(Vec3 from, Vec3 end) {
+            Vec3 delta = end.subtract(from);
+            origin = from;
+            direction = delta.normalize();
+            length = delta.length();
+        }
     }
     private static final class MdParticle {
         Vec3 position, previous, velocity; final boolean mining; final ResourceLocation texture; final int life; final double alpha; final float size; int age;

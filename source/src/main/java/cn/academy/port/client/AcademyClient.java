@@ -2733,6 +2733,7 @@ public final class AcademyClient {
             case "thunder_clap_start","thunder_clap_end" -> ClassicThunderClapEffects.receive(t);
             case "scatter_bomb_start","scatter_bomb_ball","scatter_bomb_ray","scatter_bomb_end","light_shield_start","light_shield_end" -> ClassicMeltdownerStarterEffects.receive(t);
             case "meltdowner_start","meltdowner_end","meltdowner_ray","meltdowner_reflection","mine_ray_basic_start","mine_ray_basic_end","mine_ray_basic_particles","mine_ray_expert_start","mine_ray_expert_end","mine_ray_expert_particles","mine_ray_luck_start","mine_ray_luck_end","mine_ray_luck_particles" -> ClassicMeltdownerBeamEffects.receive(t);
+            case "mine_ray_basic_trace","mine_ray_expert_trace","mine_ray_luck_trace" -> ClassicMeltdownerBeamEffects.receive(t);
             case "ray_barrage_start","ray_barrage_scatter","ray_barrage_preray","ray_barrage_end","jet_engine_start","jet_engine_mark_end","jet_engine_trigger","jet_engine_step","jet_engine_end","electron_missile_start","electron_missile_ball","electron_missile_ray","electron_missile_update","electron_missile_end" -> ClassicMeltdownerLateEffects.receive(t);
             case "mag_movement_start","mag_movement_update","mag_movement_end","mag_manip_start","mag_manip_end","mag_manip_perform" -> ClassicMagneticEffects.receive(t);
             case "charging_start","charging_end" -> ClassicChargingEffects.receive(t);
@@ -2750,7 +2751,6 @@ public final class AcademyClient {
                 boolean rail=t.getString("kind").equals("railgun");
                 if(rail) {
                     if(!RailgunDecorClient.sameDimension(minecraft.level,t))return;
-                    ClassicEffects.addRailgun(origin,direction,t.getDouble("length"),t.contains("entity",net.minecraft.nbt.Tag.TAG_INT)?t.getInt("entity"):-1);
                     RailgunDecorClient.shot(t,origin,direction);
                 } else {
                     // The native WeakArc renderer caps each stroke at 20 blocks. Chain its original material

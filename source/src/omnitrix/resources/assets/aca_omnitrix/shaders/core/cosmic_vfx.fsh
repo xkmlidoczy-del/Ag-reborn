@@ -123,7 +123,8 @@ vec3 voronoiShatter(vec2 x) {
     return vec3(edgeDist, cellId, sqrt(md1));
 }
 
-void main() {
+// Keep all exit values explicit for Veil's GLSL processor.
+vec4 shadeFragment() {
     float v = clamp(texCoord0.y, 0.0, 1.0);
     if (vertexColor.a <= 0.006) {
         discard;
@@ -148,8 +149,7 @@ void main() {
         vec3 rgb = clamp(glassTint * (0.62 + 0.48 * facetGlint) + specularRim, 0.0, 1.0);
         float alpha = vertexColor.a * shardKeep * pow(profile, 0.55) * clamp(0.36 * facetGlint + crack * 0.96, 0.0, 1.0);
         if (alpha <= 0.012) discard;
-        fragColor = linear_fog(vec4(rgb, alpha) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
-        return;
+        return linear_fog(vec4(rgb, alpha) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
     }
 
     if (vfxMode > 15.5) {
@@ -163,8 +163,7 @@ void main() {
         float size = max(0.026, min(0.11, length(fwidth(grid))));
         float star = (1.0 - smoothstep(0.027, 0.027 + size, length(delta))) * step(0.74, hash12(cell));
         vec3 stars = mix(vec3(0.42, 0.52, 0.69), vec3(0.75, 0.52, 0.42), hash12(cell + 27.0)) * star * 0.65;
-        fragColor = vec4(haze + stars, vertexColor.a * (1.0 - smoothstep(0.55, 1.0, v))) * ColorModulator;
-        return;
+        return vec4(haze + stars, vertexColor.a * (1.0 - smoothstep(0.55, 1.0, v))) * ColorModulator;
     }
 
     if (vfxMode > 14.5) {
@@ -182,8 +181,7 @@ void main() {
         vec3 lit = hue * (0.50 + stripes * 0.37 + clouds * 0.17);
         float rim = smoothstep(-0.28, 0.0, light) * (1.0 - smoothstep(0.0, 0.26, light));
         vec3 color = mix(dark, lit, daySide) + hue * rim * 0.18;
-        fragColor = vec4(color, vertexColor.a) * ColorModulator;
-        return;
+        return vec4(color, vertexColor.a) * ColorModulator;
     }
 
     if (vfxMode > 6.5) {
@@ -196,8 +194,7 @@ void main() {
         vec3 rgb = stylizedLut(vertexColor.rgb, grain.r * 0.76 + grain.g * 0.24);
         float alpha = vertexColor.a * edge * breakUp * (0.69 + grain.r * 0.3);
         if (alpha <= 0.012) discard;
-        fragColor = linear_fog(vec4(rgb, alpha) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
-        return;
+        return linear_fog(vec4(rgb, alpha) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
     }
 
     // Mode 6: Anamorphic Hypersonic Starlight Streak / Micro-Ember (5% focal accent)
@@ -209,8 +206,7 @@ void main() {
         float alpha = vertexColor.a * clamp(core + crossGlint, 0.0, 1.0) * (1.0 - vfxErosion * 0.85);
         if (alpha <= 0.012) discard;
         vec3 rgb = stylizedLut(vertexColor.rgb, clamp(0.42 + core * 0.58 + crossGlint * 0.35, 0.0, 1.0));
-        fragColor = linear_fog(vec4(rgb, alpha) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
-        return;
+        return linear_fog(vec4(rgb, alpha) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
     }
 
     // Mode 5: Asymmetric Razor Blade Arc / Crescent Wave (3-Stop LUT + Dual-Phase Flow Shredding!)
@@ -236,8 +232,7 @@ void main() {
         vec3 rgb = stylizedLut(vertexColor.rgb, lutEnergy);
         float alpha = vertexColor.a * clamp(bodySweep * erodedMask * 0.80 + leadRazor * (1.0 - vfxErosion * 0.65) + spark * 0.85, 0.0, 1.0);
         if (alpha <= 0.012) discard;
-        fragColor = linear_fog(vec4(rgb, alpha) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
-        return;
+        return linear_fog(vec4(rgb, alpha) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
     }
 
     // Mode 4: Abyssal Star-Void Contrast Sheath (rendered via TRANSLUCENT pass to carve dark negative space!)
@@ -259,8 +254,7 @@ void main() {
         vec3 rgb = mix(indigoRim, obsidian, spineHold * 0.75) + vec3(0.88, 0.93, 1.0) * microStar * 0.55;
         float alpha = vertexColor.a * pow(profile, 0.68) * mask;
         if (alpha <= 0.012) discard;
-        fragColor = linear_fog(vec4(rgb, clamp(alpha, 0.0, 0.92)) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
-        return;
+        return linear_fog(vec4(rgb, clamp(alpha, 0.0, 0.92)) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
     }
 
     float profile = sin(v * PI);
@@ -287,8 +281,7 @@ void main() {
         vec3 rgb = mix(baseTint, champagne, clamp(cardinal3 * 1.2, 0.0, 1.0));
         float alpha = vertexColor.a * clamp(geom * 0.94 + whisperVeil, 0.0, 1.0);
         if (alpha <= 0.012) discard;
-        fragColor = linear_fog(vec4(rgb, alpha) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
-        return;
+        return linear_fog(vec4(rgb, alpha) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
     }
 
     // Mode 2: V1 Dual-Phase Flow + 3-Stop LUT Multi-Strand Silk & Energy Whip Filament!
@@ -311,9 +304,8 @@ void main() {
         vec3 rgb = stylizedLut(vertexColor.rgb, lutEnergy);
         float alpha = vertexColor.a * clamp(pow(profile, 0.85) * erodedSilk * 0.72 + coreHold * 0.94, 0.0, 1.0);
         if (alpha <= 0.010) discard;
-        fragColor = linear_fog(vec4(clamp(rgb, 0.0, 1.0), alpha) * ColorModulator,
+        return linear_fog(vec4(clamp(rgb, 0.0, 1.0), alpha) * ColorModulator,
                                vertexDistance, FogStart, FogEnd, FogColor);
-        return;
     }
 
     // Mode 1: Crisp 3-Stop LUT Shockwave / Elemental Ribbon
@@ -322,8 +314,7 @@ void main() {
         float spine = smoothstep(0.42, 0.0, abs(v - 0.5));
         vec3 col = stylizedLut(vertexColor.rgb, clamp(0.24 + spine * 0.68, 0.0, 1.0)) * wave;
         float alpha = vertexColor.a * pow(profile, 0.72) * (0.72 + 0.28 * spine);
-        fragColor = linear_fog(vec4(col, clamp(alpha, 0.0, 1.0)) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
-        return;
+        return linear_fog(vec4(col, clamp(alpha, 0.0, 1.0)) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
     }
 
     // Mode 0: Celestialsapien Forge-of-Creation Nebula + Dual-Layer Flowing Star Stream
@@ -369,5 +360,9 @@ void main() {
 
     float starBoost = clamp(dustStar * 0.45 + coreStar * 0.75, 0.0, 0.85);
     float alpha = vertexColor.a * pow(profile, 0.62) * clamp(0.68 + 0.24 * nebula + starBoost, 0.0, 1.0);
-    fragColor = linear_fog(vec4(finalRgb, alpha) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
+    return linear_fog(vec4(finalRgb, alpha) * ColorModulator, vertexDistance, FogStart, FogEnd, FogColor);
+}
+
+void main() {
+    fragColor = shadeFragment();
 }

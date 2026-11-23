@@ -6,9 +6,7 @@ import cn.academy.port.AcademyNetwork;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 import java.util.*;
 
 /** Server-owned native adapters for two original continuous mining variants.
@@ -33,7 +31,12 @@ final class AdvancedMineRay {
         long now=p.serverLevel().getGameTime();if(now<=hold.lastTick)return;hold.lastTick=now;
         boolean end=hold.session.tick(p.getAbilities().instabuild,new AdvancedMineRaySession.World() {
             public AdvancedMineRaySession.Cell trace() {
-                Vec3 eye=p.getEyePosition();Vec3 end=eye.add(MeltdownerBeamSupport.direction(p).scale(AdvancedMineRaySession.range(tier)));if(tier.level==5)end=cn.academy.port.macro.MacroGeometry.loadedEnd(p.serverLevel(),eye,end);var hit=p.serverLevel().clip(new ClipContext(eye,end,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,p));
+                var trace = MeltdownerBeamSupport.miningTrace(p, AdvancedMineRaySession.range(tier), tier.level == 5);
+                if (!trace.sameGeometry(hold.lastTrace)) {
+                    hold.lastTrace = trace;
+                    send(p, hold, "_trace");
+                }
+                var hit = trace.hit();
                 if(hit.getType()!=HitResult.Type.BLOCK)return null;var at=hit.getBlockPos();return new AdvancedMineRaySession.Cell(at.getX(),at.getY(),at.getZ());
             }
             private BlockPos pos(AdvancedMineRaySession.Cell c){return new BlockPos(c.x(),c.y(),c.z());}
@@ -67,9 +70,16 @@ final class AdvancedMineRay {
         if(discard)hold.session.discard();else hold.session.finish();send(p,hold,"_end");
         if(!discard){AbilityStorage.save(p);AcademyNetwork.sync(p);}
     }
-    private static void send(ServerPlayer p,Hold hold,String suffix){MeltdownerStarterSupport.send(hold.audience,MeltdownerBeamSupport.packet(p,hold.session.tier().id+suffix,hold.token,hold.input));}
+    private static void send(ServerPlayer p, Hold hold, String suffix) {
+        var tier = hold.session.tier();
+        var tag = MeltdownerBeamSupport.packet(p, tier.id + suffix, hold.token, hold.input);
+        if (suffix.equals("_start")) hold.lastTrace = MeltdownerBeamSupport.miningTrace(p, AdvancedMineRaySession.range(tier), tier.level == 5);
+        if (!suffix.equals("_end")) hold.lastTrace.write(tag);
+        MeltdownerStarterSupport.send(hold.audience, tag);
+    }
     private static final class Hold {
         cn.academy.port.highpower.environment.SkillEnvironment.Cast terrain;final ServerLevel world;final AdvancedMineRaySession session;final long token,input;final Set<ServerPlayer> audience;long lastTick;
+        MeltdownerBeamSupport.MiningTrace lastTrace;
         Hold(ServerLevel world,AdvancedMineRaySession session,long token,long input,Set<ServerPlayer> audience){this.world=world;this.session=session;this.token=token;this.input=input;this.audience=audience;lastTick=world.getGameTime()-1;}
     }
 }

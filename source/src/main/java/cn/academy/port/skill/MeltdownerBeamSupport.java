@@ -11,6 +11,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.BlockEvent;
@@ -44,4 +46,26 @@ final class MeltdownerBeamSupport {
     }
     static CompoundTag packet(ServerPlayer p,String kind,long token,long input){var tag=MeltdownerStarterSupport.packet(p,kind,token,input);tag.putUUID("entity_uuid",p.getUUID());return tag;}
     static void ray(CompoundTag tag,Vec3 from,Vec3 direction,double length){MeltdownerStarterSupport.position(tag,from);tag.putDouble("dx",direction.x);tag.putDouble("dy",direction.y);tag.putDouble("dz",direction.z);tag.putDouble("length",length);}
+
+    record MiningTrace(Vec3 from, BlockHitResult hit) {
+        Vec3 end() { return hit.getLocation(); }
+        boolean sameGeometry(MiningTrace previous) {
+            return previous != null && from.equals(previous.from) && end().equals(previous.end());
+        }
+        void write(CompoundTag tag) {
+            MeltdownerStarterSupport.position(tag, from);
+            Vec3 end = end();
+            tag.putDouble("end_x", end.x);
+            tag.putDouble("end_y", end.y);
+            tag.putDouble("end_z", end.z);
+        }
+    }
+
+    static MiningTrace miningTrace(ServerPlayer player, double range, boolean stopAtUnloaded) {
+        Vec3 eye = player.getEyePosition();
+        var world = player.serverLevel();
+        Vec3 end = eye.add(direction(player).scale(range));
+        if (stopAtUnloaded) end = cn.academy.port.macro.MacroGeometry.loadedEnd(world, eye, end);
+        return new MiningTrace(eye, world.clip(new ClipContext(eye, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player)));
+    }
 }
