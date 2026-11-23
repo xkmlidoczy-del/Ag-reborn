@@ -117,8 +117,38 @@ public final class AcademyInterop {
         }
     }
 
+    public static boolean nativeCapacity(net.minecraft.world.entity.player.Player p) {
+        return hasNativeShieldBridge() && (p.level().isClientSide || ShieldBridge.enrolled(p));
+    }
+    public static boolean adjustingCapacity(net.minecraft.world.entity.player.Player p) {
+        return hasNativeShieldBridge() && ShieldBridge.writing(p);
+    }
+
+    static void changedVitals(ServerPlayer p, float oldHealth, float oldMax) {
+        if (hasNativeShieldBridge()) ShieldBridge.changedVitals(p, oldHealth, oldMax);
+    }
+
     private static final class ShieldBridge {
+        static boolean enrolled(net.minecraft.world.entity.player.Player p) {
+            return p.getPersistentData().contains(cn.academy.port.highpower.HighPowerCombat.DATA_KEY);
+        }
+        static boolean writing(net.minecraft.world.entity.player.Player p) {
+            return cn.academy.port.highpower.CapacityProfile.writing(p);
+        }
+        static void changedVitals(ServerPlayer p, float oldHealth, float oldMax) {
+            cn.academy.port.highpower.CapacityProfile.equipmentChanged(p, oldHealth, oldMax);
+        }
         static void register(IEventBus bus) {
+            cn.academy.port.highpower.CapacityProfile.registerEquipment(player -> {
+                var w = player.hasData(Omnitrix.WRIST) ? Omnitrix.wrist(player) : null;
+                return (w != null && (w.kind() == Kind.CELESTIAL || w.hasForm() && w.form() == Form.ALIEN_X))
+                        || AscalonService.holdingAscalon(player) || AscalonService.isArmored(player);
+            }, player -> {
+                var w = player.hasData(Omnitrix.WRIST) ? Omnitrix.wrist(player) : null;
+                return w != null && w.hasForm()
+                        ? new cn.academy.port.highpower.CapacityProfile.WristShield(w.barrier,w.maxBarrier)
+                        : cn.academy.port.highpower.CapacityProfile.WristShield.EMPTY;
+            });
             bus.addListener(ShieldBridge::absorbShield);
             cn.academy.port.highpower.PlayerShieldArmor.registerWristShield(ShieldBridge::hasWristShield);
         }

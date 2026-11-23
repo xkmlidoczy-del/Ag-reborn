@@ -1,4 +1,13 @@
 {
+  "hud.academy.highpower.dna_short": "DNA 盾",
+  "academy.city_map.north_heading": "向北",
+  "academy.city_map.east_heading": "向东",
+  "academy.city_map.south_heading": "向南",
+  "academy.city_map.west_heading": "向西",
+  "academy.city_map.scale": "16 格",
+  "hud.academy.highpower.dna_shield": "DNA 护盾",
+  "hud.academy.highpower.absorption": "伤害吸收",
+  "hud.academy.highpower.shield_standby": "待命",
   "academy.vfx2.landing_array.status": "多维落点阵演出：%s｜原素材可用：%s｜重载 %s。起射构型与已接受接触分开显示；接触不保证扣血。/aca_vfx2 landing_array off 恢复原显示。",
   "screen.academy.tutorial_source_details": "本页也介绍了此移植版尚未提供的原版设备、应用或指令",
   "screen.academy.tutorial_recipe_reference": "原版配方参考",

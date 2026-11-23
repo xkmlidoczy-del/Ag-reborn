@@ -2,7 +2,9 @@
 
 Ag:reborn（Ag重生）是基于 **Lambda Innovation** 开源项目 [AcademyCraft](https://github.com/LambdaInnovation/AcademyCraft) 移植、修改和扩展的非官方 Minecraft 模组。原作者及原项目的署名、许可和附加声明予以保留；本项目不代表原作者的官方发布或背书。
 
-本地源码版本为 **0.81.5-city-a3.81**，适用于 **Minecraft 1.21.1、NeoForge 21.1.252 和 Java 21**。本版在 a3.75 真实实体属性、都市地图、Fauna 0.1.18 刷新优化与统一伤害破限的基础上，同步内置升级版 **ACA Omnitrix 0.8.3**（三只变身腕表与阿斯卡隆圣剑）及 **ACA Infinity 0.5.4**（乌鲁无限手套、六颗无限原石与圣殿二号旗舰）。
+本地源码版本为 **0.81.5-city-a3.82**，适用于 **Minecraft 1.21.1、NeoForge 21.1.252 和 Java 21**。本版在 a3.75 真实实体属性、都市地图、Fauna 0.1.18 刷新优化与统一伤害破限的基础上，同步内置升级版 **ACA Omnitrix 0.8.4**（三只变身腕表与阿斯卡隆圣剑）及 **ACA Infinity 0.5.4**（乌鲁无限手套、六颗无限原石与圣殿二号旗舰）。
+
+a3.82 将普通 LV5 调整为 100 生命、50 基础盾和 24 基准技能强度。戴上 X 表、变为 X 天神或使用阿斯卡隆时，生命和受影响的盾池按各自剩余比例切换容量。都市地图页、小地图和属性 HUD 共用终端风格；按住 Alt 可查看完整读数和护盾来源。
 
 a3.81 根据实体实际盾血、死亡救援和移除原因结算技能。可辨认的单击封顶、阶段减伤和第三方取消各自生效。心灵傀儡、心灵宝石和鬼影附身共用归属，受控者接受点名后保护主人。现实宝石可限时封印主动接入的防御装备。[跨模组战斗接口](source/docs/跨模组战斗接口.md)
 
@@ -14,7 +16,7 @@ a3.78 修复 LV5 落空费用、道具强化提示，并补齐 12 系终极演�
 - **零遮挡 U1 微弧 HUD 与 V1 次世代特效**：腕表与无限手套统一升级为准星发丝微弧 HUD 与无黑框全息选角/选石交互，接入三色阶 LUT、双相位流场、Voronoi 镜面空间碎裂与三维多股曲线能量鞭渲染。
 - **全模组零键位冲突**：主模组能力开关为 `V`；腕表轮盘 `Y`、圣剑覆甲 `M`、副技能 `N`；无限手套选石 `[`、原石技能 `H`、响指 `J`（圣殿二号 `G`/`B`/`V` 仅乘船激活）。[腕表与圣剑说明](source/integration/aca-omnitrix/README.md) · [无限手套与旗舰说明](source/integration/aca-infinity/README.md)
 
-整合 JAR 同时包含 **ACA Mech 0.4.5**、**ACA Fauna 0.1.18**、**ACA bio HUM 0.9.1**、**ACA Omnitrix 0.8.3**、**ACA Infinity 0.5.4** 和 **GeckoLib 4.7**。升级时请从 `mods/` 移出旧版 Ag 重生及上述五个配套模组的独立 JAR，再在客户端和服务端安装同一份整合 JAR。 [下载 a3.78 整合 JAR](https://github.com/xkmlidoczy-del/Ag-reborn/releases/download/v0.81.5-city-a3.78/Ag-reborn-a3.78.jar)。
+整合 JAR 同时包含 **ACA Mech 0.4.5**、**ACA Fauna 0.1.18**、**ACA bio HUM 0.9.1**、**ACA Omnitrix 0.8.4**、**ACA Infinity 0.5.4** 和 **GeckoLib 4.7**。升级时请从 `mods/` 移出旧版 Ag 重生及上述五个配套模组的独立 JAR，再在客户端和服务端安装同一份整合 JAR。 [历史发布 · a3.78 整合 JAR](https://github.com/xkmlidoczy-del/Ag-reborn/releases/download/v0.81.5-city-a3.78/Ag-reborn-a3.78.jar)。
 
 自动生成人物只有主城第七学区无窗之楼的一名亚雷斯塔。首次靠近时，在原始塔体内安装倒悬维生舱，生成记录随世界保存。塔东侧约 `-134 0 -152`，可用 `/biohum windowless enter` 进楼及 `/biohum windowless exit` 返回。100 枚人物刷怪蛋位于「学园都市人物 NPC」。动物在原版主世界及规划公园/湖岸按生境生成，机甲可在「ACA 学园机库」部署。[人物整合说明](source/integration/aca-hum/README.md)
 

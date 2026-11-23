@@ -337,7 +337,7 @@ public final class Abilities {
         int[] beats = form == Form.FOUR_ARMS && !secondary ? new int[]{4, 7, 10} : new int[]{delay};
         int recovery = (form == Form.FOUR_ARMS && secondary) || (form == Form.ALIEN_X && style == 1 && secondary)
                 ? 8 : (delay == 0 ? 4 : 6);
-        w.skill = new SkillCast(code, style, now, beats, recovery, eye, focus, face, null);
+        w.skill = new SkillCast(form, w.kind(), code, style, now, beats, recovery, eye, focus, face, null);
         if (alternate && secondary) {
             w.shiftSecondaryAt = now + 80;
         } else if (alternate) {
@@ -401,9 +401,9 @@ public final class Abilities {
     private static Vec3 primary(ServerPlayer p, Wrist w, SkillCast skill, int beat, long now) {
         Vec3 eye = p.getEyePosition();
         Vec3 face = skill.direction;
-        boolean star = w.kind() == Kind.CELESTIAL;
-        return switch (w.form) {
-            case HEATBLAST -> launch(p, Pulse.Variant.FIRE, eye, face, star ? 1.55 : 1.34, 1, w.primaryStarted);
+        boolean star = skill.kind == Kind.CELESTIAL;
+        return switch (skill.form) {
+            case HEATBLAST -> launch(p, skill.kind, Pulse.Variant.FIRE, eye, face, star ? 1.55 : 1.34, 1, w.primaryStarted);
             case WILDMUTT -> {
                 double scentRange = star ? 32 : 19;
                 int glowTicks = star ? 160 : 95;
@@ -445,7 +445,7 @@ public final class Abilities {
                 w.steerUntil = now + 8;
                 w.linkUntil = w.brakeUntil;
                 double dashSpeed = star ? 2.10 : 1.70;
-                float dashDmg = star ? 120_000f : 2_600f;
+                float dashDmg = star ? 120_000f : 16f;
                 Vec3 end = dash(p, skill, face, dashSpeed, dashDmg, .17);
                 if (star) {
                     // X-XLR8 sub-light slash cuts enemies along dash corridor
@@ -480,7 +480,7 @@ public final class Abilities {
                 yield Vec3.atCenterOf(wall);
             }
             case FOUR_ARMS -> fourArmsComboBeat(p, w, skill, beat, star, now);
-            case STINKFLY -> launch(p, Pulse.Variant.SLIME, eye, face, star ? 1.48 : 1.28, 1, w.primaryStarted);
+            case STINKFLY -> launch(p, skill.kind, Pulse.Variant.SLIME, eye, face, star ? 1.48 : 1.28, 1, w.primaryStarted);
             case RIPJAWS -> {
                 double biteReach = star ? 4.7 : 4.0;
                 if (!p.isCrouching()) {
@@ -493,7 +493,7 @@ public final class Abilities {
                     }
                 }
                 var target = enemyOnRay(p, eye, face, biteReach);
-                float biteDmg = p.isInWater() ? (star ? 230_000f : 4_600f) : (star ? 140_000f : 2_800f);
+                float biteDmg = p.isInWater() ? (star ? 230_000f : 29f) : (star ? 140_000f : 18f);
                 if (target != null && damage(p, target, biteDmg, face, .55, 0, 0)) {
                     mark(w, target, now);
                     skill.lastFlags |= WristNetwork.FLAG_HIT_ENTITY;
@@ -524,7 +524,7 @@ public final class Abilities {
                         OmnitrixAiControl.hijackOrSubjugate(p, hackTarget, star ? 260 : 180, star, true);
                     } else {
                         OmnitrixAiControl.inflictParalysis(p, hackTarget, star ? 90 : 60, true);
-                        damage(p, hackTarget, star ? 135_000f : 3_200f, face, .20, 0, 40);
+                        damage(p, hackTarget, star ? 135_000f : 20f, face, .20, 0, 40);
                     }
                     mark(w, hackTarget, now);
                     w.circuitUntil = now + LINK_TICKS;
@@ -585,7 +585,7 @@ public final class Abilities {
 
     private static Vec3 fourArmsComboBeat(ServerPlayer p, Wrist w, SkillCast skill, int beat, boolean star, long now) {
         double reach = star ? 6.2 : 4.7;
-        float dmg = star ? 195_000f : 4_800f;
+        float dmg = star ? 195_000f : 12f;
         Vec3 eye = p.getEyePosition();
         Vec3 chest = p.position().add(0, 1.38, 0);
         Vec3 along = skill.direction.multiply(1, 0, 1);
@@ -641,11 +641,11 @@ public final class Abilities {
     private static Vec3 secondary(ServerPlayer p, Wrist w, SkillCast skill, long now) {
         Vec3 eye = p.getEyePosition();
         Vec3 face = skill.direction;
-        boolean star = w.kind() == Kind.CELESTIAL;
-        return switch (w.form) {
+        boolean star = skill.kind == Kind.CELESTIAL;
+        return switch (skill.form) {
             case HEATBLAST -> {
                 double coneRange = star ? 10.2 : 6.2;
-                float coneDmg = star ? 95_000f : 2_400f;
+                float coneDmg = star ? 95_000f : 15f;
                 LivingEntity seed = null;
                 for (var target : coneTargets(p, eye, face, coneRange, star ? .60 : .66, false)) {
                     boolean primed = linked(w, target, now);
@@ -677,7 +677,7 @@ public final class Abilities {
             }
             case WILDMUTT -> {
                 double pounceReach = star ? 6.2 : 3.8;
-                float pounceDmg = star ? 135_000f : 3_400f;
+                float pounceDmg = star ? 135_000f : 21f;
                 Vec3 heading = face.multiply(1, 0, 1).normalize();
                 var target = enemyOnRay(p, eye, heading, pounceReach);
                 if (linked(w, now) && !linked(w, target, now)) {
@@ -717,7 +717,7 @@ public final class Abilities {
                 for (int shot = 0; shot < count; shot++) {
                     float stepDeg = star ? 11f : 12f;
                     float angle = fan ? (float) Math.toRadians((shot - count / 2) * stepDeg) : 0;
-                    var tip = launch(p, Pulse.Variant.CRYSTAL, eye, face.yRot(angle), star ? 2.45 : 2.1, frac, Long.MIN_VALUE);
+                    var tip = launch(p, skill.kind, Pulse.Variant.CRYSTAL, eye, face.yRot(angle), star ? 2.45 : 2.1, frac, Long.MIN_VALUE);
                     if (tip != null) result = tip;
                 }
                 if (fan && result != null) {
@@ -777,7 +777,7 @@ public final class Abilities {
                 double horiz = kick ? (star ? .55 : .44) : (star ? .35 : .28);
                 LivingEntity nerveTarget = enemyOnRay(p, eye, direction, star ? 16.0 : 5.5);
                 Vec3 result = dash(p, skill, direction, horiz + (spring ? .04 : 0),
-                        star ? 85_000f : 1_800f, kick ? .43 : spring ? .38 : .30);
+                        star ? 85_000f : 11f, kick ? .43 : spring ? .38 : .30);
                 if (spring) {
                     w.clearLink();
                     skill.lastFlags |= WristNetwork.FLAG_FALLBACK;
@@ -792,7 +792,7 @@ public final class Abilities {
                     if (star && damage(p, nerveTarget, kick ? 150_000f : 95_000f, face, .25, 0, 35)) {
                         skill.lastFlags |= WristNetwork.FLAG_HIT_ENTITY;
                     } else if (!star) {
-                        damage(p, nerveTarget, kick ? 2_800f : 1_800f, face, .15, 0, 35);
+                        damage(p, nerveTarget, kick ? 18f : 11f, face, .15, 0, 35);
                         skill.lastFlags |= WristNetwork.FLAG_HIT_ENTITY;
                     }
                     result = nerveTarget.getEyePosition();
@@ -807,7 +807,7 @@ public final class Abilities {
             case FOUR_ARMS -> slam(p, w, skill, star, now);
             case STINKFLY -> {
                 boolean dive = skill.motion.style() == 1 && !p.onGround();
-                float diveDmg = star ? 125_000f : 2_200f;
+                float diveDmg = star ? 125_000f : 14f;
                 var target = enemyOnRay(p, eye, face, star ? 4.6 : 3.38);
                 moveDash(p, face, star ? .92 : .73, dive ? -.45 : .38);
                 if (target != null && damage(p, target, diveDmg, face, .55, 0, 0)) {
@@ -833,7 +833,7 @@ public final class Abilities {
             case RIPJAWS -> {
                 boolean water = p.isInWater();
                 double force = water ? (star ? 1.35 : 1.15) : .55;
-                float tailDmg = star ? 155_000f : 3_400f;
+                float tailDmg = star ? 155_000f : 21f;
                 var target = enemyOnRay(p, eye, water ? face : face.multiply(1, 0, 1).normalize(), 2.85 + force);
                 boolean pull = water && linked(w, target, now);
                 moveDash(p, face, force, .13);
@@ -863,7 +863,7 @@ public final class Abilities {
             }
             case UPGRADE -> {
                 double beamRange = star ? 36.0 : 20.0;
-                float beamDmg = star ? 210_000f : 4_000f;
+                float beamDmg = star ? 210_000f : 25f;
                 boolean charged = w.circuitUntil > now;
                 w.circuitUntil = 0;
                 if (charged) skill.lastFlags |= WristNetwork.FLAG_FALLBACK;
@@ -904,7 +904,7 @@ public final class Abilities {
                 Vec3 path = tip.subtract(entry);
                 Vec3 mid = entry.lerp(tip, .5);
                 if (path.lengthSqr() > 1e-4) {
-                    float slashDmg = star ? (isLinked ? 280_000f : 175_000f) : (isLinked ? 4_200f : 2_600f);
+                    float slashDmg = star ? (isLinked ? 280_000f : 175_000f) : (isLinked ? 26f : 16f);
                     for (LivingEntity soul : nearby(p, mid, 4.8, false)) {
                         Vec3 point = soul.getBoundingBox().getCenter();
                         double along = Math.clamp(point.subtract(entry).dot(path) / path.lengthSqr(), 0, 1);
@@ -1040,7 +1040,7 @@ public final class Abilities {
         Vec3 center = sample.center();
         double baseRadius = star ? 7.2 : 4.5;
         double radius = sample.grounded() ? baseRadius : baseRadius * .78;
-        float cap = star ? 260_000f : 5_600f;
+        float cap = star ? 260_000f : 35f;
         boolean consumed = false;
 
         var slamSfx = star ? Omnitrix.X_FOUR_ARMS_SLAM.get() : Omnitrix.FOUR_ARMS_SLAM.get();
@@ -1234,7 +1234,7 @@ public final class Abilities {
             case ALIEN_X -> new int[]{8, 12};
             default -> new int[]{6};
         };
-        w.skill = new SkillCast(AUTOMATED + form.ordinal(), style, now, beats, 6, eye, focus,
+        w.skill = new SkillCast(form, w.kind(), AUTOMATED + form.ordinal(), style, now, beats, 6, eye, focus,
                 focus.subtract(eye).normalize(), target.getUUID());
         w.revision++;
         WristNetwork.sync(p);
@@ -1261,7 +1261,7 @@ public final class Abilities {
                     body.getBbWidth() * .5);
             if ((contact.contains(center) || contact.clip(previous, center).isPresent())
                     && skill.hit.add(target.getUUID())
-                    && damage(p, target, 6_200f, target.position().subtract(body.position()), .65, 0, 20)) {
+                    && damage(p, target, 19f, target.position().subtract(body.position()), .65, 0, 20)) {
                 skill.previousDivePosition = null;
                 skill.lastFlags = WristNetwork.FLAG_HIT_ENTITY;
                 cue(p, skill, 2, center, target.getBoundingBox().getCenter());
@@ -1279,33 +1279,33 @@ public final class Abilities {
     }
 
     private static Vec3 automaticImpact(ServerPlayer p, PursuitBody body, LivingEntity target, SkillCast skill, int beat) {
-        Form form = body.form();
+        Form form = skill.form;
         Vec3 eye = body.getEyePosition();
         Vec3 aim = target.getEyePosition().subtract(eye).normalize();
         Vec3 end = target.getEyePosition();
         switch (form) {
-            case HEATBLAST -> fireCone(p, skill, eye, aim, 8, .71, 6_400f, 75);
+            case HEATBLAST -> fireCone(p, skill, eye, aim, 8, .71, 32f, 75);
             case WILDMUTT -> {
                 body.setDeltaMovement(aim.scale(.65).add(0, .27, 0));
-                if (body.distanceToSqr(target) <= 21 && damage(p, target, 6_800f, aim, .65, 0, 0)) {
+                if (body.distanceToSqr(target) <= 21 && damage(p, target, 34f, aim, .65, 0, 0)) {
                     skill.lastFlags |= WristNetwork.FLAG_HIT_ENTITY;
                 }
             }
             case DIAMONDHEAD -> {
                 if (skill.motion.style() == 1 && body.distanceToSqr(target) <= 4.2 * 4.2) {
-                    cone(p, skill, eye, aim, 4.2, .64, 7_500f, 0, 1.0, 0);
-                } else cone(p, skill, eye, aim, 9, .88, 7_500f, 0, .7, 0);
+                    cone(p, skill, eye, aim, 4.2, .64, 37f, 0, 1.0, 0);
+                } else cone(p, skill, eye, aim, 9, .88, 37f, 0, .7, 0);
             }
             case XLR8 -> {
                 var side = aim.yRot((p.tickCount & 1) == 0 ? .22f : -.22f);
                 body.setDeltaMovement(side.multiply(1.42, .22, 1.42));
-                if (body.distanceToSqr(target) < 21 && damage(p, target, 8_200f, aim, 1.2, 0, 0)) {
+                if (body.distanceToSqr(target) < 21 && damage(p, target, 41f, aim, 1.2, 0, 0)) {
                     skill.lastFlags |= WristNetwork.FLAG_HIT_ENTITY;
                 }
             }
             case GREY_MATTER -> {
                 body.setDeltaMovement(aim.scale(.42).add(0, .28, 0));
-                if (damage(p, target, 4_200f, aim, .22, 0, 25)) skill.lastFlags |= WristNetwork.FLAG_HIT_ENTITY;
+                if (damage(p, target, 26f, aim, .22, 0, 25)) skill.lastFlags |= WristNetwork.FLAG_HIT_ENTITY;
             }
             case FOUR_ARMS -> {
                 Vec3 sweep = aim.multiply(1, 0, 1).normalize().yRot(beat == 0 ? .48f : -.48f).scale(.7);
@@ -1315,7 +1315,7 @@ public final class Abilities {
                             && !clear(p, body.getEyePosition(), e.getEyePosition())) continue;
                     Vec3 delta = e.position().subtract(center);
                     double intensity = 1 - .60 * Math.min(1, delta.length() / 3.9);
-                    if (damage(p, e, (float) ((beat == 0 ? 8_400 : 11_500) * intensity), delta,
+                    if (damage(p, e, (float) ((beat == 0 ? 17 : 23) * intensity), delta,
                             (beat == 0 ? .72 : 1.15) * intensity, 0, 0)) {
                         if (beat == 0) {
                             e.push(0, .21, 0);
@@ -1326,7 +1326,7 @@ public final class Abilities {
                 }
             }
             case STINKFLY -> {
-                if (beat == 0) launch(p, Pulse.Variant.SLIME, eye, aim, 1.25);
+                if (beat == 0) launch(p, skill.kind, Pulse.Variant.SLIME, eye, aim, 1.25);
                 else {
                     body.setDeltaMovement(aim.x * .76, -.39, aim.z * .76);
                     skill.previousDivePosition = body.getBoundingBox().getCenter();
@@ -1334,11 +1334,11 @@ public final class Abilities {
             }
             case RIPJAWS -> {
                 if (body.isInWater()) body.setDeltaMovement(aim.scale(.82));
-                if (damage(p, target, body.isInWater() ? 9_500f : 6_800f, aim, .72, 0, 0)) {
+                if (damage(p, target, body.isInWater() ? 47f : 34f, aim, .72, 0, 0)) {
                     skill.lastFlags |= WristNetwork.FLAG_HIT_ENTITY;
                 }
             }
-            case UPGRADE -> direct(p, skill, eye, aim, 12, 7_800f, .34, 0);
+            case UPGRADE -> direct(p, skill, eye, aim, 12, 39f, .34, 0);
             case GHOSTFREAK -> {
                 Vec3 before = body.getEyePosition();
                 Vec3 side = target.position().add(-aim.z * 1.25, 0, aim.x * 1.25);
@@ -1349,7 +1349,7 @@ public final class Abilities {
                     body.moveTo(side.x, side.y, side.z, body.getYRot(), 0);
                     WristNetwork.cue(p, skill.motion.action(), 1, 0, before, body.getEyePosition());
                 }
-                if (clear(p, body.getEyePosition(), end) && damage(p, target, 7_600f, aim, .5, 0, 0)) {
+                if (clear(p, body.getEyePosition(), end) && damage(p, target, 38f, aim, .5, 0, 0)) {
                     skill.lastFlags |= WristNetwork.FLAG_HIT_ENTITY;
                 }
             }
@@ -1492,15 +1492,15 @@ public final class Abilities {
         p.resetFallDistance();
     }
 
-    private static Vec3 launch(ServerPlayer p, Pulse.Variant variant, Vec3 eye, Vec3 direction, double speed) {
-        return launch(p, variant, eye, direction, speed, 1, Long.MIN_VALUE);
+    private static Vec3 launch(ServerPlayer p, Kind castKind, Pulse.Variant variant, Vec3 eye, Vec3 direction, double speed) {
+        return launch(p, castKind, variant, eye, direction, speed, 1, Long.MIN_VALUE);
     }
 
-    private static Vec3 launch(ServerPlayer p, Pulse.Variant variant, Vec3 eye, Vec3 direction, double speed, float fraction, long mark) {
+    private static Vec3 launch(ServerPlayer p, Kind castKind, Pulse.Variant variant, Vec3 eye, Vec3 direction, double speed, float fraction, long mark) {
         Pulse pulse = Omnitrix.PULSE.get().create(p.serverLevel());
         if (pulse == null) return null;
         Vec3 start = eye.add(direction.scale(.46)).add(0, -.12, 0);
-        pulse.initialize(p, variant, start, direction.scale(speed), WristService.controlled(p), fraction, mark);
+        pulse.initialize(p, castKind, variant, start, direction.scale(speed), WristService.controlled(p), fraction, mark);
         return p.serverLevel().addFreshEntity(pulse) ? start.add(direction.scale(3)) : null;
     }
 

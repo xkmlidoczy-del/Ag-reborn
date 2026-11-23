@@ -1,4 +1,13 @@
 {
+  "hud.academy.highpower.dna_short": "DNA shield",
+  "academy.city_map.north_heading": "North",
+  "academy.city_map.east_heading": "East",
+  "academy.city_map.south_heading": "South",
+  "academy.city_map.west_heading": "West",
+  "academy.city_map.scale": "16 blocks",
+  "hud.academy.highpower.dna_shield": "DNA shield",
+  "hud.academy.highpower.absorption": "Absorption",
+  "hud.academy.highpower.shield_standby": "Standby",
   "academy.vfx2.landing_array.status": "Landing array cues: %s | original materials: %s | reload %s. Publication and accepted contact are distinct; contact does not guarantee HP loss. /aca_vfx2 landing_array off restores classic.",
   "screen.academy.tutorial_source_details": "This page also describes original devices, apps or commands that aren't available here",
   "screen.academy.tutorial_recipe_reference": "Source recipe reference",

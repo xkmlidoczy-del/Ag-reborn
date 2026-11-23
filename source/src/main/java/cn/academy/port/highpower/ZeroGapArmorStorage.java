@@ -125,8 +125,8 @@ public final class ZeroGapArmorStorage {
         CompoundTag source = owner.getPersistentData().getCompound(HighPowerCombat.DATA_KEY);
         CompoundTag snapshot = source.copy();
         try {
-            ExactCombatState base = ExactCombatState.fromDecimalMap(strings(snapshot, BASE_FIELDS, false));
-            if (!base.equals(exact.get()) || base.shieldEnabled()) return Optional.empty();
+            ExactCombatState base = exact.get();
+            if (base.shieldEnabled()) return Optional.empty();
             ScatterPlateShares scatter = readScatter(snapshot, base);
             SharedShieldReserveShares reserves = readReserves(snapshot, base);
             ZeroGapArmorShares armor = null;
@@ -316,7 +316,8 @@ public final class ZeroGapArmorStorage {
                 && captured.owner.getUUID().equals(captured.ownerUuid) && captured.owner.getId() == captured.ownerId
                 && captured.owner.level() == captured.level && captured.owner.getServer() == captured.server
                 && captured.owner.getPersistentData().get(HighPowerCombat.DATA_KEY) == captured.source
-                && captured.source.equals(captured.snapshot);
+                && captured.source.equals(captured.snapshot)
+                && HighPowerCombat.exactStateSnapshot(captured.owner).filter(captured.base::equals).isPresent();
     }
 
     static boolean hasMetadata(LivingEntity owner) {

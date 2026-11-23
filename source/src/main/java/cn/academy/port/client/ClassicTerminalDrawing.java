@@ -7,9 +7,12 @@ import net.minecraft.resources.ResourceLocation;
 
 /** Shares the existing verified system-font and immediate canvas pipeline without changing its ownership. */
 public final class ClassicTerminalDrawing {
-    private final ClassicHudFont font=new ClassicHudFont();
+    private final ClassicHudFont font;
+    public ClassicTerminalDrawing(){this(false);}
+    ClassicTerminalDrawing(boolean batch){font=new ClassicHudFont(batch); }
     private ClassicHudCanvas canvas;
     public void prepare(){font.use(ClassicHudConfig.SPEC.isLoaded()?ClassicHudConfig.FONT.get():"Microsoft YaHei");}
+    void preload(String text){prepare();font.preload(text);}
     public void begin(GuiGraphics graphics){prepare();canvas=new ClassicHudCanvas(graphics);canvas.begin();}
     public void end(){canvas.end();canvas=null;}
     public void release(){font.release();}

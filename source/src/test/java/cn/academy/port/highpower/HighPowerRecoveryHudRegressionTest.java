@@ -199,7 +199,7 @@ public final class HighPowerRecoveryHudRegressionTest {
         System.out.println("PASS " + checks + " recovery HUD exact-decimal, bounded-rate, session, layout and native-heart guard checks");
     }
 
-    /** The production v6 codec must preserve exact totals and validate every decoded reserve relationship. */
+    /** The production v7 codec must preserve exact totals and validate every decoded reserve relationship. */
     private static void verifyZeroGapCodec() {
         var identity = id(UUID.randomUUID(), 17, "minecraft:overworld", 2, 7);
         var learned = new HighPowerRecoveryHudModel.Values("90", "100", "7", "20", "full", "0", 0, 0, 0, false,
@@ -210,14 +210,18 @@ public final class HighPowerRecoveryHudRegressionTest {
         var curtain = new HighPowerRecoveryHudModel.Values("90", "100", "7", "20", "full", "0", 0, 0, 0, true,
                 "0", "0", false, "meltdowner", "5", "10", true);
         var domain = new HighPowerRecoveryHudModel.Values("90", "100", "7", "20", "full", "0", 0, 0, 0, true, "13", "20", true);
-        check(HighPowerRecoveryHudPayload.Snapshot.TYPE.id().getPath().equals("hp_recovery_hud_v6"), "new wire fields use a distinct optional v6 channel");
-        for (var values : new HighPowerRecoveryHudModel.Values[]{learned, active, curtain, domain, null}) {
+        var dna = new HighPowerRecoveryHudModel.Values("50", "100", "0", "50", "full", "0", 0, 0, 0, false,
+                "0", "0", false, "electromaster", "0", "0", false, "0", "0", false,
+                "1000000000", "1000000000", "4", true);
+        check(dna.superArmor() && dna.defense().equals("1000000000"), "a depleted base shield retains its DNA protection");
+        check(HighPowerRecoveryHudPayload.Snapshot.TYPE.id().getPath().equals("hp_recovery_hud_v7"), "new wire fields use a distinct optional v7 channel");
+        for (var values : new HighPowerRecoveryHudModel.Values[]{learned, active, curtain, domain, dna, null}) {
             var packet = new HighPowerRecoveryHudPayload.Snapshot(identity, values);
             var buffer = new net.minecraft.network.RegistryFriendlyByteBuf(io.netty.buffer.Unpooled.buffer(), net.minecraft.core.RegistryAccess.EMPTY);
             try {
                 HighPowerRecoveryHudPayload.Snapshot.CODEC.encode(buffer, packet);
                 var decoded = HighPowerRecoveryHudPayload.Snapshot.CODEC.decode(buffer);
-                check(packet.equals(decoded) && !buffer.isReadable(), "v6 exactly roundtrips NEW252 active/stored, legacy reserves and clear snapshots");
+                check(packet.equals(decoded) && !buffer.isReadable(), "v7 exactly roundtrips NEW252 active/stored, legacy reserves and clear snapshots");
             } finally { buffer.release(); }
         }
         // Complete packets ensure a malformed amount cannot pass merely because the decoder ran out of bytes.
@@ -239,10 +243,11 @@ public final class HighPowerRecoveryHudRegressionTest {
                 buffer.writeUtf("0"); buffer.writeUtf("0"); buffer.writeBoolean(false); buffer.writeUtf(fields[0]);
                 buffer.writeUtf(fields[2]); buffer.writeUtf(fields[3]); buffer.writeBoolean(false);
                 buffer.writeUtf(fields[4]); buffer.writeUtf(fields[5]); buffer.writeBoolean(false);
+                buffer.writeUtf("0"); buffer.writeUtf("0"); buffer.writeUtf("0"); buffer.writeBoolean(false);
                 boolean rejected = false;
                 try { HighPowerRecoveryHudPayload.Snapshot.CODEC.decode(buffer); }
                 catch (RuntimeException expected) { rejected = true; }
-                check(rejected, "v6 decoder rejects inconsistent, wrong-category, oversized and noncanonical aggregate reserves");
+                check(rejected, "v7 decoder rejects inconsistent, wrong-category, oversized and noncanonical aggregate reserves");
             } finally { buffer.release(); }
         }
     }
@@ -398,6 +403,16 @@ public final class HighPowerRecoveryHudRegressionTest {
         }
         check(prefixes.size() >= 3, "all current mixin configurations participate in package-boundary validation");
         Path root = Path.of("build/classes/java/main");
+        var pluginDependencies = new java.util.HashSet<String>();
+        for (String plugin : plugins) {
+            ClassNode node = new ClassNode();
+            new ClassReader(Files.readAllBytes(root.resolve(plugin.replace('.', '/') + ".class")))
+                    .accept(node, ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
+            for (var method : node.methods) for (var instruction : method.instructions) {
+                if (instruction instanceof org.objectweb.asm.tree.MethodInsnNode call && call.getOpcode() == Opcodes.INVOKESTATIC)
+                    pluginDependencies.add(call.owner.replace('/', '.'));
+            }
+        }
         var foundMixins = new java.util.HashSet<String>();
         try (var classes = Files.walk(root)) {
             for (Path path : classes.filter(path -> path.toString().endsWith(".class")).toList()) {
@@ -410,7 +425,9 @@ public final class HighPowerRecoveryHudRegressionTest {
                         .anyMatch(annotation -> annotation.desc.equals("Lorg/spongepowered/asm/mixin/Mixin;"));
                 if (declaredMixins.contains(name)) { check(mixin, "each declared mixin is an actual @Mixin, never an ordinary marker: " + name); foundMixins.add(name); }
                 boolean owned = prefixes.stream().anyMatch(name::startsWith);
-                if (owned) check(declaredMixins.stream().anyMatch(registered -> typeName.equals(registered) || typeName.startsWith(registered + "$"))
+                boolean sharedPlugin = pluginDependencies.contains(typeName)
+                        && node.interfaces.contains("org/spongepowered/asm/mixin/extensibility/IMixinConfigPlugin");
+                if (owned) check(mixin || sharedPlugin || declaredMixins.stream().anyMatch(registered -> typeName.startsWith(registered + "$"))
                                 || plugins.stream().anyMatch(plugin -> typeName.equals(plugin) || typeName.startsWith(plugin + "$")),
                         "mixin-owned package contains no directly loadable ordinary helper/marker: " + name);
                 if (!mixin && (node.access & Opcodes.ACC_INTERFACE) != 0)

@@ -14,11 +14,14 @@ import org.joml.Vector3f;
 
 /** A block-clipped hitscan. A guardian must see the actual first living body before it spends a shot. */
 public final class FleetBallistics {
+    private static final ContinuousHighPowerGrowth.Curve GUN_MULTIPLIER =
+            ContinuousHighPowerGrowth.curve("1", "1.10", "1.20", "1.35", "1.50");
+
     public static double damage(LivingEntity shooter,int variant){
         double base=InteractionLab.DAMAGE[variant];
         if(!HighPowerCombat.enabled(shooter))return base;
         var position=shooter instanceof ServerPlayer p&&cn.academy.port.highpower.HighPowerGrowth.available(p)?cn.academy.port.highpower.HighPowerGrowth.values(p).position():BigDecimal.valueOf(HighPowerCombat.level(shooter));
-        return base*ContinuousHighPowerGrowth.sample(position).damage().doubleValue()/50.0;
+        return base * GUN_MULTIPLIER.value(position).doubleValue();
     }
     public static HitResult trace(LivingEntity shooter,Vec3 direction,double range){
         var world=shooter.level();Vec3 start=shooter.getEyePosition().add(0,-.12,0),end=start.add(direction.normalize().scale(range));

@@ -511,7 +511,9 @@ public final class WristService {
     private static void applyForm(ServerPlayer p, Wrist wrist) {
         Form form = wrist.hasForm() ? wrist.form : null;
         Kind kind = wrist.kind() == null ? Kind.CLASSIC : wrist.kind();
+        float oldHealth = p.getHealth(), oldMaximum = p.getMaxHealth();
         modify(p, Attributes.MAX_HEALTH, form == null ? 0 : form.maxHealthBonus(kind), AttributeModifier.Operation.ADD_VALUE);
+        AcademyInterop.changedVitals(p, oldHealth, oldMaximum);
         if (p.getHealth() > p.getMaxHealth()) p.setHealth(p.getMaxHealth());
         modify(p, Attributes.MOVEMENT_SPEED, form == null ? 0 : form.speed(kind) - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
         modify(p, Attributes.ARMOR, form == null ? 0 : form.armor(kind), AttributeModifier.Operation.ADD_VALUE);
@@ -540,7 +542,7 @@ public final class WristService {
         if (amount != 0) {
             var modifier = new AttributeModifier(MODIFIER, amount, operation);
             // Vanilla restores saved HP before login. The active X form's maximum must already be available then.
-            if (attribute.equals(Attributes.MAX_HEALTH) && Omnitrix.wrist(player).kind() == Kind.CELESTIAL)
+            if (attribute.equals(Attributes.MAX_HEALTH))
                 instance.addPermanentModifier(modifier);
             else instance.addTransientModifier(modifier);
         }

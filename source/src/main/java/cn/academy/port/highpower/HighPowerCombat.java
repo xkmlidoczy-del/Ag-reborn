@@ -257,7 +257,7 @@ public final class HighPowerCombat {
             completion.run();
             return true;
         }
-        var sample = ContinuousHighPowerGrowth.sample(capacity);
+        var sample = CapacityProfile.sample(player, capacity);
         if (lowering && (before.health().compareTo(sample.maxHealth()) > 0
                 || before.shield().compareTo(sample.maxShield()) > 0)) return false;
         var after = new ExactCombatState(
@@ -331,7 +331,7 @@ public final class HighPowerCombat {
         if (!Double.isFinite(progress) || progress < 0) return false;
         var previous = read(player);
         if (previous.isEmpty() || previous.get().isDead()) return false;
-        var capacity = ContinuousHighPowerGrowth.sample(ability.level, progress);
+        var capacity = CapacityProfile.sample(player, ContinuousHighPowerGrowth.position(ability.level, progress));
         var before = previous.get();
         if (before.health().compareTo(capacity.maxHealth()) > 0 || before.shield().compareTo(capacity.maxShield()) > 0) return false;
         var next = new ExactCombatState(before.health(), capacity.maxHealth(), before.shield(), capacity.maxShield(), false);
@@ -378,7 +378,7 @@ public final class HighPowerCombat {
         BigDecimal highest = earnedGrowthPosition(player);
         if (position.compareTo(highest) <= 0) return false;
         if (position.compareTo(BigDecimal.valueOf(Math.min(5, earnedLevel(player) + 1))) > 0) return false;
-        var capacity = ContinuousHighPowerGrowth.sample(position);
+        var capacity = CapacityProfile.sample(player, position);
         ExactCombatState before = previous.get();
         if (capacity.maxHealth().compareTo(before.maxHealth()) < 0 || capacity.maxShield().compareTo(before.maxShield()) < 0) return false;
         ExactCombatState next = before.withMaximums(capacity.maxHealth(), capacity.maxShield());
@@ -412,7 +412,10 @@ public final class HighPowerCombat {
         tag.putLong("lastShieldSpend", entity.level().getGameTime());
         tag.putLong("lastShieldTick", Long.MIN_VALUE);
         entity.getPersistentData().put(DATA_KEY, tag);
-        ExactCombatState state = ExactCombatState.full(preset).withShieldEnabled(false);
+        var capacity = CapacityProfile.sample(entity, BigDecimal.valueOf(level));
+        CapacityProfile.mark(tag, CapacityProfile.protectedFor(entity));
+        ExactCombatState state = new ExactCombatState(capacity.maxHealth(), capacity.maxHealth(),
+                capacity.maxShield(), capacity.maxShield(), false);
         write(entity, state);
         applyNativeVitals(entity, state);
         if (entity instanceof ServerPlayer player) HighPowerActiveGrowth.enrolled(player, level);
@@ -431,15 +434,16 @@ public final class HighPowerCombat {
     public static boolean synchronizeCityNpc(cn.academy.port.city.CityNpcEntity npc, BigDecimal position,
                                              CompoundTag saved, double legacyHealthFraction) {
         if (!serverThread(npc) || !supported(npc) || npc.esper() == cn.academy.port.city.CityEspers.Profile.NONE) return false;
-        var capacity = ContinuousHighPowerGrowth.sample(position);
+        var capacity = CapacityProfile.sample(npc, position);
         if (position.compareTo(BigDecimal.valueOf(npc.esperLevel())) < 0
                 || position.compareTo(BigDecimal.valueOf(Math.min(5, npc.esperLevel() + 1))) > 0) return false;
-        ExactCombatState before = read(npc).orElse(null);
+        ExactCombatState before = saved == null ? read(npc).orElse(null) : null;
         if (saved != null && saved.isEmpty()) before = null; // one-time classic-save migration
         if (saved != null && !saved.isEmpty()) {
             // "player_power" is the local city NPC checkpoint during older save loads.
             // Current saves already contain native Health and preserve it on reload.
-            npc.getPersistentData().put(DATA_KEY, saved.copy());
+            if (!npc.getPersistentData().getCompound(DATA_KEY).contains("capacityProfileVersion"))
+                npc.getPersistentData().put(DATA_KEY, saved.copy());
             before = read(npc).orElse(null);
             if (before == null) return false;
         }
@@ -455,6 +459,7 @@ public final class HighPowerCombat {
         data.putString(GROWTH_POSITION, position.stripTrailingZeros().toPlainString());
         data.putString(CONTRACT, VanillaCombatContract.ID);
         if (!data.contains("lastShieldSpend")) data.putLong("lastShieldSpend", npc.level().getGameTime());
+        CapacityProfile.mark(data, CapacityProfile.protectedFor(npc));
         npc.getPersistentData().put(DATA_KEY, data);
         GROWTH_VALIDATION.remove(npc); write(npc, next); applyNativeVitals(npc, next);
         return true;
@@ -2216,6 +2221,11 @@ public final class HighPowerCombat {
      * Reconciliation also runs when this new hit is canceled: it belongs to the
      * completed preceding hit and must not depend on acceptance of this one.
      */
+    @SubscribeEvent(priority=EventPriority.LOWEST)
+    public static void finishLegacyEquipmentLoad(PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) CapacityProfile.finishLoadedVitals(player);
+    }
+
     @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
     public static void beforeDamage(LivingIncomingDamageEvent event) {
         LivingEntity entity = event.getEntity();
@@ -3238,7 +3248,7 @@ public final class HighPowerCombat {
             if (pending != null && pendingMatches(original, pending)
                     && pending.position().compareTo(BigDecimal.valueOf(Math.min(5, pending.certifiedLevel() + 1))) <= 0) {
                 if (pending.position().compareTo(earnedGrowthPosition(original)) > 0) {
-                    var capacity = ContinuousHighPowerGrowth.sample(pending.position());
+                    var capacity = CapacityProfile.sample(original, pending.position());
                     achieved = achieved.withMaximums(capacity.maxHealth(), capacity.maxShield());
                     baseMaximum = capacity.maxHealth().doubleValue();
                     clonedCapacity = pending.position();
@@ -3307,12 +3317,15 @@ public final class HighPowerCombat {
         if (!supported(entity) || !entity.getPersistentData().contains(DATA_KEY, Tag.TAG_COMPOUND)) return Optional.empty();
         CompoundTag data = tag(entity);
         try {
-            var maximumShield = CombatAmounts.parse(data.getString("maxShield"), "maximum shield");
-            var shield = CombatAmounts.parse(data.getString("shield"), "shield");
+            if (!data.contains("maxShield", Tag.TAG_STRING)) return Optional.empty();
             if (!data.getBoolean(NATIVE_VITALS)) {
                 if (!serverThread(entity)) return Optional.empty();
                 migrateNativeVitals(entity, data);
             }
+            if (serverThread(entity) && CapacityProfile.needsChange(entity, data))
+                CapacityProfile.synchronize(entity, data, entity.getHealth(), entity.getMaxHealth());
+            var maximumShield = CombatAmounts.parse(data.getString("maxShield"), "maximum shield");
+            var shield = CombatAmounts.parse(data.getString("shield"), "shield");
             BigDecimal maxHealth = CombatAmounts.overkillClamp(decimal(entity.getMaxHealth()));
             BigDecimal health = CombatAmounts.overkillClamp(decimal(entity.getHealth())).min(maxHealth);
             return Optional.of(new ExactCombatState(health, maxHealth, shield, maximumShield, false));
@@ -3402,7 +3415,7 @@ public final class HighPowerCombat {
                     || Double.compare(nativeXp, ability.levelExperience) != 0)
                 throw new IllegalStateException("Stale growth lifecycle draft");
             HighPowerLevel.forLevel(certified);
-            var sample = ContinuousHighPowerGrowth.sample(position);
+            var sample = CapacityProfile.sample(owner, position);
             if (nextBase.maxHealth().compareTo(sample.maxHealth()) != 0
                     || nextBase.maxShield().compareTo(sample.maxShield()) != 0
                     || position.compareTo(BigDecimal.valueOf(Math.min(5, certified + 1))) > 0)

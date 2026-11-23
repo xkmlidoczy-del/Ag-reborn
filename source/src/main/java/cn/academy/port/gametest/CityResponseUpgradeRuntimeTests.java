@@ -53,7 +53,7 @@ public final class CityResponseUpgradeRuntimeTests {
     }
     @GameTest(template=TEMPLATE,batch="response01",timeoutTicks=100)
     public static void ten_regular_officers_wear_real_four_piece_netherite_grade_police_armor(GameTestHelper h){
-        var s=scene(h);h.runAfterDelay(2,()->{for(int i=0;i<10;i++){var g=guard(s,i);h.assertTrue(DefenseArmor.full(g,false),"all ten have four authentic police pieces");h.assertTrue(g.getArmorValue()==20&&g.getAttributeValue(Attributes.ARMOR_TOUGHNESS)==12,"source netherite-grade armor");h.assertTrue(CityNpcPower.maxHealth(g).compareTo(new java.math.BigDecimal("63240"))==0,"existing Lv3 HP unchanged");}
+        var s=scene(h);h.runAfterDelay(2,()->{for(int i=0;i<10;i++){var g=guard(s,i);h.assertTrue(DefenseArmor.full(g,false),"all ten have four authentic police pieces");h.assertTrue(g.getArmorValue()==20&&g.getAttributeValue(Attributes.ARMOR_TOUGHNESS)==12,"source netherite-grade armor");h.assertTrue(CityNpcPower.maxHealth(g).compareTo(new java.math.BigDecimal("52"))==0,"ordinary LV3 officer has 52 health independent of armor");}
         h.assertTrue(!O5Reinforcements.failed(s.world,s.team)&&!O5Reinforcements.update(s.world,s.team),"healthy response does not escalate");clean(s);h.succeed();});
     }
     @GameTest(template=TEMPLATE,batch="response02",timeoutTicks=100)
@@ -116,7 +116,7 @@ public final class CityResponseUpgradeRuntimeTests {
     }
     @GameTest(template=TEMPLATE,batch="response12",timeoutTicks=100)
     public static void all_twelve_v9_types_keep_their_profiles_and_original_dimensions(GameTestHelper h){
-        h.assertTrue(TitanBlocks.TYPES.size()==12,"twelve imported types");for(var entry:TitanBlocks.TYPES.entrySet()){var e=entry.getValue().get().create(h.getLevel());h.assertTrue(e!=null&&e.species().equals(entry.getKey()),"correct registration identity");h.assertTrue(e.getMaxHealth()==e.profile().health()&&e.getBbHeight()>=24,"unchanged V9 health and giant height");h.assertTrue(TitanBlocks.IDS.length*TitanSounds.EVENTS.length==144,"all original sound events");}h.succeed();
+        h.assertTrue(TitanBlocks.TYPES.size()==12,"twelve imported types");for(var entry:TitanBlocks.TYPES.entrySet()){var e=entry.getValue().get().create(h.getLevel());h.assertTrue(e!=null&&e.species().equals(entry.getKey()),"correct registration identity");h.assertTrue(e.getMaxHealth()==e.profile().encounterHealth().floatValue()&&e.getBbHeight()>=24,"unchanged V9 health and giant height");h.assertTrue(TitanBlocks.IDS.length*TitanSounds.EVENTS.length==144,"all original sound events");}h.succeed();
     }
     @GameTest(template=TEMPLATE,batch="response13",timeoutTicks=100)
     public static void natural_zones_reject_other_dimensions_populated_core_and_ordinary_parks(GameTestHelper h){
@@ -141,6 +141,12 @@ public final class CityResponseUpgradeRuntimeTests {
     @GameTest(template=TEMPLATE,batch="response17",timeoutTicks=520)
     public static void autonomous_joint_response_eliminates_lv5_threat_without_rifles_stalling_melee(GameTestHelper h){
         var s=scene(h);s.enemy.setInvulnerable(false);h.assertTrue(HighPowerCombat.enroll(s.enemy,5),"actual Lv5 target enrolled");
+        // Preserve the original 20-million-HP encounter while ordinary LV5 now has 100 HP.
+        var encounterHealth=s.enemy.getAttribute(Attributes.MAX_HEALTH);
+        encounterHealth.addTransientModifier(new net.minecraft.world.entity.ai.attributes.AttributeModifier(
+                ResourceLocation.fromNamespaceAndPath("academy","qa_joint_response_health"),19_999_900,
+                net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_VALUE));
+        s.enemy.setHealth(s.enemy.getMaxHealth());
         for(int i=0;i<3;i++)killed(s,i);h.assertTrue(O5Reinforcements.update(s.world,s.team),"actual loss escalation");
         for(int i=3;i<10;i++)guard(s,i).setNoAi(false);
         h.runAfterDelay(450,()->{long contacts=0;for(var id:s.team.operatives)if(s.world.getEntity(id) instanceof O5OperativeEntity g)contacts+=g.confirmedHits();
@@ -148,7 +154,7 @@ public final class CityResponseUpgradeRuntimeTests {
     }
     @GameTest(template=TEMPLATE,batch="response18",timeoutTicks=100)
     public static void pinned_visual_library_preserves_strict_contract_and_unknown_versions_still_refuse(GameTestHelper h){
-        var base=new HashMap<>(Map.of("minecraft","1.21.1","neoforge","21.1.252","academy","0.1.0-m41-highpower.0.81.5-city-a3.69"));var packs=Set.of("vanilla","mod/neoforge","mod/academy");
+        var base=new HashMap<>(Map.of("minecraft","1.21.1","neoforge","21.1.252","academy",net.neoforged.fml.ModList.get().getModContainerById("academy").orElseThrow().getModInfo().getVersion().toString()));var packs=Set.of("vanilla","mod/neoforge","mod/academy");
         h.assertTrue(VanillaCombatContract.runtimeReason(base,packs).isEmpty()&&VanillaMiningContract.runtimeReason(base,packs).isEmpty(),"original base remains approved");
         base.put("geckolib","4.7");var visual=Set.of("vanilla","mod/neoforge","mod/academy","mod/geckolib");h.assertTrue(VanillaCombatContract.runtimeReason(base,visual).isEmpty()&&VanillaMiningContract.runtimeReason(base,visual).isEmpty(),"bundled exact visual runtime preserves both strict contracts");
         base.put("acamech","0.4.5");var withMech=Set.of("vanilla","mod/neoforge","mod/academy","mod/geckolib","mod/acamech");

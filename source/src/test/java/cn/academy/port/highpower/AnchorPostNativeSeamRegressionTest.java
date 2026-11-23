@@ -15,6 +15,15 @@ public final class AnchorPostNativeSeamRegressionTest {
                 ClassNode actual=new ClassNode();
                 new ClassReader(Files.readAllBytes(Path.of(args[0],owner+".class"))).accept(actual,0);
                 check(NativeAnchorPostMixinPlugin.installedCallbacksSupported(actual),"real transformed witness "+owner);
+                if (owner.equals(H)) {
+                    var altered = copy(actual);
+                    for (var observer : altered.methods) if (observer.name.endsWith("$academy$settled")) {
+                        for (var instruction : observer.instructions) if (instruction instanceof MethodInsnNode call && call.name.equals("nativePost")) {
+                            call.owner = "other/SettlementObserver";
+                            check(!NativeAnchorPostMixinPlugin.installedCallbacksSupported(altered), "unrecognized settlement observer rejected");
+                        }
+                    }
+                }
                 exports.put(owner,actual);
                 ClassNode changed=copy(actual);
                 MethodNode host=method(changed,owner.equals(H)?"onLivingDamagePost":"actuallyHurt");

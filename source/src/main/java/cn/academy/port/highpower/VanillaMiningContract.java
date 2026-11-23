@@ -25,7 +25,7 @@ import net.neoforged.fml.ModList;
 public final class VanillaMiningContract {
     public static final String ID = "academy:vanilla_beam_etching_harvest_1_21_1_21_1_252_v1";
     private static final Map<String, String> MODS = Map.of("minecraft", "1.21.1", "neoforge", "21.1.252",
-            "academy", "0.1.0-m41-highpower.0.81.5-city-a3.81");
+            "academy", "0.1.0-m41-highpower.0.81.5-city-a3.82");
     private static final Set<String> PACKS = Set.of("vanilla", "mod_data", "mod/neoforge", "mod/academy", "bundle", "trade_rebalance");
     private record BlockContract(Class<?> type, Item drop, String sha256) {}
     private static final Map<Block, BlockContract> BLOCKS = Map.of(
@@ -60,9 +60,9 @@ public final class VanillaMiningContract {
         // This HUM data pack adds only its own dimension and damage type.
         boolean hum = "0.9.1".equals(reviewed.get("acabiohum"));
         if (hum) reviewed.remove("acabiohum");
-        boolean omnitrix = "0.8.2".equals(reviewed.get("aca_omnitrix"));
+        boolean omnitrix = "0.8.4".equals(reviewed.get("aca_omnitrix"));
         if (omnitrix) reviewed.remove("aca_omnitrix");
-        boolean infinity = "0.5.3".equals(reviewed.get("aca_infinity"));
+        boolean infinity = "0.5.4".equals(reviewed.get("aca_infinity"));
         if (infinity) reviewed.remove("aca_infinity");
         boolean physics = PhysicsBundle.exact(MODS, reviewed);
         if (!MODS.equals(reviewed) && !physics) return Optional.of("Unreviewed mining mod/version set");

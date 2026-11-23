@@ -19,6 +19,7 @@ final class ClassicHudCanvas {
     ClassicHudCanvas(GuiGraphics graphics){this.graphics=graphics;}
     void begin(){graphics.flush();RenderSystem.enableBlend();RenderSystem.defaultBlendFunc();RenderSystem.disableDepthTest();RenderSystem.disableCull();RenderSystem.setShaderColor(1,1,1,1);}
     // Vanilla GUI teardown must leave blending off before the menu blur's cached opaque pass.
+    Matrix4f pose(){return graphics.pose().last().pose();}
     void end(){RenderSystem.disableBlend();RenderSystem.setShaderColor(1,1,1,1);RenderSystem.setShader(GameRenderer::getPositionTexColorShader);RenderSystem.enableDepthTest();RenderSystem.enableCull();}
     void rect(ResourceLocation texture,double x,double y,double width,double height,ClassicHudTimeline.Rgba color){rect(texture,x,y,width,height,0,0,1,1,color,null,null);}
     void rect(ResourceLocation texture,double x,double y,double width,double height,double u0,double v0,double u1,double v1,

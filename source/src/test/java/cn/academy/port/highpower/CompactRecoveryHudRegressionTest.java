@@ -139,14 +139,14 @@ public final class CompactRecoveryHudRegressionTest {
                 "unplaceable native view restores the existing native-heart fallback");
         try {
             String renderer = java.nio.file.Files.readString(java.nio.file.Path.of("src/main/java/cn/academy/port/client/HighPowerRecoveryHud.java"));
-            String nativeDraw = renderer.substring(renderer.indexOf("private static void renderNative("), renderer.indexOf("private static void bar("));
-            check(!nativeDraw.contains(".scale(") && !nativeDraw.contains("fittedText") && nativeDraw.contains("graphics.drawString(mc.font"),
-                    "ordinary GUI2 renderer draws native glyphs directly, never through fractional fitting");
-            check(renderer.contains("panel(graphics, plan.width(), paintHeight, accent.edge())")
-                    && renderer.contains("HighPowerRecoveryHudModel.nativePaintHeight(plan, mc.font.lineHeight, showPulse)")
-                    && renderer.contains("var nativePlan = chosen.nativePlan()")
+            int healthRow = renderer.indexOf("layer(graphics, width, 4, TerminalSkin.HEALTH");
+            int shieldRow = renderer.indexOf("layer(graphics, width, 23,");
+            check(healthRow >= 0 && shieldRow > healthRow && renderer.contains("int height=reserve || skillBudget!=null ? 54 : 43"),
+                    "the default terminal panel shows health above shield and expands for an active reserve");
+            check(renderer.contains("trail.solid") && renderer.contains("trail.visible(")
+                    && renderer.contains("HighPowerRecoveryHudModel.presentation(width, height, cp, keys, notification, chatBox, null)")
                     && renderer.contains("return layout(Minecraft.getInstance(), width, height)"),
-                    "relay reservation and heart replacement share the same actual measured layout");
+                    "solid and fading segments share the terminal bounds reserved against the native interface");
         } catch (java.io.IOException error) { throw new AssertionError(error); }
     }
     private static int measureNative(String text) { return text.codePoints().map(c -> c >= 0x2e80 ? 9 : 6).sum(); }

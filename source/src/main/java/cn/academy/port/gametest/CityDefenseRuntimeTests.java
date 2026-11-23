@@ -80,8 +80,8 @@ public final class CityDefenseRuntimeTests {
     @GameTest(template=TEMPLATE,batch="defense05",timeoutTicks=100)
     public static void guard_uses_existing_player_curve_and_incident_checkpoint_keeps_entity_ids(GameTestHelper h){
         var p=arena(h);var g=officer(h,p,0);
-        h.assertTrue(HighPowerCombat.enabled(g),"approved numeric adapter");h.assertTrue(CityNpcPower.maxHealth(g).compareTo(new java.math.BigDecimal("63240"))==0,"Lv3 uses unchanged player 20D health");
-        h.assertTrue(Math.abs(FleetBallistics.damage(g,2)-316.2)<.001,"gun is original raw5 x D/50");
+        h.assertTrue(HighPowerCombat.enabled(g),"approved numeric adapter");h.assertTrue(CityNpcPower.maxHealth(g).compareTo(new java.math.BigDecimal("52"))==0,"LV3 officer uses the same 52 maximum health as a player");
+        h.assertTrue(Math.abs(FleetBallistics.damage(g,2)-6.0)<.001,"LV3 officer fires the original raw 5 round at 1.20 strength");
         var n=resident(h,p);var e=suspect(h,p.add(8,0,0));var t=CityDefense.dispatch(h.getLevel(),n,e);
         var saved=CityDefenseData.get(h.getLevel()).save(new CompoundTag(),h.getLevel().registryAccess());var copy=CityDefenseData.load(saved).team(t.id);
         h.assertTrue(copy.officers.equals(t.officers)&&copy.vehicles.equals(t.vehicles)&&copy.threats.equals(t.threats),"reload preserves entity ownership, never respawns replacements");
@@ -117,12 +117,12 @@ public final class CityDefenseRuntimeTests {
     @GameTest(template=TEMPLATE,batch="defense09",timeoutTicks=100)
     public static void player_six_guns_use_same_curve_and_real_one_round_debits(GameTestHelper h){
         var at=arena(h);var p=net.neoforged.neoforge.common.util.FakePlayerFactory.get(h.getLevel(),new com.mojang.authlib.GameProfile(UUID.randomUUID(),"FleetNumbers"));
-        p.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);p.moveTo(at.x,at.y,at.z,0,0);h.assertTrue(HighPowerCombat.enroll(p,3),"player enrolled on unchanged Lv3 curve");
+        p.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);p.moveTo(at.x,at.y,at.z,0,0);h.assertTrue(HighPowerCombat.enroll(p,3),"player enrolled at LV3");
         var enemy=suspect(h,at.add(0,0,12));HighPowerCombat.enroll(enemy,3);
         for(int i=0;i<6;i++){
             var gun=new net.minecraft.world.item.ItemStack(InteractionLab.GUNS[i].get());GunItem.ammo(gun,3);p.getInventory().setItem(p.getInventory().selected,gun);enemy.invulnerableTime=0;
             var before=CityNpcPower.health(enemy);LabGameplay.request(p,new LabNetwork.Request("fire",0,0));
-            var expected=java.math.BigDecimal.valueOf(InteractionLab.DAMAGE[i]).multiply(new java.math.BigDecimal("3162")).divide(new java.math.BigDecimal("50")).multiply(new java.math.BigDecimal("0.984"));
+            var expected=java.math.BigDecimal.valueOf(InteractionLab.DAMAGE[i]).multiply(new java.math.BigDecimal("1.20")).multiply(new java.math.BigDecimal("0.984"));
             var actual=before.subtract(CityNpcPower.health(enemy));h.assertTrue(actual.subtract(expected).abs().doubleValue()<.01,"actual player gun native damage follows shared D/50 after armor: "+actual+" vs "+expected);
             h.assertTrue(GunItem.ammo(gun)==2,"one server shot consumes exactly one energy unit");
         }enemy.discard();h.succeed();

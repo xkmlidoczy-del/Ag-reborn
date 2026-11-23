@@ -146,11 +146,11 @@ public final class ShowcaseDriver {
                     cn.academy.port.terminal.TerminalNetwork.sync(p); }).join(); wait=20;
             }
             case "citymap-colors" -> {
-                try { var c=Class.forName("cn.academy.port.client.terminal.CityMap"); var f=c.getDeclaredField("colors");f.setAccessible(true);
-                    int[] colors=(int[])f.get(null); long known=java.util.Arrays.stream(colors).filter(v->v!=0xff1b2930).count();
-                    var en=c.getDeclaredField("enabled"); en.setAccessible(true); var in=c.getDeclaredField("initialized");in.setAccessible(true);var cur=c.getDeclaredField("cursor");cur.setAccessible(true);
+                try { var c=Class.forName("cn.academy.port.client.terminal.CityMap"); var f=c.getDeclaredField("cells");f.setAccessible(true);
+                    int[] colors=(int[])f.get(null); long known=java.util.Arrays.stream(colors).filter(v->v!=0 && v!=0xff292d30).count();
+                    var en=c.getDeclaredField("enabled"); en.setAccessible(true); var in=c.getDeclaredField("world");in.setAccessible(true);var cur=c.getDeclaredField("cursor");cur.setAccessible(true);
                     var p=mc.player.blockPosition(); var y=mc.level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,p.getX(),p.getZ());
-                    LOG.info("QA_CITY_MAP_KNOWN {} enabled={} initialized={} cursor={} paused={} chunk={} motionY={} surfaceY={} pos={} below={} color={}",known,en.get(null),in.get(null),cur.get(null),mc.isPaused(),mc.level.hasChunk(p.getX()>>4,p.getZ()>>4),y,mc.level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.WORLD_SURFACE,p.getX(),p.getZ()),p,mc.level.getBlockState(p.below()),mc.level.getBlockState(p.below()).getMapColor(mc.level,p.below()).col);
+                    LOG.info("QA_CITY_MAP_KNOWN {} enabled={} initialized={} cursor={} paused={} chunk={} motionY={} surfaceY={} pos={} below={} color={}",known,en.get(null),in.get(null)!=null,cur.get(null),mc.isPaused(),mc.level.hasChunk(p.getX()>>4,p.getZ()>>4),y,mc.level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.WORLD_SURFACE,p.getX(),p.getZ()),p,mc.level.getBlockState(p.below()),mc.level.getBlockState(p.below()).getMapColor(mc.level,p.below()).col);
                 } catch (ReflectiveOperationException e){throw new IllegalStateException(e);}
             }
             case "citymap-open" -> { cn.academy.port.terminal.TerminalNetwork.requestApp("city_map"); wait=30; }

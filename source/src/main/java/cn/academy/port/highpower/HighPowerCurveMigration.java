@@ -57,7 +57,7 @@ public final class HighPowerCurveMigration {
             BigDecimal oldDamage = OLD_DAMAGE.value(position);
             if (before.shieldEnabled() || before.maxHealth().compareTo(oldDamage.multiply(BigDecimal.valueOf(20))) != 0
                     || before.maxShield().compareTo(oldDamage.multiply(BigDecimal.TEN)) != 0) return false;
-            var after = ContinuousHighPowerGrowth.sample(position);
+            var after = CapacityProfile.sample(entity,position);
             converted = new ExactCombatState(rescale(before.health(), before.maxHealth(), after.maxHealth()), after.maxHealth(),
                     rescale(before.shield(), before.maxShield(), after.maxShield()), after.maxShield(), false);
             if (old.contains("pendingLethalHealth")) {
@@ -68,27 +68,25 @@ public final class HighPowerCurveMigration {
             } else pending = null;
         } catch (IllegalArgumentException invalid) { return false; }
 
-        // The approved curve change rebuilds specialized shield allocations and transient leases.
-        // Preserve the complete original checkpoint, including those allocations, for recovery.
+        CompoundTag next = old.copy();
+        try {
+            CapacityProfile.resizeShields(entity, old, next, CombatAmounts.parse(old.getString("shield"),"shield"),
+                    CombatAmounts.parse(old.getString("maxShield"),"maximum shield"), converted.maxShield());
+        } catch (IllegalArgumentException invalid) { return false; }
         CompoundTag backup = new CompoundTag();
         backup.put("combat", old.copy());
         if (parent.contains(HighPowerNaturalRecovery.DATA_KEY))
             backup.put("naturalRecovery", parent.get(HighPowerNaturalRecovery.DATA_KEY).copy());
-        CompoundTag next = new CompoundTag();
         converted.toDecimalMap().forEach(next::putString);
         next.putInt("level", level); next.putInt("earnedLevel", level);
         next.putInt("growthCurve", ContinuousHighPowerGrowth.CURVE_VERSION);
         next.putString("growthPosition", position.toPlainString());
-        // Never turn a balance migration into approval of an old native adapter contract.
-        if (old.contains("adapterContract", Tag.TAG_STRING)) next.putString("adapterContract", old.getString("adapterContract"));
-        if (old.contains("activeGrowth", Tag.TAG_COMPOUND)) next.put("activeGrowth", old.getCompound("activeGrowth").copy());
-        next.putBoolean("bracerActive", false);
-        next.putLong("lastShieldSpend", entity.level().getGameTime());
-        next.putLong("lastShieldTick", Long.MIN_VALUE);
+        CapacityProfile.mark(next, CapacityProfile.protectedFor(entity));
+        if (!next.contains("lastShieldSpend")) next.putLong("lastShieldSpend", entity.level().getGameTime());
+        if (!next.contains("lastShieldTick")) next.putLong("lastShieldTick", Long.MIN_VALUE);
         if (pending != null) next.putString("pendingLethalHealth", pending.toPlainString());
         parent.put(BACKUP_KEY, backup);
         parent.put(HighPowerCombat.DATA_KEY, next);
-        parent.remove(HighPowerNaturalRecovery.DATA_KEY);
         HighPowerCombat.curveMigrated(entity, converted);
         if (entity instanceof ServerPlayer player) {
             // CP, cooldowns, learned skills and certified/active coordinates retain their own data.

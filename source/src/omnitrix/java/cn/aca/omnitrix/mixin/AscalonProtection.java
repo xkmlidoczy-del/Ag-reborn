@@ -42,7 +42,7 @@ abstract class AscalonProtection {
 
     @Inject(method = "getHealth", at = @At("RETURN"), cancellable = true)
     private void omnitrix$ascalonGetHealth(CallbackInfoReturnable<Float> cir) {
-        if ((Object) this instanceof Player p && AscalonService.isProtected(p)) {
+        if ((Object) this instanceof Player p && AscalonService.isProtected(p) && !cn.aca.omnitrix.AcademyInterop.nativeCapacity(p)) {
             float max = getMaxHealth();
             if (max > 0f && (Float.isNaN(cir.getReturnValueF()) || cir.getReturnValueF() < max)) {
                 cir.setReturnValue(max);
@@ -54,7 +54,9 @@ abstract class AscalonProtection {
     private void omnitrix$ascalonHealthLock(float health, CallbackInfo ci) {
         if ((Object) this instanceof Player p && AscalonService.isProtected(p)) {
             float max = getMaxHealth();
-            if (max > 0f && (Float.isNaN(health) || health < max)) {
+            if (cn.aca.omnitrix.AcademyInterop.adjustingCapacity(p)) return;
+            float minimum = cn.aca.omnitrix.AcademyInterop.nativeCapacity(p) ? p.getHealth() : max;
+            if (minimum > 0f && (Float.isNaN(health) || health < minimum)) {
                 ci.cancel();
             }
         }

@@ -7,6 +7,8 @@ import net.minecraft.world.phys.Vec3;
 
 final class SkillCast {
     final WristNetwork.Performance motion;
+    final Form form;
+    final Kind kind;
     final Vec3 direction;
     final UUID target;
     final Set<UUID> hit = new HashSet<>();
@@ -15,8 +17,10 @@ final class SkillCast {
     int lastFlags;
     Vec3 previousDivePosition;
 
-    SkillCast(int code, int style, long now, int[] beats, int recovery, Vec3 origin, Vec3 focus,
+    SkillCast(Form form, Kind kind, int code, int style, long now, int[] beats, int recovery, Vec3 origin, Vec3 focus,
               Vec3 direction, UUID target) {
+        this.form = form;
+        this.kind = kind;
         this.beats = beats;
         this.direction = direction;
         this.target = target;

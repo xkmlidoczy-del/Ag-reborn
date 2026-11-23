@@ -93,7 +93,7 @@ public enum Form {
     public double attack(Kind kind) {
         if (this == ALIEN_X) return kind == Kind.CELESTIAL ? 15_000_000 : 85_000;
         if (kind == Kind.CELESTIAL) return attack * 14.0; // ~16,800 - 53,200 melee
-        return kind == Kind.CARNITRIX ? attack * 1.6 : attack;
+        return Math.round((kind == Kind.CARNITRIX ? attack * 1.6 : attack) / 160.0);
     }
 
     public double knockbackResistance(Kind kind) {
@@ -123,7 +123,7 @@ public enum Form {
                 case ALIEN_X -> 1_000_000_000;
             };
         }
-        return kind == Kind.CARNITRIX ? baseBarrier * 1.65 : baseBarrier;
+        return Math.round((kind == Kind.CARNITRIX ? baseBarrier * 1.65 : baseBarrier) / 4_000.0);
     }
 
     public String tierLabel(Kind kind) {

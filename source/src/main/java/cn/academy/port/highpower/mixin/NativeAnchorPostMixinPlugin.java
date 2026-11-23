@@ -111,10 +111,29 @@ public final class NativeAnchorPostMixinPlugin implements IMixinConfigPlugin {
         if (node == null || !HOOKS.equals(node.name)) return false;
         MethodNode method = unique(node, "onLivingDamagePost", POST_DESC);
         if (method == null || method.access != (Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC) || !method.tryCatchBlocks.isEmpty()) return false;
-        List<AbstractInsnNode> code = code(method);
+        List<AbstractInsnNode> code = nativeEventCode(node, method);
         return code.size() == 9 && eventConstruction(code)
                 && invocation(code.get(6), Opcodes.INVOKEINTERFACE, BUS, "post", BUS_DESC, true)
                 && opcode(code.get(7), Opcodes.POP) && opcode(code.get(8), Opcodes.RETURN);
+    }
+
+    /** The bundled combat integration observes settlement before NeoForge constructs the genuine Post. */
+    private static List<AbstractInsnNode> nativeEventCode(ClassNode owner, MethodNode host) {
+        var instructions = code(host);
+        if (instructions.size() < 4 || !variable(instructions.get(0), Opcodes.ALOAD, 0)
+                || !variable(instructions.get(1), Opcodes.ALOAD, 1) || !opcode(instructions.get(2), Opcodes.ACONST_NULL)
+                || !(instructions.get(3) instanceof MethodInsnNode call) || call.getOpcode() != Opcodes.INVOKESTATIC
+                || !call.owner.equals(owner.name) || !call.name.endsWith("$academy$settled")
+                || !call.desc.equals("(" + ARGS + "Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V")) return instructions;
+        var observer = unique(owner, call.name, call.desc);
+        if (observer == null || observer.access != (Opcodes.ACC_PRIVATE | Opcodes.ACC_STATIC) || !observer.tryCatchBlocks.isEmpty()) return instructions;
+        var body = code(observer);
+        if (body.size() != 7 || !variable(body.get(0), Opcodes.ALOAD, 0) || !variable(body.get(1), Opcodes.ALOAD, 1)
+                || !invocation(body.get(2), Opcodes.INVOKESTATIC, "cn/academy/port/highpower/CapBreak", "settled", POST_DESC, false)
+                || !variable(body.get(3), Opcodes.ALOAD, 0) || !variable(body.get(4), Opcodes.ALOAD, 1)
+                || !invocation(body.get(5), Opcodes.INVOKESTATIC, "cn/academy/port/api/CombatReceipt", "nativePost", POST_DESC, false)
+                || !opcode(body.get(6), Opcodes.RETURN)) return instructions;
+        return instructions.subList(4, instructions.size());
     }
 
     private static boolean nativeDamageSiteSupported(ClassNode node) {
@@ -199,7 +218,7 @@ public final class NativeAnchorPostMixinPlugin implements IMixinConfigPlugin {
         if (count(host, living ? HOOKS : BUS, living ? "onLivingDamagePost" : "post", living ? POST_DESC : BUS_DESC) != 0) return false;
         if (!living) {
             // Apart from generated argument spills and the callback, the native hook is still exact.
-            List<AbstractInsnNode> code = code(host);
+            List<AbstractInsnNode> code = nativeEventCode(node, host);
             if (code.size() != 16 || !eventConstruction(code)
                     || !(code.get(6) instanceof VarInsnNode eventStore) || eventStore.getOpcode() != Opcodes.ASTORE || eventStore.var < 2
                     || !(code.get(7) instanceof VarInsnNode busStore) || busStore.getOpcode() != Opcodes.ASTORE || busStore.var < 2 || eventStore.var == busStore.var

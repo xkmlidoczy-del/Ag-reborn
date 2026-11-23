@@ -20,7 +20,12 @@ import java.util.function.Consumer;
 
 /** Source uses system AWT fonts, not Minecraft's bitmap font. No third-party/proprietary TTF is copied. */
 final class ClassicHudFont {
-    private static final int FONT_SIZE=24,CHAR_SIZE=(int)(FONT_SIZE*1.4);
+    private static final int FONT_SIZE=24;
+    static final int CHAR_SIZE=(int)(FONT_SIZE*1.4);
+    record Raster(BufferedImage image,int advance) {}
+    private final TerminalGlyphAtlas atlas;
+    ClassicHudFont(){this(false);}
+    ClassicHudFont(boolean batch){atlas=batch?new TerminalGlyphAtlas(this,this::nextTextureLocation):null;}
     private record Glyph(ResourceLocation texture,int width){}
     private final Map<Integer,Glyph> normalGlyphs=new HashMap<>(),boldGlyphs=new HashMap<>();
     private Font normal,bold;
@@ -33,16 +38,29 @@ final class ClassicHudFont {
     void use(String requested){
         if(requested.equals(preference))return;release();preference=requested;
         try{
-            var installed=GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();String name=null;
-            for(String candidate:new String[]{requested,"微软雅黑","Microsoft YaHei","SimHei","Adobe Heiti Std R"}){
-                for(Font font:installed)if(font.getName().equalsIgnoreCase(candidate)){name=candidate;break;}
-                if(name!=null)break;
-            }
-            normal=new Font(name,Font.PLAIN,FONT_SIZE);bold=normal.deriveFont(Font.BOLD);disabled=false;
+            normal = SYSTEM_FONTS.computeIfAbsent(requested, ClassicHudFont::resolveFont);
+            bold = normal.deriveFont(Font.BOLD);
+            disabled = false;
         }catch(RuntimeException|LinkageError exception){disabled=true;LogUtils.getLogger().warn("System font unavailable; classic HUD will use the Minecraft font",exception);}
+    }
+    // Font discovery touches the platform font manager. All original terminal/HUD instances use the
+    // same face for a given preference, including across play sessions.
+    private static final Map<String, Font> SYSTEM_FONTS = new HashMap<>();
+    private static Font resolveFont(String requested) {
+        var installed = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
+        for (String candidate : new String[]{requested, "微软雅黑", "Microsoft YaHei", "SimHei", "Adobe Heiti Std R"}) {
+            for (Font face : installed) {
+                if (face.getName().equalsIgnoreCase(candidate)) return new Font(candidate, Font.PLAIN, FONT_SIZE);
+            }
+        }
+        return new Font(null, Font.PLAIN, FONT_SIZE);
+    }
+    void preload(String text) {
+        if (atlas != null && !disabled) atlas.preload(text);
     }
     double width(String text,double size,boolean bold){
         if(disabled)return Minecraft.getInstance().font.width(text)*size/12;
+        if(atlas!=null)return atlas.width(text,size,bold);
         return text.codePoints().map(cp->glyph(cp,bold).width()).sum()*size/CHAR_SIZE;
     }
     void draw(ClassicHudCanvas canvas,String text,double x,double y,double size,ClassicHudTimeline.Rgba color,boolean bold,boolean mono){
@@ -51,17 +69,22 @@ final class ClassicHudFont {
         if(disabled){canvas.minecraftText(text,x,y,size,color);return;}
         // LambdaLib TrueTypeFont disables alpha testing; vanilla GUI shader discards alpha < .1.
         ShaderInstance shader=mono?ClassicHudShaders.mono:ClassicHudShaders.font;
+        if(atlas!=null){atlas.draw(canvas.pose(),text,x,y,size,color,bold,shader);return;}
         for(int cp:text.codePoints().toArray()){
             Glyph glyph=glyph(cp,bold);canvas.rect(glyph.texture(),x,y,size,size,0,0,1,1,color,shader,null);x+=glyph.width()*size/CHAR_SIZE;
         }
     }
+    Raster rasterize(int key, boolean isBold){
+        BufferedImage image=new BufferedImage(CHAR_SIZE,CHAR_SIZE,BufferedImage.TYPE_INT_ARGB);var g=image.createGraphics();
+        g.setFont(isBold?bold:normal);g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+        var metrics=g.getFontMetrics();int width=metrics.charWidth(key);g.setBackground(new Color(255,255,255,0));g.clearRect(0,0,CHAR_SIZE,CHAR_SIZE);
+        g.setColor(Color.WHITE);g.drawString(new String(Character.toChars(key)),3,1+metrics.getAscent());g.dispose();
+        return new Raster(image,width);
+    }
     private Glyph glyph(int cp,boolean isBold){
         Map<Integer,Glyph> cache=isBold?boldGlyphs:normalGlyphs;
         return cache.computeIfAbsent(cp,key->{
-            BufferedImage image=new BufferedImage(CHAR_SIZE,CHAR_SIZE,BufferedImage.TYPE_INT_ARGB);var g=image.createGraphics();
-            g.setFont(isBold?bold:normal);g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-            var metrics=g.getFontMetrics();int width=metrics.charWidth(key);g.setBackground(new Color(255,255,255,0));g.clearRect(0,0,CHAR_SIZE,CHAR_SIZE);
-            g.setColor(Color.WHITE);g.drawString(new String(Character.toChars(key)),3,1+metrics.getAscent());g.dispose();
+            var raster=rasterize(key,isBold);BufferedImage image=raster.image();int width=raster.advance();
             NativeImage pixels=new NativeImage(CHAR_SIZE,CHAR_SIZE,false);
             for(int y=0;y<CHAR_SIZE;y++)for(int x=0;x<CHAR_SIZE;x++){
                 int argb=image.getRGB(x,y);pixels.setPixelRGBA(x,y,(argb&0xff00ff00)|((argb>>>16)&255)|((argb&255)<<16));
@@ -81,6 +104,7 @@ final class ClassicHudFont {
     }
     void release(){releaseGlyphs(Minecraft.getInstance().getTextureManager()::release);}
     private void releaseGlyphs(Consumer<ResourceLocation> release){
+        if(atlas!=null)atlas.release(release);
         normalGlyphs.values().forEach(g->release.accept(g.texture()));boldGlyphs.values().forEach(g->release.accept(g.texture()));normalGlyphs.clear();boldGlyphs.clear();
     }
     String resolvedName(){return disabled?"Minecraft font fallback":normal==null?"not initialized":normal.getName();}

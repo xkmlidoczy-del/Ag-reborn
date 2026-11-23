@@ -24,7 +24,18 @@ public final class HighPowerRecoveryHudModel {
                          String exactHpPerSecond, int pulseTicks, int ticksUntilPulse, int pauseTicksRemaining,
                          boolean shieldActive, String domainReserve, String domainCapacity, boolean domainActive, String category,
                          String curtainReserve, String curtainCapacity, boolean curtainActive,
+                         String zeroGapReserve, String zeroGapCapacity, boolean zeroGapActive,
+                         String dnaShield, String dnaCapacity, String absorption, boolean superArmor) {
+        public Values(String health, String maxHealth, String shield, String maxShield, String status,
+                         String exactHpPerSecond, int pulseTicks, int ticksUntilPulse, int pauseTicksRemaining,
+                         boolean shieldActive, String domainReserve, String domainCapacity, boolean domainActive, String category,
+                         String curtainReserve, String curtainCapacity, boolean curtainActive,
                          String zeroGapReserve, String zeroGapCapacity, boolean zeroGapActive) {
+            this(health,maxHealth,shield,maxShield,status,exactHpPerSecond,pulseTicks,ticksUntilPulse,
+                    pauseTicksRemaining,shieldActive,domainReserve,domainCapacity,domainActive,category,
+                    curtainReserve,curtainCapacity,curtainActive,zeroGapReserve,zeroGapCapacity,zeroGapActive,
+                    "0","0","0",shieldActive && decimal(shield).signum() > 0);
+        }
         /** Source-compatible NEW242 snapshots have no NEW252 aggregate reserve. */
         public Values(String health, String maxHealth, String shield, String maxShield, String status,
                       String exactHpPerSecond, int pulseTicks, int ticksUntilPulse, int pauseTicksRemaining,
@@ -51,7 +62,18 @@ public final class HighPowerRecoveryHudModel {
             this(health, maxHealth, shield, maxShield, status, exactHpPerSecond, pulseTicks, ticksUntilPulse,
                     pauseTicksRemaining, shieldActive, domainReserve, domainCapacity, domainActive, "electromaster");
         }
+        public boolean hasDna() { return decimal(dnaCapacity).signum() > 0; }
+        private BigDecimal activeReserve(boolean capacity) {
+            if (zeroGapActive) return decimal(capacity ? zeroGapCapacity : zeroGapReserve);
+            if (curtainActive) return decimal(capacity ? curtainCapacity : curtainReserve);
+            if (domainActive) return decimal(capacity ? domainCapacity : domainReserve);
+            return BigDecimal.ZERO;
+        }
+        public String defense() { return decimal(shield).add(decimal(dnaShield)).add(activeReserve(false)).stripTrailingZeros().toPlainString(); }
+        public String defenseCapacity() { return decimal(maxShield).add(decimal(dnaCapacity)).add(activeReserve(true)).stripTrailingZeros().toPlainString(); }
         public Values {
+            if (decimal(dnaShield).compareTo(decimal(dnaCapacity)) > 0 || decimal(absorption).signum() < 0)
+                throw new IllegalArgumentException("Invalid protection layer");
             if (!hudCategory(category)) throw new IllegalArgumentException("Unsupported high-power HUD category");
             if (!"electromaster".equals(category) && (domainActive
                     || decimal(domainReserve).signum() != 0 || decimal(domainCapacity).signum() != 0))
@@ -93,6 +115,7 @@ public final class HighPowerRecoveryHudModel {
         public double pulseRatio() { return pulseTicks == 0 ? 0 : clamp((pulseTicks - ticksUntilPulse) / (double)pulseTicks); }
         public boolean healing() { return status.equals("saturated") || status.equals("slow"); }
         public String categoryLabel() { return switch (category) {
+            case "equipment" -> "DNA";
             case "electromaster" -> "EM";
             case "meltdowner" -> "MD";
             case "teleporter" -> "TP";
@@ -444,11 +467,12 @@ public final class HighPowerRecoveryHudModel {
             LS = new Accent(0xffd6d9e6, 0xff8a8d9c, 0xff7a7f99, 0xffa6adc6);
     /** Classic categories plus the eight canon categories: every category that carries the exact ledger. */
     public static boolean hudCategory(String category) {
-        return "electromaster".equals(category) || "meltdowner".equals(category) || "teleporter".equals(category) || "vecmanip".equals(category)
+        return "equipment".equals(category) || "electromaster".equals(category) || "meltdowner".equals(category) || "teleporter".equals(category) || "vecmanip".equals(category)
                 || cn.academy.port.canon.CanonSkills.knownCategory(category);
     }
     public static Accent accent(String category) {
         return switch (category) {
+            case "equipment" -> VM;
             case "electromaster" -> EM;
             case "meltdowner" -> MD;
             case "teleporter" -> TP;

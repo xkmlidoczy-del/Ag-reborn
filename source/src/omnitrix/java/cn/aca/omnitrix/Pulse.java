@@ -27,9 +27,9 @@ public final class Pulse extends ThrowableProjectile {
             new org.joml.Vector3f(.86f, .92f, 1f), new org.joml.Vector3f(.38f, .24f, .78f), 1.35f);
 
     public enum Variant {
-        FIRE(3_200f, 110_000f, 64, 140, 0, 0, Form.HEATBLAST, false, ParticleTypes.FLAME),
-        CRYSTAL(4_200f, 145_000f, 0, 0, 0, 0, Form.DIAMONDHEAD, true, ParticleTypes.WAX_OFF),
-        SLIME(2_400f, 105_000f, 0, 0, 90, 140, Form.STINKFLY, false, ParticleTypes.ITEM_SLIME);
+        FIRE(20f, 110_000f, 64, 140, 0, 0, Form.HEATBLAST, false, ParticleTypes.FLAME),
+        CRYSTAL(26f, 145_000f, 0, 0, 0, 0, Form.DIAMONDHEAD, true, ParticleTypes.WAX_OFF),
+        SLIME(15f, 105_000f, 0, 0, 90, 140, Form.STINKFLY, false, ParticleTypes.ITEM_SLIME);
 
         final float damage, celestialDamage;
         final int fire, celestialFire, slow, celestialSlow;
@@ -60,10 +60,9 @@ public final class Pulse extends ThrowableProjectile {
 
     public Pulse(EntityType<? extends Pulse> type, Level level) { super(type, level); }
 
-    void initialize(ServerPlayer p, Variant variant, Vec3 from, Vec3 velocity, boolean broad, float fraction, long markSource) {
+    void initialize(ServerPlayer p, Kind kind, Variant variant, Vec3 from, Vec3 velocity, boolean broad, float fraction, long markSource) {
         setOwner(p);
         entityData.set(MODE, variant.ordinal());
-        Kind kind = Omnitrix.wrist(p).kind();
         entityData.set(WATCH_KIND, kind == null ? 0 : kind.ordinal());
         setPos(from);
         setDeltaMovement(velocity);
@@ -74,8 +73,31 @@ public final class Pulse extends ThrowableProjectile {
     }
 
     private boolean current(ServerPlayer p) {
-        return p.isAlive() && p.level() == level() && p.hasData(Omnitrix.WRIST)
-                && Omnitrix.wrist(p).stage == Wrist.Stage.ACTIVE && Omnitrix.wrist(p).began == formStart;
+        return p.isAlive() && p.level() == level();
+    }
+
+    private boolean pHasOriginalForm(ServerPlayer player) {
+        return player.hasData(Omnitrix.WRIST) && Omnitrix.wrist(player).began == formStart;
+    }
+
+    @Override protected void addAdditionalSaveData(net.minecraft.nbt.CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putInt("variant", variant().ordinal());
+        tag.putInt("watch", watchKind().ordinal());
+        tag.putBoolean("broad", broad);
+        tag.putFloat("fraction", fraction);
+        tag.putLong("start", formStart);
+        tag.putLong("mark", markSource);
+    }
+
+    @Override protected void readAdditionalSaveData(net.minecraft.nbt.CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        entityData.set(MODE, tag.getInt("variant"));
+        entityData.set(WATCH_KIND, tag.getInt("watch"));
+        broad = tag.getBoolean("broad");
+        fraction = tag.contains("fraction") ? tag.getFloat("fraction") : 1;
+        formStart = tag.getLong("start");
+        markSource = tag.contains("mark") ? tag.getLong("mark") : Long.MIN_VALUE;
     }
 
     @Override protected void defineSynchedData(SynchedEntityData.Builder builder) {
@@ -141,7 +163,7 @@ public final class Pulse extends ThrowableProjectile {
             directHit = target;
             if (Abilities.damage(player, target, dmg, getDeltaMovement(), .56 * fraction, burn, slowTicks)) {
                 hitLiving = true;
-                if (markSource != Long.MIN_VALUE) Abilities.projectileMarked(player, markSource, target);
+                if (markSource != Long.MIN_VALUE && pHasOriginalForm(player)) Abilities.projectileMarked(player, markSource, target);
             }
         }
 
@@ -156,7 +178,7 @@ public final class Pulse extends ThrowableProjectile {
                     e -> e != hitTarget && e.distanceToSqr(at) <= splashR * splashR && Abilities.validTarget(player, e, broad))) {
                 if (Abilities.damage(player, nearby, splashDmg, nearby.position().subtract(at), .35, burn / 2, slowTicks)) {
                     hitLiving = true;
-                    if (markSource != Long.MIN_VALUE) Abilities.projectileMarked(player, markSource, nearby);
+                    if (markSource != Long.MIN_VALUE && pHasOriginalForm(player)) Abilities.projectileMarked(player, markSource, nearby);
                 }
             }
         }

@@ -11,6 +11,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntity.class)
 abstract class LivingSetHealthMixin {
+    @Inject(method = "readAdditionalSaveData", at = @At("HEAD"))
+    private void academy$captureLegacyEquipmentHealth(net.minecraft.nbt.CompoundTag save, CallbackInfo ci) {
+        if ((Object)this instanceof net.minecraft.server.level.ServerPlayer player)
+            cn.academy.port.highpower.CapacityProfile.captureLoadedVitals(player, save);
+    }
+
     @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
     private void academy$friendlySource(
             net.minecraft.world.damagesource.DamageSource source,

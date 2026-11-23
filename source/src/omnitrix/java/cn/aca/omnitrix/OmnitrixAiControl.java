@@ -188,10 +188,10 @@ public final class OmnitrixAiControl {
         // Living targets without a mob AI can still receive the form's disruption.
         if (galvanic) {
             inflictParalysis(master, target, celestial ? 95 : 70, true);
-            OmnitrixDamage.hit(master, target, celestial ? 145_000f : 3_400f, true);
+            OmnitrixDamage.hit(master, target, celestial ? 145_000f : 21f, true);
         } else {
             inflictTerror(master, target, celestial ? 90 : 65);
-            OmnitrixDamage.hit(master, target, celestial ? 135_000f : 3_000f, true);
+            OmnitrixDamage.hit(master, target, celestial ? 135_000f : 19f, true);
         }
         return true;
     }
@@ -418,7 +418,7 @@ public final class OmnitrixAiControl {
                     double baseAtk = attribute == null ? 0 : attribute.getValue();
                     if (baseAtk <= 1.0) baseAtk = 6.0;
                     float strikeDmg = (float) Math.max(baseAtk * (st.celestialPuppet ? 3.5 : 1.55),
-                            st.celestialPuppet ? 85_000f : 3_200f);
+                            st.celestialPuppet ? 85_000f : 20f);
                     boolean hit = master != null
                             ? OmnitrixDamage.hit(master, rival, strikeDmg, st.celestialPuppet)
                             : AcademyInterop.hurt(rival, mob.damageSources().mobAttack(mob), strikeDmg);

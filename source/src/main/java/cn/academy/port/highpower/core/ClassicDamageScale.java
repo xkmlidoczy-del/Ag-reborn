@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 /**
  * Converts classic damage (railgun 60-110, thunderclap 36-86, arc 5-9) to the enrolled
  * esper's damage unit: original amount times D divided by {@link #DEFAULT_DIVISOR}.
- * A mastered railgun is 2.2D, including 22 at LV1. A raw-damage floor would defeat
+ * A mastered railgun is 2.2D, including 11 at ordinary LV1. A raw-damage floor would defeat
  * the rebalance below D=50; valid scaling therefore permits smaller positive hits.
  */
 public final class ClassicDamageScale {

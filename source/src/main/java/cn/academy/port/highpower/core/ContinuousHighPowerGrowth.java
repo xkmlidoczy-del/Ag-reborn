@@ -25,7 +25,7 @@ import java.util.Objects;
  */
 public final class ContinuousHighPowerGrowth {
     /** Change when balance anchors or interpolation semantics change, for persisted checkpoints. */
-    public static final int CURVE_VERSION = 2;
+    public static final int CURVE_VERSION = 3;
     public static final int OUTPUT_PRECISION = 40;
     public static final int MAX_INPUT_PRECISION = 64;
     public static final int MAX_INPUT_SCALE = 256;
@@ -46,7 +46,15 @@ public final class ContinuousHighPowerGrowth {
     private static final int SERIES_TERMS = 96;
     private static final int MAX_EXP_HALVINGS = 13;
 
-    private static final Curve DAMAGE = curve("10", "178", "3162", "56234", "1000000");
+    private static final Curve LEGACY = curve("10", "178", "3162", "56234", "1000000");
+
+    private static final Curve POWER = presets(HighPowerLevel::damage);
+    private static final Curve HEALTH = presets(HighPowerLevel::maxHealth);
+    private static final Curve SHIELD = presets(HighPowerLevel::maxShield);
+
+    private static Curve presets(java.util.function.Function<HighPowerLevel, BigDecimal> field) {
+        return curve(java.util.Arrays.stream(HighPowerLevel.values()).map(field).toArray(BigDecimal[]::new));
+    }
 
     private ContinuousHighPowerGrowth() {}
 
@@ -89,13 +97,14 @@ public final class ContinuousHighPowerGrowth {
 
     public static Snapshot sample(BigDecimal position) {
         BigDecimal q = clampPosition(position);
-        BigDecimal damage = DAMAGE.value(q);
-        // Pool ratios remain exact in the decimal ledger; never round an amount to integer units.
-        BigDecimal health = CombatAmounts.requirePositiveAmount(
-                damage.multiply(BigDecimal.valueOf(20)).min(CombatAmounts.CAP), "growth health");
-        BigDecimal shield = CombatAmounts.requirePositiveAmount(
-                damage.multiply(BigDecimal.TEN).min(CombatAmounts.CAP), "growth shield");
-        return new Snapshot(q, damage, health, shield);
+        return new Snapshot(q, POWER.value(q), HEALTH.value(q), SHIELD.value(q));
+    }
+
+    /** Protected equipment changes capacity only. Ordinary Academy casts retain their own power. */
+    public static Snapshot protectedCapacity(BigDecimal position) {
+        BigDecimal q = clampPosition(position);
+        BigDecimal old = LEGACY.value(q);
+        return new Snapshot(q, POWER.value(q), old.multiply(BigDecimal.valueOf(20)), old.multiply(BigDecimal.TEN));
     }
 
     /** Five LV1..LV5 positive anchors. Increasing, decreasing and flat sequences are supported. */

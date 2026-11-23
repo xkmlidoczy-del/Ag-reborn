@@ -30,7 +30,7 @@ public final class TitanProfiles {
             };
         }
         public java.math.BigDecimal damageUnit() {
-            return cn.academy.port.highpower.core.HighPowerLevel.forLevel(tier()).damage();
+            return java.math.BigDecimal.valueOf(tier() == 3 ? 3_162 : 56_234);
         }
         public double meleeAttack() {
             return attack() * damageUnit().doubleValue() / 6;

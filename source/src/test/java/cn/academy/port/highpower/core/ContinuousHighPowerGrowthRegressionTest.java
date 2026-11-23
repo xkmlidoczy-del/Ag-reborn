@@ -22,8 +22,8 @@ public final class ContinuousHighPowerGrowthRegressionTest {
     }
 
     private static void exactAnchorsAndLevelBoundaries() {
-        truth(ContinuousHighPowerGrowth.CURVE_VERSION == 2, "rebalance invalidates the old curve schema");
-        String[] expected = {"10", "178", "3162", "56234", "1000000"};
+        truth(ContinuousHighPowerGrowth.CURVE_VERSION == 3, "rebalance invalidates the old curve schema");
+        String[] expected = {"5", "8", "12", "18", "24"};
         for (int level = 1; level <= 5; level++) {
             var actual = ContinuousHighPowerGrowth.sample(level, 0);
             var preset = HighPowerLevel.forLevel(level);
@@ -41,8 +41,8 @@ public final class ContinuousHighPowerGrowthRegressionTest {
         for (double progress : new double[] {0, 0.0001, 0.5, 1, Double.MAX_VALUE, Double.NaN}) {
             truth(top.equals(ContinuousHighPowerGrowth.sample(5, progress)), "LV5 fixed upper endpoint");
         }
-        eq(bd("20000000"), top.maxHealth(), "LV5 HP is twenty damage units");
-        eq(bd("10000000"), top.maxShield(), "LV5 shield is ten damage units");
+        eq(bd("100"), top.maxHealth(), "LV5 native health");
+        eq(bd("50"), top.maxShield(), "LV5 base shield");
     }
 
     private static void inputClampsAndCorruption() {
@@ -74,8 +74,9 @@ public final class ContinuousHighPowerGrowthRegressionTest {
             truth(current.damage().compareTo(previous.damage()) > 0, "strictly increasing damage at q=" + q);
             truth(current.maxHealth().compareTo(previous.maxHealth()) > 0, "strictly increasing health");
             truth(current.maxShield().compareTo(previous.maxShield()) > 0, "strictly increasing shield");
-            eq(current.damage().multiply(bd("20")), current.maxHealth(), "exact continuous HP ratio");
-            eq(current.damage().multiply(BigDecimal.TEN), current.maxShield(), "exact continuous shield ratio");
+            var protectedCapacity=ContinuousHighPowerGrowth.protectedCapacity(q);
+            eq(current.damage(),protectedCapacity.damage(),"gear does not change Academy skills");
+            eq(protectedCapacity.maxShield().multiply(BigDecimal.TWO),protectedCapacity.maxHealth(),"protected legacy capacity");
             truth(current.maxHealth().compareTo(CombatAmounts.CAP) <= 0, "global cap never exceeded");
             truth(current.damage().precision() <= ContinuousHighPowerGrowth.OUTPUT_PRECISION,
                     "bounded output significant digits");

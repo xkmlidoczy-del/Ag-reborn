@@ -36,9 +36,8 @@ public final class HighPowerRecoveryHudPayload {
         Sender(ServerPlayer player) { level = player.level(); connection = player.connection; }
     }
     public record Snapshot(HighPowerRecoveryHudModel.Identity identity, HighPowerRecoveryHudModel.Values values) implements CustomPacketPayload {
-        // v5's enum rejects TP. A distinct optional channel negotiates support before
-        // any TP value is sent; older clients retain the native/actionbar fallback.
-        public static final Type<Snapshot> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath("academy", "hp_recovery_hud_v6"));
+        // Negotiate independent shield layers before sending this wire format.
+        public static final Type<Snapshot> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath("academy", "hp_recovery_hud_v7"));
         public static final StreamCodec<RegistryFriendlyByteBuf, Snapshot> CODEC = StreamCodec.of((buffer, packet) -> {
             var id = packet.identity;
             buffer.writeUUID(id.owner()); buffer.writeInt(id.entity()); buffer.writeUtf(id.dimension(), 128);
@@ -52,15 +51,19 @@ public final class HighPowerRecoveryHudPayload {
                 text(buffer, value.domainReserve()); text(buffer, value.domainCapacity()); buffer.writeBoolean(value.domainActive()); buffer.writeUtf(value.category(), 24);
                 text(buffer,value.curtainReserve()); text(buffer,value.curtainCapacity()); buffer.writeBoolean(value.curtainActive());
                 text(buffer,value.zeroGapReserve()); text(buffer,value.zeroGapCapacity()); buffer.writeBoolean(value.zeroGapActive());
+                text(buffer,value.dnaShield()); text(buffer,value.dnaCapacity()); text(buffer,value.absorption()); buffer.writeBoolean(value.superArmor());
             }
         }, buffer -> {
             var id = new HighPowerRecoveryHudModel.Identity(buffer.readUUID(), buffer.readInt(), buffer.readUtf(128), buffer.readLong(), buffer.readLong());
             var value = buffer.readBoolean() ? new HighPowerRecoveryHudModel.Values(text(buffer), text(buffer), text(buffer), text(buffer),
-                    buffer.readUtf(24), text(buffer), buffer.readVarInt(), buffer.readVarInt(), buffer.readVarInt(), buffer.readBoolean(), text(buffer), text(buffer), buffer.readBoolean(), buffer.readUtf(24), text(buffer), text(buffer), buffer.readBoolean(), text(buffer), text(buffer), buffer.readBoolean()) : null;
+                    buffer.readUtf(24), text(buffer), buffer.readVarInt(), buffer.readVarInt(), buffer.readVarInt(), buffer.readBoolean(), text(buffer), text(buffer), buffer.readBoolean(), buffer.readUtf(24), text(buffer), text(buffer), buffer.readBoolean(), text(buffer), text(buffer), buffer.readBoolean(), text(buffer), text(buffer), text(buffer), buffer.readBoolean()) : null;
             return new Snapshot(id, value);
         });
         public Snapshot { if (identity == null) throw new IllegalArgumentException("Missing recovery HUD owner"); }
         @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
+    }
+    private static String decimal(double value) {
+        return java.math.BigDecimal.valueOf(value).stripTrailingZeros().toPlainString();
     }
     private static void text(RegistryFriendlyByteBuf buffer, String value) { buffer.writeUtf(value, CombatAmounts.MAX_ENCODED_LENGTH); }
     private static String text(RegistryFriendlyByteBuf buffer) { return buffer.readUtf(CombatAmounts.MAX_ENCODED_LENGTH); }
@@ -94,6 +97,7 @@ public final class HighPowerRecoveryHudPayload {
             boolean meltdowner = HighPowerCategories.isMeltdowner(category);
             boolean shieldCategory = electromaster || meltdowner || EsperShields.eligible(player) || HighPowerCombat.vectorParryBenefitsActive(player);
             boolean zeroGap = meltdowner && HighPowerCombat.zeroGapBenefitsActive(player);
+            var dna = CapacityProfile.wristShield(player);
             value = snapshot.map(s -> new HighPowerRecoveryHudModel.Values(s.health(), s.maxHealth(),
                     shieldCategory ? s.shield() : "0", shieldCategory ? s.maxShield() : "0", s.status(),
                     s.exactHpPerSecond(), s.pulseTicks(), s.ticksUntilPulse(), s.pauseTicksRemaining(), shieldCategory && HighPowerCombat.shieldActive(player),
@@ -105,7 +109,16 @@ public final class HighPowerRecoveryHudPayload {
                     meltdowner && DissipationCurtain.active(player),
                     zeroGap ? CombatAmounts.decimalString(HighPowerCombat.zeroGapReserve(player)) : "0",
                     zeroGap ? CombatAmounts.decimalString(HighPowerCombat.zeroGapReserveCapacity(player)) : "0",
-                    zeroGap && ZeroGapArmor.active(player))).orElse(null);
+                    zeroGap && ZeroGapArmor.active(player), java.math.BigDecimal.valueOf(dna.current()).stripTrailingZeros().toPlainString(),
+                    java.math.BigDecimal.valueOf(dna.maximum()).stripTrailingZeros().toPlainString(),
+                    new java.math.BigDecimal(Float.toString(player.getAbsorptionAmount())).stripTrailingZeros().toPlainString(),
+                    PlayerShieldArmor.holding(player) || PlayerShieldArmor.contacting(player))).orElseGet(() -> {
+                if(dna.maximum()<=0) return null;
+                return new HighPowerRecoveryHudModel.Values(decimal(player.getHealth()),decimal(player.getMaxHealth()),
+                        "0","0","inactive","0",0,0,0,false,"0","0",false,"equipment",
+                        "0","0",false,"0","0",false,decimal(dna.current()),decimal(dna.maximum()),
+                        decimal(player.getAbsorptionAmount()),PlayerShieldArmor.holding(player));
+            });
         } catch (IllegalArgumentException invalidSnapshot) {
             value = null; // Malformed presentation state cannot poison gameplay or advertise stale health.
         }
@@ -122,7 +135,7 @@ public final class HighPowerRecoveryHudPayload {
     @EventBusSubscriber(modid = "academy", bus = EventBusSubscriber.Bus.MOD)
     public static final class Network {
         @SubscribeEvent public static void register(RegisterPayloadHandlersEvent event) {
-            event.registrar("6").optional().playToClient(Snapshot.TYPE, Snapshot.CODEC, (packet, context) -> clientReceiver.accept(packet));
+            event.registrar("7").optional().playToClient(Snapshot.TYPE, Snapshot.CODEC, (packet, context) -> clientReceiver.accept(packet));
         }
     }
     @SubscribeEvent public static void logout(PlayerEvent.PlayerLoggedOutEvent event) { if (event.getEntity() instanceof ServerPlayer player) SENDERS.remove(player); }

@@ -19,7 +19,9 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 public final class CombatNetworkProbe {
   private int age;
   private boolean cast;
-  private Husk subject, puppet;
+  private Husk subject, puppet, dpsTarget;
+  private int casts;
+  private float startingHealth;
 
   public CombatNetworkProbe() {
     NeoForge.EVENT_BUS.addListener(this::tick);
@@ -33,10 +35,29 @@ public final class CombatNetworkProbe {
     if (host == null || viewer == null || ++age > 2400) return;
     var level = server.overworld();
     if (age == 5) {
+      if(host.getPersistentData().getBoolean("qa382Restart")) {
+        if(!cn.academy.port.highpower.HighPowerCombat.enabled(host) || host.getHealth()!=50
+                || host.getMaxHealth()!=100 || !cn.academy.port.highpower.HighPowerCombat.shieldText(host).equals("25"))
+          throw new AssertionError("restart changed injured native player");
+        System.out.println("QA_A382_RESTART_PASS native=50/100 shield=25/50");
+      }
+      // A restarted dedicated world retains the previous run's persistent training targets.
+      level.getChunk(0, 0);
+      level.getChunk(2, 0);
+      for (var old : level.getEntitiesOfClass(Husk.class, new net.minecraft.world.phys.AABB(-5, 95, -5, 45, 106, 16),
+              e -> e.hasCustomName() && java.util.Set.of("ACA-control", "ACA-health", "ACA-sustained").contains(e.getName().getString()))) old.discard();
+      CapacityProfileProbe.run(host);
       for (int x = -8; x <= 8; x++)
         for (int z = -4; z <= 16; z++)
           level.setBlockAndUpdate(new BlockPos(x, 99, z), Blocks.SMOOTH_STONE.defaultBlockState());
       level.setDayTime(18000L);
+      level.getGameRules().getRule(net.minecraft.world.level.GameRules.RULE_NATURAL_REGENERATION).set(false,server);
+      host.setHealth(50);
+      var owned=host.getPersistentData().getCompound(cn.academy.port.highpower.HighPowerCombat.DATA_KEY);
+      owned.putString("shield","25"); owned.putLong("lastShieldSpend",level.getGameTime()+100000);
+      host.getPersistentData().putBoolean("qa382Restart",true);
+      cn.academy.port.AbilityStorage.save(host);
+      cn.academy.port.AcademyNetwork.sync(host);
       host.setGameMode(GameType.SURVIVAL);
       viewer.setGameMode(GameType.SPECTATOR);
       host.teleportTo(level, .5, 100, .5, 0, 0);
@@ -46,7 +67,23 @@ public final class CombatNetworkProbe {
       System.out.println(
           "DUAL_READY " + host.getUUID() + " " + viewer.getUUID() + " " + subject.getUUID());
     }
-    if (!cast && age >= 100 && clientReady("AcaCaster") && clientReady("AcaObserver")) {
+    if (age==15) {
+      dpsTarget=mob(level,"ACA-sustained",.5,4.5);
+      dpsTarget.getAttribute(Attributes.MAX_HEALTH).setBaseValue(1000);
+      dpsTarget.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(1);
+      dpsTarget.getAttribute(Attributes.ARMOR).setBaseValue(0);
+      dpsTarget.setHealth(1000);
+      startingHealth=dpsTarget.getHealth();
+      cn.academy.port.highpower.ElectromasterPrototype.initializeBudget(host);
+    }
+    if (age>=20 && age<220 && cn.academy.port.highpower.ElectromasterPrototype.cast(host)) casts++;
+    if (age==220) {
+      float perSecond=(startingHealth-dpsTarget.getHealth())/10;
+      System.out.println("QA_A382_SUSTAINED dps="+perSecond+" casts="+casts+" ticks=200 health="+dpsTarget.getHealth());
+      if (perSecond < 24 || perSecond > 40) throw new AssertionError("Ten-second sustained damage outside 24–40: " + perSecond);
+      dpsTarget.discard();
+    }
+    if (!cast && age >= 235 && clientReady("AcaCaster") && clientReady("AcaObserver")) {
       cast = true;
       var glove = AcaInfinity.wearer(host);
       glove.gauntlet = InfinityGauntletItem.createFullStack();

@@ -572,7 +572,7 @@ public final class AscalonService {
         p.resetFallDistance();
         p.deathTime = 0;
         p.hurtTime = 0;
-        if (p.getHealth() < p.getMaxHealth()) p.heal(p.getMaxHealth() - p.getHealth());
+        if (!AcademyInterop.nativeCapacity(p) && p.getHealth() < p.getMaxHealth()) p.heal(p.getMaxHealth() - p.getHealth());
         if (state.armored && p.getAbsorptionAmount() < 40f && now % 20 == 0) {
             p.setAbsorptionAmount(40f);
         }
@@ -1249,7 +1249,9 @@ public final class AscalonService {
     }
 
     private static void applyAttributes(ServerPlayer p, boolean armored) {
+        float oldHealth = p.getHealth(), oldMaximum = p.getMaxHealth();
         modify(p, Attributes.MAX_HEALTH, armored ? 100.0 : 0.0, AttributeModifier.Operation.ADD_VALUE);
+        AcademyInterop.changedVitals(p, oldHealth, oldMaximum);
         if (p.getHealth() > p.getMaxHealth()) p.setHealth(p.getMaxHealth());
         modify(p, Attributes.ARMOR, armored ? 100.0 : 0.0, AttributeModifier.Operation.ADD_VALUE);
         modify(p, Attributes.ARMOR_TOUGHNESS, armored ? 100.0 : 0.0, AttributeModifier.Operation.ADD_VALUE);
@@ -1277,7 +1279,11 @@ public final class AscalonService {
         var inst = player.getAttribute(attribute);
         if (inst == null) return;
         inst.removeModifier(MODIFIER);
-        if (amount != 0.0) inst.addTransientModifier(new AttributeModifier(MODIFIER, amount, op));
+        if (amount != 0.0) {
+            var modifier=new AttributeModifier(MODIFIER, amount, op);
+            if (attribute.equals(Attributes.MAX_HEALTH)) inst.addPermanentModifier(modifier);
+            else inst.addTransientModifier(modifier);
+        }
     }
 
     private static void login(PlayerEvent.PlayerLoggedInEvent e) {
