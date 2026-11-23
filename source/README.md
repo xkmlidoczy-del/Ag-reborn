@@ -4,12 +4,19 @@ The [repository README](../README.md) covers build instructions and snapshot sco
 
 ## Local QA on the 16 GiB Mac
 
-Start one scenario at a time from this directory. The runner shares a per-user lock, counts running JDK processes, and waits for normal macOS memory pressure before starting. Use the same runner for game sessions and local builds.
+Ordinary QA jobs may run together. The runner checks macOS memory pressure, estimated available memory, actual CPU load and outstanding reservations before admitting a job. It counts JDK processes started outside the runner as well. Frame-time comparisons take an exclusive group lock. The three roles of a dedicated session use all three local process slots.
+
+| Job on this 12-core M6 | JDK slots | Expected resident MiB | CPU allowance | Scheduling |
+|---|---:|---:|---:|---|
+| Small regression JVM | 1 | 384 | 1 | Shared |
+| Normal single-player benchmark | 1 | 4608 | 4 | Exclusive |
+| Dedicated server and two clients | 3 | 6144 | 6 | Whole process budget |
+| Gradle build | 3 | 2560 | 2 | Whole process budget |
+
+Run from this directory. For example, the local build command is:
 
 ```sh
-python3 qa/local_java_scenario.py --jvms 1 --max-jvms 3 -- <single-player command>
-python3 qa/local_java_scenario.py --jvms 3 --max-jvms 3 -- <dedicated server and both clients command>
-python3 qa/local_java_scenario.py --jvms 3 --max-jvms 3 -- ./gradlew --no-parallel --max-workers=2 --no-daemon jar
+python3 qa/local_java_scenario.py --jvms 3 --memory-mib 2560 --cores 2 -- ./gradlew --no-parallel --max-workers=2 --no-daemon jar
 ```
 
-On the 12-core M6, use a 1536 MiB server heap and two 2048 MiB client heaps for the dedicated checks, with `-XX:ActiveProcessorCount=2` per process. The paired single-player performance runs use the same 4096 MiB heap and four visible CPUs for both builds. Add `--log <file.jsonl>` before the command separator to record sampled process counts and resident memory. Select limits from the available memory on other hosts.
+Wrap a game or test launch command the same way. Use `--exclusive --quiet-java` for frame timings and `--log <file.jsonl>` to record sampled JDK process counts and resident memory. The log distinguishes this job’s JVMs from independently started external processes. Both builds of the single-player benchmark use a 4096 MiB heap and four visible CPUs. The dedicated checks use a 1536 MiB server heap and a 2048 MiB heap on each client, with two visible CPUs per process. The memory reservations include native allocations beyond the heap. Select limits based on available memory and CPU on other hosts.
