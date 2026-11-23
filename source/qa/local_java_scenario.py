@@ -105,8 +105,15 @@ def reservation(args):
     prefix.mkdir(mode=0o700, exist_ok=True)
     # The lifetime lock is shared for normal jobs and exclusive for benchmarks.
     with prefix.with_suffix(".lock").open("a") as group, (prefix/"admission.lock").open("a") as admission:
+        group_mode = fcntl.LOCK_EX if args.exclusive else fcntl.LOCK_SH
         while True:
-            fcntl.flock(group, fcntl.LOCK_EX if args.exclusive else fcntl.LOCK_SH)
+            # Recheck shared admission after a long exclusive run. Darwin can
+            # leave a compatible reader queued behind the first woken reader.
+            try:
+                fcntl.flock(group, group_mode | fcntl.LOCK_NB)
+            except BlockingIOError:
+                time.sleep(0.5)
+                continue
             fcntl.flock(admission, fcntl.LOCK_EX)
             try:
                 jobs = active_leases(prefix)
