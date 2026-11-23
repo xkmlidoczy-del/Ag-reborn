@@ -3984,5 +3984,14 @@
   "academy.city_map.position": "Position",
   "academy.city_map.surface": "Surface view of loaded terrain; indoors and underground may be obscured.",
   "academy.city_map.hide": "Hide map",
-  "attribute.name.academy.ability_power": "Skill Power"
+  "attribute.name.academy.ability_power": "Skill Power",
+  "block.academy.fish_computer": "Fish Computer",
+  "menu.academy.fish_computer.header": "ACA Terminal",
+  "menu.academy.fish_computer.variant": "Portrait  %s",
+  "menu.academy.fish_computer.facing": "Facing viewer",
+  "menu.academy.fish_computer.hide": "Hide projection",
+  "menu.academy.fish_computer.show": "Show projection",
+  "menu.academy.fish_computer.welcome": "Welcome",
+  "menu.academy.fish_computer.analysis": "Analysis",
+  "menu.academy.fish_computer.thinking": "Thinking"
 }

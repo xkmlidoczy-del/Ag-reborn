@@ -3979,5 +3979,14 @@
   "academy.city_map.position": "当前位置",
   "academy.city_map.surface": "显示已加载区域的地表；室内和地下可能被遮挡。",
   "academy.city_map.hide": "隐藏地图",
-  "attribute.name.academy.ability_power": "技能强度"
+  "attribute.name.academy.ability_power": "技能强度",
+  "block.academy.fish_computer": "鱼形计算者",
+  "menu.academy.fish_computer.header": "ACA 终端",
+  "menu.academy.fish_computer.variant": "当前立绘  %s",
+  "menu.academy.fish_computer.facing": "面向观察者",
+  "menu.academy.fish_computer.hide": "关闭角色投影",
+  "menu.academy.fish_computer.show": "开启角色投影",
+  "menu.academy.fish_computer.welcome": "迎宾",
+  "menu.academy.fish_computer.analysis": "运算",
+  "menu.academy.fish_computer.thinking": "思考"
 }

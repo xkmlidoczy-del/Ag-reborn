@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "academy:block/fish_computer/terminal"
+    },
+    "half=upper": {
+      "model": "academy:block/fish_computer/air"
+    }
+  }
+}

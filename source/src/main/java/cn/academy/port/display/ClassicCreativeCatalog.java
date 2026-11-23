@@ -38,6 +38,7 @@ public final class ClassicCreativeCatalog {
         "matter_unit",
         "matter_unit_phase_liquid",
         "terminal_installer",
+        "fish_computer",
         "coin",
         "maghook",
         "silbarn",
