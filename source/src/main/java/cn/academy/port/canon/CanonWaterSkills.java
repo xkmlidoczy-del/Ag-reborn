@@ -113,7 +113,7 @@ public final class CanonWaterSkills {
             boolean hit = emission.attack(target); successful = hit;
             if (hit) CanonVfx.emit(p, id, visualOrigin, target.getBoundingBox().getCenter(), CanonVfx.Phase.HIT, 18, 0, flaskBacked);
             if (hit && push.lengthSqr() > 1e-8 && (flaskBacked || validSource(p, source)) && directEligible(p, target)
-                    && p.hasLineOfSight(target) && !cn.academy.port.highpower.PlayerShieldArmor.holding(target)) {
+                    && p.hasLineOfSight(target) && !cn.academy.port.highpower.PlayerShieldArmor.ignoresControl(target)) {
                 push = push.normalize().scale(number(id, "horizontal_speed")); Vec3 previous = target.getDeltaMovement();
                 target.setDeltaMovement(push.x, Math.max(previous.y, .18), push.z);
                 target.hasImpulse = true; target.hurtMarked = true;

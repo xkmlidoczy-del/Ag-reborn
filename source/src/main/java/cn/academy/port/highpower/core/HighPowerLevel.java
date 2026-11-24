@@ -4,11 +4,11 @@ import java.math.BigDecimal;
 
 /** Provisional pack balance presets, not a claim of completed gameplay balance. */
 public enum HighPowerLevel {
-    LV1(1, 24, 6, 5),
-    LV2(2, 36, 12, 8),
-    LV3(3, 52, 22, 12),
-    LV4(4, 72, 35, 18),
-    LV5(5, 100, 50, 24);
+    LV1(1, 24, 6, 8),
+    LV2(2, 36, 12, 14),
+    LV3(3, 52, 22, 24),
+    LV4(4, 72, 35, 38),
+    LV5(5, 100, 50, 54);
 
     private final int level;
     private final BigDecimal damage;

@@ -7,68 +7,38 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
-/**
- * Counts confirmed outcomes from one snap, including a boss whose own death takes several seconds.
- */
+/** Counts confirmed erasures among the selected lives. */
 final class SnapResults {
-    int banished, damaged, killed, rescued, resisted;
-    final int ships;
+    private int erased, resisted;
+    private final int ships;
 
     SnapResults(int ships) {
         this.ships = ships;
     }
 
-    void banish(LivingEntity target) {
-        target.discard();
-        if (target.isRemoved() && target.getRemovalReason() == Entity.RemovalReason.DISCARDED)
-            banished++;
-        else resisted++;
-    }
-
-    void strike(ServerPlayer caster, LivingEntity target) {
-        var source = new DamageSource(caster.damageSources().fellOutOfWorld().typeHolder(), caster);
-        float amount = Math.max(180F, target.getMaxHealth() * .55F);
-        if (AcademyCompat.contracts()) {
-            var receipt =
-                    cn.academy.port.api.NativeCombatDamage.hurtDetailed(target, source, amount);
-            if (receipt.totem() || receipt.rescued()) rescued++;
-            else if (receipt.killed()) killed++;
-            else if (receipt.affected()) {
-                damaged++;
-                receipt.whenKilled(
-                        target,
-                        ignored -> {
-                            damaged--;
-                            killed++;
-                            if (!caster.hasDisconnected()) show(caster);
-                        });
-            } else resisted++;
-            return;
+    void erase(ServerPlayer caster, LivingEntity target) {
+        if (AcademyCompat.erasureAvailable()) {
+            if (cn.academy.port.api.CombatErasure.erase(caster, target)) erased++;
+            else resisted++;
+        } else if (target instanceof ServerPlayer player) {
+            var source = new DamageSource(caster.damageSources().fellOutOfWorld().typeHolder(), caster);
+            player.setHealth(0);
+            player.die(source);
+            if (player.isDeadOrDying()) erased++;
+            else resisted++;
+        } else {
+            target.setRemoved(Entity.RemovalReason.DISCARDED);
+            if (target.isRemoved()) erased++;
+            else resisted++;
         }
-        float health = target.getHealth(), absorption = target.getAbsorptionAmount();
-        AcademyCompat.hurt(target, source, amount, true);
-        if (target.isRemoved() && target.getRemovalReason() == Entity.RemovalReason.KILLED)
-            killed++;
-        else if (target.getHealth() < health || target.getAbsorptionAmount() < absorption)
-            damaged++;
-        else resisted++;
     }
 
     int affected() {
-        return banished + damaged + killed + rescued + ships;
+        return erased + ships;
     }
 
     void show(ServerPlayer player) {
-        player.displayClientMessage(
-                Component.translatable(
-                                "msg.aca_infinity.snap_executed",
-                                banished,
-                                damaged,
-                                killed,
-                                rescued,
-                                resisted,
-                                ships)
-                        .withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD),
-                false);
+        player.displayClientMessage(Component.translatable("msg.aca_infinity.snap_erased", erased, resisted, ships)
+                .withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD), false);
     }
 }

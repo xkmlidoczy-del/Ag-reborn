@@ -3993,5 +3993,7 @@
   "menu.academy.fish_computer.show": "Show projection",
   "menu.academy.fish_computer.welcome": "Welcome",
   "menu.academy.fish_computer.analysis": "Analysis",
-  "menu.academy.fish_computer.thinking": "Thinking"
+  "menu.academy.fish_computer.thinking": "Thinking",
+  "key.academy.toggle_ability_vitals": "Toggle Academy health and shield HUD",
+  "death.attack.academy.erasure": "%1$s was erased by %2$s"
 }

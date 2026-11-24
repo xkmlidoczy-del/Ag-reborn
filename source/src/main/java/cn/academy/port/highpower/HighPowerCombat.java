@@ -1843,7 +1843,7 @@ public final class HighPowerCombat {
         var audit = DamageAudit.begin(target, source);
         try {
             var visualBefore=cn.academy.port.macro.BeamImpactVfx.before(player,skill,target);
-            var receipt = cn.academy.port.api.NativeCombatDamage.hurtDetailed(target, source, witness);
+            var receipt = cn.academy.port.api.NativeCombatDamage.hurtSkillDetailed(target, source, witness);
             accepted = receipt.admitted();
             boolean effective = receipt.affected();
             cn.academy.port.macro.BeamImpactVfx.after(player,skill,target,visualBefore,accepted&&!source.rejected,

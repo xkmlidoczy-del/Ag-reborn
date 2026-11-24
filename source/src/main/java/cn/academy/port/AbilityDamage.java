@@ -31,19 +31,19 @@ public final class AbilityDamage {
         var before=BeamImpactVfx.before(caster,skill,target);
         var source=new EntitySkillDamageSource(caster,skill,ignoreArmor);
         var audit=DamageAudit.begin(target,source);
-        boolean hit=CapBreak.hurt(target, source, (float)Math.min(amount, cn.academy.port.highpower.CombatAttributes.LIMIT));
+        boolean hit=CapBreak.hurtSkill(target, source, (float)Math.min(amount, cn.academy.port.highpower.CombatAttributes.LIMIT));
         DamageAudit.finish(audit,skill,rawDamage,amount,hit,null);
         BeamImpactVfx.after(caster,skill,target,before,hit,null,null);
         return hit;
     }
     public static final class EntitySkillDamageSource extends DamageSource {
-        public final String skill;private final boolean ignoreArmor;
+        public final String skill;private final boolean ignoreArmor;private final LivingEntity caster;
         public EntitySkillDamageSource(LivingEntity caster,String skill,boolean ignoreArmor) {
-            super(caster.damageSources().mobAttack(caster).typeHolder(),caster);this.skill=skill;this.ignoreArmor=ignoreArmor;
+            super(caster.damageSources().mobAttack(caster).typeHolder(),caster);this.caster=caster;this.skill=skill;this.ignoreArmor=ignoreArmor;
         }
         @Override public boolean is(TagKey<DamageType> tag) {return ignoreArmor&&tag.equals(DamageTypeTags.BYPASSES_ARMOR)||super.is(tag);}
         @Override public Component getLocalizedDeathMessage(LivingEntity target) {
-            return Component.translatable("death.attack.ac_skill",target.getDisplayName(),getEntity().getDisplayName(),Component.translatable("ac.ability."+skill+".name"));
+            return Component.translatable("death.attack.ac_skill",target.getDisplayName(),caster.getDisplayName(),Component.translatable("ac.ability."+skill+".name"));
         }
     }
     public static boolean attack(ServerPlayer player,String skill,Entity target,double rawDamage) {return attack(player,skill,target,rawDamage,false);}
@@ -70,7 +70,7 @@ public final class AbilityDamage {
         if (!(target instanceof LivingEntity living)) return target.hurt(source,(float)amount);
         var before=BeamImpactVfx.before(player,skill,living);
         var audit=DamageAudit.begin(living,source);
-        boolean accepted=CapBreak.hurt(living, source, (float)Math.min(amount, cn.academy.port.highpower.CombatAttributes.LIMIT));
+        boolean accepted=CapBreak.hurtSkill(living, source, (float)Math.min(amount, cn.academy.port.highpower.CombatAttributes.LIMIT));
         DamageAudit.finish(audit,skill,rawDamage,amount,accepted,null);
         BeamImpactVfx.after(player,skill,living,before,accepted,origin,point);
         return accepted;
@@ -78,10 +78,11 @@ public final class AbilityDamage {
     public static final class SkillDamageSource extends DamageSource {
         public final String skill;
         private final boolean ignoreArmor;
+        private final ServerPlayer caster;
         public final boolean retaliation;
         public SkillDamageSource(ServerPlayer player,String skill,boolean ignoreArmor) {this(player,skill,ignoreArmor,false);}
-        private SkillDamageSource(ServerPlayer player,String skill,boolean ignoreArmor,boolean retaliation) {super(player.damageSources().playerAttack(player).typeHolder(),player);this.skill=skill;this.ignoreArmor=ignoreArmor;this.retaliation=retaliation;}
+        private SkillDamageSource(ServerPlayer player,String skill,boolean ignoreArmor,boolean retaliation) {super(player.damageSources().playerAttack(player).typeHolder(),player);this.caster=player;this.skill=skill;this.ignoreArmor=ignoreArmor;this.retaliation=retaliation;}
         @Override public boolean is(TagKey<DamageType> tag) {return ignoreArmor&&tag.equals(DamageTypeTags.BYPASSES_ARMOR)||super.is(tag);}
-        @Override public Component getLocalizedDeathMessage(LivingEntity target) {return Component.translatable("death.attack.ac_skill",target.getDisplayName(),getEntity().getDisplayName(),Component.translatable("ac.ability."+skill+".name"));}
+        @Override public Component getLocalizedDeathMessage(LivingEntity target) {return Component.translatable("death.attack.ac_skill",target.getDisplayName(),caster.getDisplayName(),Component.translatable("ac.ability."+skill+".name"));}
     }
 }

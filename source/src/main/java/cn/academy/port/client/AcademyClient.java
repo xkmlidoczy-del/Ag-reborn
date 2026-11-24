@@ -2921,7 +2921,7 @@ public final class AcademyClient {
     // Replace AcademyClient.hud's placeholder implementation after merging the presets bridge.
     @SubscribeEvent public static void hud(RenderGuiEvent.Post event) {
         var mc=Minecraft.getInstance();
-        if(mc.player==null)return;
+        if(mc.player==null || HighPowerRecoveryHud.isStoneWheelOpen(mc)) return;
         var keys=new java.util.ArrayList<ClassicAbilityHud.KeyHint>();
         for(int slot=0;slot<SLOTS.length;slot++){
             if(!delegatePresent(slot))continue;

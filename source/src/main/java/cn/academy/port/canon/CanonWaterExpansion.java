@@ -106,7 +106,7 @@ public final class CanonWaterExpansion {
                 boolean[] hit = {false};
                 emission.forEach(t -> {
                     if (emission.attack(t)) {
-                        if (t.isAlive() && !cn.academy.port.highpower.PlayerShieldArmor.holding(t)) {
+                        if (t.isAlive() && !cn.academy.port.highpower.PlayerShieldArmor.ignoresControl(t)) {
                             t.clearFire();
                             if (id.equals("hydro_eddy")) {
                                 t.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 1, false, true), p);

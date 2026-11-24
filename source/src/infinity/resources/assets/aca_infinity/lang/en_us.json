@@ -106,5 +106,6 @@
   "msg.aca_infinity.ship_warp": "✦ Short-range warp dash complete!",
   "msg.aca_infinity.ship_cam_cockpit": "Bridge Camera: 3A Holographic Canopy",
   "msg.aca_infinity.ship_cam_rear": "Bridge Camera: 14.5m Cinematic Rear",
-  "msg.aca_infinity.ship_cam_orbital": "Bridge Camera: 22m Orbital Tactical"
+  "msg.aca_infinity.ship_cam_orbital": "Bridge Camera: 22m Orbital Tactical",
+  "msg.aca_infinity.snap_erased": "Snap erased %1$s lives. Unresolved %2$s. Ships collapsed %3$s."
 }

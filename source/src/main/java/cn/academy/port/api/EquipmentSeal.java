@@ -22,12 +22,13 @@ public interface EquipmentSeal {
 
     static boolean active(LivingEntity wearer) {
         return wearer.getServer() != null
+                && !cn.academy.port.highpower.PlayerShieldArmor.ignoresControl(wearer)
                 && wearer.getPersistentData().getLong(DEADLINE)
                         > wearer.getServer().overworld().getGameTime();
     }
 
     static boolean apply(ServerPlayer caster, LivingEntity wearer, int ticks) {
-        if (ticks <= 0 || wearer.level() != caster.level() || !wearer.isAlive()) return false;
+        if (ticks <= 0 || !CombatControl.canAffect(caster, wearer)) return false;
         boolean eligible = false;
         for (var stack : wearer.getAllSlots())
             if (eligible(stack, wearer, caster)) {

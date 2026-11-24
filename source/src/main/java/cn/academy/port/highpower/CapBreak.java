@@ -29,20 +29,23 @@ public final class CapBreak {
         private final cn.academy.port.api.CombatDefense defense;
         private final DamageShape.Shape shape;
         private final boolean breakCaps;
-        private final float before;
+        private final float before, absorption;
+        private boolean originOnly;
         private boolean entered, committed, rescuing;
         private float nativeInput, finalDamage, projected;
         private DamageContainer transaction;
         private boolean posted, ambiguous, canceled;
 
-        private Hit(LivingEntity target, DamageSource source, float amount, cn.academy.port.api.CombatDefense defense, boolean breakCaps) {
+        private Hit(LivingEntity target, DamageSource source, float amount,
+                cn.academy.port.api.CombatDefense defense, boolean breakCaps, boolean skill) {
             this.target = target;
             this.source = source;
             this.amount = amount;
             this.defense = defense;
             this.breakCaps = breakCaps;
             this.shape = defense == null ? DamageShape.of(target) : DamageShape.UNKNOWN;
-            this.before = shape.vitality() != null ? target.getHealth() : 0F;
+            this.before = skill || shape.vitality() != null ? target.getHealth() : 0F;
+            this.absorption = skill ? target.getAbsorptionAmount() : 0F;
         }
     }
 
@@ -54,13 +57,41 @@ public final class CapBreak {
     }
 
     public static boolean hurt(LivingEntity target, DamageSource source, float amount) {
-        if (!Float.isFinite(amount) || amount <= 0) return false;
+        return hurt(target, source, amount, false, false);
+    }
+
+    public static boolean hurtSkill(LivingEntity target, DamageSource source, float amount) {
+        return hurt(target, source, amount, true, false);
+    }
+
+    private static final ClassValue<Boolean> CUSTOM_HURT = new ClassValue<>() {
+        @Override protected Boolean computeValue(Class<?> type) {
+            try {
+                return !type.getMethod("hurt", DamageSource.class, float.class).getDeclaringClass()
+                        .getName().startsWith("net.minecraft.");
+            } catch (ReflectiveOperationException | LinkageError unavailable) {
+                return false;
+            }
+        }
+    };
+
+    public static boolean hurtProjected(LivingEntity target, DamageSource source, float amount) {
+        return hurt(target, source, amount, true, CUSTOM_HURT.get(target.getClass()));
+    }
+
+    private static boolean hurt(LivingEntity target, DamageSource source, float amount, boolean skill, boolean projected) {
+        if (!Float.isFinite(amount) || amount <= 0
+                || skill && cn.academy.port.api.CombatControl.rejectsAttack(source)) return false;
         float requested = Math.min(amount, (float) CombatAttributes.LIMIT);
-        return aroundHurt(target, source, requested, () -> target.hurt(source, requested));
+        return aroundHurt(target, source, requested, () -> target.hurt(source, requested), skill, projected);
     }
 
     /** Also wraps the original invocation inside Player.attack to retain its modifiers and attack bookkeeping. */
     public static boolean aroundHurt(Entity target, DamageSource source, float amount, BooleanSupplier original) {
+        return aroundHurt(target, source, amount, original, false, false);
+    }
+
+    private static boolean aroundHurt(Entity target, DamageSource source, float amount, BooleanSupplier original, boolean skill, boolean projected) {
         if (!(target instanceof LivingEntity living) || target.level().isClientSide
                 || target.getServer() == null || !target.getServer().isSameThread() || !Float.isFinite(amount) || amount <= 0) {
             return original.getAsBoolean();
@@ -69,18 +100,36 @@ public final class CapBreak {
         var defense = living.getCapability(cn.academy.port.api.CombatDefense.CAPABILITY);
         if (defense == null && (!breakCaps || living instanceof Player)) return original.getAsBoolean();
         Hit parent = HIT.get();
-        Hit hit = new Hit(living, source, amount, defense, breakCaps);
+        Hit hit = new Hit(living, source, amount, defense, breakCaps, skill);
         var parentData = settlingData;
         var data = hit.shape.vitality() == null || hit.defense != null ? null : living.getEntityData();
         if (data != parentData) settlingData = data;
         HIT.set(hit);
         try {
-            return original.getAsBoolean();
+            if (projected && defense == null && !living.isInvulnerable() && living.isAlive()) {
+                if (cn.academy.port.api.ControlRelations.refuses(living, source)) return false;
+                hit.originOnly = true;
+                return ((NativeSkillAccess) living).academy$hurtFromOrigin(source, amount);
+            }
+            boolean accepted = original.getAsBoolean();
+            if (accepted || !skill || !breakCaps || defense != null || hit.entered || hit.transaction != null
+                    || living instanceof Player || living.isInvulnerable() || !living.isAlive()
+                    || living.getHealth() != hit.before || living.getAbsorptionAmount() != hit.absorption
+                    || cn.academy.port.api.ControlRelations.refuses(living, source)) return accepted;
+            // The entity refused before a native transaction or an actual debit. Deliver the same
+            // spell as contactless energy, through the canonical hurt implementation, once.
+            hit.originOnly = true;
+            return ((NativeSkillAccess) living).academy$hurtFromOrigin(source, amount);
         } finally {
             if (data != parentData) settlingData = parentData;
             if (parent == null) HIT.remove();
             else HIT.set(parent);
         }
+    }
+
+    public static boolean originOnly(DamageSource source) {
+        Hit hit = HIT.get();
+        return hit != null && hit.originOnly && hit.source == source;
     }
 
     private static Hit pending(Entity target, DamageSource source) {
@@ -143,6 +192,17 @@ public final class CapBreak {
         if (hit.ambiguous || !hit.posted || !Float.isFinite(hit.finalDamage) || hit.finalDamage < 0) return original;
         hit.committed = true;
         return hit.finalDamage;
+    }
+
+    /** Only the native commit and totem restore use the verified synchronized vitality key. */
+    public static boolean writeOriginHealth(LivingEntity target, float value, boolean rescue) {
+        var hit = HIT.get();
+        if (hit == null || hit.target != target || !hit.originOnly || hit.shape.vitality() == null
+                || hit.transaction == null || hit.canceled || hit.committed != rescue || !Float.isFinite(value))
+            return false;
+        hit.committed = true;
+        target.getEntityData().set(hit.shape.vitality(), Math.clamp(value, 0F, target.getMaxHealth()));
+        return true;
     }
 
     public static Object vitalityWrite(SynchedEntityData data, EntityDataAccessor<?> key, Object value) {

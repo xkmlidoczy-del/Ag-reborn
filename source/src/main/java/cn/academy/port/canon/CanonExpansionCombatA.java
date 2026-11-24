@@ -400,7 +400,8 @@ public final class CanonExpansionCombatA {
         var changes = new ArrayList<Assignment>();
         if (c.skill.equals("mental_route_interrupt")) {
             if (mind == null) return false;
-            if (selected == null || !MentalTargeting.moving(selected)) return MentalTargeting.resisted(c.p);
+            if (selected == null || !MentalTargeting.moving(selected)
+                    && !cn.academy.port.api.CombatControl.needsDriver(selected)) return MentalTargeting.resisted(c.p);
             if (mentalLeased(selected) || CanonSkillsCombatA.mentalTargetLeased(selected)) return false;
             changes.add(new Assignment(selected, MentalTargeting.target(selected), MentalTargeting.target(selected), true, null));
         } else if (c.skill.equals("mental_silence_field") || c.skill.equals("mental_panic_field")
@@ -441,7 +442,7 @@ public final class CanonExpansionCombatA {
                 LivingEntity before = MentalTargeting.target(mob);
                 if (c.skill.equals("mental_route_interrupt")) continue;
                 if (c.skill.equals("mental_silence_field") && before == null) continue;
-                if ((c.skill.equals("mental_panic_field") || c.skill.equals("mental_relay_interference")) && !MentalTargeting.moving(mob)) continue;
+                if ((c.skill.equals("mental_panic_field") || c.skill.equals("mental_relay_interference")) && !MentalTargeting.moving(mob) && !cn.academy.port.api.CombatControl.needsDriver(mob)) continue;
                 if (c.skill.equals("mental_pursuit_break") && before != c.p) continue;
                 if (c.skill.equals("mental_crowd_detach") && before != anchor) continue;
                 if (c.skill.equals("mental_pursuit_field") && before != c.p
@@ -497,7 +498,7 @@ public final class CanonExpansionCombatA {
                 if (!sessionContext(c) || !eligible(c, a.mob) || MentalTargeting.target(a.mob) != a.previous || MIND_LEASES.containsKey(a.mob) || !validWritten(c, a)) {
                     failed[0] = true; return;
                 }
-                if (!apply(a)) { MentalTargeting.resisted(c.p); return; }
+                if (!apply(a, duration > 0)) { MentalTargeting.resisted(c.p); return; }
                 written.add(a);
                 if (duration > 0) MIND_LEASES.put(a.mob, new MindLease(c, a.mob, a.previous, a.written, c.world.getGameTime() + duration, a.routeOnly, a.consent));
             }, () -> {
@@ -521,14 +522,14 @@ public final class CanonExpansionCombatA {
             for (Assignment a : changes) {
                 if (!context(c) || !eligible(c, a.mob) || MentalTargeting.target(a.mob) != a.previous || CanonSkillsCombatA.mentalTargetLeased(a.mob)
                         || MIND_LEASES.containsKey(a.mob) || !validWritten(c, a)) { rollback(written); return false; }
-                if (!apply(a)) {
+                if (!apply(a, duration > 0)) {
                     rollback(written);
                     return MentalTargeting.resisted(c.p);
                 }
                 written.add(a);
-                if (!context(c) || !eligible(c, a.mob) || MentalTargeting.target(a.mob) != a.written || !validWritten(c, a)
+                if (!context(c) || !eligible(c, a.mob) || !keepsAssignment(a, duration > 0) || !validWritten(c, a)
                         || written.stream().anyMatch(previous -> !eligible(c, previous.mob)
-                                || MentalTargeting.target(previous.mob) != previous.written || !validWritten(c, previous))) {
+                                || !keepsAssignment(previous, duration > 0) || !validWritten(c, previous))) {
                     rollback(written); return false;
                 }
             }
@@ -565,8 +566,14 @@ public final class CanonExpansionCombatA {
                 && a.mob.hasLineOfSight(other) && !a.mob.isAlliedTo(other) && !other.isAlliedTo(a.mob);
     }
 
-    private static boolean apply(Assignment a) {
-        return a.routeOnly ? MentalTargeting.stopRoute(a.mob) : MentalTargeting.assign(a.mob, a.written);
+    private static boolean apply(Assignment a, boolean timed) {
+        boolean accepted = a.routeOnly ? MentalTargeting.stopRoute(a.mob) : MentalTargeting.assign(a.mob, a.written);
+        return accepted || timed && cn.academy.port.api.CombatControl.needsDriver(a.mob);
+    }
+
+    private static boolean keepsAssignment(Assignment a, boolean timed) {
+        return MentalTargeting.target(a.mob) == a.written
+                || timed && cn.academy.port.api.CombatControl.needsDriver(a.mob);
     }
 
     private static void rollback(List<Assignment> written) {
@@ -584,7 +591,9 @@ public final class CanonExpansionCombatA {
                 && "mental_out".equals(state.category) && state.activated && state.overloadFine && !state.interfering
                 && state.learned(c.skill) && state.presets.currentContains(c.skill) && SkillCatalog.enabled(state.category, c.skill)
                 && c.world.getGameTime() < lease.expires && m.level() == c.world && !m.isRemoved() && m.isAlive()
-                && c.world.getEntity(m.getUUID()) == m && p.distanceToSqr(m) <= reach(c) * reach(c) && c.world.hasChunkAt(m.blockPosition())
+                && c.world.getEntity(m.getUUID()) == m
+                && cn.academy.port.api.CombatTargeting.distanceSquared(m, p.getEyePosition()) <= reach(c) * reach(c)
+                && c.world.hasChunkAt(m.blockPosition())
                 && c.world.mayInteract(p, m.blockPosition()) && (lease.consent == null || consentingAlly(c, lease.consent))
                 && (lease.written == null || lease.written.isAlive()
                     && !lease.written.isRemoved() && lease.written.level() == c.world)
@@ -599,6 +608,20 @@ public final class CanonExpansionCombatA {
             try { MentalTargeting.restore(mob, lease.written, lease.previous); } finally { MUTATING.remove(mob); }
         }
         CanonVfx.emit(lease.owner.p, lease.owner.skill, lease.owner.p.position(), lease.owner.p.position(), CanonVfx.Phase.END, 8);
+    }
+
+    @SubscribeEvent public static void driveMind(EntityTickEvent.Pre event) {
+        if (!(event.getEntity() instanceof Mob mob) || mob.level().isClientSide()) return;
+        MindLease lease = MIND_LEASES.get(mob);
+        if (lease == null || !cn.academy.port.api.CombatControl.needsDriver(mob)) return;
+        if (!validLease(lease)) { release(lease); return; }
+        long now = mob.level().getGameTime();
+        mob.setDeltaMovement(Vec3.ZERO);
+        if (lease.written != null) {
+            if (!lease.routeOnly) MentalTargeting.approach(mob, lease.written, false, now, 1.15);
+            if (now % 20L == 0L) MentalTargeting.strike(mob, lease.written);
+        }
+        event.setCanceled(true);
     }
 
     @SubscribeEvent public static void tickMind(EntityTickEvent.Post event) {
@@ -780,7 +803,7 @@ public final class CanonExpansionCombatA {
             if (groundBlast && target.position().distanceToSqr(before) <= .01) {
                 contacts.add(before);
             }
-            if (target.isAlive() && !cn.academy.port.highpower.PlayerShieldArmor.holding(target)) {
+            if (target.isAlive() && !cn.academy.port.highpower.PlayerShieldArmor.ignoresControl(target)) {
                 if (shape.push != 0 && strikeCandidate(c, shape, target)) {
                     Vec3 radial = target.position().subtract(c.pos).multiply(1, 0, 1);
                     Vec3 impulse = shape.push == 2 ? new Vec3(0, number(c.skill, "vertical_speed"), 0) : radial.lengthSqr() < 1e-8 ? Vec3.ZERO :
@@ -932,7 +955,7 @@ public final class CanonExpansionCombatA {
     }
 
     private static boolean safeLivingMotion(Context c, LivingEntity target, Vec3 impulse) {
-        if (cn.academy.port.highpower.PlayerShieldArmor.holding(target)) return false;
+        if (cn.academy.port.highpower.PlayerShieldArmor.ignoresControl(target)) return false;
         AABB moved = target.getBoundingBox().move(impulse.scale(.5)).deflate(1e-7);
         if (!c.world.getWorldBorder().isWithinBounds(moved) || !c.world.noCollision(target, moved)) return false;
         for (BlockPos at : BlockPos.betweenClosed(BlockPos.containing(moved.minX, moved.minY, moved.minZ),

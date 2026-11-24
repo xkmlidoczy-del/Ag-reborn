@@ -6,7 +6,9 @@ import cn.academy.port.highpower.HighPowerRecoveryHudPayload;
 import com.mojang.blaze3d.platform.InputConstants;
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -29,20 +31,17 @@ public final class HighPowerRecoveryHud {
     private static int growthHintAge = HighPowerRecoveryHudModel.STALE_TICKS;
     private static Object growthConnection, growthLevel, growthPlayer;
     private static final Trail HEALTH_TRAIL = new Trail(), SHIELD_TRAIL = new Trail();
-    private static final ClassicTerminalDrawing FONT = TerminalSkin.FONT;
+    private static final KeyMapping TOGGLE = new KeyMapping("key.academy.toggle_ability_vitals",
+            GLFW.GLFW_KEY_F7, "key.categories.academy");
     private static long trailEpoch;
-    private record Readout(HighPowerRecoveryHudModel.Values source,String language,String health,String shield,String label) {}
+    private record Readout(HighPowerRecoveryHudModel.Values source,String language,String health,String shield) {}
     private static Readout cached;
     private static Readout readout(Minecraft mc, HighPowerRecoveryHudModel.Values v) {
         String lang=mc.getLanguageManager().getSelected();
         if(cached!=null && cached.source()==v && lang.equals(cached.language())) return cached;
         var units=HighPowerRecoveryHudModel.hudNumberLocale(lang,(key,fallback)->tr(key,fallback));
-        String state=v.superArmor()?tr("super_armor","Super armor"):HighPowerRecoveryHudModel.decimal(v.defense()).signum()==0?
-                tr("shield_broken","Broken"):tr("shield_standby","Standby");
-        String label=v.hasDna() && HighPowerRecoveryHudModel.decimal(v.dnaShield()).signum()>0?
-                tr("dna_short","DNA shield"):tr("base_shield","Shield");
         cached=new Readout(v,lang,HighPowerRecoveryHudModel.pool(v.health(),v.maxHealth(),units).text(),
-                HighPowerRecoveryHudModel.pool(v.defense(),v.defenseCapacity(),units).text(),label+" · "+state);
+                HighPowerRecoveryHudModel.pool(v.defense(),v.defenseCapacity(),units).text());
         return cached;
     }
     private static final class Trail {
@@ -62,6 +61,9 @@ public final class HighPowerRecoveryHud {
     private HighPowerRecoveryHud() {}
     @EventBusSubscriber(modid = "academy", value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
     public static final class Setup {
+        @SubscribeEvent public static void keys(RegisterKeyMappingsEvent event) {
+            event.register(TOGGLE);
+        }
         @SubscribeEvent public static void resources(net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent event) {
             event.registerReloadListener((net.minecraft.server.packs.resources.ResourceManagerReloadListener) manager -> {
                 TerminalSkin.releaseReadout();
@@ -111,10 +113,6 @@ public final class HighPowerRecoveryHud {
     private static boolean presetUsesBudget() {
         return cn.academy.port.highpower.SkillBudgetHudModel.currentPresetUsesBudget(AcademyClient.state);
     }
-    private static cn.academy.port.highpower.SkillBudgetHudModel.Values ordinaryBudget(HighPowerRecoveryHudModel.Values values) {
-        var current = presetUsesBudget() ? budget(values) : null;
-        return current != null && (current.reserved() || current.available() < current.maximum()) ? current : null;
-    }
     public static void receiveGrowthHint(cn.academy.port.highpower.EsperGrowthHintPayload.Hint packet) {
         Minecraft mc = Minecraft.getInstance();
         Object level = mc.level, player = mc.player, connection = mc.getConnection();
@@ -137,6 +135,12 @@ public final class HighPowerRecoveryHud {
     @SubscribeEvent public static void tick(ClientTickEvent.Post event) {
         Minecraft mc = Minecraft.getInstance(); synchronize(mc); SESSION.tick(mc.isPaused()); BUDGET_SESSION.tick(mc.isPaused());
         synchronizeGrowthHint(mc); if (!mc.isPaused() && growthHintAge < HighPowerRecoveryHudModel.STALE_TICKS) growthHintAge++;
+        while (TOGGLE.consumeClick()) {
+            if (mc.player != null && mc.screen == null && ClassicHudConfig.SPEC.isLoaded()) {
+                ClassicHudConfig.ABILITY_VITALS.set(!enabled());
+                ClassicHudConfig.SPEC.save();
+            }
+        }
         if (!available(mc) || !detailHeld(mc)) { detailPage = 0; detailPages = 1; }
     }
     private static boolean detailHeld(Minecraft mc) {
@@ -153,9 +157,17 @@ public final class HighPowerRecoveryHud {
         detailPage = Math.max(0, Math.min(detailPages - 1, detailPage + (event.getScrollDeltaY() < 0 ? 1 : -1)));
         event.setCanceled(true); // Only ALT + wheel inside an overflowing exact-detail view owns this input.
     }
+    private static boolean enabled() {
+        return !ClassicHudConfig.SPEC.isLoaded() || ClassicHudConfig.ABILITY_VITALS.get();
+    }
+
+    public static boolean isStoneWheelOpen(Minecraft mc) {
+        return mc.screen != null && mc.screen.getClass().getName().equals("cn.aca.infinity.client.InfinityWheelScreen");
+    }
+
     private static boolean available(Minecraft mc) {
         synchronize(mc);
-        return mc.gui instanceof cn.academy.port.client.highpower.RecoveryHudHeartsAccess
+        return enabled() && mc.gui instanceof cn.academy.port.client.highpower.RecoveryHudHeartsAccess
                 && mc.player != null && mc.level != null && mc.getConnection() != null && mc.player.isAlive()
                 && !mc.player.isRemoved() && !mc.player.isSpectator() && mc.getCameraEntity() == mc.player
                 && !mc.options.hideGui && mc.screen == null && !mc.getDebugOverlay().showDebugScreen() && SESSION.current() != null && (SESSION.current().category().equals("equipment") || SESSION.current().category().equals(AcademyClient.state.category));
@@ -163,7 +175,8 @@ public final class HighPowerRecoveryHud {
     /** Called only for vanilla action-bar delivery; other components retain their exact identity. */
     public static Component compactActionBar(Component input) {
         Minecraft mc = Minecraft.getInstance();
-        boolean panel = available(mc) && SESSION.current().category().equals("electromaster") && (!presetUsesBudget() || budget(SESSION.current()) != null) && layout(mc, mc.getWindow().getGuiScaledWidth(), mc.getWindow().getGuiScaledHeight()) != null;
+        boolean panel = !enabled() || isStoneWheelOpen(mc)
+                || available(mc) && layout(mc, mc.getWindow().getGuiScaledWidth(), mc.getWindow().getGuiScaledHeight()) != null;
         return cn.academy.port.highpower.HighPowerStatusSummary.select(input, panel,
                 mc.getWindow().getGuiScaledWidth() - 16, mc.font::width);
     }
@@ -182,7 +195,11 @@ public final class HighPowerRecoveryHud {
         var chat = mc.gui.getChat();
         int chatHeight = (int)Math.ceil(chat.getHeight() * chat.getScale());
         var chatBox = new HighPowerRecoveryHudModel.Box(0, height - 40 - chatHeight, Math.min(width, chat.getWidth() + 16), chatHeight + 12);
-        return HighPowerRecoveryHudModel.presentation(width, height, cp, keys, notification, chatBox, null);
+        if (detailHeld(mc)) return HighPowerRecoveryHudModel.presentation(width, height, cp, keys, notification, chatBox, null);
+        var values = SESSION.current();
+        boolean reserve = values != null && (values.zeroGapActive() || values.curtainActive() || values.domainActive());
+        var compact = HighPowerRecoveryHudModel.compactLayout(width, height, cp, keys, notification, chatBox, reserve);
+        return compact == null ? null : new HighPowerRecoveryHudModel.Presentation(compact, null);
     }
     private static HighPowerRecoveryHudModel.Box layout(Minecraft mc, int width, int height) {
         var chosen = presentation(mc, width, height);
@@ -190,7 +207,8 @@ public final class HighPowerRecoveryHud {
     }
     /** Read-only bounds for the relay panel. Reserve the normal position even while its snapshot is absent. */
     public static HighPowerRecoveryHudModel.Box relayReservedBox(int width, int height) {
-        return layout(Minecraft.getInstance(), width, height);
+        var mc = Minecraft.getInstance();
+        return enabled() && !isStoneWheelOpen(mc) ? layout(mc, width, height) : null;
     }
     public static String compactNativeHealth(float health) {
         if (!Float.isFinite(health) || health <= 0) return "0";
@@ -220,39 +238,39 @@ public final class HighPowerRecoveryHud {
                 detail(graphics,mc,v,width,56);
                 return;
             }
-            boolean reserve = v.zeroGapActive() || v.curtainActive() || v.domainActive();
-            var skillBudget=ordinaryBudget(v);
-            int height=reserve || skillBudget!=null ? 54 : 43;
-            TerminalSkin.draw(graphics,TerminalSkin.FRAME,0,0,width,height,-1);
-            var numbers=readout(mc,v);
-            layer(graphics, width, 4, TerminalSkin.HEALTH,tr("health","Health"),numbers.health(),0xffe5e5e0,HEALTH_TRAIL);
-            layer(graphics, width, 23, v.superArmor()?TerminalSkin.SHIELD:TerminalSkin.BROKEN,numbers.label(),numbers.shield(),edge,SHIELD_TRAIL);
-            if(reserve || skillBudget!=null) {
-                String amount=v.zeroGapActive()?v.zeroGapReserve():v.curtainActive()?v.curtainReserve():v.domainReserve();
-                String name=v.zeroGapActive()?tr("zero_gap_reserve","Armor reserve"):v.curtainActive()?tr("curtain_reserve","Curtain reserve"):tr("domain_reserve","Domain reserve");
-                if(!reserve) {name=tr("skill_budget_cp_short","Reserve CP");amount=skillBudget.availableText();}
-                fittedText(graphics,mc,name,8,43,GRAY,width/2,.75f,false);
-                fittedText(graphics,mc,HighPowerRecoveryHudModel.compact(amount,HighPowerRecoveryHudModel.numberLocale(numbers.language())),width/2,43,WHITE,width/2-8,.8f,true);
+            var numbers = readout(mc, v);
+            layer(graphics, mc, width, 0, TerminalSkin.HEALTH, numbers.health(), 0xffe5e5e0, HEALTH_TRAIL);
+            var icon = v.superArmor() ? TerminalSkin.SHIELD : TerminalSkin.BROKEN;
+            layer(graphics, mc, width, 14, icon, numbers.shield(), v.superArmor() ? edge : GRAY, SHIELD_TRAIL);
+            if (v.hasDna() && HighPowerRecoveryHudModel.decimal(v.dnaShield()).signum() > 0)
+                fittedText(graphics, mc, "DNA", 14, 16, 0xdce4edf2, 17, LABEL_SCALE, false);
+
+            if (box.height() > 28) {
+                String amount = v.zeroGapActive() ? v.zeroGapReserve() : v.curtainActive() ? v.curtainReserve() : v.domainReserve();
+                String name = v.zeroGapActive() ? tr("zero_gap_reserve", "Armor reserve")
+                        : v.curtainActive() ? tr("curtain_reserve", "Curtain reserve") : tr("domain_reserve", "Domain reserve");
+                fittedText(graphics, mc, name, 6, 29, GRAY, width / 2, .7f, false);
+                fittedText(graphics, mc, HighPowerRecoveryHudModel.compact(amount, HighPowerRecoveryHudModel.numberLocale(numbers.language())),
+                        width / 2, 29, WHITE, width / 2 - 5, .75f, true);
             }
         } finally { graphics.pose().popPose(); }
     }
-    private static void layer(GuiGraphics g,int width,int y,net.minecraft.resources.ResourceLocation icon,
-                              String label,String number,int color,Trail trail) {
-        TerminalSkin.draw(g,icon,7,y+2,9,9,color);
-        FONT.begin(g);
-        try {
-            double labelSize=Math.min(8,8*(width*.43-18)/Math.max(1,FONT.width(label,8)));
-            FONT.text(label,20,y+1,labelSize,0xc9cbca,1,0);
-            double size=Math.min(11,11*(width*.54-5)/Math.max(1,FONT.width(number,11)));
-            FONT.text(number,width-7,y,size,color&0xffffff,1,2);
-        } finally {FONT.end();}
-        int length=width-15;
-        TerminalSkin.draw(g,TerminalSkin.TRACK,7,y+13,length,3,0xffb1b3b3);
-        int trailPixels=(int)Math.round(length*trail.visible(net.minecraft.Util.getMillis()));
-        int activePixels=(int)Math.round(length*trail.solid);
-        if(trailPixels>activePixels) TerminalSkin.draw(g,TerminalSkin.FILL,7,y+13,trailPixels,3,0xff8c807a);
-        TerminalSkin.draw(g,TerminalSkin.FILL,7,y+13,activePixels,3,color);
+
+    private static void layer(GuiGraphics graphics, Minecraft mc, int width, int y,
+                              net.minecraft.resources.ResourceLocation icon, String number, int color, Trail trail) {
+        graphics.fill(2, y, width - 2, y + 1, 0x54949ea6);
+        graphics.fill(0, y + 1, width, y + 12, 0x8212181e);
+        graphics.fill(2, y + 12, width - 2, y + 13, 0x5c12181e);
+        TerminalSkin.draw(graphics, icon, 4, y + 2, 7, 7, color);
+        fittedText(graphics, mc, number, 31, y + 2, color, width - 37, VALUE_SCALE, true);
+        int length = width - 14;
+        graphics.fill(7, y + 10, width - 7, y + 12, 0x6096a4af);
+        int lost = (int) Math.round(length * trail.visible(net.minecraft.Util.getMillis()));
+        int active = (int) Math.round(length * trail.solid);
+        if (lost > active) graphics.fill(7 + active, y + 10, 7 + lost, y + 12, 0xa0b6aaa3);
+        if (active > 0) graphics.fill(7, y + 10, 7 + active, y + 12, color);
     }
+
     private static String growthText(HighPowerRecoveryHudModel.GrowthHint hint) {
         return tr(hint.key(), hint.fallback(), hint.arguments().toArray());
     }

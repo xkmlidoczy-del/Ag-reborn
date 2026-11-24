@@ -3,6 +3,6 @@
   "minVersion": "0.8.5",
   "package": "cn.academy.port.mixin.combat",
   "compatibilityLevel": "JAVA_21",
-  "mixins": ["CombatAttributeRangesMixin", "CombatEventMixin", "LivingRescueMixin", "LivingSetHealthMixin", "VitalityDataMixin", "ControlTickMixin", "ControlledPlayerHitMixin", "BodyDimensionsMixin", "ShieldMotionMixin", "BrakedDescentMixin"],
+  "mixins": ["CombatAttributeRangesMixin", "CombatEventMixin", "LivingRescueMixin", "LivingSetHealthMixin", "VitalityDataMixin", "ControlTickMixin", "ControlledPlayerHitMixin", "BodyDimensionsMixin", "ShieldMotionMixin", "HeldMovementMixin", "SkillCarrierMixin", "BrakedDescentMixin"],
   "injectors": {"defaultRequire": 1}
 }

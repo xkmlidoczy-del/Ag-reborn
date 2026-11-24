@@ -55,8 +55,9 @@ public final class AcademyInterop {
         if (!academyLoaded()) return null;
         try {
             Class<?> cls = Class.forName("cn.academy.port.highpower.PlayerShieldArmor");
-            return MethodHandles.publicLookup().findStatic(cls, "holding",
-                    MethodType.methodType(boolean.class, Entity.class));
+            var signature = MethodType.methodType(boolean.class, Entity.class);
+            try { return MethodHandles.publicLookup().findStatic(cls, "ignoresControl", signature); }
+            catch (NoSuchMethodException olderAcademy) { return MethodHandles.publicLookup().findStatic(cls, "holding", signature); }
         } catch (ReflectiveOperationException | LinkageError ex) {
             LogUtils.getLogger().debug("Academy PlayerShieldArmor unavailable", ex);
             return null;

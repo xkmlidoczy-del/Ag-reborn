@@ -234,12 +234,17 @@ public final class CanonOffense {
     }
 
     private static void affect(Cast c, LivingEntity t) {
-        if (cn.academy.port.highpower.PlayerShieldArmor.holding(t)) return;
+        if (cn.academy.port.highpower.PlayerShieldArmor.ignoresControl(t)) return;
         String id = c.spec.id();
         if (c.spec.category().equals("mental_out")) {
             int time = cn.academy.port.core.SkillTuning.fields(id).containsKey("control_ticks") ? cn.academy.port.core.SkillTuning.integer(id, "control_ticks") : 0;
-            if (time > 0 && t.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, time, 1, false, true), c.player))
-                cn.academy.port.macro.BeamImpactVfx.contact(c.player, id, c.origin(), visualPoint(c, t), cn.academy.port.macro.BeamImpactVfx.Outcome.CONTROL);
+            if (time > 0 && cn.academy.port.api.CombatControl.canAffect(c.player, t)) {
+                boolean applied = t.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, time, 1, false, true), c.player);
+                if (!applied && !t.hasEffect(MobEffects.MOVEMENT_SLOWDOWN))
+                    applied = cn.academy.port.api.CombatControl.hold(t, c.world.getGameTime() + time);
+                if (applied) cn.academy.port.macro.BeamImpactVfx.contact(c.player, id, c.origin(),
+                        visualPoint(c, t), cn.academy.port.macro.BeamImpactVfx.Outcome.CONTROL);
+            }
             if (id.equals("mental_feedback_spike") && t instanceof Mob m) { m.getNavigation().stop(); }
         } else if (c.spec.category().equals("float_dial")) {
             var v = t.getDeltaMovement(); double vertical = id.equals("float_reversal_drop") || id.equals("float_pressure_drop") || id.equals("float_collapse_field") ? -.42 : .34;

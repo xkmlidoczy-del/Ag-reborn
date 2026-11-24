@@ -87,7 +87,7 @@ public final class CanonOffenseRuntimeTests {
         CanonOffense.observer=r->{old.accept(r);if(!r.phase().equals("RESOLVE"))return;
             var f=fixtures.stream().filter(v->v.p.getUUID().equals(r.owner())).findFirst().orElse(null);if(f==null)return;
             counts.merge(r.owner(),1,Integer::sum);
-            double expected=24*CanonEmission.levelFactor(f.spec.level()).doubleValue()*.984;
+            double expected=54*CanonEmission.levelFactor(f.spec.level()).doubleValue()*.984;
             if(Math.abs(r.damage()-expected)>.05)failures.add(r.skill()+" damage "+r.damage()+" / "+expected);
             double cost=.1*f.spec.cp();if(Math.abs(r.cp()-cost)>1e-6||Math.abs(r.cpBefore()-r.cpAfter()-cost)>1e-5)failures.add(r.skill()+" CP debit");
             if(AbilityStorage.get(f.p).cooldowns.getOrDefault(r.skill(),0)!=f.spec.cooldown())failures.add(r.skill()+" cooldown");
@@ -131,7 +131,7 @@ public final class CanonOffenseRuntimeTests {
         h.runAfterDelay(65,()->{f.place();h.assertTrue(CanonOffense.cast(f.p,f.spec.id()),"real fan cast");});
         h.runAfterDelay(95,()->{try{
             var after=f.targets.stream().map(CanonOffenseRuntimeTests::hp).reduce(BigDecimal.ZERO,BigDecimal::add);
-            near(h,before.subtract(after).doubleValue(),24*.8*.984,"whole-cast conservation");
+            near(h,before.subtract(after).doubleValue(),54*.8*.984,"whole-cast conservation");
             h.assertTrue(f.p.getMainHandItem().getCount()==29,"three sheets, not three per target");h.succeed();
         }finally{f.close();}});
     }
@@ -142,7 +142,7 @@ public final class CanonOffenseRuntimeTests {
         h.runAfterDelay(76,()->{f.place();h.assertTrue(t.hasEffect(net.minecraft.world.effect.MobEffects.LEVITATION)&&!t.onGround(),"real airborne control window");
             f.select("float_reversal_drop");h.assertTrue(CanonOffense.cast(f.p,"float_reversal_drop"),"reversal chain starts");});
         h.runAfterDelay(94,()->{try{
-            near(h,before.subtract(hp(t)).doubleValue(),24*1.4*.984,"two separate conserved hits");
+            near(h,before.subtract(hp(t)).doubleValue(),54*1.4*.984,"two separate conserved hits");
             h.assertTrue(!t.hasEffect(net.minecraft.world.effect.MobEffects.LEVITATION),"reversal ends upward buoyancy");h.succeed();
         }finally{f.close();}});
     }

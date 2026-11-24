@@ -176,7 +176,17 @@ public final class CanonSkillsCombatA {
         LivingEntity hit = MentalTargeting.aimed(player, reach);
         if (hit == null) hit = aimed(player, reach);
         if (!eligible(player, hit, DISRUPT)) return false;
-        if (!(hit instanceof Mob mob)) return MentalTargeting.resisted(player);
+        if (!(hit instanceof Mob mob)) {
+            if (hit == null || !cn.academy.port.api.CombatControl.canAffect(player, hit) || !spend(player, DISRUPT, 2, 80))
+                return MentalTargeting.resisted(player);
+            boolean held = cn.academy.port.api.CombatControl.hold(hit, player.level().getGameTime() + duration);
+            if (held) {
+                cue(player.serverLevel(), hit.position(), true);
+                CanonVfx.emit(player, DISRUPT, player.getEyePosition(), hit.position(), CanonVfx.Phase.ACTIVE, duration);
+                experience(player, DISRUPT, .02);
+            }
+            return held;
+        }
         if (!eligible(player, mob, DISRUPT) || LEASES.containsKey(mob) || CanonExpansionCombatA.mentalLeased(mob)) return false;
         long now = player.serverLevel().getGameTime();
         if (now < 0 || now > Long.MAX_VALUE - duration || !spend(player, DISRUPT, 2, 80)) return false;
@@ -329,7 +339,7 @@ public final class CanonSkillsCombatA {
         emission.forEach(target -> {
             if (barrageCandidate(player, target, level, eye, direction) && emission.attack(target)) {
                 hit[0]++;
-                if (target.isAlive() && !cn.academy.port.highpower.PlayerShieldArmor.holding(target)) {
+                if (target.isAlive() && !cn.academy.port.highpower.PlayerShieldArmor.ignoresControl(target)) {
                     Vec3 impulse = target.position().subtract(player.position()).multiply(1, 0, 1).normalize()
                             .scale(number(BARRAGE, "horizontal_speed") * kbFactor).add(0, number(BARRAGE, "vertical_speed"), 0);
                     if (finite(impulse)) { target.push(impulse.x, impulse.y, impulse.z); target.hurtMarked = true; }
@@ -382,7 +392,7 @@ public final class CanonSkillsCombatA {
                         && aimedCandidate(player, current, level, eye, direction, reach));
         if (emission == null) return false;
         boolean hit = emission.attack(target);
-        if (hit && target.isAlive() && !cn.academy.port.highpower.PlayerShieldArmor.holding(target)) {
+        if (hit && target.isAlive() && !cn.academy.port.highpower.PlayerShieldArmor.ignoresControl(target)) {
             Vec3 impulse = player.getLookAngle().multiply(1, 0, 1).normalize().scale(number(PUNCH, "horizontal_speed")).add(0, number(PUNCH, "vertical_speed"), 0);
             if (finite(impulse)) { target.push(impulse.x, impulse.y, impulse.z); target.hurtMarked = true; }
         }
@@ -794,8 +804,9 @@ public final class CanonSkillsCombatA {
     }
 
     private static boolean holdTarget(ServerPlayer owner, Mob mob, Mob target, long expires) {
+        if (!cn.academy.port.api.ControlRelations.bind(owner, mob, expires, target == null ? DISRUPT : CROWD)) return false;
         var previous = MentalTargeting.target(mob);
-        if (!MentalTargeting.assign(mob, target)) return false;
+        MentalTargeting.assign(mob, target);
         if (target == null) MentalTargeting.stopRoute(mob);
         LEASES.put(mob, new Lease(owner, owner.serverLevel(), mob, previous, target, expires));
         return true;
@@ -836,29 +847,40 @@ public final class CanonSkillsCombatA {
         }
     }
 
-    @SubscribeEvent public static void tick(EntityTickEvent.Post event) {
-        if (!(event.getEntity() instanceof Mob mob) || mob.level().isClientSide()) return;
-        Lease lease = LEASES.get(mob);
-        if (lease == null) return;
-        if (mob.level() != lease.level || lease.level.getGameTime() >= lease.expires
-                || !validOwner(lease.owner) || !MENTAL.equals(AbilityStorage.get(lease.owner).category)
-                || !MentalTargeting.reachable(lease.owner, mob, mentalReach(lease.owner, lease.target == null ? DISRUPT : CROWD))
-                || lease.target != null && !eligible(lease.owner, lease.target, CROWD)) {
-            release(mob, lease); return;
+    @SubscribeEvent public static void pauseDisrupted(EntityTickEvent.Pre event) {
+        if (event.getEntity() instanceof Mob mob && mob.level() instanceof ServerLevel level) {
+            var lease = LEASES.get(mob);
+            if (lease == null || level.getGameTime() >= lease.expires || !validOwner(lease.owner)
+                    || lease.target != null && !cn.academy.port.api.CombatControl.needsDriver(mob)) return;
+            mob.setDeltaMovement(Vec3.ZERO);
+            event.setCanceled(true);
         }
-        if (lease.target != null && !mob.hasLineOfSight(lease.target)) {
-            release(mob, lease);
-            return;
-        }
-        boolean retained = MentalTargeting.assign(mob, lease.target);
-        if (retained && lease.target == null) retained = MentalTargeting.stopRoute(mob);
-        if (!retained) {
-            release(mob, lease);
-            MentalTargeting.resisted(lease.owner);
+    }
+
+    @SubscribeEvent public static void upkeep(net.neoforged.neoforge.event.tick.ServerTickEvent.Post event) {
+        for (var lease : List.copyOf(LEASES.values())) {
+            if (lease.level.getServer() != event.getServer()) continue;
+            var mob = lease.mob;
+            long now = lease.level.getGameTime();
+            if (mob.level() != lease.level || now >= lease.expires || !validOwner(lease.owner)
+                    || !MENTAL.equals(AbilityStorage.get(lease.owner).category)
+                    || !MentalTargeting.reachable(lease.owner, mob, mentalReach(lease.owner, lease.target == null ? DISRUPT : CROWD))
+                    || lease.target != null && !eligible(lease.owner, lease.target, CROWD)) {
+                release(mob, lease);
+                continue;
+            }
+            boolean directed = MentalTargeting.assign(mob, lease.target);
+            if (lease.target == null) MentalTargeting.stopRoute(mob);
+            else {
+                boolean nativeDrive = directed && !cn.academy.port.api.CombatControl.needsDriver(mob);
+                MentalTargeting.approach(mob, lease.target, nativeDrive, now, 1.15);
+                if (!nativeDrive && now % 20L == 0L) MentalTargeting.strike(mob, lease.target);
+            }
         }
     }
     private static void release(Mob mob, Lease lease) {
         if (!LEASES.remove(mob, lease)) return;
+        cn.academy.port.api.ControlRelations.release(mob, lease.target == null ? DISRUPT : CROWD);
         MentalTargeting.restore(mob, lease.target, lease.previous);
         visual(lease.owner, lease.target == null ? DISRUPT : CROWD, lease.owner.position(), lease.owner.position(), CanonVfx.Phase.END, 8);
     }

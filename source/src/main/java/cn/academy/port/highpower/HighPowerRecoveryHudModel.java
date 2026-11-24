@@ -427,6 +427,16 @@ public final class HighPowerRecoveryHudModel {
     /** Full native-font content gets its actual measured reservation; never shrink it after wrapping. */
     public static Box layout(int width, int height, Box cp, Box keys, Box notification, Box chat, int panelWidth, int panelHeight) {
         if (panelWidth < 150 || panelWidth > width - 16 || panelHeight < 56 || panelHeight > height - 16 || height < 140) return null;
+        return place(width, height, cp, keys, notification, chat, panelWidth, panelHeight);
+    }
+
+    public static Box compactLayout(int width, int height, Box cp, Box keys, Box notification, Box chat, boolean reserve) {
+        if (width < 200 || height < 92) return null;
+        return place(width, height, cp, keys, notification, chat, 120, reserve ? 38 : 28);
+    }
+
+    private static Box place(int width, int height, Box cp, Box keys, Box notification, Box chat,
+                             int panelWidth, int panelHeight) {
         Box[] candidates = {new Box(width - panelWidth - 12, Math.max(8, cp.y + cp.height + 2), panelWidth, panelHeight),
                 new Box(8, Math.max(8, notification.y + notification.height + 4), panelWidth, panelHeight),
                 new Box(8, 8, panelWidth, panelHeight)};

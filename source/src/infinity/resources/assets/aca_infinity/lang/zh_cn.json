@@ -106,5 +106,6 @@
   "msg.aca_infinity.ship_warp": "✦ 短距曲速跃迁完成！",
   "msg.aca_infinity.ship_cam_cockpit": "舰桥视角：3A 全息穹顶座舱",
   "msg.aca_infinity.ship_cam_rear": "舰桥视角：14.5m 后方电影追尾",
-  "msg.aca_infinity.ship_cam_orbital": "舰桥视角：22m 轨道俯瞰战术视角"
+  "msg.aca_infinity.ship_cam_orbital": "舰桥视角：22m 轨道俯瞰战术视角",
+  "msg.aca_infinity.snap_erased": "响指抹除 %1$s 个生命，未完成 %2$s 个，瓦解 %3$s 艘旗舰。"
 }

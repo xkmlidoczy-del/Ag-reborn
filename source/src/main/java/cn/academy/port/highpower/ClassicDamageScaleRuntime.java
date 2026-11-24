@@ -15,11 +15,14 @@ import net.neoforged.fml.common.EventBusSubscriber;
 public final class ClassicDamageScaleRuntime {
     private ClassicDamageScaleRuntime() {}
 
-    /** Only source-catalogued classic identities own the original-number-to-D conversion.
-     * Closed controllers may use private event suffixes which are deliberately not learnable skill ids.
-     */
+    private static SkillCatalog.Skill classicSkill(String category, String id) {
+        return SkillCatalog.ALL.stream()
+                .filter(skill -> skill.category().equals(category) && skill.id().equals(id))
+                .findFirst().orElse(null);
+    }
+
     static boolean isClassicSkill(String category, String id) {
-        return SkillCatalog.ALL.stream().anyMatch(skill -> skill.category().equals(category) && skill.id().equals(id));
+        return classicSkill(category, id) != null;
     }
 
     @SubscribeEvent
@@ -31,9 +34,12 @@ public final class ClassicDamageScaleRuntime {
         String category = event.skill.substring(0, separator), id = event.skill.substring(separator + 1);
         var state = AbilityStorage.get(event.player);
         // Only the classic skills of the caster's own admitted category; every high-power skill id keeps its closed budget.
-        if (!HighPowerCategories.active(state) || !category.equals(state.category) || !isClassicSkill(category, id)) return;
+        if (!HighPowerCategories.active(state) || !category.equals(state.category)) return;
+        var definition = classicSkill(category, id);
+        if (definition == null) return;
         try {
-            double scaled = ClassicDamageScale.scaled(event.amount, HighPowerGrowth.values(event.player).damage(), EsperBalanceConfig.divisor());
+            var ranked = HighPowerGrowth.values(event.player).damage().multiply(ClassicDamageScale.rankFactor(definition.level()));
+            double scaled = ClassicDamageScale.scaled(event.amount, ranked, EsperBalanceConfig.divisor());
             if (Double.isFinite(scaled) && scaled > 0) event.amount = scaled;
         } catch (IllegalStateException | IllegalArgumentException unavailable) { /* no admitted growth: classic amount unchanged */ }
     }

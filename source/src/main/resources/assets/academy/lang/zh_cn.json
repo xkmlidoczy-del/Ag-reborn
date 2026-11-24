@@ -3988,5 +3988,7 @@
   "menu.academy.fish_computer.show": "开启角色投影",
   "menu.academy.fish_computer.welcome": "迎宾",
   "menu.academy.fish_computer.analysis": "运算",
-  "menu.academy.fish_computer.thinking": "思考"
+  "menu.academy.fish_computer.thinking": "思考",
+  "key.academy.toggle_ability_vitals": "显示或隐藏能力者属性",
+  "death.attack.academy.erasure": "%1$s 被 %2$s 抹除"
 }

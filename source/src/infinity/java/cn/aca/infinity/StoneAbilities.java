@@ -118,6 +118,7 @@ public final class StoneAbilities {
     }
 
     private static void castSkill(ServerPlayer player, boolean primary, boolean shiftMod) {
+        if (AcademyCompat.held(player)) return;
         WearerState w = AcaInfinity.wearer(player);
         if (!w.equipped()) return;
         GauntletData data = w.data();
@@ -256,16 +257,18 @@ public final class StoneAbilities {
             if (!abducted.isEmpty()) {
                 Vec3 from = abducted.getFirst().position();
                 for (LivingEntity foe : abducted) {
-                    foe.teleportTo(pullAnchor.x + (level.random.nextDouble() - 0.5) * 1.2,
-                            pullAnchor.y + 0.25,
-                            pullAnchor.z + (level.random.nextDouble() - 0.5) * 1.2);
-                    foe.setDeltaMovement(Vec3.ZERO);
-                    foe.hurtMarked = true;
-                    EntityStatusData st = AcaInfinity.status(foe);
-                    st.spaceTetherUntil = now + 120L;
-                    st.spaceTetherAnchor = pullAnchor;
+                    if (AcademyCompat.canControl(player, foe)) {
+                        foe.teleportTo(pullAnchor.x + (level.random.nextDouble() - 0.5) * 1.2,
+                                pullAnchor.y + 0.25,
+                                pullAnchor.z + (level.random.nextDouble() - 0.5) * 1.2);
+                        foe.setDeltaMovement(Vec3.ZERO);
+                        foe.hurtMarked = true;
+                        EntityStatusData st = AcaInfinity.status(foe);
+                        st.spaceTetherUntil = now + 120L;
+                        st.spaceTetherAnchor = pullAnchor;
+                        InfinityNetwork.syncEntityMark(foe);
+                    }
                     AcademyCompat.hurt(foe, level.damageSources().indirectMagic(player, player), 20.0f, false);
-                    InfinityNetwork.syncEntityMark(foe);
                 }
                 level.playSound(null, BlockPos.containing(pullAnchor), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.15f, 0.72f);
                 InfinityNetwork.broadcastCue(level, player.getUUID(), InfinityNetwork.CUE_SPACE_WARP, abducted.size(), from, pullAnchor, 64.0);
@@ -295,15 +298,17 @@ public final class StoneAbilities {
 
         List<LivingEntity> foes = findHostilesNear(level, player, dest, 8.5);
         for (LivingEntity foe : foes) {
-            EntityStatusData st = AcaInfinity.status(foe);
-            st.spaceTetherUntil = now + 120L;
-            st.spaceTetherAnchor = dest;
+            if (AcademyCompat.canControl(player, foe)) {
+                EntityStatusData st = AcaInfinity.status(foe);
+                st.spaceTetherUntil = now + 120L;
+                st.spaceTetherAnchor = dest;
 
-            Vec3 pull = dest.subtract(foe.position()).scale(0.44);
-            foe.setDeltaMovement(pull.x, 0.28, pull.z);
-            foe.hurtMarked = true;
+                Vec3 pull = dest.subtract(foe.position()).scale(0.44);
+                foe.setDeltaMovement(pull.x, 0.28, pull.z);
+                foe.hurtMarked = true;
+                InfinityNetwork.syncEntityMark(foe);
+            }
             AcademyCompat.hurt(foe, level.damageSources().playerAttack(player), 18.0f, false);
-            InfinityNetwork.syncEntityMark(foe);
         }
 
         level.playSound(null, BlockPos.containing(dest), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0f, 0.85f);
@@ -364,14 +369,17 @@ public final class StoneAbilities {
         Set<LivingEntity> affected = new HashSet<>(findHostilesAlongRay(level, player, eye, impact, 2.8));
         affected.addAll(findHostilesNear(level, player, impact, 4.8));
         for (LivingEntity foe : affected) {
-            EntityStatusData st = AcaInfinity.status(foe);
-            st.crystalSnareUntil = now + 80L;
-            st.shatteredUntil = Math.max(st.shatteredUntil, now + 120L);
-            foe.setDeltaMovement(0, -0.35, 0);
-            foe.hurtMarked = true;
+            if (AcademyCompat.canControl(player, foe)) {
+                EntityStatusData st = AcaInfinity.status(foe);
+                st.crystalSnareUntil = now + 80L;
+                st.shatteredUntil = Math.max(st.shatteredUntil, now + 120L);
+                foe.setDeltaMovement(0, -0.35, 0);
+                foe.hurtMarked = true;
+                AcademyCompat.holdPlayer(foe, st.crystalSnareUntil);
+                foe.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 3));
+                InfinityNetwork.syncEntityMark(foe);
+            }
             AcademyCompat.hurt(foe, level.damageSources().indirectMagic(player, player), 28.0f, false);
-            foe.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 3));
-            InfinityNetwork.syncEntityMark(foe);
         }
 
         BlockPos center = BlockPos.containing(impact);
@@ -415,6 +423,7 @@ public final class StoneAbilities {
         }
 
         for (LivingEntity foe : findHostilesNear(level, player, player.position(), 14.0)) {
+            if (!AcademyCompat.canControl(player, foe)) continue;
             if (AcademyCompat.contracts()) cn.academy.port.api.EquipmentSeal.apply(player, foe, 200);
             EntityStatusData st = AcaInfinity.status(foe);
             if (foe instanceof Mob mob) {
@@ -465,7 +474,7 @@ public final class StoneAbilities {
             float baseDmg = Math.max(42.0f, foe.getMaxHealth() * 0.28f) + singularityBonus;
             applyTrueNameSuppressionIfHukou(player, level, foe, now, Stone.POWER);
             AcademyCompat.hurt(foe, level.damageSources().explosion(player, player), baseDmg, true);
-            if (!singularityTriggered) {
+            if (!singularityTriggered && AcademyCompat.canControl(player, foe)) {
                 Vec3 kb = look.scale(1.65).add(0, 0.42, 0);
                 foe.setDeltaMovement(kb);
                 foe.hurtMarked = true;
@@ -493,10 +502,10 @@ public final class StoneAbilities {
 
         for (LivingEntity foe : targets) {
             EntityStatusData st = AcaInfinity.status(foe);
-            st.shatteredUntil = now + 200L;
+            if (AcademyCompat.canControl(player, foe)) st.shatteredUntil = now + 200L;
             applyTrueNameSuppressionIfHukou(player, level, foe, now, Stone.POWER);
             AcademyCompat.hurt(foe, level.damageSources().playerAttack(player), 30.0f + singularityBonus, true);
-            if (!singularityTriggered) {
+            if (!singularityTriggered && AcademyCompat.canControl(player, foe)) {
                 Vec3 away = foe.position().subtract(center);
                 double d = Math.max(0.5, away.horizontalDistance());
                 foe.setDeltaMovement(away.x / d * 1.15, 0.72, away.z / d * 1.15);
@@ -544,9 +553,11 @@ public final class StoneAbilities {
         for (LivingEntity v : victims) {
             EntityStatusData vst = AcaInfinity.status(v);
             vst.spaceTetherUntil = 0L;
-            Vec3 pull = anchor.subtract(v.position());
-            v.setDeltaMovement(pull.x * 0.52, 0.36, pull.z * 0.52);
-            v.hurtMarked = true;
+            if (AcademyCompat.canControl(player, v)) {
+                Vec3 pull = anchor.subtract(v.position());
+                v.setDeltaMovement(pull.x * 0.52, 0.36, pull.z * 0.52);
+                v.hurtMarked = true;
+            }
             if (!directTargets.contains(v)) {
                 AcademyCompat.hurt(v, level.damageSources().indirectMagic(player, player), bonusCrush, true);
             }
@@ -602,7 +613,15 @@ public final class StoneAbilities {
         int converted = 0;
         for (LivingEntity foe : hitFoes) {
             applyTrueNameSuppressionIfHukou(player, level, foe, now, Stone.MIND);
-            if (foe instanceof Mob mob && converted < maxConvert) {
+            if (!AcademyCompat.canControl(player, foe) || converted >= maxConvert) continue;
+            if (!(foe instanceof Mob)) {
+                EntityStatusData st = AcaInfinity.status(foe);
+                st.mindStandUntil = now + 300L;
+                AcademyCompat.holdPlayer(foe, st.mindStandUntil);
+                InfinityNetwork.syncEntityMark(foe);
+                converted++;
+            }
+            if (foe instanceof Mob mob) {
                 if (AcademyCompat.contracts() && !cn.academy.port.api.ControlRelations.bind(player, mob, now + 300L, "infinity_mind")) continue;
                 converted++;
                 EntityStatusData st = AcaInfinity.status(mob);
@@ -636,6 +655,12 @@ public final class StoneAbilities {
         InfinityNetwork.broadcastCue(level, player.getUUID(), InfinityNetwork.CUE_MIND_BEAM, hitFoes.size(), eye, beamEnd, 64.0);
     }
 
+    private static boolean ownedBy(LivingEntity target, ServerPlayer caster, long now) {
+        if (!target.hasData(AcaInfinity.ENTITY_STATUS)) return false;
+        EntityStatusData status = AcaInfinity.status(target);
+        return status.isMindControlled(now) && caster.getUUID().equals(status.mindMaster);
+    }
+
     private static void castMindRollCall(ServerPlayer player, ServerLevel level, long now) {
         Vec3 center = player.position();
         List<LivingEntity> foes = findHostilesNear(level, player, center, 14.0);
@@ -645,7 +670,8 @@ public final class StoneAbilities {
                         && player.getUUID().equals(AcaInfinity.status(mob).mindMaster)));
         int count = 0;
         for (LivingEntity foe : foes) {
-            if (!(foe instanceof Mob)) continue;
+            if (AcademyCompat.controlImmune(foe)
+                    || !AcademyCompat.canControl(player, foe) && !ownedBy(foe, player, now)) continue;
             EntityStatusData st = AcaInfinity.status(foe);
             if (AcademyCompat.contracts()) cn.academy.port.api.ControlRelations.release(foe, "infinity_mind");
             st.mindControlUntil = 0L;
@@ -654,6 +680,7 @@ public final class StoneAbilities {
             syncTransientModifier(foe, Attributes.ATTACK_DAMAGE, MOD_PUPPET_DMG, 0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, false);
             syncTransientModifier(foe, Attributes.MOVEMENT_SPEED, MOD_PUPPET_SPD, 0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, false);
             st.mindStandUntil = now + 180L;
+            AcademyCompat.holdPlayer(foe, st.mindStandUntil);
             foe.setDeltaMovement(Vec3.ZERO);
             foe.setXRot(0f);
             syncTransientModifier(foe, Attributes.ATTACK_DAMAGE, MOD_SILENCE_DMG, -1.0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, true);
@@ -691,7 +718,7 @@ public final class StoneAbilities {
 
         for (LivingEntity seed : hukouSeeds) {
             for (Mob bystander : level.getEntitiesOfClass(Mob.class, seed.getBoundingBox().inflate(12.0),
-                    m -> m != seed && m.isAlive() && !isFriendlyTo(player, m) && !isBossEntity(m))) {
+                    m -> m != seed && m.isAlive() && !isFriendlyTo(player, m) && AcademyCompat.canControl(player, m))) {
                 EntityStatusData bSt = AcaInfinity.status(bystander);
                 boolean newlyInfected = !bSt.hasHukou(now) || !bSt.isAshamed(now);
                 HukouNaming.Pair pair = HukouNaming.inspect(bystander);
@@ -731,7 +758,8 @@ public final class StoneAbilities {
         AABB area = player.getBoundingBox().inflate(radius);
 
         for (Entity entity : level.getEntities(player, area, e -> e.isAlive() && !isFriendlyTo(player, e))) {
-            if (entity.distanceToSqr(center) > radius * radius) continue;
+            if (entity.getBoundingBox().distanceToSqr(center) > radius * radius
+                    || !AcademyCompat.canControl(player, entity)) continue;
             EntityStatusData st = AcaInfinity.status(entity);
             if (!st.isTimeFrozen(now)) {
                 st.frozenPos = entity.position();
@@ -743,6 +771,7 @@ public final class StoneAbilities {
                 st.frozenProjectileReflected = false;
             }
             st.timeFrozenUntil = now + duration;
+            if (entity instanceof LivingEntity living) AcademyCompat.holdPlayer(living, st.timeFrozenUntil);
             entity.setDeltaMovement(Vec3.ZERO);
             InfinityNetwork.syncEntityMark(entity);
         }
@@ -757,7 +786,7 @@ public final class StoneAbilities {
 
         // Also rewind rushing nearby enemies 8m around back to their 3s-ago historical coordinates!
         for (LivingEntity foe : findHostilesNear(level, player, before, 8.5)) {
-            if (foe.hasData(AcaInfinity.ENTITY_STATUS)) {
+            if (AcademyCompat.canControl(player, foe) && foe.hasData(AcaInfinity.ENTITY_STATUS)) {
                 EntityStatusData fst = AcaInfinity.status(foe);
                 if (fst.pastPos3s.lengthSqr() > 0.01) {
                     Vec3 foeOld = foe.position();
@@ -800,12 +829,9 @@ public final class StoneAbilities {
     }
 
     private static void castSoulHukouWave(ServerPlayer player, ServerLevel level, long now) {
-        List<Entity> candidates = new ArrayList<>();
-        for (Entity e : level.getEntities(player, player.getBoundingBox().inflate(14.0),
-                ent -> ent.isAlive() && (ent instanceof LivingEntity || ent instanceof SanctuaryShipEntity) && ent != player)) {
-            if (e instanceof Player) continue;
-            candidates.add(e);
-        }
+        List<Entity> candidates = new ArrayList<>(findHostilesNear(level, player, player.position(), 14.0));
+        candidates.addAll(level.getEntitiesOfClass(SanctuaryShipEntity.class, player.getBoundingBox().inflate(14.0),
+                ship -> ship.isAlive() && !isFriendlyTo(player, ship)));
         candidates.sort(Comparator.comparingDouble(player::distanceToSqr));
         int applied = 0;
         for (Entity target : candidates) {
@@ -834,11 +860,18 @@ public final class StoneAbilities {
             living.addEffect(new MobEffectInstance(MobEffects.GLOWING, InfinityConfig.hukouTagTicks(), 0, false, false, true));
         }
 
-        if (alreadyTagged && !boss) {
+        if (boss) AcademyCompat.hurt(target, level.damageSources().indirectMagic(player, player), 22.0f, false);
+        if (!AcademyCompat.canControl(player, target)) {
+            InfinityNetwork.syncEntityMark(target);
+            return;
+        }
+
+        if (alreadyTagged) {
             int parentTicks = InfinityConfig.hukouParentSlowTicks();
             st.shameUntil = 0L;
             st.parentSlowUntil = now + parentTicks;
             st.parentFearOrigin = player.position();
+            if (target instanceof LivingEntity living) AcademyCompat.holdPlayer(living, st.parentSlowUntil);
             if (target instanceof Mob mob) {
                 forceClearBrainAndGoals(mob, false);
                 mob.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, parentTicks, 2));
@@ -847,15 +880,10 @@ public final class StoneAbilities {
                 player.displayClientMessage(Component.translatable("msg.aca_infinity.hukou_call_parents",
                         names.father(), names.mother(), target.getDisplayName()).withStyle(ChatFormatting.GOLD), false);
             }
-        } else if (boss) {
-            AcademyCompat.hurt(target, level.damageSources().indirectMagic(player, player), 22.0f, false);
-            if (announce) {
-                player.displayClientMessage(Component.translatable("msg.aca_infinity.hukou_boss",
-                        target.getDisplayName(), names.father(), names.mother()).withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD), false);
-            }
         } else {
             int shameTicks = InfinityConfig.hukouShameTicks();
             st.shameUntil = now + shameTicks;
+            if (target instanceof LivingEntity living) AcademyCompat.holdPlayer(living, st.shameUntil);
             if (target instanceof Mob mob) {
                 forceClearBrainAndGoals(mob, true);
                 mob.setXRot(44.0f);
@@ -887,6 +915,7 @@ public final class StoneAbilities {
 
     // ==================== 7. ONE-KEY SIX-STONE SNAP ====================
     public static void castSnap(ServerPlayer player) {
+        if (AcademyCompat.held(player)) return;
         WearerState w = AcaInfinity.wearer(player);
         if (!w.equipped()) return;
         GauntletData data = w.data();
@@ -917,12 +946,7 @@ public final class StoneAbilities {
             }
         }
 
-        List<LivingEntity> eligible = new ArrayList<>();
-        for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, box, LivingEntity::isAlive)) {
-            if (e.distanceToSqr(center) > radius * radius) continue;
-            if (isSnapProtected(player, e)) continue;
-            eligible.add(e);
-        }
+        List<LivingEntity> eligible = livingNear(level, center, radius, entity -> !isSnapProtected(player, entity));
         Collections.shuffle(eligible, new java.util.Random(now ^ player.getUUID().getLeastSignificantBits()));
         int toBanish = (eligible.size() + 1) / 2;
         SnapResults results = new SnapResults(collapsedShips);
@@ -935,8 +959,7 @@ public final class StoneAbilities {
                     40, 0.45, 0.65, 0.45, 0.05);
             level.sendParticles(ParticleTypes.END_ROD, vp.x, vp.y + victim.getBbHeight() * 0.5, vp.z,
                     14, 0.35, 0.45, 0.35, 0.06);
-            if (isBossEntity(victim)) results.strike(player, victim);
-            else results.banish(victim);
+            results.erase(player, victim);
         }
 
         if (!player.getAbilities().instabuild) {
@@ -1062,9 +1085,17 @@ public final class StoneAbilities {
         if (!entity.hasData(AcaInfinity.ENTITY_STATUS)) return;
         EntityStatusData st = AcaInfinity.status(entity);
 
+        boolean immune = AcademyCompat.controlImmune(entity);
+        if (immune) {
+            boolean changed = st.mindStandUntil > now || st.shameUntil > now || st.parentSlowUntil > now
+                    || st.crystalSnareUntil > now || st.spaceTetherUntil > now || st.shatteredUntil > now;
+            st.mindStandUntil = st.shameUntil = st.parentSlowUntil = st.crystalSnareUntil = st.spaceTetherUntil = st.shatteredUntil = 0L;
+            if (changed) InfinityNetwork.syncEntityMark(entity);
+        }
         // 1. Time Stone 10s Stasis enforcement + Projectile Reflect + 1.35x Temporal Reckoning on Thaw!
         if (st.timeFrozenUntil > 0L) {
-            if (st.timeFrozenUntil > now) {
+            if (st.timeFrozenUntil > now && !immune) {
+                if (entity instanceof ServerPlayer) return;
                 entity.setPos(st.frozenPos.x, st.frozenPos.y, st.frozenPos.z);
                 entity.setDeltaMovement(Vec3.ZERO);
                 entity.setYRot(st.frozenYaw);
@@ -1076,8 +1107,10 @@ public final class StoneAbilities {
                 return;
             } else {
                 st.timeFrozenUntil = 0L;
-                entity.setDeltaMovement(st.frozenDelta);
-                entity.hurtMarked = true;
+                if (!immune) {
+                    entity.setDeltaMovement(st.frozenDelta);
+                    entity.hurtMarked = true;
+                }
 
                 float stored = st.frozenDamagePool;
                 st.frozenDamagePool = 0.0f;
@@ -1109,7 +1142,7 @@ public final class StoneAbilities {
         if (!(entity instanceof LivingEntity living) || !living.isAlive()) return;
 
         // 2. Reality Stone Disarm / Shrink / Weaken & Crimson Crystal Snare maintenance
-        if (st.disarmedUntil > 0L && st.disarmedUntil <= now) {
+        if (st.disarmedUntil > 0L && (st.disarmedUntil <= now || immune)) {
             st.disarmedUntil = 0L;
             syncTransientModifier(living, Attributes.ATTACK_DAMAGE, MOD_DISARM_DMG, 0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, false);
             syncTransientModifier(living, Attributes.ARMOR_TOUGHNESS, MOD_DISARM_TOUGH, 0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, false);
@@ -1137,10 +1170,13 @@ public final class StoneAbilities {
             }
         }
 
-        if (!(living instanceof Mob mob)) return;
-
         boolean pacified = st.isStandingAttention(now) || st.isAshamed(now);
-        syncTransientModifier(mob, Attributes.ATTACK_DAMAGE, MOD_SILENCE_DMG, -1.0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, pacified);
+        syncTransientModifier(living, Attributes.ATTACK_DAMAGE, MOD_SILENCE_DMG, -1.0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, pacified);
+        if (!(living instanceof Mob mob)) {
+            if (!(living instanceof ServerPlayer) && (pacified || st.isParentSlowed(now) || st.isCrystalSnared(now)))
+                event.setCanceled(true);
+            return;
+        }
         if (!pacified && !st.isParentSlowed(now) && !st.isMindControlled(now)) {
             unlockGoalFlags(mob);
         }
@@ -1158,6 +1194,7 @@ public final class StoneAbilities {
                 InfinityNetwork.syncEntityMark(mob);
             } else if (mob.level() instanceof ServerLevel sl) {
                 Player master = sl.getPlayerByUUID(st.mindMaster);
+                boolean driven = AcademyCompat.needsDriver(mob);
                 LivingEntity victim = findPuppetTarget(sl, mob, st, master, now);
                 if (victim != null) {
                     if (mob.getTarget() != victim || now % 5L == 0L) {
@@ -1173,17 +1210,17 @@ public final class StoneAbilities {
                     mob.yBodyRot = mob.getYRot();
 
                     if (distSqr > reach * reach) {
-                        mob.getNavigation().moveTo(victim, 1.30);
-                        if (mob.getDeltaMovement().horizontalDistanceSqr() < 0.015) {
+                        if (!driven) mob.getNavigation().moveTo(victim, 1.30);
+                        if (driven || mob.getDeltaMovement().horizontalDistanceSqr() < 0.015) {
                             Vec3 step = dir.multiply(1, 0, 1).normalize().scale(0.24);
-                            mob.setDeltaMovement(step.x, mob.onGround() && mob.horizontalCollision ? 0.42 : mob.getDeltaMovement().y, step.z);
+                            mob.move(net.minecraft.world.entity.MoverType.SELF, step);
                         }
                     } else if (now - st.lastPuppetSwingTick >= 16L) {
                         st.lastPuppetSwingTick = now;
                         mob.swing(InteractionHand.MAIN_HAND);
                         var attack = mob.getAttribute(Attributes.ATTACK_DAMAGE);
                         float strike = attack == null ? 8f : (float) Math.max(1, attack.getValue());
-                        victim.hurt(sl.damageSources().mobAttack(mob), strike);
+                        AcademyCompat.hurtPuppet(victim, sl.damageSources().mobAttack(mob), strike);
                         sl.sendParticles(ParticleTypes.CRIT, victim.getX(), victim.getY() + victim.getBbHeight() * 0.5, victim.getZ(),
                                 8, 0.25, 0.25, 0.25, 0.12);
                     }
@@ -1191,9 +1228,13 @@ public final class StoneAbilities {
                     // No hostiles left: guard master obediently without ever attacking master!
                     if (mob.getTarget() != null) forceClearBrainAndGoals(mob, false);
                     if (master != null && mob.distanceToSqr(master) > 36.0) {
-                        mob.getNavigation().moveTo(master, 1.15);
+                        if (!driven) mob.getNavigation().moveTo(master, 1.15);
+                        if (driven || mob.getNavigation().isDone())
+                            mob.move(net.minecraft.world.entity.MoverType.SELF,
+                                    master.position().subtract(mob.position()).multiply(1, 0, 1).normalize().scale(.18));
                     }
                 }
+                if (driven) event.setCanceled(true);
                 return;
             }
         }
@@ -1218,6 +1259,7 @@ public final class StoneAbilities {
                 sl.sendParticles(ParticleTypes.SPLASH, mob.getX(), mob.getEyeY() + 0.15, mob.getZ(),
                         4, 0.2, 0.1, 0.2, 0.02);
             }
+            event.setCanceled(true);
             return;
         }
 
@@ -1231,11 +1273,12 @@ public final class StoneAbilities {
             mob.setYRot(fleeYaw);
             mob.setYHeadRot(fleeYaw);
             mob.yBodyRot = fleeYaw;
-            double wy = mob.onGround() && mob.horizontalCollision ? 0.42 : mob.getDeltaMovement().y;
-            mob.setDeltaMovement(fleeDir.x * 0.28, wy, fleeDir.z * 0.28);
+            mob.move(net.minecraft.world.entity.MoverType.SELF, fleeDir.scale(0.28));
+            mob.setDeltaMovement(Vec3.ZERO);
             if (now % 10L == 0L && entity.level() instanceof ServerLevel sl) {
                 sl.sendParticles(ParticleTypes.CLOUD, mob.getX(), mob.getY() + 0.2, mob.getZ(), 2, 0.15, 0.05, 0.15, 0.02);
             }
+            event.setCanceled(true);
             return;
         }
 
@@ -1265,15 +1308,7 @@ public final class StoneAbilities {
         if (st.isStandingAttention(now) || st.isAshamed(now) || st.isCrystalSnared(now)) {
             mob.setDeltaMovement(0, Math.min(0, mob.getDeltaMovement().y), 0);
             if (st.isAshamed(now)) mob.setXRot(44.0f);
-        } else if (st.isParentSlowed(now)) {
-            Vec3 away = mob.position().subtract(st.parentFearOrigin).multiply(1, 0, 1);
-            if (away.lengthSqr() < 0.01) away = new Vec3(0, 0, 1);
-            Vec3 fleeDir = away.normalize();
-            float fleeYaw = (float) (Mth.atan2(fleeDir.z, fleeDir.x) * (180.0 / Math.PI)) - 90.0f;
-            mob.setYRot(fleeYaw);
-            mob.setYHeadRot(fleeYaw);
-            mob.yBodyRot = fleeYaw;
-            mob.move(net.minecraft.world.entity.MoverType.SELF, new Vec3(fleeDir.x * 0.22, 0.0, fleeDir.z * 0.22));
+
         }
     }
 
@@ -1319,9 +1354,11 @@ public final class StoneAbilities {
                     for (LivingEntity foe : level.getEntitiesOfClass(LivingEntity.class, AABB.ofSize(burstPos, 11.0, 8.0, 11.0), LivingEntity::isAlive)) {
                         if (foe instanceof ArmorStand) continue;
                         if (owner != null && isFriendlyTo(owner, foe)) continue;
-                        Vec3 pull = burstPos.subtract(foe.position()).scale(0.45);
-                        foe.setDeltaMovement(pull.x, 0.35, pull.z);
-                        foe.hurtMarked = true;
+                        if (!AcademyCompat.controlImmune(foe)) {
+                            Vec3 pull = burstPos.subtract(foe.position()).scale(0.45);
+                            foe.setDeltaMovement(pull.x, 0.35, pull.z);
+                            foe.hurtMarked = true;
+                        }
                         AcademyCompat.hurt(foe, owner != null ? level.damageSources().explosion(owner, owner) : level.damageSources().magic(), 36.0f, true);
                     }
                     level.playSound(null, BlockPos.containing(burstPos), SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), SoundSource.PLAYERS, 1.15f, 1.1f);
@@ -1342,7 +1379,8 @@ public final class StoneAbilities {
         Entity attackerEnt = event.getSource().getEntity();
         if (attackerEnt != null && attackerEnt.hasData(AcaInfinity.ENTITY_STATUS)) {
             EntityStatusData ast = AcaInfinity.status(attackerEnt);
-            if (ast.isStandingAttention(now) || ast.isAshamed(now) || ast.isParentSlowed(now)) {
+            if (!AcademyCompat.controlImmune(attackerEnt)
+                    && (ast.isStandingAttention(now) || ast.isAshamed(now) || ast.isParentSlowed(now))) {
                 event.setCanceled(true);
                 return;
             }
@@ -1359,11 +1397,12 @@ public final class StoneAbilities {
         EntityStatusData st = AcaInfinity.status(victim);
 
         float mult = 1.0f;
-        if (st.isAshamed(now)) mult += 0.35f;
-        if (st.isShattered(now)) mult += 0.35f;
+        boolean immune = AcademyCompat.controlImmune(victim);
+        if (!immune && st.isAshamed(now)) mult += 0.35f;
+        if (!immune && st.isShattered(now)) mult += 0.35f;
         float adjusted = event.getAmount() * mult;
 
-        if (!applyingTemporalReckoning && st.isTimeFrozen(now) && adjusted > 0.0f) {
+        if (!immune && !applyingTemporalReckoning && !event.isCanceled() && st.isTimeFrozen(now) && adjusted > 0.0f) {
             st.frozenDamagePool += adjusted;
             if (attackerEnt instanceof Player p) {
                 st.frozenAttacker = p.getUUID();
@@ -1409,21 +1448,27 @@ public final class StoneAbilities {
     private static Entity findHukouTarget(ServerPlayer player, ServerLevel level, double range) {
         Vec3 eye = player.getEyePosition();
         Vec3 look = player.getLookAngle();
-        Vec3 reach = eye.add(look.scale(range));
-        AABB search = player.getBoundingBox().expandTowards(look.scale(range)).inflate(2.5);
+        Vec3 reach = level.clip(new ClipContext(eye, eye.add(look.scale(range)), ClipContext.Block.COLLIDER,
+                ClipContext.Fluid.NONE, player)).getLocation();
+        if (AcademyCompat.contracts()) {
+            var living = cn.academy.port.api.CombatTargeting.ray(level, player, eye, reach, 0.65,
+                    entity -> !isFriendlyTo(player, entity) && !(entity instanceof ArmorStand));
+            if (!living.isEmpty()) return living.getFirst();
+        }
+        AABB search = player.getBoundingBox().expandTowards(reach.subtract(eye)).inflate(2.5);
         EntityHitResult eHit = ProjectileUtil.getEntityHitResult(level, player, eye, reach, search,
-                e -> e.isAlive() && e != player && !(e instanceof Player) && !(e instanceof ArmorStand)
+                e -> e.isAlive() && !isFriendlyTo(player, e) && !(e instanceof ArmorStand)
                         && (e instanceof LivingEntity || e instanceof SanctuaryShipEntity), 0.65f);
         if (eHit != null) return eHit.getEntity();
 
         Entity best = null;
         double bestScore = Double.MAX_VALUE;
         for (Entity e : level.getEntities(player, player.getBoundingBox().inflate(24.0),
-                ent -> ent.isAlive() && ent != player && !(ent instanceof Player) && !(ent instanceof ArmorStand)
+                ent -> ent.isAlive() && !isFriendlyTo(player, ent) && !(ent instanceof ArmorStand)
                         && (ent instanceof LivingEntity || ent instanceof SanctuaryShipEntity))) {
             Vec3 to = e.getBoundingBox().getCenter().subtract(eye);
             double dist = to.length();
-            if (dist < 0.01 || dist > 24.0) continue;
+            if (dist < 0.01 || dist > 24.0 || e instanceof LivingEntity living && !player.hasLineOfSight(living)) continue;
             double dot = to.normalize().dot(look);
             if (dot < 0.55) continue;
             double score = dist * (1.2 - dot);
@@ -1481,7 +1526,9 @@ public final class StoneAbilities {
     }
 
     public static boolean isSnapProtected(Player player, LivingEntity entity) {
-        if (entity instanceof ArmorStand) return true;
+        if (entity instanceof ArmorStand || entity.isSpectator()) return true;
+        if (entity instanceof ServerPlayer target && (target.isCreative() || !target.server.isPvpAllowed()
+                || AcademyCompat.erasureAvailable() && !cn.academy.port.AcademyConfig.ATTACK_PLAYERS.get())) return true;
         if (isFriendlyTo(player, entity)) return true;
         if (entity instanceof TamableAnimal pet && pet.isTame()) return true;
         return entity.getType().is(AcaInfinity.PROTECTED);

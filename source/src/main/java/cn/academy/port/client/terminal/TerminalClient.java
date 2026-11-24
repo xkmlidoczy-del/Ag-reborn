@@ -96,7 +96,8 @@ public final class TerminalClient {
     }
     @SubscribeEvent public static void interaction(InputEvent.InteractionKeyMappingTriggered event){if((terminal!=null&&event.isAttack())||frequency!=null){event.setCanceled(true);event.setSwingHand(false);}}
     @SubscribeEvent public static void render(RenderGuiEvent.Post event){
-        session();Minecraft mc=Minecraft.getInstance();if(mc.player==null||mc.level==null)return;
+        session();Minecraft mc=Minecraft.getInstance();
+        if (mc.player == null || mc.level == null || cn.academy.port.client.HighPowerRecoveryHud.isStoneWheelOpen(mc)) return;
         CityMap.renderHud(event.getGuiGraphics(), mc);
         if(terminal!=null)terminal.render(event.getGuiGraphics());
         if(frequency!=null)frequency.render(event.getGuiGraphics());

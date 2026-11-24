@@ -6,6 +6,9 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 public final class ClassicHudConfig {
     private static final ModConfigSpec.Builder BUILDER=new ModConfigSpec.Builder();
     static {BUILDER.push("gui");}
+    public static final ModConfigSpec.BooleanValue ABILITY_VITALS = BUILDER
+            .comment("Show the Academy health and shield HUD. Toggle in game with the bound key.")
+            .define("abilityVitals", true);
     public static final ModConfigSpec.DoubleValue CP_X=BUILDER.comment("Classic gui.cpbar X, right aligned, GUI-scaled pixels.").defineInRange("cpbarX",-12d,-100000d,100000d);
     public static final ModConfigSpec.DoubleValue CP_Y=BUILDER.comment("Classic gui.cpbar Y, top aligned, GUI-scaled pixels.").defineInRange("cpbarY",12d,-100000d,100000d);
     public static final ModConfigSpec.DoubleValue KEY_X=BUILDER.comment("Classic gui.keyhint X, right aligned, GUI-scaled pixels.").defineInRange("keyhintX",0d,-100000d,100000d);

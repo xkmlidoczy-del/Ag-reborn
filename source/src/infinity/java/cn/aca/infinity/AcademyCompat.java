@@ -35,29 +35,62 @@ public final class AcademyCompat {
     private static boolean checkedDispose;
     private static Method disposeMethod;
 
-    static boolean contracts() { return Contracts.PRESENT; }
+    static boolean contracts() { return Contracts.RELATIONS; }
+    static boolean erasureAvailable() { return Contracts.ERASURE; }
+
+    static boolean controlImmune(Entity target) {
+        if (Contracts.CONTROL) return cn.academy.port.highpower.PlayerShieldArmor.ignoresControl(target);
+        return Contracts.RELATIONS && cn.academy.port.highpower.PlayerShieldArmor.holding(target);
+    }
+
+    static boolean canControl(ServerPlayer caster, Entity target) {
+        return !controlImmune(target) && (!Contracts.CONTROL
+                || cn.academy.port.api.CombatControl.canAffect(caster, target));
+    }
+
+    static boolean needsDriver(LivingEntity target) {
+        return Contracts.CONTROL && cn.academy.port.api.CombatControl.needsDriver(target);
+    }
+
+    static boolean held(ServerPlayer player) {
+        return Contracts.CONTROL && cn.academy.port.api.CombatControl.held(player);
+    }
+
+    static void holdPlayer(LivingEntity target, long expiry) {
+        if (target.isPassenger()) target.stopRiding();
+        if (Contracts.CONTROL && target instanceof ServerPlayer)
+            cn.academy.port.api.CombatControl.hold(target, expiry);
+    }
+
     private static final class Contracts {
-        static final boolean PRESENT = available();
-        private static boolean available() {
-            if (!net.neoforged.fml.ModList.get().isLoaded("academy")) return false;
+        static final boolean RELATIONS = available("ControlRelations");
+        static final boolean ERASURE = available("CombatErasure");
+        static final boolean CONTROL = available("CombatControl");
+
+        private static boolean available(String type) {
+            if (!ModList.get().isLoaded("academy")) return false;
             try {
-                Class.forName("cn.academy.port.api.ControlRelations", false, AcademyCompat.class.getClassLoader());
+                Class.forName("cn.academy.port.api." + type, false, AcademyCompat.class.getClassLoader());
                 return true;
-            } catch (ClassNotFoundException missing) { return false; }
+            } catch (ClassNotFoundException | LinkageError missing) {
+                return false;
+            }
         }
     }
 
     private AcademyCompat() {}
 
     private static final class CombatBridge {
-        private static final MethodHandle HURT = resolve();
+        private static final MethodHandle HURT = resolve("hurtSkill", "hurt");
+        private static final MethodHandle PROJECTED = resolve("hurtProjected", "hurt");
 
-        private static MethodHandle resolve() {
+        private static MethodHandle resolve(String current, String legacy) {
             if (!ModList.get().isLoaded("academy")) return null;
             try {
                 var api = Class.forName("cn.academy.port.api.NativeCombatDamage");
-                return MethodHandles.publicLookup().findStatic(api, "hurt",
-                        MethodType.methodType(boolean.class, LivingEntity.class, DamageSource.class, float.class));
+                var signature = MethodType.methodType(boolean.class, LivingEntity.class, DamageSource.class, float.class);
+                try { return MethodHandles.publicLookup().findStatic(api, current, signature); }
+                catch (NoSuchMethodException olderAcademy) { return MethodHandles.publicLookup().findStatic(api, legacy, signature); }
             } catch (ReflectiveOperationException | LinkageError absent) {
                 LogUtils.getLogger().debug("Academy native combat API unavailable", absent);
                 return null;
@@ -65,10 +98,17 @@ public final class AcademyCompat {
         }
     }
 
-    static boolean hurt(Entity target, DamageSource source, float amount, boolean standaloneReset) {
-        var bridge = CombatBridge.HURT;
+    static boolean hurt(Entity target, DamageSource original, float amount, boolean separatePulse) {
+        return hurt(target, original, amount, separatePulse, CombatBridge.HURT);
+    }
+
+    static boolean hurtPuppet(LivingEntity target, DamageSource original, float amount) {
+        return hurt(target, original, amount, false, CombatBridge.PROJECTED);
+    }
+
+    private static boolean hurt(Entity target, DamageSource original, float amount, boolean separatePulse, MethodHandle bridge) {
+        DamageSource source = new StoneDamageSource(target.level(), original, separatePulse);
         if (bridge == null || !(target instanceof LivingEntity living)) {
-            if (standaloneReset) target.invulnerableTime = 0;
             return target.hurt(source, amount);
         }
         try {

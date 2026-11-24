@@ -22,6 +22,8 @@ abstract class ControlledPlayerHitMixin {
 
     @Inject(method = "die", at = @At("HEAD"), cancellable = true)
     private void academy$guardDeath(DamageSource source, CallbackInfo ci) {
-        if (ControlRelations.blocksWrite((ServerPlayer) (Object) this)) ci.cancel();
+        ServerPlayer player = (ServerPlayer) (Object) this;
+        if (!cn.academy.port.api.CombatErasure.committing(player, source)
+                && ControlRelations.blocksWrite(player)) ci.cancel();
     }
 }

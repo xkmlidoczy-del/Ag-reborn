@@ -10,12 +10,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.InteractionHand;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -56,10 +53,7 @@ public final class CanonPuppets {
         if(p==null||mob==null||BY_OWNER.containsKey(p)||BY_MOB.containsKey(mob)||BY_OWNER.size()>=MAX)return false;
         var puppet=new Puppet(p,mob,expires);
         if (!cn.academy.port.api.ControlRelations.bind(p, mob, expires, SKILL)) return false;
-        if (!MentalTargeting.assign(mob,null)) {
-            cn.academy.port.api.ControlRelations.release(mob, SKILL);
-            return false;
-        }
+        MentalTargeting.assign(mob,null);
         puppet.nextAttack = puppet.world.getGameTime() + ATTACK_EVERY;
         BY_OWNER.put(p,puppet);BY_MOB.put(mob,puppet);
         return true;
@@ -92,12 +86,16 @@ public final class CanonPuppets {
             if(z.owner.server!=event.getServer())continue;
             if(!valid(z)){end(z);continue;}
             now=z.world.getGameTime();
-            if (!steer(z,now)) {
-                end(z);
-                MentalTargeting.resisted(z.owner);
-            }
+            steer(z,now);
         }
     }
+    @SubscribeEvent public static void yieldToDriver(net.neoforged.neoforge.event.tick.EntityTickEvent.Pre event) {
+        if (!(event.getEntity() instanceof Mob mob) || mob.level().isClientSide()) return;
+        var puppet = BY_MOB.get(mob);
+        if (puppet != null && cn.academy.port.api.CombatControl.needsDriver(mob) && valid(puppet))
+            event.setCanceled(true);
+    }
+
     @SubscribeEvent public static void stop(ServerStoppedEvent event){BY_OWNER.clear();BY_MOB.clear();}
 
     @SubscribeEvent public static void retarget(LivingChangeTargetEvent event) {
@@ -119,10 +117,15 @@ public final class CanonPuppets {
 
     // ------------------------------------------------------------------ behaviour
     private static boolean enemy(Puppet z,LivingEntity e){
-        return e!=z.mob&&e!=z.owner&&!(e instanceof Player)&&MentalTargeting.hostile(z.owner,e)&&e.isAlive()&&!e.isRemoved()&&!e.isSpectator()
-                &&!z.owner.isAlliedTo(e)&&!(e instanceof Mob m&&BY_MOB.containsKey(m))&&e.level()==z.world;
+        return e != z.mob && e.isAlive() && !e.isRemoved() && e.level() == z.world
+                && MentalTargeting.hostile(z.owner, e)
+                && !e.isSpectator() && !z.owner.isAlliedTo(e) && !e.isAlliedTo(z.owner)
+                && (!(e instanceof ServerPlayer player) || !player.isCreative()
+                        && z.owner.server.isPvpAllowed() && z.owner.canHarmPlayer(player))
+                && !cn.academy.port.api.ControlRelations.allied(z.owner, e)
+                && !(e instanceof Mob m && BY_MOB.containsKey(m));
     }
-    private static boolean steer(Puppet z,long now){
+    private static void steer(Puppet z,long now){
         var mob=z.mob;
         if(now>=z.nextPick || z.victim != null && !enemy(z,z.victim)){
             z.nextPick=now+PICK_EVERY;
@@ -131,20 +134,16 @@ public final class CanonPuppets {
         }
         LivingEntity victim=z.victim;
         if(victim!=null){
-            if (!MentalTargeting.assign(mob,victim)) return false;
-            if (mob.getNavigation().isDone() && now % PICK_EVERY == 0) mob.getNavigation().moveTo(victim,1.15);
-            if (now >= z.nextAttack && mob.isWithinMeleeAttackRange(victim) && MentalTargeting.visible(mob,victim)) {
+            boolean directed = MentalTargeting.assign(mob, victim);
+            MentalTargeting.approach(mob, victim, directed && !cn.academy.port.api.CombatControl.needsDriver(mob), now, 1.15);
+            if (now >= z.nextAttack && MentalTargeting.strike(mob, victim))
                 z.nextAttack = now + ATTACK_EVERY;
-                var attack = mob.getAttribute(Attributes.ATTACK_DAMAGE);
-                mob.swing(InteractionHand.MAIN_HAND);
-                victim.hurt(mob.damageSources().mobAttack(mob), attack == null ? 2f : (float)attack.getValue());
-            }
         }else{
-            if (!MentalTargeting.assign(mob,null)) return false;
-            if(mob.distanceToSqr(z.owner)>16)mob.getNavigation().moveTo(z.owner,1.1);
-            else if(mob.distanceToSqr(z.owner)<6.25)mob.getNavigation().stop();
+            boolean idle = MentalTargeting.assign(mob, null);
+            if (mob.distanceToSqr(z.owner) > 16)
+                MentalTargeting.approach(mob, z.owner, idle && !cn.academy.port.api.CombatControl.needsDriver(mob), now, 1.1);
+            else if (mob.distanceToSqr(z.owner) < 6.25) mob.getNavigation().stop();
         }
-        return true;
     }
     static Vec3 center(Mob m){return m.position().add(0,m.getBbHeight()*.5,0);}
 }

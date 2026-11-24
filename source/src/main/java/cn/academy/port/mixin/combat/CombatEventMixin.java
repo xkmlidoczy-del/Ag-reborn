@@ -30,10 +30,12 @@ abstract class CombatEventMixin {
         }
     }
 
-    @Inject(method = "onLivingDeath", at = @At("RETURN"))
+    @Inject(method = "onLivingDeath", at = @At("RETURN"), cancellable = true)
     private static void academy$deathOutcome(
             LivingEntity target, DamageSource source, CallbackInfoReturnable<Boolean> ci) {
-        cn.academy.port.api.CombatReceipt.deathEvent(target, source, ci.getReturnValueZ());
+        boolean erased = cn.academy.port.api.CombatErasure.committing(target, source);
+        cn.academy.port.api.CombatReceipt.deathEvent(target, source, ci.getReturnValueZ() && !erased);
+        if (erased) ci.setReturnValue(false);
     }
 
     @Inject(method = "onLivingDamagePost", at = @At("HEAD"))

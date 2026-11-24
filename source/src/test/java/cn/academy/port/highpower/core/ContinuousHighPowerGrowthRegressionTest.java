@@ -23,7 +23,7 @@ public final class ContinuousHighPowerGrowthRegressionTest {
 
     private static void exactAnchorsAndLevelBoundaries() {
         truth(ContinuousHighPowerGrowth.CURVE_VERSION == 3, "rebalance invalidates the old curve schema");
-        String[] expected = {"5", "8", "12", "18", "24"};
+        String[] expected = {"8", "14", "24", "38", "54"};
         for (int level = 1; level <= 5; level++) {
             var actual = ContinuousHighPowerGrowth.sample(level, 0);
             var preset = HighPowerLevel.forLevel(level);

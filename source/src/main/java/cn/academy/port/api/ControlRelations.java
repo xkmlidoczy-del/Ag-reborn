@@ -28,14 +28,16 @@ public final class ControlRelations {
     private static final Map<Entity, Lease> LEASES = new WeakHashMap<>();
     private static final Map<Entity, Refusal> REFUSED = new WeakHashMap<>();
     private static final ThreadLocal<Lease> ACTOR = new ThreadLocal<>();
+    private static final ThreadLocal<Entity> TICKING = new ThreadLocal<>();
     private static final StackWalker WALKER =
             StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
     private static final String SHOT_OWNER = "academy.control_shot_owner";
 
     private ControlRelations() {}
 
-    public static boolean tracking() {
-        return !LEASES.isEmpty();
+    public static boolean inForeignTick(Entity target) {
+        Entity actor = TICKING.get();
+        return actor != null && actor != target && actor.getRootVehicle() != target.getRootVehicle();
     }
 
     /** An unrelated sourced hit inside a controlled actor's tick keeps its own authority. */
@@ -54,7 +56,8 @@ public final class ControlRelations {
     }
 
     public static boolean bind(ServerPlayer owner, LivingEntity body, long until, String skill) {
-        if (body == owner || body.level() != owner.level() || until <= body.level().getGameTime())
+        if (body == owner || body.level() != owner.level() || until <= body.level().getGameTime()
+                || !CombatControl.canAffect(owner, body))
             return false;
         Lease old = lease(body);
         if (old != null && (!old.owner.equals(owner.getUUID()) || !old.skill.equals(skill)))
@@ -107,18 +110,23 @@ public final class ControlRelations {
     }
 
     public static void tick(Entity actor, Runnable original) {
-        Lease parent = ACTOR.get(), next = attributed(actor);
-        if (next == parent) {
-            original.run();
-            return;
+        Entity previousEntity = TICKING.get();
+        Lease parent = ACTOR.get();
+        Lease next = attributed(actor);
+        TICKING.set(actor);
+        if (next != parent) {
+            if (next == null) ACTOR.remove();
+            else ACTOR.set(next);
         }
-        if (next == null) ACTOR.remove();
-        else ACTOR.set(next);
         try {
             original.run();
         } finally {
-            if (parent == null) ACTOR.remove();
-            else ACTOR.set(parent);
+            if (previousEntity == null) TICKING.remove();
+            else TICKING.set(previousEntity);
+            if (next != parent) {
+                if (parent == null) ACTOR.remove();
+                else ACTOR.set(parent);
+            }
         }
     }
 

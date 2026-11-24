@@ -14,19 +14,11 @@ import org.spongepowered.asm.mixin.Mixin;
 abstract class ControlTickMixin {
     @WrapMethod(method = "tickNonPassenger")
     private void academy$activeActor(Entity entity, Operation<Void> original) {
-        if (!ControlRelations.tracking()) {
-            original.call(entity);
-            return;
-        }
         ControlRelations.tick(entity, () -> original.call(entity));
     }
 
     @WrapMethod(method = "tickPassenger")
     private void academy$passengerActor(Entity vehicle, Entity rider, Operation<Void> original) {
-        if (!ControlRelations.tracking()) {
-            original.call(vehicle, rider);
-            return;
-        }
         ControlRelations.tick(rider, () -> original.call(vehicle, rider));
     }
 }

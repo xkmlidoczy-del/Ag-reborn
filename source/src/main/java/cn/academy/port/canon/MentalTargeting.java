@@ -89,11 +89,11 @@ final class MentalTargeting {
     }
 
     static boolean controllable(Mob mob) {
-        return mob.isAlive() && !mob.isRemoved() && !mob.isNoAi();
+        return mob.isAlive() && !mob.isRemoved();
     }
 
     static boolean assign(Mob mob, LivingEntity target) {
-        if (!controllable(mob)) return false;
+        if (!controllable(mob) || mob.isNoAi()) return false;
         boolean hasBrain = brainTargets(mob);
         var previous = hasBrain ? mob.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).orElse(null) : null;
         if (hasBrain && previous != target) {
@@ -108,7 +108,7 @@ final class MentalTargeting {
     }
 
     static boolean stopRoute(Mob mob) {
-        if (!controllable(mob)) return false;
+        if (!controllable(mob) || mob.isNoAi()) return false;
         var brain = mob.getBrain();
         if (brain.checkMemory(MemoryModuleType.WALK_TARGET, MemoryStatus.REGISTERED))
             brain.eraseMemory(MemoryModuleType.WALK_TARGET);
@@ -119,6 +119,24 @@ final class MentalTargeting {
     static boolean moving(Mob mob) {
         return !mob.getNavigation().isDone()
                 || mob.getBrain().checkMemory(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_PRESENT);
+    }
+
+    static void approach(Mob mob, LivingEntity target, boolean nativeTarget, long now, double speed) {
+        if (mob.isWithinMeleeAttackRange(target)) return;
+        if (nativeTarget && !mob.getNavigation().isDone()) return;
+        if (nativeTarget && now % 10L == 0L && mob.getNavigation().moveTo(target, speed)) return;
+        Vec3 direction = target.position().subtract(mob.position()).multiply(1, 0, 1).normalize();
+        mob.getLookControl().setLookAt(target, 40, 30);
+        mob.move(net.minecraft.world.entity.MoverType.SELF, direction.scale(0.19 * speed));
+    }
+
+    static boolean strike(Mob body, LivingEntity victim) {
+        if (!body.isWithinMeleeAttackRange(victim) || !visible(body, victim)) return false;
+        var attack = body.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE);
+        float amount = attack == null ? 2f : (float) Math.max(1, attack.getValue());
+        body.swing(net.minecraft.world.InteractionHand.MAIN_HAND);
+        cn.academy.port.api.NativeCombatDamage.hurtProjected(victim, body.damageSources().mobAttack(body), amount);
+        return true;
     }
 
     static void restore(Mob mob, LivingEntity owned, LivingEntity previous) {

@@ -406,7 +406,7 @@ public final class CanonPaperSkills {
             if (!materialMatches(player, held, fence[0]) || !arrayTarget(player, target)) return;
             boolean accepted = emission.attack(target); hit[0] |= accepted; Vec3 end = target.getBoundingBox().getCenter(), delta = end.subtract(origin);
             if (accepted) {
-                if (target.isAlive() && !cn.academy.port.highpower.PlayerShieldArmor.holding(target)) {
+                if (target.isAlive() && !cn.academy.port.highpower.PlayerShieldArmor.ignoresControl(target)) {
                     target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 35, 0, false, true), player);
                 }
                 CanonVfx.emit(player, "paper_array", origin, end, CanonVfx.Phase.HIT, 24, ringed[0]++ == 0 ? r : 0, CanonAuxItems.isOrigami(expected));
