@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "academy:frost_bastion",
+    "academy:storm_drake",
+    "academy:tidal_sail",
+    "academy:ironback",
+    "academy:crystal_mantis",
+    "academy:dune_scorpion",
+    "academy:myco_frog",
+    "academy:astral_moth"
+  ]
+}

@@ -6,7 +6,7 @@ plugins {
 // with the default pure/server check outputs without rewriting their classpath.
 if (providers.gradleProperty('qaBuildDirectory').isPresent())
     layout.buildDirectory.set(layout.projectDirectory.dir(providers.gradleProperty('qaBuildDirectory').get()))
-version = '0.1.0-m41-highpower.0.81.5-city-a3.86'
+version = '0.1.0-m41-highpower.0.81.5-city-a3.87-rc1'
 group = 'cn.academy'
 base { archivesName = 'academy-generation-reborn' }
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
@@ -160,7 +160,24 @@ tasks.register('macroRulesTest', JavaExec) {
     enableAssertions = true
 }
 tasks.named('check') { dependsOn 'macroRulesTest' }
+// V4.8 was released upstream with the same mod version (0.1.0) as earlier builds.
+def ecologyModule = 'dev.titanecology:titan-ecology-expansion:0.1.0'
+def ecologyJar = file('integration/titan-ecology/titan-ecology-expansion-0.1.0.jar')
+def verifyEcology = tasks.register('verifyTitanEcologyArtifact') {
+    inputs.file(ecologyJar)
+    doLast {
+        byte[] checksum = java.security.MessageDigest.getInstance('SHA-256').digest(ecologyJar.bytes)
+        if (java.util.HexFormat.of().formatHex(checksum) != '80823a40462a04a46e198dadb8ebc10f42726987f8f9fdd4fe0da4995e507d76')
+            throw new GradleException('The embedded Titan Ecology artifact must match the accepted V4.8 JAR.')
+    }
+}
+tasks.named('jarJar') { dependsOn verifyEcology }
+
 repositories {
+    exclusiveContent {
+        forRepository { flatDir { name = 'bundledTitanEcology'; dirs ecologyJar.parentFile } }
+        filter { includeModule 'dev.titanecology', 'titan-ecology-expansion' }
+    }
     if (file('.gradle/local-maven').exists()) maven { url = uri('.gradle/local-maven'); content { includeGroup 'software.bernie.geckolib' } }
     maven { url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'; content { includeGroup 'software.bernie.geckolib' } }
     mavenCentral()
@@ -182,6 +199,8 @@ dependencies {
     jarJar files(humJar)
     jarJar files(omnitrixJar)
     jarJar files(infinityJar)
+    implementation ecologyModule
+    jarJar(ecologyModule) { version { strictly '[0.1.0]'; prefer '0.1.0' } }
     implementation 'software.bernie.geckolib:geckolib-neoforge-1.21.1:4.7'
     faunaImplementation 'software.bernie.geckolib:geckolib-neoforge-1.21.1:4.7'
     jarJar('software.bernie.geckolib:geckolib-neoforge-1.21.1') {

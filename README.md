@@ -2,7 +2,9 @@
 
 Ag:reborn（Ag重生）是基于 **Lambda Innovation** 开源项目 [AcademyCraft](https://github.com/LambdaInnovation/AcademyCraft) 移植、修改和扩展的非官方 Minecraft 模组。原作者及原项目的署名、许可和附加声明予以保留；本项目不代表原作者的官方发布或背书。
 
-本地源码版本为 **0.81.5-city-a3.86**，适用于 **Minecraft 1.21.1、NeoForge 21.1.252 和 Java 21**。本版在 a3.75 真实实体属性、都市地图、Fauna 0.1.18 刷新优化与统一伤害破限的基础上，同步内置升级版 **ACA Omnitrix 0.8.4**（三只变身腕表与阿斯卡隆圣剑）及 **ACA Infinity 0.5.6**（乌鲁无限手套、六颗无限原石与圣殿二号旗舰）。
+本地联测版本为 **0.81.5-city-a3.87-rc1**，适用于 **Minecraft 1.21.1、NeoForge 21.1.252 和 Java 21**。整合包内置 **ACA Omnitrix 0.8.4**、**ACA Infinity 0.5.6** 和 **Titan Ecology Expansion V4.8**。
+
+a3.87-rc1 在 a3.86 上加入 148 种生态生物和寄生、血肉、菌群、机械四条生态链的基地。生态系统可识别对应的 ACA 巨兽。客户端和服务端的 `mods` 目录各使用一份本体整合 JAR 即可。[V4.8 来源与构建说明](source/integration/titan-ecology/README.md)
 
 a3.86 重制了乌鲁无限手套。佩戴位置随玩家惯用手切换，拇指朝内，第三人称的腕口套在小臂上。指节分段弯曲，六颗原石各自嵌入对应座圈。
 
