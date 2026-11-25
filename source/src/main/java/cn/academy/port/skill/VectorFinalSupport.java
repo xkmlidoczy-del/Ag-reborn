@@ -13,5 +13,14 @@ final class VectorFinalSupport {
  static Vec3 looking(ServerPlayer p,double range,boolean livingOnly){var start=p.getEyePosition();var end=start.add(ClassicRaytrace.direction(p).scale(range));if(range>64)end=cn.academy.port.macro.MacroGeometry.loadedEnd(p.serverLevel(),start,end);var hit=ClassicRaytrace.perform(p,start,end,ClipContext.Fluid.NONE,e->!livingOnly||e instanceof LivingEntity);return hit instanceof EntityHitResult e?e.getEntity().position().add(0,e.getEntity().getEyeHeight()*.6,0):hit.getLocation();}
  /** World ray includes the caster, unlike traceLiving; nearest inflated intercept reports entity feet. */
  static boolean collision(ServerPlayer p,Vec3 a,Vec3 b){var w=p.serverLevel();if(w.clip(new ClipContext(a,b,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,p)).getType()!=HitResult.Type.MISS)return true;for(var e:w.getEntities((Entity)null,new AABB(a,b).inflate(1),e->e.isPickable()))if(e.getBoundingBox().inflate(.3).clip(a,b).isPresent())return true;return false;}
- static void attack(ServerPlayer p,String id,Entity e,float amount){if(e instanceof Player&&!AcademyConfig.ATTACK_PLAYERS.get()||e instanceof ServerPlayer other&&!p.canHarmPlayer(other))return;AbilityDamage.attack(p,"vecmanip."+id,e,amount);}
+ static void attack(ServerPlayer p,String id,Entity e,float amount){
+  if (canHit(p, e)) AbilityDamage.attack(p, "vecmanip." + id, e, amount);
+ }
+ static void reflectDamage(ServerPlayer p,String id,Entity e,float amount){
+  if (canHit(p, e)) AbilityDamage.shieldCounter(p, "vecmanip." + id, e, amount);
+ }
+ private static boolean canHit(ServerPlayer p, Entity target) {
+  return !(target instanceof Player) || AcademyConfig.ATTACK_PLAYERS.get()
+    && (!(target instanceof ServerPlayer other) || p.canHarmPlayer(other));
+ }
 }

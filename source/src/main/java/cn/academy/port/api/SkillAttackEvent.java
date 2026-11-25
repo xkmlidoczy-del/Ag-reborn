@@ -8,5 +8,17 @@ public final class SkillAttackEvent extends Event {
     public final String skill;
     public final Entity target;
     public double amount;
-    public SkillAttackEvent(ServerPlayer player,String skill,Entity target,double amount) {this.player=player;this.skill=skill;this.target=target;this.amount=amount;}
+    private final boolean nativeAmount;
+    public SkillAttackEvent(ServerPlayer player, String skill, Entity target, double amount) {
+        this(player, skill, target, amount, false);
+    }
+    public SkillAttackEvent(ServerPlayer player, String skill, Entity target, double amount, boolean nativeAmount) {
+        this.player = player;
+        this.skill = skill;
+        this.target = target;
+        this.amount = amount;
+        this.nativeAmount = nativeAmount;
+    }
+    /** Counters already start from actual shield or incoming damage. */
+    public boolean nativeAmount() { return nativeAmount; }
 }

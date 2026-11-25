@@ -27,4 +27,16 @@ public final class ClassicDamageScale {
         BigDecimal lifted = BigDecimal.valueOf(raw).multiply(unit).divide(BigDecimal.valueOf(divisor), java.math.MathContext.DECIMAL64);
         return lifted.min(CombatAmounts.CAP).doubleValue();
     }
+
+    /** Per-source tuning preserves charge and mastery, including the whole missile barrage. */
+    public static double skillDamage(String skill, int skillLevel, double raw, BigDecimal unit, double divisor) {
+        double share = switch (skill) {
+            case "railgun" -> .95;
+            case "thunder_clap" -> .86;
+            case "electron_missile" -> .17;
+            case "plasma_cannon" -> .65;
+            default -> 1;
+        };
+        return scaled(raw * share, unit.multiply(rankFactor(skillLevel)), divisor);
+    }
 }

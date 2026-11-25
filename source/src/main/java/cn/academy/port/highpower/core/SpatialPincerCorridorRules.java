@@ -24,7 +24,7 @@ public final class SpatialPincerCorridorRules {
     public static double transferCpCost(BigDecimal q) { return TRANSFER_CP.value(q).doubleValue(); }
     public static int transferCooldownTicks(BigDecimal q) { return ContinuousHighPowerGrowth.ceilCooldownTicks(TRANSFER_CD.value(q)); }
     public static BigDecimal damageTotal(BigDecimal d) {
-        return CombatAmounts.requirePositiveAmount(d, "NEW341 D").multiply(new BigDecimal("2.8")).min(CombatAmounts.CAP);
+        return CombatAmounts.requirePositiveAmount(d, "NEW341 D").multiply(new BigDecimal("1.8")).min(CombatAmounts.CAP);
     }
     /** Legacy three-shot overload; geometric marks and maximum custody slots are separate bounds. */
     public static BigDecimal damageShare(BigDecimal total, int slot) { return damageShare(total, slot, POINTS); }

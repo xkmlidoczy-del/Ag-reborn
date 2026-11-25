@@ -48,6 +48,7 @@ public final class DisintegrationSweep {
     public static final String ID="disintegration_sweep";
     public static final int MIN_LEVEL=3,MAX_LEVEL=5,CHARGING=0,SWEEPING=1,ENDED=2;
     public static final int PREPARED=0,MISS=1,BLOCKED=2,REFUSED=3,DAMAGED=4,ABSORBED=5,MINED=6;
+    private static final BigDecimal SWEEP_DAMAGE_SHARE = new BigDecimal("0.6");
     private static final double RANGE=48,RADIUS=.035,HALF=Math.toRadians(25);
     private static final String DATA="academy:disintegration_sweep",INPUT_AT="inputAt",PREVIEW_AT="previewAt",MASTERY_AT="masteryAt";
     private static final Map<UUID,Context> CONTEXTS=new HashMap<>();
@@ -138,7 +139,7 @@ public final class DisintegrationSweep {
             var frame=DisintegrationSweepGeometry.freeze(vector(hand(p)),vector(p.getLookAngle()),Math.toRadians(p.getYRot()),c.mining);
             if(frame.isEmpty()||!clearHand(p)){finish(c);return false;}
             c.plane=frame.get();c.releasePosition=p.position();c.released=now(p);c.lastTick=c.released;
-            var growth=HighPowerGrowth.values(p);c.total=DisintegrationSweepRules.damage(growth.damage());
+            var growth=HighPowerGrowth.values(p);c.total=DisintegrationSweepRules.damage(growth.damage().multiply(SWEEP_DAMAGE_SHARE));
             c.cost=c.mining?DisintegrationSweepRules.miningCost(growth.position()):DisintegrationSweepRules.attackCost(growth.position());
             c.cooldown=c.mining?DisintegrationSweepRules.miningCooldown(growth.position()):DisintegrationSweepRules.cooldown(growth.position());
             c.inventory=inventory(p);c.selected=p.getInventory().selected;c.freezing=true;

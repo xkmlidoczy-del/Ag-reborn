@@ -61,7 +61,7 @@ public final class AbilityDamage {
         return attack(player,skill,target,rawDamage,ignoreArmor,retaliation,null,null);
     }
     private static boolean attack(ServerPlayer player,String skill,Entity target,double rawDamage,boolean ignoreArmor,boolean retaliation,Vec3 origin,Vec3 point) {
-        var event=new SkillAttackEvent(player,skill,target,rawDamage);NeoForge.EVENT_BUS.post(event);double global=AcademyConfig.DAMAGE_SCALE.get(),local=1;int separator=skill.indexOf('.');if(separator>0)local=AcademyConfig.consumptionConfig().optionalFloat(skill.substring(0,separator),skill.substring(separator+1),"damage_scale");double amount=global==1&&local==1?event.amount:(float)global*(float)local*(float)event.amount;
+        var event=new SkillAttackEvent(player,skill,target,rawDamage,retaliation);NeoForge.EVENT_BUS.post(event);double global=AcademyConfig.DAMAGE_SCALE.get(),local=1;int separator=skill.indexOf('.');if(separator>0)local=AcademyConfig.consumptionConfig().optionalFloat(skill.substring(0,separator),skill.substring(separator+1),"damage_scale");double amount=global==1&&local==1?event.amount:(float)global*(float)local*(float)event.amount;
         if(!Double.isFinite(amount)||amount<=0) return DamageAudit.refused(skill,rawDamage,"invalid_or_cancelled_amount");
         if(target instanceof Player&&!AcademyConfig.ATTACK_PLAYERS.get()) return DamageAudit.refused(skill,rawDamage,"disabled_pvp");
         if(target instanceof net.minecraft.world.entity.decoration.HangingEntity&&!AcademyConfig.contextTerrain(target.level(),skill))

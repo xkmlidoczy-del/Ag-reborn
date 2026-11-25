@@ -2,9 +2,13 @@ package cn.academy.port.highpower;
 
 import cn.academy.port.AbilityDamage;
 import cn.academy.port.AbilityStorage;
+import cn.academy.port.highpower.core.ContinuousHighPowerGrowth;
+import cn.academy.port.highpower.core.EsperDamageBalance;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -65,8 +69,11 @@ public final class EsperShields {
     /** Fraction of the maximum shield an absorbed hit refills while the Nitrogen Armor skill is up. */
     public static final BigDecimal SHELL_REFILL = new BigDecimal("0.01");
     private static final double MELEE_REACH = 6;
-    private record Hit(ServerPlayer player, ServerLevel level, String category, Entity attacker, Entity direct, boolean broke, DamageSource source, boolean suppressPhase) {}
+    private static final int COUNTER_INTERVAL = 10;
+    private record Hit(ServerPlayer player, ServerLevel level, String category, Entity attacker, Entity direct,
+                       boolean broke, DamageSource source, boolean suppressPhase, BigDecimal shieldDebit) {}
     private static final List<Hit> PENDING = new ArrayList<>();
+    private static final Map<ServerPlayer, Long> COUNTERS = new WeakHashMap<>();
 
     private EsperShields() {}
 
@@ -81,10 +88,10 @@ public final class EsperShields {
     }
 
     /** Called by the ledger after the base shield absorbed part of an ordinary hit. */
-    static void absorbed(ServerPlayer player, DamageSource source, boolean broke) {
+    static void absorbed(ServerPlayer player, DamageSource source, boolean broke, BigDecimal shieldDebit) {
         if (source instanceof AbilityDamage.SkillDamageSource skill && skill.retaliation) return;
         PENDING.add(new Hit(player, player.serverLevel(), AbilityStorage.get(player).category, source == null ? null : source.getEntity(),
-                source == null ? null : source.getDirectEntity(), broke, source, false));
+                source == null ? null : source.getDirectEntity(), broke, source, false, shieldDebit));
     }
 
     /** Only this exact successful native hit loses its optional random phase step. */
@@ -92,7 +99,7 @@ public final class EsperShields {
         for(int i=0;i<PENDING.size();i++) {
             Hit h=PENDING.get(i);
             if(h.player()==player&&h.source()==source)
-                PENDING.set(i,new Hit(h.player(),h.level(),h.category(),h.attacker(),h.direct(),h.broke(),h.source(),true));
+                PENDING.set(i,new Hit(h.player(),h.level(),h.category(),h.attacker(),h.direct(),h.broke(),h.source(),true,h.shieldDebit()));
         }
     }
 
@@ -183,7 +190,10 @@ public final class EsperShields {
         }
     }
 
-    @SubscribeEvent public static void stopped(net.neoforged.neoforge.event.server.ServerStoppedEvent event) { PENDING.clear(); }
+    @SubscribeEvent public static void stopped(net.neoforged.neoforge.event.server.ServerStoppedEvent event) {
+        PENDING.clear();
+        COUNTERS.clear();
+    }
 
     private static void trait(Hit hit) {
         ServerPlayer player = hit.player();
@@ -197,8 +207,7 @@ public final class EsperShields {
             case HighPowerCategories.ELECTROMASTER -> {
                 burst(player, spark(), hit.broke() ? 40 : 12, .7, hit.broke() ? SoundEvents.GLASS_BREAK : SoundEvents.AMETHYST_BLOCK_HIT, 1.8F);
                 if (attacker != null) {
-                    arc(player, attacker);
-                    AbilityDamage.shieldCounter(player, "electromaster.arc_gen", attacker, 6);
+                    if (counter(hit, attacker, "electromaster.arc_gen", 6)) arc(player, attacker);
                     attacker.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 2), player);
                 }
             }
@@ -206,7 +215,7 @@ public final class EsperShields {
                 burst(player, green(), hit.broke() ? 40 : 12, .7, hit.broke() ? SoundEvents.GLASS_BREAK : SoundEvents.FIRECHARGE_USE, 1.6F);
                 if (attacker != null) {
                     attacker.igniteForSeconds(4);
-                    AbilityDamage.shieldCounter(player, "meltdowner.electron_bomb", attacker, 5);
+                    counter(hit, attacker, "meltdowner.electron_bomb", 5);
                 }
             }
             case HighPowerCategories.TELEPORTER -> {
@@ -221,7 +230,7 @@ public final class EsperShields {
                     Vec3 away = attacker.position().subtract(player.position()).multiply(1, 0, 1).normalize();
                     attacker.knockback(1.6, -away.x, -away.z);
                     attacker.hurtMarked = true;
-                    AbilityDamage.shieldCounter(player, "vecmanip.dir_shock", attacker, 4);
+                    counter(hit, attacker, "vecmanip.dir_shock", 4);
                 }
             }
             case "mental_out" -> {
@@ -230,7 +239,7 @@ public final class EsperShields {
                     if (attacker instanceof net.minecraft.world.entity.Mob mob) cn.academy.port.canon.CanonSkillsCombatA.wardDisrupt(player, mob, 40);
                     attacker.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 60, 0), player);
                     attacker.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 30, 1), player);
-                    AbilityDamage.shieldCounter(player, "mental_out.mental_disrupt", attacker, 3);
+                    counter(hit, attacker, "mental_out.mental_disrupt", 3);
                 }
             }
             case "aero_hand" -> {
@@ -238,7 +247,7 @@ public final class EsperShields {
                 if (attacker != null) {
                     Vec3 away = attacker.position().subtract(player.position()).multiply(1, 0, 1).normalize();
                     attacker.knockback(1.3, -away.x, -away.z); attacker.hurtMarked = true;
-                    AbilityDamage.shieldCounter(player, "aero_hand.aero_push", attacker, 3);
+                    counter(hit, attacker, "aero_hand.aero_push", 3);
                 }
             }
             case "float_dial" -> {
@@ -254,7 +263,7 @@ public final class EsperShields {
                 if (attacker != null) {
                     Vec3 away = attacker.position().subtract(player.position()).multiply(1, 0, 1).normalize();
                     attacker.knockback(1.1, -away.x, -away.z); attacker.hurtMarked = true;
-                    AbilityDamage.shieldCounter(player, "nitrogen_armor.nitrogen_shove", attacker, 4);
+                    counter(hit, attacker, "nitrogen_armor.nitrogen_shove", 4);
                 }
                 if (!hit.broke() && cn.academy.port.canon.CanonSkillsCombatA.ownsNitrogenShell(player)) HighPowerCombat.rechargeShieldFraction(player, SHELL_REFILL);
             }
@@ -274,23 +283,36 @@ public final class EsperShields {
                 if (attacker != null) {
                     attacker.clearFire();
                     attacker.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 1), player);
-                    AbilityDamage.shieldCounter(player, "hydro_hand.hydro_whip", attacker, 3);
+                    counter(hit, attacker, "hydro_hand.hydro_whip", 3);
                 }
             }
             case "paper_psychokinesis" -> {
                 burst(player, paper(), hit.broke() ? 40 : 12, .7, hit.broke() ? SoundEvents.GLASS_BREAK : SoundEvents.BOOK_PAGE_TURN, 1.3F);
-                if (attacker != null) AbilityDamage.shieldCounter(player, "paper_psychokinesis.paper_blade", attacker, 4);
+                if (attacker != null) counter(hit, attacker, "paper_psychokinesis.paper_blade", 4);
             }
             case "liquid_shadow" -> {
                 burst(player, ParticleTypes.SQUID_INK, hit.broke() ? 36 : 12, .7, hit.broke() ? SoundEvents.GLASS_BREAK : SoundEvents.INK_SAC_USE, 1.0F);
                 if (attacker != null) {
                     attacker.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 40, 0), player);
                     attacker.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 1), player);
-                    AbilityDamage.shieldCounter(player, "liquid_shadow.liquid_strike", attacker, 3);
+                    counter(hit, attacker, "liquid_shadow.liquid_strike", 3);
                 }
             }
             default -> {}
         }
+    }
+
+    private static boolean counter(Hit hit, LivingEntity attacker, String skill, int strength) {
+        if (hit.shieldDebit().signum() <= 0) return false;
+        var player = hit.player();
+        long now = hit.level().getGameTime();
+        Long last = COUNTERS.get(player);
+        if (last != null && now >= last && now - last < COUNTER_INTERVAL) return false;
+        var capacity = ContinuousHighPowerGrowth.sample(HighPowerCombat.earnedGrowthPosition(player)).maxShield();
+        float damage = EsperDamageBalance.passiveCounter(hit.shieldDebit(), capacity, strength);
+        if (damage <= 0) return false;
+        COUNTERS.put(player, now);
+        return AbilityDamage.shieldCounter(player, skill, attacker, damage);
     }
 
     /** Short safe shift away from the attacker (or backward), onto solid ground, never into blocks. */

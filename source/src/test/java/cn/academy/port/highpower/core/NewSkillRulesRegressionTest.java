@@ -171,7 +171,7 @@ public final class NewSkillRulesRegressionTest {
     private static void zenithDominion() {
         BigDecimal d = new BigDecimal("5E18");
         BigDecimal total = ZenithDominionRules.totalDamage(d);
-        check(total.compareTo(new BigDecimal("2E19")) == 0, "total is 4D");
+        check(total.compareTo(new BigDecimal("1.35E19")) == 0, "total is 2.7D");
         check(ZenithDominionRules.totalDamage(CombatAmounts.CAP).compareTo(CombatAmounts.CAP) == 0, "total never exceeds 1e20");
         for (int n : new int[]{1,2,3,8,16,17,64,65,130,256}) {
             var shares = ZenithDominionRules.shares(total, n);

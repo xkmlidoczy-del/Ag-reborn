@@ -17,7 +17,7 @@ public final class RailThunderArrayRegressionTest {
         check(RailThunderArrayRules.RANGE==96&&RailThunderArrayRules.MAX_TARGETS==Integer.MAX_VALUE&&RailThunderArrayRules.SCAN_LIMIT==Integer.MAX_VALUE,"fixed trajectory, full loaded roster");
         for(String input:List.of("1","5e18","1e20","1.000000000000001","0.000000000000000000001","99999999999999999999.999")){
             BigDecimal d=new BigDecimal(input),total=RailThunderArrayRules.budget(d);
-            exact(total,d.multiply(BigDecimal.valueOf(4)),"whole cast equals4D including synthetic cumulative total above final-hit cap");
+            exact(total,d.multiply(new BigDecimal("2.7")),"whole cast equals 2.7D including synthetic cumulative total above final-hit cap");
             List<BigDecimal> rays=RailThunderArrayRules.split(total,9);exact(sum(rays),total,"nine shares conserve every digit");
             for(int i=0;i<8;i++)exact(rays.get(i),rays.get(0),"first eight identical floored allocations");
             check(rays.get(8).compareTo(rays.get(0))>=0,"last ray owns exact rounding remainder");

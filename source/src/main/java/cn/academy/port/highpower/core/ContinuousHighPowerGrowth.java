@@ -25,7 +25,7 @@ import java.util.Objects;
  */
 public final class ContinuousHighPowerGrowth {
     /** Change when balance anchors or interpolation semantics change, for persisted checkpoints. */
-    public static final int CURVE_VERSION = 3;
+    public static final int CURVE_VERSION = 4;
     public static final int OUTPUT_PRECISION = 40;
     public static final int MAX_INPUT_PRECISION = 64;
     public static final int MAX_INPUT_SCALE = 256;

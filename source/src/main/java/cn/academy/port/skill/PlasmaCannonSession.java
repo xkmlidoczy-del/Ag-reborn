@@ -13,8 +13,8 @@ public final class PlasmaCannonSession {
  /** Modern sender may request performance only after the server has independently reached the float threshold. */
  public boolean perform(){if(!active||ending||go||ticks<charge)return false;state.addExperience(ID,.008F);go=true;ticks=0;state.setCooldown(ID,cooldown(state.exp(ID)));return true;}
  public static double[] move(double[] from,double[] dest){double x=dest[0]-from[0],y=dest[1]-from[1],z=dest[2]-from[2],d=Math.sqrt(x*x+y*y+z*z);return d<1?from.clone():new double[]{from[0]+x/d,from[1]+y/d,from[2]+z/d};}
- /** Source lacks return after collision explode(): simultaneous arrival/timeout intentionally requests twice. */
- public int explosions(boolean collision,double distance){return (collision?1:0)+(ticks>=MAX_TRAVEL_TICKS||distance<1.5?1:0);}
+ /** Collision, arrival and timeout may coincide. They settle one blast. */
+ public boolean shouldDetonate(boolean collision,double distance){return collision||ticks>=MAX_TRAVEL_TICKS||distance<1.5;}
  public boolean syncPosition(){if(!go)return false;if(sync==0){sync=5;return true;}sync--;return false;}
  public boolean ready(){return active&&!ending&&!go&&ticks>=charge;}public boolean chargedSoundTick(){return !go&&ticks==(int)charge;}public boolean go(){return go;}public int ticks(){return ticks;}public float capturedChargeTime(){return charge;}public AbilityProgress state(){return state;}public double overloadFloor(){return floor;}public boolean active(){return active;}public boolean ending(){return ending;}public void discard(){active=false;ending=true;}
 }

@@ -34,8 +34,8 @@ public final class VectorCageRulesRegressionTest {
         for (int i = 0; i < 1000; i++) verifyPartition(
                 BigDecimal.valueOf(1 + random.nextInt(1_000_000_000), random.nextInt(32)),
                 random.nextBoolean(), 1 + random.nextInt(8));
-        check(VectorCageRules.damage(new BigDecimal("8"), false).compareTo(new BigDecimal("20")) == 0,
-                "normal whole cast is 2.5D, not 2.5D per wall or pulse");
+        check(VectorCageRules.damage(new BigDecimal("8"), false).compareTo(new BigDecimal("14.4")) == 0,
+                "normal whole cast is 1.8D across the four pulses");
         check(VectorCageRules.damage(new BigDecimal("8"), true).compareTo(new BigDecimal("4")) == 0,
                 "crouching whole cast is .5D");
         check(VectorCageRules.damage(CombatAmounts.CAP, false).equals(CombatAmounts.requireAmount(CombatAmounts.CAP, "cap")),
@@ -58,7 +58,7 @@ public final class VectorCageRulesRegressionTest {
 
     private static void verifyPartition(BigDecimal d, boolean low, int n) {
         BigDecimal whole = VectorCageRules.damage(d, low);
-        BigDecimal ideal = d.multiply(new BigDecimal(low ? ".5" : "2.5")).min(CombatAmounts.CAP);
+        BigDecimal ideal = d.multiply(new BigDecimal(low ? ".5" : "1.8")).min(CombatAmounts.CAP);
         check(whole.compareTo(ideal) <= 0 && ideal.subtract(whole).compareTo(new BigDecimal("1E-256")) < 0,
                 "only unsupported final decimal sub-unit may be discarded");
         List<BigDecimal> shares = VectorCageRules.shares(d, low, n);

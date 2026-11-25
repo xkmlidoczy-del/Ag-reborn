@@ -26,10 +26,10 @@ public final class VectorCageRules {
         return ContinuousHighPowerGrowth.ceilCooldownTicks(CD.value(q));
     }
 
-    /** Crouching chooses a .5D whole budget; normal mode chooses 2.5D. */
+    /** Crouching chooses a .5D whole budget; normal mode chooses 1.8D. */
     public static BigDecimal damage(BigDecimal d, boolean lowMode) {
         BigDecimal whole = CombatAmounts.requirePositiveAmount(d, "NEW441 D")
-                .multiply(new BigDecimal(lowMode ? ".5" : "2.5")).min(CombatAmounts.CAP);
+                .multiply(new BigDecimal(lowMode ? ".5" : "1.8")).min(CombatAmounts.CAP);
         // The minimum supported decimal unit can acquire one extra place on multiplication.
         // Discard only that unrepresentable sub-unit, never round the budget upwards.
         if (whole.scale() > CombatAmounts.MAX_ABSOLUTE_SCALE)

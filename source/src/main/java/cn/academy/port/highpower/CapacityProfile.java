@@ -18,7 +18,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 /** Adjusts Academy's own base and shield allocations at a profile boundary on the server thread. */
 public final class CapacityProfile {
     private static final String VERSION = "capacityProfileVersion", PROTECTED = "protectedCapacity";
-    private static final int CURRENT = 1;
+    private static final int CURRENT = 2;
     private static final ThreadLocal<LivingEntity> WRITING = new ThreadLocal<>();
     public static boolean writing(LivingEntity entity) { return WRITING.get() == entity; }
     private static Predicate<ServerPlayer> protectedGear = p -> false;
@@ -44,7 +44,8 @@ public final class CapacityProfile {
     }
     static boolean needsChange(LivingEntity entity, CompoundTag tag) {
         if (entity instanceof TitanEntity) return false;
-        if (tag.getInt(VERSION) != CURRENT) return true;
+        int version = tag.getInt(VERSION);
+        if (version != CURRENT) return version < CURRENT;
         return entity instanceof ServerPlayer && tag.getBoolean(PROTECTED) != protectedFor(entity);
     }
     static void synchronize(LivingEntity entity, CompoundTag tag, float oldHealth, float oldMaximum) {
@@ -69,8 +70,8 @@ public final class CapacityProfile {
         if (tag.contains("growthCurve")) tag.putInt("growthCurve", ContinuousHighPowerGrowth.CURVE_VERSION);
         mark(tag, protectedNow);
     }
-    // a3.81 wrote native Health but omitted transient wrist/armor max-health modifiers from attributes.
-    // Retain exactly one vanilla read until the login handlers have restored the worn equipment.
+    // Native Health saves can omit transient wrist/armor max-health modifiers.
+    // During a capacity migration keep the original witness until login restores worn equipment.
     private record LoadedVitals(float health, double base) {}
     private static final Map<ServerPlayer, LoadedVitals> LOADING = Collections.synchronizedMap(new WeakHashMap<>());
 

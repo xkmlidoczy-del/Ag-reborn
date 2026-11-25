@@ -106,7 +106,7 @@ public final class EntityAbilityRuntime {
         var unit=host.damageUnit();
         if(CanonSkills.knownSkill(d.id))return unit.multiply(CanonEmission.levelFactor(d.level())).doubleValue();
         return cn.academy.port.highpower.EsperBalanceConfig.scaleClassic()
-                ?cn.academy.port.highpower.core.ClassicDamageScale.scaled(raw,unit,cn.academy.port.highpower.EsperBalanceConfig.divisor()):raw;
+                ?cn.academy.port.highpower.core.ClassicDamageScale.skillDamage(d.id,d.level(),raw,unit,cn.academy.port.highpower.EsperBalanceConfig.divisor()):raw;
     }
     private ClassicRules.SkillCost nativeCost(Definition d) {
         double e=state().exp(d.id);var base=ClassicRules.arc(e);

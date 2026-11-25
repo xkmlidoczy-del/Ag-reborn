@@ -40,6 +40,7 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 @EventBusSubscriber(modid="academy")
 public final class MulticoreCanopy {
     public static final String ID="multicore_canopy";
+    private static final BigDecimal SALVO_DAMAGE_SHARE = new BigDecimal("0.45");
     private static final boolean DIAGNOSTIC=Boolean.getBoolean("academy.highpower.multicoreCanopyDiagnostic");
     private static final org.slf4j.Logger DIAGNOSTIC_LOG=org.slf4j.LoggerFactory.getLogger("academy.multicore_canopy_diagnostics");
     private static int diagnosticEvents;
@@ -124,7 +125,7 @@ public final class MulticoreCanopy {
         try{
             maintainCores(c,c.work);if(!valid(c)){finish(c);return false;}
             c.coreRoster=c.cores.stream().filter(core->core.available).map(core->core.core.id()).toList();
-            var growth=HighPowerGrowth.values(p);c.damage=MulticoreCanopyRules.damage(growth.damage());c.cost=MulticoreCanopyRules.theoreticalFireCost(growth.position());c.cooldown=MulticoreCanopyRules.cooldownTicks(growth.position());
+            var growth=HighPowerGrowth.values(p);c.damage=MulticoreCanopyRules.damage(growth.damage().multiply(SALVO_DAMAGE_SHARE));c.cost=MulticoreCanopyRules.theoreticalFireCost(growth.position());c.cooldown=MulticoreCanopyRules.cooldownTicks(growth.position());
             c.roster=acquire(c,c.work);
             if(!c.work.valid()||!valid(c)){finish(c);return false;}
             if(c.roster.isEmpty()||c.coreRoster.isEmpty()){record(c,List.of());send(c,FIRE,MISS,List.of());finish(c);return true;}

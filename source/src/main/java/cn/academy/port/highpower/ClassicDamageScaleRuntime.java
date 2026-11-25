@@ -27,7 +27,7 @@ public final class ClassicDamageScaleRuntime {
 
     @SubscribeEvent
     public static void attack(SkillAttackEvent event) {
-        if (EsperLegacyBypass.standAside() || event.player == null || !event.player.server.isSameThread() || !EsperBalanceConfig.scaleClassic()
+        if (event.nativeAmount() || EsperLegacyBypass.standAside() || event.player == null || !event.player.server.isSameThread() || !EsperBalanceConfig.scaleClassic()
                 || !HighPowerCombat.enabled(event.player) || event.skill == null) return;
         int separator = event.skill.indexOf('.');
         if (separator <= 0) return;
@@ -38,8 +38,9 @@ public final class ClassicDamageScaleRuntime {
         var definition = classicSkill(category, id);
         if (definition == null) return;
         try {
-            var ranked = HighPowerGrowth.values(event.player).damage().multiply(ClassicDamageScale.rankFactor(definition.level()));
-            double scaled = ClassicDamageScale.scaled(event.amount, ranked, EsperBalanceConfig.divisor());
+            var growth = HighPowerGrowth.values(event.player);
+            double scaled = ClassicDamageScale.skillDamage(id, definition.level(), event.amount, growth.damage(),
+                    EsperBalanceConfig.divisor());
             if (Double.isFinite(scaled) && scaled > 0) event.amount = scaled;
         } catch (IllegalStateException | IllegalArgumentException unavailable) { /* no admitted growth: classic amount unchanged */ }
     }

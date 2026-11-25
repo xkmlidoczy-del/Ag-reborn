@@ -9,10 +9,10 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.UUID;
 
-/** NEW451 zenith vector dominion: up to 16 marked enemies lifted together, then one 4D compressed impulse partitioned exactly. */
+/** NEW451 zenith vector dominion: up to 16 marked enemies lifted together, then one partitioned 2.7D impulse. */
 public final class ZenithDominionRules {
     public static final int MAX_TARGETS = SkillTuning.integer("zenith_vector_dominion", "max_targets"), LIFT_TICKS = SkillTuning.integer("zenith_vector_dominion", "duration_ticks"), RELEASE_TICKS = 4;
-    public static final double RANGE = SkillTuning.number("zenith_vector_dominion", "reach"), TOTAL_COEFFICIENT = 4, MAX_LIFT_SPEED = .9;
+    public static final double RANGE = SkillTuning.number("zenith_vector_dominion", "reach"), TOTAL_COEFFICIENT = 2.7, MAX_LIFT_SPEED = .9;
     private ZenithDominionRules() {}
 
     public static BigDecimal totalDamage(BigDecimal d) {

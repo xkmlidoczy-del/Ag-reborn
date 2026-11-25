@@ -44,6 +44,7 @@ public final class FoldedMirrorArray {
     public static final int MIN_LEVEL=2,MAX_LEVEL=5;
     public static final int ACTIVE=0,EDIT=1,FIRE=2,ENDED=3;
     public static final int PREPARED=0,MISS=1,BLOCKED=2,REFUSED=3,DAMAGED=4,ABSORBED=5,DEGENERATE=6;
+    private static final BigDecimal BEAM_DAMAGE_SHARE = new BigDecimal("0.8");
     private static final String DATA="academy:folded_mirror_array",INPUT_AT="inputAt",ATTEMPT_AT="attemptAt",EMPTY_AT="emptyAt",MASTERY_AT="masteryAt",PREVIEW_AT="previewAt";
     private static final Map<UUID,Context> CONTEXTS=new HashMap<>();
     private static final Map<UUID,Watermark> INPUTS=new HashMap<>();
@@ -229,7 +230,7 @@ public final class FoldedMirrorArray {
         Plan plan=trace(p,shotPlates);
         if(Boolean.getBoolean("academy.debug.lease"))com.mojang.logging.LogUtils.getLogger().info("MIRROR_FIRE status={} crossings={} target={} plates={} path={}",plan.status,plan.crossings,plan.target,shotPlates,plan.path);
         if(plan.target==null||plan.crossings<1||!harmPermitted(p,plan.target)){stamp(p,EMPTY_AT);send(c,ACTIVE,plan.status,null,List.of());return false;}
-        var growth=HighPowerGrowth.values(p);BigDecimal amount=FoldedMirrorRules.damage(growth.damage());
+        var growth=HighPowerGrowth.values(p);BigDecimal amount=FoldedMirrorRules.damage(growth.damage().multiply(BEAM_DAMAGE_SHARE));
         boolean paid=valid(c)&&(borrowed==null
                 ?HighPowerResources.trySpend(p,ID,FoldedMirrorRules.shotCost(growth.position()),FoldedMirrorRules.cooldown(growth.position()))
                 :borrowed.pay(FoldedMirrorRules.shotCost(growth.position()),FoldedMirrorRules.cooldown(growth.position())));

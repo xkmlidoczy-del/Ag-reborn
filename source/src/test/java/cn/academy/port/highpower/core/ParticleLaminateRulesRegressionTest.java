@@ -13,9 +13,9 @@ public final class ParticleLaminateRulesRegressionTest {
             equal(theoreticalPulseCost(position,false),d(pulse[q-1]),"pulse endpoint");equal(theoreticalPulseCost(position,true),d(pulse[q-1]).multiply(d(".32")),"low mode cost endpoint");
         }
         check(theoreticalPlacementCost(d("3.5")).compareTo(d("2"))<0&&theoreticalPlacementCost(d("3.5")).compareTo(d(".5"))>0,"smooth intermediate q");
-        equal(damage(d("1234567890123456789.123456789"),false),d("3086419725308641972.8086419725"),"exact 2.5D");
-        equal(damage(d("1234567890123456789.123456789"),true),d("987654312098765431.2987654312"),"exact .8D");
-        equal(damage(CombatAmounts.CAP,false),CombatAmounts.CAP,"discard cap excess before partition");
+        equal(damage(d("1234567890123456789.123456789"),false),d("296296293629629629.38962962936"),"exact .24D");
+        equal(damage(d("1234567890123456789.123456789"),true),d("123456789012345678.9123456789"),"exact .10D");
+        equal(damage(CombatAmounts.CAP,false),d("2.4e19"),"source coefficient applies before partition");
         for(BigDecimal amount:new BigDecimal[]{d("1"),d(".000000000000000000000000001"),CombatAmounts.CAP})for(int count=1;count<=3;count++){
             var shares=shares(amount,count);equal(shares.stream().reduce(BigDecimal.ZERO,BigDecimal::add),amount,"whole pulse conserved exactly");
             check(shares.getLast().compareTo(shares.getFirst())>=0,"deterministic remainder belongs to last frozen identity");

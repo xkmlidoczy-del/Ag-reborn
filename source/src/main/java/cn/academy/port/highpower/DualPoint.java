@@ -38,6 +38,7 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 @EventBusSubscriber(modid="academy")
 public final class DualPoint {
     public static final String ID="dual_point";
+    private static final BigDecimal BEAM_DAMAGE_SHARE = new BigDecimal("0.92");
     private static final String MARK_CLOCK="academy:dual_point_mark_at";
     public static final int MARK=0,FIRE=1,ENDED=2,CLEAR_MARK=3;
     public static final int PREPARED=0,MISS=1,BLOCKED=2,REFUSED=3,DAMAGED=4,ABSORBED=5;
@@ -107,7 +108,7 @@ public final class DualPoint {
         if(secondary!=null&&!eligible(p,secondary,hand(p,1)))secondary=null;
         int count=(primary==null?0:1)+(secondary==null?0:1);
         if(count==0){retireEmpty(c);return false;}
-        var growth=HighPowerGrowth.values(p);BigDecimal damage=DualPointRules.damage(growth.damage());
+        var growth=HighPowerGrowth.values(p);BigDecimal damage=DualPointRules.damage(growth.damage().multiply(BEAM_DAMAGE_SHARE));
         if(!HighPowerResources.trySpend(p,ID,DualPointRules.cost(growth.position(),count),DualPointRules.cooldown(growth.arcCooldown()))){retireEmpty(c);return false;}
         c.input=input;c.slots=new Endpoint[]{primary,secondary};c.next=0;c.damage=damage;c.awarded=false;c.receipts.clear();c.committed=now(p);c.lastTick=c.committed-1;
         HighPowerNaturalRecovery.offensiveAction(p);tick(p);return true;

@@ -42,6 +42,7 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 @EventBusSubscriber(modid="academy")
 public final class ThunderNet {
     public static final String ID="thunder_net";
+    private static final BigDecimal TAP_POWER_SHARE = new BigDecimal("0.72");
     private static final String RECAST="thunder_net_recast_until";
     public static final int PENDING=0,HOLDING=1,TAP=2,ENDED=3;
     public static final int LOCKED=0,HIT=1,REFUSED=2;
@@ -142,7 +143,9 @@ public final class ThunderNet {
         List<Lock> targets=c.locks.stream().filter(l->l.target.invulnerableTime<=10).toList();
         if(targets.isEmpty())return false;
         if(hold&&targets.stream().anyMatch(l->l.target instanceof Player)){finish(c,REFUSAL,true);return false;}
-        var growth=HighPowerGrowth.values(p);BigDecimal damage=ThunderNetRules.damage(growth.damage(),hold);if(damage==null)return false;
+        var growth=HighPowerGrowth.values(p);
+        var unit = hold ? growth.damage() : growth.damage().multiply(TAP_POWER_SHARE);
+        BigDecimal damage=ThunderNetRules.damage(unit,hold);if(damage==null)return false;
         int cooldown=ThunderNetRules.cooldownTicks(growth.position());
         double cost=hold?ThunderNetRules.pulseCost(growth.position()):ThunderNetRules.tapCost(growth.position());
         List<ThunderNetRestraint.Claim> claims=new ArrayList<>();

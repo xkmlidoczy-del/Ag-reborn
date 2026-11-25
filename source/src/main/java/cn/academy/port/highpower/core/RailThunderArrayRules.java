@@ -22,10 +22,10 @@ public final class RailThunderArrayRules {
         public double squared(){return dot(this);}
     }
     private RailThunderArrayRules(){}
-    /** The cast retains exactly4D. Individual emissions are admitted by the closed native amount cap. */
+    /** Allocate one 2.7D cast budget across the fixed rays or net pulses. */
     public static BigDecimal budget(BigDecimal damage){
         if(damage==null||damage.precision()>64||Math.abs((long)damage.scale())>256||damage.signum()<=0||damage.compareTo(CAP)>0)return null;
-        return damage.multiply(BigDecimal.valueOf(4));
+        return damage.multiply(new BigDecimal("2.7"));
     }
     /** Fixed original slots, floor each preceding share, exact remainder in the final slot. */
     public static List<BigDecimal> split(BigDecimal total,int slots){

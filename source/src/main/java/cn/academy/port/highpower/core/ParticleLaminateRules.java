@@ -21,7 +21,7 @@ public final class ParticleLaminateRules {
     public static double placementCost(BigDecimal q){return theoreticalPlacementCost(q).doubleValue();}
     public static BigDecimal theoreticalPulseCost(BigDecimal q,boolean low){return PULSE.value(q).multiply(low?new BigDecimal(".32"):BigDecimal.ONE);}
     public static double pulseCost(BigDecimal q,boolean low){return theoreticalPulseCost(q,low).doubleValue();}
-    public static BigDecimal damage(BigDecimal d,boolean low){return CombatAmounts.requirePositiveAmount(d,"NEW241 D").multiply(new BigDecimal(low?".8":"2.5")).min(CombatAmounts.CAP);}
+    public static BigDecimal damage(BigDecimal d,boolean low){return CombatAmounts.requirePositiveAmount(d,"NEW241 D").multiply(new BigDecimal(low?".10":".24")).min(CombatAmounts.CAP);}
     /** Fixed stable segment-order identities receive equal shares; last receives exact remainder. */
     public static List<BigDecimal> shares(BigDecimal total,int count){
         total=CombatAmounts.requireAmount(total,"NEW241 whole-pulse budget");

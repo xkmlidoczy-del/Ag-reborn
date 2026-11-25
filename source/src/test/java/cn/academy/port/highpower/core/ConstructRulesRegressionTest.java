@@ -78,7 +78,7 @@ public final class ConstructRulesRegressionTest {
         check(ConstructRules.throwImpulse(V3.ZERO, look, 1e9, 1).length() <= 40 + 1e-9, "throw speed capped");
         // Impact scale: zero below the minimum speed and for hostile values, bounded above.
         check(ConstructRules.impactScale(2000, 2.9, 30) == 0 && ConstructRules.impactScale(0, 30, 30) == 0 && ConstructRules.impactScale(2000, Double.NaN, 30) == 0, "no impact");
-        check(ConstructRules.impactScale(1e12, 1e12, 30) <= 3 + 1e-9 && ConstructRules.impactScale(2000, 30, 30) == 1, "impact bounded");
+        check(ConstructRules.impactScale(1e12, 1e12, 30) <= 1.8 + 1e-9 && ConstructRules.impactScale(2000, 30, 30) == .6, "impact bounded");
         check(ConstructRules.impactScale(8000, 20, 30) > ConstructRules.impactScale(2000, 20, 30), "heavier hits harder");
         check(ConstructRules.holdDistance(0) == 5 && ConstructRules.holdDistance(1000) == 32 && Math.abs(ConstructRules.holdDistance(16) - 21.6) < 1e-9, "hold distance");
         for (int span = 0; span <= 64; span++) check(ConstructRules.holdDistance(span) >= span * .5 + 1 || ConstructRules.holdDistance(span) == 32, "the held body never overlaps the caster at span " + span);

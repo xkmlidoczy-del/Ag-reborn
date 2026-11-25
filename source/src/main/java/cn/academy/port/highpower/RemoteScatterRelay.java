@@ -45,6 +45,7 @@ public final class RemoteScatterRelay {
     public static final int PREPARED=0,MISS=1,BLOCKED=2,REFUSED=3,DAMAGED=4,ABSORBED=5,DEGENERATE=6,ENDPOINT=7;
     public static final int TOO_FAR=8,SEGMENT_TOO_FAR=9,TOO_CLOSE=10,FULL=11,BODY_BLOCKED=12,NO_SPACE=13,UNLOADED=14,MEASURING=15,CLEARING=16;
     /** Default only for an unobstructed air selection; all real limits stay 32m. */
+    private static final BigDecimal RELAY_DAMAGE_SHARE = new BigDecimal("0.5");
     private static final double AIR_SELECTION_DISTANCE=30;
     private static final String DATA="academy:remote_scatter_relay",INPUT_AT="inputAt",ATTEMPT_AT="attemptAt",EMPTY_AT="emptyAt",MASTERY_AT="masteryAt",PREVIEW_AT="previewAt";
     private static final Map<UUID,Context> CONTEXTS=new HashMap<>();
@@ -272,7 +273,7 @@ public final class RemoteScatterRelay {
         if(plan.target==null||plan.crossings!=c.plates.size()||!harmPermitted(p,plan.target)){
             stamp(p,EMPTY_AT);send(c,ACTIVE,plan.status,null,plan.path);return false;
         }
-        var growth=HighPowerGrowth.values(p);BigDecimal amount=RemoteScatterRelayRules.damage(growth.damage());
+        var growth=HighPowerGrowth.values(p);BigDecimal amount=RemoteScatterRelayRules.damage(growth.damage().multiply(RELAY_DAMAGE_SHARE));
         EmissionPermit permit=new EmissionPermit(c,plan,amount);c.emitting=permit;
         BigDecimal hp=health(plan.target),shield=HighPowerCombat.shield(plan.target);float absorption=plan.target.getAbsorptionAmount();boolean accepted;
         try{accepted=HighPowerCombat.attackRemoteScatterRelay(permit);}

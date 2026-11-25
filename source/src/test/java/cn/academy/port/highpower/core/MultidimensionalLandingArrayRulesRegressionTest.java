@@ -67,7 +67,7 @@ public final class MultidimensionalLandingArrayRulesRegressionTest {
             for (boolean anchor : anchors) check(anchor, "all six anchors participate");
             for (String raw : new String[]{"1e-250", ".0000000000000001", ".1", "1", "1.234567890123456789", "1e7", "5e18", "2.5e19", "4e19", "1e20"}) {
                 BigDecimal d = new BigDecimal(raw), whole = MultidimensionalLandingArrayRules.damageTotal(d), sum = BigDecimal.ZERO;
-                check(whole.compareTo(d.multiply(BigDecimal.valueOf(4)).min(CombatAmounts.CAP)) == 0, "whole min(4D,1e20), capped exactly once");
+                check(whole.compareTo(d.multiply(new BigDecimal("2.7")).min(CombatAmounts.CAP)) == 0, "whole min(4D,1e20), capped exactly once");
                 BigDecimal first = MultidimensionalLandingArrayRules.damageShare(whole, 0, needles);
                 for (int slot = 0; slot < needles; slot++) {
                     BigDecimal share = MultidimensionalLandingArrayRules.damageShare(whole, slot, needles);

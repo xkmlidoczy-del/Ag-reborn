@@ -20,7 +20,7 @@ public final class MultidimensionalLandingArrayRules {
     public static double cpCost(BigDecimal q) { return CP.value(q).doubleValue(); }
     public static int cooldownTicks(BigDecimal q) { return ContinuousHighPowerGrowth.ceilCooldownTicks(CD.value(q)); }
     public static BigDecimal damageTotal(BigDecimal d) {
-        return CombatAmounts.requirePositiveAmount(d, "NEW351 D").multiply(BigDecimal.valueOf(4)).min(CombatAmounts.CAP);
+        return CombatAmounts.requirePositiveAmount(d, "NEW351 D").multiply(new BigDecimal("2.7")).min(CombatAmounts.CAP);
     }
     /** Frozen whole-round budget is partitioned once; a failed original loses its share. */
     public static BigDecimal damageShare(BigDecimal total, int slot, int needles) {

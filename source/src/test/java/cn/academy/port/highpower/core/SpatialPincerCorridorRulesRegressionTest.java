@@ -58,8 +58,8 @@ public final class SpatialPincerCorridorRulesRegressionTest {
         for (String raw : new String[]{"1e-250", ".00000000000000000000001", ".1", "1", "1.234567890123456789", "10000000", "5e18", "4e19", "1e20"}) {
             var d = new BigDecimal(raw);
             var total = SpatialPincerCorridorRules.damageTotal(d);
-            var expected = d.multiply(new BigDecimal("2.8")).min(CombatAmounts.CAP);
-            check(total.compareTo(expected) == 0, "exact capped 2.8D total for fractional D " + raw);
+            var expected = d.multiply(new BigDecimal("1.8")).min(CombatAmounts.CAP);
+            check(total.compareTo(expected) == 0, "exact capped 1.8D total for fractional D " + raw);
             var first = SpatialPincerCorridorRules.damageShare(total, 0);
             var second = SpatialPincerCorridorRules.damageShare(total, 1);
             var last = SpatialPincerCorridorRules.damageShare(total, 2);
@@ -74,7 +74,7 @@ public final class SpatialPincerCorridorRulesRegressionTest {
                 check(CombatAmounts.requireAmount(share, "share").compareTo(share) == 0, "share remains legal in native decimal combat ledger");
         }
         check(SpatialPincerCorridorRules.damageTotal(CombatAmounts.CAP).compareTo(CombatAmounts.CAP) == 0,
-                "2.8D overflow is capped once across entire volley");
+                "1.8D overflow is capped once across entire volley");
         for (BigDecimal bad : new BigDecimal[]{null, BigDecimal.ZERO, BigDecimal.ONE.negate(), CombatAmounts.CAP.add(BigDecimal.ONE)})
             rejected(() -> SpatialPincerCorridorRules.damageTotal(bad), "invalid D cannot produce attack shares");
         for (double bad : new double[]{0, -1, Double.NaN, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY})

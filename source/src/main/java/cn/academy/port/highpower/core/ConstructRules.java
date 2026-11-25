@@ -239,6 +239,6 @@ public final class ConstructRules {
     public static double impactScale(double mass, double speed, double throwSpeed) {
         if (!Double.isFinite(mass) || !Double.isFinite(speed) || !Double.isFinite(throwSpeed) || mass <= 0 || throwSpeed <= 0 || speed < MIN_IMPACT_SPEED) return 0;
         double v = Math.min(1.5, speed / throwSpeed), m = Math.max(.1, Math.min(2, Math.sqrt(mass / MASS_REFERENCE)));
-        return v * m;
+        return .6 * v * m;
     }
 }

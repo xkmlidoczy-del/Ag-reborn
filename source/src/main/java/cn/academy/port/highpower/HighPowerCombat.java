@@ -2974,7 +2974,8 @@ public final class HighPowerCombat {
         if (EsperShields.eligible(entity) && (previous.shield().compareTo(next.shield()) > 0
                 || specialAbsorbed != null && specialAbsorbed.signum() > 0)) {
             tag(entity).putLong("lastShieldSpend", entity.level().getGameTime());
-            EsperShields.absorbed((ServerPlayer)entity, source, next.shield().signum() == 0);
+            var counterDebit = specialAbsorbed == null ? basePaid : basePaid.add(specialAbsorbed);
+            EsperShields.absorbed((ServerPlayer)entity, source, next.shield().signum() == 0, counterDebit);
         }
         if (inertialAnchor != null && inertialAnchor.absorbed().signum() > 0)
             tag(entity).putLong("lastShieldSpend", entity.level().getGameTime());

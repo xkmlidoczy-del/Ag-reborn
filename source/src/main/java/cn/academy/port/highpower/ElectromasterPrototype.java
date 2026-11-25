@@ -105,7 +105,7 @@ public final class ElectromasterPrototype {
         if(progress.learned(HighPowerSkills.FORKED_ARC))progress.setCooldown(HighPowerSkills.FORKED_ARC,growth.arcCooldown());
         if(primary==null){if(block.getType()!=HitResult.Type.MISS)award(p,HighPowerSkills.FORKED_ARC,.0018);return true;}
         // One unarmored target accepts equal ordinary hits at ten-tick intervals.
-        // The rank-five arc deals 16 per accepted hit, including when fired every tick.
+        // The rank-five arc spends two thirds of its power on an accepted hit.
         int effectiveInterval = Math.max(10, growth.arcCooldown());
         var amount = growth.damage().multiply(BigDecimal.valueOf(Math.min(1.0, effectiveInterval / 15.0)));
         var conductiveReceipt=ConductiveMarkReceipts.capture(p,primary);

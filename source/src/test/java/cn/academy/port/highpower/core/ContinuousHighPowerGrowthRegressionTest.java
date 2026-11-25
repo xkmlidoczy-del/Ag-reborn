@@ -13,6 +13,7 @@ public final class ContinuousHighPowerGrowthRegressionTest {
         exactAnchorsAndLevelBoundaries();
         inputClampsAndCorruption();
         damageAndPoolsAreStrictlyMonotone();
+        combatBudgetBounds();
         scalarCurvesAreContinuousAndShapePreserving();
         derivativesJoinAtAllBoundaries();
         exactDecimalReferenceAndDeterminism();
@@ -22,8 +23,8 @@ public final class ContinuousHighPowerGrowthRegressionTest {
     }
 
     private static void exactAnchorsAndLevelBoundaries() {
-        truth(ContinuousHighPowerGrowth.CURVE_VERSION == 3, "rebalance invalidates the old curve schema");
-        String[] expected = {"8", "14", "24", "38", "54"};
+        truth(ContinuousHighPowerGrowth.CURVE_VERSION == 4, "rebalance invalidates the old curve schema");
+        String[] expected = {"8", "15", "42", "76", "110"};
         for (int level = 1; level <= 5; level++) {
             var actual = ContinuousHighPowerGrowth.sample(level, 0);
             var preset = HighPowerLevel.forLevel(level);
@@ -41,8 +42,22 @@ public final class ContinuousHighPowerGrowthRegressionTest {
         for (double progress : new double[] {0, 0.0001, 0.5, 1, Double.MAX_VALUE, Double.NaN}) {
             truth(top.equals(ContinuousHighPowerGrowth.sample(5, progress)), "LV5 fixed upper endpoint");
         }
-        eq(bd("100"), top.maxHealth(), "LV5 native health");
-        eq(bd("50"), top.maxShield(), "LV5 base shield");
+        eq(bd("2000"), top.maxHealth(), "LV5 native health");
+        eq(bd("600"), top.maxShield(), "LV5 base shield");
+    }
+
+    private static void combatBudgetBounds() {
+        BigDecimal endgame = HighPowerLevel.LV5.damage();
+        BigDecimal meltdowner = endgame.multiply(bd("1.5"));
+        double rail = ClassicDamageScale.skillDamage("railgun", 4, 110, endgame, 50);
+        double plasma = ClassicDamageScale.skillDamage("plasma_cannon", 5, 150, endgame, 50);
+        double missiles = ClassicDamageScale.skillDamage("electron_missile", 5, 18, meltdowner, 50) * 21;
+        truth(rail > 280 && rail <= 300, "mastered railgun is a heavy single hit");
+        truth(plasma > 280 && plasma <= 300, "mastered plasma cannon uses one heavy dose");
+        truth(missiles > 280 && missiles <= 300, "full mastered barrage shares a heavy budget");
+        truth(EsperDamageBalance.passiveCounter(bd("10"), bd("600"), 6) == 3, "counter follows spent shield");
+        truth(EsperDamageBalance.passiveCounter(bd("1e9"), bd("1e9"), 6) == 60, "counter has no protected-gear windfall");
+        truth(EsperDamageBalance.passiveCounter(bd("12"), bd("12"), 6) == 1.2f, "LV2 counter remains small");
     }
 
     private static void inputClampsAndCorruption() {

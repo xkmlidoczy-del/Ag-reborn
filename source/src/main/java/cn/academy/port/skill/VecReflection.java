@@ -24,7 +24,25 @@ public final class VecReflection {
  private static Entity replaceFireball(ServerPlayer p,AbstractHurtingProjectile source){var world=p.serverLevel();Entity owner=source.getOwner();Vec3 at=source.position(),head=source.getEyePosition(),old=source.getDeltaMovement();source.discard();AbstractHurtingProjectile replacement;if(source instanceof LargeFireball large){int power=large.saveWithoutId(new CompoundTag()).getInt("ExplosionPower");replacement=owner instanceof LivingEntity living?new LargeFireball(world,living,Vec3.ZERO,power):new LargeFireball(EntityType.FIREBALL,world);if(!(owner instanceof LivingEntity)){var tag=replacement.saveWithoutId(new CompoundTag());tag.putInt("ExplosionPower",power);replacement.load(tag);}}else{replacement=new SmallFireball(EntityType.SMALL_FIREBALL,world);replacement.setOwner(owner);}replacement.setPos(at);replacement.setDeltaMovement(old);reflect(p,replacement,head);replacement.getPersistentData().putBoolean(VecDeviation.MARK,true);return world.addFreshEntity(replacement)?replacement:null;}
  @SubscribeEvent public static void reflectSkill(SkillReflectEvent event){if(!(event.target instanceof ServerPlayer p)||event.attacker==null||event.isCanceled()||!VectorStarterSupport.serverThread(p))return;var h=HOLDS.get(p.getUUID());if(h==null||!valid(h))return;event.setCanceled(true);Vec3 delta=event.attacker.getEyePosition().subtract(p.getEyePosition()).normalize();effect(h,p.position().add(0,.4+p.serverLevel().random.nextDouble()*.9,0).add(delta.scale(.5)));}
  /** Classic passby path never cancels LivingAttackEvent; mapped hurt stage remains pre mitigation. */
- @SubscribeEvent public static void hurt(LivingIncomingDamageEvent event){if(!(event.getEntity() instanceof ServerPlayer p)||event.isCanceled()||!VectorStarterSupport.serverThread(p)||REFLECTING.contains(p.getUUID()))return;var h=HOLDS.get(p.getUUID());if(h==null||!valid(h)||h.session.state().consumptionInProgress())return;var damage=h.session.damage(event.getAmount(),false,p.getAbilities().instabuild);if(!damage.performed()||HOLDS.get(p.getUUID())!=h||!valid(h))return;Entity source=event.getSource().getDirectEntity();if(source!=null&&source!=p&&REFLECTING.add(p.getUUID()))try{VectorFinalSupport.attack(p,ID,source,damage.reflected());effect(h,source.position());}finally{REFLECTING.remove(p.getUUID());}event.setAmount(damage.remaining());AbilityStorage.save(p);AcademyNetwork.sync(p);}
+ @SubscribeEvent public static void hurt(LivingIncomingDamageEvent event) {
+  if (!(event.getEntity() instanceof ServerPlayer player) || event.isCanceled()
+      || !VectorStarterSupport.serverThread(player) || REFLECTING.contains(player.getUUID())
+      || event.getSource() instanceof cn.academy.port.AbilityDamage.SkillDamageSource counter && counter.retaliation) return;
+  var hold = HOLDS.get(player.getUUID());
+  if (hold == null || !valid(hold) || hold.session.state().consumptionInProgress()) return;
+  var damage = hold.session.damage(event.getAmount(), false, player.getAbilities().instabuild);
+  if (!damage.performed() || HOLDS.get(player.getUUID()) != hold || !valid(hold)) return;
+  Entity source = event.getSource().getDirectEntity();
+  if (source != null && source != player && REFLECTING.add(player.getUUID())) {
+   try {
+    VectorFinalSupport.reflectDamage(player, ID, source, damage.reflected());
+    effect(hold, source.position());
+   } finally { REFLECTING.remove(player.getUUID()); }
+  }
+  event.setAmount(Math.max(0, damage.remaining()));
+  AbilityStorage.save(player);
+  AcademyNetwork.sync(player);
+ }
  private static void effect(Hold h,Vec3 at){var tag=VectorStarterSupport.packet(h.player,"vec_reflection_wave",h.token,h.input);tag.putLong("sequence",++h.sequence);VectorStarterSupport.position(tag,at);tag.putFloat("yaw",h.player.getYHeadRot());tag.putFloat("pitch",h.player.getXRot());VectorStarterSupport.send(h.audience,tag);}
  public static boolean release(ServerPlayer p){return release(p,0);}public static boolean release(ServerPlayer p,long input){var h=p==null?null:HOLDS.get(p.getUUID());return VectorStarterSupport.serverThread(p)&&h!=null&&(input==0||input==h.input)&&valid(h);}public static void abort(ServerPlayer p){abort(p,0);}public static boolean abort(ServerPlayer p,long input){if(!VectorStarterSupport.serverThread(p))return false;var h=HOLDS.get(p.getUUID());if(h==null||input>0&&input!=h.input)return false;finish(h);return true;}public static void remove(ServerPlayer p){if(!VectorStarterSupport.serverThread(p))return;var h=HOLDS.get(p.getUUID());if(h!=null)finish(h);INPUTS.remove(p.getUUID());TICKING.remove(p.getUUID());REFLECTING.remove(p.getUUID());}
  private static boolean valid(Hold h){var p=h.player;var s=AbilityStorage.get(p);return VectorStarterSupport.ready(p)&&h.world==p.serverLevel()&&h.session.state()==s&&h.session.active()&&s.category.equals("vecmanip")&&s.level>=4&&s.learned(ID)&&Double.isFinite(s.cp)&&Double.isFinite(s.overload)&&Double.isFinite(s.exp(ID))&&p.serverLevel().getGameTime()>=h.lastTick;}
