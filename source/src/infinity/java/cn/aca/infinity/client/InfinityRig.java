@@ -1,6 +1,7 @@
 package cn.aca.infinity.client;
 
 import cn.aca.infinity.AcaInfinity;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -16,6 +17,7 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
+import org.joml.Vector3f;
 
 public final class InfinityRig {
     public record BonePose(float x, float y, float z, float pitch, float yaw, float roll, float scale, int tint) {
@@ -101,10 +103,72 @@ public final class InfinityRig {
         }
     }
 
+    /** Indexed mesh with authored UVs. Cache normals and lighting once when loading the resource. */
+    private static final class Mesh {
+        private static final int[] FRONT_CORNERS = {0, 1, 2, 3};
+        private static final int[] REFLECTED_CORNERS = {0, 3, 2, 1};
+        final float[][] vertices;
+        final int[] indices;
+        final Vector3f[] normals;
+        final float[] shades;
+        final int[] whiteTints;
+        final boolean glow;
+
+        Mesh(JsonObject obj, float px, float py, float pz, float texel) {
+            JsonArray points = obj.getAsJsonArray("vertices");
+            vertices = new float[points.size()][];
+            for (int i = 0; i < vertices.length; i++) {
+                JsonArray v = points.get(i).getAsJsonArray();
+                vertices[i] = new float[]{v.get(0).getAsFloat() - px, v.get(1).getAsFloat() - py,
+                        v.get(2).getAsFloat() - pz, v.get(3).getAsFloat() * texel, v.get(4).getAsFloat() * texel};
+            }
+            JsonArray quads = obj.getAsJsonArray("quads");
+            if (quads.size() % 4 != 0) throw new IllegalArgumentException("Incomplete rig quad");
+            indices = new int[quads.size()];
+            for (int i = 0; i < indices.length; i++) indices[i] = quads.get(i).getAsInt();
+            normals = new Vector3f[indices.length / 4];
+            shades = new float[normals.length];
+            whiteTints = new int[normals.length];
+            for (int face = 0; face < normals.length; face++) {
+                int start = face * 4;
+                float[] a = vertices[indices[start]];
+                float[] b = vertices[indices[start + 1]];
+                float[] c = vertices[indices[start + 2]];
+                Vector3f normal = new Vector3f(b[0] - a[0], b[1] - a[1], b[2] - a[2])
+                        .cross(c[0] - a[0], c[1] - a[1], c[2] - a[2]).normalize();
+                normals[face] = normal;
+                shades[face] = 0.83f + 0.17f * normal.dot(-0.42f, 0.52f, 0.74f);
+                whiteTints[face] = shadeColor(-1, shades[face]);
+            }
+            glow = obj.has("glow") && obj.get("glow").getAsBoolean();
+        }
+
+        void emit(PoseStack.Pose pose, VertexConsumer out, int color, int light, int overlay, boolean mirrored) {
+            int packedLight = glow ? LightTexture.FULL_BRIGHT : light;
+            // A handed reflection reverses winding; keep the outward faces for shader packs.
+            int[] corners = mirrored ? REFLECTED_CORNERS : FRONT_CORNERS;
+            var modelMatrix = pose.pose();
+            Vector3f position = new Vector3f();
+            Vector3f normal = new Vector3f();
+            for (int face = 0; face < normals.length; face++) {
+                pose.transformNormal(normals[face], normal);
+                int tint = color;
+                if (!glow) tint = color == -1 ? whiteTints[face] : shadeColor(color, shades[face]);
+                for (int corner : corners) {
+                    float[] v = vertices[indices[face * 4 + corner]];
+                    modelMatrix.transformPosition(v[0], v[1], v[2], position);
+                    out.addVertex(position.x, position.y, position.z, tint, v[3], v[4],
+                            overlay, packedLight, normal.x, normal.y, normal.z);
+                }
+            }
+        }
+    }
+
     private static final class Bone {
         final String id;
         final float x, y, z, pitch, yaw, roll;
         final List<Box> boxes = new ArrayList<>();
+        final Mesh mesh;
         final List<Bone> children = new ArrayList<>();
 
         Bone(JsonObject obj, float texel) {
@@ -117,13 +181,14 @@ public final class InfinityRig {
             pitch = r.get(0).getAsFloat();
             yaw = r.get(1).getAsFloat();
             roll = r.get(2).getAsFloat();
+            mesh = obj.has("mesh") ? new Mesh(obj.getAsJsonObject("mesh"), x, y, z, texel) : null;
             for (var el : obj.getAsJsonArray("boxes")) {
                 boxes.add(Box.parse(el.getAsJsonObject(), x, y, z, texel));
             }
         }
 
         void render(PoseStack pose, VertexConsumer vc, PoseProvider anim,
-                    float px, float py, float pz, int baseColor, int light, int overlay) {
+                    float px, float py, float pz, int baseColor, int light, int overlay, boolean mirrored) {
             BonePose bp = anim.poseFor(id);
             if (bp.scale() <= 0.001f) return;
             pose.pushPose();
@@ -134,8 +199,9 @@ public final class InfinityRig {
             for (Box b : boxes) {
                 b.emit(pose.last(), vc, drawCol, light, overlay);
             }
+            if (mesh != null) mesh.emit(pose.last(), vc, drawCol, light, overlay, mirrored);
             for (Bone c : children) {
-                c.render(pose, vc, anim, x, y, z, drawCol, light, overlay);
+                c.render(pose, vc, anim, x, y, z, drawCol, light, overlay, mirrored);
             }
             pose.popPose();
         }
@@ -183,14 +249,19 @@ public final class InfinityRig {
 
     public void render(PoseStack pose, MultiBufferSource buffers, PoseProvider anim,
                        float scale, int color, int light, int overlay) {
+        render(pose, buffers, anim, scale, color, light, overlay, false);
+    }
+
+    public void render(PoseStack pose, MultiBufferSource buffers, PoseProvider anim,
+                       float scale, int color, int light, int overlay, boolean mirrorX) {
         if (root == null) return;
         pose.pushPose();
-        pose.scale(UNIT * scale, UNIT * scale, UNIT * scale);
+        pose.scale((mirrorX ? -UNIT : UNIT) * scale, UNIT * scale, UNIT * scale);
         RenderType rt = (color >>> 24) < 255
                 ? RenderType.entityTranslucent(texture)
                 : RenderType.entityCutoutNoCull(texture);
         VertexConsumer vc = buffers.getBuffer(rt);
-        root.render(pose, vc, anim, 0, 0, 0, color, light, overlay);
+        root.render(pose, vc, anim, 0, 0, 0, color, light, overlay, mirrorX);
         pose.popPose();
     }
 

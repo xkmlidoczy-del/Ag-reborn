@@ -6,7 +6,7 @@ plugins {
 // with the default pure/server check outputs without rewriting their classpath.
 if (providers.gradleProperty('qaBuildDirectory').isPresent())
     layout.buildDirectory.set(layout.projectDirectory.dir(providers.gradleProperty('qaBuildDirectory').get()))
-version = '0.1.0-m41-highpower.0.81.5-city-a3.85'
+version = '0.1.0-m41-highpower.0.81.5-city-a3.86'
 group = 'cn.academy'
 base { archivesName = 'academy-generation-reborn' }
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
@@ -134,7 +134,7 @@ def omnitrixJar = tasks.register('omnitrixJar', Jar) {
     into('META-INF') { from('integration/aca-omnitrix/NOTICE.md') }
     into('META-INF/licenses') { from('integration/aca-omnitrix/licenses') }
 }
-def infinityVersion = '0.5.5'
+def infinityVersion = '0.5.6'
 tasks.named('processInfinityResources') {
     inputs.property 'infinityVersion', infinityVersion
     filesMatching('META-INF/neoforge.mods.toml') { expand(modVersion: infinityVersion) }

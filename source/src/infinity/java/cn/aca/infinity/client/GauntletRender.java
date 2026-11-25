@@ -6,6 +6,8 @@ import cn.aca.infinity.SanctuaryBeaconItem;
 import cn.aca.infinity.Stone;
 import cn.aca.infinity.StoneItem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import java.util.HashMap;
+import java.util.Map;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -16,6 +18,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -23,11 +26,21 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.event.RenderHandEvent;
 
 public final class GauntletRender {
+    private static final Map<String, Stone> SOCKET_BONES = socketBones();
     private static BlockEntityWithoutLevelRenderer itemRenderer;
     private static int lastSeenSelected = -1;
     private static long switchInspectTick = -100L;
 
     private GauntletRender() {}
+
+    private static Map<String, Stone> socketBones() {
+        Map<String, Stone> bones = new HashMap<>();
+        for (Stone stone : Stone.values()) {
+            bones.put("gem_" + stone.id, stone);
+            bones.put("vein_" + stone.id, stone);
+        }
+        return Map.copyOf(bones);
+    }
 
     public static InfinityRig.PoseProvider stoneCrystalPose(Stone stone, float spinDeg, float pulseScale) {
         String coreId = "stone_" + stone.id;
@@ -50,41 +63,38 @@ public final class GauntletRender {
 
     public static InfinityRig.PoseProvider gauntletPose(GauntletData data, boolean snapping, float snapProgress,
                                                         float castProgress, float switchPulse) {
+        float pinch = Mth.sin(Mth.clamp(snapProgress, 0f, 1f) * (float) Math.PI);
+        float cast = Mth.sin(Mth.clamp(castProgress, 0f, 1f) * (float) Math.PI);
+        float inspect = Mth.sin(switchPulse * (float) Math.PI);
         return boneId -> {
-            for (Stone s : Stone.values()) {
-                if (boneId.equals("gem_" + s.id) || boneId.equals("vein_" + s.id)) {
-                    return data.has(s) ? InfinityRig.BonePose.IDENTITY : InfinityRig.BonePose.HIDDEN;
-                }
-            }
+            Stone stone = SOCKET_BONES.get(boneId);
+            if (stone != null) return data.has(stone) ? InfinityRig.BonePose.IDENTITY : InfinityRig.BonePose.HIDDEN;
             if (snapping) {
-                float pinch = Mth.sin(Mth.clamp(snapProgress, 0f, 1f) * (float) Math.PI);
                 return switch (boneId) {
-                    case "thumb" -> InfinityRig.BonePose.rot(24f * pinch, 18f * pinch, 26f * pinch);
-                    case "thumb_tip" -> InfinityRig.BonePose.rot(16f * pinch, 0f, 8f * pinch);
-                    case "finger_middle" -> InfinityRig.BonePose.rot(42f * pinch, 0f, -6f * pinch);
-                    case "finger_middle_mid" -> InfinityRig.BonePose.rot(28f * pinch, 0f, 0f);
-                    case "finger_middle_tip" -> InfinityRig.BonePose.rot(18f * pinch, 0f, 0f);
-                    case "finger_ring", "finger_pinky" -> InfinityRig.BonePose.rot(56f * pinch, 0f, 0f);
-                    case "finger_ring_mid", "finger_pinky_mid" -> InfinityRig.BonePose.rot(34f * pinch, 0f, 0f);
-                    case "finger_index" -> InfinityRig.BonePose.rot(-14f * pinch, 0f, 4f * pinch);
+                    case "thumb" -> InfinityRig.BonePose.rot(-22f * pinch, -3f * pinch, 55.5f * pinch);
+                    case "thumb_tip" -> InfinityRig.BonePose.rot(9.5f * pinch, -3f * pinch, -3.5f * pinch);
+                    case "finger_middle" -> InfinityRig.BonePose.rot(-32f * pinch, 0f, 4.7f * pinch);
+                    case "finger_middle_mid" -> InfinityRig.BonePose.rot(-58f * pinch, 0f, 0f);
+                    case "finger_middle_tip" -> InfinityRig.BonePose.rot(-31f * pinch, 0f, 0f);
+                    case "finger_ring", "finger_pinky" -> InfinityRig.BonePose.rot(-47f * pinch, 0f, 0f);
+                    case "finger_ring_mid", "finger_pinky_mid" -> InfinityRig.BonePose.rot(-52f * pinch, 0f, 0f);
+                    case "finger_index" -> InfinityRig.BonePose.rot(7f * pinch, 0f, -3f * pinch);
                     default -> InfinityRig.BonePose.IDENTITY;
                 };
             }
             if (castProgress > 0.01f) {
-                float s = Mth.sin(Mth.clamp(castProgress, 0f, 1f) * (float) Math.PI);
                 return switch (boneId) {
                     case "finger_index", "finger_middle", "finger_ring", "finger_pinky" ->
-                            InfinityRig.BonePose.rot(18f * s, 0f, 0f);
+                            InfinityRig.BonePose.rot(-18f * cast, 0f, 0f);
                     case "finger_index_mid", "finger_middle_mid", "finger_ring_mid", "finger_pinky_mid" ->
-                            InfinityRig.BonePose.rot(14f * s, 0f, 0f);
-                    case "thumb" -> InfinityRig.BonePose.rot(12f * s, -10f * s, -8f * s);
+                            InfinityRig.BonePose.rot(-14f * cast, 0f, 0f);
+                    case "thumb" -> InfinityRig.BonePose.rot(-12f * cast, -6f * cast, 12f * cast);
                     default -> InfinityRig.BonePose.IDENTITY;
                 };
             }
             if (switchPulse > 0.01f) {
-                float s = Mth.sin(switchPulse * (float) Math.PI);
                 if (boneId.startsWith("finger_") && !boneId.contains("_mid") && !boneId.contains("_tip")) {
-                    return InfinityRig.BonePose.rot(10f * s, 0f, 0f);
+                    return InfinityRig.BonePose.rot(-8f * inspect, 0f, 0f);
                 }
             }
             return InfinityRig.BonePose.IDENTITY;
@@ -135,16 +145,18 @@ public final class GauntletRender {
                     GauntletData data = stack.getOrDefault(AcaInfinity.GAUNTLET_DATA.get(), GauntletData.EMPTY);
                     pose.pushPose();
                     float bob = isGround ? Mth.sin(time * 0.08f) * 0.07f : 0f;
-                    pose.translate(0.5, 0.44 + bob, 0.5);
+                    pose.translate(0.5, 0.48 + bob, 0.5);
                     if (isGround) {
                         InfinityRig.rotate(pose, 8f, time * 1.8f, 0f);
                     } else if (isFixed) {
-                        InfinityRig.rotate(pose, 0f, 180f + Mth.sin(time * 0.04f) * 14f, 0f);
+                        InfinityRig.rotate(pose, 0f, -8f, 0f);
                     } else if (isGui) {
-                        InfinityRig.rotate(pose, 0f, Mth.sin(time * 0.05f) * 16f, 0f);
+                        InfinityRig.rotate(pose, 0f, Mth.sin(time * 0.05f) * 4f, 0f);
                     }
+                    boolean rightHand = ctx == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND
+                            || ctx == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND;
                     InfinityRig.get("infinity_gauntlet").render(pose, buffers,
-                            gauntletPose(data, false, 0f), 1.32f, -1, renderLight, overlay);
+                            gauntletPose(data, false, 0f), isGui || isFixed ? 1.01f : 1.12f, -1, renderLight, overlay, rightHand);
                     pose.popPose();
                 }
             };
@@ -178,11 +190,14 @@ public final class GauntletRender {
 
             pose.pushPose();
             armPart.translateAndRotate(pose);
-            pose.translate(leftArm ? 0.025f : -0.025f, 0.50f, 0.0f);
-            InfinityRig.rotate(pose, 180f, leftArm ? 180f : 0f, 0f);
+            // PlayerModel +Y runs down the arm. Face the gems outward and point both thumbs forward (-Z).
+            float armCenter = player.getSkin().model() == PlayerSkin.Model.SLIM ? 0.5f : 1f;
+            pose.translate((leftArm ? armCenter : -armCenter) / 16f, 7.95f / 16f, 0f);
+            InfinityRig.rotate(pose, 0f, leftArm ? 90f : -90f, 0f);
+            pose.scale(0.90f, 0.65f, 1.13f);
             InfinityRig.get("infinity_gauntlet").render(pose, buffers,
                     gauntletPose(view.data(), snapping, snapProg, castProg, 0f),
-                    0.94f, -1, light, OverlayTexture.NO_OVERLAY);
+                    1f, -1, light, OverlayTexture.NO_OVERLAY, !leftArm);
             pose.popPose();
         }
     }
@@ -249,29 +264,29 @@ public final class GauntletRender {
         PoseStack pose = event.getPoseStack();
         pose.pushPose();
         if (wheel) {
-            // U1 Wrist Holoprojector Pose: rest gauntlet lower & angled upward so the 6 holographic 3D stones float cleanly ABOVE the fingers!
+            // Keep the fingertips below the projected stone fan.
             pose.translate(
-                    sign * (0.46f - 0.05f * lift) + bobX * 0.20f,
-                    -0.63f + 0.13f * lift + breathY,
-                    -0.82f - 0.03f * lift);
+                    sign * (0.49f - 0.04f * lift) + bobX * 0.20f,
+                    -0.50f + 0.065f * lift + breathY,
+                    -0.97f - 0.03f * lift);
             InfinityRig.rotate(pose,
-                    44f * lift + 14f * (1f - lift),
-                    sign * (-26f - 8f * lift),
-                    sign * (-16f - 6f * lift));
+                    -34f + 20f * lift,
+                    sign * (12f + 3f * lift),
+                    sign * (7f + 9f * lift));
         } else {
             pose.translate(
-                    sign * (0.54f - 0.10f * lift) + bobX,
-                    -0.53f + 0.15f * lift + bobY + breathY,
-                    -0.84f - 0.05f * lift);
+                    sign * (0.50f - 0.06f * lift) + bobX,
+                    -0.45f + 0.07f * lift + bobY + breathY,
+                    -0.97f - 0.035f * lift);
             InfinityRig.rotate(pose,
-                    22f - 8f * lift + inspectTwist * 0.4f,
-                    sign * (-22f + inspectTwist),
-                    sign * (-14f - inspectTwist * 0.35f));
+                    -34f + 18f * lift + inspectTwist * 0.4f,
+                    sign * (12f + inspectTwist),
+                    sign * (7f + inspectTwist * 0.35f));
         }
         InfinityRig.get("infinity_gauntlet").render(pose, event.getMultiBufferSource(),
                 gauntletPose(view.data(), snapping, snapping ? snapAge / 20f : 0f,
                         casting ? castAge / 12f : 0f, switchPulse),
-                wheel ? 0.72f : 0.76f, -1, (snapping || wheel) ? LightTexture.FULL_BRIGHT : event.getPackedLight(), OverlayTexture.NO_OVERLAY);
+                wheel ? 0.72f : 0.76f, -1, (snapping || wheel) ? LightTexture.FULL_BRIGHT : event.getPackedLight(), OverlayTexture.NO_OVERLAY, !left);
         pose.popPose();
     }
 }

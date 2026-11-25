@@ -1,11 +1,17 @@
-# ACA Infinity 0.5.3 整合
+# ACA Infinity 0.5.6 整合
 
-Ag 重生 a3.80 内置 **ACA Infinity 0.5.3**（乌鲁无限手套、六颗无限原石与可驾驶圣殿二号旗舰），与主模组、Omnitrix、机甲、动物及人物 NPC 共用同一份整合 JAR，无需额外安装独立手套模组。
+Ag 重生 a3.86 内置 **ACA Infinity 0.5.6**（乌鲁无限手套、六颗无限原石与可驾驶圣殿二号旗舰），与主模组、Omnitrix、机甲、动物及人物 NPC 共用同一份整合 JAR，无需额外安装独立手套模组。
 
 ## 获取与生存探索
 
 - 创造模式可在「ACA 无限宝石」物品栏直接领取无限手套、六颗原石与圣殿二号信标。
 - 生存模式可在主世界探索生成的宇宙宝库（Cosmic Vault）获取原石，并按原版配方锻造无限手套与旗舰信标。
+
+## 手套外观
+
+右惯用手玩家将手套戴在左手，左惯用手玩家戴在右手。指尖沿小臂向外延伸，第三人称的宝石位于手背外侧。原石随各自的指节活动，移除原石后仍能看到空座圈。
+
+手套的造型和材质可用 Python 3.10 以上版本及 Pillow 重新生成。在 `source/` 下运行 `python model-sources/infinity/gauntlet.py`，再执行 `./gradlew jar`。[可编辑模型源文件](../../model-sources/infinity/gauntlet.py)
 
 ## 默认操作
 
@@ -14,4 +20,4 @@ Ag 重生 a3.80 内置 **ACA Infinity 0.5.3**（乌鲁无限手套、六颗无�
 - 按 `J` 释放当前原石的主技，`K` 释放副技，六石集齐后按 `Z` 响指。生存模式主技间隔 4 刻、副技 6 刻，六石响指默认 10 刻，服主可调整 `cosmic_skills.snapRepeatTicks`。
 - 心灵宝石的主技能控制准星指向的生物。身边有傀儡时可瞄准敌人下达集火指令。副技让附近生物和自己的傀儡罚站 9 秒，首领也会暂停行动。
 
-Gradle 从 `source/src/infinity/` 编译 0.5.3 运行源码与资源，并作为 NeoForge Jar-in-Jar 模块写入主 JAR。声明见 [NOTICE](NOTICE.md)。
+Gradle 从 `source/src/infinity/` 编译 0.5.6 运行源码与资源，并作为 NeoForge Jar-in-Jar 模块写入主 JAR。声明见 [NOTICE](NOTICE.md)。
