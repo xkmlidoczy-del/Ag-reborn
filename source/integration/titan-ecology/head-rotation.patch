@@ -1,0 +1,116 @@
+--- a/src/main/java/dev/titanecology/TitanEcologyClient.java
++++ b/src/main/java/dev/titanecology/TitanEcologyClient.java
+@@ -228,0 +229,35 @@
++        private final RenderRotation neckRotation = new RenderRotation();
++        private final RenderRotation headRotation = new RenderRotation();
++        private final RenderRotation twinRotation = new RenderRotation();
++        private final RenderRotation bodyRotation = new RenderRotation();
++
++        /** Apply a procedural rotation for this draw, including its emissive pass. */
++        private static final class RenderRotation {
++            private GeoBone bone;
++            private float x, y, z;
++            private boolean rotationChanged;
++
++            void apply(GeoBone target, float pitch, float yaw, float roll) {
++                if (target == null || (pitch == 0f && yaw == 0f && roll == 0f)) return;
++                bone = target;
++                x = target.getRotX();
++                y = target.getRotY();
++                z = target.getRotZ();
++                rotationChanged = target.hasRotationChanged();
++                target.updateRotation(x + pitch, y + yaw, z + roll);
++            }
++
++            void restore() {
++                if (bone == null) return;
++                bone.updateRotation(x, y, z);
++                if (!rotationChanged) {
++                    // Leaving GeckoLib's rotation marker set prevents unkeyframed bones from resetting.
++                    boolean positionChanged = bone.hasPositionChanged();
++                    boolean scaleChanged = bone.hasScaleChanged();
++                    bone.resetStateChanges();
++                    if (positionChanged) bone.markPositionAsChanged();
++                    if (scaleChanged) bone.markScaleAsChanged();
++                }
++                bone = null;
++            }
++        }
+@@ -267,4 +302,3 @@
+-        public void setCustomAnimations(EcoMobEntity entity, long instanceId, AnimationState<EcoMobEntity> state) {
+-            super.setCustomAnimations(entity, instanceId, state);
+-
+-            if (frameBudgetPrepared && !FULL_LOD_THIS_FRAME.contains(entity.getId())) return;
++        public void handleAnimations(EcoMobEntity entity, long instanceId, AnimationState<EcoMobEntity> state, float partialTick) {
++            super.handleAnimations(entity, instanceId, state, partialTick);
++
+@@ -273,0 +308 @@
++            var processor = getAnimationProcessor();
+@@ -276,14 +311,12 @@
+-                float headYawRad = Mth.clamp(data.netHeadYaw(), -55.0f, 55.0f) * Mth.DEG_TO_RAD;
+-                float headPitchRad = Mth.clamp(data.headPitch(), -35.0f, 35.0f) * Mth.DEG_TO_RAD;
+-                GeoBone neck = getAnimationProcessor().getBone("neck");
+-                GeoBone head = getAnimationProcessor().getBone("head");
+-                GeoBone headTwin = getAnimationProcessor().getBone("head_twin");
+-
+-                if (neck != null && head != null) {
+-                    neck.setRotY(neck.getRotY() + headYawRad * 0.35f);
+-                    neck.setRotX(neck.getRotX() + headPitchRad * 0.35f);
+-                    head.setRotY(head.getRotY() + headYawRad * 0.65f);
+-                    head.setRotX(head.getRotX() + headPitchRad * 0.65f);
+-                } else if (head != null) {
+-                    head.setRotY(head.getRotY() + headYawRad);
+-                    head.setRotX(head.getRotX() + headPitchRad);
++                float yaw = Mth.clamp(Mth.wrapDegrees(data.netHeadYaw()), -55f, 55f) * Mth.DEG_TO_RAD;
++                float pitch = Mth.clamp(data.headPitch(), -35f, 35f) * Mth.DEG_TO_RAD;
++                if (yaw != 0f || pitch != 0f) {
++                    GeoBone neck = processor.getBone("neck");
++                    GeoBone head = processor.getBone("head");
++                    if (head != null && neck != null && head.getParent() == neck) {
++                        neckRotation.apply(neck, pitch * 0.35f, yaw * 0.35f, 0f);
++                        headRotation.apply(head, pitch * 0.65f, yaw * 0.65f, 0f);
++                    } else {
++                        headRotation.apply(head, pitch, yaw, 0f);
++                    }
++                    twinRotation.apply(processor.getBone("head_twin"), pitch * 0.55f, yaw * 0.55f, 0f);
+@@ -291,3 +324,8 @@
+-                if (headTwin != null) {
+-                    headTwin.setRotY(headTwin.getRotY() + headYawRad * 0.55f);
+-                    headTwin.setRotX(headTwin.getRotX() + headPitchRad * 0.55f);
++            }
++
++            if (entity.profile().mobility() != EcoSpeciesProfile.Mobility.SESSILE) {
++                float turn = Mth.clamp(Mth.wrapDegrees(entity.yBodyRot - entity.yBodyRotO), -18f, 18f);
++                float pitch = entity.profile().mobility() == EcoSpeciesProfile.Mobility.FLY
++                        ? (float) Mth.clamp(entity.getDeltaMovement().y, -0.45, 0.45) * 0.45f : 0f;
++                if (pitch != 0f || turn != 0f) {
++                    bodyRotation.apply(processor.getBone("body"), pitch, 0f, -turn * 0.018f);
+@@ -296,10 +334,7 @@
+-
+-            GeoBone body = getAnimationProcessor().getBone("body");
+-            if (body != null && entity.profile().mobility() != EcoSpeciesProfile.Mobility.SESSILE) {
+-                float turnDelta = Mth.clamp(Mth.wrapDegrees(entity.yBodyRot - entity.yBodyRotO), -18.0f, 18.0f);
+-                body.setRotZ(body.getRotZ() - turnDelta * 0.018f);
+-                if (entity.profile().mobility() == EcoSpeciesProfile.Mobility.FLY) {
+-                    float vy = (float) Mth.clamp(entity.getDeltaMovement().y, -0.45, 0.45);
+-                    body.setRotX(body.getRotX() + vy * 0.45f);
+-                }
+-            }
++        }
++
++        private void restoreRenderRotations() {
++            bodyRotation.restore();
++            twinRotation.restore();
++            headRotation.restore();
++            neckRotation.restore();
+@@ -488,0 +524,10 @@
++        public void render(EcoMobEntity entity, float yaw, float partialTick, PoseStack poses,
++                           MultiBufferSource buffers, int light) {
++            try {
++                super.render(entity, yaw, partialTick, poses, buffers, light);
++            } finally {
++                ((SpeciesGeoModel) getGeoModel()).restoreRenderRotations();
++            }
++        }
++
++        @Override

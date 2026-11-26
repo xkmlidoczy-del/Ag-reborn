@@ -2,7 +2,9 @@
 
 Ag:reborn（Ag重生）是基于 **Lambda Innovation** 开源项目 [AcademyCraft](https://github.com/LambdaInnovation/AcademyCraft) 移植、修改和扩展的非官方 Minecraft 模组。原作者及原项目的署名、许可和附加声明予以保留；本项目不代表原作者的官方发布或背书。
 
-本地联测版本为 **0.81.5-city-a3.87-rc3**，适用于 **Minecraft 1.21.1、NeoForge 21.1.252 和 Java 21**。整合包内置 **ACA Omnitrix 0.8.4**、**ACA Infinity 0.5.6** 和 **Titan Ecology Expansion V4.8**。
+本地联测版本为 **0.81.5-city-a3.87-rc4**，适用于 **Minecraft 1.21.1、NeoForge 21.1.252 和 Java 21**。整合包内置 **ACA Omnitrix 0.8.4**、**ACA Infinity 0.5.6** 和 **Titan Ecology Expansion V4.8**。
+
+a3.87-rc4 修复巨兽附属种群在行走、游泳和持续看向目标时头颈角度累加的问题。视线偏转仅在当前绘制中生效，跨越 ±180° 时按最短角差处理。[生态模块整合说明](source/integration/titan-ecology/README.md)
 
 a3.87-rc3 内置 **ACA Domain 67 1.2.1**。背包携带扩音器后，可以展开六七餐厅、广播引怪、施放滚木与盒饭连携。默认键位和安装方式见 [六七餐厅使用说明](source/integration/aca-domain67/README.md)。
 
