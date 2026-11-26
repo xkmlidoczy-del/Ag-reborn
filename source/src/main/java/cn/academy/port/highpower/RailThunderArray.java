@@ -284,7 +284,7 @@ public final class RailThunderArray {
         if(!thread(p))return false;var state=AbilityStorage.get(p);Vec3 look=p.getLookAngle();
         return ElectromasterPrototype.ready(p)&&state.activated&&state.overloadFine&&state.learned(ID)&&state.category.equals("electromaster")
                 &&ElectromasterPrototype.effectiveLevel(p)>=5&&SkillCatalog.enabled("electromaster",ID)&&HighPowerCombat.unsupportedReason(p).isEmpty()
-                &&!AbilityConsumption.busy(p)&&!p.getAbilities().instabuild&&p.containerMenu==p.inventoryMenu
+                &&!AbilityConsumption.busy(p)&&(CompatMode.openGameplay()||!p.getAbilities().instabuild)&&p.containerMenu==p.inventoryMenu
                 &&finite(p.position())&&finite(p.getEyePosition())&&finite(look)&&look.lengthSqr()>1e-12&&RailThunderArrayRules.unit(point(look.normalize()))
                 &&Float.isFinite(p.getXRot())&&Float.isFinite(p.getYRot())&&RailThunderArrayRules.clock(now(p));
     }

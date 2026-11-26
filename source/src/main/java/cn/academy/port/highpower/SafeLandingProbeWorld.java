@@ -378,7 +378,7 @@ public final class SafeLandingProbeWorld {
             }
             BlockPos floor = p.getBlockPosBelowThatAffectsMyMovement();
             BlockState floorState = states.get(floor);
-            if (floorState == null || !net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(floorState.getBlock()).getNamespace().equals("minecraft"))
+            if (floorState == null || (!CompatMode.openGameplay() && !net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(floorState.getBlock()).getNamespace().equals("minecraft")))
                 return null;
             float friction = floorState.getFriction(p.serverLevel(), floor, p);
             if (!Float.isFinite(friction) || friction <= 0 || friction > 1 || access.academy$emergencyBlockSpeedFactor() != 1F

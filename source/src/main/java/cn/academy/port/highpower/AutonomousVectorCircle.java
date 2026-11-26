@@ -658,7 +658,7 @@ public final class AutonomousVectorCircle {
                     && plainEquipment(weapon));
     }
     private static boolean plainEquipment(ItemStack stack) {
-        if (stack.isEmpty()) return true;
+        if (stack.isEmpty() || CompatMode.openGameplay()) return true;
         if (stack.getCount() != 1 || !BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace().equals("minecraft")
                 || !stack.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY).isEmpty()) return false;
         ItemStack canonical = new ItemStack(stack.getItem()); int damage = stack.getDamageValue();
@@ -677,8 +677,8 @@ public final class AutonomousVectorCircle {
     private static boolean canAct(ServerPlayer p) { return basic(p, false) && HighPowerResources.ready(p) && HighPowerCombat.unsupportedReason(p).isEmpty(); }
     private static boolean basic(ServerPlayer p, boolean nativeFrame) {
         if (!thread(p) || p.connection == null || p.hasDisconnected() || p.isRemoved() || !nativeFrame && !p.isAlive()
-                || p.isSpectator() || p.getAbilities().instabuild || p.getAbilities().invulnerable || p.noPhysics || p.isPassenger() || p.isVehicle()
-                || p.isSleeping() || p.isFallFlying() || p.getAbilities().flying || p.containerMenu != p.inventoryMenu || AbilityConsumption.busy(p)) return false;
+                || p.isSpectator() || (p.getAbilities().instabuild && !CompatMode.openGameplay()) || (p.getAbilities().invulnerable && !CompatMode.openGameplay()) || p.noPhysics || p.isPassenger() || p.isVehicle()
+                || p.isSleeping() || p.isFallFlying() || (p.getAbilities().flying && !(CompatMode.openGameplay() && p.getAbilities().instabuild)) || p.containerMenu != p.inventoryMenu || AbilityConsumption.busy(p)) return false;
         var state = AbilityStorage.peek(p);
         return state != null && HighPowerCombat.enabled(p) && state.category.equals("vecmanip") && state.activated && state.overloadFine && !state.interfering
                 && state.learned(ID) && state.learned(MultiAxisReflection.ID) && state.level == 5 && SkillCatalog.enabled("vecmanip", ID)

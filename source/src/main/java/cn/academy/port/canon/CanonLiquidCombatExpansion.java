@@ -109,7 +109,8 @@ public final class CanonLiquidCombatExpansion {
     }
     private static List<LivingEntity> targets(Context c){
         if(c.skill.equals("liquid_contact_sweep")){
-            var area=c.body.getBoundingBox().inflate(number(c.skill, "contact_margin"));if(!loaded(c.world,new Vec3(area.minX,area.minY,area.minZ),new Vec3(area.maxX,area.maxY,area.maxZ)))return List.of();
+            double sweepMargin=Math.max(number(c.skill, "contact_margin"),2.2);
+            var area=c.body.getBoundingBox().inflate(sweepMargin);if(!loaded(c.world,new Vec3(area.minX,area.minY,area.minZ),new Vec3(area.maxX,area.maxY,area.maxZ)))return List.of();
             var found=c.world.getEntitiesOfClass(Mob.class,area,t->geometry(c,t));if(found.size()>64)return List.of();
             found.sort(Comparator.comparing(Entity::getUUID));return List.copyOf(found.subList(0,Math.min(integer(c.skill, "target_cap"),found.size())));
         }
@@ -118,8 +119,9 @@ public final class CanonLiquidCombatExpansion {
         return hit instanceof EntityHitResult h&&h.getEntity() instanceof LivingEntity target&&geometry(c,target)?List.of(target):List.of();
     }
     private static boolean geometry(Context c,LivingEntity target){
-        var owner=c.owner;var body=c.body;var world=c.world;double inflate=number(c.skill, "contact_margin");
-        double range=number(c.skill, "body_reach");
+        var owner=c.owner;var body=c.body;var world=c.world;
+        double inflate=c.skill.equals("liquid_contact_sweep")?Math.max(number(c.skill, "contact_margin"),2.2):number(c.skill, "contact_margin");
+        double range=c.skill.equals("liquid_contact_sweep")?Math.max(number(c.skill, "body_reach"),3.5):number(c.skill, "body_reach");
         if(!CanonLiquidSkills.sameBody(owner,body)||!(target instanceof Mob)||!CanonTargetPolicy.hostile(target)
                 ||target.level()!=world||world.getEntity(target.getUUID())!=target||!target.isAlive()||target.isRemoved()
                 ||target.isPassenger()||target.isVehicle()||target.isAlliedTo(owner)||owner.isAlliedTo(target)
@@ -127,8 +129,7 @@ public final class CanonLiquidCombatExpansion {
                 ||!world.hasChunkAt(target.blockPosition())||!world.mayInteract(owner,target.blockPosition())
                 ||!world.getWorldBorder().isWithinBounds(target.getBoundingBox())||target.distanceToSqr(body)>range*range
                 ||!body.getBoundingBox().inflate(inflate).intersects(target.getBoundingBox())||!owner.hasLineOfSight(target))return false;
-        var type=target.getType();if(!CanonTargetPolicy.reviewed(target)&&(!BuiltInRegistries.ENTITY_TYPE.getKey(type).getNamespace().equals("minecraft")
-                ||type==EntityType.WITHER||type==EntityType.ENDER_DRAGON||type==EntityType.WARDEN||type==EntityType.ELDER_GUARDIAN))return false;
+        if(!CanonTargetPolicy.admittedCombatEntity(target))return false;
         Vec3 from=body.getEyePosition(),to=target.getBoundingBox().getCenter();
         if(!loaded(world,from,to)||world.clip(new ClipContext(from,to,ClipContext.Block.COLLIDER,ClipContext.Fluid.NONE,body)).getType()!=HitResult.Type.MISS)return false;
         if(c.skill.equals("liquid_contact_sweep"))return true;

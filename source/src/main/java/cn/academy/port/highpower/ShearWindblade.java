@@ -439,7 +439,7 @@ public final class ShearWindblade {
     private static boolean baseCanAct(ServerPlayer p) {
         if (!thread(p)) return false; var state = AbilityStorage.get(p);
         return p.connection != null && !p.hasDisconnected() && HighPowerResources.ready(p)
-                && !p.getAbilities().instabuild && !p.getAbilities().invulnerable && !p.noPhysics && !p.isPassenger() && !p.isSleeping()
+                && (CompatMode.openGameplay() || !p.getAbilities().instabuild) && (CompatMode.openGameplay() || !p.getAbilities().invulnerable) && !p.noPhysics && !p.isPassenger() && !p.isSleeping()
                 && state.activated && state.overloadFine && !state.interfering && state.learned(ID) && state.learned(DeflectionStrike.ID)
                 && state.category.equals("vecmanip") && state.level >= 2 && state.level <= 5
                 && HighPowerResources.effectiveLevel(p) >= 2 && SkillCatalog.enabled("vecmanip", ID)
@@ -478,7 +478,7 @@ public final class ShearWindblade {
                 && state.category.equals("vecmanip") && state.level >= 2 && state.level <= 5
                 && c.preset == state.presets.current() && c.revision == state.presets.revision()
                 && ID.equals(state.presets.currentSkill(c.input.slot()))
-                && !p.noPhysics && !p.isPassenger() && !p.isSleeping() && !p.getAbilities().instabuild && !p.getAbilities().invulnerable
+                && !p.noPhysics && !p.isPassenger() && !p.isSleeping() && (CompatMode.openGameplay() || !p.getAbilities().instabuild) && (CompatMode.openGameplay() || !p.getAbilities().invulnerable)
                 && !AbilityConsumption.busy(p) && !HighPowerResources.hasReservation(p);
         if (valid) {
             try { valid = c.growth != null && c.growth.compareTo(HighPowerGrowth.values(p).position()) == 0; }

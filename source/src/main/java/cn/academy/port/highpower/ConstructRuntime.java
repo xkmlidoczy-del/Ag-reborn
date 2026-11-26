@@ -353,6 +353,20 @@ public final class ConstructRuntime {
         Vec3 c = vec(b.center()), v = new Vec3(b.velocity()[0], b.velocity()[1], b.velocity()[2]);
         Vec3 dir = v.lengthSqr() > 1e-9 ? v.normalize() : Vec3.ZERO;
         sendVisual(t.level, t.ownerId, t.owner, t.token, SHATTER, c, vec(b.min()), vec(b.max()), dir, 0);
+        if (CompatMode.openGameplay() && owner != null && c != null) {
+            BigDecimal splashRaw = t.damage.multiply(new BigDecimal("0.55"));
+            var box = new net.minecraft.world.phys.AABB(c, c).inflate(3.5);
+            for (LivingEntity nearby : t.level.getEntitiesOfClass(LivingEntity.class, box,
+                    x -> x != owner && x.isAlive() && !x.isRemoved()
+                            && x.position().distanceToSqr(c) <= 3.5 * 3.5
+                            && cn.academy.port.canon.CanonTargetPolicy.directedAreaTarget(owner, x))) {
+                if (t.hit.add(nearby.getUUID())) {
+                    HighPowerCombat.attackEmission(new SplashPermit(owner, body, t, nearby, splashRaw));
+                }
+            }
+            cn.academy.port.highpower.environment.SkillBlastHelper.emitBlast(
+                    owner, DAMAGE_KEY, cn.academy.port.AbilityStorage.get(owner).level, c, 2.2f, 2.6, true);
+        }
         for (LivingEntity target : struck) {
             var box = target.getBoundingBox();
             sendVisual(t.level, t.ownerId, t.owner, t.token, ENTOMB, box.getCenter(), new Vec3(box.minX, box.minY, box.minZ), new Vec3(box.maxX, box.maxY, box.maxZ), c, 0);
@@ -467,9 +481,40 @@ public final class ConstructRuntime {
             return player.server.isSameThread() && player.isAlive() && !player.hasDisconnected() && player.serverLevel()==thrown.level
                     && THROWN_BODIES.get(body)==thrown && thrown.owner.equals(player.getUUID()) && now(player)<=thrown.until
                     && thrown.hit.contains(target.getUUID()) && target.level()==thrown.level && thrown.level.getEntity(target.getId())==target
-                    && target.position().equals(position) && state.activated && state.overloadFine && !state.interfering
+                    && (CompatMode.openGameplay() ? target.position().distanceToSqr(position) <= 16.0 : target.position().equals(position))
+                    && state.activated && state.overloadFine && !state.interfering
                     && HighPowerCategories.VECMANIP.equals(state.category) && state.level>=4 && state.learned(HighPowerSkills.VECTOR_CONSTRUCT)
                     && cn.academy.port.SkillCatalog.enabled(state.category,HighPowerSkills.VECTOR_CONSTRUCT) && HighPowerResources.ready(player);
+        }
+    }
+
+    /** Controlled radial shatter splash permit on thrown-structure impact. */
+    public static final class SplashPermit implements AbilityEmission {
+        private final ServerPlayer player;
+        private final UUID body;
+        private final Thrown thrown;
+        private final LivingEntity target;
+        private final Vec3 position;
+        private final BigDecimal damage;
+        private boolean claimed;
+        private SplashPermit(ServerPlayer player, UUID body, Thrown thrown, LivingEntity target, BigDecimal damage) {
+            this.player = player; this.body = body; this.thrown = thrown; this.target = target; this.position = target.position(); this.damage = damage;
+        }
+        public ServerPlayer player() { return player; }
+        public LivingEntity target() { return target; }
+        public String skill() { return DAMAGE_KEY; }
+        public BigDecimal damage() { return damage; }
+        public boolean claim() { if (claimed || !valid()) return false; claimed = true; return true; }
+        public boolean valid() {
+            if (!player.server.isSameThread()) return false;
+            var state = cn.academy.port.AbilityStorage.get(player);
+            return player.isAlive() && !player.hasDisconnected() && player.serverLevel() == thrown.level
+                    && THROWN_BODIES.get(body) == thrown && thrown.owner.equals(player.getUUID()) && now(player) <= thrown.until
+                    && thrown.hit.contains(target.getUUID()) && target.level() == thrown.level && thrown.level.getEntity(target.getId()) == target
+                    && target.position().distanceToSqr(position) <= 16.0
+                    && state.activated && state.overloadFine && !state.interfering
+                    && HighPowerCategories.VECMANIP.equals(state.category) && state.level >= 4 && state.learned(HighPowerSkills.VECTOR_CONSTRUCT)
+                    && cn.academy.port.SkillCatalog.enabled(state.category, HighPowerSkills.VECTOR_CONSTRUCT) && HighPowerResources.ready(player);
         }
     }
 

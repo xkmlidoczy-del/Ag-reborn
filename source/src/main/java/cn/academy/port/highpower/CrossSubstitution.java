@@ -447,7 +447,7 @@ public final class CrossSubstitution {
     private static boolean eligible(Context c) {
         ServerPlayer p = c.identity.owner(); var s = c.identity.state();
         return identity(c) && !c.closing && p.isAlive() && !p.isRemoved() && !p.hasDisconnected()
-                && !p.isCreative() && !p.isSpectator() && !p.getAbilities().invulnerable && p.containerMenu == p.inventoryMenu
+                && (CompatMode.openGameplay() || !p.isCreative()) && !p.isSpectator() && (CompatMode.openGameplay() || !p.getAbilities().invulnerable) && p.containerMenu == p.inventoryMenu
                 && s.activated && s.overloadFine && !s.interfering && !s.consumptionInProgress() && !AbilityConsumption.busy(p)
                 && s.learned(ID) && s.learned(HighPowerSkills.SAFE_LANDING_PROBE) && s.learned(HighPowerSkills.DISPLACED_PROJECTION)
                 && SkillCatalog.enabled("teleporter", ID) && HighPowerResources.ready(p)

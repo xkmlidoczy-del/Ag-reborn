@@ -145,7 +145,7 @@ final class TemporaryEnvironmentBlock extends BaseEntityBlock {
             String name = tag.getString("ownerName");
             if (name.isBlank() || name.length() > 16) return;
             BlockState original = NbtUtils.readBlockState(registries.lookupOrThrow(Registries.BLOCK), tag.getCompound("original"));
-            if (SkillEnvironment.eligibleOriginal(original) || SkillEnvironment.naturalGround(original)) {
+            if (SkillEnvironment.eligibleOriginal(original) || SkillEnvironment.naturalGround(original) || SkillEnvironment.eligibleBlastBlock(original)) {
                 record = new Record(tag.getUUID("transaction"), new GameProfile(tag.getUUID("owner"), name),
                         original, tag.getLong("expires"));
             }
@@ -194,7 +194,7 @@ final class TemporaryEnvironmentBlock extends BaseEntityBlock {
             if (chunk == null || !SkillEnvironment.knownClaimPolicy()
                     || !SkillEnvironment.canBuild(world, owner, pos) || chunk.getBlockState(pos) != marker()
                     || chunk.getBlockEntity(pos, LevelChunk.EntityCreationType.CHECK) != this
-                    || !SkillEnvironment.eligibleNeighbors(world, pos) || !record.original().canSurvive(world, pos)) return false;
+                    || !SkillEnvironment.eligibleNeighbors(world, pos, cn.academy.port.highpower.CompatMode.openGameplay()) || !record.original().canSurvive(world, pos)) return false;
             var occupants = new ArrayList<Entity>(1);
             world.getEntities(EntityTypeTest.forClass(Entity.class), new AABB(pos),
                     entity -> entity.isAlive() && !entity.isSpectator(), occupants, 1);

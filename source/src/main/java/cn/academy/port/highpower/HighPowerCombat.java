@@ -1367,8 +1367,10 @@ public final class HighPowerCombat {
     }
 
     public static boolean supportedMulticoreCanopyTarget(LivingEntity target) {
-        return target instanceof net.minecraft.world.entity.monster.Enemy && !(target instanceof ServerPlayer)
-                && supported(target);
+        return !(target instanceof ServerPlayer) && supported(target)
+                && (target instanceof net.minecraft.world.entity.monster.Enemy
+                    || CompatMode.openGameplay() && (cn.academy.port.canon.CanonTargetPolicy.hostile(target)
+                        || target instanceof net.minecraft.world.entity.decoration.ArmorStand));
     }
     private static boolean multicoreCanopyBenefitsActive(ServerPlayer player) {
         if (!HighPowerResources.ready(player) || HighPowerResources.effectiveLevel(player) < 5) return false;

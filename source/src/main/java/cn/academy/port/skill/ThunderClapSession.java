@@ -9,7 +9,7 @@ import cn.academy.port.core.ClassicRules;
 /** Source tick/order arithmetic without any game or client bootstrap. Release is cancellation. */
 public final class ThunderClapSession {
     public static final String ID = "thunder_clap";
-    public static final int LEVEL = 5, MIN_TICKS = 40, MAX_TICKS = 60;
+    public static final int LEVEL = 5, EARLY_MIN_TICKS = 20, MIN_TICKS = 40, MAX_TICKS = 60;
     public static final double AIM_DISTANCE = SkillTuning.number("thunder_clap", "reach");
     public static final float EXPERIENCE = .003F;
     public enum TickResult { CONTINUE, CANCEL, FIRE, ALREADY_ENDED }
@@ -62,12 +62,28 @@ public final class ThunderClapSession {
         }
         return TickResult.CONTINUE;
     }
+    public static float earlyDamage(double exp, int ticks) {
+        if (ticks >= MIN_TICKS) return damage(exp, ticks);
+        float ratio = Math.max(0.45F, (float) ticks / (float) MIN_TICKS);
+        return lerp(36, 72, exp) * (0.55F + 0.45F * ratio);
+    }
+
     /** Call only once after authoritative lightning and attack effects. */
     public boolean complete() {
         if (active || committed || ticks < MIN_TICKS) return false;
         committed = true;
         state.setCooldown(ID, cooldown(mastery, ticks));
         state.addExperience(ID, EXPERIENCE);
+        return true;
+    }
+
+    /** Proportional early discharge on player key release (>=20 ticks) under open gameplay mode. */
+    public boolean completeEarly() {
+        if (committed || ticks < EARLY_MIN_TICKS) return false;
+        active = false;
+        committed = true;
+        state.setCooldown(ID, cooldown(mastery, ticks));
+        state.addExperience(ID, EXPERIENCE * 0.6F);
         return true;
     }
     public void end() { active = false; committed = true; }

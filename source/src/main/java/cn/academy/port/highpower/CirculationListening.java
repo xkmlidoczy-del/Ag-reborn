@@ -306,7 +306,7 @@ public final class CirculationListening {
         if (!(entity instanceof LivingEntity living) || !living.isSprinting() || living.isSleeping() || living.isFallFlying() || living.isSwimming()
                 || !HighPowerCombat.supported(living) || living instanceof Player && living.getClass() != ServerPlayer.class) return null;
         if (living instanceof ServerPlayer player && (player.connection == null || player.hasDisconnected()
-                || player.getAbilities().flying || player.getAbilities().instabuild || player.getAbilities().invulnerable)) return null;
+                || (player.getAbilities().flying && !(CompatMode.openGameplay() && player.getAbilities().instabuild)) || (player.getAbilities().instabuild && !CompatMode.openGameplay()) || (player.getAbilities().invulnerable && !CompatMode.openGameplay()))) return null;
         return CirculationListeningRules.Kind.RUNNER;
     }
     private static boolean plainArrow(Arrow arrow) {
@@ -520,8 +520,8 @@ public final class CirculationListening {
     private static boolean canAct(ServerPlayer p) { return basic(p) && HighPowerResources.ready(p) && HighPowerCombat.unsupportedReason(p).isEmpty(); }
     private static boolean basic(ServerPlayer p) {
         if (!thread(p) || p.connection == null || p.hasDisconnected() || p.isRemoved() || !p.isAlive()
-                || p.isSpectator() || p.getAbilities().instabuild || p.getAbilities().invulnerable || p.noPhysics || p.isPassenger() || p.isVehicle()
-                || p.isSleeping() || p.isFallFlying() || p.getAbilities().flying || p.containerMenu != p.inventoryMenu || AbilityConsumption.busy(p)) return false;
+                || p.isSpectator() || (p.getAbilities().instabuild && !CompatMode.openGameplay()) || (p.getAbilities().invulnerable && !CompatMode.openGameplay()) || p.noPhysics || p.isPassenger() || p.isVehicle()
+                || p.isSleeping() || p.isFallFlying() || (p.getAbilities().flying && !(CompatMode.openGameplay() && p.getAbilities().instabuild)) || p.containerMenu != p.inventoryMenu || AbilityConsumption.busy(p)) return false;
         var state = AbilityStorage.peek(p);
         return state != null && HighPowerCombat.enabled(p) && state.category.equals("vecmanip") && state.activated && state.overloadFine && !state.interfering
                 && state.learned(ID) && state.learned(CirculationRelief.ID) && state.learned(InertialAnchor.ID) && state.learned(VectorParry.ID)

@@ -486,7 +486,7 @@ public final class EmergencyReturn {
     private static boolean controlEligible(Context c) {
         var p = c.identity.owner(); var state = c.identity.state();
         return identity(c) && p.isAlive() && !p.isRemoved() && !p.hasDisconnected() && !p.isSpectator()
-                && !p.getAbilities().instabuild && !p.getAbilities().invulnerable && p.containerMenu == p.inventoryMenu
+                && (CompatMode.openGameplay() || !p.getAbilities().instabuild) && (CompatMode.openGameplay() || !p.getAbilities().invulnerable) && p.containerMenu == p.inventoryMenu
                 && state.activated && state.overloadFine && !state.interfering && !state.consumptionInProgress()
                 && !AbilityConsumption.busy(p) && state.learned(ID) && state.level >= 4 && state.level <= 5
                 && SkillCatalog.enabled(HighPowerCategories.TELEPORTER, ID) && HighPowerCombat.emergencyReturnBenefitsActive(p);

@@ -148,14 +148,30 @@ public final class ElectronBomb {
         Vec3 from = cast.lastPosition;
         Vec3 destination = lookingDestination(player);
         var hit = trace(world, player, from, destination);
+        if (cn.academy.port.highpower.CompatMode.openGameplay()
+                && !cn.academy.port.highpower.EsperLegacyBypass.standAside()
+                && hit.getType() == HitResult.Type.BLOCK
+                && from.distanceToSqr(hit.getLocation()) < 2.25
+                && hit.getLocation().distanceToSqr(destination) > 1.0) {
+            hit = trace(world, player, player.getEyePosition(), destination);
+        }
+        Entity primary = null;
         if (hit instanceof EntityHitResult entityHit) {
+            primary = entityHit.getEntity();
             // Normal armor/NeoForge damage events apply. The original skill does not bypass armor.
-            RadiationMarks.attack(player, entityHit.getEntity(),
-                    (float) cast.plan.cost.damage());
+            RadiationMarks.attack(player, primary, (float) cast.plan.cost.damage());
         }
         Vec3 visualEnd = hit.getType() != HitResult.Type.MISS
                 ? hit.getLocation()
                 : destination;
+        if (hit.getType() != HitResult.Type.MISS
+                && cn.academy.port.highpower.CompatMode.openGameplay()
+                && !cn.academy.port.highpower.EsperLegacyBypass.standAside()) {
+            cn.academy.port.highpower.environment.SkillBlastHelper.splashEntities(
+                    player, "meltdowner." + ID, visualEnd, 1.8, cast.plan.cost.damage() * 0.40, primary, true);
+            cn.academy.port.highpower.environment.SkillBlastHelper.emitBlast(
+                    player, "meltdowner." + ID, AbilityStorage.get(player).level, visualEnd, 1.2f, 1.4, false);
+        }
         sendRay(player, from, visualEnd);
     }
 

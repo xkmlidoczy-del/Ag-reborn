@@ -267,8 +267,7 @@ public final class CanonFloatExpansion {
             return true;
         }
         if(self||ally||!(e instanceof Mob)||!CanonTargetPolicy.hostile(e)||e.isAlliedTo(p)||p.isAlliedTo(e)||!p.hasLineOfSight(e))return false;
-        var type=e.getType();return CanonTargetPolicy.reviewed(e)||BuiltInRegistries.ENTITY_TYPE.getKey(type).getNamespace().equals("minecraft")
-                &&type!=EntityType.WITHER&&type!=EntityType.ENDER_DRAGON&&type!=EntityType.WARDEN&&type!=EntityType.ELDER_GUARDIAN;
+        return CanonTargetPolicy.admittedCombatEntity(e);
     }
     @SubscribeEvent public static void tick(ServerTickEvent.Post event){
         for(Lease lease:List.copyOf(ACTIVE.values())){

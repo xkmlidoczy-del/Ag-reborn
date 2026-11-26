@@ -15,13 +15,25 @@ import net.neoforged.fml.ModList;
 public final class CompatMode {
     private static final Set<String> KNOWN = Set.of("minecraft", "neoforge", "academy", "sable", "sablecompanion", "veil", "geckolib");
     private static volatile Boolean override;
+    private static volatile boolean modRuntimeActive;
 
     private CompatMode() {}
+
+    public static void markModRuntimeActive() { modRuntimeActive = true; }
 
     public static boolean open() {
         Boolean forced = override;
         if (forced != null) return forced;
         if (Boolean.getBoolean("academy.compat.strict")) return false;
+        try { return AcademyConfig.HIGH_POWER_OPEN_COMPAT.get(); }
+        catch (IllegalStateException configNotLoaded) { return true; }
+    }
+
+    /** True only inside a live NeoForge runtime with open compatibility active; standalone ASM/unit oracles stay closed. */
+    public static boolean openGameplay() {
+        Boolean forced = override;
+        if (forced != null) return forced;
+        if (!modRuntimeActive || Boolean.getBoolean("academy.compat.strict")) return false;
         try { return AcademyConfig.HIGH_POWER_OPEN_COMPAT.get(); }
         catch (IllegalStateException configNotLoaded) { return true; }
     }

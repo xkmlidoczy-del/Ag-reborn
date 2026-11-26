@@ -387,7 +387,7 @@ public final class VectorCage {
     private static boolean canAct(ServerPlayer p) {
         if (!thread(p)) return false; var state = AbilityStorage.peek(p);
         return state != null && p.connection != null && !p.hasDisconnected() && p.isAlive() && !p.isRemoved() && !p.isSpectator()
-                && !p.getAbilities().instabuild && !p.getAbilities().invulnerable && !p.getAbilities().flying && !p.noPhysics
+                && (CompatMode.openGameplay() || !p.getAbilities().instabuild) && (CompatMode.openGameplay() || !p.getAbilities().invulnerable) && (CompatMode.openGameplay() && p.getAbilities().instabuild || !p.getAbilities().flying) && !p.noPhysics
                 && !p.isPassenger() && !p.isVehicle() && !p.isSleeping() && !p.isFallFlying() && p.containerMenu == p.inventoryMenu
                 && state.category.equals("vecmanip") && state.level >= 4 && state.level <= 5 && HighPowerResources.effectiveLevel(p) >= 4
                 && state.activated && state.overloadFine && !state.interfering && !state.consumptionInProgress()

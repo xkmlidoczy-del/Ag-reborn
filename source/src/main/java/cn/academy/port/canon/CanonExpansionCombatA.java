@@ -262,7 +262,7 @@ public final class CanonExpansionCombatA {
         var hit = ClassicRaytrace.living(c.p, r, ClipContext.Fluid.NONE);
         LivingEntity raw = hit instanceof EntityHitResult e && e.getEntity() instanceof LivingEntity l ? l : CanonSkillsCombatA.softAim(c.p, r);
         if (!(raw instanceof Mob m)) return null;
-        boolean known = CanonTargetPolicy.reviewed(m) || BuiltInRegistries.ENTITY_TYPE.getKey(m.getType()).getNamespace().equals("minecraft");
+        boolean known = CanonTargetPolicy.admittedCombatEntity(m);
         return known && CanonTargetPolicy.directTarget(c.p, m) && m.isAlive() && !m.isRemoved() && !m.isInvulnerable() && m.level() == c.world
                 && c.world.getEntity(m.getUUID()) == m && !m.isAlliedTo(c.p) && !c.p.isAlliedTo(m) && !m.isPassenger() && !m.isVehicle()
                 && c.p.hasLineOfSight(m) && c.world.hasChunkAt(m.blockPosition()) && c.world.mayInteract(c.p, m.blockPosition()) ? m : null;
@@ -793,6 +793,7 @@ public final class CanonExpansionCombatA {
         var def = CanonExpansionA.find(c.skill);
         int skillLevel = def == null ? 1 : def.level();
         int[] hits = {0};
+        Vec3[] firstImpact = {null};
         var contacts = new ArrayList<Vec3>();
         final var deferredSurplus = surplus;
         cast.forEach(target -> {
@@ -800,6 +801,7 @@ public final class CanonExpansionCombatA {
             Vec3 before = target.position();
             if (!cast.attack(target)) return;
             hits[0]++;
+            if (firstImpact[0] == null) firstImpact[0] = before;
             if (groundBlast && target.position().distanceToSqr(before) <= .01) {
                 contacts.add(before);
             }
@@ -828,6 +830,9 @@ public final class CanonExpansionCombatA {
                 }
             }
             if (!contacts.isEmpty() && sessionContext(c)) groundBlastEnvironment(c, shape, contacts, deferredSurplus);
+            if (hits[0] > 0 && firstImpact[0] != null && sessionContext(c) && def != null) {
+                CanonEndpointBlast.emitHitBlast(c.p, def.category(), c.skill, skillLevel, firstImpact[0]);
+            }
             if (hits[0] > 0 && AbilityStorage.get(c.p) == c.state && c.state.learned(c.skill)) { c.state.addExperience(c.skill, .01); AbilityStorage.save(c.p); }
         });
         return true;
@@ -873,7 +878,8 @@ public final class CanonExpansionCombatA {
         if (sameTick && (c.skill.equals("dark_wing_charge") || c.skill.equals("nitrogen_ram") || c.skill.equals("nitrogen_impact"))
                 && (strikeMotion(c) == null || !safeMotion(c, strikeMotion(c)))) return false;
         if (shape.direct ? !CanonTargetPolicy.directTarget(c.p, t)
-                : !(CanonTargetPolicy.hostile(t) || t instanceof Player other && AcademyConfig.ATTACK_PLAYERS.get() && c.p.server.isPvpAllowed() && c.p.canHarmPlayer(other))) {
+                : !(cn.academy.port.highpower.CompatMode.openGameplay() ? CanonTargetPolicy.directedAreaTarget(c.p, t)
+                : (CanonTargetPolicy.hostile(t) || t instanceof Player other && AcademyConfig.ATTACK_PLAYERS.get() && c.p.server.isPvpAllowed() && c.p.canHarmPlayer(other)))) {
             return false;
         }
         Vec3 delta = t.getBoundingBox().getCenter().subtract(c.eye);

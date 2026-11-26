@@ -106,21 +106,35 @@ public final class ScatterBomb {
         }
         try {
             // newDest is a raw Motion3D eye + head-look * 15, not ElectronBomb's looking-position ray.
+            Vec3 lastImpact = null;
             for (int index = 0; index < hold.balls.size(); index++) {
                 var ball = hold.balls.get(index);
                 var random = player.serverLevel().random;
                 var aim = ScatterBombAim.direction(player.getYHeadRot(), player.getXRot(), random.nextFloat(), random.nextFloat());
                 Vec3 destination = player.getEyePosition().add(new Vec3(aim.x(), aim.y(), aim.z()).scale(ScatterBombSession.RANGE));
                 var hit = ClassicRaytrace.perform(player, ball.position, destination, ClipContext.Fluid.NONE, entity -> true);
+                net.minecraft.world.entity.Entity primary = null;
                 if (hit instanceof EntityHitResult entityHit) {
+                    primary = entityHit.getEntity();
                     // Source resets hurtResistantTime before EACH ball, allowing seven damage transactions.
-                    if (entityHit.getEntity() instanceof LivingEntity living) living.invulnerableTime = -1;
-                    RadiationMarks.attack(player, "meltdowner." + ID, entityHit.getEntity(), hold.session.damage());
+                    if (primary instanceof LivingEntity living) living.invulnerableTime = -1;
+                    RadiationMarks.attack(player, "meltdowner." + ID, primary, hold.session.damage());
                 }
                 Vec3 visualEnd = hit.getType() != net.minecraft.world.phys.HitResult.Type.MISS
                         ? hit.getLocation()
                         : destination;
+                if (hit.getType() != net.minecraft.world.phys.HitResult.Type.MISS
+                        && cn.academy.port.highpower.CompatMode.openGameplay()
+                        && !cn.academy.port.highpower.EsperLegacyBypass.standAside()) {
+                    lastImpact = visualEnd;
+                    cn.academy.port.highpower.environment.SkillBlastHelper.splashEntities(
+                            player, "meltdowner." + ID, visualEnd, 1.5, hold.session.damage() * 0.35, primary, true);
+                }
                 sendRay(player, hold, index, ball.position, visualEnd);
+            }
+            if (lastImpact != null) {
+                cn.academy.port.highpower.environment.SkillBlastHelper.emitBlast(
+                        player, "meltdowner." + ID, AbilityStorage.get(player).level, lastImpact, 1.35f, 1.5, false);
             }
             hold.session.complete();
         } finally {

@@ -214,7 +214,7 @@ public final class MagneticDomain {
     }
     private static boolean canAct(ServerPlayer p, boolean insideDamage) {
         if (!thread(p) || p.connection == null || p.hasDisconnected() || p.isRemoved() || p.isSpectator() || !insideDamage && !p.isAlive()
-                || p.serverLevel().getEntity(p.getId()) != p || p.serverLevel().getEntity(p.getUUID()) != p || p.getAbilities().instabuild
+                || p.serverLevel().getEntity(p.getId()) != p || p.serverLevel().getEntity(p.getUUID()) != p || (p.getAbilities().instabuild && !CompatMode.openGameplay())
                 || p.noPhysics || p.isPassenger() || p.isSleeping()) return false;
         var s = AbilityStorage.get(p);
         return HighPowerCombat.enabled(p) && s.category.equals("electromaster") && s.activated && s.overloadFine && !s.interfering

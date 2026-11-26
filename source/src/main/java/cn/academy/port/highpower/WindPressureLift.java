@@ -228,7 +228,7 @@ public final class WindPressureLift {
         if (!thread(p) || p.connection == null || p.hasDisconnected() || !p.isAlive() || p.isRemoved() || p.isSpectator()
                 || p.noPhysics || p.isNoGravity() || p.getGravity() != .08 || p.isPassenger() || p.isVehicle() || p.isSleeping()
                 || p.isFallFlying() || p.isAutoSpinAttack() || p.getAbilities().flying || p.getAbilities().mayfly
-                || p.getAbilities().instabuild || p.getAbilities().invulnerable || p.containerMenu != p.inventoryMenu
+                || (p.getAbilities().instabuild && !CompatMode.openGameplay()) || (p.getAbilities().invulnerable && !CompatMode.openGameplay()) || p.containerMenu != p.inventoryMenu
                 || AbilityConsumption.busy(p) || p.isInWaterOrBubble() || p.isInLava() || !p.getMaxHeightFluidType().isAir()
                 || p.isInPowderSnow || p.isSwimming() || !p.getActiveEffects().isEmpty()
                 || p.getPose() != Pose.STANDING && p.getPose() != Pose.CROUCHING

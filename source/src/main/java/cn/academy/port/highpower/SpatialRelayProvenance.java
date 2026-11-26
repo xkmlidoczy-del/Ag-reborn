@@ -61,7 +61,7 @@ public final class SpatialRelayProvenance {
     public static boolean ordinary(ItemStack stack) {
         if (stack == null || stack.isEmpty() || !stack.isComponentsPatchEmpty() || stack.getCount() < 1
                 || stack.getCount() > stack.getMaxStackSize()
-                || !"minecraft".equals(BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace())
+                || (!CompatMode.openGameplay() && !"minecraft".equals(BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace()))
                 || !stack.getItem().getClass().getName().startsWith("net.minecraft.world.item.")
                 || stack.getItem() instanceof BundleItem
                 || stack.getItem() instanceof BlockItem block && block.getBlock() instanceof EntityBlock

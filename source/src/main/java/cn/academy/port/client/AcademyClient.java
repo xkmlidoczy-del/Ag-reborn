@@ -1306,7 +1306,7 @@ public final class AcademyClient {
         var context=new DisplacedProjectionInputState.DispatchContext(mc.level,mc.player,mc.getConnection(),inputSessionEpoch(),
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=mc.player!=null&&mc.level!=null&&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator()
-                &&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable&&!mc.player.noPhysics;
+                &&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)&&!mc.player.noPhysics;
         boolean mapped=cn.academy.port.highpower.HighPowerCategories.TELEPORTER.equals(state.category)
                 &&state.level>=1&&state.learned(skill)&&cn.academy.port.preset.PresetSkills.mappedUsable(state,skill);
         return new DisplacedProjectionInputState.Gates(context,slot,physicalKey,inGame,state.isActivated(),
@@ -1348,7 +1348,7 @@ public final class AcademyClient {
         var context=new RecoveryMarkInputState.DispatchContext(mc.level,mc.player,mc.getConnection(),inputSessionEpoch(),
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=mc.player!=null&&mc.level!=null&&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator();
-        boolean sourceEligible=inGame&&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable&&!mc.player.noPhysics
+        boolean sourceEligible=inGame&&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)&&!mc.player.noPhysics
                 &&!mc.player.isPassenger()&&!mc.player.isSleeping()&&mc.player.onGround()
                 &&!mc.player.isFallFlying()&&!mc.player.isSwimming()&&!mc.player.isInWater()&&!mc.player.isInLava();
         boolean mapped=cn.academy.port.highpower.HighPowerCategories.TELEPORTER.equals(state.category)
@@ -1393,7 +1393,7 @@ public final class AcademyClient {
         var context=new ReturnMarkInputState.DispatchContext(mc.level,mc.player,mc.getConnection(),inputSessionEpoch(),
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=mc.player!=null&&mc.level!=null&&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator();
-        boolean sourceEligible=inGame&&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable&&!mc.player.noPhysics
+        boolean sourceEligible=inGame&&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)&&!mc.player.noPhysics
                 &&!mc.player.isPassenger()&&!mc.player.isSleeping()&&mc.player.onGround()
                 &&!mc.player.isFallFlying()&&!mc.player.isSwimming()&&!mc.player.isInWater()&&!mc.player.isInLava();
         boolean mapped=cn.academy.port.highpower.HighPowerCategories.TELEPORTER.equals(state.category)
@@ -1438,7 +1438,7 @@ public final class AcademyClient {
         var context=new ShortInterceptionInputState.DispatchContext(mc.level,mc.player,mc.getConnection(),inputSessionEpoch(),
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=mc.player!=null&&mc.level!=null&&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator();
-        boolean sourceEligible=inGame&&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable&&!mc.player.noPhysics
+        boolean sourceEligible=inGame&&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)&&!mc.player.noPhysics
                 &&!mc.player.isPassenger()&&!mc.player.isSleeping()&&mc.player.onGround()
                 &&!mc.player.isFallFlying()&&!mc.player.isSwimming()&&!mc.player.isInWater()&&!mc.player.isInLava();
         boolean mapped=cn.academy.port.highpower.HighPowerCategories.TELEPORTER.equals(state.category)
@@ -1491,7 +1491,7 @@ public final class AcademyClient {
         var context=new MultidimensionalLandingArrayInputState.DispatchContext(mc.level,mc.player,mc.getConnection(),inputSessionEpoch(),
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=mc.player!=null&&mc.level!=null&&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator();
-        boolean sourceEligible=inGame&&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable&&!mc.player.noPhysics
+        boolean sourceEligible=inGame&&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)&&!mc.player.noPhysics
                 &&!mc.player.isPassenger()&&!mc.player.isSleeping()&&mc.player.onGround()
                 &&!mc.player.isFallFlying()&&!mc.player.isSwimming()&&!mc.player.isInWater()&&!mc.player.isInLava();
         boolean mapped=cn.academy.port.highpower.HighPowerCategories.TELEPORTER.equals(state.category)
@@ -1547,7 +1547,7 @@ public final class AcademyClient {
         var context=new SpatialPincerInputState.DispatchContext(mc.level,mc.player,mc.getConnection(),inputSessionEpoch(),
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=mc.player!=null&&mc.level!=null&&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator();
-        boolean sourceEligible=inGame&&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable&&!mc.player.noPhysics
+        boolean sourceEligible=inGame&&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)&&!mc.player.noPhysics
                 &&!mc.player.isPassenger()&&!mc.player.isSleeping()&&mc.player.onGround()
                 &&!mc.player.isFallFlying()&&!mc.player.isSwimming()&&!mc.player.isInWater()&&!mc.player.isInLava();
         boolean mapped=cn.academy.port.highpower.HighPowerCategories.TELEPORTER.equals(state.category)
@@ -1601,7 +1601,7 @@ public final class AcademyClient {
         var context=new SpatialRelayInputState.DispatchContext(mc.level,mc.player,mc.getConnection(),inputSessionEpoch(),
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=mc.player!=null&&mc.level!=null&&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator();
-        boolean sourceEligible=inGame&&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable&&!mc.player.noPhysics
+        boolean sourceEligible=inGame&&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)&&!mc.player.noPhysics
                 &&!mc.player.isPassenger()&&!mc.player.isSleeping()&&mc.player.onGround()
                 &&!mc.player.isFallFlying()&&!mc.player.isSwimming()&&!mc.player.isInWater()&&!mc.player.isInLava();
         boolean mapped=cn.academy.port.highpower.HighPowerCategories.TELEPORTER.equals(state.category)
@@ -1655,7 +1655,7 @@ public final class AcademyClient {
         var context=new CornerExchangeInputState.DispatchContext(mc.level,mc.player,mc.getConnection(),inputSessionEpoch(),
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=mc.player!=null&&mc.level!=null&&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator();
-        boolean sourceEligible=inGame&&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable&&!mc.player.noPhysics
+        boolean sourceEligible=inGame&&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)&&!mc.player.noPhysics
                 &&!mc.player.isPassenger()&&!mc.player.isSleeping()&&mc.player.onGround()
                 &&!mc.player.isFallFlying()&&!mc.player.isSwimming()&&!mc.player.isInWater()&&!mc.player.isInLava();
         boolean mapped=cn.academy.port.highpower.HighPowerCategories.TELEPORTER.equals(state.category)
@@ -1709,7 +1709,7 @@ public final class AcademyClient {
         var context=new EmergencyReturnInputState.DispatchContext(mc.level,mc.player,mc.getConnection(),inputSessionEpoch(),
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=mc.player!=null&&mc.level!=null&&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator();
-        boolean sourceEligible=inGame&&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable&&!mc.player.noPhysics
+        boolean sourceEligible=inGame&&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)&&!mc.player.noPhysics
                 &&!mc.player.isPassenger()&&!mc.player.isSleeping()&&mc.player.onGround()
                 &&!mc.player.isFallFlying()&&!mc.player.isSwimming()&&!mc.player.isInWater()&&!mc.player.isInLava();
         boolean mapped=cn.academy.port.highpower.HighPowerCategories.TELEPORTER.equals(state.category)
@@ -1762,7 +1762,7 @@ public final class AcademyClient {
         var context=new CrossSubstitutionInputState.DispatchContext(mc.level,mc.player,mc.getConnection(),inputSessionEpoch(),
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=mc.player!=null&&mc.level!=null&&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator();
-        boolean sourceEligible=inGame&&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable&&!mc.player.noPhysics
+        boolean sourceEligible=inGame&&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)&&!mc.player.noPhysics
                 &&!mc.player.isPassenger()&&!mc.player.isSleeping()&&mc.player.onGround()
                 &&!mc.player.isFallFlying()&&!mc.player.isSwimming()&&!mc.player.isInWater()&&!mc.player.isInLava();
         boolean mapped=cn.academy.port.highpower.HighPowerCategories.TELEPORTER.equals(state.category)
@@ -1807,7 +1807,7 @@ public final class AcademyClient {
         var context=new VectorParryInputState.DispatchContext(mc.level,mc.player,mc.getConnection(),inputSessionEpoch(),
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=mc.player!=null&&mc.level!=null&&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator();
-        boolean sourceEligible=inGame&&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable&&!mc.player.noPhysics
+        boolean sourceEligible=inGame&&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)&&!mc.player.noPhysics
                 &&!mc.player.isPassenger()&&!mc.player.isSleeping()&&mc.player.containerMenu==mc.player.inventoryMenu;
         boolean mapped=cn.academy.port.highpower.HighPowerCategories.VECMANIP.equals(state.category)
                 &&state.level>=1&&state.level<=5&&state.learned(skill)&&state.learned(cn.academy.port.highpower.DeflectionStrike.ID)
@@ -1866,7 +1866,7 @@ public final class AcademyClient {
         var context=new BrakingTouchInputState.DispatchContext(mc.level,mc.player,mc.getConnection(),inputSessionEpoch(),
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=mc.player!=null&&mc.level!=null&&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator();
-        boolean sourceEligible=inGame&&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable&&!mc.player.noPhysics
+        boolean sourceEligible=inGame&&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)&&!mc.player.noPhysics
                 &&!mc.player.isPassenger()&&!mc.player.isVehicle()&&!mc.player.isSleeping()&&!mc.player.isFallFlying()
                 &&!mc.player.getAbilities().flying&&!mc.player.isInWaterOrBubble()&&!mc.player.isInLava()&&!mc.player.onClimbable()
                 &&mc.player.containerMenu==mc.player.inventoryMenu;
@@ -1885,7 +1885,7 @@ public final class AcademyClient {
         var context=new BrakingTouchInputState.DispatchContext(mc.level,mc.player,mc.getConnection(),inputSessionEpoch(),
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=mc.player!=null&&mc.level!=null&&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator();
-        boolean sourceEligible=inGame&&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable&&!mc.player.noPhysics
+        boolean sourceEligible=inGame&&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)&&!mc.player.noPhysics
                 &&!mc.player.isPassenger()&&!mc.player.isVehicle()&&!mc.player.isSleeping()&&!mc.player.isFallFlying()
                 &&mc.player.containerMenu==mc.player.inventoryMenu;
         boolean mapped=kind.category.equals(state.category)&&state.level>=kind.level&&state.level<=5&&state.learned(skill)
@@ -1981,7 +1981,7 @@ public final class AcademyClient {
         var context=new DeflectionStrikeInputState.DispatchContext(mc.level,mc.player,mc.getConnection(),inputSessionEpoch(),
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=mc.player!=null&&mc.level!=null&&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator();
-        boolean sourceEligible=inGame&&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable&&!mc.player.noPhysics
+        boolean sourceEligible=inGame&&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)&&!mc.player.noPhysics
                 &&!mc.player.isPassenger()&&!mc.player.isSleeping();
         boolean mapped=cn.academy.port.highpower.HighPowerCategories.VECMANIP.equals(state.category)
                 &&state.level>=1&&state.learned(skill)&&cn.academy.port.preset.PresetSkills.mappedUsable(state,skill);
@@ -2024,7 +2024,7 @@ public final class AcademyClient {
         var context=new DualPointInputState.DispatchContext(mc.level,mc.player,mc.getConnection(),inputSessionEpoch(),
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=mc.player!=null&&mc.level!=null&&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator();
-        boolean sourceEligible=inGame&&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable&&!mc.player.noPhysics
+        boolean sourceEligible=inGame&&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)&&!mc.player.noPhysics
                 &&!mc.player.isPassenger()&&!mc.player.isSleeping();
         boolean mapped="meltdowner".equals(state.category)&&state.level>=1&&state.level<=5&&state.learned(skill)
                 &&cn.academy.port.preset.PresetSkills.mappedUsable(state,skill)
@@ -2043,7 +2043,7 @@ public final class AcademyClient {
         var context=new YawPalmInputState.DispatchContext(mc.level,mc.player,mc.getConnection(),inputSessionEpoch(),
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=mc.player!=null&&mc.level!=null&&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator();
-        boolean sourceEligible=inGame&&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable&&!mc.player.noPhysics
+        boolean sourceEligible=inGame&&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)&&!mc.player.noPhysics
                 &&!mc.player.isPassenger()&&!mc.player.isSleeping();
         boolean mapped=cn.academy.port.highpower.HighPowerCategories.VECMANIP.equals(state.category)
                 &&state.level>=2&&state.level<=5&&state.learned(skill)&&state.learned(cn.academy.port.highpower.BrakingTouch.ID)
@@ -2093,7 +2093,7 @@ public final class AcademyClient {
         var context=new TrajectoryReturnInputState.DispatchContext(mc.level,mc.player,mc.getConnection(),inputSessionEpoch(),
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=mc.player!=null&&mc.level!=null&&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator();
-        boolean sourceEligible=inGame&&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable&&!mc.player.noPhysics
+        boolean sourceEligible=inGame&&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)&&!mc.player.noPhysics
                 &&!mc.player.isPassenger()&&!mc.player.isSleeping();
         boolean mapped=cn.academy.port.highpower.HighPowerCategories.VECMANIP.equals(state.category)
                 &&state.level>=3&&state.level<=5&&state.learned(skill)&&state.learned(cn.academy.port.highpower.YawPalm.ID)
@@ -2137,7 +2137,7 @@ public final class AcademyClient {
         var context=new ShearWindbladeInputState.DispatchContext(mc.level,mc.player,mc.getConnection(),inputSessionEpoch(),
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=mc.player!=null&&mc.level!=null&&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator();
-        boolean sourceEligible=inGame&&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable&&!mc.player.noPhysics
+        boolean sourceEligible=inGame&&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)&&!mc.player.noPhysics
                 &&!mc.player.isPassenger()&&!mc.player.isSleeping()&&mc.player.containerMenu==mc.player.inventoryMenu;
         boolean mapped=cn.academy.port.highpower.HighPowerCategories.VECMANIP.equals(state.category)
                 &&state.level>=2&&state.level<=5&&state.learned(skill)&&state.learned(cn.academy.port.highpower.DeflectionStrike.ID)&&cn.academy.port.preset.PresetSkills.mappedUsable(state,skill);
@@ -2180,7 +2180,7 @@ public final class AcademyClient {
         var context=new PhaseSidestepInputState.DispatchContext(mc.level,mc.player,mc.getConnection(),inputSessionEpoch(),
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=mc.player!=null&&mc.level!=null&&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator();
-        boolean sourceEligible=inGame&&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable&&!mc.player.noPhysics
+        boolean sourceEligible=inGame&&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)&&!mc.player.noPhysics
                 &&!mc.player.isPassenger()&&!mc.player.isSleeping()&&mc.player.onGround()
                 &&!mc.player.isFallFlying()&&!mc.player.isSwimming()&&!mc.player.isInWater()&&!mc.player.isInLava();
         boolean mapped=cn.academy.port.highpower.HighPowerCategories.TELEPORTER.equals(state.category)
@@ -2227,7 +2227,7 @@ public final class AcademyClient {
                 mc.player==null?0:mc.player.getY(),mc.player==null?0:mc.player.getZ());
         boolean inGame=binding!=null&&mc.player!=null&&mc.level!=null&&mc.getConnection()!=null
                 &&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator()
-                &&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable
+                &&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)
                 &&!mc.player.noPhysics&&!mc.player.isPassenger()&&!mc.player.isSleeping()
                 &&mc.player.onGround()&&!mc.player.isFallFlying()&&!mc.player.isSwimming()
                 &&!mc.player.isInWater()&&!mc.player.isInLava();
@@ -2267,7 +2267,7 @@ public final class AcademyClient {
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=binding!=null&&mc.player!=null&&mc.level!=null&&mc.getConnection()!=null
                 &&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator()
-                &&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable
+                &&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)
                 &&!mc.player.noPhysics&&!mc.player.isPassenger()&&!mc.player.isVehicle()&&!mc.player.isSleeping()
                 &&!mc.player.isFallFlying()&&!mc.player.getAbilities().flying
                 &&mc.player.containerMenu==mc.player.inventoryMenu;
@@ -2307,7 +2307,7 @@ public final class AcademyClient {
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=binding!=null&&mc.player!=null&&mc.level!=null&&mc.getConnection()!=null
                 &&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator()
-                &&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable
+                &&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)
                 &&!mc.player.noPhysics&&!mc.player.isPassenger()&&!mc.player.isVehicle()&&!mc.player.isSleeping()
                 &&!mc.player.isFallFlying()&&!mc.player.getAbilities().flying
                 &&mc.player.containerMenu==mc.player.inventoryMenu;
@@ -2347,7 +2347,7 @@ public final class AcademyClient {
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=binding!=null&&mc.player!=null&&mc.level!=null&&mc.getConnection()!=null
                 &&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator()
-                &&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable
+                &&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)
                 &&!mc.player.noPhysics&&!mc.player.isPassenger()&&!mc.player.isVehicle()&&!mc.player.isSleeping()
                 &&!mc.player.isFallFlying()&&!mc.player.getAbilities().flying
                 &&mc.player.containerMenu==mc.player.inventoryMenu;
@@ -2387,7 +2387,7 @@ public final class AcademyClient {
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=binding!=null&&mc.player!=null&&mc.level!=null&&mc.getConnection()!=null
                 &&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator()
-                &&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable
+                &&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)
                 &&!mc.player.noPhysics&&!mc.player.isPassenger()&&!mc.player.isVehicle()&&!mc.player.isSleeping()
                 &&!mc.player.isFallFlying()&&!mc.player.getAbilities().flying
                 &&mc.player.containerMenu==mc.player.inventoryMenu;
@@ -2427,7 +2427,7 @@ public final class AcademyClient {
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=binding!=null&&mc.player!=null&&mc.level!=null&&mc.getConnection()!=null
                 &&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator()
-                &&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable
+                &&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)
                 &&!mc.player.noPhysics&&!mc.player.isPassenger()&&!mc.player.isVehicle()&&!mc.player.isSleeping()
                 &&!mc.player.isFallFlying()&&!mc.player.getAbilities().flying
                 &&mc.player.containerMenu==mc.player.inventoryMenu;
@@ -2474,7 +2474,7 @@ public final class AcademyClient {
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=binding!=null&&mc.player!=null&&mc.level!=null&&mc.getConnection()!=null
                 &&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator()
-                &&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable
+                &&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)
                 &&!mc.player.noPhysics&&!mc.player.isPassenger()&&!mc.player.isVehicle()&&!mc.player.isSleeping()
                 &&!mc.player.isFallFlying()&&!mc.player.getAbilities().flying
                 &&mc.player.containerMenu==mc.player.inventoryMenu;
@@ -2514,7 +2514,7 @@ public final class AcademyClient {
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=binding!=null&&mc.player!=null&&mc.level!=null&&mc.getConnection()!=null
                 &&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator()
-                &&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable
+                &&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)
                 &&!mc.player.noPhysics&&!mc.player.isPassenger()&&!mc.player.isVehicle()&&!mc.player.isSleeping()
                 &&!mc.player.isFallFlying()&&!mc.player.getAbilities().flying
                 &&mc.player.containerMenu==mc.player.inventoryMenu;
@@ -2554,7 +2554,7 @@ public final class AcademyClient {
                 mc.player==null?-1:mc.player.getId(),serverSingleEpoch,state.presets.current(),state.presets.revision(),mappings());
         boolean inGame=binding!=null&&mc.player!=null&&mc.level!=null&&mc.getConnection()!=null
                 &&mc.player.isAlive()&&!mc.player.isRemoved()&&!mc.player.isSpectator()
-                &&!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable
+                &&(cn.academy.port.highpower.CompatMode.openGameplay()||!mc.player.getAbilities().instabuild&&!mc.player.getAbilities().invulnerable)
                 &&!mc.player.noPhysics&&!mc.player.isPassenger()&&!mc.player.isSleeping();
         boolean mapped="meltdowner".equals(state.category)&&state.level==5
                 &&state.learned(cn.academy.port.highpower.HighPowerSkills.DUAL_POINT)

@@ -94,7 +94,7 @@ public final class CanonSkillsCombatA {
     private static final Set<ServerPlayer> PERFORMING = java.util.Collections.newSetFromMap(new IdentityHashMap<>());
 
     /** No NoAI or entity NBT writes: unloading, disconnect and restart cannot strand a mob. */
-    private record Lease(ServerPlayer owner, ServerLevel level, Mob mob, LivingEntity previous, Mob target, long expires) {}
+    private record Lease(ServerPlayer owner, ServerLevel level, Mob mob, LivingEntity previous, Mob target, long started, long expires) {}
     private record Shell(ServerPlayer owner, ServerLevel level, long expires) {}
     private record Dome(ServerPlayer owner, ServerLevel level, long expires) {}
     private record Wings(ServerPlayer owner, ServerLevel level, long expires) {}
@@ -211,7 +211,21 @@ public final class CanonSkillsCombatA {
                         && !LEASES.containsKey(candidate) && !CanonExpansionCombatA.mentalLeased(candidate) && candidate.hasLineOfSight(victim)
                         && !candidate.isAlliedTo(victim) && !victim.isAlliedTo(candidate)));
         nearby.sort(Comparator.comparingDouble(player::distanceToSqr));
-        if (nearby.isEmpty()) return false;
+        if (nearby.isEmpty()) {
+            if (!cn.academy.port.highpower.CompatMode.openGameplay()) return false;
+            long nowSolo = player.serverLevel().getGameTime();
+            if (nowSolo < 0 || nowSolo > Long.MAX_VALUE - duration || !spend(player, CROWD, 5, 200)) return false;
+            if (!validOwner(player) || !eligible(player, victim, CROWD)) return false;
+            holdTarget(player, victim, null, nowSolo + Math.min(duration, 160));
+            double crush = HighPowerGrowth.values(player).damage().multiply(new BigDecimal("1.15")).doubleValue();
+            if (Double.isFinite(crush) && crush > 0) {
+                cn.academy.port.AbilityDamage.attack(player, "mental_out.mental_out_crowd", victim, crush);
+            }
+            cue(player.serverLevel(), victim.position().add(0, victim.getBbHeight() * .7, 0), true);
+            CanonVfx.emit(player, CROWD, player.getEyePosition(), victim.position(), CanonVfx.Phase.HIT, 28, radius, remote);
+            experience(player, CROWD, .03);
+            return true;
+        }
         int cap = integer(CROWD, "target_cap") + (remote ? 1 : 0);
         List<Mob> selected = List.copyOf(nearby.subList(0, Math.min(cap, nearby.size())));
         long now = player.serverLevel().getGameTime();
@@ -336,9 +350,11 @@ public final class CanonSkillsCombatA {
         boolean boosted = chipHeld && CanonAuxItems.consume(player, CanonAuxItems.AERO_PRESSURE_CHIP);
         double kbFactor = boosted ? 1.2 : 1.0;
         int[] hit = {0};
+        Vec3[] firstHit = {null};
         emission.forEach(target -> {
             if (barrageCandidate(player, target, level, eye, direction) && emission.attack(target)) {
                 hit[0]++;
+                if (firstHit[0] == null) firstHit[0] = target.position();
                 if (target.isAlive() && !cn.academy.port.highpower.PlayerShieldArmor.ignoresControl(target)) {
                     Vec3 impulse = target.position().subtract(player.position()).multiply(1, 0, 1).normalize()
                             .scale(number(BARRAGE, "horizontal_speed") * kbFactor).add(0, number(BARRAGE, "vertical_speed"), 0);
@@ -348,7 +364,12 @@ public final class CanonSkillsCombatA {
                 airLine(player, target.position().add(0, target.getBbHeight() * .5, 0), false);
                 CanonVfx.emit(player, BARRAGE, eye, target.position(), CanonVfx.Phase.HIT, 22, hit[0] == 1 ? cn.academy.port.core.RangedSkillRanges.fixed(BARRAGE) : 0, boosted);
             }
-        }, () -> { if (hit[0] > 0 && validOwner(player)) experience(player, BARRAGE, .03); });
+        }, () -> {
+            if (hit[0] > 0 && validOwner(player)) {
+                if (firstHit[0] != null) CanonEndpointBlast.emitHitBlast(player, AERO, BARRAGE, 5, firstHit[0]);
+                experience(player, BARRAGE, .03);
+            }
+        });
         return true;
     }
 
@@ -428,9 +449,11 @@ public final class CanonSkillsCombatA {
         if (target == null || target == player || !target.isAlive() || target.isRemoved() || target.isSpectator()
                 || target.level() != player.level() || player.isAlliedTo(target) || target.isAlliedTo(player)
                 || !player.hasLineOfSight(target) || HighPowerCombat.unsupportedReason(target).isPresent()) return false;
-        return CanonTargetPolicy.hostile(target)
+        return cn.academy.port.highpower.CompatMode.openGameplay()
+                ? CanonTargetPolicy.directedAreaTarget(player, target)
+                : (CanonTargetPolicy.hostile(target)
                 || target instanceof Player other && AcademyConfig.ATTACK_PLAYERS.get()
-                && player.server.isPvpAllowed() && player.canHarmPlayer(other);
+                && player.server.isPvpAllowed() && player.canHarmPlayer(other));
     }
 
     private static void airLine(ServerPlayer player, Vec3 target, boolean darkMatter) {
@@ -487,8 +510,23 @@ public final class CanonSkillsCombatA {
         if (shell == null || !validShell(shell) || DOMES.containsKey(player) || now < 0 || now > Long.MAX_VALUE - duration
                 || !spend(player, DOME, 5, 200)) return false;
         if (!validShell(shell) || SHELLS.get(player) != shell) return false;
+        double r = number(DOME, "radius");
         DOMES.put(player, new Dome(player, player.serverLevel(), Math.min(shell.expires, now + duration)));
-        CanonVfx.emit(player, DOME, player.position(), player.position(), CanonVfx.Phase.START, (int) Math.min(duration, shell.expires - now), number(DOME, "radius"));
+        double burst = HighPowerGrowth.values(player).damage().multiply(new BigDecimal("0.65")).doubleValue();
+        int struck = 0;
+        for (LivingEntity hostile : player.serverLevel().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(r),
+                m -> m != player && CanonTargetPolicy.hostile(m) && m.isAlive() && !m.isRemoved() && !m.isAlliedTo(player)
+                        && !player.isAlliedTo(m) && player.distanceToSqr(m) <= r * r && player.hasLineOfSight(m))) {
+            if (++struck > 12) break;
+            if (Double.isFinite(burst) && burst > 0) {
+                cn.academy.port.AbilityDamage.attack(player, "nitrogen_armor.nitrogen_dome", hostile, burst);
+            }
+            if (hostile.isAlive()) {
+                hostile.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 1, false, true), player);
+                hostile.setTicksFrozen(Math.min(hostile.getTicksRequiredToFreeze() + 40, hostile.getTicksFrozen() + 60));
+            }
+        }
+        CanonVfx.emit(player, DOME, player.position(), player.position(), CanonVfx.Phase.START, (int) Math.min(duration, shell.expires - now), r);
         experience(player, DOME, .02);
         return true;
     }
@@ -808,7 +846,7 @@ public final class CanonSkillsCombatA {
         var previous = MentalTargeting.target(mob);
         MentalTargeting.assign(mob, target);
         if (target == null) MentalTargeting.stopRoute(mob);
-        LEASES.put(mob, new Lease(owner, owner.serverLevel(), mob, previous, target, expires));
+        LEASES.put(mob, new Lease(owner, owner.serverLevel(), mob, previous, target, owner.serverLevel().getGameTime(), expires));
         return true;
     }
     private static boolean validOwner(ServerPlayer p) {
@@ -875,6 +913,16 @@ public final class CanonSkillsCombatA {
                 boolean nativeDrive = directed && !cn.academy.port.api.CombatControl.needsDriver(mob);
                 MentalTargeting.approach(mob, lease.target, nativeDrive, now, 1.15);
                 if (!nativeDrive && now % 20L == 0L) MentalTargeting.strike(mob, lease.target);
+                long elapsed = now - lease.started;
+                if (elapsed >= 15 && elapsed % 20L == 0L) {
+                    double shock = HighPowerGrowth.values(lease.owner).damage().multiply(new BigDecimal("0.22")).doubleValue();
+                    if (Double.isFinite(shock) && shock > 0) {
+                        cn.academy.port.AbilityDamage.attack(lease.owner, "mental_out.mental_out_crowd", mob, shock);
+                        if (lease.target.isAlive() && !lease.target.isRemoved()) {
+                            cn.academy.port.AbilityDamage.attack(lease.owner, "mental_out.mental_out_crowd", lease.target, shock);
+                        }
+                    }
+                }
             }
         }
     }
@@ -930,12 +978,19 @@ public final class CanonSkillsCombatA {
                     dome.level.sendParticles(ParticleTypes.CLOUD, player.getX(), player.getY() + 1, player.getZ(), 8, 1.5, .6, 1.5, .01);
                 if (t % 20 == 0) {
                     double r = number(DOME, "radius");
+                    double dot = HighPowerGrowth.values(player).damage().multiply(new BigDecimal("0.25")).doubleValue();
                     int chilled = 0;
-                    for (Mob hostile : dome.level.getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(r),
-                            m -> CanonTargetPolicy.hostile(m) && m.isAlive() && !m.isRemoved() && !m.isAlliedTo(player)
-                                    && player.distanceToSqr(m) <= r * r && player.hasLineOfSight(m))) {
+                    for (LivingEntity hostile : dome.level.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(r),
+                            m -> m != player && CanonTargetPolicy.hostile(m) && m.isAlive() && !m.isRemoved() && !m.isAlliedTo(player)
+                                    && !player.isAlliedTo(m) && player.distanceToSqr(m) <= r * r && player.hasLineOfSight(m))) {
                         if (++chilled > 12) break;
-                        hostile.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 0, false, true), player);
+                        if (Double.isFinite(dot) && dot > 0) {
+                            cn.academy.port.AbilityDamage.attack(player, "nitrogen_armor.nitrogen_dome", hostile, dot);
+                        }
+                        if (hostile.isAlive()) {
+                            hostile.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 1, false, true), player);
+                            hostile.setTicksFrozen(Math.min(hostile.getTicksRequiredToFreeze() + 40, hostile.getTicksFrozen() + 45));
+                        }
                     }
                 }
             }

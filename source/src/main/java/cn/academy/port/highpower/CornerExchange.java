@@ -318,7 +318,7 @@ public final class CornerExchange {
     private static boolean controlEligible(Context c) {
         var p = c.identity.owner(); var s = c.identity.state();
         return identity(c) && p.isAlive() && !p.isRemoved() && !p.hasDisconnected() && !p.isSpectator()
-                && !p.getAbilities().instabuild && !p.getAbilities().invulnerable && p.containerMenu == p.inventoryMenu
+                && (CompatMode.openGameplay() || !p.getAbilities().instabuild) && (CompatMode.openGameplay() || !p.getAbilities().invulnerable) && p.containerMenu == p.inventoryMenu
                 && s.activated && s.overloadFine && !s.interfering && !s.consumptionInProgress() && !AbilityConsumption.busy(p)
                 && s.learned(ID) && s.level >= 3 && s.level <= 5 && SkillCatalog.enabled(HighPowerCategories.TELEPORTER, ID)
                 && HighPowerResources.ready(p) && HighPowerResources.effectiveLevel(p) >= 3

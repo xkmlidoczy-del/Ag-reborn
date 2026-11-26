@@ -1,5 +1,11 @@
 # 状态 / Status
 
+## 2026-11-26 a3.87-rc2 技能条件与受控爆破联测
+
+- `fix/a3.87-skills-p0-p2` 基于 rc1 完成离线构建。本地整合包 `Ag-reborn-a3.87-rc2.jar` 的 SHA-256 为 `20fbc38d1fcc5163d79121a78998190e52be35ceeb0fc0fa9a1c8fb329f27589`。
+- 修复 `/academy dev` 后同一刻施法仍被过载拦截的问题。四项专项均通过，覆盖创造模式、跨模组目标与友军、空放及四个 LV5 伤害技能、地形落点与受控爆破。
+- 同一候选包通过 186 项整合回归、294 项开放模式能力与液影回归、75 项严格模式液影回归，以及 217 项 Titan Ecology 回归。另跑的旧契约中，开放模式的 2 项及严格模式的 24 项失败均与 rc1 一致。Gradle 全量检查的 32 项历史失败也在 rc1 原样复现。
+
 ## 2026-11-25 a3.87-rc1 Titan Ecology V4.8 联测
 
 - a3.86 源码已备份到 GitHub 的 `backup/a3.86-20261125` 分支，远端提交为 `e5409098781cdf255ebc0cdb962cf9f19dcbf6fc`。[备份](https://github.com/xkmlidoczy-del/Ag-reborn/tree/backup/a3.86-20261125)

@@ -463,7 +463,7 @@ public final class RecoveryMark {
     private static boolean controlEligible(Context context) {
         var player = context.identity.owner(); var state = context.identity.state();
         return identity(context) && player.isAlive() && !player.isRemoved() && !player.hasDisconnected()
-                && !player.isSpectator() && !player.getAbilities().instabuild && !player.getAbilities().invulnerable
+                && !player.isSpectator() && (CompatMode.openGameplay() || !player.getAbilities().instabuild) && (CompatMode.openGameplay() || !player.getAbilities().invulnerable)
                 && player.containerMenu == player.inventoryMenu && state.activated && state.overloadFine && !state.interfering
                 && !state.consumptionInProgress() && state.learned(ID) && state.level >= 2 && state.level <= 5
                 && SkillCatalog.enabled(HighPowerCategories.TELEPORTER, ID) && HighPowerResources.ready(player)

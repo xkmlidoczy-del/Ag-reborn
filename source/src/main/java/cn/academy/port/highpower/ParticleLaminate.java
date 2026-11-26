@@ -305,7 +305,7 @@ public final class ParticleLaminate {
     private static boolean canActState(ServerPlayer p){
         var state=AbilityStorage.get(p);
         return p.connection!=null&&!p.hasDisconnected()&&p.containerMenu==p.inventoryMenu&&HighPowerResources.ready(p)
-                &&!p.getAbilities().instabuild&&!p.getAbilities().invulnerable&&state.activated&&state.overloadFine&&!state.interfering
+                &&(CompatMode.openGameplay()||!p.getAbilities().instabuild)&&(CompatMode.openGameplay()||!p.getAbilities().invulnerable)&&state.activated&&state.overloadFine&&!state.interfering
                 &&state.learned(ID)&&state.learned(DisintegrationSweep.ID)&&state.learned(FoldedMirrorArray.ID)&&state.learned(DualPoint.ID)
                 &&state.category.equals("meltdowner")&&state.level>=MIN_LEVEL&&state.level<=MAX_LEVEL&&HighPowerResources.effectiveLevel(p)>=MIN_LEVEL
                 &&SkillCatalog.enabled("meltdowner",ID)&&HighPowerCombat.unsupportedReason(p).isEmpty()&&!AbilityConsumption.busy(p)
@@ -326,7 +326,7 @@ public final class ParticleLaminate {
         return target!=null&&permittedVolume(p,target.getBoundingBox(),work)&&harmState(p,target);
     }
     private static boolean harmState(ServerPlayer p,LivingEntity target){
-        ServerLevel world=p.serverLevel();return target!=null&&target!=p&&target instanceof Enemy&&target.level()==world&&target.isAlive()&&!target.isRemoved()&&!target.isSpectator()
+        ServerLevel world=p.serverLevel();return target!=null&&target!=p&&(target instanceof Enemy || CompatMode.openGameplay() && cn.academy.port.canon.CanonTargetPolicy.directedAreaTarget(p,target))&&target.level()==world&&target.isAlive()&&!target.isRemoved()&&!target.isSpectator()
                 &&world.getEntity(target.getUUID())==target&&world.getEntity(target.getId())==target&&HighPowerCombat.supported(target)
                 &&HighPowerCombat.unsupportedReason(target).isEmpty()&&!target.isInvulnerable()&&!target.getPersistentData().getBoolean("academy:protected")
                 &&!p.isAlliedTo(target)&&!target.isAlliedTo(p);

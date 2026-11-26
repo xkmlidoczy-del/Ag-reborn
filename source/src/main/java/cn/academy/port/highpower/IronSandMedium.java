@@ -84,7 +84,7 @@ public final class IronSandMedium {
     }
     private static boolean eligible(ServerPlayer player) {
         return player != null && player.server.isSameThread() && player.isAlive() && !player.isRemoved()
-                && !player.isSpectator() && !player.isCreative() && !player.getAbilities().instabuild;
+                && !player.isSpectator() && (CompatMode.openGameplay() || !player.isCreative()) && (CompatMode.openGameplay() || !player.getAbilities().instabuild);
     }
 
     /** F-swapping away and back between charge samples still invalidates that charge. */

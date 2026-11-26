@@ -24,8 +24,7 @@ import net.minecraft.world.phys.Vec3;
  * Player key-press Dry-Fire presentation for direct/area offensive Canon skills.
  *
  * <p>Direct programmatic {@code cast(player, skill)} calls remain strict target-bound transactions for GameTests,
- * while real client slot presses in empty air spend a light 35% CP / short cooldown pulse and emit the full
- * {@link CanonVfx} slash, lance, or burst along the aim ray so players can preview and swing abilities freely.
+ * while client slot presses in empty air can spend a small CP cost and emit a short START cue along the aim ray.
  */
 public final class CanonDryFire {
     private static final Set<String> CORE_OFFENSIVE = Set.of(
@@ -95,34 +94,20 @@ public final class CanonDryFire {
         }
 
         double baseArc = HighPowerGrowth.values(p).arcCost();
-        double dryCost = Math.max(1.0, baseArc * (def.level() >= 4 ? 0.65 : 0.35));
-        int dryCooldown = def.level() >= 5 ? 24 : def.level() == 4 ? 18 : 12;
+        double dryCost = Math.max(0.5, baseArc * 0.15);
+        int dryCooldown = def.level() >= 4 ? 8 : 6;
         if (!Double.isFinite(dryCost) || !HighPowerResources.trySpend(p, skill, dryCost, dryCooldown)) {
             return false;
         }
 
-        if (baseSheets > 0 && !p.getAbilities().instabuild) {
-            heldSheet.shrink(sheetCost);
-            p.getInventory().setChanged();
-        }
-        if (skill.startsWith("hydro_") && CanonWaterSkills.source(p) == null) {
-            CanonAuxItems.spendWaterFlaskCharge(p);
-        }
-
         double reach = resolveReach(skill, offenseSpec);
-        double area = resolveArea(p, skill, offenseSpec);
         Vec3 eye = p.getEyePosition();
         Vec3 dir = ClassicRaytrace.direction(p).normalize();
-        Vec3 rawEnd = eye.add(dir.scale(Math.min(48.0, Math.max(2.5, reach))));
+        Vec3 rawEnd = eye.add(dir.scale(Math.min(16.0, Math.max(2.5, reach * 0.55))));
         var hit = p.serverLevel().clip(new ClipContext(eye, rawEnd, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, p));
         Vec3 end = hit.getType() == HitResult.Type.MISS ? rawEnd : hit.getLocation();
-        Vec3 from = area > 0 && offenseSpec == null ? p.position() : eye;
-        if (area > 0 && offenseSpec == null && !skill.equals("aero_barrage") && !skill.startsWith("dark_spear")) {
-            end = p.position().add(dir.scale(Math.min(4.0, area * 0.35)));
-        }
 
-        int vfxTicks = def.level() >= 5 ? 24 : def.level() == 4 ? 20 : 14;
-        CanonVfx.emit(p, skill, from, end, CanonVfx.Phase.HIT, vfxTicks, area);
+        CanonVfx.emit(p, skill, eye, end, CanonVfx.Phase.START, 10, 0, false);
         playDrySound(p, def.category(), def.level());
         return true;
     }
@@ -169,6 +154,6 @@ public final class CanonDryFire {
             case "float_dial" -> SoundEvents.SHULKER_BULLET_HIT;
             default -> SoundEvents.PLAYER_ATTACK_SWEEP;
         };
-        p.serverLevel().playSound(null, p.blockPosition(), sound, SoundSource.PLAYERS, 0.55f, pitch);
+        p.serverLevel().playSound(null, p.blockPosition(), sound, SoundSource.PLAYERS, 0.32f, pitch);
     }
 }

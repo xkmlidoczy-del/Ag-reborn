@@ -61,7 +61,7 @@ public final class CanonWaterSkills {
     private static final Map<UUID, Flow> FLOWS = new HashMap<>();
     private static final Map<UUID, Selection> SELECTIONS = new HashMap<>();
     private record Shield(ServerPlayer owner, ServerLevel world, BlockPos source, boolean flaskBacked, long expires) {}
-    private record Flow(ServerPlayer owner, ServerLevel world, BlockPos source, boolean flaskBacked, List<UUID> targets, Vec3 direction, long expires) {}
+    private record Flow(ServerPlayer owner, ServerLevel world, BlockPos source, boolean flaskBacked, List<UUID> targets, Vec3 direction, long started, long expires) {}
     private record Selection(ServerPlayer owner, ServerLevel world, BlockPos source, long expires) {}
     private CanonWaterSkills() {}
 
@@ -104,7 +104,7 @@ public final class CanonWaterSkills {
             SHIELDS.put(p.getUUID(), new Shield(p, world, source, flaskBacked, now + ticks));
             CanonVfx.emit(p, id, visualOrigin, p.position(), CanonVfx.Phase.START, ticks, 0, flaskBacked);
         } else if (id.equals("hydro_domain")) {
-            FLOWS.put(p.getUUID(), new Flow(p, world, source, flaskBacked, targets.stream().map(Entity::getUUID).toList(), horizontal.normalize(), now + ticks));
+            FLOWS.put(p.getUUID(), new Flow(p, world, source, flaskBacked, targets.stream().map(Entity::getUUID).toList(), horizontal.normalize(), now, now + ticks));
             p.clearFire();
             CanonVfx.emit(p, id, visualOrigin, targets.getFirst().position(), CanonVfx.Phase.START, ticks, domainRadius(p), flaskBacked);
         } else {
@@ -230,9 +230,7 @@ public final class CanonWaterSkills {
         if (!(target instanceof Mob) || !CanonTargetPolicy.hostile(target) || !target.isAlive() || target.isRemoved()
                 || target.isPassenger() || target.isVehicle() || target.isAlliedTo(owner) || owner.isAlliedTo(target)
                 || !finite(target.position()) || !finite(target.getDeltaMovement())) return false;
-        var type = target.getType();
-        return CanonTargetPolicy.reviewed(target) || BuiltInRegistries.ENTITY_TYPE.getKey(type).getNamespace().equals("minecraft") && type != EntityType.WITHER
-                && type != EntityType.ENDER_DRAGON && type != EntityType.WARDEN && type != EntityType.ELDER_GUARDIAN;
+        return CanonTargetPolicy.admittedCombatEntity(target);
     }
 
     @SubscribeEvent public static void tick(ServerTickEvent.Post event) {
@@ -266,11 +264,22 @@ public final class CanonWaterSkills {
                         || !flow.owner.hasLineOfSight(target)) continue;
                 Vec3 previous = target.getDeltaMovement();
                 double speed = number("hydro_domain", "horizontal_speed");
-                target.setDeltaMovement(flow.direction.x * speed, previous.y, flow.direction.z * speed);
-                target.hasImpulse = true; target.hurtMarked = true;
-                target.clearFire();
-                if (now % 15 == 0) {
+                long elapsed = now - flow.started;
+                if (elapsed >= 10 && elapsed % 15 == 0) {
+                    double pulse = HighPowerGrowth.values(flow.owner).damage().multiply(new BigDecimal("0.30")).doubleValue();
+                    if (Double.isFinite(pulse) && pulse > 0) {
+                        cn.academy.port.AbilityDamage.attack(flow.owner, "hydro_hand.hydro_domain", target, pulse);
+                    }
+                    if (target.isAlive()) {
+                        target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 35, 1, false, true), flow.owner);
+                    }
+                } else if (now % 15 == 0) {
                     target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 35, 1, false, true), flow.owner);
+                }
+                if (target.isAlive()) {
+                    target.setDeltaMovement(flow.direction.x * speed, previous.y, flow.direction.z * speed);
+                    target.hasImpulse = true; target.hurtMarked = true;
+                    target.clearFire();
                 }
                 if (now % 5 == 0)
                     flow.world.sendParticles(ParticleTypes.SPLASH, target.getX(), target.getY() + .4, target.getZ(), 4, .2, .1, .2, 0);
@@ -297,7 +306,8 @@ public final class CanonWaterSkills {
 
     private static boolean arrowEligible(ServerPlayer p, AbstractArrow arrow, Vec3 center) {
         if (arrow.getType() != EntityType.ARROW || arrow.inGround || arrow.isRemoved() || !arrow.isAlive()
-                || !(arrow.getOwner() instanceof Mob shooter) || !(shooter instanceof Enemy)
+                || !(arrow.getOwner() instanceof Mob shooter)
+                || !(shooter instanceof Enemy || CompatMode.openGameplay() && (CanonTargetPolicy.hostile(shooter) || shooter.getTarget() == p))
                 || shooter.isAlliedTo(p) || p.isAlliedTo(shooter)
                 || ElectromasterPrototype.leased(arrow) || MultiAxisReflectionArrowBridge.leased(arrow)
                 || TrajectoryReturnArrowBridge.leased(arrow) || ShortInterceptionArrowBridge.leased(arrow)

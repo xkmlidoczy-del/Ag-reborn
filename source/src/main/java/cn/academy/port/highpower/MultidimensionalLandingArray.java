@@ -376,8 +376,8 @@ public final class MultidimensionalLandingArray {
             && c.identity.owns(p) && mapped(p, c.command.slot()) && c.identity.state().presets.current() == c.preset
             && c.identity.state().presets.revision() == c.revision; }
     private static boolean eligible(Context c) { ServerPlayer p = c.identity.owner(); var s = c.identity.state();
-        return identity(c) && !c.closing && p.isAlive() && !p.isRemoved() && !p.hasDisconnected() && !p.isCreative()
-                && !p.isSpectator() && !p.getAbilities().invulnerable && p.containerMenu == p.inventoryMenu
+        return identity(c) && !c.closing && p.isAlive() && !p.isRemoved() && !p.hasDisconnected() && (CompatMode.openGameplay() || !p.isCreative())
+                && !p.isSpectator() && (CompatMode.openGameplay() || !p.getAbilities().invulnerable) && p.containerMenu == p.inventoryMenu
                 && s.activated && s.overloadFine && !s.interfering && !s.consumptionInProgress() && !AbilityConsumption.busy(p)
                 && s.learned(ID) && s.learned(HighPowerSkills.SPATIAL_PINCER_CORRIDOR)
                 && SkillCatalog.enabled(HighPowerCategories.TELEPORTER, ID) && HighPowerResources.ready(p)

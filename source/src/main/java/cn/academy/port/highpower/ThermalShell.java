@@ -312,7 +312,7 @@ public final class ThermalShell {
     private static boolean canAct(ServerPlayer p) { return basic(p, false) && HighPowerResources.ready(p) && HighPowerResources.effectiveLevel(p) >= 2 && HighPowerCombat.unsupportedReason(p).isEmpty(); }
     private static boolean basic(ServerPlayer p, boolean nativeDamageFrame) {
         if (!thread(p) || p.connection == null || p.hasDisconnected() || p.isRemoved() || !nativeDamageFrame && !p.isAlive()
-                || p.isSpectator() || p.getAbilities().instabuild || p.getAbilities().invulnerable || p.noPhysics || p.isPassenger()
+                || p.isSpectator() || (p.getAbilities().instabuild && !CompatMode.openGameplay()) || (p.getAbilities().invulnerable && !CompatMode.openGameplay()) || p.noPhysics || p.isPassenger()
                 || p.isSleeping() || AbilityConsumption.busy(p)) return false;
         var s = AbilityStorage.peek(p);
         return s != null && HighPowerCombat.enabled(p) && s.category.equals("meltdowner") && s.activated && s.overloadFine && !s.interfering

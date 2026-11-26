@@ -52,6 +52,7 @@ public final class BeamEtching {
         final double cost;
         final BeamEtchingMining.Capacity capacity = BeamEtchingMining.newCapacity();
         final LinkedHashMap<BlockPos, BeamEtchingMining.Target> marks = new LinkedHashMap<>();
+        final LinkedHashMap<UUID, net.minecraft.world.entity.LivingEntity> entityMarks = new LinkedHashMap<>();
         final Set<ServerPlayer> audience = new LinkedHashSet<>();
         List<BeamEtchingMining.Target> frozen;
         List<ItemStack> inventory;
@@ -65,6 +66,69 @@ public final class BeamEtching {
             var q = HighPowerGrowth.values(p).position(); cost = BeamEtchingRules.cost(q); cooldown = BeamEtchingRules.cooldown(q);
         }
     }
+    public static final class EntityPermit implements AbilityEmission {
+        private final ServerPlayer owner;
+        private final net.minecraft.world.entity.LivingEntity target;
+        private final java.math.BigDecimal damage;
+        private boolean claimed;
+        private EntityPermit(ServerPlayer owner, net.minecraft.world.entity.LivingEntity target, java.math.BigDecimal damage) {
+            this.owner = owner; this.target = target; this.damage = damage;
+        }
+        public ServerPlayer player() { return owner; }
+        public net.minecraft.world.entity.LivingEntity target() { return target; }
+        public String skill() { return "meltdowner.beam_etching"; }
+        public java.math.BigDecimal damage() { return damage; }
+        public boolean claim() { if (claimed || !valid()) return false; claimed = true; return true; }
+        public boolean valid() {
+            return thread(owner) && owner.isAlive() && !owner.isRemoved() && !owner.hasDisconnected()
+                    && target != null && target.isAlive() && !target.isRemoved() && target.level() == owner.level()
+                    && owner.distanceToSqr(target) <= 13.5 * 13.5
+                    && HighPowerCombat.supported(target) && cn.academy.port.canon.CanonTargetPolicy.directTarget(owner, target);
+        }
+    }
+
+    private static net.minecraft.world.entity.LivingEntity aimEntity(ServerPlayer p, BeamEtchingMining.Target blockHit) {
+        Vec3 eye = p.getEyePosition(), look = p.getLookAngle().normalize();
+        var bounded = BeamEtchingRules.endpoint(point(eye), point(look));
+        if (bounded == null) return null;
+        Vec3 end = blockHit != null ? blockHit.surface() : new Vec3(bounded.x(), bounded.y(), bounded.z());
+        double maxDistSqr = eye.distanceToSqr(end);
+        net.minecraft.world.entity.LivingEntity best = null;
+        double bestDist = maxDistSqr;
+        for (var cand : p.serverLevel().getEntitiesOfClass(net.minecraft.world.entity.LivingEntity.class,
+                new AABB(eye, end).inflate(0.45), e -> cn.academy.port.canon.CanonTargetPolicy.directTarget(p, e) && HighPowerCombat.supported(e))) {
+            var clip = cand.getBoundingBox().inflate(0.28).clip(eye, end);
+            if (clip.isEmpty()) continue;
+            double d2 = eye.distanceToSqr(clip.get());
+            if (d2 <= bestDist && p.hasLineOfSight(cand)) {
+                bestDist = d2;
+                best = cand;
+            }
+        }
+        return best;
+    }
+
+    private static void strikeEntities(ServerPlayer p, Context c) {
+        if (c.processing || !valid(c)) { finish(c); return; }
+        c.processing = true;
+        try {
+            if (!HighPowerResources.trySpend(p, ID, c.cost, c.cooldown)) { finish(c); return; }
+            var share = HighPowerGrowth.values(p).damage().multiply(new java.math.BigDecimal("0.42"));
+            for (var target : List.copyOf(c.entityMarks.values())) {
+                if (target == null || !target.isAlive() || target.isRemoved() || target.level() != p.level() || !p.hasLineOfSight(target)) continue;
+                if (HighPowerCombat.attackEmission(new EntityPermit(p, target, share))) {
+                    c.successes++;
+                    cn.academy.port.macro.MacroVfx.emit(p, ID, cn.academy.port.macro.MacroVfx.Phase.HIT,
+                            p.getEyePosition(), target.getBoundingBox().getCenter(), 14, 0);
+                }
+            }
+            if (c.successes > 0) reward(c);
+            finish(c);
+        } finally {
+            c.processing = false;
+        }
+    }
+
     private BeamEtching() {}
 
     public static boolean start(ServerPlayer p, String wire) {
@@ -88,7 +152,17 @@ public final class BeamEtching {
         if (c == null || c.processing || c.frozen != null || !HighPowerBracerSession.authenticated(p, input) || !c.input.equals(input)) return false;
         if (!valid(c) || !inventoryUnchanged(c) || BeamEtchingRules.expired(c.started, now(p))) { finish(c); return false; }
         c.frozen = List.copyOf(c.marks.values());
-        if (c.frozen.isEmpty()) { finish(c); return true; }
+        if (c.frozen.isEmpty()) {
+            if (CompatMode.openGameplay()) {
+                var liveAimed = aimEntity(p, aim(p));
+                if (liveAimed != null && c.entityMarks.size() < 4) c.entityMarks.putIfAbsent(liveAimed.getUUID(), liveAimed);
+                if (!c.entityMarks.isEmpty()) {
+                    strikeEntities(p, c);
+                    return true;
+                }
+            }
+            finish(c); return true;
+        }
         work(c); return true;
     }
     public static boolean abort(ServerPlayer p, String wire) {
@@ -116,7 +190,15 @@ public final class BeamEtching {
         var timing = readTiming(p); if (timing == null) { finish(c); return; }
         BeamEtchingMining.Target candidate = aim(p);
         boolean unavailable = candidate == null || !BeamEtchingMining.inspect(p, candidate, c.capacity).eligible();
-        if (!unavailable && c.marks.size() < BeamEtchingRules.MAX_MARKS && !c.marks.containsKey(candidate.pos()) && timing.acquireReady(tick)) {
+        if (CompatMode.openGameplay()) {
+            var ent = aimEntity(p, candidate);
+            if (ent != null && c.entityMarks.size() < 4) {
+                c.entityMarks.putIfAbsent(ent.getUUID(), ent);
+                unavailable = false;
+            }
+        }
+        if (candidate != null && BeamEtchingMining.inspect(p, candidate, c.capacity).eligible()
+                && c.marks.size() < BeamEtchingRules.MAX_MARKS && !c.marks.containsKey(candidate.pos()) && timing.acquireReady(tick)) {
             // The persistent tick is consumed before mutating this cast, including on later abort.
             writeTiming(p, timing.acquire(tick)); c.marks.put(candidate.pos(), candidate);
         }
@@ -184,7 +266,7 @@ public final class BeamEtching {
     }
     private static boolean canAct(ServerPlayer p) {
         if (!thread(p) || p.connection == null || p.hasDisconnected() || !p.isAlive() || p.isRemoved() || p.isSpectator()
-                || p.getAbilities().instabuild || p.getAbilities().invulnerable || p.noPhysics || p.isPassenger() || p.isSleeping()
+                || (p.getAbilities().instabuild && !CompatMode.openGameplay()) || (p.getAbilities().invulnerable && !CompatMode.openGameplay()) || p.noPhysics || p.isPassenger() || p.isSleeping()
                 || p.containerMenu != p.inventoryMenu || AbilityConsumption.busy(p) || !HighPowerResources.ready(p)
                 || HighPowerCombat.unsupportedReason(p).isPresent()) return false;
         var s = AbilityStorage.get(p);

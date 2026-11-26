@@ -47,6 +47,7 @@ public final class HighPowerResources {
         return reservation == null ? amount : amount.add(BigDecimal.valueOf(reservation.cost));
     }
     private static boolean canSpend(ServerPlayer player, double cost) {
+        if (CompatMode.openGameplay() && player.getAbilities().instabuild) return true;
         ControlHold hold = CONTROL_HOLDS.get(player);
         if (hold == null) return availableCp(player) >= cost;
         BigDecimal remaining = BigDecimal.valueOf(cp(player)).subtract(BigDecimal.valueOf(cost));
@@ -62,6 +63,7 @@ public final class HighPowerResources {
         return stored > 0 && BigDecimal.valueOf(stored).compareTo(amount) > 0 ? Math.nextDown(stored) : stored;
     }
     private static double subtractCost(ServerPlayer player, double current, double cost) {
+        if (CompatMode.openGameplay() && player.getAbilities().instabuild) return current;
         return CONTROL_HOLDS.containsKey(player)
                 ? storedAmount(BigDecimal.valueOf(current).subtract(BigDecimal.valueOf(cost)))
                 : current - cost;
@@ -153,10 +155,11 @@ public final class HighPowerResources {
             String clock = "next_" + skill;
             BigDecimal current = BigDecimal.valueOf(hold.expected);
             BigDecimal total = BigDecimal.valueOf(hold.cost).add(BigDecimal.valueOf(shotCost));
+            boolean freeCreative = CompatMode.openGameplay() && player.getAbilities().instabuild;
             if (now < 0 || now > Long.MAX_VALUE - cooldownTicks
                     || hold.data.contains(clock) && !hold.data.contains(clock, Tag.TAG_LONG)
-                    || now < hold.data.getLong(clock) || current.compareTo(total) < 0) return false;
-            double remaining = storedAmount(current.subtract(total));
+                    || now < hold.data.getLong(clock) || !freeCreative && current.compareTo(total) < 0) return false;
+            double remaining = freeCreative ? current.doubleValue() : storedAmount(current.subtract(total));
             // No callbacks occur between validation, retirement, and the irreversible debit.
             // Removing first also means later native callbacks cannot claim or subtract it again.
             hold.close();

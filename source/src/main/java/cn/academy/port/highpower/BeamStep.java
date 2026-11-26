@@ -164,7 +164,7 @@ public final class BeamStep {
                 || p.getAbilities().mayfly || p.getPose() != net.minecraft.world.entity.Pose.STANDING || p.horizontalCollision || p.verticalCollision
                 || p.isAutoSpinAttack() || p.isInPowderSnow || p.isSwimming() || !p.getActiveEffects().isEmpty()
                 || p.getGravity() != .08 || !p.getMaxHeightFluidType().isAir()
-                || p.getAbilities().instabuild || p.getAbilities().invulnerable || p.isInWaterOrBubble() || p.isInLava() || p.onClimbable()
+                || (p.getAbilities().instabuild && !CompatMode.openGameplay()) || (p.getAbilities().invulnerable && !CompatMode.openGameplay()) || p.isInWaterOrBubble() || p.isInLava() || p.onClimbable()
                 || p.hasEffect(MobEffects.LEVITATION) || p.hasEffect(MobEffects.SLOW_FALLING) || competingMovement(p)
                 || !Double.isFinite(BeamStepRules.assistedY(p.getDeltaMovement().y))) return false;
         for (BlockPos pos : BlockPos.betweenClosed(BlockPos.containing(box.minX,box.minY,box.minZ), BlockPos.containing(box.maxX,box.maxY,box.maxZ)))

@@ -477,7 +477,7 @@ public final class TacticalCoordinateFormation {
     private static boolean control(Session s) {
         ServerPlayer p = s.identity.owner(); var state = s.identity.state();
         return !s.terminal && !s.closing && identity(s) && live(p) && !p.isSpectator()
-                && !p.getAbilities().instabuild && !p.getAbilities().invulnerable && p.containerMenu == p.inventoryMenu
+                && (CompatMode.openGameplay() || !p.getAbilities().instabuild) && (CompatMode.openGameplay() || !p.getAbilities().invulnerable) && p.containerMenu == p.inventoryMenu
                 && state.activated && state.overloadFine && !state.interfering && !state.consumptionInProgress()
                 && (committing(p) || !AbilityConsumption.busy(p)) && state.learned(ID) && state.learned(SpatialRelay.ID) && state.level == 5
                 && SkillCatalog.enabled(HighPowerCategories.TELEPORTER, ID) && HighPowerResources.ready(p)
@@ -489,7 +489,7 @@ public final class TacticalCoordinateFormation {
     }
     /** Recipient path never obtains or initializes an ability ledger. */
     private static String travelerRefusal(ServerPlayer p) {
-        if (!live(p) || p.isSpectator() || p.getAbilities().instabuild || p.getAbilities().invulnerable
+        if (!live(p) || p.isSpectator() || (p.getAbilities().instabuild && !CompatMode.openGameplay()) || (p.getAbilities().invulnerable && !CompatMode.openGameplay())
                 || p.containerMenu != p.inventoryMenu) return "source_unavailable";
         var state = AbilityStorage.peek(p);
         if (state != null && (state.interfering || state.consumptionInProgress())) return "movement_conflict";

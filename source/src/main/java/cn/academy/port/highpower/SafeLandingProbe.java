@@ -190,7 +190,7 @@ public final class SafeLandingProbe {
             &&c.identity.state().presets.current()==c.preset&&c.identity.state().presets.revision()==c.revision;}
     private static String eligibility(Context c){
         ServerPlayer p=c.identity.owner();var s=c.identity.state();
-        if(!identity(c)||!p.isAlive()||p.isRemoved()||p.hasDisconnected()||p.isSpectator()||p.getAbilities().instabuild||p.getAbilities().invulnerable
+        if(!identity(c)||!p.isAlive()||p.isRemoved()||p.hasDisconnected()||p.isSpectator()||(p.getAbilities().instabuild&&!CompatMode.openGameplay())||(p.getAbilities().invulnerable&&!CompatMode.openGameplay())
                 ||p.containerMenu!=p.inventoryMenu||!s.activated||!s.overloadFine||s.interfering||s.consumptionInProgress()
                 ||!s.learned(ID)||s.level<1||s.level>5||!SkillCatalog.enabled(HighPowerCategories.TELEPORTER,ID)
                 ||!HighPowerResources.ready(p)||HighPowerCombat.unsupportedReason(p).isPresent())return "context_changed";

@@ -490,8 +490,8 @@ public final class MultiAxisReflection {
     private static boolean canAct(ServerPlayer p) { return basic(p, false) && HighPowerResources.ready(p) && HighPowerCombat.unsupportedReason(p).isEmpty(); }
     private static boolean basic(ServerPlayer p, boolean nativeFrame) {
         if (!thread(p) || p.connection == null || p.hasDisconnected() || p.isRemoved() || !nativeFrame && !p.isAlive()
-                || p.isSpectator() || p.getAbilities().instabuild || p.getAbilities().invulnerable || p.noPhysics || p.isPassenger() || p.isVehicle()
-                || p.isSleeping() || p.isFallFlying() || p.getAbilities().flying || p.containerMenu != p.inventoryMenu || AbilityConsumption.busy(p)) return false;
+                || p.isSpectator() || (p.getAbilities().instabuild && !CompatMode.openGameplay()) || (p.getAbilities().invulnerable && !CompatMode.openGameplay()) || p.noPhysics || p.isPassenger() || p.isVehicle()
+                || p.isSleeping() || p.isFallFlying() || (p.getAbilities().flying && !(CompatMode.openGameplay() && p.getAbilities().instabuild)) || p.containerMenu != p.inventoryMenu || AbilityConsumption.busy(p)) return false;
         var state = AbilityStorage.peek(p);
         return state != null && HighPowerCombat.enabled(p) && state.category.equals("vecmanip") && state.activated && state.overloadFine && !state.interfering
                 && state.learned(ID) && state.learned("vector_cage") && state.level >= 4 && state.level <= 5 && SkillCatalog.enabled("vecmanip", ID)

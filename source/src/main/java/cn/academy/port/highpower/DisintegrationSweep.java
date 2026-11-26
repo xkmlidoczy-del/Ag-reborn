@@ -349,7 +349,7 @@ public final class DisintegrationSweep {
     private static boolean canAct(ServerPlayer p){
         if(!thread(p))return false;var state=AbilityStorage.get(p);
         return p.connection!=null&&!p.hasDisconnected()&&p.isAlive()&&!p.isRemoved()&&!p.isSpectator()&&p.containerMenu==p.inventoryMenu
-                &&HighPowerResources.ready(p)&&!p.getAbilities().instabuild&&!p.getAbilities().invulnerable&&state.activated&&state.overloadFine&&!state.interfering
+                &&HighPowerResources.ready(p)&&(CompatMode.openGameplay()||!p.getAbilities().instabuild)&&(CompatMode.openGameplay()||!p.getAbilities().invulnerable)&&state.activated&&state.overloadFine&&!state.interfering
                 &&state.learned(ID)&&state.learned(DualPoint.ID)&&state.learned(FoldedMirrorArray.ID)&&state.category.equals("meltdowner")&&state.level>=3&&state.level<=5
                 &&HighPowerResources.effectiveLevel(p)>=3&&SkillCatalog.enabled("meltdowner",ID)&&HighPowerCombat.unsupportedReason(p).isEmpty()
                 &&!AbilityConsumption.busy(p)&&!p.noPhysics&&!p.isPassenger()&&!p.isSleeping()&&finite(p.position())&&finite(p.getEyePosition())

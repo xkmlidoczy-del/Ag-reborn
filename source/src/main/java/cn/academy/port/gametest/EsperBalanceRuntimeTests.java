@@ -234,15 +234,20 @@ public final class EsperBalanceRuntimeTests {
             p.invulnerableTime = 0;
             p.hurt(p.damageSources().mobAttack(second), 10);
         });
+        h.runAfterDelay(69, () -> {
+            h.assertTrue(before - second.getHealth() == 3, "A distinct attacker has its own counter cooldown");
+            p.invulnerableTime = 0;
+            p.hurt(p.damageSources().mobAttack(second), 10);
+        });
         h.runAfterDelay(80, () -> {
-            h.assertTrue(before == second.getHealth(), "the defender's counter cooldown also covers a different attacker");
+            h.assertTrue(before - second.getHealth() == 3, "A repeated attacker stays within its counter cooldown");
             p.hurt(p.damageSources().mobAttack(second), 600);
         });
         h.runAfterDelay(82, () -> {
             try {
-                h.assertTrue(before - second.getHealth() == 60, "breaking the shield returns at most sixty damage");
-                h.assertTrue(p.getHealth() == 1980 && HighPowerCombat.shieldText(p).equals("0"),
-                        "600 shield and 20 native HP were paid once across three hits");
+                h.assertTrue(before - second.getHealth() == 63, "Breaking the shield adds sixty damage");
+                h.assertTrue(p.getHealth() == 1970 && HighPowerCombat.shieldText(p).equals("0"),
+                        "600 shield and 30 native HP were paid once across four hits");
                 h.succeed();
             } finally {
                 first.discard();

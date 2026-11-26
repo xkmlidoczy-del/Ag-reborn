@@ -258,8 +258,8 @@ public final class ScatterPlates {
         return basic(p, false);
     }
     private static boolean basic(ServerPlayer p, boolean nativeDamageFrame) {
-        if (!thread(p) || p.connection == null || p.hasDisconnected() || p.isRemoved() || !nativeDamageFrame && !p.isAlive() || p.isSpectator() || p.getAbilities().instabuild
-                || p.getAbilities().invulnerable || p.noPhysics || p.isPassenger() || p.isSleeping() || AbilityConsumption.busy(p)) return false;
+        if (!thread(p) || p.connection == null || p.hasDisconnected() || p.isRemoved() || !nativeDamageFrame && !p.isAlive() || p.isSpectator() || (p.getAbilities().instabuild && !CompatMode.openGameplay())
+                || (p.getAbilities().invulnerable && !CompatMode.openGameplay()) || p.noPhysics || p.isPassenger() || p.isSleeping() || AbilityConsumption.busy(p)) return false;
         var s = AbilityStorage.peek(p);
         return s != null && s.category.equals("meltdowner") && s.activated && s.overloadFine && !s.interfering
                 && s.learned(ID) && s.learned(DualPoint.ID) && s.level >= 1 && s.level <= 5 && SkillCatalog.enabled("meltdowner", ID)

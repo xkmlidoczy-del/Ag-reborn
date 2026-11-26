@@ -451,7 +451,8 @@ public final class NewSkillRuntime {
         record Cand(LivingEntity e, double angle) {}
         var found = new ArrayList<Cand>();
         AABB box = new AABB(eye, eye).inflate(ZenithDominionRules.RANGE);
-        for (LivingEntity e : p.serverLevel().getEntitiesOfClass(LivingEntity.class, box, x -> x != p && x.isAlive() && !x.isRemoved() && VectorCageWorld.hostile(p, x))) {
+        for (LivingEntity e : p.serverLevel().getEntitiesOfClass(LivingEntity.class, box, x -> x != p && x.isAlive() && !x.isRemoved()
+                && (VectorCageWorld.hostile(p, x) || CompatMode.openGameplay() && cn.academy.port.canon.CanonTargetPolicy.directedAreaTarget(p, x)))) {
             Vec3 to = e.getEyePosition().subtract(eye);
             double dist = to.length();
             if (dist < 1e-6 || dist > ZenithDominionRules.RANGE) continue;
@@ -494,12 +495,17 @@ public final class NewSkillRuntime {
                 if(!cn.academy.port.macro.MacroSettlement.reserve(p.server))break;
                 c.macroIndex=i+1;
                 Entity e = p.serverLevel().getEntity(c.marks.get(i));
-                if (!(e instanceof LivingEntity t) || !t.isAlive() || !VectorCageWorld.hostile(p, t)) continue;
+                if (!(e instanceof LivingEntity t) || !t.isAlive()
+                        || !(VectorCageWorld.hostile(p, t) || CompatMode.openGameplay() && cn.academy.port.canon.CanonTargetPolicy.directedAreaTarget(p, t))) continue;
                 hits.add(t.position().add(0, t.getBbHeight() / 2, 0));
                 Vec3 away = t.position().subtract(p.position()).multiply(1, 0, 1);
                 Vec3 push = away.lengthSqr() < 1e-6 ? Vec3.ZERO : away.normalize().scale(.6);
                 t.setDeltaMovement(push.x, -.9, push.z); t.hurtMarked = true;
                 HighPowerCombat.attackEmission(new EmissionPermit(c,i,t));
+            }
+            if (!hits.isEmpty()) {
+                cn.academy.port.highpower.environment.SkillBlastHelper.emitBlast(
+                        p, c.kind.damageKey, 5, hits.getFirst(), 2.4f, 3.0, true);
             }
             send(c, RELEASE, p.getEyePosition(), p.getLookAngle(), hits);
         }
@@ -522,7 +528,8 @@ public final class NewSkillRuntime {
             return thread(player()) && context.kind==Kind.ZENITH_DOMINION && context.paid && context.done && NewSkillRuntime.valid(context)
                     && now(player())-context.started>=ZenithDominionRules.LIFT_TICKS && index>=0 && index<context.marks.size()
                     && context.marks.get(index).equals(target.getUUID()) && player().serverLevel().getEntity(target.getId())==target
-                    && player().serverLevel().getEntity(target.getUUID())==target && target.position().equals(position);
+                    && player().serverLevel().getEntity(target.getUUID())==target
+                    && (CompatMode.openGameplay() ? target.position().distanceToSqr(position) <= 16.0 : target.position().equals(position));
         }
     }
 

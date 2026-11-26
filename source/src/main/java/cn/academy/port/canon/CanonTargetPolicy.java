@@ -51,25 +51,64 @@ public final class CanonTargetPolicy {
         return entity instanceof NeutralMob neutral && (neutral.isAngry() || neutral.getTarget() != null);
     }
 
+    public static boolean bossEntity(LivingEntity entity) {
+        return entity instanceof net.minecraft.world.entity.boss.enderdragon.EnderDragon
+                || entity instanceof net.minecraft.world.entity.boss.wither.WitherBoss
+                || entity instanceof net.minecraft.world.entity.monster.warden.Warden
+                || entity instanceof net.minecraft.world.entity.monster.ElderGuardian
+                || urbanBoss(entity)
+                || entity instanceof cn.academy.port.titan.TitanEntity;
+    }
+
+    /** Cross-mod and boss combat entity admission; preserves closed vanilla-non-boss contract in strict tests. */
+    public static boolean admittedCombatEntity(LivingEntity entity) {
+        if (entity == null || !entity.isAlive() || entity.isRemoved()) return false;
+        if (cn.academy.port.highpower.CompatMode.openGameplay()) {
+            return cn.academy.port.highpower.HighPowerCombat.supported(entity);
+        }
+        var type = entity.getType();
+        return reviewed(entity)
+                || net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(type).getNamespace().equals("minecraft")
+                && type != EntityType.WITHER && type != EntityType.ENDER_DRAGON
+                && type != EntityType.WARDEN && type != EntityType.ELDER_GUARDIAN;
+    }
+
     public static boolean hostile(LivingEntity entity) {
-        return entity instanceof Enemy
+        if (entity == null) return false;
+        if (entity instanceof Enemy
                 || angryNeutral(entity)
                 || entity instanceof cn.academy.port.city.defense.GuardianEntity
                 || entity instanceof cn.academy.port.city.CityNpcEntity npc && npc.look() == cn.academy.port.city.CityNpcEntity.Look.GUARD
-                || reviewed(entity);
+                || reviewed(entity)) {
+            return true;
+        }
+        if (!cn.academy.port.highpower.CompatMode.openGameplay()) return false;
+        return entity.getType().getCategory() == net.minecraft.world.entity.MobCategory.MONSTER
+                || entity instanceof cn.academy.port.titan.TitanEntity
+                || entity instanceof Mob mob && (mob.isAggressive() || mob.getTarget() != null);
+    }
+
+    /** Directed AoE/Line/Cone target policy: admits hostiles, bosses, modded monsters, armor stands, and non-livestock combat mobs while sparing livestock, villagers, pets, and allies. */
+    public static boolean directedAreaTarget(ServerPlayer caster, LivingEntity entity) {
+        if (caster == null) return hostile(entity);
+        if (!directTarget(caster, entity)) return false;
+        if (hostile(entity)) return true;
+        if (!cn.academy.port.highpower.CompatMode.openGameplay()) return false;
+        if (entity instanceof net.minecraft.world.entity.animal.Animal && !(entity instanceof NeutralMob)) return false;
+        if (entity instanceof net.minecraft.world.entity.ambient.AmbientCreature) return false;
+        if (entity instanceof net.minecraft.world.entity.animal.WaterAnimal) return false;
+        return true;
     }
 
     /** Direct crosshair strike eligibility: admits deliberate strikes on non-civilian mobs and armor stands while protecting allies & pets. */
     public static boolean directTarget(ServerPlayer caster, LivingEntity entity) {
         if (caster == null || entity == null || entity == caster || !entity.isAlive() || entity.isRemoved()
-                || entity.isSpectator() || caster.isAlliedTo(entity) || entity.isAlliedTo(caster)) {
+                || entity.isSpectator() || caster.isAlliedTo(entity) || entity.isAlliedTo(caster)
+                || cn.academy.port.api.ControlRelations.allied(caster, entity)) {
             return false;
         }
         if (entity instanceof Player other) {
             return AcademyConfig.ATTACK_PLAYERS.get() && caster.server.isPvpAllowed() && caster.canHarmPlayer(other);
-        }
-        if (hostile(entity)) {
-            return true;
         }
         if (entity instanceof AbstractVillager) {
             return false;
@@ -80,6 +119,9 @@ public final class CanonTargetPolicy {
         if (entity instanceof TamableAnimal tamable && tamable.isTame()) {
             if (caster.getUUID().equals(tamable.getOwnerUUID())) return false;
             if (tamable.getOwner() instanceof Player owner && (caster.isAlliedTo(owner) || owner.isAlliedTo(caster))) return false;
+        }
+        if (hostile(entity)) {
+            return true;
         }
         return entity instanceof Mob || entity instanceof ArmorStand;
     }

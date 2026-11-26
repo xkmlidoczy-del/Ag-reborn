@@ -426,7 +426,7 @@ public final class BrakingTouchLandingProof {
         return p != null && p.getClass() == ServerPlayer.class && p.server.isSameThread() && p.connection != null
                 && !p.hasDisconnected() && p.isAlive() && !p.isRemoved() && !p.isSpectator() && !p.isChangingDimension()
                 && !p.noPhysics && !p.isNoGravity() && !p.isPassenger() && !p.isVehicle() && !p.isSleeping()
-                && !p.getAbilities().flying && !p.getAbilities().mayfly && !p.getAbilities().invulnerable
+                && !p.getAbilities().flying && !p.getAbilities().mayfly && (CompatMode.openGameplay() || !p.getAbilities().invulnerable)
                 && !p.isFallFlying() && (p.getPose() == Pose.STANDING || p.getPose() == Pose.CROUCHING) && !p.isAutoSpinAttack() && !p.isInPowderSnow
                 && !p.isInWaterOrBubble() && !p.isInLava() && !p.isSwimming() && p.getMaxHeightFluidType().isAir()
                 && !p.hasEffect(MobEffects.LEVITATION) && !p.hasEffect(MobEffects.SLOW_FALLING)
@@ -438,7 +438,7 @@ public final class BrakingTouchLandingProof {
         return p != null && p.getClass() == ServerPlayer.class && p.server.isSameThread() && p.connection != null
                 && !p.hasDisconnected() && !p.isRemoved() && !p.isSpectator() && !p.isChangingDimension()
                 && !p.noPhysics && !p.isNoGravity() && !p.isPassenger() && !p.isVehicle() && !p.isSleeping()
-                && !p.getAbilities().flying && !p.getAbilities().mayfly && !p.getAbilities().invulnerable
+                && !p.getAbilities().flying && !p.getAbilities().mayfly && (CompatMode.openGameplay() || !p.getAbilities().invulnerable)
                 && !p.isFallFlying() && (p.getPose() == Pose.STANDING || p.getPose() == Pose.CROUCHING) && !p.isAutoSpinAttack() && !p.isInPowderSnow
                 && !p.isInWaterOrBubble() && !p.isInLava() && !p.isSwimming() && p.getMaxHeightFluidType().isAir()
                 && !p.hasEffect(MobEffects.LEVITATION) && !p.hasEffect(MobEffects.SLOW_FALLING)

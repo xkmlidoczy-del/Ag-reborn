@@ -52,6 +52,26 @@ public final class HighPowerProgression {
         return true;
     }
 
+    /** Ensures both Canon and HighPower espers are enrolled and admin/creative rank promotions are rebaselined. */
+    public static boolean ensureEnrolled(ServerPlayer player) {
+        if (player == null || !player.server.isSameThread()) return false;
+        boolean enrolled = certifyCanon(player);
+        if (CompatMode.openGameplay() && HighPowerCombat.enabled(player)) {
+            var state = AbilityStorage.get(player);
+            if (HighPowerCategories.active(state) && state.level >= 1 && state.level <= 5
+                    && state.level > HighPowerCombat.earnedLevel(player)
+                    && (cn.academy.port.command.ClassicAbilityCommands.active(player)
+                        || player.hasPermissions(2) || (player.getAbilities().instabuild && !CompatMode.openGameplay()))) {
+                HighPowerCombat.commitAbilityRank(player, state.level, () -> {});
+                HighPowerResources.initializeBudget(player);
+                if (state.learned(HighPowerSkills.SCATTER_PLATES)) ScatterPlateStorage.ensure(player);
+                if (state.learned("zero_gap_armor")) ZeroGapArmorStorage.ensureLearned(player);
+                return true;
+            }
+        }
+        return enrolled;
+    }
+
     /** UI-specific ingress: reject before work and return the precise compatibility reason to its modal. */
     public static boolean requestLearning(ServerPlayer player,DevelopmentProcess.Developer developer,String wire) {
         var request=HighPowerLearningProtocol.parse(wire);

@@ -61,6 +61,7 @@ public final class PointMeltdown {
         final Set<ServerPlayer> audience = new LinkedHashSet<>();
         final Set<ServerPlayer> cooldownOwners = Collections.newSetFromMap(new IdentityHashMap<>());
         BeamEtchingMining.Target preview, frozen;
+        net.minecraft.world.entity.LivingEntity entityPreview;
         PointMeltdownRules.Focus focus;
         MiningPermit digging;
         long lastHoldTick = -1, lastVisual = -1, sequence;
@@ -105,6 +106,68 @@ public final class PointMeltdown {
                     && player.getLookAngle().equals(look) && visible(player, target);
         }
     }
+    public static final class EntityPermit implements AbilityEmission {
+        private final ServerPlayer owner;
+        private final net.minecraft.world.entity.LivingEntity target;
+        private final java.math.BigDecimal damage;
+        private boolean claimed;
+        private EntityPermit(ServerPlayer owner, net.minecraft.world.entity.LivingEntity target, java.math.BigDecimal damage) {
+            this.owner = owner; this.target = target; this.damage = damage;
+        }
+        public ServerPlayer player() { return owner; }
+        public net.minecraft.world.entity.LivingEntity target() { return target; }
+        public String skill() { return "meltdowner.point_meltdown"; }
+        public java.math.BigDecimal damage() { return damage; }
+        public boolean claim() { if (claimed || !valid()) return false; claimed = true; return true; }
+        public boolean valid() {
+            return thread(owner) && owner.isAlive() && !owner.isRemoved() && !owner.hasDisconnected()
+                    && target != null && target.isAlive() && !target.isRemoved() && target.level() == owner.level()
+                    && HighPowerCombat.supported(target) && cn.academy.port.canon.CanonTargetPolicy.directTarget(owner, target);
+        }
+    }
+
+    private static net.minecraft.world.entity.LivingEntity aimEntity(ServerPlayer player, BeamEtchingMining.Target blockTarget) {
+        Vec3 eye = player.getEyePosition(), look = player.getLookAngle().normalize();
+        var endPt = PointMeltdownRules.endpoint(point(eye), point(look));
+        if (endPt == null) return null;
+        Vec3 end = blockTarget != null ? blockTarget.surface() : new Vec3(endPt.x(), endPt.y(), endPt.z());
+        double maxDistSqr = eye.distanceToSqr(end);
+        net.minecraft.world.entity.LivingEntity best = null;
+        double bestDist = maxDistSqr;
+        for (var cand : player.serverLevel().getEntitiesOfClass(net.minecraft.world.entity.LivingEntity.class,
+                new AABB(eye, end).inflate(0.5), e -> cn.academy.port.canon.CanonTargetPolicy.directTarget(player, e) && HighPowerCombat.supported(e))) {
+            var clip = cand.getBoundingBox().inflate(0.28).clip(eye, end);
+            if (clip.isEmpty()) continue;
+            double d2 = eye.distanceToSqr(clip.get());
+            if (d2 <= bestDist && player.hasLineOfSight(cand)) {
+                bestDist = d2;
+                best = cand;
+            }
+        }
+        return best;
+    }
+
+    private static void strikeEntity(ServerPlayer player, Context context, net.minecraft.world.entity.LivingEntity target) {
+        if (context.processing || context.attempted || !valid(context)) { finish(context, CANCELED); return; }
+        context.attempted = true; context.processing = true; PROCESSING.put(player, context);
+        try {
+            if (!HighPowerResources.trySpend(player, ID, context.cost, context.cooldown)) {
+                finish(context, UNAVAILABLE); return;
+            }
+            var dmg = HighPowerGrowth.values(player).damage().multiply(new java.math.BigDecimal("0.95"));
+            boolean hit = HighPowerCombat.attackEmission(new EntityPermit(player, target, dmg));
+            applyCooldown(context);
+            if (hit) {
+                cn.academy.port.macro.MacroVfx.emit(player, ID, cn.academy.port.macro.MacroVfx.Phase.HIT,
+                        player.getEyePosition(), target.getBoundingBox().getCenter(), 18, 0);
+            }
+            finish(context, hit ? READY : UNAVAILABLE);
+        } finally {
+            context.processing = false;
+            PROCESSING.entrySet().removeIf(entry -> entry.getValue() == context);
+        }
+    }
+
     private PointMeltdown() {}
 
     public static boolean start(ServerPlayer player, String wire) {
@@ -134,6 +197,13 @@ public final class PointMeltdown {
                 || !HighPowerBracerSession.authenticated(player, input) || !context.input.equals(input)) return false;
         if (!valid(context) || !inventoryUnchanged(context) || PointMeltdownRules.expired(context.started, now(player))) {
             finish(context, CANCELED); return false;
+        }
+        if (CompatMode.openGameplay()) {
+            net.minecraft.world.entity.LivingEntity hitEntity = aimEntity(player, context.preview);
+            if (hitEntity != null) {
+                strikeEntity(player, context, hitEntity);
+                return true;
+            }
         }
         if (context.preview == null || !visible(player, context.preview) || !inspect(context, context.preview)) {
             finish(context, UNAVAILABLE); return true;
@@ -200,9 +270,11 @@ public final class PointMeltdown {
         context.lastHoldTick = tick; context.preview = aim(player);
         boolean available = context.preview != null && inspect(context, context.preview);
         if (!available) context.preview = null;
+        context.entityPreview = CompatMode.openGameplay() ? aimEntity(player, context.preview) : null;
+        boolean anyReady = available || context.entityPreview != null;
         if (PointMeltdownRules.ready(context.lastVisual, tick, PointMeltdownRules.PREVIEW_INTERVAL)) {
             context.lastVisual = tick;
-            send(context, PREVIEW, available ? List.of(mark(context.preview)) : List.of(), available ? READY : UNAVAILABLE,
+            send(context, PREVIEW, available ? List.of(mark(context.preview)) : List.of(), anyReady ? READY : UNAVAILABLE,
                     PointMeltdownRules.PREVIEW_TICKS - (int)(tick - context.started), player.getEyePosition());
         }
     }
@@ -237,7 +309,7 @@ public final class PointMeltdown {
     }
     private static boolean canAct(ServerPlayer player) {
         if (!thread(player) || player.connection == null || player.hasDisconnected() || !player.isAlive() || player.isRemoved()
-                || player.isSpectator() || player.getAbilities().instabuild || player.getAbilities().invulnerable || player.noPhysics
+                || player.isSpectator() || (player.getAbilities().instabuild && !CompatMode.openGameplay()) || (player.getAbilities().invulnerable && !CompatMode.openGameplay()) || player.noPhysics
                 || player.isPassenger() || player.isSleeping() || player.containerMenu != player.inventoryMenu
                 || AbilityConsumption.busy(player) || !HighPowerResources.ready(player)
                 || HighPowerResources.effectiveLevel(player) < MIN_LEVEL || HighPowerCombat.unsupportedReason(player).isPresent()) return false;

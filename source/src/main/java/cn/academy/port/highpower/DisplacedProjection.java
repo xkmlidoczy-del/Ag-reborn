@@ -157,7 +157,7 @@ public final class DisplacedProjection {
     private static boolean eligible(Cast c){
         var p=c.identity.owner();var s=c.identity.state();
         return c.identity.owns(p)&&mapped(p,c.input.slot())&&s.presets.current()==c.preset&&s.presets.revision()==c.revision
-                &&p.isAlive()&&!p.isRemoved()&&!p.hasDisconnected()&&!p.isCreative()&&!p.isSpectator()&&!p.getAbilities().invulnerable
+                &&p.isAlive()&&!p.isRemoved()&&!p.hasDisconnected()&&(CompatMode.openGameplay()||!p.isCreative())&&!p.isSpectator()&&(CompatMode.openGameplay()||!p.getAbilities().invulnerable)
                 &&p.containerMenu==p.inventoryMenu&&s.activated&&s.overloadFine&&!s.interfering&&!s.consumptionInProgress()
                 &&s.learned(ID)&&s.learned(HighPowerSkills.SAFE_LANDING_PROBE)&&SkillCatalog.enabled("teleporter",ID)
                 &&HighPowerResources.ready(p)&&HighPowerCombat.unsupportedReason(p).isEmpty();

@@ -166,7 +166,7 @@ public final class EmergencyReturnConnectionCycle {
         return p instanceof NativeEmergencyReturnMovementAccess access && p.isAlive() && !p.isRemoved()
                 && p.getPose() == Pose.STANDING && !p.isShiftKeyDown() && !p.noPhysics && !p.isPassenger() && !p.isVehicle()
                 && !p.isSleeping() && !p.isFallFlying() && !p.isSwimming() && !p.isAutoSpinAttack()
-                && !p.getAbilities().flying && !p.getAbilities().instabuild && !p.getAbilities().invulnerable
+                && !p.getAbilities().flying && (CompatMode.openGameplay() || !p.getAbilities().instabuild) && (CompatMode.openGameplay() || !p.getAbilities().invulnerable)
                 && !p.isInWater() && !p.isInLava() && !p.isInPowderSnow && !p.isNoGravity()
                 && !p.shouldDiscardFriction() && Double.compare(p.getGravity(), .08D) == 0
                 && p.xxa == 0F && p.yya == 0F && p.zza == 0F && !access.academy$emergencyJumping()

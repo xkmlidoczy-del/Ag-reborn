@@ -271,7 +271,7 @@ public final class YawPalm {
     private static boolean canAct(ServerPlayer p) {
         if (!thread(p)) return false; var state = AbilityStorage.get(p);
         return p.connection != null && !p.hasDisconnected() && HighPowerResources.ready(p)
-                && !p.getAbilities().instabuild && !p.getAbilities().invulnerable && !p.noPhysics && !p.isPassenger() && !p.isSleeping()
+                && (CompatMode.openGameplay() || !p.getAbilities().instabuild) && (CompatMode.openGameplay() || !p.getAbilities().invulnerable) && !p.noPhysics && !p.isPassenger() && !p.isSleeping()
                 && state.activated && state.overloadFine && !state.interfering && state.learned(ID) && state.category.equals("vecmanip")
                 && state.learned(HighPowerSkills.BRAKING_TOUCH) && state.level >= 2 && state.level <= 5 && HighPowerResources.effectiveLevel(p) >= 2 && SkillCatalog.enabled("vecmanip", ID)
                 && HighPowerCombat.unsupportedReason(p).isEmpty() && !AbilityConsumption.busy(p) && !HighPowerResources.hasReservation(p)

@@ -95,7 +95,8 @@ public final class CanonEmissionReentryRuntimeTests {
             h.assertTrue(hook.calls == 1 && state.presets.current() == 1, "first attack hook switched to same-skill preset");
             h.assertTrue(total(first).compareTo(beforeFirst) == 0 && total(second).compareTo(beforeSecond) == 0,
                     "reentrant preset change prevents both pending exact settlements");
-            h.assertTrue(HighPowerResources.cp(player) < cp, "already paid cost is not refunded");
+            h.assertTrue(Math.abs(HighPowerResources.cp(player) - cp) < 1e-9, "The unsettled ultimate returns its CP");
+            h.assertTrue(state.cooldowns.getOrDefault("aero_barrage", 0) == 10, "The unsettled ultimate uses the short cooldown");
             h.succeed();
         } finally {
             NeoForge.EVENT_BUS.unregister(hook); first.discard(); second.discard();
@@ -150,7 +151,8 @@ public final class CanonEmissionReentryRuntimeTests {
             h.assertTrue(delta.normalize().dot(player.getLookAngle().normalize()) >= .7,
                     "target stays in the skill cone, isolating its range guard");
             h.assertTrue(total(target).compareTo(before) == 0, "skill-specific guard rejects the moved target after callback");
-            h.assertTrue(HighPowerResources.cp(player) < cp, "already paid cost is not refunded");
+            h.assertTrue(Math.abs(HighPowerResources.cp(player) - cp) < 1e-9, "The unsettled ultimate returns its CP");
+            h.assertTrue(state.cooldowns.getOrDefault("aero_barrage", 0) == 10, "The unsettled ultimate uses the short cooldown");
             h.succeed();
         } finally {
             cleared.forEach((pos, old) -> level.setBlock(pos, old, 2));

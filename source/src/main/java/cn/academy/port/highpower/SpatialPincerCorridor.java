@@ -476,7 +476,7 @@ public final class SpatialPincerCorridor {
     private static boolean eligible(Context c) {
         ServerPlayer p = c.identity.owner(); var s = c.identity.state();
         return identity(c) && !c.closing && p.isAlive() && !p.isRemoved() && !p.hasDisconnected()
-                && !p.isCreative() && !p.isSpectator() && !p.getAbilities().invulnerable && p.containerMenu == p.inventoryMenu
+                && (CompatMode.openGameplay() || !p.isCreative()) && !p.isSpectator() && (CompatMode.openGameplay() || !p.getAbilities().invulnerable) && p.containerMenu == p.inventoryMenu
                 && s.activated && s.overloadFine && !s.interfering && !s.consumptionInProgress()
                 && (c.plan == null && SpatialPincerConsent.committing(p) || !AbilityConsumption.busy(p))
                 && s.learned(ID) && s.learned(HighPowerSkills.CROSS_SUBSTITUTION) && s.learned(HighPowerSkills.SAFE_LANDING_PROBE) && s.learned(HighPowerSkills.DISPLACED_PROJECTION)

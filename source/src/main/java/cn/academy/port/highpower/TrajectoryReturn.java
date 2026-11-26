@@ -293,7 +293,7 @@ public final class TrajectoryReturn {
             &&canAct(c.identity.owner())&&mapped(c.identity.owner(),c.input.slot())&&c.preset==c.identity.state().presets.current()&&c.revision==c.identity.state().presets.revision();}
     private static boolean canAct(ServerPlayer p){
         if(!thread(p))return false;var s=AbilityStorage.get(p);
-        return p.connection!=null&&!p.hasDisconnected()&&p.isAlive()&&!p.isRemoved()&&!p.isCreative()&&!p.isSpectator()&&!p.getAbilities().invulnerable
+        return p.connection!=null&&!p.hasDisconnected()&&p.isAlive()&&!p.isRemoved()&&(CompatMode.openGameplay()||!p.isCreative())&&!p.isSpectator()&&(CompatMode.openGameplay()||!p.getAbilities().invulnerable)
                 &&!p.noPhysics&&!p.isPassenger()&&!p.isVehicle()&&!p.isSleeping()&&p.containerMenu==p.inventoryMenu
                 &&s.activated&&s.overloadFine&&!s.interfering&&!s.consumptionInProgress()&&s.learned(ID)&&s.learned("yaw_palm")
                 &&HighPowerCategories.VECMANIP.equals(s.category)&&s.level>=3&&s.level<=5&&HighPowerResources.effectiveLevel(p)>=3

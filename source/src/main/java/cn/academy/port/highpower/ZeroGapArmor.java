@@ -400,8 +400,8 @@ public final class ZeroGapArmor {
     }
     private static boolean canAct(ServerPlayer p) { return basic(p, false) && HighPowerResources.ready(p) && HighPowerCombat.unsupportedReason(p).isEmpty(); }
     private static boolean basic(ServerPlayer p, boolean nativeDamageFrame) {
-        if (!thread(p) || p.connection == null || p.hasDisconnected() || p.isRemoved() || !nativeDamageFrame && !p.isAlive() || p.isSpectator() || p.getAbilities().instabuild
-                || p.getAbilities().invulnerable || p.noPhysics || p.isPassenger() || p.isSleeping() || p.containerMenu != p.inventoryMenu || AbilityConsumption.busy(p)) return false;
+        if (!thread(p) || p.connection == null || p.hasDisconnected() || p.isRemoved() || !nativeDamageFrame && !p.isAlive() || p.isSpectator() || (p.getAbilities().instabuild && !CompatMode.openGameplay())
+                || (p.getAbilities().invulnerable && !CompatMode.openGameplay()) || p.noPhysics || p.isPassenger() || p.isSleeping() || p.containerMenu != p.inventoryMenu || AbilityConsumption.busy(p)) return false;
         var s = AbilityStorage.peek(p);
         return s != null && s.category.equals("meltdowner") && s.activated && s.overloadFine && !s.interfering
                 && s.learned(ID) && s.learned(ScatterPlates.ID) && s.learned(DissipationCurtain.ID) && s.learned(DualPoint.ID)

@@ -118,7 +118,7 @@ public final class MagneticDomainTeamSlowFall {
     private static boolean eligible(ServerPlayer p) {
         return thread(p) && p.connection!=null && p.connection.isAcceptingMessages() && !p.hasDisconnected() && p.isAlive() && !p.isRemoved()
             && p.serverLevel().getEntity(p.getUUID())==p && !p.isSpectator()
-            && !p.getAbilities().instabuild && !p.getAbilities().invulnerable && !p.getAbilities().flying
+            && (CompatMode.openGameplay() || !p.getAbilities().instabuild) && (CompatMode.openGameplay() || !p.getAbilities().invulnerable) && !p.getAbilities().flying
             && !p.isInWaterOrBubble() && !p.isInLava()
             && !p.noPhysics && !p.isPassenger() && !p.isVehicle() && !p.isSleeping() && !p.isFallFlying()
             && p.containerMenu==p.inventoryMenu && finite(p.position()) && finite(p.getDeltaMovement());

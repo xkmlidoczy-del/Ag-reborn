@@ -407,7 +407,7 @@ public final class RemoteScatterRelay {
     private static boolean canAct(ServerPlayer p){
         if(!thread(p))return false;var state=AbilityStorage.get(p);
         return p.connection!=null&&!p.hasDisconnected()&&p.containerMenu==p.inventoryMenu&&HighPowerResources.ready(p)
-                &&!p.isSpectator()&&!p.getAbilities().instabuild&&!p.getAbilities().invulnerable&&state.activated&&state.overloadFine&&!state.interfering
+                &&!p.isSpectator()&&(CompatMode.openGameplay()||!p.getAbilities().instabuild)&&(CompatMode.openGameplay()||!p.getAbilities().invulnerable)&&state.activated&&state.overloadFine&&!state.interfering
                 &&state.learned(ID)&&state.learned(FoldedMirrorArray.ID)&&state.category.equals("meltdowner")&&state.level>=MIN_LEVEL&&state.level<=MAX_LEVEL
                 &&HighPowerResources.effectiveLevel(p)>=MIN_LEVEL&&SkillCatalog.enabled("meltdowner",ID)
                 &&HighPowerCombat.unsupportedReason(p).isEmpty()&&!AbilityConsumption.busy(p)&&!p.noPhysics&&!p.isPassenger()&&!p.isSleeping()
@@ -419,7 +419,7 @@ public final class RemoteScatterRelay {
         ServerPlayer p=c.identity.owner();var state=AbilityStorage.get(p);
         return thread(p)&&owned(p)==c&&c.identity.owns(p)&&HighPowerBracerSession.authenticated(p,c.input)
                 &&p.connection!=null&&!p.hasDisconnected()&&p.containerMenu==p.inventoryMenu
-                &&!p.isSpectator()&&!p.getAbilities().instabuild&&!p.getAbilities().invulnerable
+                &&!p.isSpectator()&&(CompatMode.openGameplay()||!p.getAbilities().instabuild)&&(CompatMode.openGameplay()||!p.getAbilities().invulnerable)
                 &&p.isAlive()&&!p.isRemoved()&&state.activated&&state.overloadFine&&!state.interfering
                 &&state.category.equals("meltdowner")&&state.level==5&&state.learned(ID)&&state.learned(FoldedMirrorArray.ID)
                 &&c.preset==state.presets.current()&&c.revision==state.presets.revision()

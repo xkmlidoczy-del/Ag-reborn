@@ -371,8 +371,8 @@ public final class MulticoreCanopy {
     private static boolean canActState(ServerPlayer p){
         var state=AbilityStorage.get(p);
         return p.connection!=null&&!p.hasDisconnected()&&p.containerMenu==p.inventoryMenu&&HighPowerResources.ready(p)
-                &&!p.getAbilities().instabuild&&!p.getAbilities().invulnerable&&state.activated&&state.overloadFine&&!state.interfering
-                &&state.learned(ID)&&state.learned(ParticleLaminate.ID)&&state.category.equals("meltdowner")&&state.level==5&&HighPowerResources.effectiveLevel(p)==5
+                &&(CompatMode.openGameplay()||!p.getAbilities().instabuild)&&(CompatMode.openGameplay()||!p.getAbilities().invulnerable)&&state.activated&&state.overloadFine&&!state.interfering
+                &&state.learned(ID)&&(CompatMode.openGameplay()||state.learned(ParticleLaminate.ID))&&state.category.equals("meltdowner")&&state.level==5&&HighPowerResources.effectiveLevel(p)==5
                 &&SkillCatalog.enabled("meltdowner",ID)&&HighPowerCombat.unsupportedReason(p).isEmpty()&&!AbilityConsumption.busy(p)
                 &&!p.noPhysics&&!p.isPassenger()&&!p.isSleeping()&&finite(p.position())&&finite(p.getDeltaMovement())&&finite(p.getLookAngle())
                 &&p.getLookAngle().lengthSqr()>.5&&Float.isFinite(p.getXRot())&&Float.isFinite(p.getYRot())&&MulticoreCanopyRules.clock(physicalTick);

@@ -212,7 +212,7 @@ public final class ShortInterception {
     private static boolean sameTarget(Context c){return c.target!=null&&c.targetUuid.equals(c.target.getUUID())&&c.targetId==c.target.getId()&&ShortInterceptionWorld.hostile(c.identity.owner(),c.target);}
     private static boolean identity(Context c){
         var p=c.identity.owner();var s=c.identity.state();return c.identity.owns(p)&&mapped(p,c.command.slot())&&s.presets.current()==c.preset&&s.presets.revision()==c.revision
-                &&p.isAlive()&&!p.isRemoved()&&!p.hasDisconnected()&&!p.isCreative()&&!p.isSpectator()&&!p.getAbilities().invulnerable
+                &&p.isAlive()&&!p.isRemoved()&&!p.hasDisconnected()&&(CompatMode.openGameplay()||!p.isCreative())&&!p.isSpectator()&&(CompatMode.openGameplay()||!p.getAbilities().invulnerable)
                 &&p.containerMenu==p.inventoryMenu&&s.activated&&s.overloadFine&&!s.interfering&&!s.consumptionInProgress()
                 &&s.learned(ID)&&s.learned("cross_substitution")&&SkillCatalog.enabled("teleporter",ID)&&s.level>=3
                 &&HighPowerCategories.isTeleporter(s.category)&&HighPowerCombat.enabled(p)&&HighPowerCombat.unsupportedReason(p).isEmpty()

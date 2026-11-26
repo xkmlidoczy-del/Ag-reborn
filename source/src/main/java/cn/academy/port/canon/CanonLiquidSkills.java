@@ -316,7 +316,7 @@ public final class CanonLiquidSkills {
     /** A live, unclaimed arrow shot by a hostile mob that is not on the owner's side. */
     private static boolean hostileArrow(ServerPlayer owner,net.minecraft.world.entity.projectile.AbstractArrow arrow) {
         if(arrow.getType()!=EntityType.ARROW||arrow.inGround||arrow.isRemoved()||!arrow.isAlive()
-                ||!(arrow.getOwner() instanceof Mob shooter)||!(shooter instanceof Enemy)||shooter.isAlliedTo(owner)||owner.isAlliedTo(shooter)
+                ||!(arrow.getOwner() instanceof Mob shooter)||!(shooter instanceof Enemy || cn.academy.port.highpower.CompatMode.openGameplay() && (CanonTargetPolicy.hostile(shooter) || shooter.getTarget()==owner))||shooter.isAlliedTo(owner)||owner.isAlliedTo(shooter)
                 ||cn.academy.port.highpower.ElectromasterPrototype.leased(arrow)||cn.academy.port.highpower.MultiAxisReflectionArrowBridge.leased(arrow)
                 ||cn.academy.port.highpower.TrajectoryReturnArrowBridge.leased(arrow)||cn.academy.port.highpower.ShortInterceptionArrowBridge.leased(arrow)
                 ||cn.academy.port.highpower.IronSandLance.leased(arrow)||cn.academy.port.highpower.MagneticArrowSeparation.leased(arrow)
@@ -453,9 +453,7 @@ public final class CanonLiquidSkills {
                 ||target.isPassenger()||target.isVehicle()||target.isAlliedTo(p)||p.isAlliedTo(target)
                 ||!lease.world.hasChunkAt(target.blockPosition())||target.distanceToSqr(lease.body)>range*range||!finite(target.position())||!p.hasLineOfSight(target)
                 ||HighPowerCombat.unsupportedReason(target).isPresent())return false;
-        var type=target.getType();
-        return CanonTargetPolicy.reviewed(target)||net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(type).getNamespace().equals("minecraft")
-                &&type!=EntityType.WITHER&&type!=EntityType.ENDER_DRAGON&&type!=EntityType.WARDEN&&type!=EntityType.ELDER_GUARDIAN;
+        return CanonTargetPolicy.admittedCombatEntity(target);
     }
     private static boolean visible(Lease lease,LivingEntity target) {
         Vec3 from=lease.body.getEyePosition(),to=target.getBoundingBox().getCenter();

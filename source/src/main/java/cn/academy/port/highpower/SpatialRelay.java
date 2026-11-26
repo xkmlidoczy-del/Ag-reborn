@@ -366,7 +366,7 @@ public final class SpatialRelay {
                 && context.command.epoch() == context.identity.epoch() && mapped(player, context.command.slot())
                 && state.presets.current() == context.preset && state.presets.revision() == context.revision
                 && context.category.equals(state.category) && player.isAlive() && !player.isRemoved() && !player.hasDisconnected()
-                && !player.isCreative() && !player.isSpectator() && !player.getAbilities().invulnerable
+                && (CompatMode.openGameplay() || !player.isCreative()) && !player.isSpectator() && (CompatMode.openGameplay() || !player.getAbilities().invulnerable)
                 && player.containerMenu == player.inventoryMenu && state.activated && state.overloadFine && !state.interfering
                 && !state.consumptionInProgress() && !AbilityConsumption.busy(player) && state.learned(ID)
                 && state.learned(RecoveryMark.ID) && SkillCatalog.enabled(HighPowerCategories.TELEPORTER, ID)

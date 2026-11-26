@@ -219,7 +219,7 @@ public final class ThunderNet {
         if(!thread(p))return false;var s=AbilityStorage.get(p);
         return ElectromasterPrototype.ready(p)&&s.activated&&s.overloadFine&&s.learned(ID)&&s.category.equals("electromaster")
                 &&ElectromasterPrototype.effectiveLevel(p)>=4&&SkillCatalog.enabled("electromaster",ID)
-                &&HighPowerCombat.unsupportedReason(p).isEmpty()&&!AbilityConsumption.busy(p)&&!p.getAbilities().instabuild
+                &&HighPowerCombat.unsupportedReason(p).isEmpty()&&!AbilityConsumption.busy(p)&&(CompatMode.openGameplay()||!p.getAbilities().instabuild)
                 &&finite(p.position())&&finite(p.getLookAngle())&&Float.isFinite(p.getXRot())&&Float.isFinite(p.getYRot())&&ThunderNetRules.clock(now(p));
     }
     private static boolean valid(Context c){ServerPlayer p=c.identity.owner();return c.identity.owns(p)&&HighPowerBracerSession.authenticated(p,c.input)&&canAct(p)

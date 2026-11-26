@@ -71,10 +71,7 @@ public final class CanonWaterMotion {
                 &&HighPowerCombat.unsupportedReason(other).isEmpty()&&other.server.getPlayerList().getPlayer(other.getUUID())==other;
         if(!id.equals("hydro_repel")||!(target instanceof Mob)||!CanonTargetPolicy.hostile(target)
                 ||target.isAlliedTo(p)||p.isAlliedTo(target)||HighPowerCombat.unsupportedReason(target).isPresent())return false;
-        var type=target.getType();
-        return CanonTargetPolicy.reviewed(target)||net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(type).getNamespace().equals("minecraft")
-                &&type!=net.minecraft.world.entity.EntityType.WITHER&&type!=net.minecraft.world.entity.EntityType.ENDER_DRAGON
-                &&type!=net.minecraft.world.entity.EntityType.WARDEN&&type!=net.minecraft.world.entity.EntityType.ELDER_GUARDIAN;
+        return CanonTargetPolicy.admittedCombatEntity(target);
     }
     private static boolean permitted(ServerPlayer owner,LivingEntity target,Vec3 velocity) {
         if(!finite(velocity)||velocity.lengthSqr()>1)return false;ServerLevel w=owner.serverLevel();Vec3 end=target.position().add(velocity);

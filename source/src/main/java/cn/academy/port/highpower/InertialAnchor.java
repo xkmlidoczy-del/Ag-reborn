@@ -399,7 +399,7 @@ public final class InertialAnchor {
     }
     /** Only canonical vanilla components plus the item's ordinary durability are admitted. */
     private static boolean plainEquipment(ItemStack stack) {
-        if (stack.isEmpty()) return true;
+        if (stack.isEmpty() || CompatMode.openGameplay()) return true;
         if (stack.getCount() != 1 || !BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace().equals("minecraft")
                 || !stack.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY).isEmpty()) return false;
         ItemStack canonical = new ItemStack(stack.getItem());
@@ -412,8 +412,8 @@ public final class InertialAnchor {
     private static boolean canAct(ServerPlayer p) { return basic(p, false) && HighPowerResources.ready(p) && HighPowerCombat.unsupportedReason(p).isEmpty(); }
     private static boolean basic(ServerPlayer p, boolean nativeFrame) {
         if (!thread(p) || p.connection == null || p.hasDisconnected() || p.isRemoved() || !nativeFrame && !p.isAlive()
-                || p.isSpectator() || p.getAbilities().instabuild || p.getAbilities().invulnerable || p.noPhysics || p.isPassenger() || p.isVehicle()
-                || p.isSleeping() || p.isFallFlying() || p.getAbilities().flying || p.containerMenu != p.inventoryMenu || AbilityConsumption.busy(p)) return false;
+                || p.isSpectator() || (p.getAbilities().instabuild && !CompatMode.openGameplay()) || (p.getAbilities().invulnerable && !CompatMode.openGameplay()) || p.noPhysics || p.isPassenger() || p.isVehicle()
+                || p.isSleeping() || p.isFallFlying() || (p.getAbilities().flying && !(CompatMode.openGameplay() && p.getAbilities().instabuild)) || p.containerMenu != p.inventoryMenu || AbilityConsumption.busy(p)) return false;
         var s = AbilityStorage.peek(p);
         return s != null && HighPowerCombat.enabled(p) && s.category.equals("vecmanip") && s.activated && s.overloadFine && !s.interfering
                 && s.learned(ID) && s.learned(VectorParry.ID) && s.level >= 2 && s.level <= 5 && SkillCatalog.enabled("vecmanip", ID)

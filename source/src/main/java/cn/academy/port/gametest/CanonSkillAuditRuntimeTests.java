@@ -210,7 +210,7 @@ public final class CanonSkillAuditRuntimeTests {
         var state = AbilityStorage.get(player); state.changeCategoryClassic(category); state.setLevel(5);
         state.learn(CanonSkills.root(category)); state.setActivateState(true);
         level.setDayTime(18000); // no sun burn: a burning zombie's hurt cooldown would swallow the counter hit
-        var zombie = h.spawn(EntityType.ZOMBIE, START.add(0, 0, 1.5)); zombie.setTarget(player);
+        var zombie = h.spawn(EntityType.ZOMBIE, START.add(0, 0, 1.5)); zombie.setNoAi(true);
         // GameTests run with the legacy shield bypass on; the classic shield tests force shields back on the same way.
         cn.academy.port.highpower.EsperLegacyBypass.force(true);
         try {
@@ -219,6 +219,7 @@ public final class CanonSkillAuditRuntimeTests {
             float[] zombieHp = new float[1];
             // A freshly joined player is spawn-invulnerable for 60 ticks; hit after that.
             h.runAfterDelay(65, () -> {
+                zombie.setNoAi(false); zombie.setTarget(player);
                 var before = HighPowerCombat.shield(player);
                 // The zombie may already have swung and been countered; clear its hurt cooldown so this hit's counter lands.
                 zombie.invulnerableTime = 0; player.setRemainingFireTicks(100); zombieHp[0] = zombie.getHealth();

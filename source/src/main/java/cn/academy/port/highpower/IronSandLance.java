@@ -347,7 +347,7 @@ public final class IronSandLance {
     }
     private static boolean canAct(ServerPlayer p){
         if(!thread(p))return false;var state=AbilityStorage.get(p);
-        return p.connection!=null&&!p.hasDisconnected()&&ElectromasterPrototype.ready(p)&&!p.getAbilities().instabuild&&!p.getAbilities().invulnerable
+        return p.connection!=null&&!p.hasDisconnected()&&ElectromasterPrototype.ready(p)&&(CompatMode.openGameplay()||!p.getAbilities().instabuild)&&(CompatMode.openGameplay()||!p.getAbilities().invulnerable)
                 &&state.activated&&state.overloadFine&&!state.interfering&&state.learned(ID)&&state.category.equals("electromaster")
                 &&state.level>=3&&state.level<=5&&ElectromasterPrototype.effectiveLevel(p)>=3&&SkillCatalog.enabled("electromaster",ID)
                 &&HighPowerCombat.unsupportedReason(p).isEmpty()&&!AbilityConsumption.busy(p)&&!p.noPhysics&&!p.isPassenger()&&!p.isSleeping()

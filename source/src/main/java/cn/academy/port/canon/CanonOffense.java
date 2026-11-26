@@ -42,10 +42,11 @@ public final class CanonOffense {
         final int preset, level; final long revision, started; final Vec3 axis, areaCentre; final List<LivingEntity> targets;
         final CanonLiquidEntities.Shadow body; final ItemStack paper, paperSnapshot; final int sheets;
         final double effectiveReach;
+        final boolean aimedWarmup;
         boolean committed;
-        Cast(ServerPlayer p, CanonOffenseSkills.Spec spec, List<LivingEntity> targets, CanonLiquidEntities.Shadow body, ItemStack paper, int sheets, double effectiveReach) {
+        Cast(ServerPlayer p, CanonOffenseSkills.Spec spec, List<LivingEntity> targets, CanonLiquidEntities.Shadow body, ItemStack paper, int sheets, double effectiveReach, boolean aimedWarmup) {
             player = p; world = p.serverLevel(); state = AbilityStorage.get(p); this.spec = spec; this.targets = List.copyOf(targets); this.body = body;
-            this.paper = paper; paperSnapshot = paper.copy(); this.sheets = sheets; this.effectiveReach = effectiveReach;
+            this.paper = paper; paperSnapshot = paper.copy(); this.sheets = sheets; this.effectiveReach = effectiveReach; this.aimedWarmup = aimedWarmup;
             preset = state.presets.current(); revision = state.presets.revision();
             level = state.level; started = world.getGameTime(); axis = ClassicRaytrace.direction(p); areaCentre = aimPoint(p, spec, effectiveReach);
         }
@@ -81,11 +82,35 @@ public final class CanonOffense {
         if (baseSheets > 0 && (!CanonAuxItems.isSheet(paper) || paper.getCount() < sheets)) return false;
         double reach = effectiveReach(player, spec);
         var targets = select(player, spec, body, reach); if (targets.isEmpty()) return false;
-        var c = new Cast(player, spec, targets, body, paper, sheets, reach);
+        var c = new Cast(player, spec, targets, body, paper, sheets, reach, false);
         if (HighPowerResources.availableCp(player) < c.cost() || !valid(c)) return false;
         CASTS.put(player, c);
         CanonVfx.emit(player, id, c.origin(), area(player, spec) > 0 ? c.areaCentre : visualPoint(c, targets.getFirst()), CanonVfx.Phase.START, spec.warmup() + 2, area(player, spec));
         observer.accept(new Receipt(player.getUUID(), id, "WARMUP", c.started, targets.size(), 0, 0, HighPowerResources.cp(player), HighPowerResources.cp(player)));
+        return true;
+    }
+
+    /** Player slot-press fallback for AREA/LINE/CONE warmup skills aimed at solid terrain when no entity is pre-locked. */
+    public static boolean tryStartAimedWarmup(ServerPlayer player, String id) {
+        if (!cn.academy.port.highpower.CompatMode.openGameplay()) return false;
+        var spec = CanonOffenseSkills.find(id);
+        if (spec == null || spec.shape() == CanonOffenseSkills.Shape.POINT || spec.shape() == CanonOffenseSkills.Shape.AIR_POINT
+                || player == null || !AbilityStorage.get(player).canUse(id) || AbilityConsumption.busy(player) || !owner(player, spec) || CASTS.size() >= 64) return false;
+        var body = spec.body() ? CanonLiquidSkills.controlledBody(player) : null;
+        if (spec.body() && body == null) return false;
+        int baseSheets = switch (id) { case "paper_fold_fan" -> 3; case "paper_piercing_lance" -> 2; case "paper_returning_wheel" -> 4; default -> 0; };
+        ItemStack paper = CanonAuxItems.isSheet(player.getMainHandItem()) ? player.getMainHandItem() : player.getOffhandItem();
+        int sheets = baseSheets > 0 ? CanonAuxItems.sheetCost(paper, baseSheets) : 0;
+        if (baseSheets > 0 && (!CanonAuxItems.isSheet(paper) || paper.getCount() < sheets)) return false;
+        double reach = effectiveReach(player, spec);
+        Vec3 from = player.getEyePosition(), rawEnd = from.add(ClassicRaytrace.direction(player).scale(Math.min(32.0, reach)));
+        var hit = player.serverLevel().clip(new ClipContext(from, rawEnd, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
+        if (hit.getType() != HitResult.Type.BLOCK && !(spec.category().equals("float_dial") && CanonAuxItems.floatMarker(player) != null)) return false;
+        var c = new Cast(player, spec, List.of(), body, paper, sheets, reach, true);
+        if (HighPowerResources.availableCp(player) < c.cost() || !valid(c)) return false;
+        CASTS.put(player, c);
+        CanonVfx.emit(player, id, c.origin(), c.areaCentre, CanonVfx.Phase.START, spec.warmup() + 2, Math.max(1.2, area(player, spec)));
+        observer.accept(new Receipt(player.getUUID(), id, "WARMUP", c.started, 0, 0, 0, HighPowerResources.cp(player), HighPowerResources.cp(player)));
         return true;
     }
 
@@ -114,7 +139,8 @@ public final class CanonOffense {
                 || HighPowerCombat.unsupportedReason(t).isPresent()) return false;
         if (t instanceof Player other) return AcademyConfig.ATTACK_PLAYERS.get() && p.server.isPvpAllowed() && p.canHarmPlayer(other);
         boolean directShape = spec.shape() == CanonOffenseSkills.Shape.POINT || spec.shape() == CanonOffenseSkills.Shape.AIR_POINT;
-        return directShape ? CanonTargetPolicy.directTarget(p, t) : (t instanceof Mob && CanonTargetPolicy.hostile(t));
+        return directShape ? CanonTargetPolicy.directTarget(p, t)
+                : (cn.academy.port.highpower.CompatMode.openGameplay() ? CanonTargetPolicy.directedAreaTarget(p, t) : (t instanceof Mob && CanonTargetPolicy.hostile(t)));
     }
 
     private static double radius(ServerPlayer p, CanonOffenseSkills.Spec spec) {
@@ -200,6 +226,50 @@ public final class CanonOffense {
         return !target.onGround() && target.level().noCollision(target, target.getBoundingBox().move(0, -.08, 0));
     }
 
+    private static List<LivingEntity> reselectAtWarmupEnd(Cast c) {
+        if (!cn.academy.port.highpower.CompatMode.openGameplay()
+                || c.spec.shape() == CanonOffenseSkills.Shape.POINT
+                || c.spec.shape() == CanonOffenseSkills.Shape.AIR_POINT) {
+            return List.of();
+        }
+        if (c.spec.shape() == CanonOffenseSkills.Shape.AREA) {
+            double r = radius(c.player, c.spec);
+            int cap = c.spec.targets() + (c.spec.category().equals("mental_out") && c.spec.targets() > 1 && CanonAuxItems.inHands(c.player, CanonAuxItems.MENTAL_REMOTE) ? 1 : 0);
+            var list = new ArrayList<>(c.world.getEntitiesOfClass(LivingEntity.class, new AABB(c.areaCentre, c.areaCentre).inflate(r),
+                    v -> target(c.player, c.spec, v, c.effectiveReach + r) && v.getBoundingBox().getCenter().distanceToSqr(c.areaCentre) <= r * r));
+            list.sort(Comparator.comparingDouble(v -> v.getBoundingBox().getCenter().distanceToSqr(c.areaCentre)));
+            return List.copyOf(list.subList(0, Math.min(cap, list.size())));
+        }
+        return select(c.player, c.spec, c.body, c.effectiveReach);
+    }
+
+    private static boolean reselectedGeometry(Cast c, LivingEntity t, List<LivingEntity> activeTargets) {
+        if (!valid(c) || !activeTargets.contains(t)
+                || !target(c.player, c.spec, t, c.effectiveReach + (c.spec.shape() == CanonOffenseSkills.Shape.AREA ? radius(c.player, c.spec) : 0))) {
+            return false;
+        }
+        if (c.spec.body()) {
+            return c.body.getBoundingBox().getCenter().distanceToSqr(t.getBoundingBox().getCenter()) <= radius(c.player, c.spec) * radius(c.player, c.spec)
+                    && c.world.clip(new ClipContext(c.body.getBoundingBox().getCenter(), t.getBoundingBox().getCenter(), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, c.body)).getType() == HitResult.Type.MISS;
+        }
+        if (c.spec.shape() == CanonOffenseSkills.Shape.AREA) {
+            return t.getBoundingBox().getCenter().distanceToSqr(c.areaCentre) <= radius(c.player, c.spec) * radius(c.player, c.spec);
+        }
+        return select(c.player, c.spec, c.body, c.effectiveReach).contains(t);
+    }
+
+    private static void emitOffenseBlast(Cast c, Vec3 impact) {
+        if (!cn.academy.port.highpower.CompatMode.openGameplay() || c.spec.category().equals("mental_out")) return;
+        boolean heavy = c.spec.shape() == CanonOffenseSkills.Shape.AREA || c.spec.level() >= 4
+                || c.spec.id().equals("paper_piercing_lance") || c.spec.id().equals("liquid_lance");
+        if (!heavy) return;
+        float power = c.spec.level() >= 5 ? 2.1f : c.spec.level() == 4 ? 1.7f : 1.3f;
+        double crater = c.spec.level() >= 5 ? 2.4 : c.spec.level() == 4 ? 1.8 : 1.3;
+        boolean allowTerrain = c.spec.level() >= 4 && !c.spec.category().equals("liquid_shadow");
+        cn.academy.port.highpower.environment.SkillBlastHelper.emitBlast(
+                c.player, c.spec.category() + "." + c.spec.id(), c.spec.level(), impact, power, crater, allowTerrain);
+    }
+
     @SubscribeEvent public static void tick(ServerTickEvent.Post event) {
         for (var c : List.copyOf(CASTS.values())) {
             if (c.player.server != event.getServer()) continue;
@@ -207,9 +277,35 @@ public final class CanonOffense {
             if (c.world.getGameTime() - c.started < c.spec.warmup()) continue;
             CASTS.remove(c.player, c);
             var victims = c.targets.stream().filter(t -> geometry(c, t)).toList();
-            if (victims.isEmpty()) { end(c); continue; }
+            boolean reselected = false;
+            if (victims.isEmpty() && cn.academy.port.highpower.CompatMode.openGameplay()) {
+                victims = reselectAtWarmupEnd(c);
+                reselected = !victims.isEmpty();
+            }
+            if (victims.isEmpty()) {
+                if (c.aimedWarmup && cn.academy.port.highpower.CompatMode.openGameplay()) {
+                    double cp = c.cost(), cpBefore = HighPowerResources.cp(c.player);
+                    if (HighPowerResources.trySpend(c.player, c.spec.id(), cp, c.spec.cooldown())) {
+                        c.committed = true;
+                        if (c.sheets > 0 && !c.player.getAbilities().instabuild) {
+                            c.paper.shrink(c.sheets); c.player.getInventory().setChanged();
+                        }
+                        double a = Math.max(1.4, area(c.player, c.spec));
+                        CanonVfx.emit(c.player, c.spec.id(), c.origin(), c.areaCentre, CanonVfx.Phase.HIT, 22, a,
+                                c.effectiveReach > c.spec.reach() || c.sheets > 0 && CanonAuxItems.isOrigami(c.paperSnapshot));
+                        emitOffenseBlast(c, c.areaCentre);
+                        observer.accept(new Receipt(c.player.getUUID(), c.spec.id(), "RESOLVE", c.world.getGameTime(), 0, cp, 0, cpBefore, HighPowerResources.cp(c.player)));
+                        continue;
+                    }
+                }
+                end(c);
+                continue;
+            }
+            final var activeVictims = List.copyOf(victims);
+            final boolean useReselected = reselected;
             Vec3 origin = c.origin(); double cp = c.cost(), cpBefore = HighPowerResources.cp(c.player);
-            var emission = CanonEmission.begin(c.player, c.spec.id(), cp, c.spec.cooldown(), victims, t -> geometry(c, t));
+            var emission = CanonEmission.begin(c.player, c.spec.id(), cp, c.spec.cooldown(), activeVictims,
+                    t -> useReselected ? reselectedGeometry(c, t, activeVictims) : geometry(c, t));
             if (emission == null) { end(c); continue; }
             if (c.sheets > 0) {
                 if (!valid(c)) { emission.finish(); end(c); continue; }
@@ -217,17 +313,22 @@ public final class CanonOffense {
             }
             c.committed = true;
             final double[] dealt = {0}; final int[] hits = {0};
+            final Vec3[] blastAt = {null};
             emission.forEach(t -> {
                 var before = cn.academy.port.highpower.CityNpcPower.health(t);
                 if (!emission.attack(t)) return;
                 hits[0]++;
+                if (blastAt[0] == null) blastAt[0] = area(c.player, c.spec) > 0 ? c.areaCentre : t.getBoundingBox().getCenter();
                 dealt[0] += before.subtract(cn.academy.port.highpower.CityNpcPower.health(t)).max(java.math.BigDecimal.ZERO).doubleValue();
                 affect(c, t);
                 CanonVfx.emit(c.player, c.spec.id(), origin, hits[0] == 1 && area(c.player, c.spec) > 0 ? c.areaCentre : visualPoint(c, t), CanonVfx.Phase.HIT, 26, hits[0] == 1 ? area(c.player, c.spec) : 0,
                         c.effectiveReach > c.spec.reach() || c.sheets > 0 && CanonAuxItems.isOrigami(c.paperSnapshot));
             }, () -> {
-                if (hits[0] > 0 && valid(c)) { c.state.addExperience(c.spec.id(), .01); AbilityStorage.save(c.player); }
-                else CanonVfx.emit(c.player, c.spec.id(), origin, c.centre(), CanonVfx.Phase.END, 8);
+                if (hits[0] > 0 && valid(c)) {
+                    if (blastAt[0] != null) emitOffenseBlast(c, blastAt[0]);
+                    c.state.addExperience(c.spec.id(), .01);
+                    AbilityStorage.save(c.player);
+                } else CanonVfx.emit(c.player, c.spec.id(), origin, c.centre(), CanonVfx.Phase.END, 8);
                 observer.accept(new Receipt(c.player.getUUID(), c.spec.id(), "RESOLVE", c.world.getGameTime(), hits[0], cp, dealt[0], cpBefore, HighPowerResources.cp(c.player)));
             });
         }

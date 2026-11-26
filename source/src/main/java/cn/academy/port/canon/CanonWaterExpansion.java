@@ -104,8 +104,10 @@ public final class CanonWaterExpansion {
                     flaskPaid[0] = true;
                 }
                 boolean[] hit = {false};
+                Vec3[] firstImpact = {null};
                 emission.forEach(t -> {
                     if (emission.attack(t)) {
+                        if (firstImpact[0] == null) firstImpact[0] = t.position();
                         if (t.isAlive() && !cn.academy.port.highpower.PlayerShieldArmor.ignoresControl(t)) {
                             t.clearFire();
                             if (id.equals("hydro_eddy")) {
@@ -117,6 +119,9 @@ public final class CanonWaterExpansion {
                         hit[0] = true;
                     }
                 }, () -> {
+                    if (hit[0] && firstImpact[0] != null && id.equals("hydro_eddy") && p.isAlive() && p.serverLevel() == world) {
+                        CanonEndpointBlast.emitHitBlast(p, CATEGORY, id, 5, firstImpact[0]);
+                    }
                     if (hit[0] && AbilityStorage.get(p) == state && state.learned(id)) { state.addExperience(id, .01); AbilityStorage.save(p); }
                 });
                 return cn.academy.port.macro.MacroSkillRules.ultimate(id) || hit[0];
@@ -221,16 +226,13 @@ public final class CanonWaterExpansion {
     private static boolean attackGeometry(ServerPlayer p, String id, LivingEntity target, boolean flaskBacked) {
         var w = p.serverLevel();
         boolean direct = id.equals("hydro_pressure_jet");
-        if ((direct ? !CanonTargetPolicy.directTarget(p, target) : !(target instanceof Mob && CanonTargetPolicy.hostile(target)))
+        if ((direct ? !CanonTargetPolicy.directTarget(p, target)
+                : !(cn.academy.port.highpower.CompatMode.openGameplay() ? CanonTargetPolicy.directedAreaTarget(p, target) : (target instanceof Mob && CanonTargetPolicy.hostile(target))))
                 || target.level() != w || w.getEntity(target.getUUID()) != target || !target.isAlive() || target.isRemoved()
                 || target.isPassenger() || target.isVehicle() || p.isAlliedTo(target) || target.isAlliedTo(p)
                 || !finite(target.position()) || !w.hasChunkAt(target.blockPosition()) || !w.mayInteract(p, target.blockPosition())
                 || !p.hasLineOfSight(target) || HighPowerCombat.unsupportedReason(target).isPresent()) return false;
-        if (!direct) {
-            var type = target.getType();
-            if (!CanonTargetPolicy.reviewed(target) && (!BuiltInRegistries.ENTITY_TYPE.getKey(type).getNamespace().equals("minecraft")
-                    || type == EntityType.WITHER || type == EntityType.ENDER_DRAGON || type == EntityType.WARDEN || type == EntityType.ELDER_GUARDIAN)) return false;
-        }
+        if (!direct && !CanonTargetPolicy.admittedCombatEntity(target)) return false;
         Vec3 delta = target.getBoundingBox().getCenter().subtract(p.getEyePosition()); double distance = delta.lengthSqr();
         if (!finite(delta) || distance < 1e-8) return false;
         if (id.equals("hydro_eddy")) return target.isInWaterOrBubble() && p.distanceToSqr(target) <= Math.pow(cn.academy.port.macro.MacroSkillRules.area(id, AbilityStorage.get(p).exp(id), number(id, "radius")), 2);
@@ -261,8 +263,7 @@ public final class CanonWaterExpansion {
                 && other.connection != null && !other.hasDisconnected() && !other.isSpectator() && other.isShiftKeyDown()
                 && other.server.getPlayerList().getPlayer(other.getUUID()) == other && p.isAlliedTo(other) && other.isAlliedTo(p);
         if (!id.equals("hydro_undertow") || !(t instanceof Mob) || !CanonTargetPolicy.hostile(t) || p.isAlliedTo(t) || t.isAlliedTo(p)) return false;
-        var type = t.getType(); return CanonTargetPolicy.reviewed(t) || BuiltInRegistries.ENTITY_TYPE.getKey(type).getNamespace().equals("minecraft")
-                && type != EntityType.WITHER && type != EntityType.ENDER_DRAGON && type != EntityType.WARDEN && type != EntityType.ELDER_GUARDIAN;
+        return CanonTargetPolicy.admittedCombatEntity(t);
     }
     private static Vec3 motion(ServerPlayer p, LivingEntity t, String id) {
         Vec3 old = t.getDeltaMovement();

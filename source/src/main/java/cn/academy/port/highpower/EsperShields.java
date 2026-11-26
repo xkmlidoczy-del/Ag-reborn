@@ -69,11 +69,11 @@ public final class EsperShields {
     /** Fraction of the maximum shield an absorbed hit refills while the Nitrogen Armor skill is up. */
     public static final BigDecimal SHELL_REFILL = new BigDecimal("0.01");
     private static final double MELEE_REACH = 6;
-    private static final int COUNTER_INTERVAL = 10;
+    private static final int COUNTER_INTERVAL = 4;
     private record Hit(ServerPlayer player, ServerLevel level, String category, Entity attacker, Entity direct,
                        boolean broke, DamageSource source, boolean suppressPhase, BigDecimal shieldDebit) {}
     private static final List<Hit> PENDING = new ArrayList<>();
-    private static final Map<ServerPlayer, Long> COUNTERS = new WeakHashMap<>();
+    private static final Map<ServerPlayer, Map<Entity, Long>> COUNTERS = new WeakHashMap<>();
 
     private EsperShields() {}
 
@@ -306,12 +306,13 @@ public final class EsperShields {
         if (hit.shieldDebit().signum() <= 0) return false;
         var player = hit.player();
         long now = hit.level().getGameTime();
-        Long last = COUNTERS.get(player);
-        if (last != null && now >= last && now - last < COUNTER_INTERVAL) return false;
+        var attackerTimes = COUNTERS.computeIfAbsent(player, ignored -> new WeakHashMap<>());
+        Long last = attackerTimes.get(attacker);
+        if (!hit.broke() && last != null && now >= last && now - last < COUNTER_INTERVAL) return false;
         var capacity = ContinuousHighPowerGrowth.sample(HighPowerCombat.earnedGrowthPosition(player)).maxShield();
         float damage = EsperDamageBalance.passiveCounter(hit.shieldDebit(), capacity, strength);
         if (damage <= 0) return false;
-        COUNTERS.put(player, now);
+        attackerTimes.put(attacker, now);
         return AbilityDamage.shieldCounter(player, skill, attacker, damage);
     }
 

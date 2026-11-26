@@ -469,7 +469,7 @@ public final class SpatialPincerConsent {
     }
     /** Reading recipient eligibility never obtains, binds or initializes ability/high-power state. */
     private static String travelerRefusal(ServerPlayer player) {
-        if (!live(player) || player.isSpectator() || player.getAbilities().instabuild || player.getAbilities().invulnerable
+        if (!live(player) || player.isSpectator() || (player.getAbilities().instabuild && !CompatMode.openGameplay()) || (player.getAbilities().invulnerable && !CompatMode.openGameplay())
                 || player.containerMenu != player.inventoryMenu) return "source_unavailable";
         var state = AbilityStorage.peek(player);
         if (state != null && (state.interfering || state.consumptionInProgress())) return "movement_conflict";

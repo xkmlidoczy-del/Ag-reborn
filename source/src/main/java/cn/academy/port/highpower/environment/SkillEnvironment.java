@@ -96,7 +96,21 @@ public final class SkillEnvironment {
 
     /** Use only after a successful server-side cast, never from an aim preview or a client request. */
     public static Cast begin(ServerPlayer owner, String qualifiedSkill, int skillLevel) {
-        return new Cast(owner, qualifiedSkill, skillLevel);
+        return new Cast(owner, qualifiedSkill, skillLevel, false);
+    }
+
+    /** Controlled blast/crater cast for LV3-LV5 two-stage explosions under open gameplay mode. */
+    public static Cast beginBlast(ServerPlayer owner, String qualifiedSkill, int skillLevel) {
+        return new Cast(owner, qualifiedSkill, skillLevel,
+                cn.academy.port.highpower.CompatMode.openGameplay() && skillLevel >= 3);
+    }
+
+    public static boolean terrainPermitted(Level world, String qualifiedSkill) {
+        try {
+            return AcademyConfig.contextTerrain(world, qualifiedSkill);
+        } catch (IllegalArgumentException unregistered) {
+            return AcademyConfig.canDestroyBlocks(world);
+        }
     }
 
     public record Counts(int blockChecks, int blockWriteAttempts, int restorationAttempts,
@@ -114,6 +128,7 @@ public final class SkillEnvironment {
         private final ServerLevel world;
         private final String skill;
         private final int level;
+        private final boolean blastCast;
         private final UUID presentation;
         private Vec3 impactCentre;
         private final Set<BlockPos> blocks = new HashSet<>();
@@ -121,24 +136,30 @@ public final class SkillEnvironment {
         private int blockWrites, pushes;
         private boolean insideHook;
 
-        private Cast(ServerPlayer owner, String skill, int level) {
+        private Cast(ServerPlayer owner, String skill, int level, boolean blastCast) {
             this.owner = owner;
             this.world = owner.serverLevel();
             this.skill = skill;
+            this.blastCast = blastCast;
             this.presentation = cn.academy.port.macro.MacroVfx.castId(owner,skill);
-            this.level = switch (skill) {
-                case "electromaster.railgun", "aero_hand.aero_ground_blast" -> level == 4 ? level : 0;
-                case "vecmanip.plasma_cannon", "meltdowner.mine_ray_luck" -> level == 5 ? level : 0;
-                default -> 0;
-            };
+            if (blastCast) {
+                this.level = Math.max(3, Math.min(5, level));
+            } else {
+                this.level = switch (skill) {
+                    case "electromaster.railgun", "aero_hand.aero_ground_blast" -> level == 4 ? level : 0;
+                    case "vecmanip.plasma_cannon", "meltdowner.mine_ray_luck" -> level == 5 ? level : 0;
+                    default -> 0;
+                };
+            }
         }
 
         public boolean allowsBlockChanges() {
             Mode current = mode(world);
-            return liveOwner() && !skill.equals("aero_hand.aero_ground_blast")
+            return liveOwner() && (blastCast || !skill.equals("aero_hand.aero_ground_blast"))
                     && (current == Mode.RESTORE || current == Mode.PERMANENT)
                     && world.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)
-                    && AcademyConfig.contextTerrain(world, skill) && knownClaimPolicy();
+                    && (blastCast ? terrainPermitted(world, skill) : AcademyConfig.contextTerrain(world, skill))
+                    && knownClaimPolicy();
         }
 
         /** True only if the candidate changed. A protected or otherwise refused cell stops a penetration ray. */
@@ -147,8 +168,12 @@ public final class SkillEnvironment {
         }
 
         public boolean breakBlock(BlockPos candidate, BooleanSupplier drops) {
-            if (insideHook || !allowsBlockChanges() || blocks.size() >= (level==5?32768:MAX_BLOCK_CANDIDATES)
-                    || blockWrites >= (level == 4 ? 12 : cn.academy.port.macro.MacroSkillRules.BLOCKS_PER_CAST)) return false;
+            int maxCandidates = (level == 5 || blastCast) ? 32768 : MAX_BLOCK_CANDIDATES;
+            int maxWrites = blastCast
+                    ? (level == 3 ? 24 : level == 4 ? 64 : 256)
+                    : (level == 4 ? 12 : cn.academy.port.macro.MacroSkillRules.BLOCKS_PER_CAST);
+            if (insideHook || !allowsBlockChanges() || blocks.size() >= maxCandidates
+                    || blockWrites >= maxWrites) return false;
             BlockPos pos = candidate.immutable();
             var budget = budget(world.getServer());
             if (!blocks.add(pos) || budget.blockChecks + budget.entityCandidates >= MAX_BLOCK_CHECKS_PER_TICK
@@ -157,7 +182,7 @@ public final class SkillEnvironment {
             var chunk = residentChunk(world, pos);
             if (chunk == null || !canBuild(world, owner, pos)) return false;
             BlockState original = chunk.getBlockState(pos);
-            if (!eligibleMaterial(original) || !eligibleNeighbors(world, pos)) return false;
+            if (!eligibleMaterial(original) || !eligibleNeighbors(world, pos, blastCast)) return false;
             Mode current = mode(world);
             var cell = new Cell(world.dimension(), pos);
             if (!budget.activeCells.add(cell)) return false;
@@ -174,9 +199,10 @@ public final class SkillEnvironment {
                 blockWrites++;
                 budget.blockWrites++;
                 boolean changed;
-                if (current == Mode.RESTORE)
-                    changed = TemporaryEnvironmentBlock.place(world, owner, pos, original, level == 4 ? 600 : 1200);
-                else {
+                if (current == Mode.RESTORE) {
+                    int lifetime = blastCast ? (level == 3 ? 300 : level == 4 ? 600 : 1200) : (level == 4 ? 600 : 1200);
+                    changed = TemporaryEnvironmentBlock.place(world, owner, pos, original, lifetime);
+                } else {
                     boolean drop = drops.getAsBoolean();
                     changed = unchanged(pos, chunk, original, current) && destroy(world, owner, pos, original, drop);
                 }
@@ -190,7 +216,7 @@ public final class SkillEnvironment {
 
         /** Queue a full roster, rather than silently losing candidates when this tick's budget is exhausted. */
         public void enqueue(java.util.Collection<BlockPos> candidates,boolean drops){
-            if(level!=5||!world.getServer().isSameThread()||!allowsBlockChanges())return;
+            if((level!=5&&!blastCast)||!world.getServer().isSameThread()||!allowsBlockChanges())return;
             var chunks=new java.util.TreeMap<Long,java.util.ArrayDeque<BlockPos>>();
             for(var pos:candidates)chunks.computeIfAbsent(net.minecraft.world.level.ChunkPos.asLong(pos.getX()>>4,pos.getZ()>>4),k->new java.util.ArrayDeque<>()).add(pos.immutable());
             var ordered=new java.util.ArrayList<BlockPos>(candidates.size());
@@ -200,14 +226,16 @@ public final class SkillEnvironment {
 
         /** Compact bowl and connected fissures. Height queries run inside the bounded queue, never in this planner. */
         public void blast(Vec3 centre,double radius,java.util.Collection<BlockPos> core){
-            if(level!=5||!allowsBlockChanges()||!Double.isFinite(radius)||radius<0||radius>64)return;
+            if((level!=5&&!blastCast)||!allowsBlockChanges()||!Double.isFinite(radius)||radius<0||radius>64)return;
             impactCentre=centre;
             record Column(int x,int z,int depth){}
             var base=BlockPos.containing(centre);var columns=new java.util.LinkedHashSet<Column>();
             double phase=Math.floorMod(presentation.getLeastSignificantBits(),997)/997d*Math.PI*2;
-            for(int x=-5;x<=5;x++)for(int z=-5;z<=5;z++){
-                double d=Math.hypot(x,z),rim=4.2+.45*Math.sin(Math.atan2(z,x)*5+phase);if(d>Math.min(rim,radius))continue;
-                int depth=d<1.6?3:d<3?2:1;
+            int grid=blastCast?(level==3?2:level==4?3:5):5;
+            double baseRim=blastCast?(level==3?1.8:level==4?2.8:4.2):4.2;
+            for(int x=-grid;x<=grid;x++)for(int z=-grid;z<=grid;z++){
+                double d=Math.hypot(x,z),rim=baseRim+.45*Math.sin(Math.atan2(z,x)*5+phase);if(d>Math.min(rim,radius))continue;
+                int depth=blastCast&&level==3?1:blastCast&&level==4?(d<1.6?2:1):(d<1.6?3:d<3?2:1);
                 for(int y=0;y<depth;y++)columns.add(new Column(base.getX()+x,base.getZ()+z,y));
             }
             // Four long pressure cracks and two shorter branches. Curved paths are rasterized
@@ -256,9 +284,12 @@ public final class SkillEnvironment {
         }
 
         private boolean eligibleMaterial(BlockState state) {
+            if (blastCast) {
+                return eligibleBlastBlock(state) && (!protectedCity(world) || eligibleOriginal(state) || naturalGround(state));
+            }
             // The plasma's native explosion already breaks soil. Keep that material in the
             // managed crater, without widening the railgun or harvesting allow-list.
-            return eligibleOriginal(state) || skill.equals("vecmanip.plasma_cannon") && naturalGround(state);
+            return eligibleOriginal(state) || skill.equals("vecmanip.plasma_cannon") && (naturalGround(state) || state.is(Blocks.GRASS_BLOCK));
         }
 
         /** A classic harvesting path keeps its native loot/event semantics while sharing the global write budget. */
@@ -291,7 +322,7 @@ public final class SkillEnvironment {
                 if (!AcademyConfig.ATTACK_PLAYERS.get() || !owner.server.isPvpAllowed() || other.hasDisconnected()
                         || other.getAbilities().invulnerable || !owner.canHarmPlayer(other)
                         || !other.canHarmPlayer(owner)) return false;
-            } else if (!(target instanceof Enemy)) return false;
+            } else if (!(target instanceof Enemy || cn.academy.port.highpower.CompatMode.openGameplay() && cn.academy.port.canon.CanonTargetPolicy.directedAreaTarget(owner, target))) return false;
             insideHook = true;
             pushes++;
             budget.pushes++;
@@ -316,7 +347,7 @@ public final class SkillEnvironment {
                     && mode(world) == current && allowsBlockChanges() && canBuild(world, owner, pos)
                     && residentChunk(world, pos) == chunk && chunk.getBlockState(pos) == state
                     && chunk.getBlockEntity(pos, LevelChunk.EntityCreationType.CHECK) == null
-                    && eligibleNeighbors(world, pos);
+                    && eligibleNeighbors(world, pos, blastCast);
         }
     }
 
@@ -373,7 +404,24 @@ public final class SkillEnvironment {
                 || state.is(Blocks.CLAY) || state.is(Blocks.SNOW_BLOCK));
     }
 
+    static boolean eligibleBlastBlock(BlockState state) {
+        if (state == null || state.isAir() || isVacancy(state) || state.hasBlockEntity() || !state.getFluidState().isEmpty()) {
+            return false;
+        }
+        if (eligibleOriginal(state) || naturalGround(state) || state.is(Blocks.GRASS_BLOCK) || state.is(Blocks.COBBLESTONE)
+                || state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(BlockTags.TERRACOTTA) || state.is(BlockTags.PLANKS)) {
+            return true;
+        }
+        float destroyTime = state.getBlock().defaultDestroyTime();
+        float resistance = state.getBlock().getExplosionResistance();
+        return destroyTime >= 0.0f && destroyTime <= 6.0f && resistance >= 0.0f && resistance <= 12.0f;
+    }
+
     static boolean eligibleNeighbors(ServerLevel level, BlockPos center) {
+        return eligibleNeighbors(level, center, false);
+    }
+
+    static boolean eligibleNeighbors(ServerLevel level, BlockPos center, boolean allowBlastTerrain) {
         for (Direction direction : Direction.values()) {
             BlockPos pos = center.relative(direction);
             LevelChunk chunk = residentChunk(level, pos);
@@ -381,7 +429,8 @@ public final class SkillEnvironment {
             BlockState state = chunk.getBlockState(pos);
             if (!state.isAir() && !isVacancy(state) && !state.is(Blocks.STONE) && !state.is(Blocks.COBBLESTONE)
                     && !state.is(Blocks.DIRT) && !state.is(Blocks.GRASS_BLOCK)
-                    && !naturalGround(state) && !(eligibleOriginal(state) && !state.is(Blocks.SHORT_GRASS))) return false;
+                    && !naturalGround(state) && !(eligibleOriginal(state) && !state.is(Blocks.SHORT_GRASS))
+                    && !(allowBlastTerrain && eligibleBlastBlock(state))) return false;
         }
         return true;
     }

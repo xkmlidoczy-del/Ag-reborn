@@ -51,7 +51,7 @@ public final class CanonSkillsCombatB {
     private static final double RESCUE_REACH = cn.academy.port.core.RangedSkillRanges.fixed("float_rescue");
     private static final double FIELD_RANGE = number("float_field", "radius");
     private static final Map<UUID, Lease> LEASES = new HashMap<>();
-    private record Lease(ServerPlayer owner, ServerLevel world, LivingEntity target, String skill, long expires, double startY, double reach) {}
+    private record Lease(ServerPlayer owner, ServerLevel world, LivingEntity target, String skill, long started, long expires, double startY, double reach) {}
 
     private CanonSkillsCombatB() {}
     static boolean leased(Entity target) { return target != null && LEASES.containsKey(target.getUUID()); }
@@ -129,7 +129,7 @@ public final class CanonSkillsCombatB {
                     target -> {
                         if (!eligibleHostile(player, target) || target.distanceToSqr(player) > leaseReach * leaseReach
                                 || LEASES.containsKey(target.getUUID()) || CanonFloatExpansion.leased(target)) return;
-                        LEASES.put(target.getUUID(), new Lease(player, world, target, skill, now + ticks, target.getY(), leaseReach));
+                        LEASES.put(target.getUUID(), new Lease(player, world, target, skill, now, now + ticks, target.getY(), leaseReach));
                         if (first[0] == null) first[0] = target.position();
                     }, () -> {
                         payment.finish(first[0] != null);
@@ -139,7 +139,7 @@ public final class CanonSkillsCombatB {
                         }
                     });
         } else {
-            for (LivingEntity target : targets) LEASES.put(target.getUUID(), new Lease(player, world, target, skill, now + ticks, target.getY(), leaseReach));
+            for (LivingEntity target : targets) LEASES.put(target.getUUID(), new Lease(player, world, target, skill, now, now + ticks, target.getY(), leaseReach));
             CanonVfx.emit(player, skill, player.position(), targets.getFirst().position(), CanonVfx.Phase.START, ticks);
             experience(player, state, skill);
         }
@@ -216,10 +216,7 @@ public final class CanonSkillsCombatB {
                 || target.isAlliedTo(owner) || owner.isAlliedTo(target) || !finite(target.position())
                 || !finite(target.getDeltaMovement()) || target.hasEffect(MobEffects.LEVITATION)
                 || target.hasEffect(MobEffects.SLOW_FALLING)) return false;
-        var type = target.getType();
-        return CanonTargetPolicy.reviewed(target) || BuiltInRegistries.ENTITY_TYPE.getKey(type).getNamespace().equals("minecraft")
-                && type != EntityType.WITHER && type != EntityType.ENDER_DRAGON
-                && type != EntityType.WARDEN && type != EntityType.ELDER_GUARDIAN;
+        return CanonTargetPolicy.admittedCombatEntity(target);
     }
 
     @SubscribeEvent public static void tick(ServerTickEvent.Post event) {
@@ -233,10 +230,19 @@ public final class CanonSkillsCombatB {
             } else {
                 // Buoyancy takes the enemy off its feet: it rises to a real height, loses its footing and drifts helplessly,
                 // then gravity returns at the end of the lease and the fall is its own (vanilla fall damage, no extra hit).
-                double goal = lease.startY + number(lease.skill, "rise_limit"), dy = goal - target.getY();
-                double vertical = Math.max(-.08, Math.min(.34, dy * .28 + .08));
-                target.setDeltaMovement(velocity.x * .55, vertical, velocity.z * .55);
-                if (target instanceof Mob mob) mob.getNavigation().stop();
+                long elapsed = lease.world.getGameTime() - lease.started;
+                if (lease.skill.equals("float_field") && elapsed >= 20 && elapsed % 20 == 0) {
+                    double pulse = HighPowerGrowth.values(lease.owner).damage().multiply(new java.math.BigDecimal("0.28")).doubleValue();
+                    if (Double.isFinite(pulse) && pulse > 0) {
+                        cn.academy.port.AbilityDamage.attack(lease.owner, "float_dial.float_field", target, pulse);
+                    }
+                }
+                if (target.isAlive()) {
+                    double goal = lease.startY + number(lease.skill, "rise_limit"), dy = goal - target.getY();
+                    double vertical = Math.max(-.08, Math.min(.34, dy * .28 + .08));
+                    target.setDeltaMovement(velocity.x * .55, vertical, velocity.z * .55);
+                    if (target instanceof Mob mob) mob.getNavigation().stop();
+                }
             }
             target.hasImpulse = true; target.hurtMarked = true;
             if (lease.world.getGameTime() % 5 == 0) {
@@ -289,7 +295,23 @@ public final class CanonSkillsCombatB {
     }
 
     private static void end(Lease lease) {
-        if(LEASES.remove(lease.target.getUUID(),lease)) CanonVfx.emit(lease.owner,lease.skill,lease.owner.position(),lease.target.position(),CanonVfx.Phase.END,8);
+        if(LEASES.remove(lease.target.getUUID(),lease)) {
+            if (lease.skill.equals("float_field") && lease.world.getGameTime() >= lease.expires
+                    && lease.target.isAlive() && !lease.target.isRemoved()
+                    && lease.owner.isAlive() && !lease.owner.hasDisconnected() && lease.owner.serverLevel() == lease.world) {
+                double slam = HighPowerGrowth.values(lease.owner).damage().multiply(new java.math.BigDecimal("0.45")).doubleValue();
+                if (Double.isFinite(slam) && slam > 0) {
+                    cn.academy.port.AbilityDamage.attack(lease.owner, "float_dial.float_field", lease.target, slam);
+                }
+                if (lease.target.isAlive()) {
+                    Vec3 v = lease.target.getDeltaMovement();
+                    lease.target.setDeltaMovement(v.x * .3, -.65, v.z * .3);
+                    lease.target.hasImpulse = true;
+                    lease.target.hurtMarked = true;
+                }
+            }
+            CanonVfx.emit(lease.owner,lease.skill,lease.owner.position(),lease.target.position(),CanonVfx.Phase.END,8);
+        }
     }
     private static void removeOwner(ServerPlayer player) { for(var l:List.copyOf(LEASES.values()))if(l.owner==player||l.target==player)end(l); }
     @SubscribeEvent public static void logout(PlayerEvent.PlayerLoggedOutEvent event) {

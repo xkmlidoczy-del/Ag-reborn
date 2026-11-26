@@ -216,7 +216,7 @@ public final class PotentialBuffer {
     }
     private static boolean canAct(ServerPlayer p, boolean insideDamage) {
         if (!thread(p) || p.connection == null || p.hasDisconnected() || p.isRemoved() || p.isSpectator()
-                || !insideDamage && !p.isAlive() || p.serverLevel().getEntity(p.getId()) != p || p.getAbilities().instabuild) return false;
+                || !insideDamage && !p.isAlive() || p.serverLevel().getEntity(p.getId()) != p || (p.getAbilities().instabuild && !CompatMode.openGameplay())) return false;
         var s = AbilityStorage.get(p);
         return HighPowerCombat.enabled(p) && s.category.equals("electromaster") && s.activated && s.overloadFine && !s.interfering
                 && s.learned(ID) && s.learned(GroundingReturn.ID) && s.level >= 4 && s.level <= 5 && ElectromasterPrototype.effectiveLevel(p) >= 4

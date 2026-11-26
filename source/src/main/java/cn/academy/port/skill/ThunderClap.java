@@ -82,6 +82,10 @@ public final class ThunderClap {
                         && ThunderClapSession.within(entity.position().distanceToSqr(point), range)));
     }
     private static void discharge(ServerPlayer player, Hold hold) {
+        discharge(player, hold, false);
+    }
+
+    private static void discharge(ServerPlayer player, Hold hold, boolean earlyRelease) {
         HOLDS.remove(player.getUUID(), hold);
         if (!COMMITTING.add(player.getUUID())) { hold.session.end(); send(player, hold, "thunder_clap_end"); return; }
         try {
@@ -92,7 +96,9 @@ public final class ThunderClap {
                 hold.level.addFreshEntity(lightning);
             }
             double range = ThunderClapSession.range(hold.session.mastery());
-            float damage = ThunderClapSession.damage(hold.session.mastery(), hold.session.ticks());
+            float damage = earlyRelease
+                    ? ThunderClapSession.earlyDamage(hold.session.mastery(), hold.session.ticks())
+                    : ThunderClapSession.damage(hold.session.mastery(), hold.session.ticks());
             cn.academy.port.macro.MacroVfx.emit(player,ID,cn.academy.port.macro.MacroVfx.Phase.HIT,hold.point,hold.point,70,range,hold.token);
             var state=hold.session.state();
             cn.academy.port.macro.MacroSettlement.submit(hold.level,targets(player,hold.point,range),
@@ -103,7 +109,10 @@ public final class ThunderClap {
                         float applied=ThunderClapSession.radialDamage(damage,target.position().distanceTo(hold.point),range);
                         AbilityDamage.attack(player,"electromaster.thunder_clap",target,applied);
                     },()->{});
-            hold.session.complete();
+            if (earlyRelease) hold.session.completeEarly();
+            else hold.session.complete();
+            cn.academy.port.highpower.environment.SkillBlastHelper.emitBlast(
+                    player, "electromaster.thunder_clap", 5, hold.point, earlyRelease ? 2.2f : 3.0f, Math.min(3.8, range * 0.45), true);
             cn.academy.port.achievements.ClassicAchievements.trigger(player,"electromaster.thunder_clap");
         } finally {
             COMMITTING.remove(player.getUUID());
@@ -112,7 +121,17 @@ public final class ThunderClap {
         }
     }
     public static boolean release(ServerPlayer player) {
-        if (!serverThread(player) || !HOLDS.containsKey(player.getUUID())) return false;
+        if (!serverThread(player)) return false;
+        Hold hold = HOLDS.get(player.getUUID());
+        if (hold == null) return false;
+        if (cn.academy.port.highpower.CompatMode.openGameplay()
+                && !cn.academy.port.highpower.EsperLegacyBypass.standAside()
+                && valid(player, hold)
+                && hold.session.ticks() >= ThunderClapSession.EARLY_MIN_TICKS) {
+            hold.point = aim(player);
+            discharge(player, hold, true);
+            return true;
+        }
         abort(player); return true;
     }
     public static void abort(ServerPlayer player) {

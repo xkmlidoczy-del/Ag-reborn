@@ -385,13 +385,14 @@ public final class CanonPaperSkills {
         Vec3 origin = player.getEyePosition(), center = player.position();
         if (!finite(origin) || !finite(center)) return false;
         double r = arrayRadius(player);
-        var candidates = player.serverLevel().getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(r), target ->
-                CanonTargetPolicy.hostile(target) && target.isAlive() && !target.isRemoved() && !target.isAlliedTo(player)
+        var candidates = player.serverLevel().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(r), target ->
+                target != player && (CompatMode.openGameplay() ? CanonTargetPolicy.directedAreaTarget(player, target) : (target instanceof Mob && CanonTargetPolicy.hostile(target)))
+                        && target.isAlive() && !target.isRemoved() && !target.isAlliedTo(player)
                         && !player.isAlliedTo(target) && target.distanceToSqr(player) <= r * r && player.hasLineOfSight(target)
                         && HighPowerCombat.unsupportedReason(target).isEmpty());
         if (candidates.isEmpty()) return false;
         candidates.sort(Comparator.comparingDouble(target -> target.distanceToSqr(player)));
-        var targets = new ArrayList<LivingEntity>(); for (Mob target : candidates) { if (targets.size() == ARRAY_TARGETS) break; targets.add(target); }
+        var targets = new ArrayList<LivingEntity>(); for (LivingEntity target : candidates) { if (targets.size() == ARRAY_TARGETS) break; targets.add(target); }
         var expected = held.copy();
         final ItemStack[] fence = {expected};
         var emission = CanonEmission.begin(player, "paper_array", HighPowerGrowth.values(player).arcCost() * 4, 100, targets,
@@ -402,10 +403,12 @@ public final class CanonPaperSkills {
         fence[0] = held.copy();
         boolean[] hit = {false};
         int[] ringed = {0};
+        Vec3[] firstImpact = {null};
         emission.forEach(target -> {
             if (!materialMatches(player, held, fence[0]) || !arrayTarget(player, target)) return;
             boolean accepted = emission.attack(target); hit[0] |= accepted; Vec3 end = target.getBoundingBox().getCenter(), delta = end.subtract(origin);
             if (accepted) {
+                if (firstImpact[0] == null) firstImpact[0] = end;
                 if (target.isAlive() && !cn.academy.port.highpower.PlayerShieldArmor.ignoresControl(target)) {
                     target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 35, 0, false, true), player);
                 }
@@ -417,6 +420,9 @@ public final class CanonPaperSkills {
                 player.serverLevel().sendParticles(PaperParticles.INSTANCE, point.x, point.y, point.z, 1, .02, .02, .02, 0);
             }
         }, () -> {
+            if (hit[0] && firstImpact[0] != null && player.isAlive()) {
+                CanonEndpointBlast.emitHitBlast(player, CATEGORY, "paper_array", 5, firstImpact[0]);
+            }
             if (hit[0] && AbilityStorage.get(player) == state && CATEGORY.equals(state.category) && state.learned("paper_array")) {
                 state.addExperience("paper_array", .01); AbilityStorage.save(player);
             }
@@ -432,7 +438,8 @@ public final class CanonPaperSkills {
     }
     private static boolean arrayTarget(ServerPlayer p, LivingEntity target) {
         double r = arrayRadius(p);
-        return target instanceof Mob && CanonTargetPolicy.hostile(target) && target.isAlive() && !target.isRemoved()
+        return target != p && (CompatMode.openGameplay() ? CanonTargetPolicy.directedAreaTarget(p, target) : (target instanceof Mob && CanonTargetPolicy.hostile(target)))
+                && target.isAlive() && !target.isRemoved()
                 && target.level() == p.level() && target.distanceToSqr(p) <= r * r && !target.isAlliedTo(p) && !p.isAlliedTo(target)
                 && p.hasLineOfSight(target) && HighPowerCombat.unsupportedReason(target).isEmpty();
     }
@@ -522,7 +529,8 @@ public final class CanonPaperSkills {
     }
     private static boolean eligible(ServerPlayer p, AbstractArrow a, Vec3 center) {
         if (a.getType() != EntityType.ARROW || a.inGround || a.isRemoved() || !a.isAlive()
-                || !(a.getOwner() instanceof Mob shooter) || !(shooter instanceof Enemy)
+                || !(a.getOwner() instanceof Mob shooter)
+                || !(shooter instanceof Enemy || CompatMode.openGameplay() && (CanonTargetPolicy.hostile(shooter) || shooter.getTarget() == p))
                 || shooter.isAlliedTo(p) || p.isAlliedTo(shooter)
                 || ElectromasterPrototype.leased(a) || MultiAxisReflectionArrowBridge.leased(a)
                 || TrajectoryReturnArrowBridge.leased(a) || ShortInterceptionArrowBridge.leased(a)
