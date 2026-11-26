@@ -6,7 +6,7 @@ plugins {
 // with the default pure/server check outputs without rewriting their classpath.
 if (providers.gradleProperty('qaBuildDirectory').isPresent())
     layout.buildDirectory.set(layout.projectDirectory.dir(providers.gradleProperty('qaBuildDirectory').get()))
-version = '0.1.0-m41-highpower.0.81.5-city-a3.87-rc2'
+version = '0.1.0-m41-highpower.0.81.5-city-a3.87-rc3'
 group = 'cn.academy'
 base { archivesName = 'academy-generation-reborn' }
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
@@ -18,6 +18,8 @@ sourceSets {
     hum
     omnitrix { compileClasspath += main.output }
     infinity { compileClasspath += main.output }
+    domain67 { compileClasspath += main.output }
+    domain67Qa { compileClasspath += domain67.output + main.output }
     mechQa {
         compileClasspath += mech.output
         runtimeClasspath += mech.output
@@ -31,6 +33,8 @@ neoForge {
     addModdingDependenciesTo sourceSets.hum
     addModdingDependenciesTo sourceSets.omnitrix
     addModdingDependenciesTo sourceSets.infinity
+    addModdingDependenciesTo sourceSets.domain67
+    addModdingDependenciesTo sourceSets.domain67Qa
     runs {
         client { client(); if(providers.gradleProperty('canonExperimental').getOrElse('false').toBoolean())systemProperty 'academy.canon.experimental','true'; gameDirectory = layout.projectDirectory.dir(providers.gradleProperty('clientDirectory').getOrElse('run-client')); if(providers.gradleProperty('visualQA').getOrElse('false').toBoolean())systemProperty 'academy.visual.qa','true'; if(providers.gradleProperty('wirelessQA').getOrElse('false').toBoolean())systemProperty 'academy.wireless.qa','true' }
         server { server(); gameDirectory = layout.projectDirectory.dir(providers.gradleProperty('serverDirectory').getOrElse('run-server')); if (providers.gradleProperty('urbanWorldgenProbe').isPresent()) systemProperty 'academy.urban.worldgenProbe', providers.gradleProperty('urbanWorldgenProbe').get(); if (providers.gradleProperty('canonExperimental').getOrElse('false').toBoolean()) systemProperty 'academy.canon.experimental','true'; programArgument '--nogui' }
@@ -85,6 +89,7 @@ neoForge {
         acabiohum { sourceSet(sourceSets.hum) }
         aca_omnitrix { sourceSet(sourceSets.omnitrix) }
         aca_infinity { sourceSet(sourceSets.infinity) }
+        aca_domain67 { sourceSet(sourceSets.domain67) }
     }
 }
 
@@ -147,6 +152,27 @@ def infinityJar = tasks.register('infinityJar', Jar) {
     from sourceSets.infinity.output
     into('META-INF') { from('integration/aca-infinity/NOTICE.md') }
 }
+def domain67Version = '1.2.1'
+['processDomain67Resources', 'processDomain67QaResources'].each { taskName ->
+    tasks.named(taskName) {
+        inputs.property 'modVersion', domain67Version
+        filesMatching('META-INF/neoforge.mods.toml') { expand(modVersion: domain67Version) }
+    }
+}
+def domain67Jar = tasks.register('domain67Jar', Jar) {
+    archiveBaseName = 'aca-domain67-neoforge-1.21.1'
+    archiveVersion = domain67Version
+    archiveClassifier = 'embedded'
+    manifest { attributes('Automatic-Module-Name': 'cn.aca.domain67') }
+    from sourceSets.domain67.output
+    into('META-INF') { from('integration/aca-domain67/NOTICE.md') }
+}
+tasks.register('domain67QaJar', Jar) {
+    archiveBaseName = 'aca-domain67-neoforge-1.21.1'
+    archiveVersion = domain67Version
+    archiveClassifier = 'qa-runner'
+    from sourceSets.domain67Qa.output
+}
 tasks.register('mechQaJar', Jar) {
     archiveBaseName = 'aca-mech-integration-qa'
     archiveVersion = '0.4.5'
@@ -199,6 +225,7 @@ dependencies {
     jarJar files(humJar)
     jarJar files(omnitrixJar)
     jarJar files(infinityJar)
+    jarJar files(domain67Jar)
     implementation ecologyModule
     jarJar(ecologyModule) { version { strictly '[0.1.0]'; prefer '0.1.0' } }
     implementation 'software.bernie.geckolib:geckolib-neoforge-1.21.1:4.7'

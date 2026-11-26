@@ -1,0 +1,44 @@
+{
+  "parent": "minecraft:builtin/entity",
+  "gui_light": "front",
+  "textures": {
+    "particle": "aca_domain67:item/choco_sausage_noodles"
+  },
+  "display": {
+    "gui": {
+      "rotation": [26, 36, 0],
+      "translation": [0, 0.5, 0],
+      "scale": [1.02, 1.02, 1.02]
+    },
+    "ground": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 2.2, 0],
+      "scale": [0.72, 0.72, 0.72]
+    },
+    "fixed": {
+      "rotation": [0, 180, 0],
+      "translation": [0, 0, 0],
+      "scale": [0.95, 0.95, 0.95]
+    },
+    "thirdperson_righthand": {
+      "rotation": [45, 0, 0],
+      "translation": [0, 2.4, 1.2],
+      "scale": [0.78, 0.78, 0.78]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [45, 0, 0],
+      "translation": [0, 2.4, 1.2],
+      "scale": [0.78, 0.78, 0.78]
+    },
+    "firstperson_righthand": {
+      "rotation": [16, -20, 6],
+      "translation": [1.0, 2.0, 0.2],
+      "scale": [0.80, 0.80, 0.80]
+    },
+    "firstperson_lefthand": {
+      "rotation": [16, 20, -6],
+      "translation": [1.0, 2.0, 0.2],
+      "scale": [0.80, 0.80, 0.80]
+    }
+  }
+}

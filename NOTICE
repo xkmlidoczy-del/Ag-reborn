@@ -69,3 +69,5 @@ geometry and native landing adapter are independent prototype additions.
 NEW441 vector_cage learning icon is an unchanged byte copy of the retained classic vecmanip/skills/dir_blast.png; original AcademyCraft attribution and license continue to apply. No external effect assets were added.
 
 NEW443 wind_pressure_lift learning icon reuses the unchanged original AcademyCraft storm_wing.png under the existing GPLv3 asset attribution. No external asset or dependency added.
+
+ACA Domain 67 (领域展开 · 六七餐厅) is included as a separate embedded module. It retains the original ACA Project copyright notice. See source/integration/aca-domain67/NOTICE.md and META-INF/NOTICE.md in the embedded module.

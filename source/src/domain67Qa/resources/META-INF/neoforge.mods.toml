@@ -1,0 +1,14 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="All rights reserved; see NOTICE.md"
+[[mods]]
+modId="aca_domain67_qa"
+version="${modVersion}"
+displayName="ACA Domain 67 QA"
+description='''Headless GameTest suite for ACA Domain 67.'''
+[[dependencies.aca_domain67_qa]]
+modId="aca_domain67"
+type="required"
+versionRange="[0,)"
+ordering="AFTER"
+side="BOTH"

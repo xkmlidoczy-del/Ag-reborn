@@ -1,0 +1,26 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="All rights reserved; see NOTICE.md"
+[[mods]]
+modId="aca_domain67"
+version="${modVersion}"
+displayName="ACA Domain 67"
+description='''Domain Expansion: Restaurant 67 — JJK-style Impact Frame & depth-buffer engulfing domain shader, 67 Plaza Circus Broadcast AI lure, mandatory Chocolate-Sausage Noodle dining rules, Cursed Log interception & 8-Portal Mega Log Finisher, and MJ 78-Yuan No-Heartburn Bento cameo for Minecraft 1.21.1.'''
+[[dependencies.aca_domain67]]
+modId="minecraft"
+type="required"
+versionRange="[1.21.1]"
+ordering="NONE"
+side="BOTH"
+[[dependencies.aca_domain67]]
+modId="neoforge"
+type="required"
+versionRange="[21.1.252,21.2)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.aca_domain67]]
+modId="academy"
+type="optional"
+versionRange="[0,)"
+ordering="AFTER"
+side="BOTH"
