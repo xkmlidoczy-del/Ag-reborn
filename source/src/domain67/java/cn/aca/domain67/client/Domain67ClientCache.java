@@ -2,7 +2,6 @@ package cn.aca.domain67.client;
 
 import cn.aca.domain67.Domain67Network;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -10,12 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
-/**
- * Dist-clean client state, anti-spam peripheral toast slot & gentle spring-inertia tracker (v1.2.0):
- * - Single-Slot Deduplicated Peripheral Toast (`activeToast`) with strict per-category 45-tick cooldowns —
- *   NEVER stacks multiple banners, NEVER blocks center screen, and NEVER spams on repeated skill casts!
- * - Uses i18n translation keys (`zh_cn.json` / `en_us.json`) so Chinese locale renders 100% pure Simplified Chinese!
- */
+/** Domain and rift presentation state, plus one peripheral status slot for the local player. */
 public final class Domain67ClientCache {
     public static final float EXPAND_TOTAL_TICKS = 42.0f;
     public static final float COLLAPSE_TOTAL_TICKS = 32.0f;
@@ -174,8 +168,8 @@ public final class Domain67ClientCache {
 
     private static final Map<UUID, ClientDomainView> DOMAINS = new ConcurrentHashMap<>();
     private static final List<RiftVisual> RIFTS = new ArrayList<>();
-    private static final Map<String, Long> LAST_TOAST_AT = new HashMap<>();
     private static PeripheralToast activeToast = null;
+    private static long nextToastTick;
 
     private static long clientTicks = 0L;
     private static long handSignStartTick = Long.MIN_VALUE;
@@ -244,17 +238,11 @@ public final class Domain67ClientCache {
         return Mth.lerp(partial, prevLagPitch, lagPitch);
     }
 
-    /**
-     * Pushes or deduplicates a single peripheral micro-toast with strict cooldown throttling so repeated
-     * skill presses NEVER spam or re-pop animations!
-     */
+    /** Keeps the current message visible and uses one cooldown for the status slot. */
     public static boolean pushThrottledToast(String categoryKey, String badge, String titleKey, String subKey,
                                              int countArg, int accentRgb, int durationTicks) {
-        Long last = LAST_TOAST_AT.get(categoryKey);
-        if (last != null && clientTicks >= last && (clientTicks - last) < TOAST_COOLDOWN_TICKS) {
-            return false;
-        }
-        LAST_TOAST_AT.put(categoryKey, clientTicks);
+        if (activeToast != null || clientTicks < nextToastTick) return false;
+        nextToastTick = clientTicks + TOAST_COOLDOWN_TICKS;
         activeToast = new PeripheralToast(categoryKey, badge, titleKey, subKey, countArg, accentRgb, clientTicks, durationTicks);
         return true;
     }
@@ -266,8 +254,8 @@ public final class Domain67ClientCache {
     public static void clearStateOnly() {
         DOMAINS.clear();
         RIFTS.clear();
-        LAST_TOAST_AT.clear();
         activeToast = null;
+        nextToastTick = 0L;
         handSignStartTick = Long.MIN_VALUE;
         shakeStartTick = Long.MIN_VALUE;
         camInit = false;
@@ -326,17 +314,17 @@ public final class Domain67ClientCache {
     }
 
     public static void handleVfxCue(Domain67Network.VfxCuePayload cue, UUID localPlayerId) {
+        boolean ownCast = cue.actor().equals(localPlayerId);
         switch (cue.cueId()) {
             case Domain67Network.CUE_DOMAIN_EXPAND -> {
-                if (cue.actor().equals(localPlayerId)) {
+                if (ownCast) {
                     handSignStartTick = clientTicks;
+                    pushThrottledToast("expand", "67",
+                            "ui.aca_domain67.toast.expand.title",
+                            "ui.aca_domain67.toast.expand.sub",
+                            cue.extra(), 0xFFF2C96B, 36);
                 }
                 triggerShake(1.2f);
-                LAST_TOAST_AT.remove("close");
-                pushThrottledToast("expand", "67",
-                        "ui.aca_domain67.toast.expand.title",
-                        "ui.aca_domain67.toast.expand.sub",
-                        cue.extra(), 0xFFF2C96B, 42);
             }
             case Domain67Network.CUE_DOMAIN_CLOSE -> {
                 ClientDomainView existing = DOMAINS.get(cue.actor());
@@ -344,19 +332,16 @@ public final class Domain67ClientCache {
                     existing.beginCollapse(clientTicks);
                 }
                 triggerShake(1.0f);
-                LAST_TOAST_AT.remove("expand");
-                pushThrottledToast("close", "67",
-                        "ui.aca_domain67.toast.close.title",
-                        cue.extra() > 0 ? "ui.aca_domain67.toast.close.sub_punish" : "ui.aca_domain67.toast.close.sub_clean",
-                        cue.extra(), 0xFFE5B85C, 34);
+                if (ownCast) {
+                    pushThrottledToast("close", "67",
+                            "ui.aca_domain67.toast.close.title",
+                            cue.extra() > 0 ? "ui.aca_domain67.toast.close.sub_punish" : "ui.aca_domain67.toast.close.sub_clean",
+                            cue.extra(), 0xFFE5B85C, 34);
+                }
             }
             case Domain67Network.CUE_CIRCUS_BROADCAST -> {
                 RIFTS.add(new RiftVisual(cue.from(), cue.to(), clientTicks, 32, RIFT_MODE_BROADCAST));
                 triggerShake(0.45f);
-                pushThrottledToast("broadcast", Domain67Client.keyLabel(Domain67Client.KEY_CIRCUS_BROADCAST),
-                        "ui.aca_domain67.toast.broadcast.title",
-                        "ui.aca_domain67.toast.broadcast.sub",
-                        cue.extra(), 0xFFF2C96B, 32);
             }
             case Domain67Network.CUE_GUARD_LOG -> {
                 // World rift + log visual only — ZERO popup spam!
@@ -371,10 +356,6 @@ public final class Domain67ClientCache {
                     RIFTS.add(new RiftVisual(rp, cue.to(), clientTicks, 26, RIFT_MODE_SPATIAL));
                 }
                 triggerShake(1.55f);
-                pushThrottledToast("log", Domain67Client.keyLabel(Domain67Client.KEY_LOG_FINISHER),
-                        "ui.aca_domain67.toast.log.title",
-                        "ui.aca_domain67.toast.log.sub",
-                        cue.extra(), 0xFFE86A4A, 34);
             }
             case Domain67Network.CUE_MEGA_LOG_IMPACT -> {
                 triggerShake(1.85f);
@@ -382,10 +363,6 @@ public final class Domain67ClientCache {
             case Domain67Network.CUE_BENTO_CAMEO -> {
                 RIFTS.add(new RiftVisual(cue.from(), cue.to(), clientTicks, 30, RIFT_MODE_SAUCE_WAVE));
                 triggerShake(0.75f);
-                pushThrottledToast("bento", "78",
-                        "ui.aca_domain67.toast.bento.title",
-                        "ui.aca_domain67.toast.bento.sub",
-                        cue.extra(), 0xFFF2C96B, 32);
             }
             case Domain67Network.CUE_FINISHED_NO_REWARD -> {
                 // Silent transition — shown cleanly on targeted diner micro-pill without HUD spam!

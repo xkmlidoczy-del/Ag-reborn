@@ -215,6 +215,31 @@ public final class Domain67GameTests {
                 "log", ";", "ui.aca_domain67.toast.log.title", "ui.aca_domain67.toast.log.sub", 2, 0xFFE86A4A, 34);
         helper.assertTrue(firstAccepted && Domain67ClientCache.activeToast() != null, "First toast should display cleanly");
         helper.assertTrue(spamSuppressed, "Repeated cast within cooldown window must be suppressed (zero spam)");
+        helper.assertFalse(Domain67ClientCache.pushThrottledToast(
+                "need_dom", "[", "ui.aca_domain67.toast.need_domain.title", "ui.aca_domain67.toast.need_domain.sub",
+                0, 0xFFE5B85C, 28), "A different category must not replace a visible message");
+
+        Domain67ClientCache.clearStateOnly();
+        UUID spectator = UUID.randomUUID();
+        var openCue = new Domain67Network.VfxCuePayload(Domain67Network.CUE_DOMAIN_EXPAND,
+                fakeId, Vec3.ZERO, Vec3.ZERO, 1);
+        Domain67ClientCache.handleVfxCue(openCue, spectator);
+        helper.assertTrue(Domain67ClientCache.activeToast() == null, "Observer should not see the caster's toast");
+        for (int cueId : new int[]{Domain67Network.CUE_CIRCUS_BROADCAST, Domain67Network.CUE_LOG_BARRAGE,
+                Domain67Network.CUE_BENTO_CAMEO, Domain67Network.CUE_GUARD_LOG}) {
+            var cue = new Domain67Network.VfxCuePayload(cueId, fakeId, Vec3.ZERO, Vec3.ZERO, 1);
+            Domain67ClientCache.handleVfxCue(cue, spectator);
+            Domain67ClientCache.handleVfxCue(cue, fakeId);
+        }
+        helper.assertTrue(Domain67ClientCache.activeToast() == null, "Routine skills should use world effects");
+        helper.assertTrue(Domain67ClientCache.rifts().size() == 22, "Both viewers must still receive their world effects");
+        Domain67ClientCache.handleVfxCue(openCue, fakeId);
+        var localToast = Domain67ClientCache.activeToast();
+        helper.assertTrue(localToast != null, "Only the caster gets the entry toast");
+        var closeCue = new Domain67Network.VfxCuePayload(Domain67Network.CUE_DOMAIN_CLOSE,
+                fakeId, Vec3.ZERO, Vec3.ZERO, 0);
+        Domain67ClientCache.handleVfxCue(closeCue, fakeId);
+        helper.assertTrue(Domain67ClientCache.activeToast() == localToast, "Fast entry and exit cannot reanimate the status slot");
 
         view.beginCollapse(200L);
         helper.assertTrue(view.isCollapsing(), "Domain must enter collapsing phase");

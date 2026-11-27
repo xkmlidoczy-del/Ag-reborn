@@ -3,9 +3,12 @@ package cn.academy.biohum.client;
 import cn.academy.biohum.CastMotion;
 import cn.academy.biohum.HumNpc;
 import cn.academy.biohum.Skills;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.phys.Vec3;
 
 /** Six vanilla joints, sampled from a separate authored clip for each skill. */
@@ -13,6 +16,11 @@ final class NpcModel extends PlayerModel<HumNpc> {
     private final ModelPart[] joints;
     private final boolean slim;
     private float[] activeAngles;
+    StoryYsmMesh storyMesh;
+    private boolean storyEyesClosed, storyUsesAcaSword;
+    private CastMotion.Anchor storyCastAnchor;
+    private float storyCastWeight;
+    private int storyExpression;
 
     NpcModel(ModelPart root, boolean slim) {
         super(root, slim);
@@ -25,7 +33,14 @@ final class NpcModel extends PlayerModel<HumNpc> {
         for (var joint : joints) joint.resetPose();
         hat.visible=!npc.suspended();
         activeAngles=null;
+        storyCastAnchor=null;
+        storyCastWeight=0;
         super.setupAnim(npc, walk, amount, age, yaw, pitch);
+        if (storyMesh != null) {
+            storyEyesClosed = NpcRenderer.isBlinking(npc) || npc.isSleeping() || npc.hurtTime > 0;
+            storyExpression = Mth.clamp(npc.expression(), 0, 2);
+            storyUsesAcaSword = NpcRenderer.rendersLongSword(npc, npc.getMainHandItem());
+        }
         if(npc.suspended()){
             body.xRot=Mth.sin(age*.06f)*.022f;
             head.xRot=.04f+Mth.sin(age*.064f)*.038f;
@@ -54,6 +69,8 @@ final class NpcModel extends PlayerModel<HumNpc> {
         float lookYaw=Mth.clamp(yaw-facing,-18,18)*Mth.DEG_TO_RAD;
         float lookPitch=Mth.clamp(pitch,-12,12)*Mth.DEG_TO_RAD;
         var anchor=CastMotion.style(skill).anchor();
+        storyCastAnchor=anchor;
+        storyCastWeight=blend;
         boolean facialAnchor=anchor==CastMotion.Anchor.MOUTH || anchor==CastMotion.Anchor.EYES;
         for (int i = 0; i < joints.length; i++) {
             var joint = joints[i];
@@ -82,8 +99,45 @@ final class NpcModel extends PlayerModel<HumNpc> {
 
     Vec3 anchor(CastMotion.Anchor anchor) {
         if(activeAngles==null)return Vec3.ZERO;
+        if (storyMesh != null) {
+            if (anchor == CastMotion.Anchor.RIGHT) return new Vec3(storyMesh.gripPosition(this, true));
+            if (anchor == CastMotion.Anchor.LEFT) return new Vec3(storyMesh.gripPosition(this, false));
+            if (anchor == CastMotion.Anchor.BETWEEN) {
+                return new Vec3(storyMesh.gripPosition(this, true))
+                        .lerp(new Vec3(storyMesh.gripPosition(this, false)), .5);
+            }
+        }
         return CastMotion.anchor(anchor,activeAngles,slim);
     }
+
+    @Override
+    public void renderToBuffer(PoseStack pose, VertexConsumer out, int light, int overlay, int color) {
+        if (storyMesh == null) super.renderToBuffer(pose, out, light, overlay, color);
+        else storyMesh.render(this, pose, out, light, overlay, color);
+    }
+
+    @Override
+    public void translateToHand(HumanoidArm arm, PoseStack poses) {
+        if (storyMesh == null) {
+            super.translateToHand(arm, poses);
+            return;
+        }
+        boolean right = arm == HumanoidArm.RIGHT;
+        storyMesh.translateToGrip(this, right, poses);
+        // ItemInHandLayer adds its standard wrist offset after rotating the item.
+        // Cancel that offset in arm space so the item starts at the authored grip.
+        poses.translate(right ? 1f / 16f : -1f / 16f, -.625f, .125f);
+    }
+
+    float storyGripWeight(boolean right) {
+        return storyCastAnchor == CastMotion.Anchor.BETWEEN
+                || storyCastAnchor == (right ? CastMotion.Anchor.RIGHT : CastMotion.Anchor.LEFT)
+                ? storyCastWeight : 0;
+    }
+
+    boolean storyEyesClosed() { return storyEyesClosed; }
+    int storyExpression() { return storyExpression; }
+    boolean storyUsesAcaSword() { return storyUsesAcaSword; }
 
     private static void move(ModelPart part,Vec3 point) {
         part.setPos((float)point.x*16,(float)point.y*16,(float)point.z*16);

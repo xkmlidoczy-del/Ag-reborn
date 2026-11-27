@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-/** A six-face detail with the same texture layout as a vanilla model cube. */
+/** A six-face detail using a box UV layout or an authored material strip. */
 final class AccessoryMesh {
     private static final float MODEL_UNITS = 16f;
     private static final float ATLAS_UNITS = 128f;
@@ -39,6 +39,10 @@ final class AccessoryMesh {
     private final Face[] faces;
 
     AccessoryMesh(Profiles.Accessory detail) {
+        this(detail, 0, 0);
+    }
+
+    AccessoryMesh(Profiles.Accessory detail, int stripWidth, int stripLength) {
         float[] p = detail.pivot();
         float[] r = detail.rotation();
         float[] b = detail.box();
@@ -51,6 +55,10 @@ final class AccessoryMesh {
         Vector3f[] top = ring(centerX, b[1] - p[1], centerZ, w * t[0], d * t[1]);
         Vector3f[] bottom = ring(centerX, b[1] + h - p[1], centerZ, w * t[2], d * t[3]);
         float u = detail.uv()[0], v = detail.uv()[1];
+        if (stripWidth > 0) {
+            faces = stripFaces(top, bottom, u, v, stripWidth, stripLength);
+            return;
+        }
         float sideY = v + d;
         faces = new Face[]{
             Face.from(top[1], top[0], bottom[0], bottom[1], u + d, sideY, w, h),
@@ -59,6 +67,27 @@ final class AccessoryMesh {
             Face.from(top[2], top[1], bottom[1], bottom[2], u + d + w, sideY, d, h),
             Face.from(top[2], top[3], top[0], top[1], u + d, v, w, d),
             Face.from(bottom[1], bottom[0], bottom[3], bottom[2], u + d + w, v, w, d),
+        };
+    }
+
+    private static Face[] stripFaces(Vector3f[] top, Vector3f[] bottom,
+                                     float u, float v, float width, float length) {
+        // This swatch is a vertical strip on the 512px details sheet. The long
+        // direction of these meshes is Z, so map it to V and keep texel centers
+        // inside the strip. Both caps get an opaque sample from their own end.
+        float halfTexel = ATLAS_UNITS / 512 / 2;
+        u += halfTexel;
+        v += halfTexel;
+        width -= 2 * halfTexel;
+        length -= 2 * halfTexel;
+        float cap = .5f;
+        return new Face[]{
+            Face.from(top[1], top[0], bottom[0], bottom[1], u, v, width, cap),
+            Face.from(top[3], top[2], bottom[2], bottom[3], u, v + length - cap, width, cap),
+            Face.from(bottom[0], top[0], top[3], bottom[3], u, v, width, length),
+            Face.from(top[1], bottom[1], bottom[2], top[2], u, v, width, length),
+            Face.from(top[0], top[1], top[2], top[3], u, v, width, length),
+            Face.from(bottom[1], bottom[0], bottom[3], bottom[2], u, v, width, length),
         };
     }
 

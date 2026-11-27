@@ -1,0 +1,405 @@
+{
+  "version": "v18.5.1",
+  "models": {
+    "accelerator": {
+      "model": "de80c6c3851f3e4d7d0038e5a42a5887d4e84d411b7390474a4f5149a1f66580",
+      "texture": "8d2e84e6e16fcbb607f69e9dad1931d0ffda05e9e80f18dbc6c8ac3dda1dff6f"
+    },
+    "acqua": {
+      "model": "3680e6f61a5b69a188db0ca06d83ee604d117f3f5001b18bfb048b52b7ab47b5",
+      "texture": "750ab17ef0c83d439b58c677c826ceed92a202c2354ef1cbb8803ed00aca981e"
+    },
+    "agnese": {
+      "model": "df99fe17a4b39c68f10fc38514877f33ade8d0bfbd4f4b809476debfca733c7f",
+      "texture": "4c4e3d2cbc037f64cafbf693aa77e57d89725653bd4b5db7f7c9d9488db3b58a"
+    },
+    "aiwass": {
+      "model": "c8712a1af8b85d9a9b594130626467986f84763a5763a71676368893cf960745",
+      "texture": "3503420e86a028725aeb36759a79e8900c65dfece3877cce7997d1e19646017b"
+    },
+    "aleister": {
+      "model": "fbffce8bc28196f4a3ef06cec73578154d744f7fecb1b49419a40c723025813c",
+      "texture": "b7345d965b1dcebf59dcbc52477ae3ae2af6e138fd363e5564f89f505ce04c1f"
+    },
+    "alice": {
+      "model": "108d1f3ddfdb1c6633cb33a8443e4e375522bb5272a49fa4f5a34be61560bee5",
+      "texture": "04cfb779f4860aa12efc995ebe415ef1d7e7927a332b0c3fe1abd5af66d473d8"
+    },
+    "angelene": {
+      "model": "703ae69be8da683c0da2c8425ff31b6f7c784e5f4e74572ca45b097a7cda683b",
+      "texture": "fd27d437003bc6e485ffd6366876c178b9c2fb2551b12cea20a3ae090a3760bc"
+    },
+    "anna": {
+      "model": "d4108990d5c55aad356c537e9e11a3dc71247fbec64cdc7b25f8ff3d588434b3",
+      "texture": "6aaebe8eacb9b6c63b93283fc92244a13b3e0c1586ec5de466ffb6e0ec87bac6"
+    },
+    "anna_kingsford": {
+      "model": "b05669e5945b472902a40588f03ee1ab6c3d2e6f449b15462920505f505dc671",
+      "texture": "a652978b5173f023f1b8031164126c29e095d50654bbeb36575f3524625e52e5"
+    },
+    "aogami": {
+      "model": "c4590290057de640c88bff75200d8cf0936e57dcc885c8439378b077cbf9f568",
+      "texture": "8dcfaf74cab343b1d94ccc6cad6e4c410aa1352e9e223edfc5fdc8dd1a76794e"
+    },
+    "aradia": {
+      "model": "7a097257dd511f2125c204a657bb285467eb00a17e8d8ad49fc51a3e2d8aa424",
+      "texture": "51973536c8c3b6677b3cc2e3eabbacbbbbe3d54dcfaec6bf3d008244c45eebaa"
+    },
+    "aureolus": {
+      "model": "2f5a7f9eacd2df184bde19b069960eecba1b5ef778c376084cb7dc6d4e28a021",
+      "texture": "ce5e1af0417bb0cccfebdc9c0ed659afed060a7a70541156ab8fd67316da1188"
+    },
+    "bayloupe": {
+      "model": "9a6f969afa031b5f2c2887b602b1c767f95e31fe7a5eae6adfa5d8550e5517c6",
+      "texture": "d714515658f15f31eb13ad8e526034be5ceee3f19dfcb37454ebf02ff2a20649"
+    },
+    "bologna": {
+      "model": "268c8c66ce4916c2a6260234d2d454ba8e0c41d60ff6cf8f22d9428a44d21177",
+      "texture": "a5d14d8f1497023cd6c9d249f8ffef2cd7b6fa9f73bf495078559ba25d47286d"
+    },
+    "brunhild": {
+      "model": "142aabc06dce28e68659c2ab260f2a7c2a10f60b8009c58c5b1de8f46b55b825",
+      "texture": "253c5f86fb93ad1b0ef8f6dd274c15044e1efa45710ecd3d4c4c5eed4f5e80fb"
+    },
+    "carissa": {
+      "model": "8fbf9677833125f07967029148d2614a33e805af55db3fd6ab0cf8b2c0af4207",
+      "texture": "8050d5e0b0d1cace7211655afaa97ddfc8c06232893ecda2bffe9c3b2f102999"
+    },
+    "crc": {
+      "model": "03df11731db5a74c43076e4c09f58d9ab4d986f60499fb645a113df27aefd1a1",
+      "texture": "d1af35c6ca4a553f6cfea785b2b0d667b3b82f3c5e37ff28a25a1b41e6fabac6"
+    },
+    "elizard": {
+      "model": "60997ccec023757d00b3a44e785c031038e090f565edfbf95bcef710f69dccea",
+      "texture": "2003624eb8258964445052ad945e1930ff8e0ed5ce9b398ecb8001b0bd5b4e4d"
+    },
+    "etzali": {
+      "model": "bb0b315de99cfddec97d4a434934a39d6e82da4d8c8c3723f58c9e66f308a313",
+      "texture": "66e0ea9f4417ae8d575930e75a96abe661fd22ce9612baf0a2f7b3aae3cb951d"
+    },
+    "fiamma": {
+      "model": "d2fc8fd8e68dd3645f3dbafc45344e25d539fa4bb26c9c7d095bd22cebcef922",
+      "texture": "cde28680acb290e186273b665762e5b5343bdbb651304da669c6e546a08f9214"
+    },
+    "floris": {
+      "model": "e10089e9c0ba503c3aa3eb857ce5734c24d21afe4a43211905606f3056b6f602",
+      "texture": "89ab9b43483698af9483e78e4f3cea9f976b4cb3beb0c00a02b1d2b0c716ddf3"
+    },
+    "fraulein": {
+      "model": "4fbdd33d3788e9aa6eb0b6ff557d4c69f16031404954507dc671ed07bf66533e",
+      "texture": "9d94854ccc667df3f2fc9ad0609dfef3948dc2be2e3c8355fe7e3ea826472ff3"
+    },
+    "fremea": {
+      "model": "259861b1b5207b662afff3e0df14b4680cf8366f5afd822a302219605257ce94",
+      "texture": "ceb4cf7b40cd99a87abebd06cd7af6b3508827483d3cccae37e05604460ffea7"
+    },
+    "frenda": {
+      "model": "6f4fb99567c73193a1988ed6212f221e80070ec4480fd4dee60542d87bafb935",
+      "texture": "70c0e3c90c1e0716ffb3fa123fc3272b8e512a41106a37e59211557fe8f9c28a"
+    },
+    "fukiyose": {
+      "model": "53113cf267a3bcd7c4c8c84b1c345a24d3e83052d6a21720ec5190f16c860191",
+      "texture": "fc8401fa1e78129baf106a5bc82d22f1f1711d84af241699f2b922361e341bd0"
+    },
+    "good_old_mary": {
+      "model": "5fbab381544c3a43887cf4b113e9d4aef5db5df571c6a1542b2355bbe52e7501",
+      "texture": "9fb996f5f938d98bccff5b8186c100ff35b35b7f1de3efec84167dca2afcd747"
+    },
+    "hamazura": {
+      "model": "34aeb4155e42e1df94036794973aa03219f637279c7e3dd7170244c28085c5cd",
+      "texture": "61189e0291c812264095723f72c10614b04b0faf62b6515690674be3a1d3c153"
+    },
+    "heaven_canceller": {
+      "model": "737a1a095b0b5e7e2b618736e7d858d3c0a77c670f9593d3432eaf2fc355c842",
+      "texture": "3507a287a88f95401986665c49d858d08fa7bb7fd0da173589412d9210dd07d6"
+    },
+    "high_priest": {
+      "model": "c6249d485d13ecb4ae333849422da0bf6ca2ad4ba3e6ca4784e5dc78862e9ca0",
+      "texture": "c20ef0148399fb228c12ad1adab0a78fac26c076faae68df8915d90ffa9a3784"
+    },
+    "himegami": {
+      "model": "b9584249a42d2d6c410b7ab894f82093b890101301e45bd5952b1283263fa7b1",
+      "texture": "62e9d8341f968993d50db25fc1e68e10ddc024d10284f5dcd3dab3ec3bba2c18"
+    },
+    "ht_trismegistus": {
+      "model": "e4fd6411f97f2da8875ebd0fc74bef42d1c272b835f5e0bea871c86496eff299",
+      "texture": "f74dd32a39d30985bd8c548898af01f8f20c76edd0f660b3803c79102e15461f"
+    },
+    "index": {
+      "model": "8d4dd0e272d1e53f4ed48a816cf8e6a88be8d2fb3f5bb669275dd1bb7242d4e6",
+      "texture": "80e10db8268100447d7e9c49be2dc88311260b3a4f8449f8dcb7eddfcd3c4686"
+    },
+    "itsuwa": {
+      "model": "60a582104c2486564a2090b701654e617fddaf51676ea18be92f12998d77a0d0",
+      "texture": "ad9264b6ae25bae1c61b4f4675a38c3067d0a39b355c7bc67e4d5715c3e28e14"
+    },
+    "kakine": {
+      "model": "d21a5acd3baec199adee588d8ae0bdd524e38a98f7255265ba16b6206f40d8b9",
+      "texture": "cd4f850303f69a88265f02aa52435c8154f5401e5606af50e7fdcf49b7b35b22"
+    },
+    "kamijou_shiina": {
+      "model": "f3e0ff32b2610034b3c3c0f6c1397aecd78bbdbcb10909c91ad4d3826d51a43f",
+      "texture": "5aea4e890ba31e9ff8c9202d6ea617ea13846cf8dd1fb56901b6a74f65b96087"
+    },
+    "kamijou_touya": {
+      "model": "0b22563fad9f72549b7308c9ed3f4fe91aa8ea751d1c39f598eb63efb1ddbba4",
+      "texture": "695055af6cbd4f0a2640e27f80507adb7628839715b616411b290dc57af82afb"
+    },
+    "kamizato": {
+      "model": "11a38f58638e642c308f07839fd2a656986340951375e0d45f7424c4cab82f57",
+      "texture": "2901cc27103998de0ef8703416d67b6ea190a0e09a862d3ab9e34994150678b4"
+    },
+    "kanzaki": {
+      "model": "0a5e2afc2d3ec50a9ac32fd6e7dc0f989157fc2520ac521608fef0bcf65a907d",
+      "texture": "ccea4bb7d5cb9b0c30f827af6813350fb7cfc7d09bea7519e5eb58a3bfc44f75"
+    },
+    "kazakiri": {
+      "model": "a422c128568311a680c76a0bc3acdac2bbb7c1f38c18bf07ed6d9f7859ba6c0b",
+      "texture": "cc938fa3662de4f6467cb3e978fc5484db9a11967bd12260b5d9909023786a78"
+    },
+    "kihara_amata": {
+      "model": "8ac095dfdf5a5fbc6e2f45c76cae75a76940aba8337a3d5e0d1d73281be6ecd1",
+      "texture": "8d1321ea80632cb6b00c70910b7fcca587c494872a09f0f0c2866be6b69fe56b"
+    },
+    "kihara_byouri": {
+      "model": "6a504a5aa84bbd03d1cf800793dc613787c4de8e26f6880d1a40a7e0afc55860",
+      "texture": "87b310ca3a1b671e5c5207e8ef19eb245a319888964b72a7156012b0aabdef61"
+    },
+    "kihara_enshuu": {
+      "model": "d16280ec98bac5efb1c306785271c6b5c70b10b6dece5c4dcf81a01f3c4a55d8",
+      "texture": "efe996d19eeb3320aaee5b086b76cf957754c704df7123e9a3d9c906143003c9"
+    },
+    "kihara_kagun": {
+      "model": "2f635173dba61f8d32d05b6a5f9ebdf510751861fa96cde66f1530b393b17a14",
+      "texture": "677f6786480d231946728dc34682645cbcc5e47254d654e7e7d292c4514329d8"
+    },
+    "kihara_ransuu": {
+      "model": "945377d7bc409b53636416e22e256c7010e97afdfcb75dead445c9892a01e2fc",
+      "texture": "c594d8a3038dab52871b3e4768385d17ea5bb53adbd70e36dd78e3c69ea2b49b"
+    },
+    "kihara_yuiitsu": {
+      "model": "e1bfcf17fe64691ff95c9b354423f45f5eeeb3abe7c1833ca27dcc56dfd50656",
+      "texture": "2d159dc7330dd83819e8252c9c68af8662e19acf5682bc21dc2819db91ffc278"
+    },
+    "kinuhata": {
+      "model": "bb67a61cb29eeb6310102edc6f6f3c4ba5b89eb335b853a7c5f953b95a839df5",
+      "texture": "a0fdf14a62aa8394e2fe8a788ed7afdab65ff643e76630a654677c6e1338d996"
+    },
+    "knight_leader": {
+      "model": "3419629f75df08789c6c8ab19b3d9380373061363697c07763c29163350e1076",
+      "texture": "79f8cffa607ba0e9807992533599d366a457db7b2fb4c2b3add2fd37e023cab3"
+    },
+    "komoe": {
+      "model": "869755082d0d72ad2949fcd42d48d795c5d9be646666ee9d4e7a8e6dcf1db954",
+      "texture": "2fc5e70997b25536ceb62e8d43ce8bb8fbbed1b88c87d63f3f2561fd7b36d16e"
+    },
+    "kumokawa_maria": {
+      "model": "a3ab56a5d8c84b84e577e657db09bd10d0ed655f99902f05cc4857b94b93380a",
+      "texture": "6c8eb1892346fe198c1dc274fa773d6912c36b27fba767d68534ef8ff7ed7a48"
+    },
+    "kumokawa_seria": {
+      "model": "2ae84a1482e0816f8d39343c521eb3cf4d333cf8467fb6a453d5c0eacfdc6dc0",
+      "texture": "dcac3e340016a28924fd882c4b25cc7874d852aa0ac6fec459c4100f71742f49"
+    },
+    "kuroko": {
+      "model": "5f245b116ddddde2e6a42b843b4223db4eb350b30f5b30498af1fab20e538f94",
+      "texture": "2f6a02700badfe8924ecab46238285a7e41916d2f8d622fdab83235a1484ab8d"
+    },
+    "kuroyoru": {
+      "model": "8cdec898e2cd39d4f84af8dc264793e0b2a23e4dc2b9b910b85207248b6740ff",
+      "texture": "73dcddc348380434fde2959b8c6f9f43bc126e15c46eb590db516a862009d5ee"
+    },
+    "lancs": {
+      "model": "a5f1326656a4c0b3b4f3c6280852941ea71352db308badb324e496c06f3ff544",
+      "texture": "a18ca8642675d67efd6b75625d4c77ea78446ffb3d8fd588fff6877d4947581e"
+    },
+    "last_order": {
+      "model": "6b46f953fd1f52e3cecb44ba7d81af4839d51a366c5adac7aedca6fcdf5f6ca0",
+      "texture": "7e6a6e22fa506615bead8c9a509ea63e61338b9d7b6c3a4e670c59e9206f9e30"
+    },
+    "laura_coronzon": {
+      "model": "ea9616f1c0c7a29bdf6d7bef0885351b4b9b3cffd834e25e6b17325c7bae556b",
+      "texture": "47b3374b6ead49528224d545c613d22410dc45d04673fcf9fb296b1ed4c0bedc"
+    },
+    "leivinia": {
+      "model": "3a08a7428c0991df8e44b9bbc7a91f861f460e64ceee0c1c8364eb701072d67e",
+      "texture": "81d5d7ab7463f10dc117aca20d42ed583aa0d688f54a3f0ea662118aff1c2c8b"
+    },
+    "lessar": {
+      "model": "205e08983a2c84169bfb82af90f74fe6ae5af23ebbd11c06a2d5693561e36228",
+      "texture": "18088a7156e0dba73fe39715f48671e9b02f70a62ac1c88cf439f5ec590f958b"
+    },
+    "lidvia": {
+      "model": "c58cd48f6c7a802558e1c5e9944a579baaa5091c4b1e0e4e41ceff2a805baf03",
+      "texture": "83ce1224567fe7f67503d5b6a7d0b31bd50517646b4c07b02d61439f22f309ff"
+    },
+    "lucia": {
+      "model": "43de6facf2d8e92540bcada036e554ddd748d3ba53ac4ee248759d6918059153",
+      "texture": "8c6ff9b1520632c57fb0969987d9db1d24b9db09555f14e05eaed08cc86c6add"
+    },
+    "maika": {
+      "model": "6f9410704a45a20771c0737b30210049d237fa6db3f1bfd319c1134ea5cf4968",
+      "texture": "2611e6c1b223837e9c0c31303ee5ef21fc5cbafa8ef798bb2b76bb8d41f17de1"
+    },
+    "marian": {
+      "model": "e7fb2b0812dbf59960ec9ddd5903ad362a0f5109dd231f29a96e4358b5f8ed1d",
+      "texture": "4c779f570df7fc3574249b02718f25886ee5298196f774e3a584ce2e60ce833f"
+    },
+    "matthai": {
+      "model": "0294128cd0b0832bf9edb1c5aeae10770af7d67143db151950190d127d6881b9",
+      "texture": "f20770d3d10a5328c756a703babcbdbd3f5c361df71a766fbd48a6c5db6ba8c1"
+    },
+    "measure_heart": {
+      "model": "596c53732e57f72e59c6a9c31c0c9987332d00c983fb0bb77e7531ff2f55e2de",
+      "texture": "b61872c3a140d50fa742f1864c250db137d0e2fcd5b6e80057e80b45e024ddb9"
+    },
+    "mikoto": {
+      "model": "a7e529c00abc3993bec9ed48af0fc3815749bcbf9b0b8e717de4fbea09c4f5f9",
+      "texture": "a45f31de345acafc3c0a31861ba9e869c0cb2c8ba96aa7240ec55f9c6b20c840"
+    },
+    "misaka_10032": {
+      "model": "898ea7f47d1070a67483540d14299b086ad90b7940fdc1bef7bc7f5a39cb94b7",
+      "texture": "651aed4929e71b17d816f17360072228815abbfb6fbe1697aa6ce9403e16f7b9"
+    },
+    "misaka_misuzu": {
+      "model": "c408fbf344fcf4d80e7b8154b03fe4c46d2b49bffb0adeaa729ea65379a7e47d",
+      "texture": "eeddf4386c4c7a973cf1740c8d0ffd04e6fa7d9614cb334f87f69b555c2d6113"
+    },
+    "misaka_tabigake": {
+      "model": "a2c24c941e93b826c0961418522d7b7ded1ec9b8c8d1176196990436c8623d33",
+      "texture": "2b449a5f029113fe9137624a7ad9e7127e239e5b19acc1e687bec15f3e6f11ba"
+    },
+    "misaka_worst": {
+      "model": "7372c4af66e12192fc661f6331d6451814b3011528e9e6b4050c8bf8a423ec4b",
+      "texture": "c1b53eb36614b4229e674ed5ef99d4f9d04a38a7f9d315e2e61d0785e65be6ed"
+    },
+    "misaki": {
+      "model": "74e472537db371cc8c2078b405a390d1b70e77981fc4f57c1f18764167e50bae",
+      "texture": "8eababd60ee4d55875aec3db95f058c50fb3339c9710bd816eb351f56e4acb61"
+    },
+    "mitsuari": {
+      "model": "6a3d1aa0cd6aae0a899facc2da5e5a371de549f978309c874ae7447aabba9729",
+      "texture": "80794f1e76995b8d8ce1cab4497c549ad43f8011ac1db82e09bbaf668ff93f6e"
+    },
+    "mugino": {
+      "model": "99ef2a146133244cfc53ed8017ec56956f70f3eb020d5bc1a53641abbe504de1",
+      "texture": "cb3d7873ee0282c3fcbbcff6df7b6795445baaea1ca4be90b6cd81ca222e914a"
+    },
+    "musujime": {
+      "model": "b9e72dab9fee54520036eb0f18a866ededa579498c24c9d531e176f67c7f980e",
+      "texture": "f372b3005a80ac4e30c0bf66b37787d60c2efaa5a66d101dcbbaa409580aa4cf"
+    },
+    "mut_thebes": {
+      "model": "5f306d11c89c396d02c4ec6a0ba21b04a008727c9175eee8f948ca5c39329a41",
+      "texture": "01534ef60cad22b0779dc6954122f5fbf5ee6b7eb0cf01e6852b743c53f1502a"
+    },
+    "nephthys": {
+      "model": "39a2fc5aedf1c4c2676aa648a33943de222c8c9c1593cff65fdf4f5e572c2091",
+      "texture": "6d982d9469020e062b7eaf52411f22a71f9af2a24c4c4ba10fc42d0a2cb5c459"
+    },
+    "niang_niang": {
+      "model": "e4928707721c18c9dc553948fa33e380337c585507e71539a4f385021a5677aa",
+      "texture": "f1c3b5f96432d1139b4865a84bae97271fa10d7d85bce32c9c673f574cac7e79"
+    },
+    "ollerus": {
+      "model": "2d13dbf901f5e9bf32388ec5bb4759e53b6c917bf081247c31d0f244fb3fb4c7",
+      "texture": "df1a893405c5503c28da4733b610ea7a38f37706ca109c5b24f93d10d206483a"
+    },
+    "oriana": {
+      "model": "cbc6bd9c817bc76ff88c518931c62efabd39fbc1401ac0777e326e90bf4c0488",
+      "texture": "1e155774bceadde705a223b7af3488ed495add7040dd0d7ea19e73c61a0100cd"
+    },
+    "orsola": {
+      "model": "dd39e380c23070be0de3a7b63e1fe165cf15575d1c679b2a2687409f65a65b09",
+      "texture": "a278f65bec8a5ee6378cb7704655ae7166bd6fc39dc7265f0e046f5d1947792a"
+    },
+    "othinus": {
+      "model": "4154c11c49cd4af74a0ac73c478fe8ee134b5ae9afdc92e4f7e5c60c6ba9c871",
+      "texture": "20d0ced638af813cbc31a9b248cb24a807c4c8d438fc25bb5b2294819e3291b6"
+    },
+    "rensa": {
+      "model": "5fd39ec2789cdcc5f422d9ce867ece617db90a4dfa74c798aba93e938afd00ad",
+      "texture": "02e06d09120c96e58ff6ca49bebdd43c177363970e32484d7ccb804707c2d689"
+    },
+    "rimea": {
+      "model": "2e949956cbb1e94707c8b0cea5d21715e5980a4cdf4706c7d78efc30569eeea0",
+      "texture": "731319d596ab9ad1579ba1fecfb94a7db44bdaf5831cdbbb46b8d97b450b3a52"
+    },
+    "sasha": {
+      "model": "19095facb059449b4e685265b1763f5fca174d74fa8a17e9fb4047fa3d4eda67",
+      "texture": "86441e6f2e3c0fe1bca913c3baea08957d435f4a99c6edb24345c33feed168a9"
+    },
+    "saten": {
+      "model": "14c68aa6d651cc5fe18851cf5b8d215089f66a9b4386ddb00a52d82a1b85d032",
+      "texture": "67a1954556baf447933f1914611971a6fa5d3c4a1a3c5fa4bd2831cf24957e77"
+    },
+    "sherry": {
+      "model": "ae06056093a04c3d158da1a95455697a8f78a14280266170908033b74c0e41fe",
+      "texture": "977d29f50fbcb5be03aadf1124a8c3dd9722c1f1344d3ccdf008ff9fe98cdd27"
+    },
+    "silvia": {
+      "model": "e1a094a42529a93afe48483e75c00bf7f49f1ea36520d47f47e988de86384e8a",
+      "texture": "253667bd54b11684b715219673050ae1123c78c96674b8c349fe4d845830de99"
+    },
+    "sogiita": {
+      "model": "c0ac3f3fd5e565f565fb1fd8ab7440010331963027df9e686bf57b8ed043354a",
+      "texture": "111947528a47219b4e93cfffb83fc734e6919f79458543cca75b7944018aa183"
+    },
+    "st_germain": {
+      "model": "8dbac8ce7ae17adb04640399e9466078f48841cfac23095a0eab6a6f73a94246",
+      "texture": "a2b2862cc17d60c25cecf883dd30b6aa5c4a75c5404d697abcb2497fbd77b5ed"
+    },
+    "stiyl": {
+      "model": "46e7a6884d585df1139cc8a3944943767b985c2756678c5619d6ce2b8a456e8c",
+      "texture": "7a38996996324b11c667a75139ba4d61a316b513fa872b331e62dfb5499ac34b"
+    },
+    "takitsubo": {
+      "model": "4fbeb22be39c3da35787bc39792a78a31c7b6764af1d2bcb6019334b6063c046",
+      "texture": "aa55ab4a9d71edc82a3f38d1f3b9616adc43d0790701ba31dd34724e134649f0"
+    },
+    "tatemiya": {
+      "model": "d78b73f76f00605687fcb8f2ebcb34efe9bf342867b24d9a64fb6ee019afd344",
+      "texture": "1b9c252cd067cf0b2e2173b7b6d988f9f15c2ca5d5dbbbbf36d09e2379c2f729"
+    },
+    "terra": {
+      "model": "e3b25d8419035091a07e5a266a7f1e062bba0672514734698a38adbe6e1525de",
+      "texture": "19dc887cfe4053468cccc970a96a92515a79251e4d1375fad4b60378cf2b5d33"
+    },
+    "thor": {
+      "model": "76a453282d2839cafbe677f17d21a9adb13bb861f2451b7a8ccc60c301b143ba",
+      "texture": "5a954782f4d4d6090ae446088028f6e0c4689135a6d69c6ee5861e51973bb5aa"
+    },
+    "touma": {
+      "model": "88a3e1914f8cb33a3fa1d567142b2c93efb05b0badfd837bcc81645a874f4877",
+      "texture": "7f2c2f94d6e36b16d6ca3bdb99952838cea25826bee6294d1f60e9ca9cfa30ff"
+    },
+    "tsuchimikado": {
+      "model": "33f0f46c3c0704397ac4dcea5a36b36ac9f7b956e5aa310f8ea58eeac5232b16",
+      "texture": "ec508dbff91866a2acca8b058b3df609692e1a63afcf6f0971a9eec763d953f8"
+    },
+    "uiharu": {
+      "model": "60a151aceed0488ac1d2135d09df0af581af16d9a7f2ab15ce0f0057006a270c",
+      "texture": "140e06986a6e745a6b91840d5358f7c8afbb1344551a0d334cb45d5934ff9cd6"
+    },
+    "vasilisa": {
+      "model": "f2535dfcd36570abc6a0eb1ad19068ea2aac8ad21d4c320a45577f5714334e58",
+      "texture": "70cc86f2b4778f66edf0751498893efa3cda5cad8bf7d2fb4964de8fd54dee8d"
+    },
+    "vento": {
+      "model": "d4c8de7d1e9565b71dcb32a27aeec7808d97df91dd4efe503a99599679fd73c4",
+      "texture": "10d160a9ccac269645642173336de1114102119fec93d4e9ab93db98fa41fbe6"
+    },
+    "villlian": {
+      "model": "3004b17d29992b97b4acf64f4aad36acea1506a0d3c75c6d67a4407421da7bf9",
+      "texture": "a8ada312d8f09202cb0ca3c76becd32a8554fea27c192f67140218ad67b0296e"
+    },
+    "yomikawa": {
+      "model": "6b342693eecb14b57c8a48aa41c852154def437b1024e7ec1f0942aa71aba399",
+      "texture": "8b41cb3776e68302cfbb2ece4e80a949125e005ad598ba486d9ccda5d51879c0"
+    },
+    "yoshikawa": {
+      "model": "c705ae1e9b221f8b54dd7a4e7e452bd71387b5f42e35a7f592882cb1c7e520f1",
+      "texture": "6ba946cfb2160fadc4af69f15404c29e1959c914dfbd1f5bcb9b117d9c49be89"
+    }
+  }
+}

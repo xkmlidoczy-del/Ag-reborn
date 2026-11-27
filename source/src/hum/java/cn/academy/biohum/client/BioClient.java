@@ -4,6 +4,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -64,6 +65,9 @@ public final class BioClient {
    @Override protected int getBlockLightLevel(FlameFamiliar a,net.minecraft.core.BlockPos pos){return 15;}
    @Override protected void scale(FlameFamiliar a,PoseStack p,float partial){p.scale(1.5f,1.5f,1.5f);}
   });
+ }
+ @SubscribeEvent public static void storyAppearances(RegisterClientReloadListenersEvent event) {
+  event.registerReloadListener(StoryYsmAssets.INSTANCE);
  }
  @SubscribeEvent public static void phaseClient(FMLClientSetupEvent event){
   event.enqueueWork(()->{

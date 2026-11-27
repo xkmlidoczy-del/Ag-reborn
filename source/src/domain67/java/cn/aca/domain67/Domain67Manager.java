@@ -25,11 +25,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-/**
- * Server-side engine for Domain Expansion: Restaurant 67 (v1.2.0 Anti-Spam & Heavy Rolling Log Edition).
- * - Strict anti-spam hint throttling (`sendThrottledHint`) — zero chat history spam and zero repeat actionbar flood!
- * - Larger, heavier, floor-rolling Cursed Logs (`spawnOnStage` with `dom.center.y` floor clamping & 45-54 tick presence).
- */
+/** Server-side skill, target and terrain state for Restaurant 67. */
 public final class Domain67Manager {
     public static final float DOMAIN_RADIUS = 32.0f;
     public static final int STAGE_BLOCK_RADIUS = 26;
@@ -44,7 +40,7 @@ public final class Domain67Manager {
     private static final Map<UUID, Long> BROADCAST_READY_AT = new HashMap<>();
     private static final Map<UUID, Long> FINISHER_READY_AT = new HashMap<>();
     private static final Map<UUID, Long> BENTO_READY_AT = new HashMap<>();
-    private static final Map<UUID, Long> LAST_HINT_AT = new HashMap<>();
+    private static final Map<UUID, HintWindow> LAST_HINTS = new HashMap<>();
     private static final Map<UUID, CircusLureState> CIRCUS_LURED = new HashMap<>();
 
     private Domain67Manager() {}
@@ -123,22 +119,27 @@ public final class Domain67Manager {
         BROADCAST_READY_AT.clear();
         FINISHER_READY_AT.clear();
         BENTO_READY_AT.clear();
-        LAST_HINT_AT.clear();
+        LAST_HINTS.clear();
         CIRCUS_LURED.clear();
     }
 
-    private static void sendThrottledHint(ServerPlayer player, Component message) {
+    private record HintWindow(String key, long sentAt, long repeatAt) {}
+
+    private static void sendThrottledHint(ServerPlayer player, String key, long cooldownEnd) {
         long now = player.serverLevel().getGameTime();
-        long prev = LAST_HINT_AT.getOrDefault(player.getUUID(), Long.MIN_VALUE);
-        if (prev == Long.MIN_VALUE || now - prev >= 45L) {
-            LAST_HINT_AT.put(player.getUUID(), now);
-            player.displayClientMessage(message, true);
-        }
+        HintWindow previous = LAST_HINTS.get(player.getUUID());
+        if (previous != null && (now < previous.sentAt() + 45L
+                || key.equals(previous.key()) && now < previous.repeatAt())) return;
+        LAST_HINTS.put(player.getUUID(), new HintWindow(key, now, Math.max(now + 100L, cooldownEnd)));
+        Component message = cooldownEnd > now
+                ? Component.translatable(key, String.format(java.util.Locale.ROOT, "%.1f", (cooldownEnd - now) / 20f))
+                : Component.translatable(key);
+        player.displayClientMessage(message, true);
     }
 
     public static void handlePlayerAction(ServerPlayer player, int actionId, int arg0) {
         if (!CircusMegaphoneItem.hasMegaphone(player)) {
-            sendThrottledHint(player, Component.translatable("msg.aca_domain67.need_megaphone"));
+            sendThrottledHint(player, "msg.aca_domain67.need_megaphone", 0L);
             return;
         }
         switch (actionId) {
@@ -155,8 +156,7 @@ public final class Domain67Manager {
         long now = level.getGameTime();
         long readyAt = BROADCAST_READY_AT.getOrDefault(player.getUUID(), 0L);
         if (!player.getAbilities().instabuild && now < readyAt) {
-            sendThrottledHint(player, Component.translatable("msg.aca_domain67.cooldown",
-                    String.format("%.1f", (readyAt - now) / 20.0f)));
+            sendThrottledHint(player, "msg.aca_domain67.cooldown", readyAt);
             return 0;
         }
         BROADCAST_READY_AT.put(player.getUUID(), now + BROADCAST_COOLDOWN_TICKS);
@@ -191,8 +191,7 @@ public final class Domain67Manager {
         long now = level.getGameTime();
         long readyAt = DOMAIN_READY_AT.getOrDefault(player.getUUID(), 0L);
         if (!player.getAbilities().instabuild && now < readyAt) {
-            sendThrottledHint(player, Component.translatable("msg.aca_domain67.cooldown",
-                    String.format("%.1f", (readyAt - now) / 20.0f)));
+            sendThrottledHint(player, "msg.aca_domain67.cooldown", readyAt);
             return null;
         }
 
@@ -246,15 +245,14 @@ public final class Domain67Manager {
     public static int castOmniLogFinisher(ServerPlayer player) {
         ActiveDomain dom = ACTIVE_DOMAINS.get(player.getUUID());
         if (dom == null) {
-            sendThrottledHint(player, Component.translatable("msg.aca_domain67.need_domain"));
+            sendThrottledHint(player, "msg.aca_domain67.need_domain", 0L);
             return 0;
         }
         ServerLevel level = player.serverLevel();
         long now = level.getGameTime();
         long readyAt = FINISHER_READY_AT.getOrDefault(player.getUUID(), 0L);
         if (!player.getAbilities().instabuild && now < readyAt) {
-            sendThrottledHint(player, Component.translatable("msg.aca_domain67.cooldown",
-                    String.format("%.1f", (readyAt - now) / 20.0f)));
+            sendThrottledHint(player, "msg.aca_domain67.cooldown", readyAt);
             return 0;
         }
         FINISHER_READY_AT.put(player.getUUID(), now + FINISHER_COOLDOWN_TICKS);
@@ -303,15 +301,14 @@ public final class Domain67Manager {
     public static int castNoHeartburnBentoCameo(ServerPlayer player) {
         ActiveDomain dom = ACTIVE_DOMAINS.get(player.getUUID());
         if (dom == null) {
-            sendThrottledHint(player, Component.translatable("msg.aca_domain67.need_domain"));
+            sendThrottledHint(player, "msg.aca_domain67.need_domain", 0L);
             return 0;
         }
         ServerLevel level = player.serverLevel();
         long now = level.getGameTime();
         long readyAt = BENTO_READY_AT.getOrDefault(player.getUUID(), 0L);
         if (!player.getAbilities().instabuild && now < readyAt) {
-            sendThrottledHint(player, Component.translatable("msg.aca_domain67.cooldown",
-                    String.format("%.1f", (readyAt - now) / 20.0f)));
+            sendThrottledHint(player, "msg.aca_domain67.cooldown", readyAt);
             return 0;
         }
         BENTO_READY_AT.put(player.getUUID(), now + BENTO_COOLDOWN_TICKS);

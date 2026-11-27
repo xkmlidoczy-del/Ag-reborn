@@ -152,7 +152,7 @@ def infinityJar = tasks.register('infinityJar', Jar) {
     from sourceSets.infinity.output
     into('META-INF') { from('integration/aca-infinity/NOTICE.md') }
 }
-def domain67Version = '1.2.1'
+def domain67Version = '1.2.2'
 ['processDomain67Resources', 'processDomain67QaResources'].each { taskName ->
     tasks.named(taskName) {
         inputs.property 'modVersion', domain67Version
@@ -186,15 +186,15 @@ tasks.register('macroRulesTest', JavaExec) {
     enableAssertions = true
 }
 tasks.named('check') { dependsOn 'macroRulesTest' }
-// The V4.8 renderer fix retains mod version 0.1.0 and the existing species IDs.
+// Titan Ecology V4.9 retains mod version 0.1.0 and the existing registry IDs.
 def ecologyModule = 'dev.titanecology:titan-ecology-expansion:0.1.0'
 def ecologyJar = file('integration/titan-ecology/titan-ecology-expansion-0.1.0.jar')
 def verifyEcology = tasks.register('verifyTitanEcologyArtifact') {
     inputs.file(ecologyJar)
     doLast {
         byte[] checksum = java.security.MessageDigest.getInstance('SHA-256').digest(ecologyJar.bytes)
-        if (java.util.HexFormat.of().formatHex(checksum) != '9782f16cf9f43c3a7176febe111293c00097d4b835ab45ccb44161fa097ab8b0')
-            throw new GradleException('The embedded Titan Ecology artifact must match the V4.8 head-rotation fix.')
+        if (java.util.HexFormat.of().formatHex(checksum) != 'debf2e8682ed07fd14b4c4f334269eed8fdd0018f823bf6ee402f782ffa989d8')
+            throw new GradleException('The embedded Titan Ecology artifact must match the verified V4.9 build.')
     }
 }
 tasks.named('jarJar') { dependsOn verifyEcology }
@@ -230,6 +230,7 @@ dependencies {
     jarJar(ecologyModule) { version { strictly '[0.1.0]'; prefer '0.1.0' } }
     implementation 'software.bernie.geckolib:geckolib-neoforge-1.21.1:4.7'
     faunaImplementation 'software.bernie.geckolib:geckolib-neoforge-1.21.1:4.7'
+    humCompileOnly 'software.bernie.geckolib:geckolib-neoforge-1.21.1:4.7'
     jarJar('software.bernie.geckolib:geckolib-neoforge-1.21.1') {
         version { strictly '[4.7,4.8)'; prefer '4.7' }
     }

@@ -21,24 +21,9 @@ final class PresentationProps {
 
     static void draw(HumNpc npc,NpcModel model,ItemInHandRenderer renderer,PoseStack stack,
                      MultiBufferSource buffers,int light,float partial){
-        var skill=Skills.get(npc.technique());
-        if(skill==null||npc.signatureAge()+partial>skill.windup()+Math.min(8,skill.recovery())
-                ||npc.signatureAge()+partial<2||npc.abortAge()>=4)return;
-        Item item=switch(skill.id()){
-            case "mental_stop","mental_retreat","mental_assist","mental_memory" -> BioHum.MENTAL_REMOTE.get();
-            case "enshuu_guidance","ransuu_burst","judgment_report",
-                 "network_triage","network_triage_care","tabigake_survey","seria_briefing",
-                 "sister_signal","rensa_scan" -> BioHum.HAND_TERMINAL.get();
-            case "analysis","spell_intercept","sheol_fear","orsola_reading","komoe_lesson",
-                 "rimea_intelligence" -> Items.BOOK;
-            case "shorthand_cast","shorthand_ice","shorthand_flare","shorthand_escape",
-                 "onmyo_seal","immortal_talisman","cross_charm" -> Items.PAPER;
-            case "aim_track","aim_reacquire" -> BioHum.CRYSTAL.get();
-            case "frog_doctor_care","alchemist_rescue","yuiitsu_protocol" -> Items.GLASS_BOTTLE;
-            case "coin_ladder" -> Items.GOLD_NUGGET;
-            case "dvergr_forge" -> Items.IRON_INGOT;
-            default -> null;
-        };
+        var skill=activeSkill(npc,partial);
+        if(skill==null)return;
+        Item item=itemFor(skill.id());
         if(item==null)return;
         HumanoidArm arm=switch(skill.id()){
             case "analysis","spell_intercept","sheol_fear","orsola_reading","komoe_lesson","rimea_intelligence" -> HumanoidArm.LEFT;
@@ -54,6 +39,38 @@ final class PresentationProps {
         renderer.renderItem(npc,MEDIA.computeIfAbsent(item,ItemStack::new),
                 left?ItemDisplayContext.THIRD_PERSON_LEFT_HAND:ItemDisplayContext.THIRD_PERSON_RIGHT_HAND,left,stack,buffers,light);
         stack.popPose();
+    }
+
+    static boolean usesRemote(HumNpc npc,float partial){
+        var right=npc.getMainArm()==HumanoidArm.RIGHT?npc.getMainHandItem():npc.getOffhandItem();
+        var skill=activeSkill(npc,partial);
+        return right.is(BioHum.MENTAL_REMOTE.get())
+                ||right.isEmpty()&&skill!=null&&itemFor(skill.id())==BioHum.MENTAL_REMOTE.get();
+    }
+
+    private static Skills.Skill activeSkill(HumNpc npc,float partial){
+        var skill=Skills.get(npc.technique());
+        float age=npc.signatureAge()+partial;
+        return skill!=null&&age>=2&&age<=skill.windup()+Math.min(8,skill.recovery())
+                &&npc.abortAge()<4?skill:null;
+    }
+
+    private static Item itemFor(String skill){
+        return switch(skill){
+            case "mental_stop","mental_retreat","mental_assist","mental_memory" -> BioHum.MENTAL_REMOTE.get();
+            case "enshuu_guidance","ransuu_burst","judgment_report",
+                 "network_triage","network_triage_care","tabigake_survey","seria_briefing",
+                 "sister_signal","rensa_scan" -> BioHum.HAND_TERMINAL.get();
+            case "analysis","spell_intercept","sheol_fear","orsola_reading","komoe_lesson",
+                 "rimea_intelligence" -> Items.BOOK;
+            case "shorthand_cast","shorthand_ice","shorthand_flare","shorthand_escape",
+                 "onmyo_seal","immortal_talisman","cross_charm" -> Items.PAPER;
+            case "aim_track","aim_reacquire" -> BioHum.CRYSTAL.get();
+            case "frog_doctor_care","alchemist_rescue","yuiitsu_protocol" -> Items.GLASS_BOTTLE;
+            case "coin_ladder" -> Items.GOLD_NUGGET;
+            case "dvergr_forge" -> Items.IRON_INGOT;
+            default -> null;
+        };
     }
 
     private PresentationProps(){}

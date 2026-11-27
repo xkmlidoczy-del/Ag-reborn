@@ -2,7 +2,11 @@
 
 Ag:reborn（Ag重生）是基于 **Lambda Innovation** 开源项目 [AcademyCraft](https://github.com/LambdaInnovation/AcademyCraft) 移植、修改和扩展的非官方 Minecraft 模组。原作者及原项目的署名、许可和附加声明予以保留；本项目不代表原作者的官方发布或背书。
 
-本地联测版本为 **0.81.5-city-a3.87-rc4**，适用于 **Minecraft 1.21.1、NeoForge 21.1.252 和 Java 21**。整合包内置 **ACA Omnitrix 0.8.4**、**ACA Infinity 0.5.6** 和 **Titan Ecology Expansion V4.8**。
+当前联测源码以 **0.81.5-city-a3.87-rc4** 为基线，适用于 **Minecraft 1.21.1、NeoForge 21.1.252 和 Java 21**。从当前源码构建的整合包内置 **ACA Omnitrix 0.8.4**、**ACA Infinity 0.5.6** 和 **Titan Ecology Expansion V4.9**。
+
+V4.9 为巨兽种群加入分段运输路线、分基地续建与可逆的边界扩张，内含 48 套新结构、8 款方向构件和 6 种裁切片模型样板。[生态模块版本与 SHA-256](source/integration/titan-ecology/README.md)
+
+主体贴图复修版重画十种生物的甲壳、皮肤、骨肋和装甲，修复八套阶段模型的贴图重叠，并把断腱驰龙、噬骸嵌合猎犬和灾厄凝袭沼鲸的眼组移到头壳表面。[生态模块整合说明](source/integration/titan-ecology/README.md)
 
 a3.87-rc4 修复巨兽附属种群在行走、游泳和持续看向目标时头颈角度累加的问题。视线偏转仅在当前绘制中生效，跨越 ±180° 时按最短角差处理。[生态模块整合说明](source/integration/titan-ecology/README.md)
 
@@ -10,7 +14,7 @@ a3.87-rc3 内置 **ACA Domain 67 1.2.1**。背包携带扩音器后，可以展�
 
 a3.87-rc2 调整开放兼容模式下的技能使用条件。管理员执行 `/academy dev <能力系>` 后可以立即测试 LV5 技能。四个 LV5 技能加入实际伤害，爆破技能支持地形落点、可恢复弹坑或溅射。
 
-a3.87-rc1 在 a3.86 上加入 148 种生态生物和寄生、血肉、菌群、机械四条生态链的基地。生态系统可识别对应的 ACA 巨兽。客户端和服务端的 `mods` 目录各使用一份本体整合 JAR 即可。[V4.8 来源与构建说明](source/integration/titan-ecology/README.md)
+a3.87-rc1 在 a3.86 上加入 148 种生态生物和寄生、血肉、菌群、机械四条生态链的基地。生态系统可识别对应的 ACA 巨兽。客户端和服务端的 `mods` 目录各使用一份本体整合 JAR 即可。
 
 a3.86 重制了乌鲁无限手套。佩戴位置随玩家惯用手切换，拇指朝内，第三人称的腕口套在小臂上。指节分段弯曲，六颗原石各自嵌入对应座圈。
 
@@ -35,6 +39,8 @@ a3.78 修复 LV5 落空费用、道具强化提示，并补齐 12 系终极演�
 整合 JAR 同时包含 **ACA Mech 0.4.5**、**ACA Fauna 0.1.18**、**ACA bio HUM 0.9.1**、**ACA Omnitrix 0.8.4**、**ACA Infinity 0.5.6** 和 **GeckoLib 4.7**。升级时请从 `mods/` 移出旧版 Ag 重生及各内置模块的独立 JAR，再在客户端和服务端安装同一份整合 JAR。 [历史发布 · a3.78 整合 JAR](https://github.com/xkmlidoczy-del/Ag-reborn/releases/download/v0.81.5-city-a3.78/Ag-reborn-a3.78.jar)。
 
 自动生成人物只有主城第七学区无窗之楼的一名亚雷斯塔。首次靠近时，在原始塔体内安装倒悬维生舱，生成记录随世界保存。塔东侧约 `-134 0 -152`，可用 `/biohum windowless enter` 进楼及 `/biohum windowless exit` 返回。100 枚人物刷怪蛋位于「学园都市人物 NPC」。动物在原版主世界及规划公园/湖岸按生境生成，机甲可在「ACA 学园机库」部署。[人物整合说明](source/integration/aca-hum/README.md)
+
+客户端加载 ACA 故事组 v18.5.1 后，剧情角色按各自的 ID 自动使用对应的 YSM 外貌。联机中的各观察端各自选择外观，模型缺失时显示附带的角色模型。[安装目录与加载规则](source/integration/aca-hum/README.md#aca-故事组-v1851-外观)
 
 ## 构建
 

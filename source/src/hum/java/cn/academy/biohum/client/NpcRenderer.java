@@ -20,6 +20,7 @@ import java.util.*;
 public final class NpcRenderer extends HumanoidMobRenderer<HumNpc,PlayerModel<HumNpc>> {
  public static final Set<String> SEEN=new HashSet<>();public static long renderCalls,renderNanos;
  final Profiles.Profile profile;
+ private StoryYsmAssets.Appearance storyAppearance;
  private static final RenderType FACE_ATLAS=RenderType.entityCutoutNoCull(
    ResourceLocation.fromNamespaceAndPath(BioHum.ID,"textures/entity/aleister_faces_090.png"));
  private static final RenderType PROFILE_ATLAS=RenderType.entityCutoutNoCull(
@@ -67,23 +68,39 @@ public final class NpcRenderer extends HumanoidMobRenderer<HumNpc,PlayerModel<Hu
   return (npc.tickCount + Math.floorMod(npc.getUUID().hashCode(), 127)) % 109 < 4;
  }
  @Override public ResourceLocation getTextureLocation(HumNpc a){
+  if(storyAppearance!=null)return storyAppearance.texture();
   if(a.suspended())return ResourceLocation.fromNamespaceAndPath(BioHum.ID,"textures/entity/aleister_normal.png");
   String expression=isBlinking(a)?"blink":a.expression()==1?"friendly":a.expression()==2?"angry":"normal";return ResourceLocation.fromNamespaceAndPath(BioHum.ID,"textures/entity/"+profile.id()+"_"+expression+".png");}
+ @Override protected RenderType getRenderType(HumNpc npc,boolean visible,boolean translucent,boolean glowing){
+  if(storyAppearance!=null&&visible&&!translucent)return RenderType.entityCutoutNoCull(storyAppearance.texture());
+  return super.getRenderType(npc,visible,translucent,glowing);
+ }
  @Override public void render(HumNpc a,float yaw,float partial,PoseStack pose,MultiBufferSource buffers,int light){
   long start=System.nanoTime();SEEN.add(profile.id());
   boolean capsule=a.suspended()&&!a.isInvisible();
-  if(capsule)LifeSupportRenderer.frame(a,partial,pose,buffers,light);
-  super.render(a,yaw,partial,pose,buffers,capsule?LightTexture.pack(13,3):light);
-  if(capsule)LifeSupportRenderer.liquid(a,partial,pose,buffers);
+  var previous = storyAppearance;
+  var npcModel = (NpcModel) getModel();
+  storyAppearance = StoryYsmAssets.find(a.characterId);
+  npcModel.storyMesh = storyAppearance == null ? null : storyAppearance.mesh();
+  try {
+   if(capsule)LifeSupportRenderer.frame(a,partial,pose,buffers,light);
+   super.render(a,yaw,partial,pose,buffers,capsule?LightTexture.pack(13,3):light);
+   if(capsule)LifeSupportRenderer.liquid(a,partial,pose,buffers);
+  } finally {
+   storyAppearance = previous;
+   npcModel.storyMesh = previous == null ? null : previous.mesh();
+  }
   renderNanos+=System.nanoTime()-start;renderCalls++;
  }
 
- private static boolean rendersLongSword(LivingEntity entity, ItemStack item) {
+ static boolean rendersLongSword(LivingEntity entity, ItemStack item) {
   return entity instanceof HumNpc npc && npc.characterId.equals("kanzaki") && item.is(Items.IRON_SWORD);
  }
 
  static final class Accessories extends RenderLayer<HumNpc,PlayerModel<HumNpc>> {
   private record Piece(ModelPart bone, AccessoryMesh mesh,String name) {}
+  private static final Set<String> STORY_PROPS = Set.of("rod","spear","mace","mace_end","blade","staff","staff_end",
+      "shield","hammer","hammer_end","needle","wand","remote","coordinate_torch","torch_lens");
 
   private final List<Piece> pieces = new ArrayList<>();
   private final RenderType renderType;
@@ -93,6 +110,11 @@ public final class NpcRenderer extends HumanoidMobRenderer<HumNpc,PlayerModel<Hu
 
   private static AccessoryMesh prop(String name,float[] box,float[] pivot,float[] rotation,int[] uv,float[] taper){
    return new AccessoryMesh(new Profiles.Accessory("body",name,box,pivot,rotation,uv,taper));
+  }
+
+  private static AccessoryMesh stripProp(String name,float[] box,float[] pivot,float[] rotation,
+                                          int v,int width,int length,float[] taper){
+   return new AccessoryMesh(new Profiles.Accessory("body",name,box,pivot,rotation,new int[]{0,v},taper),width,length);
   }
 
   Accessories(NpcRenderer renderer, Profiles.Profile profile,net.minecraft.client.renderer.ItemInHandRenderer heldItems) {
@@ -114,18 +136,18 @@ public final class NpcRenderer extends HumanoidMobRenderer<HumNpc,PlayerModel<Hu
     };
     pieces.add(new Piece(bone, new AccessoryMesh(accessory),accessory.name()));
    }
-   scabbard=profile.id().equals("kanzaki")?prop("scabbard",new float[]{4.5f,10,-1.4f,1,1.15f,22.6f},
-       new float[]{5,10,0},new float[]{-.38f,.13f,0},new int[]{0,43},new float[]{1,1,.79f,.79f}):null;
-   drawnBlade=profile.id().equals("kanzaki")?prop("blade",new float[]{-.39f,9.2f,-23.3f,.78f,.35f,23.2f},
-       new float[]{0,9.4f,-.35f},new float[]{1.396f,0,0},new int[]{1,72},new float[]{1,1,.95f,1}):null;
-   drawnHilt=profile.id().equals("kanzaki")?prop("hilt",new float[]{-1.06f,8.95f,-.52f,2.12f,.9f,4.7f},
-       new float[]{0,9.4f,-.35f},new float[]{1.396f,0,0},new int[]{0,108},new float[]{1,1,1,1}):null;
-   sheathedHilt=profile.id().equals("kanzaki")?prop("hip_hilt",new float[]{4.26f,10,-5.3f,1.5f,.94f,4.8f},
-       new float[]{5,10,0},new float[]{-.38f,.13f,0},new int[]{0,108},new float[]{1,1,1,1}):null;
-   ascalon=profile.id().equals("acqua")?prop("ascalon",new float[]{-.76f,9.16f,-23.35f,1.52f,.45f,24.2f},
-       new float[]{0,9.4f,-.35f},new float[]{1.396f,0,0},new int[]{0,87},new float[]{1,1,1,1}):null;
-   spearPoint=profile.id().equals("itsuwa")?prop("spear_tip",new float[]{-.56f,9.1f,-15.65f,1.12f,.45f,3.1f},
-       new float[]{0,9.4f,-.35f},new float[]{1.396f,0,0},new int[]{0,102},new float[]{.66f,1,1,1}):null;
+   scabbard=profile.id().equals("kanzaki")?stripProp("scabbard",new float[]{4.5f,10,-1.4f,1,1.15f,22.6f},
+       new float[]{5,10,0},new float[]{-.38f,.13f,0},43,6,25,new float[]{1,1,.79f,.79f}):null;
+   drawnBlade=profile.id().equals("kanzaki")?stripProp("blade",new float[]{-.39f,9.2f,-23.3f,.78f,.35f,23.2f},
+       new float[]{0,9.4f,-.35f},new float[]{1.396f,0,0},72,4,27,new float[]{1,1,.95f,1}):null;
+   drawnHilt=profile.id().equals("kanzaki")?stripProp("hilt",new float[]{-1.06f,8.95f,-.52f,2.12f,.9f,4.7f},
+       new float[]{0,9.4f,-.35f},new float[]{1.396f,0,0},108,6,10,new float[]{1,1,1,1}):null;
+   sheathedHilt=profile.id().equals("kanzaki")?stripProp("hip_hilt",new float[]{4.26f,10,-5.3f,1.5f,.94f,4.8f},
+       new float[]{5,10,0},new float[]{-.38f,.13f,0},108,6,10,new float[]{1,1,1,1}):null;
+   ascalon=profile.id().equals("acqua")?stripProp("ascalon",new float[]{-.76f,9.16f,-23.35f,1.52f,.45f,24.2f},
+       new float[]{0,9.4f,-.35f},new float[]{1.396f,0,0},87,6,27,new float[]{1,1,1,1}):null;
+   spearPoint=profile.id().equals("itsuwa")?stripProp("spear_tip",new float[]{-.56f,9.1f,-15.65f,1.12f,.45f,3.1f},
+       new float[]{0,9.4f,-.35f},new float[]{1.396f,0,0},102,4,8,new float[]{.66f,1,1,1}):null;
    flightWings=profile.id().equals("floris")?java.util.Map.of(-1,flightWing(-1),1,flightWing(1)):java.util.Map.of();
   }
 
@@ -140,6 +162,8 @@ public final class NpcRenderer extends HumanoidMobRenderer<HumNpc,PlayerModel<Hu
   public void render(PoseStack pose, MultiBufferSource buffers, int light, HumNpc npc,
       float walk, float amount, float partial, float age, float yaw, float pitch) {
    if (npc.isInvisible()) return;
+   var model = (NpcModel) getParentModel();
+   boolean story = model.storyMesh != null;
    var vertices = buffers.getBuffer(renderType);
    int overlay = LivingEntityRenderer.getOverlayCoords(npc, 0);
    boolean swordHeld = rendersLongSword(npc, npc.getMainHandItem());
@@ -155,12 +179,14 @@ public final class NpcRenderer extends HumanoidMobRenderer<HumNpc,PlayerModel<Hu
    }
    for (var piece : pieces) {
     String name=piece.name();
+    if(story&&!name.startsWith("wing_")&&!STORY_PROPS.contains(name))continue;
     if(npc.suspended()&&Set.of("nape_hair","right_lock","left_lock","rod").contains(name))continue;
     if(npc.characterId.equals("aleister")&&name.equals("rod")&&!npc.getMainHandItem().is(BioHum.BLASTING_ROD.get()))continue;
     if(name.startsWith("sword_")||ascalonPhase&&name.startsWith("mace"))continue;
     if(name.startsWith("wing_")&&wingLength<.05f)continue;
+    if(story&&name.equals("remote")&&PresentationProps.usesRemote(npc,partial))continue;
     pose.pushPose();
-    piece.bone().translateAndRotate(pose);
+    translateHeldPart(model,piece.bone(),pose);
     if(Set.of("rod","spear","mace","mace_end","blade").contains(name)){
      pose.translate(0,9.4/16,-.35/16);
      pose.mulPose(Axis.XP.rotationDegrees(80));
@@ -174,14 +200,14 @@ public final class NpcRenderer extends HumanoidMobRenderer<HumNpc,PlayerModel<Hu
     boolean drawn=skill!=null&&(skill.id().equals("saint_intercept")||skill.id().equals("yuisen")||skill.id().startsWith("close_kanzaki"))
          &&!skill.id().endsWith("_flinch")&&npc.signatureAge()+partial>=Math.max(2,skill.windup()-3)
          &&npc.signatureAge()+partial<skill.length()-4;
-    draw(scabbard,getParentModel().body,pose,vertices,light,overlay);
+    drawSheathed(scabbard,model,pose,vertices,light,overlay);
     if(drawn){
-     draw(drawnBlade,getParentModel().rightArm,pose,vertices,light,overlay);
-     draw(drawnHilt,getParentModel().rightArm,pose,vertices,light,overlay);
-    }else draw(sheathedHilt,getParentModel().body,pose,vertices,light,overlay);
+     drawHeld(drawnBlade,model,pose,vertices,light,overlay);
+     drawHeld(drawnHilt,model,pose,vertices,light,overlay);
+    }else drawSheathed(sheathedHilt,model,pose,vertices,light,overlay);
    }
-   if(ascalonPhase)draw(ascalon,getParentModel().rightArm,pose,vertices,light,overlay);
-   if(spearPoint!=null)draw(spearPoint,getParentModel().rightArm,pose,vertices,light,overlay);
+   if(ascalonPhase)drawHeld(ascalon,model,pose,vertices,light,overlay);
+   if(spearPoint!=null)drawHeld(spearPoint,model,pose,vertices,light,overlay);
    if(!flightWings.isEmpty()&&npc.wings().equals("flight_gear_step")){
     float opening=npc.technique().equals("flight_gear_step")
             ?Mth.clamp((npc.signatureAge()+partial-7)/5,0,1):1;
@@ -196,9 +222,10 @@ public final class NpcRenderer extends HumanoidMobRenderer<HumNpc,PlayerModel<Hu
      pose.popPose();
     }
    }
-   if(npc.suspended())face(npc,pose,buffers,overlay);
-   else {
-    PresentationProps.draw(npc,(NpcModel)getParentModel(),heldItems,pose,buffers,light,partial);
+   if(npc.suspended()) {
+    if(!story)face(npc,pose,buffers,overlay);
+   } else {
+    PresentationProps.draw(npc,model,heldItems,pose,buffers,light,partial);
     SkillFx.eyes(npc,getParentModel().head,pose,buffers,partial);
     SkillFx.ready(npc,(NpcModel)getParentModel(),pose,buffers,partial);
    }
@@ -207,10 +234,25 @@ public final class NpcRenderer extends HumanoidMobRenderer<HumNpc,PlayerModel<Hu
    }
   }
 
-  private static void draw(AccessoryMesh mesh,ModelPart bone,PoseStack pose,
-                           com.mojang.blaze3d.vertex.VertexConsumer out,int light,int overlay){
+  private static void translateHeldPart(NpcModel model,ModelPart bone,PoseStack pose){
+   if(model.storyMesh!=null&&(bone==model.leftArm||bone==model.rightArm)){
+    model.storyMesh.translateToHeldPart(model,bone==model.rightArm,pose);
+   }else bone.translateAndRotate(pose);
+  }
+
+  private static void drawHeld(AccessoryMesh mesh,NpcModel model,PoseStack pose,
+                               com.mojang.blaze3d.vertex.VertexConsumer out,int light,int overlay){
    pose.pushPose();
-   bone.translateAndRotate(pose);
+   translateHeldPart(model,model.rightArm,pose);
+   mesh.draw(pose,out,light,overlay,1);
+   pose.popPose();
+  }
+
+  private static void drawSheathed(AccessoryMesh mesh,NpcModel model,PoseStack pose,
+                                   com.mojang.blaze3d.vertex.VertexConsumer out,int light,int overlay){
+   pose.pushPose();
+   if(model.storyMesh!=null)model.storyMesh.translateToSheath(model,pose);
+   else model.body.translateAndRotate(pose);
    mesh.draw(pose,out,light,overlay,1);
    pose.popPose();
   }
